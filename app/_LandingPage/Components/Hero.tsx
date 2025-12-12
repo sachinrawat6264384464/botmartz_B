@@ -2,41 +2,36 @@
 
 import React, { useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import Scene3D from "./Scene3D";
+import SceneVideo from "./SceneVideo";
 import WelcomeOverlay from "./WelcomeOverlay";
 import HeroOverlay from "./HeroOverlay";
 
 export default function Hero() {
-  // State 1: Has the user clicked enter?
   const [isEntered, setIsEntered] = useState(false);
-  
-  // State 2: Has the 3D camera finished flying?
   const [showHero, setShowHero] = useState(false);
 
   return (
     <main className="relative w-full h-screen overflow-hidden bg-[#011C40]">
       
-      {/* 1. The Persistent 3D Universe */}
-      <Scene3D 
+      {/* 1. BACKGROUND LAYER (Video) */}
+      <SceneVideo 
         isEntered={isEntered} 
         onAnimationComplete={() => setShowHero(true)} 
       />
 
-      {/* 2. The UI Layers */}
+      {/* 2. UI LAYERS */}
       <AnimatePresence mode="wait">
         
-        {/* Stage 1: Welcome Screen */}
+        {/* Stage 1: Entrance Screen */}
         {!isEntered && (
-           <WelcomeOverlay key="welcome" onEnter={() => setIsEntered(true)} />
+          <WelcomeOverlay key="welcome" onEnter={() => setIsEntered(true)} />
         )}
 
-        {/* Stage 2: Hero Content (Only shows after camera lands) */}
+        {/* Stage 2: Hero Content (Only appears after video transition) */}
         {showHero && (
-           <HeroOverlay key="hero" />
+          <HeroOverlay key="hero" />
         )}
-
       </AnimatePresence>
-
     </main>
   );
 }
