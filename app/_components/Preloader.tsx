@@ -124,12 +124,14 @@ export default function Preloader({ onLoadComplete }: PreloaderProps) {
             {/* Logo */}
             <div className="relative w-[220px] h-[95px] md:w-[300px] md:h-[130px]">
               <Image
-                src="/Botmartz_silver.png"
-                alt="Botmartz Logo"
-                fill
-                className="object-contain drop-shadow-[0_0_35px_rgba(255,255,255,0.6)]"
-                priority
-              />
+  src="/Botmartz_silver.png"
+  alt="Botmartz Logo"
+  fill
+  className="object-contain drop-shadow-[0_0_35px_rgba(255,255,255,0.6)]"
+  priority
+  quality={85} // Add this
+  sizes="(max-width: 768px) 220px, 300px" // Add this
+/>
             </div>
           </motion.div>
 

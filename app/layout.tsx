@@ -26,9 +26,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Preconnect to external resources */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://grainy-gradients.vercel.app" />
+        
+        {/* Preload critical assets */}
+        <link rel="preload" href="/Botmartz_silver.png" as="image" />
+        
         <style dangerouslySetInnerHTML={{
           __html: `
-            /* Prevent flash of unstyled content */
             body {
               background-color: #050505;
             }
@@ -44,9 +51,7 @@ export default function RootLayout({
           `
         }} />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
