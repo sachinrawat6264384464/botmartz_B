@@ -50,7 +50,7 @@ export default function HeroSection() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: isMobile ? 0.3 : 0.8, delay: isMobile ? 0 : 0.2 }}
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#050505] pt-20 md:pt-0" 
+className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#050505]"
       style={{ perspective: isMobile ? 'none' : '2000px' }}
     >
       {/* 1. Liquid Background Layer - Simplified on mobile */}
@@ -173,7 +173,7 @@ export default function HeroSection() {
               >
                 <span className="block text-2xl sm:text-4xl md:text-[6rem] font-black tracking-[-0.02em] bg-gradient-to-b from-white via-gray-300 to-gray-500 bg-clip-text text-transparent"
                   style={{ WebkitTextStroke: isMobile ? "0.5px rgba(255,255,255,0.9)" : "1.5px rgba(255,255,255,0.9)", textShadow: "0 0 30px rgba(255,255,255,0.5), 0 0 10px rgba(255,255,255,0.8)" }}>
-                  IT SOLUTIONS
+                BUSINESS, AUTOMATED.
                 </span>
               </motion.div>
             </div>
