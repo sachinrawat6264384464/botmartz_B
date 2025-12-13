@@ -108,9 +108,7 @@ export default function Navbar() {
 
           {/* 3. CTA BUTTON - Desktop Only */}
           <div className="hidden md:flex items-center gap-6">
-             <button className="text-[11px] font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors">
-                Login
-             </button>
+
 
              <MagneticButton className="group relative px-6 py-2.5 bg-[#00E5FF] text-black text-[11px] font-bold tracking-widest uppercase rounded-full overflow-hidden hover:shadow-[0_0_20px_rgba(0,229,255,0.5)] transition-shadow duration-300">
                 <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />

@@ -226,11 +226,10 @@ function FloatingShard({ top, left, right, bottom, label, sublabel, delay }: any
   return (
     <motion.div 
       style={{ top, left, right, bottom }}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: [0, -15, 0] }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{ 
-        opacity: { duration: 0.6, delay: delay + 0.4 },
-        y: { duration: 6, repeat: Infinity, ease: "easeInOut", delay: delay + 1 }
+        opacity: { duration: 0.6, delay: delay + 0.4 }
       }}
       className="absolute hidden md:flex flex-col items-start gap-1 pointer-events-none group z-20"
     >
