@@ -1,9 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable React compiler (faster renders)
-  experimental: {
-    reactCompiler: true,
-  },
+  // Enable React compiler (faster renders) - moved out of experimental
+  reactCompiler: true,
   
   // Optimize images
   images: {
@@ -17,9 +15,6 @@ const nextConfig = {
   
   // Optimize production build
   productionBrowserSourceMaps: false,
-  
-  // Enable SWC minification (faster)
-  swcMinify: true,
 };
 
 export default nextConfig;
