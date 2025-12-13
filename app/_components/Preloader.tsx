@@ -129,7 +129,7 @@ export default function Preloader({ onLoadComplete }: PreloaderProps) {
   fill
   className="object-contain drop-shadow-[0_0_35px_rgba(255,255,255,0.6)]"
   priority
-  quality={85} // Add this
+  quality={70} // Add this
   sizes="(max-width: 768px) 220px, 300px" // Add this
 />
             </div>

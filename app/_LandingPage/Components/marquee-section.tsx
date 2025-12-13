@@ -16,27 +16,27 @@ const MarqueeContent = memo(() => (
 
 MarqueeContent.displayName = 'MarqueeContent';
 
-export const MarqueeSection = memo(function MarqueeSection() {
-  // Memoize the repeated content array
+export default memo(function MarqueeSection() {
+  // Memoize the repeated content array - more repetitions for mobile
   const repeatedContent = useMemo(() => 
-    Array.from({ length: 4 }, (_, i) => i), 
+    Array.from({ length: 6 }, (_, i) => i), 
     []
   );
 
   return (
-    <div className="py-12 border-y border-white/5 bg-[#080808] overflow-hidden flex relative z-20">
-      {/* Gradient overlay */}
+    <div className="py-8 md:py-12 border-y border-white/5 bg-[#080808] overflow-hidden flex relative z-20">
+      {/* Gradient overlay - stronger on mobile for cleaner edges */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-[#050505] z-10 pointer-events-none" />
       
-      {/* Marquee content */}
+      {/* Marquee content - responsive sizing and spacing */}
       <motion.div 
-        className="flex gap-16 whitespace-nowrap text-[#333] font-bold text-6xl uppercase tracking-tighter will-change-transform"
+        className="flex gap-8 md:gap-16 whitespace-nowrap text-[#333] font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase tracking-tighter will-change-transform"
         animate={{ x: ["0%", "-50%"] }}
         transition={{ 
-          duration: 20, 
+          duration: 25, // Slightly slower for better mobile readability
           repeat: Infinity, 
           ease: "linear",
-          repeatType: "loop" // More explicit
+          repeatType: "loop"
         }}
       >
         {repeatedContent.map((i) => (
@@ -46,5 +46,3 @@ export const MarqueeSection = memo(function MarqueeSection() {
     </div>
   );
 });
-
-MarqueeSection.displayName = 'MarqueeSection';

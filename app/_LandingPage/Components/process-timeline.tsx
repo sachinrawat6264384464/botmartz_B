@@ -48,8 +48,8 @@ const TimelineStep = memo(({
       transition={{ duration: 0.6, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
       className="relative pl-16 md:pl-24 group"
     >
-      {/* Connector Dot */}
-      <div className="absolute left-[15px] md:left-[23px] top-0 transform -translate-x-1/2 w-4 h-4 bg-[#050505] border border-white/20 rounded-full z-10 group-hover:border-[#FF5500] group-hover:scale-125 transition-all duration-300">
+    {/* Connector Dot */}
+      <div className="absolute left-[15px] md:left-[24px] top-0 w-4 h-4 bg-[#050505] border border-white/20 rounded-full z-10 group-hover:border-[#FF5500] group-hover:scale-125 transition-all duration-300">
         <div className="absolute inset-0 m-auto w-1.5 h-1.5 bg-[#FF5500] rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-[0_0_10px_#FF5500]" />
       </div>
 

@@ -6,9 +6,9 @@ import { Space_Grotesk } from 'next/font/google';
 import { cn } from "@/lib/utils";
 
 // Import lightweight components normally
-import { Navbar } from "./Components/navbar";
+import Navbar  from "./Components/navbar";
 import HeroSection from "./Components/hero-section";
-import { MarqueeSection } from "./Components/marquee-section";
+import  MarqueeSection  from "./Components/marquee-section";
 
 // Lazy load heavy components with loading states
 const ServicesGrid = dynamic(() => import('./Components/services-grid').then(mod => ({ default: mod.ServicesGrid })), {

@@ -214,21 +214,7 @@ className="relative min-h-screen flex flex-col items-center justify-center overf
         </div>
       </motion.div>
       
-      {/* Scroll Indicator - Desktop only */}
-      {!isMobile && (
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          style={{ opacity }} 
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-20"
-        >
-          <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-medium">Scroll to Explore</span>
-          <motion.div className="w-[1px] h-16 bg-gradient-to-b from-white/40 via-white/20 to-transparent relative overflow-hidden">
-            <motion.div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white to-transparent" animate={{ top: ['-100%', '100%'] }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }} />
-          </motion.div>
-        </motion.div>
-      )}
+     
     </motion.section>
   );
 }
