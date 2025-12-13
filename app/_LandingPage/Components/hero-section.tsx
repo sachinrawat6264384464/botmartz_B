@@ -16,25 +16,32 @@ const particleData = [...Array(15)].map((_, i) => ({
 
 export default function HeroSection() {
   const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
 
-  // Handle component initialization
+  // Detect mobile and handle component initialization
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
     setMounted(true);
     
-    // Signal that hero is loaded after a short delay to ensure rendering is complete
     const timer = setTimeout(() => {
       if (ref.current) {
         ref.current.setAttribute('data-hero-loaded', 'true');
       }
     }, 100);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
-  // Optimized Scroll Parallax
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  // Optimized Scroll Parallax - disabled on mobile
+  const contentY = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["0%", "30%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
@@ -42,47 +49,52 @@ export default function HeroSection() {
       ref={ref}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.8, delay: 0.2 }}
-      className="relative h-screen flex flex-col items-center justify-center overflow-hidden bg-[#050505]" 
-      style={{ perspective: '2000px' }}
+      transition={{ duration: isMobile ? 0.3 : 0.8, delay: isMobile ? 0 : 0.2 }}
+      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#050505] pt-20 md:pt-0" 
+      style={{ perspective: isMobile ? 'none' : '2000px' }}
     >
-      {/* 1. Liquid Background Layer */}
-      <div className="absolute inset-0 z-0 opacity-30 mix-blend-screen pointer-events-none">
-        <ShadowOverlay 
-          color="rgba(192, 192, 192, 0.9)"
-          animation={{ scale: 70, speed: 15 }}
-          noise={{ opacity: 0.15, scale: 1.2 }}
-          sizing="stretch"
-        />
-      </div>
+      {/* 1. Liquid Background Layer - Simplified on mobile */}
+      {!isMobile && (
+        <div className="absolute inset-0 z-0 opacity-30 mix-blend-screen pointer-events-none">
+          <ShadowOverlay 
+            color="rgba(192, 192, 192, 0.9)"
+            animation={{ scale: 70, speed: 15 }}
+            noise={{ opacity: 0.15, scale: 1.2 }}
+            sizing="stretch"
+          />
+        </div>
+      )}
 
-      {/* 2. WORLD MAP LAYER */}
-      <div className="absolute inset-0 z-0 flex items-center justify-center opacity-60 scale-125 md:scale-100 pointer-events-none">
-         <WorldMap 
-            lineColor="#ffffff" 
-            dots={[
-              { start: { lat: 64.2008, lng: -149.4937 }, end: { lat: 34.0522, lng: -118.2437 } },
-              { start: { lat: 64.2008, lng: -149.4937 }, end: { lat: -15.7975, lng: -47.8919 } },
-              { start: { lat: -15.7975, lng: -47.8919 }, end: { lat: 38.7223, lng: -9.1393 } },
-              { start: { lat: 51.5074, lng: -0.1278 }, end: { lat: 28.6139, lng: 77.209 } },
-              { start: { lat: 28.6139, lng: 77.209 }, end: { lat: 43.1332, lng: 131.9113 } },
-              { start: { lat: 28.6139, lng: 77.209 }, end: { lat: -1.2921, lng: 36.8219 } },
-            ]}
-         />
+      {/* 2. WORLD MAP LAYER - Static on mobile, animated on desktop */}
+      <div className="absolute inset-0 z-0 flex items-center justify-center opacity-60 scale-110 md:scale-100 pointer-events-none">
+        <WorldMap 
+          lineColor="#ffffff" 
+          animated={!isMobile}
+          dots={[
+            { start: { lat: 64.2008, lng: -149.4937 }, end: { lat: 34.0522, lng: -118.2437 } },
+            { start: { lat: 64.2008, lng: -149.4937 }, end: { lat: -15.7975, lng: -47.8919 } },
+            { start: { lat: -15.7975, lng: -47.8919 }, end: { lat: 38.7223, lng: -9.1393 } },
+            { start: { lat: 51.5074, lng: -0.1278 }, end: { lat: 28.6139, lng: 77.209 } },
+            { start: { lat: 28.6139, lng: 77.209 }, end: { lat: 43.1332, lng: 131.9113 } },
+            { start: { lat: 28.6139, lng: 77.209 }, end: { lat: -1.2921, lng: 36.8219 } },
+          ]}
+        />
       </div>
 
       {/* 3. Static Center Spotlight */}
       <div 
         className="absolute inset-0 pointer-events-none z-0"
         style={{
-          background: `radial-gradient(circle 800px at 50% 50%, rgba(255,255,255,0.06), transparent 50%)`
+          background: isMobile 
+            ? `radial-gradient(circle 400px at 50% 40%, rgba(255,255,255,0.08), transparent 60%)`
+            : `radial-gradient(circle 800px at 50% 50%, rgba(255,255,255,0.06), transparent 50%)`
         }}
       />
 
-      {/* 4. Floating Particles */}
-      {mounted && (
+      {/* 4. Floating Particles - Reduced on mobile */}
+      {mounted && !isMobile && (
         <div className="absolute inset-0 z-0">
-          {particleData.map((particle, i) => (
+          {particleData.slice(0, 8).map((particle, i) => (
             <FloatingParticle key={i} data={particle} delay={i * 0.3} />
           ))}
         </div>
@@ -94,10 +106,10 @@ export default function HeroSection() {
       {/* MAIN CONTENT */}
       <motion.div 
         style={{ y: contentY, opacity }} 
-        className="relative z-10 w-full max-w-7xl px-6 flex flex-col items-center justify-center -mt-10"
+        className="relative z-10 w-full max-w-7xl px-6 flex flex-col items-center justify-center"
       >
-        {/* Auto-Floating Shards */}
-        {mounted && (
+        {/* Auto-Floating Shards - Desktop only */}
+        {mounted && !isMobile && (
           <>
             <FloatingShard top="15%" left="5%" label="AI-POWERED" sublabel="Neural Networks" delay={0} />
             <FloatingShard top="25%" right="5%" label="SECURE" sublabel="256-bit Encryption" delay={0.1} />
@@ -108,15 +120,15 @@ export default function HeroSection() {
 
         <div className="text-center relative z-20 flex flex-col items-center">
             
-            {/* 1. HUGE LOGO */}
+            {/* 1. HUGE LOGO - Increased size, better mobile spacing */}
             <motion.div 
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-              className="relative mb-6"
+              transition={{ duration: isMobile ? 0.4 : 0.8, delay: isMobile ? 0 : 0.4, ease: "easeOut" }}
+              className="relative mb-4 md:mb-6"
             >
                <div className="absolute inset-0 bg-white/20 blur-[60px] rounded-full" />
-               <div className="relative w-[280px] h-[120px] md:w-[500px] md:h-[220px]">
+               <div className="relative w-[350px] h-[150px] sm:w-[420px] sm:h-[180px] md:w-[550px] md:h-[240px]">
                   <Image 
                       src="/Botmartz_silver.png" 
                       alt="Botmartz Logo" 
@@ -127,15 +139,15 @@ export default function HeroSection() {
                </div>
             </motion.div>
 
-            {/* 2. TEXT TITLE */}
-            <div className="relative -mt-4 md:-mt-8">
+            {/* 2. TEXT TITLE - Better mobile sizing */}
+            <div className="relative -mt-2 md:-mt-8">
               <motion.h1 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-                className="text-6xl md:text-[9rem] font-black tracking-tighter leading-[0.9] text-white relative"
+                transition={{ duration: isMobile ? 0.4 : 0.8, delay: isMobile ? 0.1 : 0.5, ease: "easeOut" }}
+                className="text-5xl sm:text-7xl md:text-[9rem] font-black tracking-tighter leading-[0.9] text-white relative"
               >
-                {mounted ? (
+                {mounted && !isMobile ? (
                   <ScrambleText text="BOTMARTZ" className="relative inline-block">
                     <span className="absolute inset-0 bg-gradient-to-b from-white via-white to-gray-200 bg-clip-text text-transparent blur-md" />
                     <span className="relative bg-clip-text text-transparent bg-[linear-gradient(180deg,#ffffff_0%,#ffffff_45%,#a0a0a0_50%,#ffffff_95%,#ffffff_100%)]"
@@ -156,24 +168,24 @@ export default function HeroSection() {
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-                className="relative mt-0 md:mt-2"
+                transition={{ duration: isMobile ? 0.4 : 0.8, delay: isMobile ? 0.2 : 0.6, ease: "easeOut" }}
+                className="relative mt-1 md:mt-2"
               >
-                <span className="block text-3xl md:text-[6rem] font-black tracking-[-0.02em] bg-gradient-to-b from-white via-gray-300 to-gray-500 bg-clip-text text-transparent"
-                  style={{ WebkitTextStroke: "1.5px rgba(255,255,255,0.9)", textShadow: "0 0 30px rgba(255,255,255,0.5), 0 0 10px rgba(255,255,255,0.8)" }}>
+                <span className="block text-2xl sm:text-4xl md:text-[6rem] font-black tracking-[-0.02em] bg-gradient-to-b from-white via-gray-300 to-gray-500 bg-clip-text text-transparent"
+                  style={{ WebkitTextStroke: isMobile ? "0.5px rgba(255,255,255,0.9)" : "1.5px rgba(255,255,255,0.9)", textShadow: "0 0 30px rgba(255,255,255,0.5), 0 0 10px rgba(255,255,255,0.8)" }}>
                   IT SOLUTIONS
                 </span>
               </motion.div>
             </div>
             
-            {/* 3. DESCRIPTION & CTA */}
+            {/* 3. DESCRIPTION & CTA - Improved mobile layout */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
-              className="pt-8 flex flex-col items-center gap-8 max-w-2xl"
+              transition={{ duration: isMobile ? 0.4 : 0.8, delay: isMobile ? 0.3 : 0.7, ease: "easeOut" }}
+              className="pt-6 md:pt-8 flex flex-col items-center gap-6 md:gap-8 max-w-2xl px-4"
             >
-              <p className={`${interTight.className} text-gray-300 text-lg md:text-xl font-light tracking-wide leading-relaxed`}>
+              <p className={`${interTight.className} text-gray-300 text-base sm:text-lg md:text-xl font-light tracking-wide leading-relaxed text-center`}>
                 Transforming businesses through{' '}
                 <span className="relative inline-block">
                   <span className="absolute inset-0 bg-white/10 blur-xl" />
@@ -182,18 +194,18 @@ export default function HeroSection() {
                 , intelligent software, and scalable digital ecosystems.
               </p>
 
-              <div className="flex gap-4 mt-2">
+              <div className="flex flex-row gap-3 sm:gap-4 mt-2 w-full sm:w-auto">
                 <motion.button 
-                  whileHover={{ scale: 1.05 }} 
+                  whileHover={{ scale: isMobile ? 1 : 1.05 }} 
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-3 bg-white text-black font-bold uppercase text-xs tracking-widest rounded-sm hover:bg-gray-100 transition-colors"
+                  className="flex-1 sm:flex-none sm:w-auto px-6 sm:px-8 py-3 bg-white text-black font-bold uppercase text-xs tracking-widest rounded-sm hover:bg-gray-100 transition-colors"
                 >
                   Explore Solutions
                 </motion.button>
                 <motion.button 
-                  whileHover={{ scale: 1.05 }} 
+                  whileHover={{ scale: isMobile ? 1 : 1.05 }} 
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-3 border border-white/20 text-white font-bold uppercase text-xs tracking-widest rounded-sm hover:bg-white/5 transition-colors backdrop-blur-sm"
+                  className="flex-1 sm:flex-none sm:w-auto px-6 sm:px-8 py-3 border border-white/20 text-white font-bold uppercase text-xs tracking-widest rounded-sm hover:bg-white/5 transition-colors backdrop-blur-sm"
                 >
                   Contact Us
                 </motion.button>
@@ -202,19 +214,21 @@ export default function HeroSection() {
         </div>
       </motion.div>
       
-      {/* Scroll Indicator */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.8 }}
-        style={{ opacity }} 
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-20"
-      >
-        <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-medium">Scroll to Explore</span>
-        <motion.div className="w-[1px] h-16 bg-gradient-to-b from-white/40 via-white/20 to-transparent relative overflow-hidden">
-          <motion.div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white to-transparent" animate={{ top: ['-100%', '100%'] }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }} />
+      {/* Scroll Indicator - Desktop only */}
+      {!isMobile && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          style={{ opacity }} 
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-20"
+        >
+          <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-medium">Scroll to Explore</span>
+          <motion.div className="w-[1px] h-16 bg-gradient-to-b from-white/40 via-white/20 to-transparent relative overflow-hidden">
+            <motion.div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white to-transparent" animate={{ top: ['-100%', '100%'] }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }} />
+          </motion.div>
         </motion.div>
-      </motion.div>
+      )}
     </motion.section>
   );
 }
@@ -245,8 +259,8 @@ function FloatingShard({ top, left, right, bottom, label, sublabel, delay }: any
   );
 }
 
-// World Map
-function WorldMap({ dots = [], lineColor = "#ffffff" }: any) {
+// World Map - Static on mobile, animated on desktop
+function WorldMap({ dots = [], lineColor = "#ffffff", animated = true }: any) {
   const [mounted, setMounted] = useState(false);
   const map = new DottedMap({ height: 100, grid: "diagonal" });
   const svgMap = map.getSVG({ radius: 0.22, color: "#FFFFFF40", shape: "circle", backgroundColor: "transparent" });
@@ -290,15 +304,25 @@ function WorldMap({ dots = [], lineColor = "#ffffff" }: any) {
             const end = projectPoint(dot.end.lat, dot.end.lng);
             return (
               <g key={i}>
-                <motion.path 
-                  d={createCurvedPath(start, end)} 
-                  fill="none" 
-                  stroke="url(#path-gradient)" 
-                  strokeWidth="1" 
-                  initial={{ pathLength: 0 }} 
-                  animate={{ pathLength: 1 }} 
-                  transition={{ duration: 2, delay: 0.5 * i, repeat: Infinity, repeatDelay: 3 }} 
-                />
+                {animated ? (
+                  <motion.path 
+                    d={createCurvedPath(start, end)} 
+                    fill="none" 
+                    stroke="url(#path-gradient)" 
+                    strokeWidth="1" 
+                    initial={{ pathLength: 0 }} 
+                    animate={{ pathLength: 1 }} 
+                    transition={{ duration: 2, delay: 0.5 * i, repeat: Infinity, repeatDelay: 3 }} 
+                  />
+                ) : (
+                  <path 
+                    d={createCurvedPath(start, end)} 
+                    fill="none" 
+                    stroke={lineColor} 
+                    strokeWidth="1" 
+                    opacity="0.3"
+                  />
+                )}
                 <circle cx={start.x} cy={start.y} r="2" fill={lineColor} />
                 <circle cx={end.x} cy={end.y} r="2" fill={lineColor} />
               </g>
@@ -319,7 +343,7 @@ function ShadowOverlay({ sizing = 'fill', color = 'rgba(128, 128, 128, 1)', anim
   );
 }
 
-// Scramble Text
+// Scramble Text - Desktop only
 function ScrambleText({ text, className, children }: any) {
   const [displayText, setDisplayText] = useState(text);
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
