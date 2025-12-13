@@ -22,6 +22,15 @@ export default function HeroSection() {
   // Handle component initialization
   useEffect(() => {
     setMounted(true);
+    
+    // Signal that hero is loaded after a short delay to ensure rendering is complete
+    const timer = setTimeout(() => {
+      if (ref.current) {
+        ref.current.setAttribute('data-hero-loaded', 'true');
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, []);
 
   // Optimized Scroll Parallax

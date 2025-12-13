@@ -1,6 +1,5 @@
 "use client";
-
-import { ReactLenis } from "@studio-freight/react-lenis";
+import { ReactLenis } from "lenis/react";
 import { Space_Grotesk } from 'next/font/google';
 import { cn } from "@/lib/utils";
 
@@ -50,7 +49,7 @@ export default function BotmartzLandingPage() {
       <SectionWithMockup
     title={
         <>
-            Intelligence, <br />
+            Intelligence, 
             <span className="text-[#888]">delivered to you.</span>
         </>
     }

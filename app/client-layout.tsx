@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Preloader from "./_components/Preloader";
 
 export default function ClientLayout({
@@ -13,21 +13,21 @@ export default function ClientLayout({
   const handleLoadComplete = () => {
     setIsLoading(false);
     
-    // Add loaded class to enable transition
-    setTimeout(() => {
+    // Smooth transition to content
+    requestAnimationFrame(() => {
       const content = document.getElementById('main-content');
       if (content) {
         content.classList.add('loaded');
       }
-    }, 50);
+    });
   };
 
   return (
     <>
-      {/* Global Preloader */}
+      {/* Preloader */}
       {isLoading && <Preloader onLoadComplete={handleLoadComplete} />}
 
-      {/* Main Content - Hidden by CSS until loaded */}
+      {/* Main Content - Renders immediately but hidden */}
       <div id="main-content">
         {children}
       </div>
