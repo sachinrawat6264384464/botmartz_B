@@ -41,7 +41,7 @@ const ClientTransmissions = dynamic(() => import('./Components/client-transmissi
   ssr: true
 });
 
-const NeuralQuery = dynamic(() => import('./Components/neural-query').then(mod => ({ default: mod.NeuralQuery })), {
+const NeuralQuery = dynamic(() => import('./Components/neural-query'), {
   loading: () => <div className="min-h-screen" />,
   ssr: true
 });

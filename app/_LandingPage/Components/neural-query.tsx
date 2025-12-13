@@ -73,7 +73,8 @@ const FAQItem = memo(({
 
 FAQItem.displayName = 'FAQItem';
 
-export const NeuralQuery = memo(function NeuralQuery() {
+// Main Component
+function NeuralQuery() {
   const [openId, setOpenId] = useState<string | null>(null);
 
   // Memoized toggle handler
@@ -82,23 +83,48 @@ export const NeuralQuery = memo(function NeuralQuery() {
   }, []);
 
   return (
-    <section className="py-24 max-w-4xl mx-auto px-6 md:px-12">
-      <h2 className="text-4xl font-bold mb-12 text-center">
+    <section className="min-h-screen bg-black py-24 px-6 md:px-12 overflow-hidden">
+      <h2 className="text-4xl font-bold mb-16 text-center text-white">
         NEURAL <span className="text-[#D4AF37]">QUERY</span>
       </h2>
-      <div className="space-y-4">
-        {FAQS.map((faq) => (
-          <FAQItem 
-            key={faq.id} 
-            question={faq.q} 
-            answer={faq.a}
-            isOpen={openId === faq.id}
-            onToggle={createToggleHandler(faq.id)}
-          />
-        ))}
+      
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+        {/* Left Side - Video */}
+        <div className="relative group">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/20 to-purple-500/20 rounded-2xl blur-3xl opacity-50 group-hover:opacity-70 transition-opacity duration-500"></div>
+          <div className="relative bg-black/40 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-[#D4AF37]/50 transition-all duration-300">
+            <video 
+              autoPlay 
+              loop 
+              muted 
+              playsInline
+              className="w-full h-auto rounded-lg shadow-2xl"
+            >
+              <source src="/Botmartz_hi.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            <div className="mt-6 text-center">
+              <p className="text-[#D4AF37] font-semibold text-lg">BOTMARTZ AI ASSISTANT</p>
+              <p className="text-gray-500 text-sm mt-1">Your Neural Interface Guide</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side - FAQ */}
+        <div className="space-y-4">
+          {FAQS.map((faq) => (
+            <FAQItem 
+              key={faq.id} 
+              question={faq.q} 
+              answer={faq.a}
+              isOpen={openId === faq.id}
+              onToggle={createToggleHandler(faq.id)}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
-});
+}
 
-NeuralQuery.displayName = 'NeuralQuery';
+export default NeuralQuery;
