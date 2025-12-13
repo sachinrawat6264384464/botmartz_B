@@ -1,8 +1,7 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Inter_Tight } from 'next/font/google';
 import DottedMap from "dotted-map"; 
 
@@ -15,89 +14,7 @@ const particleData = [...Array(15)].map((_, i) => ({
   duration: 10 + (i * 2.3) % 20
 }));
 
-// --- PRELOADER COMPONENT ---
-function Preloader({ onComplete }: { onComplete: () => void }) {
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    // Simulate loading progress
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setTimeout(onComplete, 500); // Small delay before hiding
-          return 100;
-        }
-        return prev + 2;
-      });
-    }, 30);
-
-    return () => clearInterval(interval);
-  }, [onComplete]);
-
-  return (
-    <motion.div
-      initial={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#050505]"
-    >
-      {/* Animated Logo */}
-      <motion.div
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="relative mb-8"
-      >
-        <div className="absolute inset-0 bg-white/20 blur-[60px] rounded-full" />
-        <div className="relative w-[200px] h-[85px] md:w-[300px] md:h-[130px]">
-          <Image 
-            src="/Botmartz_silver.png" 
-            alt="Botmartz Logo" 
-            fill
-            className="object-contain drop-shadow-[0_0_35px_rgba(255,255,255,0.5)]"
-            priority
-          />
-        </div>
-      </motion.div>
-
-      {/* Progress Bar */}
-      <div className="w-64 md:w-80 h-1 bg-white/10 rounded-full overflow-hidden">
-        <motion.div
-          className="h-full bg-gradient-to-r from-white via-gray-300 to-white"
-          style={{ width: `${progress}%` }}
-          transition={{ duration: 0.3 }}
-        />
-      </div>
-
-      {/* Progress Text */}
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
-        className="mt-4 text-white/60 text-sm font-mono"
-      >
-        {progress}%
-      </motion.p>
-
-      {/* Pulsing Dots */}
-      <div className="flex gap-2 mt-6">
-        {[0, 1, 2].map((i) => (
-          <motion.div
-            key={i}
-            className="w-2 h-2 bg-white/40 rounded-full"
-            animate={{ scale: [1, 1.5, 1], opacity: [0.4, 1, 0.4] }}
-            transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
-          />
-        ))}
-      </div>
-    </motion.div>
-  );
-}
-
-// --- MAIN HERO COMPONENT ---
 export default function HeroSection() {
-  const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
@@ -112,196 +29,188 @@ export default function HeroSection() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
-    <>
-      {/* Preloader */}
-      <AnimatePresence>
-        {loading && <Preloader onComplete={() => setLoading(false)} />}
-      </AnimatePresence>
-
-      {/* Main Content */}
-      <motion.section 
-        ref={ref}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: loading ? 0 : 1 }}
-        transition={{ duration: 0.5 }}
-        className="relative h-screen flex flex-col items-center justify-center overflow-hidden bg-[#050505]" 
-        style={{ perspective: '2000px' }}
-      >
-        {/* 1. Liquid Background Layer */}
-        <div className="absolute inset-0 z-0 opacity-30 mix-blend-screen pointer-events-none">
-          <ShadowOverlay 
-            color="rgba(192, 192, 192, 0.9)"
-            animation={{ scale: 70, speed: 15 }}
-            noise={{ opacity: 0.15, scale: 1.2 }}
-            sizing="stretch"
-          />
-        </div>
-
-        {/* 2. WORLD MAP LAYER */}
-        <div className="absolute inset-0 z-0 flex items-center justify-center opacity-60 scale-125 md:scale-100 pointer-events-none">
-           <WorldMap 
-              lineColor="#ffffff" 
-              dots={[
-                { start: { lat: 64.2008, lng: -149.4937 }, end: { lat: 34.0522, lng: -118.2437 } },
-                { start: { lat: 64.2008, lng: -149.4937 }, end: { lat: -15.7975, lng: -47.8919 } },
-                { start: { lat: -15.7975, lng: -47.8919 }, end: { lat: 38.7223, lng: -9.1393 } },
-                { start: { lat: 51.5074, lng: -0.1278 }, end: { lat: 28.6139, lng: 77.209 } },
-                { start: { lat: 28.6139, lng: 77.209 }, end: { lat: 43.1332, lng: 131.9113 } },
-                { start: { lat: 28.6139, lng: 77.209 }, end: { lat: -1.2921, lng: 36.8219 } },
-              ]}
-           />
-        </div>
-
-        {/* 3. Static Center Spotlight */}
-        <div 
-          className="absolute inset-0 pointer-events-none z-0"
-          style={{
-            background: `radial-gradient(circle 800px at 50% 50%, rgba(255,255,255,0.06), transparent 50%)`
-          }}
+    <motion.section 
+      ref={ref}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8, delay: 0.2 }}
+      className="relative h-screen flex flex-col items-center justify-center overflow-hidden bg-[#050505]" 
+      style={{ perspective: '2000px' }}
+    >
+      {/* 1. Liquid Background Layer */}
+      <div className="absolute inset-0 z-0 opacity-30 mix-blend-screen pointer-events-none">
+        <ShadowOverlay 
+          color="rgba(192, 192, 192, 0.9)"
+          animation={{ scale: 70, speed: 15 }}
+          noise={{ opacity: 0.15, scale: 1.2 }}
+          sizing="stretch"
         />
+      </div>
 
-        {/* 4. Floating Particles */}
+      {/* 2. WORLD MAP LAYER */}
+      <div className="absolute inset-0 z-0 flex items-center justify-center opacity-60 scale-125 md:scale-100 pointer-events-none">
+         <WorldMap 
+            lineColor="#ffffff" 
+            dots={[
+              { start: { lat: 64.2008, lng: -149.4937 }, end: { lat: 34.0522, lng: -118.2437 } },
+              { start: { lat: 64.2008, lng: -149.4937 }, end: { lat: -15.7975, lng: -47.8919 } },
+              { start: { lat: -15.7975, lng: -47.8919 }, end: { lat: 38.7223, lng: -9.1393 } },
+              { start: { lat: 51.5074, lng: -0.1278 }, end: { lat: 28.6139, lng: 77.209 } },
+              { start: { lat: 28.6139, lng: 77.209 }, end: { lat: 43.1332, lng: 131.9113 } },
+              { start: { lat: 28.6139, lng: 77.209 }, end: { lat: -1.2921, lng: 36.8219 } },
+            ]}
+         />
+      </div>
+
+      {/* 3. Static Center Spotlight */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-0"
+        style={{
+          background: `radial-gradient(circle 800px at 50% 50%, rgba(255,255,255,0.06), transparent 50%)`
+        }}
+      />
+
+      {/* 4. Floating Particles */}
+      {mounted && (
+        <div className="absolute inset-0 z-0">
+          {particleData.map((particle, i) => (
+            <FloatingParticle key={i} data={particle} delay={i * 0.3} />
+          ))}
+        </div>
+      )}
+
+      {/* 5. Edge Vignette */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(5,5,5,0.4)_70%,#050505_100%)] z-0 pointer-events-none" />
+
+      {/* MAIN CONTENT */}
+      <motion.div 
+        style={{ y: contentY, opacity }} 
+        className="relative z-10 w-full max-w-7xl px-6 flex flex-col items-center justify-center -mt-10"
+      >
+        {/* Auto-Floating Shards */}
         {mounted && (
-          <div className="absolute inset-0 z-0">
-            {particleData.map((particle, i) => (
-              <FloatingParticle key={i} data={particle} delay={i * 0.3} />
-            ))}
-          </div>
+          <>
+            <FloatingShard top="15%" left="5%" label="AI-POWERED" sublabel="Neural Networks" delay={0} />
+            <FloatingShard top="25%" right="5%" label="SECURE" sublabel="256-bit Encryption" delay={0.1} />
+            <FloatingShard bottom="20%" left="8%" label="SCALABLE" sublabel="Cloud Infrastructure" delay={0.2} />
+            <FloatingShard bottom="25%" right="8%" label="99.9% UPTIME" sublabel="Enterprise Grade" delay={0.3} />
+          </>
         )}
 
-        {/* 5. Edge Vignette */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(5,5,5,0.4)_70%,#050505_100%)] z-0 pointer-events-none" />
+        <div className="text-center relative z-20 flex flex-col items-center">
+            
+            {/* 1. HUGE LOGO */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+              className="relative mb-6"
+            >
+               <div className="absolute inset-0 bg-white/20 blur-[60px] rounded-full" />
+               <div className="relative w-[280px] h-[120px] md:w-[500px] md:h-[220px]">
+                  <Image 
+                      src="/Botmartz_silver.png" 
+                      alt="Botmartz Logo" 
+                      fill
+                      className="object-contain drop-shadow-[0_0_35px_rgba(255,255,255,0.5)]"
+                      priority
+                  />
+               </div>
+            </motion.div>
 
-        {/* MAIN CONTENT */}
-        <motion.div 
-          style={{ y: contentY, opacity }} 
-          className="relative z-10 w-full max-w-7xl px-6 flex flex-col items-center justify-center -mt-10"
-        >
-          {/* Auto-Floating Shards */}
-          {mounted && !loading && (
-            <>
-              <FloatingShard top="15%" left="5%" label="AI-POWERED" sublabel="Neural Networks" delay={0} />
-              <FloatingShard top="25%" right="5%" label="SECURE" sublabel="256-bit Encryption" delay={0.1} />
-              <FloatingShard bottom="20%" left="8%" label="SCALABLE" sublabel="Cloud Infrastructure" delay={0.2} />
-              <FloatingShard bottom="25%" right="8%" label="99.9% UPTIME" sublabel="Enterprise Grade" delay={0.3} />
-            </>
-          )}
-
-          <div className="text-center relative z-20 flex flex-col items-center">
-              
-              {/* 1. HUGE LOGO */}
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: loading ? 0 : 1, scale: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                className="relative mb-6"
+            {/* 2. TEXT TITLE */}
+            <div className="relative -mt-4 md:-mt-8">
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+                className="text-6xl md:text-[9rem] font-black tracking-tighter leading-[0.9] text-white relative"
               >
-                 <div className="absolute inset-0 bg-white/20 blur-[60px] rounded-full" />
-                 <div className="relative w-[280px] h-[120px] md:w-[500px] md:h-[220px]">
-                    <Image 
-                        src="/Botmartz_silver.png" 
-                        alt="Botmartz Logo" 
-                        fill
-                        className="object-contain drop-shadow-[0_0_35px_rgba(255,255,255,0.5)]"
-                        priority
+                {mounted ? (
+                  <ScrambleText text="BOTMARTZ" className="relative inline-block">
+                    <span className="absolute inset-0 bg-gradient-to-b from-white via-white to-gray-200 bg-clip-text text-transparent blur-md" />
+                    <span className="relative bg-clip-text text-transparent bg-[linear-gradient(180deg,#ffffff_0%,#ffffff_45%,#a0a0a0_50%,#ffffff_95%,#ffffff_100%)]"
+                      style={{ textShadow: '0 0 80px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 0 10px #ffffff' }}
                     />
-                 </div>
-              </motion.div>
-
-              {/* 2. TEXT TITLE */}
-              <div className="relative -mt-4 md:-mt-8">
-                <motion.h1 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: loading ? 0 : 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-                  className="text-6xl md:text-[9rem] font-black tracking-tighter leading-[0.9] text-white relative"
-                >
-                  {mounted && !loading ? (
-                    <ScrambleText text="BOTMARTZ" className="relative inline-block">
-                      <span className="absolute inset-0 bg-gradient-to-b from-white via-white to-gray-200 bg-clip-text text-transparent blur-md" />
-                      <span className="relative bg-clip-text text-transparent bg-[linear-gradient(180deg,#ffffff_0%,#ffffff_45%,#a0a0a0_50%,#ffffff_95%,#ffffff_100%)]"
-                        style={{ textShadow: '0 0 80px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 0 10px #ffffff' }}
-                      />
-                    </ScrambleText>
-                  ) : (
-                    <span className="relative inline-block">
-                      <span className="absolute inset-0 bg-gradient-to-b from-white via-white to-gray-200 bg-clip-text text-transparent blur-md">BOTMARTZ</span>
-                      <span className="relative bg-clip-text text-transparent bg-[linear-gradient(180deg,#ffffff_0%,#ffffff_45%,#a0a0a0_50%,#ffffff_95%,#ffffff_100%)]"
-                        style={{ textShadow: '0 0 80px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 0 10px #ffffff' }}>
-                        BOTMARTZ
-                      </span>
+                  </ScrambleText>
+                ) : (
+                  <span className="relative inline-block">
+                    <span className="absolute inset-0 bg-gradient-to-b from-white via-white to-gray-200 bg-clip-text text-transparent blur-md">BOTMARTZ</span>
+                    <span className="relative bg-clip-text text-transparent bg-[linear-gradient(180deg,#ffffff_0%,#ffffff_45%,#a0a0a0_50%,#ffffff_95%,#ffffff_100%)]"
+                      style={{ textShadow: '0 0 80px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 0 10px #ffffff' }}>
+                      BOTMARTZ
                     </span>
-                  )}
-                </motion.h1>
-                
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: loading ? 0 : 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-                  className="relative mt-0 md:mt-2"
-                >
-                  <span className="block text-3xl md:text-[6rem] font-black tracking-[-0.02em] bg-gradient-to-b from-white via-gray-300 to-gray-500 bg-clip-text text-transparent"
-                    style={{ WebkitTextStroke: "1.5px rgba(255,255,255,0.9)", textShadow: "0 0 30px rgba(255,255,255,0.5), 0 0 10px rgba(255,255,255,0.8)" }}>
-                    IT SOLUTIONS
                   </span>
-                </motion.div>
-              </div>
+                )}
+              </motion.h1>
               
-              {/* 3. DESCRIPTION & CTA */}
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: loading ? 0 : 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-                className="pt-8 flex flex-col items-center gap-8 max-w-2xl"
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+                className="relative mt-0 md:mt-2"
               >
-                <p className={`${interTight.className} text-gray-300 text-lg md:text-xl font-light tracking-wide leading-relaxed`}>
-                  Transforming businesses through{' '}
-                  <span className="relative inline-block">
-                    <span className="absolute inset-0 bg-white/10 blur-xl" />
-                    <span className="relative text-white font-medium drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">next-gen automation</span>
-                  </span>
-                  , intelligent software, and scalable digital ecosystems.
-                </p>
-
-                <div className="flex gap-4 mt-2">
-                  <motion.button 
-                    whileHover={{ scale: 1.05 }} 
-                    whileTap={{ scale: 0.95 }}
-                    className="px-8 py-3 bg-white text-black font-bold uppercase text-xs tracking-widest rounded-sm hover:bg-gray-100 transition-colors"
-                  >
-                    Explore Solutions
-                  </motion.button>
-                  <motion.button 
-                    whileHover={{ scale: 1.05 }} 
-                    whileTap={{ scale: 0.95 }}
-                    className="px-8 py-3 border border-white/20 text-white font-bold uppercase text-xs tracking-widest rounded-sm hover:bg-white/5 transition-colors backdrop-blur-sm"
-                  >
-                    Contact Us
-                  </motion.button>
-                </div>
+                <span className="block text-3xl md:text-[6rem] font-black tracking-[-0.02em] bg-gradient-to-b from-white via-gray-300 to-gray-500 bg-clip-text text-transparent"
+                  style={{ WebkitTextStroke: "1.5px rgba(255,255,255,0.9)", textShadow: "0 0 30px rgba(255,255,255,0.5), 0 0 10px rgba(255,255,255,0.8)" }}>
+                  IT SOLUTIONS
+                </span>
               </motion.div>
-          </div>
+            </div>
+            
+            {/* 3. DESCRIPTION & CTA */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
+              className="pt-8 flex flex-col items-center gap-8 max-w-2xl"
+            >
+              <p className={`${interTight.className} text-gray-300 text-lg md:text-xl font-light tracking-wide leading-relaxed`}>
+                Transforming businesses through{' '}
+                <span className="relative inline-block">
+                  <span className="absolute inset-0 bg-white/10 blur-xl" />
+                  <span className="relative text-white font-medium drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">next-gen automation</span>
+                </span>
+                , intelligent software, and scalable digital ecosystems.
+              </p>
+
+              <div className="flex gap-4 mt-2">
+                <motion.button 
+                  whileHover={{ scale: 1.05 }} 
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-3 bg-white text-black font-bold uppercase text-xs tracking-widest rounded-sm hover:bg-gray-100 transition-colors"
+                >
+                  Explore Solutions
+                </motion.button>
+                <motion.button 
+                  whileHover={{ scale: 1.05 }} 
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-3 border border-white/20 text-white font-bold uppercase text-xs tracking-widest rounded-sm hover:bg-white/5 transition-colors backdrop-blur-sm"
+                >
+                  Contact Us
+                </motion.button>
+              </div>
+            </motion.div>
+        </div>
+      </motion.div>
+      
+      {/* Scroll Indicator */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.8 }}
+        style={{ opacity }} 
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-20"
+      >
+        <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-medium">Scroll to Explore</span>
+        <motion.div className="w-[1px] h-16 bg-gradient-to-b from-white/40 via-white/20 to-transparent relative overflow-hidden">
+          <motion.div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white to-transparent" animate={{ top: ['-100%', '100%'] }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }} />
         </motion.div>
-        
-        {/* Scroll Indicator */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: loading ? 0 : 1 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          style={{ opacity }} 
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-20"
-        >
-          <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 font-medium">Scroll to Explore</span>
-          <motion.div className="w-[1px] h-16 bg-gradient-to-b from-white/40 via-white/20 to-transparent relative overflow-hidden">
-            <motion.div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-white to-transparent" animate={{ top: ['-100%', '100%'] }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }} />
-          </motion.div>
-        </motion.div>
-      </motion.section>
-    </>
+      </motion.div>
+    </motion.section>
   );
 }
 
-// --- OPTIMIZED SUB-COMPONENTS ---
+// --- SUB-COMPONENTS ---
 
 // Simplified Shard
 function FloatingShard({ top, left, right, bottom, label, sublabel, delay }: any) {
@@ -311,8 +220,8 @@ function FloatingShard({ top, left, right, bottom, label, sublabel, delay }: any
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: [0, -15, 0] }}
       transition={{ 
-        opacity: { duration: 0.6, delay },
-        y: { duration: 6, repeat: Infinity, ease: "easeInOut", delay: delay + 0.6 }
+        opacity: { duration: 0.6, delay: delay + 0.4 },
+        y: { duration: 6, repeat: Infinity, ease: "easeInOut", delay: delay + 1 }
       }}
       className="absolute hidden md:flex flex-col items-start gap-1 pointer-events-none group z-20"
     >
