@@ -129,7 +129,7 @@ export default function Preloader({ onLoadComplete }: PreloaderProps) {
   fill
   className="object-contain drop-shadow-[0_0_35px_rgba(255,255,255,0.6)]"
   priority
-  quality={70} // Add this
+  quality={75} // Add this
   sizes="(max-width: 768px) 220px, 300px" // Add this
 />
             </div>
@@ -159,7 +159,7 @@ export default function Preloader({ onLoadComplete }: PreloaderProps) {
                 animate={{ opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                Initializing Hero Section
+                Initializing Botmartz
               </motion.span>
               <span className="text-white/70 tabular-nums font-bold">
                 {Math.floor(progress)}%
