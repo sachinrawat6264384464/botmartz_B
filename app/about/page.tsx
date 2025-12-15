@@ -22,6 +22,7 @@ import {
   Globe, 
   Zap, 
   Shield, 
+
   Fingerprint, 
   Maximize2, 
   MoveUpRight,
@@ -34,6 +35,44 @@ const mono = JetBrains_Mono({ subsets: ['latin'], weight: ['400', '500'] });
 const oswald = Oswald({ subsets: ['latin'], weight: ['700'] });
 
 // --- UTILS & HOOKS ---
+
+const GlitchText = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      className={`relative group ${className}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <span className="relative z-10 mix-blend-difference">{children}</span>
+      <AnimatePresence>
+        {isHovered && (
+          <>
+            <motion.span
+              className="absolute inset-0 text-[#00E5FF] z-0 opacity-70 mix-blend-screen"
+              initial={{ x: 0 }}
+              animate={{ x: [-2, 2, -1, 0], y: [1, -1, 0] }}
+              exit={{ x: 0, y: 0 }}
+              transition={{ duration: 0.2, times: [0, 0.2, 0.5, 1], repeat: Infinity, repeatType: "reverse" }}
+            >
+              {children}
+            </motion.span>
+            <motion.span
+              className="absolute inset-0 text-[#FF5500] z-0 opacity-70 mix-blend-screen"
+              initial={{ x: 0 }}
+              animate={{ x: [2, -2, 1, 0], y: [-1, 1, 0] }}
+              exit={{ x: 0, y: 0 }}
+              transition={{ duration: 0.2, delay: 0.05, times: [0, 0.2, 0.5, 1], repeat: Infinity, repeatType: "reverse" }}
+            >
+              {children}
+            </motion.span>
+          </>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
 const useScramble = (text: string, speed: number = 40) => {
   const [displayText, setDisplayText] = useState(text);
@@ -149,107 +188,106 @@ const ScrambleText = ({ text, className }: { text: string, className?: string })
 // --- SECTIONS ---
 
 // SECTION 1: KINETIC HERO (FIXED: SIDE-BY-SIDE LAYOUT)
+
+// SECTION 1: KINETIC HERO
 const Hero = () => {
   const containerRef = useRef(null);
   const { scrollY } = useScroll();
-  
+
   const y1 = useTransform(scrollY, [0, 500], [0, 100]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   return (
     <section ref={containerRef} className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-[#050505] py-20">
-      {/* Grid Background */}
-      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#1a1a1a_1px,transparent_1px),linear-gradient(to_bottom,#1a1a1a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
-      
-      {/* Main Content Wrapper */}
+      {/* Dynamic Cyberpunk Grid Background */}
+      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,rgba(0,229,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,229,255,0.05)_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_40%,transparent_100%)] pointer-events-none">
+        <motion.div
+          className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,229,255,0.1),transparent_60%)]"
+          animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.8, 0.5] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </div>
+
       <div className="relative z-10 w-full max-w-[95vw] mx-auto px-4 md:px-8">
-        
         {/* Top Label */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="flex items-center gap-4 mb-8"
         >
-          <div className="h-[1px] w-12 bg-[#00E5FF]" />
-          <span className={`${mono.className} text-[#00E5FF] text-xs tracking-[0.2em]`}>
-            EST. 2023 // GLOBAL OPERATIONS
-          </span>
+          <div className="h-[2px] w-12 bg-[#00E5FF] shadow-[0_0_10px_#00E5FF]" />
+          <ScrambleText text="EST. 2023 // GLOBAL OPERATIONS" className={`font-mono text-[#00E5FF] text-sm tracking-[0.2em] drop-shadow-[0_0_5px_rgba(0,229,255,0.7)]`} />
         </motion.div>
 
-        {/* --- GRID LAYOUT FOR TEXT (LEFT) & VIDEO (RIGHT) --- */}
+        {/* --- GRID LAYOUT --- */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          {/* LEFT COLUMN: TEXT */}
+          {/* LEFT: TEXT */}
           <div className="lg:col-span-7 relative">
-            <motion.h1 
+            <motion.h1
               style={{ y: y1, opacity }}
-              className={`${oswald.className} text-[15vw] lg:text-[10vw] leading-[0.8] text-white uppercase mix-blend-difference z-20 relative`}
+              className={`font-oswald text-[15vw] lg:text-[11vw] leading-[0.85] text-white uppercase z-20 relative tracking-tighter`}
             >
               We Are <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-gray-800">
-                BOTLINGS
-              </span>
+              <GlitchText className="text-transparent bg-clip-text bg-gradient-to-br from-white via-[#E0E0E0] to-[#A0A0A0] drop-shadow-[0_0_25px_rgba(255,255,255,0.4)]">
+                Botmartz
+              </GlitchText>
             </motion.h1>
 
-            {/* Decorative Spinny Thing (Moved relative to text) */}
-            <motion.div 
-               className="absolute -top-12 -right-12 z-0 hidden lg:block opacity-30"
-               animate={{ rotate: 360 }}
-               transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            <motion.div
+              className="absolute -top-20 -right-20 z-0 hidden lg:block opacity-40 pointer-events-none"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
             >
-              <div className="w-32 h-32 border border-dashed border-[#00E5FF] rounded-full" />
+              <div className="w-64 h-64 rounded-full border-[3px] border-dashed border-[#00E5FF]/40 relative">
+                <motion.div className="absolute inset-2 rounded-full border-[3px] border-dotted border-[#FF5500]/30" animate={{ rotate: -360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }} />
+              </div>
             </motion.div>
           </div>
 
-          {/* RIGHT COLUMN: VIDEO */}
+          {/* RIGHT: VIDEO */}
           <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-              className="lg:col-span-5 relative w-full h-full max-w-2xl mx-auto lg:mx-0"
+            initial={{ opacity: 0, scale: 0.9, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+            className="lg:col-span-5 relative w-full h-full max-w-2xl mx-auto lg:mx-0"
           >
-              <div className="relative rounded-lg overflow-hidden border border-white/10 group shadow-[0_0_50px_rgba(0,229,255,0.1)]">
-                {/* Aesthetic Corner Accents */}
-                <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#00E5FF] z-20" />
-                <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[#00E5FF] z-20" />
-                
-                {/* Video Player */}
-                <video
-                    className="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-700"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                >
-                    <source src="/BotMartz_Works.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                </video>
-
-                {/* Scanline Overlay */}
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-10 bg-[length:100%_2px,3px_100%] pointer-events-none" />
-              </div>
+            <div className="relative rounded-xl overflow-hidden border-2 border-[#00E5FF]/30 group shadow-[0_0_40px_rgba(0,229,255,0.15)] backdrop-blur-sm bg-[#000]/30">
+              <div className="absolute top-2 right-2 w-6 h-6 border-t-2 border-r-2 border-[#00E5FF] z-20" />
+              <div className="absolute bottom-2 left-2 w-6 h-6 border-b-2 border-l-2 border-[#00E5FF] z-20" />
+              <div className="absolute top-2 left-2 w-2 h-2 bg-[#FF5500] z-20 animate-pulse" />
+              
+              <video
+                className="w-full h-auto object-cover opacity-85 group-hover:opacity-100 transition-opacity duration-500 mix-blend-lighten"
+                autoPlay
+                loop
+                muted
+                playsInline
+              >
+                <source src="/BotMartz_Works.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_2px,rgba(0,229,255,0.1)_3px),linear-gradient(90deg,rgba(255,0,0,0.03),rgba(0,255,0,0.02),rgba(0,0,255,0.03))] z-10 bg-[length:100%_3px,3px_100%] pointer-events-none animate-[scan_5s_linear_infinite]" />
+            </div>
           </motion.div>
-
         </div>
-        {/* --- END GRID --- */}
 
         {/* Bottom Bar */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-16 flex flex-col md:flex-row justify-between items-end border-t border-white/10 pt-8"
+          className="mt-20 flex flex-col md:flex-row justify-between items-end border-t border-[#00E5FF]/20 pt-8"
         >
-          <p className={`${inter.className} text-gray-400 max-w-md text-lg font-light leading-relaxed`}>
-            We don't just write code. We architect <span className="text-white">digital neural systems</span> that render traditional business logic obsolete.
+          <p className={`font-inter text-gray-400 max-w-lg text-lg font-light leading-relaxed`}>
+            We don't just write code. We architect <span className="text-[#00E5FF] font-medium drop-shadow-[0_0_8px_rgba(0,229,255,0.6)]">digital neural systems</span> that render traditional business logic obsolete.
           </p>
-          
+
           <MagneticButton className="group mt-8 md:mt-0 flex items-center gap-4 cursor-pointer">
-            <div className="h-12 w-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-300">
-              <ChevronDown className="animate-bounce" />
+            <div className="h-14 w-14 rounded-full border-2 border-[#00E5FF]/50 flex items-center justify-center group-hover:bg-[#00E5FF] group-hover:border-transparent group-hover:text-black transition-all duration-300 shadow-[0_0_15px_rgba(0,229,255,0.3)]">
+              <ChevronDown className="animate-bounce w-6 h-6" />
             </div>
-            <span className={`${mono.className} text-xs tracking-widest uppercase`}>Initialize</span>
+            <span className={`font-mono text-sm tracking-[0.25em] uppercase text-[#00E5FF] group-hover:text-white transition-colors duration-300`}>Initialize</span>
           </MagneticButton>
         </motion.div>
       </div>
@@ -261,9 +299,9 @@ const Hero = () => {
 const FounderSection = () => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  
-  const rotateX = useTransform(mouseY, [-0.5, 0.5], ["15deg", "-15deg"]);
-  const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-15deg", "15deg"]);
+
+  const rotateX = useTransform(mouseY, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-10deg", "10deg"]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -271,7 +309,7 @@ const FounderSection = () => {
     const height = rect.height;
     const mouseXFromCenter = e.clientX - rect.left - width / 2;
     const mouseYFromCenter = e.clientY - rect.top - height / 2;
-    
+
     mouseX.set(mouseXFromCenter / width);
     mouseY.set(mouseYFromCenter / height);
   };
@@ -282,50 +320,53 @@ const FounderSection = () => {
   };
 
   return (
-    <section className="py-32 bg-[#080808] relative overflow-hidden perspective-1000">
-      <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
-        
-        {/* LEFT: CONTENT */}
+    <section className="py-32 bg-[#080808] relative overflow-hidden perspective-1500">
+      <div className="absolute inset-0 bg-[url('/circuit-pattern.svg')] bg-center bg-repeat opacity-[0.03] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-24 items-center relative z-10">
         <div className="space-y-12">
           <div>
-            <div className={`${mono.className} flex items-center gap-2 text-[#FF5500] text-sm mb-4`}>
-              <Fingerprint size={16} />
-              <span>IDENTITY_VERIFIED</span>
+            <div className={`font-mono flex items-center gap-3 text-[#FF5500] text-sm mb-4 tracking-widest`}>
+              <Fingerprint size={18} className="animate-pulse" />
+              <ScrambleText text="IDENTITY_VERIFIED" />
             </div>
-            <h2 className={`${oswald.className} text-6xl md:text-8xl text-white uppercase leading-none`}>
-              soham <br /> 
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-white">Sharma</span>
+            <h2 className={`font-oswald text-7xl md:text-9xl text-white uppercase leading-[0.9] tracking-tight`}>
+              Soham <br />
+              <GlitchText className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF5500] via-[#FF8800] to-white drop-shadow-[0_0_20px_rgba(255,85,0,0.5)]">
+                Sharma
+              </GlitchText>
             </h2>
           </div>
 
-          <div className="border-l-2 border-[#FF5500] pl-8 space-y-6">
-            <p className={`${inter.className} text-xl text-gray-300 font-light`}>
+          <div className="border-l-4 border-[#FF5500] pl-8 space-y-8 relative before:absolute before:top-0 before:-left-1 before:w-2 before:h-2 before:bg-[#FF5500] before:animate-ping">
+            <p className={`font-inter text-2xl text-gray-300 font-light italic leading-relaxed`}>
               "The gap between 'functioning' and 'flawless' is where we live. I founded Botmartz to strip away the inefficiencies of modern web architecture."
             </p>
-            <div className="flex gap-8">
+            <div className="flex gap-12">
               <div className="flex flex-col">
-                 <span className={`${mono.className} text-2xl text-white font-bold`}>20+</span>
-                 <span className="text-xs text-gray-500 uppercase tracking-widest">Systems Deployed</span>
+                <span className={`font-mono text-4xl text-white font-bold drop-shadow-[0_0_10px_#FF5500]`}>20+</span>
+                <span className="text-xs text-gray-500 uppercase tracking-[0.2em] mt-1">Systems Deployed</span>
               </div>
               <div className="flex flex-col">
-                 <span className={`${mono.className} text-2xl text-white font-bold`}>100%</span>
-                 <span className="text-xs text-gray-500 uppercase tracking-widest">Execution Rate</span>
+                <span className={`font-mono text-4xl text-white font-bold drop-shadow-[0_0_10px_#FF5500]`}>100%</span>
+                <span className="text-xs text-gray-500 uppercase tracking-[0.2em] mt-1">Execution Rate</span>
               </div>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             {['Next.js Architecture', 'Neural Automation', 'AI Integration', 'Quantum UI'].map((skill, i) => (
-              <div key={i} className="flex items-center gap-3 border border-white/10 p-4 bg-white/5 hover:bg-white/10 transition-colors">
-                <div className="w-1.5 h-1.5 bg-[#FF5500]" />
-                <span className={`${mono.className} text-xs text-gray-300`}>{skill}</span>
+              <div key={i} className="flex items-center gap-3 border border-[#FF5500]/20 p-4 bg-[#FF5500]/5 hover:bg-[#FF5500]/15 transition-all duration-300 rounded-md group relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-[#FF5500]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform -translate-x-full group-hover:translate-x-0" />
+                <div className="w-2 h-2 bg-[#FF5500] rounded-full shadow-[0_0_5px_#FF5500]" />
+                <span className={`font-mono text-sm text-gray-300 relative z-10`}>{skill}</span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* RIGHT: 3D CARD */}
-        <div className="relative flex justify-center perspective-[2000px]">
+        {/* RIGHT: 3D CARD WITH IMAGE */}
+        <div className="relative flex justify-center perspective-[2500px] py-10">
           <motion.div
             style={{
               rotateX,
@@ -334,42 +375,48 @@ const FounderSection = () => {
             }}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            className="relative w-full max-w-md aspect-[3/4] rounded-xl bg-[#111] border border-white/10 group"
+            className="relative w-full max-w-md aspect-[3/4] rounded-2xl bg-[#0A0A0A] border-2 border-[#FF5500]/30 group shadow-[0_20px_60px_-20px_rgba(255,85,0,0.3)]"
           >
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#FF5500]/20 via-transparent to-[#00E5FF]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl" />
-            
-            <div className="absolute inset-2 bg-[#0a0a0a] rounded-lg overflow-hidden flex items-center justify-center">
-              <div className="text-white/10 font-black text-9xl -rotate-90 select-none">YG</div>
-              <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[size:100%_4px] opacity-20 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#FF5500]/30 via-transparent to-[#00E5FF]/30 opacity-40 group-hover:opacity-70 transition-opacity duration-500 rounded-2xl z-20 mix-blend-overlay" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,rgba(255,85,0,0.1)_50%,transparent_100%)] h-[200%] w-full animate-[scan_6s_linear_infinite] z-30 pointer-events-none mix-blend-plus-lighter" />
+
+            {/* Image Container */}
+            <div className="absolute inset-1 rounded-xl overflow-hidden flex items-center justify-center bg-[#000]">
+              {/* Using your specific uploaded image path here */}
+              <Image
+                src="/Sohamsharma.jpeg"
+                alt="Soham Sharma - Founder"
+                fill
+                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_2px,rgba(0,0,0,0.8)_3px)] z-10 bg-[length:100%_3px] pointer-events-none opacity-50" />
             </div>
 
-            <motion.div 
-              style={{ transform: "translateZ(60px)" }}
-              className="absolute bottom-8 left-8 right-8 p-6 bg-black/80 backdrop-blur-md border border-white/20"
+            <motion.div
+              style={{ transform: "translateZ(80px)" }}
+              className="absolute bottom-6 left-6 right-6 p-5 bg-black/70 backdrop-blur-xl border border-[#FF5500]/40 rounded-xl shadow-[0_10px_30px_-10px_rgba(255,85,0,0.5)]"
             >
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="text-white font-bold text-lg">Lead Architect</h3>
-                  <p className="text-gray-400 text-xs">Botmartz Solutions</p>
+                  <h3 className="text-white font-bold text-xl tracking-wide drop-shadow-[0_0_5px_#FF5500]">Lead Architect</h3>
+                  <p className="text-gray-400 text-sm font-mono mt-1">Botmartz Solutions</p>
                 </div>
-                <Globe className="text-[#00E5FF] animate-pulse" size={20} />
+                <Globe className="text-[#00E5FF] animate-pulse drop-shadow-[0_0_8px_#00E5FF]" size={24} />
               </div>
-              <div className="mt-4 h-[1px] w-full bg-white/20 relative">
-                <motion.div 
-                  animate={{ x: ["0%", "100%", "0%"] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                  className="absolute top-0 left-0 h-full w-1/3 bg-[#00E5FF] blur-[2px]" 
+              <div className="mt-5 h-[2px] w-full bg-[#FF5500]/20 relative overflow-hidden rounded-full">
+                <motion.div
+                  animate={{ x: ["-100%", "100%"] }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
+                  className="absolute top-0 left-0 h-full w-1/2 bg-gradient-to-r from-transparent via-[#FF5500] to-transparent blur-[3px]"
                 />
               </div>
             </motion.div>
-
           </motion.div>
         </div>
       </div>
     </section>
   );
 };
-
 // SECTION 3: HORIZONTAL TIMELINE
 const TimelineSection = () => {
   const targetRef = useRef<HTMLDivElement>(null);
