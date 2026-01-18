@@ -31,10 +31,10 @@ const SystemMetrics = dynamic(() => import('./Components/system-metrics').then(m
   ssr: true
 });
 
-const ProjectManifest = dynamic(() => import('./Components/project-manifest').then(mod => ({ default: mod.ProjectManifest })), {
-  loading: () => <div className="min-h-screen" />,
-  ssr: true
-});
+// const ProjectManifest = dynamic(() => import('./Components/project-manifest').then(mod => ({ default: mod.ProjectManifest })), {
+//   loading: () => <div className="min-h-screen" />,
+//   ssr: true
+// });
 
 const ClientTransmissions = dynamic(() => import('./Components/client-transmissions').then(mod => ({ default: mod.ClientTransmissions })), {
   loading: () => <div className="min-h-screen" />,
@@ -90,7 +90,7 @@ export default function BotmartzLandingPage() {
         />
         <ProcessTimeline />
         <SystemMetrics />
-        <ProjectManifest />
+        {/* <ProjectManifest /> */}
         <ClientTransmissions />
         <NeuralQuery />
         <FinalCTA />
