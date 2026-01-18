@@ -20,7 +20,7 @@ const particleData = [...Array(20)].map((_, i) => ({
 export default function HeroSection() {
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const ref = useRef(null);
+const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
 
   useEffect(() => {
