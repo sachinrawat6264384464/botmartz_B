@@ -93,7 +93,7 @@ function NeuralQuery() {
         <div className="relative group">
           <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/20 to-purple-500/20 rounded-2xl blur-3xl opacity-50 group-hover:opacity-70 transition-opacity duration-500"></div>
           <div className="relative bg-black/40 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-[#D4AF37]/50 transition-all duration-300">
-            <video 
+            {/* <video 
               autoPlay 
               loop 
               muted 
@@ -102,7 +102,7 @@ function NeuralQuery() {
             >
               <source src="/Botmartz_hi.mp4" type="video/mp4" />
               Your browser does not support the video tag.
-            </video>
+            </video> */}
             <div className="mt-6 text-center">
               <p className="text-[#D4AF37] font-semibold text-lg">BOTMARTZ AI ASSISTANT</p>
               <p className="text-gray-500 text-sm mt-1">Your Neural Interface Guide</p>
