@@ -52,7 +52,7 @@ export function LocationMap({
   return (
     <motion.div
       ref={containerRef}
-      className={`relative cursor-pointer select-none ${className}`}
+      className={`relative cursor-pointer select-none will-change-transform ${className}`}
       style={{ perspective: 1000 }}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}

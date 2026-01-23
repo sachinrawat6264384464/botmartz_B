@@ -69,6 +69,7 @@ const SectionWithMockup: React.FC<SectionWithMockupProps> = ({
                                 src={primaryImageSrc} 
                                 alt="Feature Mockup" 
                                 className="w-full h-full object-cover"
+                                loading="lazy"
                             />
                             
                             {/* Inner Glass Shine */}

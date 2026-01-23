@@ -11,89 +11,74 @@ interface PreloaderProps {
 export default function Preloader({ onLoadComplete }: PreloaderProps) {
   const [progress, setProgress] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
+  const [statusText, setStatusText] = useState("Initializing System");
 
   useEffect(() => {
     let mounted = true;
-    let animationFrameId: number;
-    const startTime = Date.now();
-    const targetDuration = 2000; // 2 seconds smooth animation
-    let heroReady = false;
+    let counterInterval: NodeJS.Timeout;
+    
+    // We target a specific loading duration to ensure "smoothness"
+    // but we will hold at 99% until we get the "hero-ready" signal.
+    const duration = 2500; 
+    const steps = 50;
+    const stepTime = duration / steps;
+    
+    let currentProgress = 0;
 
-    // Listen for hero section ready signal
     const checkHeroReady = () => {
-      const heroElement = document.querySelector('[data-hero-loaded="true"]');
-      if (heroElement) {
-        heroReady = true;
-      }
+       const heroElement = document.querySelector('[data-hero-loaded="true"]');
+       return !!heroElement;
     };
 
-    // Observer to watch for hero ready attribute
-    const observer = new MutationObserver(() => {
-      checkHeroReady();
-    });
-
-    // Start observing the document body for attribute changes
-    observer.observe(document.body, {
-      attributes: true,
-      subtree: true,
-      attributeFilter: ['data-hero-loaded']
-    });
-
-    // Smooth progress animation
-    const animate = () => {
+    counterInterval = setInterval(() => {
       if (!mounted) return;
 
-      const elapsed = Date.now() - startTime;
-      checkHeroReady();
-      
-      // Calculate target based on time (0 to 95 over targetDuration)
-      const timeProgress = Math.min(95, (elapsed / targetDuration) * 100);
-      
-      setProgress((prev) => {
-        // Smooth easing towards target
-        const next = prev + (timeProgress - prev) * 0.15;
-        
-        // If hero is ready and we're past 85%, complete
-        if (heroReady && next >= 85) {
-          observer.disconnect();
-          setIsComplete(true);
-          setTimeout(() => {
-            onLoadComplete?.();
-          }, 300);
-          return 100;
-        }
-        
-        // Keep animating
-        if (!isComplete) {
-          animationFrameId = requestAnimationFrame(animate);
-        }
-        
-        return next;
-      });
-    };
+      if (currentProgress < 90) {
+        // Fast initial load
+        currentProgress += Math.random() * 5 + 1; 
+      } else if (currentProgress < 99) {
+        // Slow crawl at the end
+        currentProgress += 0.5;
+      }
 
-    // Start animation immediately
-    animationFrameId = requestAnimationFrame(animate);
+      if (currentProgress >= 99) {
+        currentProgress = 99;
+        
+        // Only finish if hero is ready
+        if (checkHeroReady()) {
+           clearInterval(counterInterval);
+           finishLoading();
+           return;
+        }
+        setStatusText("Finalizing Assets...");
+      }
+      
+      setProgress(Math.min(currentProgress, 99));
+    }, stepTime);
 
-    // Fallback: force complete after 3.5 seconds
-    const fallbackTimeout = setTimeout(() => {
-      if (mounted && !isComplete) {
-        observer.disconnect();
+    // Safety fallback: Force complete after 4 seconds regardless
+    const safetyTimer = setTimeout(() => {
+       if (!isComplete && mounted) {
+          clearInterval(counterInterval);
+          finishLoading();
+       }
+    }, 4000);
+
+    const finishLoading = () => {
         setProgress(100);
+        setStatusText("Ready");
         setIsComplete(true);
         setTimeout(() => {
-          onLoadComplete?.();
-        }, 300);
-      }
-    }, 3500);
+            if (mounted) onLoadComplete?.();
+        }, 500); // Short delay to see 100%
+    };
 
     return () => {
       mounted = false;
-      observer.disconnect();
-      cancelAnimationFrame(animationFrameId);
-      clearTimeout(fallbackTimeout);
+      clearInterval(counterInterval);
+      clearTimeout(safetyTimer);
     };
-  }, [onLoadComplete, isComplete]);
+  }, [onLoadComplete]);
 
   return (
     <AnimatePresence mode="wait">
@@ -101,7 +86,7 @@ export default function Preloader({ onLoadComplete }: PreloaderProps) {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
           className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#050505]"
         >
           {/* Animated Logo */}
@@ -124,67 +109,42 @@ export default function Preloader({ onLoadComplete }: PreloaderProps) {
             {/* Logo */}
             <div className="relative w-[220px] h-[95px] md:w-[300px] md:h-[130px]">
               <Image
-  src="/Botmartz_silver.png"
-  alt="Botmartz Logo"
-  fill
-  className="object-contain drop-shadow-[0_0_35px_rgba(255,255,255,0.6)]"
-  priority
-  quality={75} // Add this
-  sizes="(max-width: 768px) 220px, 300px" // Add this
-/>
+                src="/Botmartz_silver.png"
+                alt="Botmartz Logo"
+                fill
+                className="object-contain drop-shadow-[0_0_35px_rgba(255,255,255,0.6)]"
+                priority
+                quality={75}
+                sizes="(max-width: 768px) 220px, 300px"
+              />
             </div>
           </motion.div>
 
-          {/* Progress Bar */}
+          {/* Progress Bar Container */}
           <div className="w-72 md:w-96 space-y-4 z-10">
             <div className="relative h-1 bg-white/5 rounded-full overflow-hidden border border-white/10">
-              <motion.div
-                className="absolute left-0 top-0 h-full bg-gradient-to-r from-white via-gray-200 to-white rounded-full"
-                style={{ width: `${progress}%` }}
-                transition={{ duration: 0.1, ease: "linear" }}
+              {/* CSS TRANSITION BAR for smoothness */}
+              <div
+                className="absolute left-0 top-0 h-full bg-gradient-to-r from-white via-gray-200 to-white rounded-full transition-all ease-out"
+                style={{ 
+                    width: `${progress}%`,
+                    transitionDuration: '300ms' // Smooth css interpolation
+                }}
               >
-                {/* Shimmer */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent"
-                  animate={{ x: ["-100%", "200%"] }}
-                  transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
-                />
-              </motion.div>
+                {/* Shimmer Overlay */}
+                <div className="absolute inset-0 w-full h-full animate-shimmer bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+              </div>
             </div>
 
             {/* Progress Info */}
             <div className="flex items-center justify-between text-xs font-mono">
-              <motion.span
-                className="text-white/50"
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                Initializing Botmartz
-              </motion.span>
+              <span className="text-white/50 animate-pulse">
+                {statusText}
+              </span>
               <span className="text-white/70 tabular-nums font-bold">
                 {Math.floor(progress)}%
               </span>
             </div>
-          </div>
-
-          {/* Animated Dots */}
-          <div className="flex gap-2 mt-8 z-10">
-            {[0, 1, 2].map((i) => (
-              <motion.div
-                key={i}
-                className="w-2 h-2 bg-white/40 rounded-full"
-                animate={{
-                  scale: [1, 1.5, 1],
-                  opacity: [0.3, 1, 0.3],
-                }}
-                transition={{
-                  duration: 1.2,
-                  repeat: Infinity,
-                  delay: i * 0.2,
-                  ease: "easeInOut",
-                }}
-              />
-            ))}
           </div>
         </motion.div>
       )}

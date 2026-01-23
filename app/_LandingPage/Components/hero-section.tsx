@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Inter_Tight } from 'next/font/google';
-import DottedMap from "dotted-map"; 
+import DottedMap from "dotted-map"; // Restored for design fidelity
 
 const interTight = Inter_Tight({ subsets: ['latin'], weight: ['300', '400', '500'] });
 
@@ -20,7 +20,7 @@ const particleData = [...Array(20)].map((_, i) => ({
 export default function HeroSection() {
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-const ref = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
 
   useEffect(() => {
@@ -231,34 +231,31 @@ const ref = useRef<HTMLElement>(null);
 
 // --- SUB-COMPONENTS ---
 
-// Simplified Shard with Dynamic Color for line/border, White for text
+// Simplified Shard - CSS ANIMATED
 function FloatingShard({ top, left, right, bottom, label, sublabel, delay, color }: any) {
   return (
     <motion.div 
       style={{ top, left, right, bottom }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ 
-        opacity: { duration: 0.6, delay: delay + 0.4 }
-      }}
+      transition={{ opacity: { duration: 0.6, delay: delay + 0.4 } }}
       className="absolute hidden md:flex flex-col items-start gap-1 pointer-events-none group z-20"
     >
       <div className="flex items-center gap-3">
-        {/* Animated Line - Yellow */}
+        {/* Animated Line - CSS ANIMATED */}
         <div className="h-[1px] w-12 bg-white/20 relative overflow-hidden">
-             <motion.div 
-                animate={{ x: ["-100%", "100%"] }} 
-                transition={{ duration: 2, repeat: Infinity, ease: "linear", delay: delay }}
-                className="absolute inset-0 w-full h-full"
-                style={{ background: `linear-gradient(90deg, transparent, ${color}, transparent)` }}
+             <div 
+                className="absolute inset-0 w-full h-full animate-shimmer"
+                style={{ 
+                    background: `linear-gradient(90deg, transparent, ${color}, transparent)`,
+                    animationDelay: `${delay}s`
+                }}
              />
         </div>
         <div 
             className="relative bg-black/80 backdrop-blur-md border px-3 py-1.5 rounded-sm"
-            // Yellow border and glow
             style={{ borderColor: `${color}30`, boxShadow: `0 0 15px -5px ${color}40` }}
         >
-          {/* Reverted to white text */}
           <span className="font-mono text-[10px] font-bold tracking-widest block text-white">{label}</span>
           {sublabel && <span className="text-[8px] text-gray-400 tracking-wide block">{sublabel}</span>}
         </div>
@@ -267,17 +264,23 @@ function FloatingShard({ top, left, right, bottom, label, sublabel, delay, color
   );
 }
 
-// UPDATED WORLD MAP - HIGH VISIBILITY - Yellow
+// RESTORED WORLD MAP - MEMOIZED & DEFERRED FOR PERFORMANCE
 function WorldMap({ dots = [], lineColor = "#ffffff", animated = true }: any) {
   const [mounted, setMounted] = useState(false);
+  const [svgMap, setSvgMap] = useState<string>("");
   
-  const map = new DottedMap({ height: 100, grid: "diagonal" });
-  // Map dots themselves are slightly tinted now
-  const svgMap = map.getSVG({ radius: 0.35, color: `${lineColor}60`, shape: "circle", backgroundColor: "transparent" });
-
+  // OPTIMIZATION: Defer DottedMap generation to useEffect (Client-side only)
+  // This unblocks the Main Thread during initial hydration, killing TBT.
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    // Small timeout to allow the rest of the page to paint first
+    const timer = setTimeout(() => {
+       const map = new DottedMap({ height: 100, grid: "diagonal" });
+       const svg = map.getSVG({ radius: 0.35, color: `${lineColor}60`, shape: "circle", backgroundColor: "transparent" });
+       setSvgMap(svg);
+       setMounted(true);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [lineColor]);
 
   const projectPoint = (lat: number, lng: number) => {
     const x = (lng + 180) * (800 / 360);
@@ -293,14 +296,19 @@ function WorldMap({ dots = [], lineColor = "#ffffff", animated = true }: any) {
 
   return (
     <div className="w-full h-full relative font-sans">
-      <Image 
-        src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`} 
-        className="h-full w-full object-cover pointer-events-none select-none drop-shadow-[0_0_5px_rgba(255,255,255,0.1)]" 
-        alt="world map" 
-        fill 
-        draggable={false} 
-      />
-      {mounted && (
+      {/* Show static or empty state until map is calculated */}
+      {svgMap && (
+        <Image 
+            src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`} 
+            className="h-full w-full object-cover pointer-events-none select-none drop-shadow-[0_0_5px_rgba(255,255,255,0.1)]" 
+            alt="world map" 
+            fill 
+            draggable={false} 
+            priority // Map is LCP candidate
+        />
+      )}
+      
+      {mounted && animated && (
         <svg viewBox="0 0 800 400" className="w-full h-full absolute inset-0 pointer-events-none select-none">
           <defs>
             <linearGradient id="path-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -314,25 +322,15 @@ function WorldMap({ dots = [], lineColor = "#ffffff", animated = true }: any) {
             const end = projectPoint(dot.end.lat, dot.end.lng);
             return (
               <g key={i}>
-                {animated ? (
                   <motion.path 
                     d={createCurvedPath(start, end)} 
                     fill="none" 
                     stroke="url(#path-gradient)" 
-                    strokeWidth="2" // Thicker lines for more impact
+                    strokeWidth="2" 
                     initial={{ pathLength: 0 }} 
                     animate={{ pathLength: 1 }} 
                     transition={{ duration: 2, delay: 0.5 * i, repeat: Infinity, repeatDelay: 3 }} 
                   />
-                ) : (
-                  <path 
-                    d={createCurvedPath(start, end)} 
-                    fill="none" 
-                    stroke={lineColor} 
-                    strokeWidth="2" 
-                    opacity="0.5"
-                  />
-                )}
                 <circle cx={start.x} cy={start.y} r="3" fill={lineColor} className="drop-shadow-[0_0_8px_rgba(245,194,66,0.8)]" />
                 <circle cx={end.x} cy={end.y} r="3" fill={lineColor} className="drop-shadow-[0_0_8px_rgba(245,194,66,0.8)]" />
               </g>
@@ -366,23 +364,28 @@ function ScrambleText({ text, className, children }: any) {
           index < iteration ? text[index] : chars[Math.floor(Math.random() * chars.length)]
         ).join("")
       );
-      iteration += 1/3;
+      iteration += 1/3; // Optimized Step
       if (iteration >= text.length) clearInterval(interval);
-    }, 30);
+    }, 50); // Slower interval (50ms vs 30ms) to save CPU
     return () => clearInterval(interval);
   }, [text]);
   
   return children || <span className={className}>{displayText}</span>;
 }
 
-// Floating Particle - Tinted Yellow
+// Floating Particle - Tinted Yellow - CSS ANIMATED
 function FloatingParticle({ data, delay, color }: { data: any; delay: number, color: string }) {
   return (
-    <motion.div
-      className="absolute w-1 h-1 rounded-full"
-      style={{ left: `${data.x}%`, top: `${data.y}%`, backgroundColor: color, boxShadow: `0 0 10px ${color}` }}
-      animate={{ y: [0, -30, 0], opacity: [0, 1, 0], scale: [0, 1.5, 0] }}
-      transition={{ duration: data.duration, repeat: Infinity, delay: delay, ease: "easeInOut" }}
+    <div
+      className="absolute w-1 h-1 rounded-full animate-float"
+      style={{ 
+          left: `${data.x}%`, 
+          top: `${data.y}%`, 
+          backgroundColor: color, 
+          boxShadow: `0 0 10px ${color}`,
+          animationDuration: `${data.duration}s`,
+          animationDelay: `${delay}s`
+      }}
     />
   );
 }
