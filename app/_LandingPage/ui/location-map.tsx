@@ -47,7 +47,7 @@ export function LocationMap({
   }
 
   // Industrial Orange Theme
-  const ACCENT = "#FF5500"
+  const ACCENT = "#D4AF37"
 
   return (
     <motion.div
@@ -167,8 +167,8 @@ export function LocationMap({
             <motion.div
               className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 backdrop-blur-sm border border-white/5"
               animate={{
-                backgroundColor: isHovered ? "rgba(255, 85, 0, 0.15)" : "rgba(255, 255, 255, 0.05)",
-                borderColor: isHovered ? "rgba(255, 85, 0, 0.3)" : "rgba(255, 255, 255, 0.05)"
+                backgroundColor: isHovered ? "rgba(212, 175, 55, 0.15)" : "rgba(255, 255, 255, 0.05)",
+                borderColor: isHovered ? "rgba(212, 175, 55, 0.3)" : "rgba(255, 255, 255, 0.05)"
               }}
             >
               <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: ACCENT }} />

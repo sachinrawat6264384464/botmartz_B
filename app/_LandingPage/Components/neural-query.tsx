@@ -85,7 +85,7 @@ function NeuralQuery() {
   return (
     <section className="min-h-screen bg-black py-24 px-6 md:px-12 overflow-hidden">
       <h2 className="text-4xl font-bold mb-16 text-center text-white">
-        NEURAL <span className="text-[#D4AF37]">QUERY</span>
+        EXPERT <span className="text-[#D4AF37]">INSIGHTS</span>
       </h2>
       
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
@@ -104,8 +104,8 @@ function NeuralQuery() {
               Your browser does not support the video tag.
             </video> */}
             <div className="mt-6 text-center">
-              <p className="text-[#D4AF37] font-semibold text-lg">BOTMARTZ AI ASSISTANT</p>
-              <p className="text-gray-500 text-sm mt-1">Your Neural Interface Guide</p>
+              <p className="text-[#D4AF37] font-semibold text-lg">BOTMARTZ SUPPORT</p>
+              <p className="text-gray-500 text-sm mt-1">Your Growth Partner</p>
             </div>
           </div>
         </div>

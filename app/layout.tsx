@@ -31,25 +31,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
+        
         {/* Preload critical assets */}
         <link rel="preload" href="/botmartz_silver_bg_free.png" as="image" />
         
-        <style dangerouslySetInnerHTML={{
-          __html: `
-            body {
-              background-color: #050505;
-            }
-            #main-content {
-              opacity: 0;
-              visibility: hidden;
-            }
-            #main-content.loaded {
-              opacity: 1;
-              visibility: visible;
-              transition: opacity 0.8s ease-out;
-            }
-          `
-        }} />
       </head>
       <body 
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

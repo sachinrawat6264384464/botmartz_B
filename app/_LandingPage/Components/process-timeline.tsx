@@ -20,14 +20,14 @@ const mono = JetBrains_Mono({
 });
 
 // THEME CONFIG
-const ACCENT = "#FF5500";
+const ACCENT = "#D4AF37";
 
 // Static data outside component
 const STEPS = [
-  { id: "01", title: "Discovery & Audit", desc: "Analyzing architectural bottlenecks and data flow latency.", icon: Activity },
-  { id: "02", title: "Neural Architecture", desc: "Designing custom AI agents with specific logic gates.", icon: GitMerge },
-  { id: "03", title: "System Injection", desc: "Seamless deployment into existing ERP/CRM stacks.", icon: TerminalSquare },
-  { id: "04", title: "Optimization Loop", desc: "Continuous reinforcement learning and refinement.", icon: CheckCircle2 },
+  { id: "01", title: "Discovery & Strategy", desc: "Analyzing your business goals and technical requirements.", icon: Activity },
+  { id: "02", title: "Architecture Design", desc: "Building scalable foundations tailored to your growth.", icon: GitMerge },
+  { id: "03", title: "Seamless Integration", desc: "Deploying solutions without disrupting existing workflows.", icon: TerminalSquare },
+  { id: "04", title: "Continuous Optimization", desc: "Iterative improvements based on real-world performance.", icon: CheckCircle2 },
 ] as const;
 
 // Memoized Timeline Step Component
@@ -49,15 +49,15 @@ const TimelineStep = memo(({
       className="relative pl-16 md:pl-24 group"
     >
     {/* Connector Dot */}
-      <div className="absolute left-[15px] md:left-[24px] top-0 w-4 h-4 bg-[#050505] border border-white/20 rounded-full z-10 group-hover:border-[#FF5500] group-hover:scale-125 transition-all duration-300">
-        <div className="absolute inset-0 m-auto w-1.5 h-1.5 bg-[#FF5500] rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-[0_0_10px_#FF5500]" />
+      <div className="absolute left-[15px] md:left-[24px] top-0 w-4 h-4 bg-[#050505] border border-white/20 rounded-full z-10 group-hover:border-[#D4AF37] group-hover:scale-125 transition-all duration-300">
+        <div className="absolute inset-0 m-auto w-1.5 h-1.5 bg-[#D4AF37] rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-[0_0_10px_#D4AF37]" />
       </div>
 
       {/* Card */}
-      <div className="relative p-6 md:p-8 rounded-xl border border-white/5 bg-white/2 hover:bg-white/4 hover:border-[#FF5500]/40 transition-all duration-500 group-hover:shadow-[0_0_40px_-15px_rgba(255,85,0,0.2)]">
+      <div className="relative p-6 md:p-8 rounded-xl border border-white/5 bg-white/2 hover:bg-white/4 hover:border-[#D4AF37]/40 transition-all duration-500 group-hover:shadow-[0_0_40px_-15px_rgba(212,175,55,0.2)]">
         
         {/* Icon */}
-        <div className="mb-6 inline-flex items-center justify-center w-12 h-12 rounded-lg bg-[#FF5500]/10 text-[#FF5500] border border-[#FF5500]/20 group-hover:bg-[#FF5500] group-hover:text-black transition-all duration-300">
+        <div className="mb-6 inline-flex items-center justify-center w-12 h-12 rounded-lg bg-[#D4AF37]/10 text-[#D4AF37] border border-[#D4AF37]/20 group-hover:bg-[#D4AF37] group-hover:text-black transition-all duration-300">
           <Icon strokeWidth={1.5} size={24} />
         </div>
 
@@ -65,7 +65,7 @@ const TimelineStep = memo(({
           {step.id}
         </div>
 
-        <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-[#FF5500] transition-colors">
+        <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-[#D4AF37] transition-colors">
           {step.title}
         </h3>
         
@@ -74,8 +74,8 @@ const TimelineStep = memo(({
         </p>
 
         {/* Industrial Corners */}
-        <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-[#FF5500]/50 opacity-0 group-hover:opacity-100 transition-all duration-500" />
-        <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[#FF5500]/50 opacity-0 group-hover:opacity-100 transition-all duration-500" />
+        <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-[#D4AF37]/50 opacity-0 group-hover:opacity-100 transition-all duration-500" />
+        <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[#D4AF37]/50 opacity-0 group-hover:opacity-100 transition-all duration-500" />
       </div>
     </motion.div>
   );
@@ -92,21 +92,21 @@ const StickyHeader = memo(() => (
       viewport={{ once: true }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className={`flex items-center gap-3 text-[#FF5500] ${mono.className} text-xs tracking-widest mb-4`}>
+      <div className={`flex items-center gap-3 text-[#D4AF37] ${mono.className} text-xs tracking-widest mb-4`}>
         <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF5500] opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF5500]"></span>
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D4AF37] opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#D4AF37]"></span>
         </span>
-        SYSTEM_STATUS: CRITICAL
+        SYSTEM_STATUS: OPTIMIZED
       </div>
       
       <h2 className="text-5xl md:text-7xl font-bold leading-tight text-white mb-6">
-        PROTOCOL <br />
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-white">EXECUTION</span>
+        OUR <br />
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-white">PROCESS</span>
       </h2>
 
       <p className={`${inter.className} text-xl text-gray-400 leading-relaxed max-w-md`}>
-        We don't just write code; we forge <span className="text-[#FF5500] font-medium">resilient digital infrastructure</span>.
+        We don't just write code; we forge <span className="text-[#D4AF37] font-medium">resilient digital infrastructure</span>.
       </p>
     </motion.div>
 
@@ -128,7 +128,7 @@ const VerticalTimeline = memo(({ lineHeight }: { lineHeight: MotionValue<string>
   <div className="absolute left-[23px] md:left-8 top-4 bottom-12 w-px bg-white/10">
     <motion.div 
       style={{ height: lineHeight }}
-      className="w-full bg-gradient-to-b from-[#FF5500] via-[#FF5500] to-transparent shadow-[0_0_20px_#FF5500] will-change-transform"
+      className="w-full bg-gradient-to-b from-[#D4AF37] via-[#D4AF37] to-transparent shadow-[0_0_20px_#D4AF37] will-change-transform"
     />
   </div>
 ));
@@ -148,8 +148,8 @@ export const ProcessTimeline = memo(function ProcessTimeline() {
     <section ref={containerRef} className="py-32 px-6 md:px-12 max-w-[1600px] mx-auto relative bg-[#050505] overflow-hidden">
       
       {/* Background Texture */}
-      <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(255,85,0,0.01)_10px,rgba(255,85,0,0.01)_20px)] pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,85,0,0.05),transparent_70%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(212,175,55,0.01)_10px,rgba(212,175,55,0.01)_20px)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.05),transparent_70%)] pointer-events-none" />
 
       <div className="grid lg:grid-cols-2 gap-20 relative z-10">
         

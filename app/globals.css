@@ -120,3 +120,19 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Preloader & Layout Defaults */
+body {
+  background-color: #050505;
+}
+
+#main-content {
+  opacity: 0;
+  visibility: hidden;
+}
+
+#main-content.loaded {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.8s ease-out;
+}

@@ -64,7 +64,7 @@ const spaceGrotesk = Space_Grotesk({
   preload: true
 });
 
-const ACCENT = "#FF5500"; 
+const ACCENT = "#D4AF37"; 
 
 export default function BotmartzLandingPage() {
   const [mounted, setMounted] = useState(false);
@@ -88,7 +88,7 @@ export default function BotmartzLandingPage() {
     <ReactLenis root options={{ lerp: 0.06, duration: 1.2 }}>
       <main className={cn(
         "bg-[#050505] text-[#E0E0E0] min-h-screen w-full relative overflow-x-hidden",
-        "selection:bg-[#FF5500]/30 selection:text-[#FF5500]",
+        "selection:bg-[#D4AF37]/30 selection:text-[#D4AF37]",
         spaceGrotesk.className
       )}>
         

@@ -101,7 +101,7 @@ export default function Navbar() {
             {['Services', 'Work', 'About', 'Contact'].map((item) => (
               <MagneticButton key={item} className="text-xs font-bold tracking-widest uppercase text-gray-300 hover:text-white transition-colors cursor-pointer relative group">
                 {item}
-                <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#00E5FF] opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-[0_0_10px_#00E5FF]" />
+                <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#D4AF37] opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-[0_0_10px_#D4AF37]" />
               </MagneticButton>
             ))}
           </div>
@@ -110,7 +110,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-6">
 
 
-             <MagneticButton className="group relative px-6 py-2.5 bg-[#00E5FF] text-black text-[11px] font-bold tracking-widest uppercase rounded-full overflow-hidden hover:shadow-[0_0_20px_rgba(0,229,255,0.5)] transition-shadow duration-300">
+             <MagneticButton className="group relative px-6 py-2.5 bg-[#D4AF37] text-black text-[11px] font-bold tracking-widest uppercase rounded-full overflow-hidden hover:shadow-[0_0_20px_rgba(212,175,55,0.5)] transition-shadow duration-300">
                 <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
                 <div className="relative flex items-center gap-2">
                     <span>Initialize</span>
@@ -122,7 +122,7 @@ export default function Navbar() {
           {/* MOBILE MENU BUTTON */}
           <button 
             onClick={toggleMobileMenu}
-            className="md:hidden text-white hover:text-[#00E5FF] transition-colors"
+            className="md:hidden text-white hover:text-[#D4AF37] transition-colors"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? (
@@ -161,7 +161,7 @@ export default function Navbar() {
               <div className="flex justify-end p-6">
                 <button
                   onClick={closeMobileMenu}
-                  className="text-white hover:text-[#00E5FF] transition-colors"
+                  className="text-white hover:text-[#D4AF37] transition-colors"
                   aria-label="Close menu"
                 >
                   <X className="w-6 h-6" />
@@ -190,7 +190,7 @@ export default function Navbar() {
 
                 <button 
                   onClick={closeMobileMenu}
-                  className="w-full py-3 bg-[#00E5FF] text-black text-sm font-bold tracking-widest uppercase rounded-full hover:shadow-[0_0_20px_rgba(0,229,255,0.5)] transition-shadow duration-300 flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-[#D4AF37] text-black text-sm font-bold tracking-widest uppercase rounded-full hover:shadow-[0_0_20px_rgba(212,175,55,0.5)] transition-shadow duration-300 flex items-center justify-center gap-2"
                 >
                   <span>Initialize</span>
                   <ArrowRight className="w-4 h-4" />

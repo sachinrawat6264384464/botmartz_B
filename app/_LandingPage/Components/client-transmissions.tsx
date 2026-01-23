@@ -61,7 +61,7 @@ export const ClientTransmissions = memo(function ClientTransmissions() {
     <section className="py-32 bg-[#050505] relative">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <h2 className="text-sm uppercase tracking-[0.4em] text-[#D4AF37] mb-16 text-center">
-          Incoming Transmissions
+          Client Success Stories
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
           {TESTIMONIALS.map((testimonial, index) => (

@@ -51,7 +51,7 @@ const SectionWithMockup: React.FC<SectionWithMockupProps> = ({
                         className={`relative w-full aspect-[4/5] md:aspect-square flex items-center justify-center ${reverseLayout ? 'md:order-1' : 'md:order-2'}`}
                     >
                         {/* Background Glow */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-white/5 via-white/0 to-transparent blur-3xl rounded-full opacity-40 pointer-events-none" />
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-[#D4AF37]/20 via-white/5 to-transparent blur-3xl rounded-full opacity-40 pointer-events-none" />
 
                         {/* Optional Secondary Layer (Background Card) */}
                         {secondaryImageSrc && (
@@ -64,7 +64,7 @@ const SectionWithMockup: React.FC<SectionWithMockupProps> = ({
                         )}
 
                         {/* Main Mockup Card */}
-                        <div className="relative w-full h-full z-10 rounded-[32px] overflow-hidden shadow-2xl border border-white/10 bg-[#0A0A0A]">
+                        <div className="relative w-full h-full z-10 rounded-[32px] overflow-hidden shadow-2xl border border-[#D4AF37]/30 bg-[#0A0A0A]">
                             <img 
                                 src={primaryImageSrc} 
                                 alt="Feature Mockup" 
