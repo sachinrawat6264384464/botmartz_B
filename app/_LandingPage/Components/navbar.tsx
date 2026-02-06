@@ -2,9 +2,24 @@
 import React, { useState } from "react";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import { ArrowRight, Menu, X } from "lucide-react";
+import Link from "next/link";
 
-// Simplified MagneticButton for demo
-function MagneticButton({ children, className = "", onClick }: any) {
+// --- DATA ---
+const NAV_ITEMS = [
+  { name: 'Services', path: '/services' },
+  { name: 'Work', path: '/work' }, // Targeted redirect
+  { name: 'Contact', path: '/contact' },
+];
+
+// Modified to support Links
+function MagneticButton({ children, className = "", onClick, href }: any) {
+  if (href) {
+    return (
+      <Link href={href} className={className} onClick={onClick}>
+        {children}
+      </Link>
+    );
+  }
   return (
     <button className={className} onClick={onClick}>
       {children}
@@ -83,33 +98,41 @@ export default function Navbar() {
           <div className="absolute inset-0 rounded-full border border-white/10 pointer-events-none" />
           
           {/* 1. LOGO + BOTMARTZ TEXT */}
-          <div className="relative flex items-center gap-3 cursor-pointer group z-10">
+          <Link href="/" className="relative flex items-center gap-3 cursor-pointer group z-10">
              <div className="relative h-8 w-8">
                <img
-                  src="/botmartz_silver_bg_free.png"
-                  alt="Botmartz"
-                  className="h-full w-full object-contain group-hover:brightness-125 transition-all drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]"
+                 src="/botmartz_silver_bg_free.png"
+                 alt="Botmartz"
+                 className="h-full w-full object-contain group-hover:brightness-125 transition-all drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]"
                />
              </div>
              <span className="text-xl font-black tracking-tight text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] group-hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.6)] transition-all">
                BOTMARTZ
              </span>
-          </div>
+          </Link>
 
           {/* 2. CENTER LINKS - Desktop Only */}
           <div className="hidden md:flex items-center gap-10">
-            {['Services', 'Work', 'About', 'Contact'].map((item) => (
-              <MagneticButton key={item} className="text-xs font-bold tracking-widest uppercase text-gray-300 hover:text-white transition-colors cursor-pointer relative group">
-                {item}
+            {NAV_ITEMS.map((item) => (
+              <MagneticButton 
+                key={item.name} 
+                href={item.path} // Pass URL here
+                className="text-xs font-bold tracking-widest uppercase text-gray-300 hover:text-white transition-colors cursor-pointer relative group"
+              >
+                {item.name}
                 <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#D4AF37] opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-[0_0_10px_#D4AF37]" />
               </MagneticButton>
             ))}
+             
+             {/* Special Link for About */}
+             <Link href="/about" className="text-xs font-bold tracking-widest uppercase text-gray-300 hover:text-white transition-colors cursor-pointer relative group">
+               About
+               <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#D4AF37] opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-[0_0_10px_#D4AF37]" />
+             </Link>
           </div>
 
           {/* 3. CTA BUTTON - Desktop Only */}
           <div className="hidden md:flex items-center gap-6">
-
-
              <MagneticButton className="group relative px-6 py-2.5 bg-[#D4AF37] text-black text-[11px] font-bold tracking-widest uppercase rounded-full overflow-hidden hover:shadow-[0_0_20px_rgba(212,175,55,0.5)] transition-shadow duration-300">
                 <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
                 <div className="relative flex items-center gap-2">
@@ -170,24 +193,42 @@ export default function Navbar() {
 
               {/* Menu Items */}
               <nav className="flex flex-col gap-2 px-6 py-4">
-                {['Services', 'Work', 'About', 'Contact'].map((item, index) => (
-                  <motion.button
-                    key={item}
+                {/* Standard mapped items (Services, Work, Contact) */}
+                {NAV_ITEMS.map((item, index) => (
+                  <motion.div
+                    key={item.name}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    onClick={closeMobileMenu}
-                    className="text-left py-4 px-4 text-lg font-bold tracking-wide uppercase text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all border-b border-white/5"
                   >
-                    {item}
-                  </motion.button>
+                    <Link
+                      href={item.path}
+                      onClick={closeMobileMenu}
+                      className="block w-full text-left py-4 px-4 text-lg font-bold tracking-wide uppercase text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all border-b border-white/5"
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.div>
                 ))}
+
+                {/* About (Separate to match desktop structure, or can be added to NAV_ITEMS) */}
+                <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 }}
+                >
+                    <Link
+                      href="/about"
+                      onClick={closeMobileMenu}
+                      className="block w-full text-left py-4 px-4 text-lg font-bold tracking-wide uppercase text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all border-b border-white/5"
+                    >
+                      About
+                    </Link>
+                </motion.div>
               </nav>
 
               {/* Mobile CTA Buttons */}
               <div className="mt-auto p-6 space-y-4">
-                
-
                 <button 
                   onClick={closeMobileMenu}
                   className="w-full py-3 bg-[#D4AF37] text-black text-sm font-bold tracking-widest uppercase rounded-full hover:shadow-[0_0_20px_rgba(212,175,55,0.5)] transition-shadow duration-300 flex items-center justify-center gap-2"

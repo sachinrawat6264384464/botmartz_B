@@ -553,7 +553,7 @@ const Footer = () => {
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="w-[80vw] h-[80vw] bg-gradient-to-r from-[#00E5FF]/10 to-[#FF5500]/10 rounded-full blur-[150px] animate-[spin_20s_linear_infinite] opacity-50" />
       </div>
-      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.04] animate-[grain_6s_steps(10)_infinite] pointer-events-none" />
+     
 
       <div className="z-10 text-center space-y-10">
         <p className={`font-mono text-[#00E5FF] text-base tracking-[0.4em] drop-shadow-[0_0_5px_#00E5FF]`}>
