@@ -1,134 +1,177 @@
 "use client";
+import { useEffect, useState } from 'react';
+import { db } from '@/lib/firebase';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { Mail, TrendingUp, Clock, ArrowUpRight } from 'lucide-react';
+import Link from 'next/link';
+import { Inter_Tight } from 'next/font/google';
 
-import { useState, useEffect } from "react";
-import { getAuth } from "firebase/auth";
-import { app } from "@/lib/firebase";
-import {
-  Users,
-  FileText,
-  Mail,
-  Activity,
-  TrendingUp,
-  Clock,
-} from "lucide-react";
+const interTight = Inter_Tight({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
+
+interface Stats {
+  total: number;
+  unread: number;
+  today: number;
+}
 
 export default function AdminDashboard() {
-  const [user, setUser] = useState<any>(null);
+  const [stats, setStats] = useState<Stats>({ total: 0, unread: 0, today: 0 });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const auth = getAuth(app);
-    setUser(auth.currentUser);
+    const fetchStats = async () => {
+      try {
+        const contactsRef = collection(db, 'contacts');
+        
+        const allContacts = await getDocs(contactsRef);
+        const total = allContacts.size;
+        
+        const unreadQuery = query(contactsRef, where('status', '==', 'unread'));
+        const unreadDocs = await getDocs(unreadQuery);
+        const unread = unreadDocs.size;
+        
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const todayQuery = query(contactsRef, where('createdAt', '>=', today));
+        const todayDocs = await getDocs(todayQuery);
+        const todayCount = todayDocs.size;
+        
+        setStats({ total, unread, today: todayCount });
+      } catch (error) {
+        console.error('Error fetching stats:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
   }, []);
 
-  const stats = [
-    {
-      title: "Total Users",
-      value: "0",
-      icon: Users,
-      change: "+0%",
-      color: "from-blue-500 to-cyan-500",
+  const statCards = [
+    { 
+      label: 'Total Messages', 
+      value: stats.total, 
+      icon: Mail, 
+      color: 'bg-blue-500',
+      lightColor: 'bg-blue-50',
+      textColor: 'text-blue-600'
     },
-    {
-      title: "Projects",
-      value: "0",
-      icon: FileText,
-      change: "+0%",
-      color: "from-purple-500 to-pink-500",
+    { 
+      label: 'Unread Messages', 
+      value: stats.unread, 
+      icon: TrendingUp, 
+      color: 'bg-red-500',
+      lightColor: 'bg-red-50',
+      textColor: 'text-red-600'
     },
-    {
-      title: "Messages",
-      value: "0",
-      icon: Mail,
-      change: "+0%",
-      color: "from-[#D4AF37] to-yellow-600",
-    },
-    {
-      title: "Active Sessions",
-      value: "1",
-      icon: Activity,
-      change: "Live",
-      color: "from-green-500 to-emerald-500",
+    { 
+      label: 'Today', 
+      value: stats.today, 
+      icon: Clock, 
+      color: 'bg-green-500',
+      lightColor: 'bg-green-50',
+      textColor: 'text-green-600'
     },
   ];
 
+  if (loading) {
+    return (
+      <div className={`${interTight.className} p-8`}>
+        <div className="flex items-center justify-center h-64">
+          <div className="w-8 h-8 border-2 border-gray-300 border-t-black rounded-full animate-spin" />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-8">
-      {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-[#D4AF37]/10 to-transparent border border-[#D4AF37]/20 rounded-2xl p-8">
-        <h2 className="text-3xl font-bold text-white mb-2">
-          Welcome back, Admin
-        </h2>
-        <p className="text-gray-400">
-          Here's what's happening with your platform today.
-        </p>
+    <div className={`${interTight.className} p-8`}>
+      {/* Page Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard Overview</h1>
+        <p className="text-gray-600">Monitor your customer inquiries and engagement metrics.</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, index) => (
-          <div
-            key={index}
-            className="relative group bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-6 hover:border-white/20 transition-all"
-          >
-            {/* Gradient Background */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {statCards.map((stat, index) => {
+          const Icon = stat.icon;
+          return (
             <div
-              className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-10 rounded-xl transition-opacity`}
-            />
-
-            <div className="relative">
-              <div className="flex items-center justify-between mb-4">
-                <div
-                  className={`p-3 bg-gradient-to-br ${stat.color} rounded-lg`}
-                >
-                  <stat.icon className="w-6 h-6 text-white" />
+              key={index}
+              className="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-lg transition-all duration-300 group"
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className={`${stat.lightColor} p-3 rounded-xl`}>
+                  <Icon size={24} className={stat.textColor} />
                 </div>
-                <span className="text-xs font-mono text-green-400">
-                  {stat.change}
+                <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">
+                  +12%
                 </span>
               </div>
-
-              <h3 className="text-2xl font-bold text-white mb-1">
-                {stat.value}
-              </h3>
-              <p className="text-sm text-gray-400">{stat.title}</p>
+              
+              <div>
+                <p className="text-sm font-medium text-gray-600 mb-1">
+                  {stat.label}
+                </p>
+                <p className="text-4xl font-bold text-gray-900">{stat.value}</p>
+              </div>
             </div>
+          );
+        })}
+      </div>
+
+      {/* Quick Actions */}
+      <div className="bg-white rounded-2xl border border-gray-200 p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold text-gray-900">Quick Actions</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Link
+            href="/admin/contacts"
+            className="group flex items-center justify-between p-5 bg-gray-50 rounded-xl border border-gray-200 hover:border-black hover:shadow-md transition-all duration-300"
+          >
+            <div className="flex items-center gap-4">
+              <div className="bg-white p-3 rounded-lg border border-gray-200 group-hover:border-black transition-colors">
+                <Mail size={20} className="text-gray-700" />
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900">View All Messages</p>
+                <p className="text-sm text-gray-500">Check and respond to inquiries</p>
+              </div>
+            </div>
+            <ArrowUpRight size={20} className="text-gray-400 group-hover:text-black transition-colors" />
+          </Link>
+
+          <div className="group flex items-center justify-between p-5 bg-gray-50 rounded-xl border border-gray-200 hover:border-black hover:shadow-md transition-all duration-300 cursor-pointer">
+            <div className="flex items-center gap-4">
+              <div className="bg-white p-3 rounded-lg border border-gray-200 group-hover:border-black transition-colors">
+                <TrendingUp size={20} className="text-gray-700" />
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900">Export Reports</p>
+                <p className="text-sm text-gray-500">Download CSV or PDF</p>
+              </div>
+            </div>
+            <ArrowUpRight size={20} className="text-gray-400 group-hover:text-black transition-colors" />
           </div>
-        ))}
+        </div>
       </div>
 
       {/* Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Activity Feed */}
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-6">
-          <div className="flex items-center gap-3 mb-6">
-            <Clock className="w-5 h-5 text-[#D4AF37]" />
-            <h3 className="text-lg font-semibold text-white">
-              Recent Activity
-            </h3>
-          </div>
-          <div className="space-y-4">
-            <p className="text-gray-400 text-sm">No recent activity</p>
-          </div>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-6">
-          <div className="flex items-center gap-3 mb-6">
-            <TrendingUp className="w-5 h-5 text-[#D4AF37]" />
-            <h3 className="text-lg font-semibold text-white">Quick Stats</h3>
-          </div>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-400 text-sm">Login Time</span>
-              <span className="text-white text-sm font-mono">
-                {new Date().toLocaleTimeString()}
-              </span>
+      <div className="mt-6 bg-white rounded-2xl border border-gray-200 p-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Recent Activity</h2>
+        <div className="space-y-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+              <div className="w-2 h-2 bg-blue-500 rounded-full" />
+              <div className="flex-1">
+                <p className="text-sm font-medium text-gray-900">New message received</p>
+                <p className="text-xs text-gray-500">{i} hour{i > 1 ? 's' : ''} ago</p>
+              </div>
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-400 text-sm">Admin Email</span>
-              <span className="text-white text-sm">{user?.email}</span>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
