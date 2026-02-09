@@ -7,7 +7,7 @@ import { Space_Grotesk } from 'next/font/google';
 import { cn } from "@/lib/utils";
 
 // Import lightweight components normally
-import Navbar from "./Components/navbar";
+import Navbar from "../_components/navbar";
 import MarqueeSection from "./Components/marquee-section";
 
 // Dynamically import HeroSection with no SSR to prevent Framer Motion issues
@@ -52,7 +52,7 @@ const FinalCTA = dynamic(() => import('./Components/final-cta').then(mod => ({ d
   ssr: false
 });
 
-const FooterTerminal = dynamic(() => import('./Components/footer-terminal').then(mod => ({ default: mod.FooterTerminal })), {
+const FooterTerminal = dynamic(() => import('../_components/footer').then(mod => ({ default: mod.Footer})), {
   loading: () => <div className="min-h-screen bg-[#050505]" />,
   ssr: false
 });

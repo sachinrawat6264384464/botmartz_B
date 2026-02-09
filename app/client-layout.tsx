@@ -2,14 +2,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Preloader from "./_components/Preloader";
-import Navbar from "./_LandingPage/Components/navbar";
+import Navbar from "./_components/navbar";
+import { Footer } from "./_components/footer";
 
 export default function ClientLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  const isAdminRoute = pathname?.startsWith('/admin');
+  
   const [showPreloader, setShowPreloader] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
@@ -64,8 +69,9 @@ export default function ClientLayout({
 
       {/* Main Content - Renders immediately if preloader already shown */}
       <div id="main-content" className={!isLoading ? "loaded" : ""}>
-        <Navbar />
+        {!isAdminRoute && <Navbar />}
         {children}
+        {!isAdminRoute && <Footer />}
       </div>
     </>
   );
