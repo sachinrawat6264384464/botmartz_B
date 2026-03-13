@@ -127,15 +127,10 @@ body {
   background-color: #050505;
 }
 
+/* Content is always visible — preloader overlays on top as a fixed element */
 #main-content {
-  opacity: 0;
-  visibility: hidden;
-}
-
-#main-content.loaded {
   opacity: 1;
   visibility: visible;
-  transition: opacity 0.8s ease-out;
 }
 
 /* Animations */

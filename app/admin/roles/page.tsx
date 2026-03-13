@@ -21,6 +21,7 @@ import {
   Loader2,
   Users,
   AlertCircle,
+  Zap,
 } from 'lucide-react';
 import { Inter_Tight } from 'next/font/google';
 
@@ -35,7 +36,6 @@ interface UserRoleDoc {
   createdAt?: any;
 }
 
-// Modules available for assignment (excludes 'roles' — that's super-admin-only)
 const ASSIGNABLE_MODULES = MODULES.filter((m) => m.id !== 'roles');
 
 export default function RoleManagementPage() {
@@ -44,21 +44,17 @@ export default function RoleManagementPage() {
   const [users, setUsers] = useState<UserRoleDoc[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Edit modal
   const [editingUser, setEditingUser] = useState<UserRoleDoc | null>(null);
   const [tempModules, setTempModules] = useState<ModuleId[]>([]);
   const [saving, setSaving] = useState(false);
 
-  // Add user modal
   const [showAddModal, setShowAddModal] = useState(false);
   const [newEmail, setNewEmail] = useState('');
   const [newUid, setNewUid] = useState('');
   const [addError, setAddError] = useState('');
   const [adding, setAdding] = useState(false);
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  useEffect(() => { fetchUsers(); }, []);
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -80,7 +76,6 @@ export default function RoleManagementPage() {
     }
   };
 
-  /* ── Edit permissions ── */
   const openEditModal = (user: UserRoleDoc) => {
     setEditingUser(user);
     setTempModules([...user.modules]);
@@ -101,9 +96,7 @@ export default function RoleManagementPage() {
         updatedAt: serverTimestamp(),
       });
       setUsers((prev) =>
-        prev.map((u) =>
-          u.uid === editingUser.uid ? { ...u, modules: tempModules } : u
-        )
+        prev.map((u) => u.uid === editingUser.uid ? { ...u, modules: tempModules } : u)
       );
       setEditingUser(null);
     } catch (err) {
@@ -113,7 +106,6 @@ export default function RoleManagementPage() {
     }
   };
 
-  /* ── Add user manually ── */
   const handleAddUser = async () => {
     setAddError('');
     if (!newEmail.trim() || !newUid.trim()) {
@@ -137,7 +129,7 @@ export default function RoleManagementPage() {
       setShowAddModal(false);
       setNewEmail('');
       setNewUid('');
-    } catch (err) {
+    } catch {
       setAddError('Failed to add user. Check the UID and try again.');
     } finally {
       setAdding(false);
@@ -151,87 +143,86 @@ export default function RoleManagementPage() {
     setAddError('');
   };
 
+  const getInitials = (name: string, email: string) =>
+    (name || email).charAt(0).toUpperCase();
+
   return (
-    <div className={`${interTight.className} p-8`}>
-      {/* Page Header */}
-      <div className="flex items-start justify-between mb-8">
+    <div className={`${interTight.className} p-6 max-w-[1400px]`}>
+
+      {/* Header */}
+      <div className="mb-8 flex items-start justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-3">
-            <Shield size={30} className="text-gray-700" />
-            Role Management
-          </h1>
-          <p className="text-gray-500 text-sm">
-            Assign dashboard module permissions to each admin user.
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-8 h-8 bg-gray-100 border border-gray-200 rounded-xl flex items-center justify-center">
+              <Shield size={15} className="text-gray-600" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900">Role Management</h1>
+          </div>
+          <p className="text-sm text-gray-500 ml-10">
+            Assign module permissions to admin users ·{' '}
+            <span className="font-medium text-gray-700">{users.length} user{users.length !== 1 ? 's' : ''}</span>
           </p>
         </div>
         <button
           onClick={() => setShowAddModal(true)}
-          className="flex items-center gap-2 bg-black text-white px-5 py-2.5 rounded-xl font-medium text-sm hover:bg-gray-800 transition-colors"
+          className="flex items-center gap-2 bg-gray-900 text-white px-4 py-2.5 rounded-xl font-semibold text-sm hover:bg-gray-800 transition-colors shadow-sm"
         >
-          <Plus size={17} />
+          <Plus size={15} />
           Add User
         </button>
       </div>
 
       {/* Users Table */}
-      <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+      <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
         {loading ? (
           <div className="flex items-center justify-center h-52">
-            <Loader2 size={32} className="animate-spin text-gray-300" />
+            <Loader2 size={24} className="animate-spin text-gray-300" />
           </div>
         ) : users.length === 0 ? (
-          <div className="text-center py-16 px-8 text-gray-400">
-            <Users size={44} className="mx-auto mb-4 opacity-30" />
-            <p className="text-base font-medium text-gray-600">No users found</p>
-            <p className="text-sm mt-1 max-w-sm mx-auto">
-              Users appear here automatically after their first login, or you can add them manually above.
+          <div className="text-center py-16 px-8">
+            <div className="w-12 h-12 bg-gray-50 border border-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
+              <Users size={20} className="text-gray-300" />
+            </div>
+            <p className="text-sm font-semibold text-gray-500">No users found</p>
+            <p className="text-xs text-gray-400 mt-1 max-w-xs mx-auto">
+              Users appear automatically after first login, or add them manually above.
             </p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="bg-gray-50 border-b border-gray-100">
-                  <th className="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    User
-                  </th>
-                  <th className="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    Assigned Modules
-                  </th>
-                  <th className="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    Role
-                  </th>
-                  <th className="text-right px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    Actions
-                  </th>
+                <tr className="border-b border-gray-100 bg-gray-50/70">
+                  <th className="text-left px-5 py-3 text-[10px] font-semibold text-gray-400 uppercase tracking-wider">User</th>
+                  <th className="text-left px-5 py-3 text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Assigned Modules</th>
+                  <th className="text-left px-5 py-3 text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Role</th>
+                  <th className="text-right px-5 py-3 text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-gray-50">
                 {users.map((user) => (
-                  <tr key={user.uid} className="hover:bg-gray-50 transition-colors">
-                    {/* User info */}
-                    <td className="px-6 py-4">
+                  <tr key={user.uid} className="hover:bg-gray-50/70 transition-colors">
+                    <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-9 h-9 bg-linear-to-br from-gray-700 to-gray-900 rounded-full flex items-center justify-center shrink-0">
                           <span className="text-xs font-bold text-white">
-                            {(user.displayName || user.email).charAt(0).toUpperCase()}
+                            {getInitials(user.displayName, user.email)}
                           </span>
                         </div>
                         <div className="min-w-0">
-                          <p className="font-medium text-gray-900 truncate">
-                            {user.displayName || <span className="italic text-gray-400">No name</span>}
+                          <p className="text-sm font-semibold text-gray-900 truncate">
+                            {user.displayName || <span className="italic text-gray-400 font-normal">No name</span>}
                           </p>
-                          <p className="text-sm text-gray-500 truncate">{user.email}</p>
+                          <p className="text-xs text-gray-400 truncate">{user.email}</p>
                         </div>
                       </div>
                     </td>
 
-                    {/* Modules */}
-                    <td className="px-6 py-4">
+                    <td className="px-5 py-4">
                       {user.isSuperAdmin ? (
-                        <span className="text-sm text-gray-400 italic">All modules</span>
+                        <span className="text-xs text-gray-400 italic">All modules</span>
                       ) : user.modules.length === 0 ? (
-                        <span className="text-sm text-gray-400">— None assigned</span>
+                        <span className="text-xs text-gray-400">— None assigned</span>
                       ) : (
                         <div className="flex flex-wrap gap-1.5">
                           {user.modules.map((mId) => {
@@ -249,27 +240,25 @@ export default function RoleManagementPage() {
                       )}
                     </td>
 
-                    {/* Role badge */}
-                    <td className="px-6 py-4">
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          user.isSuperAdmin
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-gray-100 text-gray-600'
-                        }`}
-                      >
-                        {user.isSuperAdmin ? 'Super Admin' : 'Admin'}
-                      </span>
+                    <td className="px-5 py-4">
+                      {user.isSuperAdmin ? (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-yellow-50 text-yellow-700 border border-yellow-200">
+                          <Zap size={10} /> Super Admin
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">
+                          <Shield size={10} /> Admin
+                        </span>
+                      )}
                     </td>
 
-                    {/* Edit button */}
-                    <td className="px-6 py-4 text-right">
+                    <td className="px-5 py-4 text-right">
                       <button
                         onClick={() => openEditModal(user)}
                         disabled={user.isSuperAdmin}
-                        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                        className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-gray-600 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                       >
-                        <Edit size={14} />
+                        <Edit size={13} />
                         Edit Permissions
                       </button>
                     </td>
@@ -281,55 +270,47 @@ export default function RoleManagementPage() {
         )}
       </div>
 
-      {/* ── Edit Permissions Modal ── */}
+      {/* Edit Permissions Modal */}
       {editingUser && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md">
-            {/* Modal header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-100">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className={`${interTight.className} bg-white rounded-2xl shadow-2xl w-full max-w-md border border-gray-200`}>
+            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900">Edit Permissions</h2>
-                <p className="text-sm text-gray-500 mt-0.5">{editingUser.email}</p>
+                <h2 className="text-sm font-semibold text-gray-900">Edit Permissions</h2>
+                <p className="text-xs text-gray-400 mt-0.5">{editingUser.email}</p>
               </div>
               <button
                 onClick={() => setEditingUser(null)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
               >
-                <X size={20} className="text-gray-500" />
+                <X size={16} className="text-gray-400" />
               </button>
             </div>
 
-            {/* Module checkboxes */}
-            <div className="p-6">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
+            <div className="p-5">
+              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-3">
                 Select Modules
               </p>
-              <div className="space-y-1">
+              <div className="space-y-0.5">
                 {ASSIGNABLE_MODULES.map((mod) => {
                   const checked = tempModules.includes(mod.id);
                   const Icon = mod.icon;
                   return (
                     <label
                       key={mod.id}
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 cursor-pointer group"
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 cursor-pointer group transition-colors"
                     >
                       <input
                         type="checkbox"
                         checked={checked}
                         onChange={() => toggleModule(mod.id)}
-                        className="w-4 h-4 rounded border-gray-300 accent-black"
+                        className="w-4 h-4 rounded border-gray-300 accent-gray-900"
                       />
                       <Icon
-                        size={17}
-                        className={`transition-colors ${
-                          checked ? 'text-gray-800' : 'text-gray-400 group-hover:text-gray-600'
-                        }`}
+                        size={16}
+                        className={`transition-colors ${checked ? 'text-gray-800' : 'text-gray-400 group-hover:text-gray-600'}`}
                       />
-                      <span
-                        className={`text-sm font-medium transition-colors ${
-                          checked ? 'text-gray-900' : 'text-gray-500 group-hover:text-gray-700'
-                        }`}
-                      >
+                      <span className={`text-sm font-medium transition-colors ${checked ? 'text-gray-900' : 'text-gray-500 group-hover:text-gray-700'}`}>
                         {mod.label}
                       </span>
                     </label>
@@ -338,24 +319,19 @@ export default function RoleManagementPage() {
               </div>
             </div>
 
-            {/* Modal footer */}
-            <div className="flex gap-3 px-6 pb-6">
+            <div className="flex gap-2 px-5 pb-5">
               <button
                 onClick={() => setEditingUser(null)}
-                className="flex-1 px-4 py-2.5 border border-gray-200 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-50 transition-colors"
+                className="flex-1 px-4 py-2.5 border border-gray-200 text-gray-600 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={savePermissions}
                 disabled={saving}
-                className="flex-1 px-4 py-2.5 bg-black text-white rounded-xl font-medium text-sm flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors disabled:opacity-50"
+                className="flex-1 px-4 py-2.5 bg-gray-900 text-white rounded-xl text-sm font-semibold flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors disabled:opacity-50"
               >
-                {saving ? (
-                  <Loader2 size={15} className="animate-spin" />
-                ) : (
-                  <Save size={15} />
-                )}
+                {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
                 {saving ? 'Saving…' : 'Save Permissions'}
               </button>
             </div>
@@ -363,34 +339,25 @@ export default function RoleManagementPage() {
         </div>
       )}
 
-      {/* ── Add User Modal ── */}
+      {/* Add User Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md">
-            <div className="flex items-center justify-between p-6 border-b border-gray-100">
-              <h2 className="text-lg font-semibold text-gray-900">Add User Manually</h2>
-              <button
-                onClick={closeAddModal}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <X size={20} className="text-gray-500" />
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className={`${interTight.className} bg-white rounded-2xl shadow-2xl w-full max-w-md border border-gray-200`}>
+            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+              <h2 className="text-sm font-semibold text-gray-900">Add User Manually</h2>
+              <button onClick={closeAddModal} className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors">
+                <X size={16} className="text-gray-400" />
               </button>
             </div>
 
-            <div className="p-6 space-y-4">
-              {/* Info tip */}
-              <div className="flex gap-3 p-4 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800">
-                <AlertCircle size={16} className="shrink-0 mt-0.5" />
-                <span>
-                  Users are added here automatically on first login. Use this form to
-                  pre-assign permissions before a user has logged in.
-                </span>
+            <div className="p-5 space-y-4">
+              <div className="flex gap-3 p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800">
+                <AlertCircle size={14} className="shrink-0 mt-0.5" />
+                <span>Users are added automatically on first login. Use this to pre-assign permissions before a user has logged in.</span>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
-                  Email
-                </label>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Email</label>
                 <input
                   type="email"
                   value={newEmail}
@@ -401,9 +368,7 @@ export default function RoleManagementPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
-                  Firebase UID
-                </label>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Firebase UID</label>
                 <input
                   type="text"
                   value={newUid}
@@ -411,31 +376,29 @@ export default function RoleManagementPage() {
                   placeholder="e.g. abc123xyz..."
                   className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black transition-all"
                 />
-                <p className="text-xs text-gray-400 mt-1.5">
-                  Find this in Firebase Console → Authentication → Users
-                </p>
+                <p className="text-xs text-gray-400 mt-1.5">Find this in Firebase Console → Authentication → Users</p>
               </div>
 
               {addError && (
-                <p className="text-sm text-red-500 flex items-center gap-2">
-                  <AlertCircle size={14} /> {addError}
+                <p className="text-xs text-red-500 flex items-center gap-1.5">
+                  <AlertCircle size={13} /> {addError}
                 </p>
               )}
             </div>
 
-            <div className="flex gap-3 px-6 pb-6">
+            <div className="flex gap-2 px-5 pb-5">
               <button
                 onClick={closeAddModal}
-                className="flex-1 px-4 py-2.5 border border-gray-200 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-50 transition-colors"
+                className="flex-1 px-4 py-2.5 border border-gray-200 text-gray-600 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleAddUser}
                 disabled={adding}
-                className="flex-1 px-4 py-2.5 bg-black text-white rounded-xl font-medium text-sm flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors disabled:opacity-50"
+                className="flex-1 px-4 py-2.5 bg-gray-900 text-white rounded-xl text-sm font-semibold flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors disabled:opacity-50"
               >
-                {adding && <Loader2 size={15} className="animate-spin" />}
+                {adding && <Loader2 size={14} className="animate-spin" />}
                 {adding ? 'Adding…' : 'Add User'}
               </button>
             </div>

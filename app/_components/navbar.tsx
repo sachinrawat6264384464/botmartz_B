@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import Image from "next/image";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import { ArrowRight, Menu, X } from "lucide-react";
 import Link from "next/link";
@@ -100,10 +101,13 @@ export default function Navbar() {
           {/* 1. LOGO + BOTMARTZ TEXT */}
           <Link href="/" className="relative flex items-center gap-3 cursor-pointer group z-10">
              <div className="relative h-8 w-8">
-               <img
+               <Image
                  src="/botmartz_silver_bg_free.png"
                  alt="Botmartz"
-                 className="h-full w-full object-contain group-hover:brightness-125 transition-all drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]"
+                 fill
+                 sizes="32px"
+                 priority
+                 className="object-contain group-hover:brightness-125 transition-all drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]"
                />
              </div>
              <span className="text-xl font-black tracking-tight text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] group-hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.6)] transition-all">

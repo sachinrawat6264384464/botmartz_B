@@ -1,5 +1,5 @@
 "use client";
-import { useState, memo, useCallback } from "react";
+import { useState, memo, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
@@ -73,11 +73,41 @@ const FAQItem = memo(({
 
 FAQItem.displayName = 'FAQItem';
 
+// Lazy video — only loads when scrolled into view
+function LazyVideo() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); observer.disconnect(); } },
+      { threshold: 0.2 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <video
+      ref={videoRef}
+      autoPlay
+      loop
+      muted
+      playsInline
+      preload="none"
+      src={inView ? '/botmartzhi.mp4' : undefined}
+      className="w-full h-auto block"
+      style={{ background: '#050505' }}
+    />
+  );
+}
+
 // Main Component
 function NeuralQuery() {
   const [openId, setOpenId] = useState<string | null>(null);
 
-  // Memoized toggle handler
   const createToggleHandler = useCallback((id: string) => {
     return () => setOpenId(prev => prev === id ? null : id);
   }, []);
@@ -90,22 +120,27 @@ function NeuralQuery() {
       
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
         {/* Left Side - Video */}
-        <div className="relative group">
-          <div className="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/20 to-purple-500/20 rounded-2xl blur-3xl opacity-50 group-hover:opacity-70 transition-opacity duration-500"></div>
-          <div className="relative bg-black/40 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-[#D4AF37]/50 transition-all duration-300">
-            {/* <video 
-              autoPlay 
-              loop 
-              muted 
-              playsInline
-              className="w-full h-auto rounded-lg shadow-2xl"
-            >
-              <source src="/Botmartz_hi.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video> */}
-            <div className="mt-6 text-center">
-              <p className="text-[#D4AF37] font-semibold text-lg">BOTMARTZ SUPPORT</p>
-              <p className="text-gray-500 text-sm mt-1">Your Growth Partner</p>
+        <div className="relative group flex flex-col items-center">
+          {/* Ambient glow behind the card */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/25 via-[#D4AF37]/5 to-transparent rounded-3xl blur-3xl opacity-60 group-hover:opacity-90 transition-opacity duration-700 pointer-events-none" />
+
+          <div className="relative w-full rounded-2xl overflow-hidden border border-[#D4AF37]/25 shadow-[0_0_40px_rgba(212,175,55,0.15)] group-hover:shadow-[0_0_60px_rgba(212,175,55,0.25)] transition-shadow duration-500 bg-[#0a0a0a]">
+            {/* Gold top accent line */}
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent z-10" />
+
+            <LazyVideo />
+
+            {/* Bottom label overlay */}
+            <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 via-black/40 to-transparent px-6 py-4 flex items-end justify-between">
+              <div>
+                <p className="text-[#D4AF37] font-bold text-sm tracking-widest uppercase">Botmartz Support</p>
+                <p className="text-white/40 text-xs mt-0.5 font-mono">Your Growth Partner</p>
+              </div>
+              {/* Live indicator */}
+              <div className="flex items-center gap-2 mb-1">
+                <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse shadow-[0_0_6px_#D4AF37]" />
+                <span className="text-[#D4AF37] text-xs font-mono tracking-widest">LIVE</span>
+              </div>
             </div>
           </div>
         </div>

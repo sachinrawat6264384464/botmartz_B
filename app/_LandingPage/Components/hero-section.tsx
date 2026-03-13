@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Inter_Tight } from 'next/font/google';
 import DottedMap from "dotted-map"; // Restored for design fidelity
 
-const interTight = Inter_Tight({ subsets: ['latin'], weight: ['300', '400', '500'] });
+const interTight = Inter_Tight({ subsets: ['latin'], weight: ['300', '400'], display: 'swap' });
 
 // Accent Color Constant - The Yellow from your image
 const ACCENT_COLOR = "#F5C242"; 
@@ -107,8 +107,8 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(5,5,5,0.4)_70%,#050505_100%)] z-0 pointer-events-none" />
 
       {/* MAIN CONTENT */}
-      <motion.div 
-        style={{ y: contentY, opacity }} 
+      <motion.div
+        style={{ y: contentY, opacity, willChange: 'transform, opacity' }}
         className="relative z-10 w-full max-w-7xl px-6 flex flex-col items-center justify-center"
       >
         {mounted && !isMobile && (
@@ -269,17 +269,27 @@ function WorldMap({ dots = [], lineColor = "#ffffff", animated = true }: any) {
   const [mounted, setMounted] = useState(false);
   const [svgMap, setSvgMap] = useState<string>("");
   
-  // OPTIMIZATION: Defer DottedMap generation to useEffect (Client-side only)
-  // This unblocks the Main Thread during initial hydration, killing TBT.
+  // OPTIMIZATION: Defer DottedMap generation off the main thread using scheduler
+  // Runs after paint so it doesn't block LCP or increase TBT.
   useEffect(() => {
-    // Small timeout to allow the rest of the page to paint first
-    const timer = setTimeout(() => {
-       const map = new DottedMap({ height: 100, grid: "diagonal" });
-       const svg = map.getSVG({ radius: 0.35, color: `${lineColor}60`, shape: "circle", backgroundColor: "transparent" });
-       setSvgMap(svg);
-       setMounted(true);
-    }, 100);
-    return () => clearTimeout(timer);
+    let cancelled = false;
+    const generate = () => {
+      if (cancelled) return;
+      const map = new DottedMap({ height: 60, grid: "diagonal" });
+      const svg = map.getSVG({ radius: 0.42, color: `${lineColor}60`, shape: "circle", backgroundColor: "transparent" });
+      if (!cancelled) {
+        setSvgMap(svg);
+        setMounted(true);
+      }
+    };
+    // Use requestIdleCallback if available to avoid blocking main thread
+    if (typeof requestIdleCallback !== 'undefined') {
+      const id = requestIdleCallback(generate, { timeout: 2000 });
+      return () => { cancelled = true; cancelIdleCallback(id); };
+    } else {
+      const timer = setTimeout(generate, 200);
+      return () => { cancelled = true; clearTimeout(timer); };
+    }
   }, [lineColor]);
 
   const projectPoint = (lat: number, lng: number) => {
@@ -351,25 +361,29 @@ function ShadowOverlay({ sizing = 'fill', color = 'rgba(128, 128, 128, 1)', anim
   );
 }
 
-// Scramble Text
+// Scramble Text — runs at 80ms intervals (fewer re-renders, lower TBT)
 function ScrambleText({ text, className, children }: any) {
   const [displayText, setDisplayText] = useState(text);
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  
+
   useEffect(() => {
-    let iteration = 0;
-    const interval = setInterval(() => {
-      setDisplayText((prev: string) => 
-        text.split("").map((char: string, index: number) => 
-          index < iteration ? text[index] : chars[Math.floor(Math.random() * chars.length)]
-        ).join("")
-      );
-      iteration += 1/3; // Optimized Step
-      if (iteration >= text.length) clearInterval(interval);
-    }, 50); // Slower interval (50ms vs 30ms) to save CPU
-    return () => clearInterval(interval);
+    // Delay start slightly so it doesn't run during LCP window
+    const startTimer = setTimeout(() => {
+      let iteration = 0;
+      const interval = setInterval(() => {
+        setDisplayText(
+          text.split("").map((char: string, index: number) =>
+            index < iteration ? text[index] : chars[Math.floor(Math.random() * chars.length)]
+          ).join("")
+        );
+        iteration += 0.5;
+        if (iteration >= text.length) clearInterval(interval);
+      }, 80);
+      return () => clearInterval(interval);
+    }, 600);
+    return () => clearTimeout(startTimer);
   }, [text]);
-  
+
   return children || <span className={className}>{displayText}</span>;
 }
 

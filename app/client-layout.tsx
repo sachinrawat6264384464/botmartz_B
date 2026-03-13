@@ -3,9 +3,13 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import dynamic from "next/dynamic";
 import Preloader from "./_components/Preloader";
 import Navbar from "./_components/navbar";
-import { Footer } from "./_components/footer";
+
+const Footer = dynamic(() => import("./_components/footer").then(m => ({ default: m.Footer })), {
+  ssr: false,
+});
 
 export default function ClientLayout({
   children,
@@ -14,61 +18,30 @@ export default function ClientLayout({
 }) {
   const pathname = usePathname();
   const isAdminRoute = pathname?.startsWith('/admin');
-  
-  const [showPreloader, setShowPreloader] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isMounted, setIsMounted] = useState(false);
 
-  // Check if preloader should be shown
+  const [showPreloader, setShowPreloader] = useState(false);
+
+  // Only check sessionStorage after mount (client-only API)
   useEffect(() => {
-    setIsMounted(true);
-    
-    // Check if preloader has been shown in this session
+    if (isAdminRoute) return;
     const hasSeenPreloader = sessionStorage.getItem("preloader-shown");
-    
     if (!hasSeenPreloader) {
-      // First visit - show preloader
       setShowPreloader(true);
-    } else {
-      // Already seen preloader - skip it
-      setIsLoading(false);
-      // Immediately show content as loaded
-      requestAnimationFrame(() => {
-        const content = document.getElementById('main-content');
-        if (content) {
-          content.classList.add('loaded');
-        }
-      });
     }
-  }, []);
+  }, [isAdminRoute]);
 
   const handleLoadComplete = () => {
-    // Mark preloader as shown for this session
     sessionStorage.setItem("preloader-shown", "true");
     setShowPreloader(false);
-    setIsLoading(false);
-    
-    // Smooth transition to content
-    requestAnimationFrame(() => {
-      const content = document.getElementById('main-content');
-      if (content) {
-        content.classList.add('loaded');
-      }
-    });
   };
-
-  // Don't render children until mounted on client
-  if (!isMounted) {
-    return null;
-  }
 
   return (
     <>
-      {/* Preloader - Only shows on first visit */}
+      {/* Preloader overlays visually but does NOT block content from rendering/painting */}
       {showPreloader && <Preloader onLoadComplete={handleLoadComplete} />}
 
-      {/* Main Content - Renders immediately if preloader already shown */}
-      <div id="main-content" className={!isLoading ? "loaded" : ""}>
+      {/* Content always renders immediately — critical for LCP */}
+      <div id="main-content">
         {!isAdminRoute && <Navbar />}
         {children}
         {!isAdminRoute && <Footer />}

@@ -3,7 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Inter_Tight } from 'next/font/google';
 
-const inter = Inter_Tight({ subsets: ['latin'], weight: ['400', '600', '700'] });
+const inter = Inter_Tight({ subsets: ['latin'], weight: ['400', '700'], display: 'swap' });
 
 interface SectionWithMockupProps {
     title: React.ReactNode;
@@ -59,7 +59,7 @@ const SectionWithMockup: React.FC<SectionWithMockupProps> = ({
                                 className="absolute top-0 right-0 w-[85%] h-[85%] rounded-[32px] overflow-hidden opacity-40 blur-[1px] brightness-50 transform translate-x-8 -translate-y-8"
                                 style={{ zIndex: 0 }}
                             >
-                                <img src={secondaryImageSrc} alt="" className="w-full h-full object-cover" />
+                                <img src={secondaryImageSrc} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
                             </motion.div>
                         )}
 

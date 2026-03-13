@@ -14,67 +14,38 @@ export default function Preloader({ onLoadComplete }: PreloaderProps) {
   const [statusText, setStatusText] = useState("Initializing System");
 
   useEffect(() => {
-    let mounted = true;
-    let counterInterval: NodeJS.Timeout;
-    
-    // We target a specific loading duration to ensure "smoothness"
-    // but we will hold at 99% until we get the "hero-ready" signal.
-    const duration = 2500; 
-    const steps = 50;
-    const stepTime = duration / steps;
-    
+    let isMounted = true;
+    let finished = false;
+    // Target 800ms total — fast enough not to hurt LCP significantly
+    const steps = 40;
+    const stepTime = 800 / steps;
     let currentProgress = 0;
 
-    const checkHeroReady = () => {
-       const heroElement = document.querySelector('[data-hero-loaded="true"]');
-       return !!heroElement;
+    const finishLoading = () => {
+      if (finished || !isMounted) return;
+      finished = true;
+      clearInterval(counterInterval);
+      clearTimeout(safetyTimer);
+      setProgress(100);
+      setStatusText("Ready");
+      setIsComplete(true);
+      setTimeout(() => {
+        if (isMounted) onLoadComplete?.();
+      }, 300);
     };
 
-    counterInterval = setInterval(() => {
-      if (!mounted) return;
-
-      if (currentProgress < 90) {
-        // Fast initial load
-        currentProgress += Math.random() * 5 + 1; 
-      } else if (currentProgress < 99) {
-        // Slow crawl at the end
-        currentProgress += 0.5;
-      }
-
-      if (currentProgress >= 99) {
-        currentProgress = 99;
-        
-        // Only finish if hero is ready
-        if (checkHeroReady()) {
-           clearInterval(counterInterval);
-           finishLoading();
-           return;
-        }
-        setStatusText("Finalizing Assets...");
-      }
-      
-      setProgress(Math.min(currentProgress, 99));
+    const counterInterval = setInterval(() => {
+      if (!isMounted) return;
+      currentProgress += 100 / steps + (Math.random() * 2 - 1);
+      setProgress(Math.min(Math.floor(currentProgress), 99));
+      if (currentProgress >= 99) finishLoading();
     }, stepTime);
 
-    // Safety fallback: Force complete after 4 seconds regardless
-    const safetyTimer = setTimeout(() => {
-       if (!isComplete && mounted) {
-          clearInterval(counterInterval);
-          finishLoading();
-       }
-    }, 4000);
-
-    const finishLoading = () => {
-        setProgress(100);
-        setStatusText("Ready");
-        setIsComplete(true);
-        setTimeout(() => {
-            if (mounted) onLoadComplete?.();
-        }, 500); // Short delay to see 100%
-    };
+    // Hard cap: always finish within 1.5 seconds
+    const safetyTimer = setTimeout(finishLoading, 1500);
 
     return () => {
-      mounted = false;
+      isMounted = false;
       clearInterval(counterInterval);
       clearTimeout(safetyTimer);
     };

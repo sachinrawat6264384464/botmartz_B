@@ -7,11 +7,13 @@ import ClientLayout from "./client-layout";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -27,16 +29,27 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Preconnect to external resources */}
+        {/* Preconnect to font CDN */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
-        
-        {/* Preload critical assets */}
-        <link rel="preload" href="/botmartz_silver_bg_free.png" as="image" />
-        
+        {/* DNS prefetch for Unsplash images */}
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        {/* Preload the logo used in the navbar (renders immediately on all pages) */}
+        <link
+          rel="preload"
+          href="/botmartz_silver_bg_free.png"
+          as="image"
+          type="image/png"
+        />
+        {/* Preload the logo shown during preloader (first visit) */}
+        <link
+          rel="preload"
+          href="/Botmartz_silver.png"
+          as="image"
+          type="image/png"
+        />
       </head>
-      <body 
+      <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
       >
