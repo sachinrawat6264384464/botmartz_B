@@ -9,9 +9,9 @@ import {
   Phone, 
   MapPin, 
   Linkedin, 
-  Github, 
   Instagram, 
   Globe,
+  BookOpen,
   ArrowUpRight,
   Terminal
 } from "lucide-react";
@@ -50,10 +50,11 @@ const FOOTER_LINKS = {
 };
 
 const SOCIAL_LINKS = [
-  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-  { icon: Github, href: "https://github.com", label: "GitHub" },
-  { icon: Instagram, href: "https://instagram.com", label: "Instagram" },
-  { icon: Globe, href: "#", label: "Website" },
+  { icon: Linkedin, href: "https://www.linkedin.com/in/soham-sharma/", label: "LinkedIn" },
+  { icon: BookOpen, href: "https://blog.botmartz.com/", label: "Blog" },
+  { icon: Instagram, href: "https://www.instagram.com/botmartzai_solutions/", label: "AI Solutions" },
+  { icon: Instagram, href: "https://www.instagram.com/botmartz_academy/", label: "Academy" },
+  { icon: Globe, href: "https://maps.app.goo.gl/W4XioP5ev2zZnU1u6", label: "Location" },
 ];
 
 const CONTACT_INFO = [
@@ -73,7 +74,7 @@ const CONTACT_INFO = [
     icon: MapPin, 
     label: "Location", 
     value: "Indore, India",
-    href: "#" 
+    href: "https://maps.app.goo.gl/W4XioP5ev2zZnU1u6" 
   },
 ];
 
@@ -95,7 +96,7 @@ export function Footer() {
               <Link href="/" className="inline-block group mb-8">
                 <div className="relative w-[240px] h-[100px] md:w-[300px] md:h-[125px]">
                   <Image
-                    src="/Botmartz_silver.png"
+                    src="/BotmartzNewLogo.png"
                     alt="Botmartz"
                     fill
                     sizes="(max-width: 768px) 240px, 300px"

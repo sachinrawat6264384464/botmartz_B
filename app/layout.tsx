@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Botmartz - IT Solutions",
+  title: "Botmartz - AI Solutions",
   description: "Transforming businesses through next-gen automation, intelligent software, and scalable digital ecosystems.",
 };
 
@@ -37,14 +37,14 @@ export default function RootLayout({
         {/* Preload the logo used in the navbar (renders immediately on all pages) */}
         <link
           rel="preload"
-          href="/botmartz_silver_bg_free.png"
+          href="/BotmartznewBot.png"
           as="image"
           type="image/png"
         />
         {/* Preload the logo shown during preloader (first visit) */}
         <link
           rel="preload"
-          href="/Botmartz_silver.png"
+          href="/BotmartzNewLogo.png"
           as="image"
           type="image/png"
         />

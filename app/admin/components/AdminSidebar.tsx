@@ -15,13 +15,11 @@ const interTight = Inter_Tight({ subsets: ['latin'], weight: ['400', '500', '600
 
 const SECTION_GROUPS: { label: string; ids: ModuleId[] }[] = [
   { label: 'Overview', ids: ['dashboard'] },
-  { label: 'Content', ids: ['contacts', 'blogs', 'comments', 'newsletter'] },
-  { label: 'System', ids: ['roles'] },
+  { label: 'Content',  ids: ['contacts'] },
 ];
 
 const BADGE_STYLE: Partial<Record<ModuleId, string>> = {
   contacts: 'bg-sky-500/20 text-sky-300 border border-sky-500/30',
-  comments: 'bg-amber-500/20 text-amber-300 border border-amber-500/30',
 };
 
 export default function AdminSidebar() {
@@ -37,18 +35,14 @@ export default function AdminSidebar() {
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const [c, cm] = await Promise.all([
-          getCountFromServer(query(collection(db, 'contacts'), where('status', '==', 'unread'))),
-          getCountFromServer(query(collection(db, 'comments'), where('status', '==', 'pending'))),
-        ]);
-        setLiveCounts({ contacts: c.data().count, comments: cm.data().count });
+        const c = await getCountFromServer(query(collection(db, 'contacts'), where('status', '==', 'unread')));
+        setLiveCounts({ contacts: c.data().count });
       } catch { /* ignore */ }
     };
     fetchCounts();
   }, [pathname]);
 
   const allowedModules = MODULES.filter((mod) => {
-    if (mod.id === 'roles') return userRole?.isSuperAdmin ?? false;
     if (userRole?.isSuperAdmin) return true;
     return hasAccess(mod.id);
   });
@@ -88,7 +82,7 @@ export default function AdminSidebar() {
         {/* ── Logo ── */}
         <div className={`flex items-center gap-3 px-4 py-5 ${collapsed ? 'justify-center' : ''}`}>
           <div className="relative w-8 h-8 shrink-0">
-            <Image src="/Botmartz_silver.png" alt="BOTMARTZ" fill className="object-contain" />
+            <Image src="/BotmartzNewLogo.png" alt="BOTMARTZ" fill className="object-contain" />
           </div>
           {!collapsed && (
             <div>

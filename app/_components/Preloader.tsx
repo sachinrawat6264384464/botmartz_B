@@ -80,7 +80,7 @@ export default function Preloader({ onLoadComplete }: PreloaderProps) {
             {/* Logo */}
             <div className="relative w-[220px] h-[95px] md:w-[300px] md:h-[130px]">
               <Image
-                src="/Botmartz_silver.png"
+                src="/BotmartzNewLogo.png"
                 alt="Botmartz Logo"
                 fill
                 className="object-contain drop-shadow-[0_0_35px_rgba(255,255,255,0.6)]"

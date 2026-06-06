@@ -1,243 +1,502 @@
 "use client";
-import { useEffect, useState } from 'react';
-import { db } from '@/lib/firebase';
-import { collection, query, orderBy, onSnapshot, doc, updateDoc } from 'firebase/firestore';
-import { Mail, MailOpen, Trash2, Clock, X, ExternalLink } from 'lucide-react';
-import { Inter_Tight } from 'next/font/google';
 
-const interTight = Inter_Tight({ subsets: ['latin'], weight: ['400', '500', '600'] });
+import { useState, useRef } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion, useInView } from "framer-motion";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import {
+  Inter_Tight,
+  JetBrains_Mono,
+} from "next/font/google";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Linkedin,
+  Instagram,
+  BookOpen,
+  Globe,
+  Send,
+  CheckCircle,
+  AlertCircle,
+  Loader2,
+  ArrowUpRight,
+  Terminal,
+} from "lucide-react";
 
-interface Contact {
-  id: string;
-  name: string;
-  email: string;
-  message: string;
-  createdAt: any;
-  status: 'read' | 'unread';
-}
+const inter = Inter_Tight({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
+const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"] });
 
-export default function ContactsList() {
-  const [contacts, setContacts] = useState<Contact[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<'all' | 'unread' | 'read'>('all');
-  const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
+const CONTACT_INFO = [
+  {
+    icon: Mail,
+    label: "Email",
+    value: "sohamnsharma@gmail.com",
+    href: "mailto:sohamnsharma@gmail.com",
+    description: "Drop us a message anytime",
+  },
+  {
+    icon: Phone,
+    label: "Phone",
+    value: "+91-9730084626",
+    href: "tel:+919730084626",
+    description: "Mon–Sat, 9am–7pm IST",
+  },
+  {
+    icon: MapPin,
+    label: "Location",
+    value: "Indore, India",
+    href: "https://maps.app.goo.gl/W4XioP5ev2zZnU1u6",
+    description: "Visit us at our office",
+  },
+];
 
-  useEffect(() => {
-    const contactsRef = collection(db, 'contacts');
-    const q = query(contactsRef, orderBy('createdAt', 'desc'));
+const SOCIAL_LINKS = [
+  {
+    icon: Linkedin,
+    href: "https://www.linkedin.com/in/soham-sharma/",
+    label: "LinkedIn",
+    color: "#0A66C2",
+  },
+  {
+    icon: BookOpen,
+    href: "https://blog.botmartz.com/",
+    label: "Blog",
+    color: "#D4AF37",
+  },
+  {
+    icon: Instagram,
+    href: "https://www.instagram.com/botmartzai_solutions/",
+    label: "AI Solutions",
+    color: "#E1306C",
+  },
+  {
+    icon: Instagram,
+    href: "https://www.instagram.com/botmartz_academy/",
+    label: "Academy",
+    color: "#833AB4",
+  },
+  {
+    icon: Globe,
+    href: "https://maps.app.goo.gl/W4XioP5ev2zZnU1u6",
+    label: "Find Us",
+    color: "#34A853",
+  },
+];
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const contactsData = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as Contact[];
-      
-      setContacts(contactsData);
-      setLoading(false);
-    });
+export default function ContactPage() {
+  const [form, setForm] = useState({ name: "", email: "", company: "", message: "" });
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [error, setError] = useState("");
+  const formRef = useRef(null);
+  const isInView = useInView(formRef, { once: true });
 
-    return () => unsubscribe();
-  }, []);
-
-  const markAsRead = async (contactId: string) => {
-    const contactRef = doc(db, 'contacts', contactId);
-    await updateDoc(contactRef, { status: 'read' });
-  };
-
-  const deleteContact = async (contactId: string) => {
-    if (confirm('Are you sure you want to delete this message?')) {
-      console.log('Delete:', contactId);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+    setError("");
+    try {
+      await addDoc(collection(db, "contacts"), {
+        name: form.name.trim(),
+        email: form.email.trim(),
+        company: form.company.trim(),
+        message: form.message.trim(),
+        status: "unread",
+        createdAt: serverTimestamp(),
+      });
+      setStatus("success");
+      setForm({ name: "", email: "", company: "", message: "" });
+    } catch (err) {
+      console.error(err);
+      setError("Something went wrong. Please try again.");
+      setStatus("error");
     }
   };
 
-  const filteredContacts = contacts.filter((contact) => {
-    if (filter === 'all') return true;
-    return contact.status === filter;
-  });
-
-  const formatDate = (timestamp: any) => {
-    if (!timestamp) return 'Just now';
-    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-    return new Intl.DateTimeFormat('en-US', {
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    }).format(date);
-  };
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="w-8 h-8 border-2 border-gray-300 border-t-black rounded-full animate-spin" />
-      </div>
-    );
-  }
-
   return (
-    <div className={interTight.className}>
-      {/* Filter Tabs */}
-      <div className="flex gap-2 mb-6">
-        {(['all', 'unread', 'read'] as const).map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setFilter(tab)}
-            className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
-              filter === tab
-                ? 'bg-black text-white shadow-lg'
-                : 'bg-white text-gray-600 hover:text-black border border-gray-200 hover:border-gray-300'
-            }`}
-          >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
-            {tab === 'unread' && contacts.filter((c) => c.status === 'unread').length > 0 && (
-              <span className={`ml-2 text-xs px-2 py-0.5 rounded-full ${
-                filter === tab ? 'bg-white text-black' : 'bg-red-100 text-red-600'
-              }`}>
-                {contacts.filter((c) => c.status === 'unread').length}
-              </span>
-            )}
-          </button>
-        ))}
+    <main className={`${inter.className} min-h-screen bg-[#080808] text-white overflow-x-hidden`}>
+
+      {/* ── Background Effects ── */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        {/* Grid */}
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+          }}
+        />
+        {/* Gold top glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[400px] bg-[#D4AF37]/8 blur-[120px] rounded-full" />
+        {/* Bottom glow */}
+        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-white/3 blur-[120px] rounded-full" />
       </div>
 
-      {/* Messages List */}
-      <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
-        {filteredContacts.length === 0 ? (
-          <div className="text-center py-16 text-gray-500">
-            <Mail size={48} className="mx-auto mb-4 text-gray-300" />
-            <p className="font-medium text-gray-900">No messages found</p>
-            <p className="text-sm text-gray-500 mt-1">Messages will appear here when received</p>
+      <div className="relative max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-20 md:py-28">
+
+        {/* ── HERO LOGO BLOCK ── */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="flex flex-col items-center text-center mb-20 md:mb-28"
+        >
+          {/* Logo */}
+          <Link href="/" className="group inline-block mb-8">
+            <div className="relative w-[280px] h-[120px] md:w-[400px] md:h-[170px]">
+              <Image
+                src="/BotmartzNewLogo.png"
+                alt="Botmartz AI Solutions"
+                fill
+                sizes="(max-width: 768px) 280px, 400px"
+                className="object-contain group-hover:drop-shadow-[0_0_40px_rgba(212,175,55,0.5)] transition-all duration-700"
+                priority
+              />
+            </div>
+          </Link>
+
+          {/* Badge */}
+          <div
+            className={`${mono.className} inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/8 backdrop-blur-sm mb-6`}
+          >
+            <Terminal className="w-3.5 h-3.5 text-[#D4AF37]" />
+            <span className="text-[11px] text-[#D4AF37] tracking-widest uppercase">
+              GenAI · Web · Cloud
+            </span>
           </div>
-        ) : (
-          <div className="divide-y divide-gray-100">
-            {filteredContacts.map((contact) => (
-              <div
-                key={contact.id}
-                className={`p-6 hover:bg-gray-50 transition-all duration-200 cursor-pointer ${
-                  contact.status === 'unread' ? 'bg-blue-50/30' : ''
-                }`}
-                onClick={() => {
-                  setSelectedContact(contact);
-                  if (contact.status === 'unread') {
-                    markAsRead(contact.id);
-                  }
-                }}
-              >
-                <div className="flex items-start gap-4">
-                  {/* Avatar */}
-                  <div className={`flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br ${
-                    contact.status === 'unread' 
-                      ? 'from-blue-500 to-blue-600' 
-                      : 'from-gray-200 to-gray-300'
-                  } flex items-center justify-center shadow-sm`}>
-                    {contact.status === 'unread' ? (
-                      <Mail size={20} className="text-white" />
-                    ) : (
-                      <MailOpen size={20} className="text-gray-600" />
-                    )}
-                  </div>
 
-                  {/* Content */}
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1] mb-4">
+            Let&apos;s Build{" "}
+            <span className="bg-gradient-to-r from-[#D4AF37] via-yellow-200 to-[#D4AF37] bg-clip-text text-transparent">
+              Something
+            </span>{" "}
+            Great
+          </h1>
+          <p className="text-gray-400 text-lg md:text-xl max-w-2xl leading-relaxed font-light">
+            Engineering intelligent systems and scalable digital infrastructure for the modern enterprise.
+          </p>
+        </motion.div>
+
+        {/* ── MAIN GRID: Left info + Right form ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-start">
+
+          {/* ── LEFT: Contact Info ── */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            className="space-y-6"
+          >
+            {/* Section Label */}
+            <div>
+              <p className={`${mono.className} text-xs text-[#D4AF37] uppercase tracking-[0.2em] mb-2`}>
+                Get In Touch
+              </p>
+              <h2 className="text-2xl md:text-3xl font-bold text-white">
+                We&apos;d love to hear from you
+              </h2>
+              <p className="text-gray-400 mt-2 font-light">
+                Reach out through any channel below or fill in the form.
+              </p>
+            </div>
+
+            {/* Contact Cards */}
+            <div className="space-y-4">
+              {CONTACT_INFO.map((item, i) => (
+                <motion.a
+                  key={item.label}
+                  href={item.href}
+                  target={item.href.startsWith("http") ? "_blank" : undefined}
+                  rel="noopener noreferrer"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
+                  className="group flex items-center gap-5 p-5 rounded-2xl border border-white/8 bg-white/3 hover:border-[#D4AF37]/40 hover:bg-[#D4AF37]/5 backdrop-blur-md transition-all duration-400"
+                >
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#D4AF37]/10 border border-[#D4AF37]/20 flex items-center justify-center group-hover:bg-[#D4AF37]/20 transition-all duration-300">
+                    <item.icon className="w-5 h-5 text-[#D4AF37]" />
+                  </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between mb-2">
-                      <div>
-                        <h3 className={`font-semibold text-gray-900 ${contact.status === 'unread' ? 'font-bold' : ''}`}>
-                          {contact.name}
-                        </h3>
-                        <p className="text-sm text-gray-500">{contact.email}</p>
-                      </div>
-                      <div className="flex items-center gap-3 ml-4">
-                        <span className="text-xs text-gray-500 flex items-center gap-1.5 bg-gray-100 px-2.5 py-1 rounded-full">
-                          <Clock size={12} />
-                          {formatDate(contact.createdAt)}
-                        </span>
-                        {contact.status === 'unread' && (
-                          <span className="w-2.5 h-2.5 bg-blue-500 rounded-full shadow-lg shadow-blue-500/50" />
-                        )}
-                      </div>
-                    </div>
-                    <p className="text-sm text-gray-600 line-clamp-2">{contact.message}</p>
+                    <p className={`${mono.className} text-[10px] text-gray-500 uppercase tracking-wider mb-0.5`}>
+                      {item.label}
+                    </p>
+                    <p className="text-white font-semibold text-sm sm:text-base truncate group-hover:text-[#D4AF37] transition-colors">
+                      {item.value}
+                    </p>
+                    <p className="text-gray-500 text-xs mt-0.5">{item.description}</p>
                   </div>
+                  <ArrowUpRight className="w-4 h-4 text-gray-600 group-hover:text-[#D4AF37] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300 flex-shrink-0" />
+                </motion.a>
+              ))}
+            </div>
 
-                  {/* Actions */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      deleteContact(contact.id);
-                    }}
-                    className="flex-shrink-0 p-2.5 hover:bg-red-50 rounded-lg transition-colors group"
+            {/* Divider */}
+            <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+            {/* Social Links */}
+            <div>
+              <p className={`${mono.className} text-[10px] text-gray-500 uppercase tracking-[0.2em] mb-4`}>
+                Follow Us
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {SOCIAL_LINKS.map((social, i) => (
+                  <motion.a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.6 + i * 0.08, duration: 0.4 }}
+                    aria-label={social.label}
+                    className="group flex items-center gap-2.5 px-4 py-2.5 rounded-xl border border-white/10 bg-white/4 hover:scale-105 active:scale-95 transition-all duration-300 hover:border-white/25"
+                    style={{ "--social-color": social.color } as React.CSSProperties}
                   >
-                    <Trash2 size={16} className="text-gray-400 group-hover:text-red-500" />
-                  </button>
+                    <social.icon
+                      className="w-4 h-4 text-gray-400 group-hover:text-white transition-colors"
+                    />
+                    <span className="text-xs text-gray-400 group-hover:text-white transition-colors font-medium">
+                      {social.label}
+                    </span>
+                  </motion.a>
+                ))}
+              </div>
+            </div>
+
+            {/* Map Embed Preview */}
+            <motion.a
+              href="https://maps.app.goo.gl/W4XioP5ev2zZnU1u6"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9, duration: 0.5 }}
+              className="group block relative rounded-2xl border border-white/8 overflow-hidden hover:border-[#D4AF37]/40 transition-all duration-400"
+            >
+              <div className="relative h-44 bg-gradient-to-br from-[#1a1a1a] to-[#111]">
+                {/* Map placeholder with dots pattern */}
+                <div
+                  className="absolute inset-0 opacity-20"
+                  style={{
+                    backgroundImage: "radial-gradient(circle, #D4AF37 1px, transparent 1px)",
+                    backgroundSize: "24px 24px",
+                  }}
+                />
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center animate-pulse">
+                    <MapPin className="w-5 h-5 text-[#D4AF37]" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-white font-semibold text-sm">Indore, Madhya Pradesh</p>
+                    <p className="text-gray-500 text-xs">India</p>
+                  </div>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute bottom-4 right-4 flex items-center gap-1.5 bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-lg px-3 py-1.5 group-hover:bg-[#D4AF37]/20 transition-all">
+                  <span className="text-[10px] text-[#D4AF37] font-medium">Open Maps</span>
+                  <ArrowUpRight className="w-3 h-3 text-[#D4AF37]" />
                 </div>
               </div>
-            ))}
-          </div>
-        )}
-      </div>
+            </motion.a>
+          </motion.div>
 
-      {/* Detail Modal */}
-      {selectedContact && (
-        <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedContact(null)}
-        >
-          <div
-            className="bg-white rounded-2xl p-8 max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
+          {/* ── RIGHT: Contact Form ── */}
+          <motion.div
+            ref={formRef}
+            initial={{ opacity: 0, x: 30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
           >
-            {/* Header */}
-            <div className="flex items-start justify-between mb-6 pb-6 border-b border-gray-200">
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">{selectedContact.name}</h2>
-                <a 
-                  href={`mailto:${selectedContact.email}`} 
-                  className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2 group"
+            <div className="relative rounded-3xl border border-white/10 bg-white/3 backdrop-blur-xl p-8 md:p-10 shadow-[0_0_80px_rgba(212,175,55,0.06)]">
+
+              {/* Top glow accent */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-[#D4AF37]/60 to-transparent" />
+
+              {status === "success" ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex flex-col items-center justify-center gap-5 py-16 text-center"
                 >
-                  {selectedContact.email}
-                  <ExternalLink size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </a>
-                <p className="text-sm text-gray-500 mt-2 flex items-center gap-1.5">
-                  <Clock size={14} />
-                  {formatDate(selectedContact.createdAt)}
-                </p>
-              </div>
-              <button
-                onClick={() => setSelectedContact(null)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <X size={20} className="text-gray-500" />
-              </button>
+                  <div className="w-20 h-20 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center">
+                    <CheckCircle className="w-10 h-10 text-green-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold mb-2">Message Sent!</h3>
+                    <p className="text-gray-400 font-light">
+                      Thanks for reaching out. Our team will get back to you within 24 hours.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setStatus("idle")}
+                    className="mt-2 px-8 py-3 border border-[#D4AF37]/40 text-[#D4AF37] rounded-xl text-sm font-semibold hover:bg-[#D4AF37]/10 transition-all duration-300"
+                  >
+                    Send Another Message
+                  </button>
+                </motion.div>
+              ) : (
+                <>
+                  <div className="mb-8">
+                    <p className={`${mono.className} text-[10px] text-[#D4AF37] uppercase tracking-[0.2em] mb-2`}>
+                      Start a Conversation
+                    </p>
+                    <h2 className="text-2xl font-bold text-white">Send a Message</h2>
+                    <p className="text-gray-400 text-sm mt-1 font-light">
+                      Tell us about your project and we&apos;ll get back to you shortly.
+                    </p>
+                  </div>
+
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    {/* Name + Company row */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div>
+                        <label className={`${mono.className} block text-[10px] text-gray-500 uppercase tracking-wider mb-2`}>
+                          Full Name *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={form.name}
+                          onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                          placeholder="John Doe"
+                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#D4AF37]/50 focus:bg-[#D4AF37]/5 transition-all duration-300"
+                        />
+                      </div>
+                      <div>
+                        <label className={`${mono.className} block text-[10px] text-gray-500 uppercase tracking-wider mb-2`}>
+                          Company
+                        </label>
+                        <input
+                          type="text"
+                          value={form.company}
+                          onChange={(e) => setForm((f) => ({ ...f, company: e.target.value }))}
+                          placeholder="Acme Inc. (optional)"
+                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#D4AF37]/50 focus:bg-[#D4AF37]/5 transition-all duration-300"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Email */}
+                    <div>
+                      <label className={`${mono.className} block text-[10px] text-gray-500 uppercase tracking-wider mb-2`}>
+                        Email Address *
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={form.email}
+                        onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                        placeholder="you@company.com"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#D4AF37]/50 focus:bg-[#D4AF37]/5 transition-all duration-300"
+                      />
+                    </div>
+
+                    {/* Message */}
+                    <div>
+                      <label className={`${mono.className} block text-[10px] text-gray-500 uppercase tracking-wider mb-2`}>
+                        Message *
+                      </label>
+                      <textarea
+                        required
+                        rows={6}
+                        value={form.message}
+                        onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
+                        placeholder="Tell us about your project, goals, or any questions you have…"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#D4AF37]/50 focus:bg-[#D4AF37]/5 transition-all duration-300 resize-none"
+                      />
+                    </div>
+
+                    {/* Error */}
+                    {status === "error" && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex items-center gap-2 text-red-400 text-sm"
+                      >
+                        <AlertCircle size={14} /> {error}
+                      </motion.p>
+                    )}
+
+                    {/* Submit */}
+                    <button
+                      type="submit"
+                      disabled={status === "loading"}
+                      className="group w-full relative overflow-hidden flex items-center justify-center gap-2.5 bg-[#D4AF37] text-black font-bold py-4 rounded-xl text-sm hover:bg-yellow-300 active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_30px_rgba(212,175,55,0.3)] hover:shadow-[0_0_50px_rgba(212,175,55,0.5)]"
+                    >
+                      {status === "loading" ? (
+                        <>
+                          <Loader2 size={16} className="animate-spin" />
+                          Sending…
+                        </>
+                      ) : (
+                        <>
+                          <Send size={16} />
+                          Send Message
+                          <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                        </>
+                      )}
+                    </button>
+
+                    <p className="text-center text-gray-600 text-xs">
+                      We typically respond within{" "}
+                      <span className="text-gray-400">24 hours</span> on business days.
+                    </p>
+                  </form>
+                </>
+              )}
             </div>
-            
-            {/* Message */}
-            <div className="mb-6">
-              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Message</h3>
-              <div className="bg-gray-50 rounded-xl p-5 border border-gray-200">
-                <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-                  {selectedContact.message}
-                </p>
+          </motion.div>
+        </div>
+
+        {/* ── BOTTOM QUICK LINKS ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1, duration: 0.6 }}
+          className="mt-20 md:mt-28 pt-10 border-t border-white/8"
+        >
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+            <Link href="/" className="group inline-block">
+              <div className="relative w-[150px] h-[60px]">
+                <Image
+                  src="/BotmartzNewLogo.png"
+                  alt="Botmartz AI Solutions"
+                  fill
+                  sizes="150px"
+                  className="object-contain object-left opacity-60 group-hover:opacity-100 transition-opacity duration-300"
+                />
               </div>
+            </Link>
+
+            <div className="flex flex-wrap items-center justify-center gap-6">
+              {[
+                { label: "Services", href: "/services" },
+                { label: "Work", href: "/work" },
+                { label: "About", href: "/about" },
+                { label: "Blog", href: "https://blog.botmartz.com/", external: true },
+              ].map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  target={link.external ? "_blank" : undefined}
+                  rel={link.external ? "noopener noreferrer" : undefined}
+                  className={`${mono.className} text-xs text-gray-500 hover:text-[#D4AF37] transition-colors tracking-wider uppercase`}
+                >
+                  {link.label}
+                </Link>
+              ))}
             </div>
 
-            {/* Actions */}
-            <div className="flex gap-3">
-              <button
-                onClick={() => window.location.href = `mailto:${selectedContact.email}`}
-                className="flex-1 bg-black text-white font-semibold py-3 rounded-xl hover:bg-gray-800 transition-colors"
-              >
-                Reply via Email
-              </button>
-              <button
-                onClick={() => setSelectedContact(null)}
-                className="px-6 bg-gray-100 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-200 transition-colors"
-              >
-                Close
-              </button>
-            </div>
+            <p className={`${mono.className} text-xs text-gray-600`}>
+              © {new Date().getFullYear()} Botmartz AI Solutions
+            </p>
           </div>
-        </div>
-      )}
-    </div>
+        </motion.div>
+
+      </div>
+    </main>
   );
 }

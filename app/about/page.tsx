@@ -11,7 +11,7 @@ import {
   useVelocity,
   useAnimationFrame,
 } from "framer-motion";
-import { ArrowUpRight, Cpu, Globe, Linkedin, Mail, Terminal , Sparkles } from "lucide-react";
+import { ArrowUpRight, Cpu, Globe, Instagram, Linkedin, Mail, Terminal , Sparkles } from "lucide-react";
 
 // --- DATA ---
 const DATA = {
@@ -701,12 +701,31 @@ const Footer = () => {
             <p className="text-lg md:text-2xl font-serif">{DATA.founder.phone}</p>
           </div>
           <div className="flex gap-3">
-            <MagneticButton className="w-12 h-12 md:w-14 md:h-14 border border-black rounded-full flex items-center justify-center hover:bg-black hover:text-[#D4AF37] transition-all">
+            <a
+              href="https://www.linkedin.com/in/soham-sharma/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-12 h-12 md:w-14 md:h-14 border border-black rounded-full flex items-center justify-center hover:bg-black hover:text-[#D4AF37] transition-all"
+              aria-label="LinkedIn"
+            >
               <Linkedin size={18} />
-            </MagneticButton>
-            <MagneticButton className="w-12 h-12 md:w-14 md:h-14 border border-black rounded-full flex items-center justify-center hover:bg-black hover:text-[#D4AF37] transition-all">
+            </a>
+            <a
+              href="https://www.instagram.com/botmartzai_solutions/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-12 h-12 md:w-14 md:h-14 border border-black rounded-full flex items-center justify-center hover:bg-black hover:text-[#D4AF37] transition-all"
+              aria-label="Instagram"
+            >
+              <Instagram size={18} />
+            </a>
+            <a
+              href={`mailto:${DATA.founder.email}`}
+              className="w-12 h-12 md:w-14 md:h-14 border border-black rounded-full flex items-center justify-center hover:bg-black hover:text-[#D4AF37] transition-all"
+              aria-label="Email"
+            >
               <Mail size={18} />
-            </MagneticButton>
+            </a>
           </div>
         </div>
 

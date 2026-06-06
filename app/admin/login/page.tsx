@@ -40,7 +40,7 @@ export default function AdminLogin() {
         <div className="flex justify-center mb-8">
           <div className="relative w-48 h-20">
             <Image
-              src="/Botmartz_silver.png"
+              src="/BotmartzNewLogo.png"
               alt="Botmartz Admin"
               fill
               className="object-contain"

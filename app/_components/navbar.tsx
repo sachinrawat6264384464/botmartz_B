@@ -102,7 +102,7 @@ export default function Navbar() {
           <Link href="/" className="relative flex items-center gap-3 cursor-pointer group z-10">
              <div className="relative h-8 w-8">
                <Image
-                 src="/botmartz_silver_bg_free.png"
+                 src="/BotmartznewBot.png"
                  alt="Botmartz"
                  fill
                  sizes="32px"

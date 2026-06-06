@@ -132,9 +132,9 @@ export default function HeroSection() {
                <div className="absolute inset-0 bg-[#F5C242]/20 blur-[80px] rounded-full" />
             </motion.div>
 
-            {/* 2. TEXT TITLE - White */}
+            {/* 2. TEXT TITLE */}
             <div className="relative -mt-2 md:-mt-8">
-              <motion.h1 
+              <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: isMobile ? 0.4 : 0.8, delay: isMobile ? 0.1 : 0.5, ease: "easeOut" }}
@@ -142,50 +142,57 @@ export default function HeroSection() {
               >
                 {mounted && !isMobile ? (
                   <ScrambleText text="BOTMARTZ" className="relative inline-block">
-                    {/* Reverted to white gradient */}
                     <span className="absolute inset-0 bg-gradient-to-b from-white via-white to-gray-200 bg-clip-text text-transparent blur-md" />
-                    <span className="relative bg-clip-text text-transparent bg-[linear-gradient(180deg,#ffffff_0%,#ffffff_45%,#a0a0a0_50%,#ffffff_95%,#ffffff_100%)]"
-                      style={{ textShadow: '0 0 80px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 0 10px #ffffff' }}
+                    <span
+                      className="relative bg-clip-text text-transparent bg-[linear-gradient(180deg,#ffffff_0%,#ffffff_45%,#a0a0a0_50%,#ffffff_95%,#ffffff_100%)]"
+                      style={{ textShadow: "0 0 80px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 0 10px #ffffff" }}
                     />
                   </ScrambleText>
                 ) : (
                   <span className="relative inline-block">
-                    {/* Reverted to white gradient */}
                     <span className="absolute inset-0 bg-gradient-to-b from-white via-white to-gray-200 bg-clip-text text-transparent blur-md">BOTMARTZ</span>
-                    <span className="relative bg-clip-text text-transparent bg-[linear-gradient(180deg,#ffffff_0%,#ffffff_45%,#a0a0a0_50%,#ffffff_95%,#ffffff_100%)]"
-                      style={{ textShadow: '0 0 80px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 0 10px #ffffff' }}>
+                    <span
+                      className="relative bg-clip-text text-transparent bg-[linear-gradient(180deg,#ffffff_0%,#ffffff_45%,#a0a0a0_50%,#ffffff_95%,#ffffff_100%)]"
+                      style={{ textShadow: "0 0 80px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 0 10px #ffffff" }}
+                    >
                       BOTMARTZ
                     </span>
                   </span>
                 )}
               </motion.h1>
-              
-              {/* BOTMARTZ and IT SOLUTIONS - White */}
-              <motion.div 
+
+              {/* BOTMARTZ + AI SOLUTIONS stacked */}
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: isMobile ? 0.4 : 0.8, delay: isMobile ? 0.2 : 0.6, ease: "easeOut" }}
                 className="relative mt-1 md:mt-2 flex flex-col items-center justify-center leading-[0.85] md:leading-[0.85]"
               >
-                {/* Line 1: BOTMARTZ - Reverted to white */}
-                <span className="block text-2xl sm:text-4xl md:text-[6rem] font-black tracking-[-0.02em] bg-gradient-to-b from-white via-gray-300 to-gray-500 bg-clip-text text-transparent"
-                  style={{ 
-                    WebkitTextStroke: isMobile ? "0.5px rgba(255,255,255,0.9)" : "1.5px rgba(255,255,255,0.9)", 
-                    textShadow: "0 0 30px rgba(255,255,255,0.5), 0 0 10px rgba(255,255,255,0.8)" 
-                  }}>
+                {/* Line 1: BOTMARTZ */}
+                <span
+                  className="block text-2xl sm:text-4xl md:text-[6rem] font-black tracking-[-0.02em] bg-gradient-to-b from-white via-gray-300 to-gray-500 bg-clip-text text-transparent"
+                  style={{
+                    WebkitTextStroke: isMobile ? "0.5px rgba(255,255,255,0.9)" : "1.5px rgba(255,255,255,0.9)",
+                    textShadow: "0 0 30px rgba(255,255,255,0.5), 0 0 10px rgba(255,255,255,0.8)",
+                  }}
+                >
                   BOTMARTZ
                 </span>
-                
-                {/* Line 2: IT SOLUTIONS - Reverted to white */}
-                <span className="block text-2xl sm:text-4xl md:text-[6rem] font-black tracking-[-0.02em] bg-gradient-to-b from-white via-gray-300 to-gray-500 bg-clip-text text-transparent"
-                  style={{ 
-                    WebkitTextStroke: isMobile ? "0.5px rgba(255,255,255,0.9)" : "1.5px rgba(255,255,255,0.9)", 
-                    textShadow: "0 0 30px rgba(255,255,255,0.5), 0 0 10px rgba(255,255,255,0.8)" 
-                  }}>
-                  IT SOLUTIONS
+
+                {/* Line 2: AI SOLUTIONS */}
+                <span
+                  className="block text-2xl sm:text-4xl md:text-[6rem] font-black tracking-[-0.02em] bg-gradient-to-b from-white via-gray-300 to-gray-500 bg-clip-text text-transparent"
+                  style={{
+                    WebkitTextStroke: isMobile ? "0.5px rgba(255,255,255,0.9)" : "1.5px rgba(255,255,255,0.9)",
+                    textShadow: "0 0 30px rgba(255,255,255,0.5), 0 0 10px rgba(255,255,255,0.8)",
+                  }}
+                >
+                  AI SOLUTIONS
                 </span>
               </motion.div>
             </div>
+
+
             
             {/* 3. DESCRIPTION & CTA - White */}
             <motion.div 

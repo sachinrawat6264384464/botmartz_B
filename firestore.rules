@@ -1,0 +1,59 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Helpers ───────────────────────────────────────────────────
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isSuperAdmin() {
+      return isSignedIn() &&
+        get(/databases/$(database)/documents/user_roles/$(request.auth.uid))
+          .data.isSuperAdmin == true;
+    }
+
+    // ── contacts ──────────────────────────────────────────────────
+    // Anyone can submit a contact form (create).
+    // Only super-admins can read, update, or delete contacts.
+    match /contacts/{docId} {
+      allow create: if true;
+      allow read, update, delete: if isSuperAdmin();
+    }
+
+    // ── user_roles ────────────────────────────────────────────────
+    // Any signed-in user can read their OWN role document
+    // (needed by AuthContext on login).
+    // Only super-admins can write role documents.
+    match /user_roles/{userId} {
+      allow read: if isSignedIn() && request.auth.uid == userId;
+      allow write: if isSuperAdmin();
+    }
+
+    // ── Deny everything else ──────────────────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

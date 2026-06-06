@@ -36,7 +36,7 @@ interface UserRoleDoc {
   createdAt?: any;
 }
 
-const ASSIGNABLE_MODULES = MODULES.filter((m) => m.id !== 'roles');
+const ASSIGNABLE_MODULES = MODULES; // all current modules are assignable
 
 export default function RoleManagementPage() {
   const { userRole: currentUserRole } = useAuth();

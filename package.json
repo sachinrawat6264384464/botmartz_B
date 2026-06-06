@@ -59,8 +59,10 @@
     "@types/nodemailer": "^7.0.11",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.0.8",
+    "firebase-admin": "^13.8.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
