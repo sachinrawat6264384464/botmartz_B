@@ -170,7 +170,7 @@ export default function HeroSection() {
               >
                 {/* Line 1: BOTMARTZ */}
                 <span
-                  className="block text-2xl sm:text-4xl md:text-[6rem] font-black tracking-[-0.02em] bg-gradient-to-b from-white via-gray-300 to-gray-500 bg-clip-text text-transparent"
+                  className="hidden md:block text-2xl sm:text-4xl md:text-[6rem] font-black tracking-[-0.02em] bg-gradient-to-b from-white via-gray-300 to-gray-500 bg-clip-text text-transparent"
                   style={{
                     WebkitTextStroke: isMobile ? "0.5px rgba(255,255,255,0.9)" : "1.5px rgba(255,255,255,0.9)",
                     textShadow: "0 0 30px rgba(255,255,255,0.5), 0 0 10px rgba(255,255,255,0.8)",
