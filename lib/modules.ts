@@ -1,8 +1,11 @@
-import { Home, Mail, LucideIcon } from 'lucide-react';
+import { Home, Mail, BookOpen, MessageSquare, Send, LucideIcon } from 'lucide-react';
 
 export type ModuleId =
   | 'dashboard'
-  | 'contacts';
+  | 'contacts'
+  | 'blogs'
+  | 'comments'
+  | 'newsletter';
 
 export interface AppModule {
   id: ModuleId;
@@ -18,11 +21,17 @@ export interface AppModule {
  */
 export const MODULES: AppModule[] = [
   { id: 'dashboard', label: 'Dashboard', href: '/admin',           icon: Home },
-  { id: 'contacts',  label: 'Messages',  href: '/admin/contacts',  icon: Mail, badge: true },
+  { id: 'blogs',     label: 'Blogs',     href: '/admin/Blogs',      icon: BookOpen },
+  { id: 'comments',  label: 'Comments',  href: '/admin/comments',   icon: MessageSquare },
+  { id: 'newsletter',label: 'Newsletter',href: '/admin/newsletter', icon: Send },
+  { id: 'contacts',  label: 'Contact Form', href: '/admin/contacts',icon: Mail, badge: true },
 ];
 
 /** Maps each admin route to its required module ID. */
 export const ROUTE_MODULE_MAP: Partial<Record<string, ModuleId>> = {
-  '/admin':           'dashboard',
-  '/admin/contacts':  'contacts',
+  '/admin':                     'dashboard',
+  '/admin/Blogs':               'blogs',
+  '/admin/comments':            'comments',
+  '/admin/newsletter':          'newsletter',
+  '/admin/contacts':            'contacts',
 };

@@ -30,9 +30,13 @@ const interTight = Inter_Tight({ subsets: ["latin"], weight: ["400", "500", "600
 
 interface Comment {
   id: string;
-  blogId: string;
-  authorName: string;
-  authorEmail: string;
+  blogId?: string;
+  postSlug?: string;
+  // Support both old admin-created schema and new public form schema
+  authorName?: string;
+  authorEmail?: string;
+  name?: string;
+  email?: string;
   content: string;
   status: "pending" | "approved" | "rejected";
   createdAt: any;
@@ -86,6 +90,11 @@ export default function CommentsAdminPage() {
   const getBlogSlug = (blogId: string) =>
     blogPosts.find((b) => b.id === blogId)?.slug || "";
 
+  // ── Normalizer helpers — support both old and new comment schemas
+  const getAuthorName = (c: Comment) => c.authorName || c.name || "Anonymous";
+  const getAuthorEmail = (c: Comment) => c.authorEmail || c.email || "";
+  const getBlogRef = (c: Comment) => c.blogId || c.postSlug || "";
+
   const formatDate = (ts: any) => {
     if (!ts) return "N/A";
     try {
@@ -125,12 +134,13 @@ export default function CommentsAdminPage() {
 
   const filtered = comments.filter((c) => {
     const matchStatus = statusFilter === "all" || c.status === statusFilter;
-    const title = getBlogTitle(c.blogId).toLowerCase();
+    const blogRef = getBlogRef(c);
+    const title = getBlogTitle(blogRef).toLowerCase();
     const q = searchQuery.toLowerCase();
-    const matchSearch =
-      c.authorName.toLowerCase().includes(q) ||
-      c.authorEmail.toLowerCase().includes(q) ||
-      c.content.toLowerCase().includes(q) ||
+    const matchSearch = !q ||
+      getAuthorName(c).toLowerCase().includes(q) ||
+      getAuthorEmail(c).toLowerCase().includes(q) ||
+      (c.content?.toLowerCase() || "").includes(q) ||
       title.includes(q);
     return matchStatus && matchSearch;
   });
@@ -162,8 +172,8 @@ export default function CommentsAdminPage() {
 
   const handleExportCSV = () => {
     const rows = filtered.map((c, i) => [
-      i + 1, c.authorName, c.authorEmail,
-      getBlogTitle(c.blogId), c.content.replace(/"/g, '""'),
+      i + 1, getAuthorName(c), getAuthorEmail(c),
+      getBlogTitle(getBlogRef(c)), (c.content || "").replace(/"/g, '""'),
       c.status, formatDate(c.createdAt),
     ]);
     const csv = [
@@ -342,22 +352,22 @@ export default function CommentsAdminPage() {
                       <td className="px-3 py-3">
                         <div className="flex items-center gap-2">
                           <div className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 text-[10px] font-bold shrink-0">
-                            {comment.authorName.charAt(0).toUpperCase()}
+                            {getAuthorName(comment).charAt(0).toUpperCase()}
                           </div>
                           <div>
-                            <div className="text-xs font-semibold text-gray-900">{comment.authorName}</div>
-                            <div className="text-[10px] text-gray-400">{comment.authorEmail}</div>
+                            <div className="text-xs font-semibold text-gray-900">{getAuthorName(comment)}</div>
+                            <div className="text-[10px] text-gray-400">{getAuthorEmail(comment)}</div>
                           </div>
                         </div>
                       </td>
                       <td className="px-3 py-3">
                         <a
-                          href={`https://blog.botmartz.com/${getBlogSlug(comment.blogId)}`}
+                          href={`/blog/${getBlogSlug(getBlogRef(comment))}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-xs text-gray-600 hover:text-gray-900 transition-colors max-w-[150px] truncate block"
                         >
-                          {getBlogTitle(comment.blogId)}
+                          {getBlogTitle(getBlogRef(comment))}
                         </a>
                       </td>
                       <td className="px-3 py-3">
@@ -482,8 +492,8 @@ export default function CommentsAdminPage() {
         >
           <p className="text-sm text-gray-500 mb-3">This action cannot be undone.</p>
           <div className="bg-gray-50 border border-gray-100 rounded-xl p-3">
-            <p className="text-sm font-semibold text-gray-900">{commentToDelete.authorName}</p>
-            <p className="text-xs text-gray-400 mb-1.5">{commentToDelete.authorEmail}</p>
+            <p className="text-sm font-semibold text-gray-900">{getAuthorName(commentToDelete)}</p>
+            <p className="text-xs text-gray-400 mb-1.5">{getAuthorEmail(commentToDelete)}</p>
             <p className="text-xs text-gray-500 line-clamp-3">{commentToDelete.content}</p>
           </div>
         </ConfirmModal>
@@ -496,11 +506,11 @@ export default function CommentsAdminPage() {
             <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-gray-700 text-sm font-bold shrink-0">
-                  {selectedComment.authorName.charAt(0).toUpperCase()}
+                  {getAuthorName(selectedComment).charAt(0).toUpperCase()}
                 </div>
                 <div>
                   <h3 className="text-sm font-semibold text-gray-900">Comment Detail</h3>
-                  <p className="text-xs text-gray-400">{selectedComment.authorEmail}</p>
+                  <p className="text-xs text-gray-400">{getAuthorEmail(selectedComment)}</p>
                 </div>
               </div>
               <button
@@ -514,11 +524,11 @@ export default function CommentsAdminPage() {
             <div className="p-5 overflow-y-auto space-y-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 font-bold text-base">
-                  {selectedComment.authorName.charAt(0).toUpperCase()}
+                  {getAuthorName(selectedComment).charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-900 text-sm">{selectedComment.authorName}</p>
-                  <p className="text-xs text-gray-500">{selectedComment.authorEmail}</p>
+                  <p className="font-semibold text-gray-900 text-sm">{getAuthorName(selectedComment)}</p>
+                  <p className="text-xs text-gray-500">{getAuthorEmail(selectedComment)}</p>
                   <div className="mt-1">{statusBadge(selectedComment.status)}</div>
                 </div>
               </div>
@@ -526,12 +536,12 @@ export default function CommentsAdminPage() {
               <div>
                 <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Blog Post</p>
                 <a
-                  href={`https://blog.botmartz.com/${getBlogSlug(selectedComment.blogId)}`}
+                  href={`/blog/${getBlogSlug(getBlogRef(selectedComment))}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1 text-xs text-blue-600 hover:underline font-medium"
                 >
-                  {getBlogTitle(selectedComment.blogId)}
+                  {getBlogTitle(getBlogRef(selectedComment))}
                   <ExternalLink size={10} />
                 </a>
               </div>

@@ -31,7 +31,10 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
 
     // Route permission check (skip login & unauthorized pages)
     if (user && userRole && !isLoginPage && pathname !== '/admin/unauthorized') {
-      const moduleId = ROUTE_MODULE_MAP[pathname];
+      const matchedKey = Object.keys(ROUTE_MODULE_MAP).find(
+        (key) => pathname === key || pathname.startsWith(key + '/')
+      );
+      const moduleId = matchedKey ? ROUTE_MODULE_MAP[matchedKey] : undefined;
       if (moduleId && !hasAccess(moduleId)) {
         router.replace('/admin/unauthorized');
       }

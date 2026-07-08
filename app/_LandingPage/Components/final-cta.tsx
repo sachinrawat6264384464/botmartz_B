@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export function FinalCTA() {
   const containerRef = useRef<HTMLElement>(null);
@@ -56,10 +57,13 @@ export function FinalCTA() {
           {/* CTA Button */}
           <div className="relative group">
             <div className="absolute inset-0 bg-[#D4AF37] blur-[30px] opacity-20 group-hover:opacity-40 transition-opacity duration-500 rounded-full" />
-            <button className="relative px-12 py-5 bg-white text-black font-black text-lg md:text-xl tracking-widest uppercase rounded-full hover:scale-105 hover:bg-[#D4AF37] transition-all duration-300 flex items-center gap-4">
+            <Link 
+              href="/contact" 
+              className="relative px-12 py-5 bg-white text-black font-black text-lg md:text-xl tracking-widest uppercase rounded-full hover:scale-105 hover:bg-[#D4AF37] transition-all duration-300 flex items-center gap-4 cursor-pointer text-center inline-flex"
+            >
               <span>Contact</span>
               <ArrowRight className="w-6 h-6" />
-            </button>
+            </Link>
           </div>
         </motion.div>
       </div>

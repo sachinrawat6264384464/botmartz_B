@@ -9,6 +9,7 @@ import Link from "next/link";
 const NAV_ITEMS = [
   { name: 'Services', path: '/services' },
   { name: 'Work', path: '/work' }, // Targeted redirect
+  { name: 'Blog', path: '/blog' },
   { name: 'Contact', path: '/contact' },
 ];
 
@@ -137,7 +138,7 @@ export default function Navbar() {
 
           {/* 3. CTA BUTTON - Desktop Only */}
           <div className="hidden md:flex items-center gap-6">
-             <MagneticButton className="group relative px-6 py-2.5 bg-[#D4AF37] text-black text-[11px] font-bold tracking-widest uppercase rounded-full overflow-hidden hover:shadow-[0_0_20px_rgba(212,175,55,0.5)] transition-shadow duration-300">
+             <MagneticButton href="/contact" className="group relative px-6 py-2.5 bg-[#D4AF37] text-black text-[11px] font-bold tracking-widest uppercase rounded-full overflow-hidden hover:shadow-[0_0_20px_rgba(212,175,55,0.5)] transition-shadow duration-300">
                 <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
                 <div className="relative flex items-center gap-2">
                     <span>Initialize</span>
@@ -233,13 +234,14 @@ export default function Navbar() {
 
               {/* Mobile CTA Buttons */}
               <div className="mt-auto p-6 space-y-4">
-                <button 
-                  onClick={closeMobileMenu}
-                  className="w-full py-3 bg-[#D4AF37] text-black text-sm font-bold tracking-widest uppercase rounded-full hover:shadow-[0_0_20px_rgba(212,175,55,0.5)] transition-shadow duration-300 flex items-center justify-center gap-2"
+                <Link 
+                  href="/contact" 
+                  onClick={closeMobileMenu} 
+                  className="block w-full py-3 bg-[#D4AF37] text-black text-sm font-bold tracking-widest uppercase rounded-full hover:shadow-[0_0_20px_rgba(212,175,55,0.5)] transition-shadow duration-300 flex items-center justify-center gap-2 cursor-pointer text-center"
                 >
                   <span>Initialize</span>
                   <ArrowRight className="w-4 h-4" />
-                </button>
+                </Link>
               </div>
             </motion.div>
           </>

@@ -46,11 +46,13 @@ export default function RoleManagementPage() {
 
   const [editingUser, setEditingUser] = useState<UserRoleDoc | null>(null);
   const [tempModules, setTempModules] = useState<ModuleId[]>([]);
+  const [tempIsSuperAdmin, setTempIsSuperAdmin] = useState(false);
   const [saving, setSaving] = useState(false);
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [newEmail, setNewEmail] = useState('');
   const [newUid, setNewUid] = useState('');
+  const [newRole, setNewRole] = useState<'superadmin' | 'admin' | 'user'>('user');
   const [addError, setAddError] = useState('');
   const [adding, setAdding] = useState(false);
 
@@ -79,6 +81,7 @@ export default function RoleManagementPage() {
   const openEditModal = (user: UserRoleDoc) => {
     setEditingUser(user);
     setTempModules([...user.modules]);
+    setTempIsSuperAdmin(user.isSuperAdmin);
   };
 
   const toggleModule = (id: ModuleId) => {
@@ -92,11 +95,12 @@ export default function RoleManagementPage() {
     setSaving(true);
     try {
       await updateDoc(doc(db, 'user_roles', editingUser.uid), {
-        modules: tempModules,
+        modules: tempIsSuperAdmin ? [] : tempModules,
+        isSuperAdmin: tempIsSuperAdmin,
         updatedAt: serverTimestamp(),
       });
       setUsers((prev) =>
-        prev.map((u) => u.uid === editingUser.uid ? { ...u, modules: tempModules } : u)
+        prev.map((u) => u.uid === editingUser.uid ? { ...u, modules: tempIsSuperAdmin ? [] : tempModules, isSuperAdmin: tempIsSuperAdmin } : u)
       );
       setEditingUser(null);
     } catch (err) {
@@ -118,17 +122,20 @@ export default function RoleManagementPage() {
     }
     setAdding(true);
     try {
+      const isSuperAdmin = newRole === 'superadmin';
+      const modules = newRole === 'admin' ? ['dashboard'] as ModuleId[] : [];
       await setDoc(doc(db, 'user_roles', newUid.trim()), {
         email: newEmail.trim(),
         displayName: '',
-        modules: [],
-        isSuperAdmin: false,
+        modules,
+        isSuperAdmin,
         createdAt: serverTimestamp(),
       });
       await fetchUsers();
       setShowAddModal(false);
       setNewEmail('');
       setNewUid('');
+      setNewRole('user');
     } catch {
       setAddError('Failed to add user. Check the UID and try again.');
     } finally {
@@ -140,6 +147,7 @@ export default function RoleManagementPage() {
     setShowAddModal(false);
     setNewEmail('');
     setNewUid('');
+    setNewRole('user');
     setAddError('');
   };
 
@@ -245,9 +253,13 @@ export default function RoleManagementPage() {
                         <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-yellow-50 text-yellow-700 border border-yellow-200">
                           <Zap size={10} /> Super Admin
                         </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">
+                      ) : user.modules.length > 0 ? (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-50 text-sky-700 border border-sky-200">
                           <Shield size={10} /> Admin
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-50 text-gray-500 border border-gray-200">
+                          <Users size={10} /> User
                         </span>
                       )}
                     </td>
@@ -255,7 +267,7 @@ export default function RoleManagementPage() {
                     <td className="px-5 py-4 text-right">
                       <button
                         onClick={() => openEditModal(user)}
-                        disabled={user.isSuperAdmin}
+                        disabled={user.email === currentUserRole?.email}
                         className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-gray-600 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                       >
                         <Edit size={13} />
@@ -287,36 +299,101 @@ export default function RoleManagementPage() {
               </button>
             </div>
 
-            <div className="p-5">
-              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-3">
-                Select Modules
-              </p>
-              <div className="space-y-0.5">
-                {ASSIGNABLE_MODULES.map((mod) => {
-                  const checked = tempModules.includes(mod.id);
-                  const Icon = mod.icon;
-                  return (
-                    <label
-                      key={mod.id}
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 cursor-pointer group transition-colors"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={checked}
-                        onChange={() => toggleModule(mod.id)}
-                        className="w-4 h-4 rounded border-gray-300 accent-gray-900"
-                      />
-                      <Icon
-                        size={16}
-                        className={`transition-colors ${checked ? 'text-gray-800' : 'text-gray-400 group-hover:text-gray-600'}`}
-                      />
-                      <span className={`text-sm font-medium transition-colors ${checked ? 'text-gray-900' : 'text-gray-500 group-hover:text-gray-700'}`}>
-                        {mod.label}
-                      </span>
-                    </label>
-                  );
-                })}
+            <div className="p-5 border-b border-gray-100">
+              <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Role</label>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setTempIsSuperAdmin(true);
+                  }}
+                  className={`flex-1 py-2 px-3 text-xs font-semibold rounded-xl border transition-all ${
+                    tempIsSuperAdmin
+                      ? "bg-yellow-500/10 border-yellow-500/30 text-yellow-600 font-bold"
+                      : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100"
+                  }`}
+                >
+                  Super Admin
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setTempIsSuperAdmin(false);
+                    if (tempModules.length === 0) {
+                      setTempModules(['dashboard']);
+                    }
+                  }}
+                  className={`flex-1 py-2 px-3 text-xs font-semibold rounded-xl border transition-all ${
+                    !tempIsSuperAdmin && tempModules.length > 0
+                      ? "bg-sky-500/10 border-sky-500/30 text-sky-600 font-bold"
+                      : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100"
+                  }`}
+                >
+                  Admin
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setTempIsSuperAdmin(false);
+                    setTempModules([]);
+                  }}
+                  className={`flex-1 py-2 px-3 text-xs font-semibold rounded-xl border transition-all ${
+                    !tempIsSuperAdmin && tempModules.length === 0
+                      ? "bg-gray-100 border-gray-300 text-gray-800 font-bold"
+                      : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100"
+                  }`}
+                >
+                  User
+                </button>
               </div>
+            </div>
+
+            <div className="p-5">
+              {tempIsSuperAdmin ? (
+                <div className="text-center py-6 px-4 bg-yellow-50/50 border border-yellow-100 rounded-xl">
+                  <Zap size={20} className="text-yellow-500 mx-auto mb-2" />
+                  <p className="text-xs font-medium text-yellow-800">Super Admins have full access</p>
+                  <p className="text-[10px] text-yellow-600/80 mt-0.5">They bypass all module-level checks automatically.</p>
+                </div>
+              ) : tempModules.length === 0 ? (
+                <div className="text-center py-6 px-4 bg-gray-50 border border-gray-100 rounded-xl">
+                  <Users size={20} className="text-gray-400 mx-auto mb-2" />
+                  <p className="text-xs font-medium text-gray-700">No admin permissions assigned</p>
+                  <p className="text-[10px] text-gray-400 mt-0.5">This user has a basic role with zero admin panel access.</p>
+                </div>
+              ) : (
+                <>
+                  <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-3">
+                    Select Modules
+                  </p>
+                  <div className="space-y-0.5">
+                    {ASSIGNABLE_MODULES.map((mod) => {
+                      const checked = tempModules.includes(mod.id);
+                      const Icon = mod.icon;
+                      return (
+                        <label
+                          key={mod.id}
+                          className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 cursor-pointer group transition-colors"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={checked}
+                            onChange={() => toggleModule(mod.id)}
+                            className="w-4 h-4 rounded border-gray-300 accent-gray-900"
+                          />
+                          <Icon
+                            size={16}
+                            className={`transition-colors ${checked ? 'text-gray-800' : 'text-gray-400 group-hover:text-gray-600'}`}
+                          />
+                          <span className={`text-sm font-medium transition-colors ${checked ? 'text-gray-900' : 'text-gray-500 group-hover:text-gray-700'}`}>
+                            {mod.label}
+                          </span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="flex gap-2 px-5 pb-5">
@@ -379,8 +456,47 @@ export default function RoleManagementPage() {
                 <p className="text-xs text-gray-400 mt-1.5">Find this in Firebase Console → Authentication → Users</p>
               </div>
 
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Role</label>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setNewRole('superadmin')}
+                    className={`flex-1 py-2 px-3 text-xs font-semibold rounded-xl border transition-all ${
+                      newRole === 'superadmin'
+                        ? "bg-yellow-500/10 border-yellow-500/30 text-yellow-600 font-bold"
+                        : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100"
+                    }`}
+                  >
+                    Super Admin
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setNewRole('admin')}
+                    className={`flex-1 py-2 px-3 text-xs font-semibold rounded-xl border transition-all ${
+                      newRole === 'admin'
+                        ? "bg-sky-500/10 border-sky-500/30 text-sky-600 font-bold"
+                        : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100"
+                    }`}
+                  >
+                    Admin
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setNewRole('user')}
+                    className={`flex-1 py-2 px-3 text-xs font-semibold rounded-xl border transition-all ${
+                      newRole === 'user'
+                        ? "bg-gray-100 border-gray-300 text-gray-800 font-bold"
+                        : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100"
+                    }`}
+                  >
+                    User
+                  </button>
+                </div>
+              </div>
+
               {addError && (
-                <p className="text-xs text-red-500 flex items-center gap-1.5">
+                <p className="text-xs text-red-500 flex items-center gap-1.5 mt-2">
                   <AlertCircle size={13} /> {addError}
                 </p>
               )}

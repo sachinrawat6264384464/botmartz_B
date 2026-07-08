@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -13,7 +13,9 @@ import {
   Globe,
   BookOpen,
   ArrowUpRight,
-  Terminal
+  Terminal,
+  Send,
+  Loader2
 } from "lucide-react";
 import { Inter_Tight, JetBrains_Mono } from 'next/font/google';
 
@@ -37,10 +39,9 @@ const FOOTER_LINKS = {
     { label: "Contact", href: "/contact" },
   ],
   services: [
-    { label: "AI Solutions", href: "/services#ai" },
-    { label: "Web Development", href: "/services#web" },
-    { label: "Cloud Architecture", href: "/services#cloud" },
-    { label: "Training Programs", href: "/services#training" },
+    { label: "AI Solutions", href: "/services/ai-solutions" },
+    { label: "Web Development", href: "/services/web-development" },
+    { label: "Training Programs", href: "https://classes.botmartz.com" },
   ],
   legal: [
     { label: "Privacy Policy", href: "/privacy" },
@@ -51,7 +52,7 @@ const FOOTER_LINKS = {
 
 const SOCIAL_LINKS = [
   { icon: Linkedin, href: "https://www.linkedin.com/in/soham-sharma/", label: "LinkedIn" },
-  { icon: BookOpen, href: "https://blog.botmartz.com/", label: "Blog" },
+  { icon: BookOpen, href: "/blog", label: "Blog" },
   { icon: Instagram, href: "https://www.instagram.com/botmartzai_solutions/", label: "AI Solutions" },
   { icon: Instagram, href: "https://www.instagram.com/botmartz_academy/", label: "Academy" },
   { icon: Globe, href: "https://maps.app.goo.gl/W4XioP5ev2zZnU1u6", label: "Location" },
@@ -61,14 +62,14 @@ const CONTACT_INFO = [
   { 
     icon: Mail, 
     label: "Email", 
-    value: "sohamnsharma@gmail.com",
-    href: "mailto:sohamnsharma@gmail.com" 
+    value: "soham@botmartz.com",
+    href: "mailto:soham@botmartz.com" 
   },
   { 
     icon: Phone, 
     label: "Phone", 
-    value: "+91-9730084626",
-    href: "tel:+919730084626" 
+    value: "+91 94073 28842",
+    href: "tel:+919407328842" 
   },
   { 
     icon: MapPin, 
@@ -79,6 +80,40 @@ const CONTACT_INFO = [
 ];
 
 export function Footer() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setStatus("loading");
+    setErrorMsg("");
+
+    try {
+      const res = await fetch("/api/newsletter/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setStatus("success");
+        setEmail("");
+      } else {
+        setStatus("error");
+        setErrorMsg(data.error || "Subscription failed. Please try again.");
+      }
+    } catch (err) {
+      console.error("[newsletter/subscribe] error:", err);
+      setStatus("error");
+      setErrorMsg("Network error. Please try again later.");
+    }
+  };
+
   return (
     <footer className="relative bg-[#050505] border-t border-white/5">
       {/* Top Gradient Glow */}
@@ -111,12 +146,69 @@ export function Footer() {
                 Engineering intelligent systems and scalable digital infrastructure for the modern enterprise.
               </p>
               
-              {/* Terminal Badge */}
-              <div className={`${mono.className} inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/5 backdrop-blur-sm`}>
-                <Terminal className="w-3.5 h-3.5 text-[#D4AF37]" />
-                <span className="text-[11px] text-[#D4AF37] tracking-wider uppercase">
-                  GenAI Architect
-                </span>
+              {/* Terminal Badge / Phone CTA */}
+              <div className="flex flex-wrap items-center gap-3">
+                <Link 
+                  href="tel:+919407328842"
+                  className={`${mono.className} inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/5 backdrop-blur-sm hover:border-[#D4AF37]/60 hover:bg-[#D4AF37]/10 transition-all`}
+                >
+                  <Terminal className="w-3.5 h-3.5 text-[#D4AF37]" />
+                  <span className="text-[11px] text-[#D4AF37] tracking-wider uppercase">
+                    +91 94073 28842
+                  </span>
+                </Link>
+              </div>
+
+              {/* Newsletter Subscription */}
+              <div className="mt-8 max-w-sm">
+                <h4 className={`${mono.className} text-[10px] text-gray-500 uppercase tracking-[0.2em] mb-3`}>
+                  Subscribe to Transmissions
+                </h4>
+                
+                {status === "success" ? (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="p-4 rounded-xl border border-green-500/20 bg-green-500/5 text-green-400 text-xs font-light leading-relaxed"
+                  >
+                    🚀 Transmission secured! Thank you for subscribing.
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleSubscribe} className="relative flex gap-2">
+                    <input
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="you@company.com"
+                      className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-[#D4AF37]/50 focus:bg-[#D4AF37]/5 transition-all duration-300"
+                    />
+                    <button
+                      type="submit"
+                      disabled={status === "loading"}
+                      className="px-4 py-2.5 bg-[#D4AF37] text-black font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-yellow-300 active:scale-[0.97] transition-all duration-300 disabled:opacity-50 flex items-center gap-1.5 shadow-[0_0_15px_rgba(212,175,55,0.2)]"
+                    >
+                      {status === "loading" ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      ) : (
+                        <>
+                          <span>Join</span>
+                          <Send className="w-3 h-3" />
+                        </>
+                      )}
+                    </button>
+                  </form>
+                )}
+                
+                {status === "error" && (
+                  <motion.p 
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-400 text-[11px] mt-2 font-light"
+                  >
+                    ⚠️ {errorMsg}
+                  </motion.p>
+                )}
               </div>
             </div>
 

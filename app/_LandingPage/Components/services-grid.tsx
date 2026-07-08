@@ -1,6 +1,7 @@
 "use client";
 import React, { useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
+import Link from "next/link";
 import {
   Zap, Cpu, Globe, Layers, Code2, Database, Shield, Terminal, ArrowUpRight,
 } from "lucide-react";
@@ -34,6 +35,7 @@ const SERVICES = [
     badge: "Most Requested",
     colSpan: 2,
     accent: true,
+    href: "/services/ai-solutions",
   },
   {
     id: "02",
@@ -42,6 +44,7 @@ const SERVICES = [
     desc: "Production-grade agents, fine-tuned models, and RAG pipelines trained on your data — not generic prompts.",
     icon: <Cpu />,
     colSpan: 1,
+    href: "/services/ai-solutions",
   },
   {
     id: "03",
@@ -51,16 +54,19 @@ const SERVICES = [
     icon: <Globe />,
     colSpan: 1,
     rowSpan: 2,
+    href: "/services/web-development",
   },
   {
     id: "04",
-    title: "SaaS Infrastructure",
-    headline: "Multi-tenant. Battle-tested. Ready for your Series B.",
-    desc: "Cloud architecture designed to absorb 10× traffic spikes, support multiple client tiers, and never hand your ops team a pager incident at 2am.",
-    icon: <Layers />,
-    badge: "Enterprise",
+    title: "AI Training Programs",
+    headline: "Generative AI Engineering & Upskilling.",
+    desc: "Our GenAI Bootcamps, courses, and custom B2B training modules are designed to bridge the developer-to-AI-engineer gap.",
+    icon: <Terminal />,
+    badge: "Bootcamp",
     colSpan: 2,
     accent: true,
+    href: "https://classes.botmartz.com",
+    external: true,
   },
   {
     id: "05",
@@ -69,6 +75,7 @@ const SERVICES = [
     desc: "Custom middleware that connects your CRM, ERP, payment rails, and 500+ third-party platforms into a single coherent data layer.",
     icon: <Code2 />,
     colSpan: 1,
+    href: "/services/web-development",
   },
   {
     id: "06",
@@ -77,6 +84,7 @@ const SERVICES = [
     desc: "Real-time dashboards, ML inference pipelines, and event tracking — purpose-built so decision-makers get the signal, not the noise.",
     icon: <Database />,
     colSpan: 1,
+    href: "/services/ai-solutions",
   },
   {
     id: "07",
@@ -87,6 +95,7 @@ const SERVICES = [
     badge: "SOC 2",
     colSpan: 2,
     accent: true,
+    href: "/services/web-development",
   },
   {
     id: "08",
@@ -95,6 +104,7 @@ const SERVICES = [
     desc: "Fully automated CI/CD pipelines, infrastructure-as-code, and zero-downtime deployments backed by observability and on-call runbooks.",
     icon: <Terminal />,
     colSpan: 1,
+    href: "/services/web-development",
   },
 ];
 
@@ -182,10 +192,13 @@ export function ServicesGrid() {
             Not sure which services fit your stage?{" "}
             <span className="text-white font-medium">We scope it in a free 30-min call.</span>
           </p>
-          <button className="group flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#C9A84C]/30 bg-[#C9A84C]/5 hover:bg-[#C9A84C]/10 hover:border-[#C9A84C]/60 transition-all duration-300 text-[#C9A84C] text-sm font-medium">
+          <Link 
+            href="/contact" 
+            className="group flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#C9A84C]/30 bg-[#C9A84C]/5 hover:bg-[#C9A84C]/10 hover:border-[#C9A84C]/60 transition-all duration-300 text-[#C9A84C] text-sm font-medium cursor-pointer text-center"
+          >
             <span className={mono.className}>Book a Scoping Call</span>
             <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
-          </button>
+          </Link>
         </motion.div>
 
       </div>
@@ -198,16 +211,15 @@ function BentoCard({ service, index }: { service: any; index: number }) {
   const colClass = service.colSpan === 2 ? "col-span-2" : "col-span-1";
   const rowClass = service.rowSpan === 2 ? "row-span-2" : "";
 
-  return (
+  const cardContent = (
     <motion.div
       initial={{ opacity: 0, x: 50 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: "-20% 0px -20% 0px" }}
       transition={{ duration: 0.6, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
-      className={`group relative overflow-hidden rounded-xl border transition-all duration-500 cursor-pointer
+      className={`group relative overflow-hidden rounded-xl border transition-all duration-500 cursor-pointer h-full
         ${service.accent ? "border-[#C9A84C]/20 bg-white/2" : "border-white/5 bg-white/2"}
-        hover:border-[#C9A84C]/40 hover:bg-white/4 hover:shadow-[0_0_40px_-15px_rgba(201,168,76,0.2)]
-        ${colClass} ${rowClass}`}
+        hover:border-[#C9A84C]/40 hover:bg-white/4 hover:shadow-[0_0_40px_-15px_rgba(201,168,76,0.2)]`}
     >
       {/* Hover radial glow */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-[radial-gradient(ellipse_at_top_left,rgba(201,168,76,0.04),transparent_60%)]" />
@@ -268,20 +280,35 @@ function BentoCard({ service, index }: { service: any; index: number }) {
       <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[#C9A84C]/50 opacity-0 group-hover:opacity-100 transition-all duration-500" />
     </motion.div>
   );
+
+  if (service.external) {
+    return (
+      <a href={service.href} target="_blank" rel="noopener noreferrer" className={`${colClass} ${rowClass} block relative group`}>
+        {cardContent}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={service.href || "/services"} className={`${colClass} ${rowClass} block relative group`}>
+      {cardContent}
+    </Link>
+  );
 }
 
 /* ─── Mobile Card ────────────────────────────────────────────────────────── */
 function MobileCard({ service, index }: { service: any; index: number }) {
   const isFeatured = service.colSpan === 2;
+  const colClass = isFeatured ? "col-span-2" : "col-span-1";
 
-  return (
+  const cardContent = (
     <motion.div
       initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay: index * 0.04, ease: [0.22, 1, 0.36, 1] }}
-      className={`relative overflow-hidden rounded-xl border bg-white/[0.02]
-        ${isFeatured ? "col-span-2 border-[#C9A84C]/20" : "col-span-1 border-white/5"}`}
+      className={`relative overflow-hidden rounded-xl border bg-white/[0.02] h-full
+        ${isFeatured ? "border-[#C9A84C]/20" : "border-white/5"}`}
     >
       {isFeatured && (
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent" />
@@ -323,6 +350,20 @@ function MobileCard({ service, index }: { service: any; index: number }) {
         </div>
       </div>
     </motion.div>
+  );
+
+  if (service.external) {
+    return (
+      <a href={service.href} target="_blank" rel="noopener noreferrer" className={`${colClass} block`}>
+        {cardContent}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={service.href || "/services"} className={`${colClass} block`}>
+      {cardContent}
+    </Link>
   );
 }
 

@@ -20,7 +20,7 @@ import { getFirestore, FieldValue } from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
 import * as dotenv from "dotenv";
 
-dotenv.config({ path: ".env.local" });
+dotenv.config({ path: ".env" });
 
 // ── Config ────────────────────────────────────────────────────────
 const ADMIN_EMAIL    = "Botmartzadmin@gmail.com";

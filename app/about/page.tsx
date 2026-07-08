@@ -20,8 +20,8 @@ const DATA = {
     role: "GENAI_ARCHITECT", 
     location: "INDORE_IN",
     image: "/Sohamsharma2.jpeg",
-    email: "sohamnsharma@gmail.com",
-    phone: "+91-9730084626"
+    email: "soham@botmartz.com",
+    phone: "+91 94073 28842"
   },
   experience: [
     { company: "INTELLIPAAS", role: "AI Product Architect", year: "2025", desc: "RAG Systems & Agentic Workflows" },

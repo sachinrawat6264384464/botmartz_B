@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useState } from "react";
+import Link from "next/link";
 import { 
   motion, 
   useScroll, 
@@ -83,12 +84,15 @@ const Hero = () => {
         </p>
 
         <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
-          <button className="group relative px-8 py-4 bg-[#D4AF37] text-black font-bold uppercase tracking-widest overflow-hidden hover:scale-105 transition-transform duration-300">
+          <Link 
+            href="/contact" 
+            className="group relative px-8 py-4 bg-[#D4AF37] text-black font-bold uppercase tracking-widest overflow-hidden hover:scale-105 transition-transform duration-300 cursor-pointer block text-center"
+          >
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             <span className="relative flex items-center gap-2">
               Initialize Project <ArrowRight className="w-4 h-4" />
             </span>
-          </button>
+          </Link>
           
           <button className="flex items-center gap-3 text-white hover:text-[#D4AF37] transition-colors group">
             <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:border-[#D4AF37] transition-colors">
@@ -105,24 +109,28 @@ const Hero = () => {
 // 2. IMMERSIVE SERVICES GRID
 const SERVICES = [
   { 
-    id: "01", title: "Intelligent Automation", category: "Efficiency", 
-    desc: "We replace manual bottlenecks with autonomous code workflows.", 
-    icon: <Zap />, image: IMAGES.services.automation, col: 2 
+    id: "01", title: "AI Training Programs", category: "Education", 
+    desc: "Generative AI Engineering bootcamps and corporate upskilling programs.", 
+    icon: <Terminal />, image: IMAGES.services.automation, col: 2,
+    href: "https://classes.botmartz.com", external: true
   },
   { 
     id: "02", title: "Neural AI Agents", category: "Intelligence", 
-    desc: "Custom LLMs trained on your proprietary data.", 
-    icon: <Cpu />, image: IMAGES.services.ai, col: 1 
+    desc: "Custom LLMs and agentic workflows trained on proprietary data.", 
+    icon: <Cpu />, image: IMAGES.services.ai, col: 1,
+    href: "/services/ai-solutions"
   },
   { 
     id: "03", title: "Global Edge Web", category: "Infrastructure", 
-    desc: "Next.js sites deployed to 140+ global edge locations.", 
-    icon: <Globe />, image: IMAGES.services.web, col: 1 
+    desc: "Next.js sites deployed globally for sub-800ms loading speeds.", 
+    icon: <Globe />, image: IMAGES.services.web, col: 1,
+    href: "/services/web-development"
   },
   { 
-    id: "04", title: "Ironclad Security", category: "Protection", 
-    desc: "Zero-trust architecture and real-time threat monitoring.", 
-    icon: <Shield />, image: IMAGES.services.security, col: 2 
+    id: "04", title: "Intelligent Automation", category: "Efficiency", 
+    desc: "Replacing manual business operations with robust autonomous workflows.", 
+    icon: <Zap />, image: IMAGES.services.security, col: 2,
+    href: "/services/ai-solutions"
   },
 ];
 
@@ -141,51 +149,68 @@ const VisualServices = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[350px]">
-        {SERVICES.map((service, i) => (
-          <motion.div 
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-            className={`relative group overflow-hidden rounded-2xl border border-white/10 ${service.col === 2 ? 'md:col-span-2' : ''}`}
-          >
-            {/* Background Image */}
-            <Image 
-              src={service.image} 
-              alt={service.title} 
-              fill 
-              className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-40 group-hover:opacity-60"
-            />
-            
-            {/* Dark Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+        {SERVICES.map((service, i) => {
+          const cardContent = (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              className="relative group overflow-hidden rounded-2xl border border-white/10 h-full cursor-pointer"
+            >
+              {/* Background Image */}
+              <Image 
+                src={service.image} 
+                alt={service.title} 
+                fill 
+                className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-40 group-hover:opacity-60"
+              />
+              
+              {/* Dark Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
 
-            {/* Content */}
-            <div className="absolute inset-0 p-8 flex flex-col justify-end">
-              <div className="mb-auto flex justify-between items-start">
-                <div className="w-12 h-12 rounded-lg bg-white/10 backdrop-blur-md flex items-center justify-center text-[#D4AF37] border border-white/10">
-                  {React.cloneElement(service.icon, { size: 24 })}
+              {/* Content */}
+              <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                <div className="mb-auto flex justify-between items-start">
+                  <div className="w-12 h-12 rounded-lg bg-white/10 backdrop-blur-md flex items-center justify-center text-[#D4AF37] border border-white/10">
+                    {React.cloneElement(service.icon, { size: 24 })}
+                  </div>
+                  <span className="font-mono text-xs text-white/40 border border-white/10 px-2 py-1 rounded">
+                    {service.id}
+                  </span>
                 </div>
-                <span className="font-mono text-xs text-white/40 border border-white/10 px-2 py-1 rounded">
-                  {service.id}
-                </span>
+
+                <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                  <span className="text-[#D4AF37] font-mono text-xs uppercase tracking-widest mb-2 block">
+                    {service.category}
+                  </span>
+                  <h3 className="text-3xl font-bold text-white mb-2">{service.title}</h3>
+                  <p className="text-gray-400 max-w-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                    {service.desc}
+                  </p>
+                </div>
               </div>
 
-              <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                <span className="text-[#D4AF37] font-mono text-xs uppercase tracking-widest mb-2 block">
-                  {service.category}
-                </span>
-                <h3 className="text-3xl font-bold text-white mb-2">{service.title}</h3>
-                <p className="text-gray-400 max-w-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
-                  {service.desc}
-                </p>
-              </div>
-            </div>
+              {/* Hover Border Effect */}
+              <div className="absolute inset-0 border-2 border-[#D4AF37] opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
+            </motion.div>
+          );
 
-            {/* Hover Border Effect */}
-            <div className="absolute inset-0 border-2 border-[#D4AF37] opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
-          </motion.div>
-        ))}
+          const colClass = service.col === 2 ? 'md:col-span-2' : 'col-span-1';
+
+          if (service.external) {
+            return (
+              <a key={i} href={service.href} target="_blank" rel="noopener noreferrer" className={`${colClass} block`}>
+                {cardContent}
+              </a>
+            );
+          }
+
+          return (
+            <Link key={i} href={service.href} className={`${colClass} block`}>
+              {cardContent}
+            </Link>
+          );
+        })}
       </div>
     </section>
   );
@@ -304,13 +329,19 @@ const CTA = () => {
         </p>
         
         <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-            <button className="px-10 py-5 bg-white text-black font-bold uppercase tracking-widest hover:bg-[#D4AF37] transition-colors duration-300">
-                Book Strategy Call
-            </button>
-            <span className="text-white/30 font-mono text-sm">OR</span>
-            <button className="text-white border-b border-[#D4AF37] pb-1 hover:text-[#D4AF37] transition-colors">
-                View Pricing Models
-            </button>
+          <Link 
+            href="/contact" 
+            className="px-10 py-5 bg-white text-black font-bold uppercase tracking-widest hover:bg-[#D4AF37] transition-colors duration-300 cursor-pointer text-center block"
+          >
+            Book Strategy Call
+          </Link>
+          <span className="text-white/30 font-mono text-sm">OR</span>
+          <Link 
+            href="/contact" 
+            className="text-white border-b border-[#D4AF37] pb-1 hover:text-[#D4AF37] transition-colors cursor-pointer text-center"
+          >
+            View Pricing Models
+          </Link>
         </div>
       </div>
     </section>

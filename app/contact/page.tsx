@@ -33,15 +33,15 @@ const CONTACT_INFO = [
   {
     icon: Mail,
     label: "Email",
-    value: "sohamnsharma@gmail.com",
-    href: "mailto:sohamnsharma@gmail.com",
+    value: "soham@botmartz.com",
+    href: "mailto:soham@botmartz.com",
     description: "Drop us a message anytime",
   },
   {
     icon: Phone,
     label: "Phone",
-    value: "+91-9730084626",
-    href: "tel:+919730084626",
+    value: "+91 94073 28842",
+    href: "tel:+919407328842",
     description: "Mon–Sat, 9am–7pm IST",
   },
   {

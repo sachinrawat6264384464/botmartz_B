@@ -1,11 +1,13 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Inter_Tight } from 'next/font/google';
 import DottedMap from "dotted-map"; // Restored for design fidelity
 
 const interTight = Inter_Tight({ subsets: ['latin'], weight: ['300', '400'], display: 'swap' });
+const MotionLink = motion(Link);
 
 // Accent Color Constant - The Yellow from your image
 const ACCENT_COLOR = "#F5C242"; 
@@ -212,22 +214,22 @@ export default function HeroSection() {
               </p>
 
               <div className="flex flex-row gap-3 sm:gap-4 mt-2 w-full sm:w-auto">
-                <motion.button 
+                <MotionLink 
+                  href="/services"
                   whileHover={{ scale: isMobile ? 1 : 1.05 }} 
                   whileTap={{ scale: 0.95 }}
-                  // Reverted to white background and black text
-                  className="flex-1 sm:flex-none sm:w-auto px-6 sm:px-8 py-3 bg-white text-black font-bold uppercase text-xs tracking-widest rounded-sm hover:bg-gray-100 transition-colors"
+                  className="flex-1 sm:flex-none px-6 sm:px-8 py-3 bg-white text-black font-bold uppercase text-xs tracking-widest rounded-sm hover:bg-gray-100 transition-colors cursor-pointer text-center block"
                 >
                   Explore Solutions
-                </motion.button>
-                <motion.button 
+                </MotionLink>
+                <MotionLink 
+                  href="/contact"
                   whileHover={{ scale: isMobile ? 1 : 1.05 }} 
                   whileTap={{ scale: 0.95 }}
-                  // Reverted to white border and text
-                  className="flex-1 sm:flex-none sm:w-auto px-6 sm:px-8 py-3 border border-white/20 text-white font-bold uppercase text-xs tracking-widest rounded-sm hover:bg-white/5 transition-colors backdrop-blur-sm"
+                  className="flex-1 sm:flex-none px-6 sm:px-8 py-3 border border-white/20 text-white font-bold uppercase text-xs tracking-widest rounded-sm hover:bg-white/5 transition-colors backdrop-blur-sm cursor-pointer text-center block"
                 >
                   Contact Us
-                </motion.button>
+                </MotionLink>
               </div>
             </motion.div>
         </div>

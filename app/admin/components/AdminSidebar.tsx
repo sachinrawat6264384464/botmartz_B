@@ -15,7 +15,8 @@ const interTight = Inter_Tight({ subsets: ['latin'], weight: ['400', '500', '600
 
 const SECTION_GROUPS: { label: string; ids: ModuleId[] }[] = [
   { label: 'Overview', ids: ['dashboard'] },
-  { label: 'Content',  ids: ['contacts'] },
+  { label: 'Content',  ids: ['blogs', 'comments', 'newsletter'] },
+  { label: 'Inbox',    ids: ['contacts'] },
 ];
 
 const BADGE_STYLE: Partial<Record<ModuleId, string>> = {
