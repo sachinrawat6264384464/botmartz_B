@@ -6,7 +6,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 // Helper to authenticate as admin for database checks
 async function authenticateAdmin() {
   if (!auth.currentUser) {
-    await signInWithEmailAndPassword(auth, 'Botmartzadmin@gmail.com', 'admin@312');
+    await signInWithEmailAndPassword(auth, 'soham@botmartz.com', 'admin@312');
   }
 }
 

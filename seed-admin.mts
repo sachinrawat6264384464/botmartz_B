@@ -23,7 +23,7 @@ import * as dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
 // ── Config ────────────────────────────────────────────────────────
-const ADMIN_EMAIL    = "Botmartzadmin@gmail.com";
+const ADMIN_EMAIL    = "soham@botmartz.com";
 const ADMIN_PASSWORD = "admin@312";
 const ADMIN_NAME     = "Botmartz Admin";
 // ─────────────────────────────────────────────────────────────────
