@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Inter_Tight } from 'next/font/google';
-import DottedMap from "dotted-map"; // Restored for design fidelity
 
 const interTight = Inter_Tight({ subsets: ['latin'], weight: ['300', '400'], display: 'swap' });
 const MotionLink = motion(Link);
@@ -276,30 +275,10 @@ function FloatingShard({ top, left, right, bottom, label, sublabel, delay, color
 // RESTORED WORLD MAP - MEMOIZED & DEFERRED FOR PERFORMANCE
 function WorldMap({ dots = [], lineColor = "#ffffff", animated = true }: any) {
   const [mounted, setMounted] = useState(false);
-  const [svgMap, setSvgMap] = useState<string>("");
   
-  // OPTIMIZATION: Defer DottedMap generation off the main thread using scheduler
-  // Runs after paint so it doesn't block LCP or increase TBT.
   useEffect(() => {
-    let cancelled = false;
-    const generate = () => {
-      if (cancelled) return;
-      const map = new DottedMap({ height: 60, grid: "diagonal" });
-      const svg = map.getSVG({ radius: 0.42, color: `${lineColor}60`, shape: "circle", backgroundColor: "transparent" });
-      if (!cancelled) {
-        setSvgMap(svg);
-        setMounted(true);
-      }
-    };
-    // Use requestIdleCallback if available to avoid blocking main thread
-    if (typeof requestIdleCallback !== 'undefined') {
-      const id = requestIdleCallback(generate, { timeout: 2000 });
-      return () => { cancelled = true; cancelIdleCallback(id); };
-    } else {
-      const timer = setTimeout(generate, 200);
-      return () => { cancelled = true; clearTimeout(timer); };
-    }
-  }, [lineColor]);
+    setMounted(true);
+  }, []);
 
   const projectPoint = (lat: number, lng: number) => {
     const x = (lng + 180) * (800 / 360);
@@ -315,17 +294,14 @@ function WorldMap({ dots = [], lineColor = "#ffffff", animated = true }: any) {
 
   return (
     <div className="w-full h-full relative font-sans">
-      {/* Show static or empty state until map is calculated */}
-      {svgMap && (
-        <Image 
-            src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`} 
-            className="h-full w-full object-cover pointer-events-none select-none drop-shadow-[0_0_5px_rgba(255,255,255,0.1)]" 
-            alt="world map" 
-            fill 
-            draggable={false} 
-            priority // Map is LCP candidate
-        />
-      )}
+      <Image 
+          src="/dotted-map.svg" 
+          className="h-full w-full object-cover pointer-events-none select-none drop-shadow-[0_0_5px_rgba(255,255,255,0.1)]" 
+          alt="world map" 
+          fill 
+          draggable={false} 
+          priority // Map is LCP candidate
+      />
       
       {mounted && animated && (
         <svg viewBox="0 0 800 400" className="w-full h-full absolute inset-0 pointer-events-none select-none">

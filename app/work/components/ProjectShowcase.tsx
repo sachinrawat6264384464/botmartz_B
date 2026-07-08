@@ -23,14 +23,14 @@ const PROJECTS = [
     description: "Reinventing natural beauty commerce with immersive storytelling."
   },
   { 
-    id: "decathlon", 
-    title: "Decathlon", 
-    category: "Retail Tech", 
-    url: "https://www.decathlon.in/", 
-    image: "/projects/decathlon.png",
-    color: "#0082C3", // Decathlon Blue
+    id: "anugami", 
+    title: "Anugami", 
+    category: "Technology", 
+    url: "https://anugami.com/", 
+    image: "/projects/anugami2.png",
+    color: "#080F1A", // Deep tech dark blue
     textColor: "#ffffff",
-    description: "Scaling athletic excellence through high-performance digital architecture."
+    description: "Pioneering decentralized AI networks and advanced neural automation solutions."
   },
   { 
     id: "tesora", 
@@ -61,6 +61,16 @@ const PROJECTS = [
     color: "#FF5500", // Safari Orange
     textColor: "#ffffff",
     description: "Digital branding strategy designed for the modern traveler."
+  },
+  { 
+    id: "hoaconnecthub", 
+    title: "Hoa Connect Hub", 
+    category: "Real Estate SaaS", 
+    url: "https://hoaconnecthub.com/", 
+    image: "/projects/hoaconnecthub.png",
+    color: "#0F1A1C", // Dark cyan tint for real estate SaaS
+    textColor: "#ffffff",
+    description: "Engineering robust community logistics and digital home association platforms."
   }
 ];
 

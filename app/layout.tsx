@@ -17,8 +17,68 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Botmartz - AI Solutions",
-  description: "Transforming businesses through next-gen automation, intelligent software, and scalable digital ecosystems.",
+  metadataBase: new URL("https://botmartz.com"),
+  title: {
+    default: "Botmartz | Premium Generative AI & Automation Solutions",
+    template: "%s | Botmartz"
+  },
+  description: "Transforming enterprise performance through intelligent AI agents, custom RAG systems, and next-gen workflow automation ecosystems.",
+  keywords: [
+    "Generative AI Solutions",
+    "Enterprise AI Agents",
+    "Custom RAG Systems",
+    "Workflow Automation",
+    "AI Consulting",
+    "Indore AI Company",
+    "Botmartz",
+    "Soham Sharma",
+    "GenAI Architect",
+    "Corporate AI Training",
+    "Next.js Development Agency",
+    "Large Language Models LLM",
+    "Vector Database integration",
+    "LlamaIndex LangChain",
+    "Agentic AI Development",
+    "Custom Chatbot Solutions",
+    "Software Development Indore"
+  ],
+  authors: [{ name: "Soham Sharma", url: "https://www.linkedin.com/in/soham-sharma/" }],
+  creator: "Soham Sharma",
+  publisher: "Botmartz",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://botmartz.com",
+    title: "Botmartz | Premium Generative AI & Automation Solutions",
+    description: "Transforming enterprise performance through intelligent AI agents, custom RAG systems, and next-gen workflow automation ecosystems.",
+    siteName: "Botmartz",
+    images: [
+      {
+        url: "/BotmartzNewLogo.png",
+        width: 1200,
+        height: 630,
+        alt: "Botmartz AI Solutions Logo"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Botmartz | Premium Generative AI & Automation Solutions",
+    description: "Transforming enterprise performance through intelligent AI agents, custom RAG systems, and next-gen workflow automation ecosystems.",
+    images: ["/BotmartzNewLogo.png"],
+    creator: "@botmartz"
+  }
 };
 
 export default function RootLayout({

@@ -9,6 +9,7 @@ import { collection, getDocs, query, where, limit, addDoc, orderBy, serverTimest
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Calendar, Clock, User, Share2, BookOpen, AlertCircle, MessageSquare, Send, CheckCircle, Eye, Heart } from "lucide-react";
+import SchemaMarkup from "@/app/_components/SchemaMarkup";
 
 const inter = Inter_Tight({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700", "900"] });
 const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"] });
@@ -27,6 +28,7 @@ interface BlogPost {
   views?: number;
   likes?: number;
   status: string;
+  updatedAt?: any;
 }
 
 export default function BlogSlugPage() {
@@ -235,6 +237,22 @@ export default function BlogSlugPage() {
 
   return (
     <main className={`${inter.className} min-h-screen bg-[#050505] text-white pt-36 pb-24 px-6 overflow-x-hidden`}>
+      <SchemaMarkup
+        type="Article"
+        data={{
+          title: post.title,
+          slug: post.slug,
+          excerpt: post.excerpt,
+          featuredImage: post.featuredImage,
+          author: post.author,
+          createdAt: post.createdAt?.seconds 
+            ? new Date(post.createdAt.seconds * 1000).toISOString() 
+            : new Date().toISOString(),
+          updatedAt: post.updatedAt?.seconds 
+            ? new Date(post.updatedAt.seconds * 1000).toISOString() 
+            : undefined,
+        }}
+      />
       {/* Scroll Progress Bar */}
       <motion.div 
         className="fixed top-0 left-0 right-0 h-[3px] bg-[#D4AF37] origin-left z-50"

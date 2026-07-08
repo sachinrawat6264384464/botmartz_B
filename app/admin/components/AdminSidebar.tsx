@@ -15,7 +15,7 @@ const interTight = Inter_Tight({ subsets: ['latin'], weight: ['400', '500', '600
 
 const SECTION_GROUPS: { label: string; ids: ModuleId[] }[] = [
   { label: 'Overview', ids: ['dashboard'] },
-  { label: 'Content',  ids: ['blogs', 'comments', 'newsletter'] },
+  { label: 'Content',  ids: ['blogs', 'case-studies', 'comments', 'newsletter'] },
   { label: 'Inbox',    ids: ['contacts'] },
 ];
 

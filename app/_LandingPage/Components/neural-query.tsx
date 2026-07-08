@@ -104,6 +104,8 @@ function LazyVideo() {
   );
 }
 
+import SchemaMarkup from "@/app/_components/SchemaMarkup";
+
 // Main Component
 function NeuralQuery() {
   const [openId, setOpenId] = useState<string | null>(null);
@@ -114,6 +116,7 @@ function NeuralQuery() {
 
   return (
     <section className="min-h-screen bg-black py-24 px-6 md:px-12 overflow-hidden">
+      <SchemaMarkup type="FAQPage" data={{ faqs: FAQS }} />
       <h2 className="text-4xl font-bold mb-16 text-center text-white">
         EXPERT <span className="text-[#D4AF37]">INSIGHTS</span>
       </h2>

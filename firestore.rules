@@ -39,7 +39,12 @@ service cloud.firestore {
       allow read: if true;
       allow update: if isSuperAdmin() ||
         (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views', 'likes']));
-      allow create, delete: if isSuperAdmin();
+    }
+
+    // ── case-studies ──────────────────────────────────────────────
+    // Hidden from public frontend. Only super-admins can read or write.
+    match /case-studies/{docId} {
+      allow read, write: if isSuperAdmin();
     }
 
     // ── comments ──────────────────────────────────────────────────

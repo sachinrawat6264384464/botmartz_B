@@ -16,9 +16,8 @@ import Link from "next/link";
 
 // --- PROJECT DATA ---
 const projects = [
-  "/projects/anugami.png",
-  "/projects/decathlon.png",
-  "/projects/Fitchratings.png",
+  "/projects/anugami2.png",
+  "/projects/hoaconnecthub.png",
   "/projects/homestory.png",
   "/projects/lotus.png",
   "/projects/plix.png",

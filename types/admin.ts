@@ -21,6 +21,27 @@ export interface BlogPost {
   likes?: number;
 }
 
+export interface CaseStudy {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  clientName?: string;
+  category: string;
+  tags: string[];
+  featuredImage?: string;
+  featuredImageAlt?: string;
+  featuredImageName?: string;
+  status: "draft" | "published";
+  createdAt: any; // Firebase Timestamp
+  updatedAt?: any;
+  publishedAt?: any;
+  readTime?: number;
+  views?: number;
+  likes?: number;
+}
+
 export interface Contact {
   id: string;
   name: string;

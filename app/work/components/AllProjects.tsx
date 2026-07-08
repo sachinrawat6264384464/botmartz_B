@@ -17,14 +17,13 @@ import { ExternalLink, ChevronLeft, ChevronRight } from "lucide-react"
 const PROJECTS = [
   { id: "lotus", title: "Lotus Herbals", url: "https://www.lotus.in/", tag: "E-commerce", result: "Premium Skincare", image: "/projects/lotus.png" },
   { id: "tesora", title: "Shop Tesora", url: "https://www.shoptesora.com/", tag: "Home & Living", result: "Luxury Appliances", image: "/projects/shopstesora.png" },
-  { id: "decathlon", title: "Decathlon India", url: "https://www.decathlon.in/", tag: "Sports & Retail", result: "Athletic Excellence", image: "/projects/decathlon.png" },
+  { id: "anugami", title: "Anugami", url: "https://anugami.com/", tag: "Technology", result: "Decentralized AI", image: "/projects/anugami2.png" },
   { id: "yashueprem", title: "Yashuprem", url: "https://yashueprem.com/", tag: "E-commerce", result: "Curated Fashion", image: "/projects/Yashuprem.png" },
   { id: "safari", title: "Safari Bags", url: "https://www.safaribags.com/", tag: "Retail", result: "Travel Essentials", image: "/projects/safari.png" },
   { id: "plix", title: "PlixLife", url: "https://plixlife.com/", tag: "Wellness", result: "Plant-based Nutrition", image: "/projects/plix.png" },
-  { id: "anugami", title: "Anugami", url: "https://anugami.com/", tag: "Technology", result: "Digital Innovation", image: "/projects/anugami.png" },
   { id: "ziplyne", title: "Ziplyne", url: "https://ziplyne.com/", tag: "Logistics", result: "Smart Delivery", image: "/projects/ziplyne.png" },
   { id: "homestory", title: "HomeStory", url: "#", tag: "Interior Design", result: "Modern Living", image: "/projects/homestory.png" },
-  { id: "fitchratings", title: "Fitch Ratings", url: "#", tag: "Finance", result: "Credit Analytics", image: "/projects/Fitchratings.png" }
+  { id: "hoaconnecthub", title: "Hoa Connect Hub", url: "https://hoaconnecthub.com/", tag: "Real Estate SaaS", result: "Community Logistics", image: "/projects/hoaconnecthub.png" }
 ]
 
 // --- UTILS ---
