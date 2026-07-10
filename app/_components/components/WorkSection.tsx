@@ -286,10 +286,10 @@ export const Hero = () => {
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 px-6">
               <Link href="/contact" className="w-full sm:w-auto z-40">
-                <m.button 
-                  whileHover={{ scale: 1.02, textShadow: "0 0 8px rgb(255,255,255)" }}
+                <m.div 
+                  whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="group relative w-full sm:w-64 overflow-hidden bg-[#D4AF37] px-8 py-4 rounded-tr-xl rounded-bl-xl transition-all shadow-[0_0_30px_-10px_rgba(212,175,55,0.4)] hover:shadow-[0_0_40px_-5px_rgba(212,175,55,0.6)]"
+                  className="group relative w-full sm:w-64 overflow-hidden bg-[#D4AF37] px-8 py-4 rounded-tr-xl rounded-bl-xl transition-all shadow-[0_0_30px_-10px_rgba(212,175,55,0.4)] hover:shadow-[0_0_40px_-5px_rgba(212,175,55,0.6)] cursor-pointer text-center"
                 >
                   <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]">
                     <div className="relative h-full w-12 bg-white/40 blur-md" />
@@ -297,13 +297,14 @@ export const Hero = () => {
                   <span className="flex items-center justify-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-black relative z-10">
                     Initialize Project <ArrowUpRight size={18} strokeWidth={3} />
                   </span>
-                </m.button>
+                </m.div>
               </Link>
 
               <Link href="/work" className="w-full sm:w-auto z-40">
-                <m.button 
-                  whileHover={{ backgroundColor: "rgba(255,255,255,0.05)" }}
-                  className="group relative w-full sm:w-64 border border-white/10 px-8 py-4 rounded-tl-xl rounded-br-xl backdrop-blur-md transition-all hover:border-[#D4AF37]/50 hover:shadow-[0_0_20px_-10px_rgba(212,175,55,0.3)]"
+                <m.div 
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="group relative w-full sm:w-64 border border-white/10 px-8 py-4 rounded-tl-xl rounded-br-xl backdrop-blur-md transition-all hover:border-[#D4AF37]/50 hover:shadow-[0_0_20px_-10px_rgba(212,175,55,0.3)] bg-black/40 cursor-pointer text-center"
                 >
                   <span className="flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-white/70 group-hover:text-[#D4AF37] transition-colors">
                     <Activity size={16} className="text-[#D4AF37]" />
@@ -311,7 +312,7 @@ export const Hero = () => {
                   </span>
                   <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[#D4AF37]/50 group-hover:border-[#D4AF37] transition-colors" />
                   <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[#D4AF37]/50 group-hover:border-[#D4AF37] transition-colors" />
-                </m.button>
+                </m.div>
               </Link>
             </div>
           </div>

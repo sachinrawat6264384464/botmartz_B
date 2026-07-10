@@ -191,7 +191,7 @@ export const ProjectsShowcase = () => {
   });
 
   return (
-    <section ref={container} className="bg-[#050505] relative pb-[20vh]">
+    <section id="showcase" ref={container} className="bg-[#050505] relative pb-[20vh]">
       
       {/* Title Section (Sticky) */}
       <div className="h-[50vh] flex items-center justify-center sticky top-0 z-0">
