@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Search, X, Mail, FileText, Users, ArrowRight } from 'lucide-react';
+import { Search, X, Mail, FileText, Users, ArrowRight, Sun, Moon } from 'lucide-react';
 import { Inter_Tight } from 'next/font/google';
 import { useAuth } from '@/lib/context/AuthContext';
 import { useRouter } from 'next/navigation';
+import { useTheme } from 'next-themes';
 import { db } from '@/lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 
@@ -27,6 +28,7 @@ const CATEGORY_META = {
 export default function AdminHeader() {
   const { user, userRole } = useAuth();
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
 
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
@@ -176,12 +178,12 @@ export default function AdminHeader() {
   }, {});
 
   return (
-    <header className={`${interTight.className} bg-white border-b border-gray-200 px-8 py-4`}>
+    <header className={`${interTight.className} bg-admin-card border-b border-admin-border px-8 py-4`}>
       <div className="flex items-center justify-between">
         {/* Search Bar */}
         <div className="flex-1 max-w-2xl relative">
           <div className="relative">
-            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-admin-text-muted" />
             <input
               ref={inputRef}
               type="text"
@@ -189,7 +191,7 @@ export default function AdminHeader() {
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => { if (results.length > 0) setOpen(true); }}
               placeholder="Search messages, blogs, subscribers..."
-              className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-11 pr-10 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+              className="w-full bg-admin-bg border border-admin-border rounded-xl pl-11 pr-10 py-2.5 text-sm text-admin-text placeholder:text-admin-text-muted focus:outline-none focus:border-admin-accent focus:ring-1 focus:ring-admin-accent transition-all"
             />
             {query && (
               <button
@@ -205,15 +207,15 @@ export default function AdminHeader() {
           {open && (
             <div
               ref={dropdownRef}
-              className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-2xl shadow-xl z-50 overflow-hidden"
+              className="absolute top-full left-0 right-0 mt-2 bg-admin-card border border-admin-border rounded-2xl shadow-xl z-50 overflow-hidden"
             >
               {loading ? (
                 <div className="flex items-center justify-center py-8">
-                  <div className="w-5 h-5 border-2 border-gray-200 border-t-gray-600 rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-2 border-admin-border border-t-admin-accent rounded-full animate-spin" />
                 </div>
               ) : results.length === 0 ? (
                 <div className="py-8 text-center">
-                  <p className="text-sm text-gray-400">No results for <strong>"{query}"</strong></p>
+                  <p className="text-sm text-admin-text-muted">No results for <strong>"{query}"</strong></p>
                 </div>
               ) : (
                 <div className="py-2 max-h-96 overflow-y-auto">
@@ -233,16 +235,16 @@ export default function AdminHeader() {
                           <button
                             key={result.id}
                             onClick={() => handleSelect(result)}
-                            className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors text-left group"
+                            className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-admin-bg transition-colors text-left group"
                           >
                             <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${meta.color}`}>
                               <Icon size={13} />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-gray-900 truncate">{result.title}</p>
-                              <p className="text-xs text-gray-400 truncate">{result.subtitle}</p>
+                              <p className="text-sm font-medium text-admin-text truncate">{result.title}</p>
+                              <p className="text-xs text-admin-text-muted truncate">{result.subtitle}</p>
                             </div>
-                            <ArrowRight size={14} className="text-gray-300 group-hover:text-gray-500 shrink-0 transition-colors" />
+                            <ArrowRight size={14} className="text-admin-text-muted group-hover:text-admin-text shrink-0 transition-colors" />
                           </button>
                         ))}
                       </div>
@@ -250,8 +252,8 @@ export default function AdminHeader() {
                   })}
                 </div>
               )}
-              <div className="border-t border-gray-100 px-4 py-2 bg-gray-50">
-                <p className="text-xs text-gray-400">{results.length} result{results.length !== 1 ? 's' : ''} across messages, blogs & subscribers</p>
+              <div className="border-t border-admin-border px-4 py-2 bg-admin-card">
+                <p className="text-xs text-admin-text-muted">{results.length} result{results.length !== 1 ? 's' : ''} across messages, blogs & subscribers</p>
               </div>
             </div>
           )}
@@ -259,16 +261,24 @@ export default function AdminHeader() {
 
         {/* Right Actions */}
         <div className="flex items-center gap-3 ml-6">
-          <div className="w-px h-8 bg-gray-200" />
+          <button
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className="p-2 text-admin-text-muted hover:text-admin-text hover:bg-admin-bg rounded-xl transition-colors"
+            title="Toggle theme"
+          >
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+
+          <div className="w-px h-8 bg-admin-border" />
 
           {/* Profile */}
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-linear-to-br from-gray-700 to-gray-900 rounded-full flex items-center justify-center">
-              <span className="text-xs font-semibold text-white">{initials || 'AD'}</span>
+            <div className="w-9 h-9 bg-linear-to-br from-admin-accent to-cyan-500 rounded-full flex items-center justify-center text-white">
+              <span className="text-xs font-semibold">{initials || 'AD'}</span>
             </div>
             <div className="hidden sm:block">
-              <p className="text-sm font-semibold text-gray-900">{displayName}</p>
-              <p className="text-xs text-gray-500">{roleLabel}</p>
+              <p className="text-sm font-semibold text-admin-text">{displayName}</p>
+              <p className="text-xs text-admin-accent font-medium">{roleLabel}</p>
             </div>
           </div>
         </div>

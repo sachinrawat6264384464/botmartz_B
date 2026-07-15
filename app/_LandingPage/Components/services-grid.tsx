@@ -28,84 +28,46 @@ const GOLD = "#C9A84C";
 const SERVICES = [
   {
     id: "01",
-    title: "Workflow Automation",
-    headline: "Kill the manual work. Keep the momentum.",
-    desc: "We map, rebuild, and automate your critical business processes — from lead intake to invoice dispatch — so your team stops firefighting and starts scaling.",
-    icon: <Zap />,
-    badge: "Most Requested",
+    title: "Enterprise RAG",
+    headline: "Knowledge unlocked, not hallucinated.",
+    desc: "We build advanced document intelligence systems handling scanned PDFs, complex tables, and enterprise search with precision hybrid retrieval.",
+    icon: <Database />,
+    badge: "Flagship",
     colSpan: 2,
     accent: true,
-    href: "/services/ai-solutions",
+    href: "/services/enterprise-rag",
   },
   {
     id: "02",
-    title: "AI & LLM Engineering",
-    headline: "Intelligence built for your business, not the demo reel.",
-    desc: "Production-grade agents, fine-tuned models, and RAG pipelines trained on your data — not generic prompts.",
+    title: "AI Agents",
+    headline: "Agents that plan, act, and remember.",
+    desc: "Multi-agent workflows powered by LangGraph. We build systems that automate research, intake, and support with human-in-the-loop validation.",
     icon: <Cpu />,
-    colSpan: 1,
-    href: "/services/ai-solutions",
+    colSpan: 2,
+    accent: false,
+    href: "/services/ai-agents",
   },
   {
     id: "03",
-    title: "High-Performance Web",
-    headline: "First impressions load in 800ms.",
-    desc: "Edge-rendered Next.js architecture, global CDN delivery, and Core Web Vitals scores that outrank your competition before a single ad spend.",
-    icon: <Globe />,
-    colSpan: 1,
-    rowSpan: 2,
-    href: "/services/web-development",
+    title: "AI Engineering & Infra",
+    headline: "Production-grade deployment.",
+    desc: "FastAPI, Docker, MLflow, and scalable PyTorch deployments. We don't just prompt; we engineer robust AI middleware.",
+    icon: <Terminal />,
+    colSpan: 2,
+    href: "/services",
   },
   {
     id: "04",
-    title: "AI Training Programs",
-    headline: "Generative AI Engineering & Upskilling.",
-    desc: "Our GenAI Bootcamps, courses, and custom B2B training modules are designed to bridge the developer-to-AI-engineer gap.",
-    icon: <Terminal />,
-    badge: "Bootcamp",
-    colSpan: 2,
-    accent: true,
-    href: "https://classes.botmartz.com",
-    external: true,
-  },
-  {
-    id: "05",
-    title: "API & Integration Layer",
-    headline: "One source of truth across every tool you run.",
-    desc: "Custom middleware that connects your CRM, ERP, payment rails, and 500+ third-party platforms into a single coherent data layer.",
+    title: "Botmartz Academy",
+    headline: "Become an AI Engineer.",
+    desc: "Our Accelerator trains engineers to build production AI systems, moving beyond basic prompt engineering to architectural depth.",
     icon: <Code2 />,
-    colSpan: 1,
-    href: "/services/web-development",
-  },
-  {
-    id: "06",
-    title: "Data & Analytics",
-    headline: "Your data should answer questions, not raise them.",
-    desc: "Real-time dashboards, ML inference pipelines, and event tracking — purpose-built so decision-makers get the signal, not the noise.",
-    icon: <Database />,
-    colSpan: 1,
-    href: "/services/ai-solutions",
-  },
-  {
-    id: "07",
-    title: "Security & Compliance",
-    headline: "Zero-trust isn't a buzzword. It's the baseline.",
-    desc: "SOC 2-aligned architecture, end-to-end encryption, and threat modelling baked into every layer — not bolted on after launch.",
-    icon: <Shield />,
-    badge: "SOC 2",
+    badge: "Accelerator",
     colSpan: 2,
     accent: true,
-    href: "/services/web-development",
-  },
-  {
-    id: "08",
-    title: "DevOps & Delivery",
-    headline: "Ship faster. Break nothing.",
-    desc: "Fully automated CI/CD pipelines, infrastructure-as-code, and zero-downtime deployments backed by observability and on-call runbooks.",
-    icon: <Terminal />,
-    colSpan: 1,
-    href: "/services/web-development",
-  },
+    href: "https://academy.botmartz.com",
+    external: true,
+  }
 ];
 
 export function ServicesGrid() {
@@ -159,9 +121,9 @@ export function ServicesGrid() {
             transition={{ duration: 0.6, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
             className={`${inter.className} text-xl text-gray-400 leading-relaxed max-w-md`}
           >
-            Eight integrated service lines. One studio accountable for the outcome —{" "}
+            AI Engineering Services — Enterprise RAG + AI Agents. {" "}
             <span className="text-[#C9A84C] font-medium">
-              from architecture decisions to production deploy.
+              We build production systems, not just prototypes.
             </span>
           </motion.p>
         </div>

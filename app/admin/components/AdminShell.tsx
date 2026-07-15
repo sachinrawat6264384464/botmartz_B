@@ -57,11 +57,11 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
 
   // All authenticated pages — sidebar + header shell
   return (
-    <div className="flex h-screen bg-white overflow-hidden">
+    <div className="flex h-screen bg-ink overflow-hidden">
       <AdminSidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
         <AdminHeader />
-        <main className="flex-1 overflow-y-auto bg-gray-50">
+        <main className="flex-1 overflow-y-auto bg-ink">
           {children}
         </main>
       </div>

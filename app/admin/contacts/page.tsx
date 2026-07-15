@@ -52,17 +52,17 @@ function formatFullDate(ts: any) {
 function ConfirmModal({ name, onConfirm, onCancel }: { name: string; onConfirm: () => void; onCancel: () => void }) {
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6">
-        <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4">
+      <div className="bg-paper rounded-2xl shadow-2xl w-full max-w-sm p-6 border border-line">
+        <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-4 border border-red-500/20">
           <Trash2 size={22} className="text-red-500" />
         </div>
-        <h2 className="text-base font-bold text-gray-900 text-center mb-2">Delete Message</h2>
-        <p className="text-sm text-gray-500 text-center mb-6">
-          Delete message from <strong className="text-gray-700">{name}</strong>? This cannot be undone.
+        <h2 className="text-base font-bold text-white text-center mb-2">Delete Message</h2>
+        <p className="text-sm text-ink-soft text-center mb-6">
+          Delete message from <strong className="text-white">{name}</strong>? This cannot be undone.
         </p>
         <div className="flex gap-3">
-          <button onClick={onCancel} className="flex-1 px-4 py-2.5 border border-gray-200 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors">Cancel</button>
-          <button onClick={onConfirm} className="flex-1 px-4 py-2.5 bg-red-500 text-white rounded-xl text-sm font-semibold hover:bg-red-600 transition-colors">Delete</button>
+          <button onClick={onCancel} className="flex-1 px-4 py-2.5 border border-line text-ink-soft rounded-xl text-sm font-medium hover:bg-white/[0.03] transition-colors">Cancel</button>
+          <button onClick={onConfirm} className="flex-1 px-4 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-sm font-semibold transition-colors">Delete</button>
         </div>
       </div>
     </div>
@@ -131,7 +131,7 @@ export default function ContactsList() {
     <div className={`${interTight.className} p-6 h-full`}>
       {/* Toast */}
       {toast && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-4 py-3 bg-white border border-green-200 text-green-800 text-sm font-medium rounded-xl shadow-xl">
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-4 py-3 bg-paper border border-green-500/20 text-green-400 text-sm font-medium rounded-xl shadow-xl">
           <CheckCircle size={15} className="text-green-500" /> {toast}
         </div>
       )}
@@ -144,20 +144,20 @@ export default function ContactsList() {
       <div className="flex items-start justify-between mb-6">
         <div>
           <div className="flex items-center gap-2.5 mb-1">
-            <div className="w-8 h-8 rounded-lg bg-gray-900 flex items-center justify-center">
-              <Mail size={16} className="text-white" />
+            <div className="w-8 h-8 rounded-lg bg-brand/10 border border-brand/20 flex items-center justify-center">
+              <Mail size={16} className="text-brand" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">Messages</h1>
+            <h1 className="text-2xl font-bold text-white">Messages</h1>
           </div>
-          <p className="text-sm text-gray-500 ml-10.5">Customer inquiries and contact submissions</p>
+          <p className="text-sm text-ink-soft ml-10.5">Customer inquiries and contact submissions</p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 border border-gray-200">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-paper text-ink-soft border border-line">
             {contacts.length} total
           </span>
           {unreadCount > 0 && (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-100">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-brand/10 text-brand border border-brand/20">
+              <span className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse" />
               {unreadCount} unread
             </span>
           )}
@@ -167,23 +167,23 @@ export default function ContactsList() {
       {/* Main layout */}
       <div className="flex gap-4" style={{ height: 'calc(100vh - 200px)' }}>
         {/* Left: List */}
-        <div className="w-80 shrink-0 flex flex-col bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+        <div className="w-80 shrink-0 flex flex-col bg-paper rounded-2xl border border-line overflow-hidden shadow-sm">
           {/* Search + filters */}
-          <div className="p-3 border-b border-gray-100 space-y-2">
+          <div className="p-3 border-b border-line space-y-2">
             <div className="relative">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-soft" />
               <input type="text" placeholder="Search messages…" value={search} onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-8 pr-8 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10 focus:bg-white transition-all" />
+                className="w-full pl-8 pr-8 py-2 text-sm bg-ink border border-line rounded-lg text-white placeholder-ink-soft focus:outline-none focus:border-brand transition-all" />
               {search && (
-                <button onClick={() => setSearch('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"><X size={13} /></button>
+                <button onClick={() => setSearch('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-ink-soft hover:text-white"><X size={13} /></button>
               )}
             </div>
-            <div className="flex gap-1 p-0.5 bg-gray-100 rounded-lg">
+            <div className="flex gap-1 p-0.5 bg-ink rounded-lg border border-line">
               {(['all', 'unread', 'read'] as const).map((tab) => (
                 <button key={tab} onClick={() => setFilter(tab)}
-                  className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${filter === tab ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}>
+                  className={`flex-1 py-1.5 rounded-md text-xs font-medium transition-all ${filter === tab ? 'bg-paper text-white shadow-sm border border-line' : 'text-ink-soft hover:text-white'}`}>
                   {tab === 'unread' && unreadCount > 0 ? (
-                    <span className="flex items-center justify-center gap-1">Unread <span className="px-1 rounded-full bg-blue-100 text-blue-700 text-[10px]">{unreadCount}</span></span>
+                    <span className="flex items-center justify-center gap-1">Unread <span className="px-1 rounded-full bg-brand/20 text-brand border border-brand/20 text-[10px]">{unreadCount}</span></span>
                   ) : (
                     tab.charAt(0).toUpperCase() + tab.slice(1)
                   )}
@@ -196,20 +196,20 @@ export default function ContactsList() {
           <div className="flex-1 overflow-y-auto">
             {filtered.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full py-12 text-center px-4">
-                <div className="w-12 h-12 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-center mb-3">
-                  <InboxIcon size={22} className="text-gray-300" />
+                <div className="w-12 h-12 bg-white/[0.03] rounded-2xl border border-line flex items-center justify-center mb-3">
+                  <InboxIcon size={22} className="text-ink-soft" />
                 </div>
-                <p className="text-sm font-medium text-gray-500">No messages</p>
-                <p className="text-xs text-gray-400 mt-1">{search ? 'Try a different search' : 'Nothing here yet'}</p>
+                <p className="text-sm font-medium text-ink-soft">No messages</p>
+                <p className="text-xs text-ink-soft/50 mt-1">{search ? 'Try a different search' : 'Nothing here yet'}</p>
               </div>
             ) : (
               filtered.map((c) => (
                 <button key={c.id} onClick={() => handleSelect(c)}
-                  className={`w-full text-left px-4 py-3.5 border-b border-gray-50 last:border-0 transition-all group relative ${
-                    selectedContact?.id === c.id ? 'bg-gray-900' : 'hover:bg-gray-50/80'
+                  className={`w-full text-left px-4 py-3.5 border-b border-line last:border-0 transition-all group relative ${
+                    selectedContact?.id === c.id ? 'bg-white/[0.05]' : 'hover:bg-white/[0.02]'
                   }`}>
                   {c.status === 'unread' && selectedContact?.id !== c.id && (
-                    <span className="absolute left-1.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-blue-500" />
+                    <span className="absolute left-1.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-brand" />
                   )}
                   <div className="flex items-start gap-3">
                     <div className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${
@@ -219,15 +219,15 @@ export default function ContactsList() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-baseline justify-between gap-2 mb-0.5">
-                        <span className={`text-sm font-semibold truncate ${selectedContact?.id === c.id ? 'text-white' : 'text-gray-900'} ${c.status === 'unread' ? 'font-bold' : ''}`}>
+                        <span className={`text-sm font-semibold truncate ${selectedContact?.id === c.id ? 'text-white' : 'text-white'} ${c.status === 'unread' ? 'font-bold' : ''}`}>
                           {c.name}
                         </span>
-                        <span className={`text-[11px] shrink-0 ${selectedContact?.id === c.id ? 'text-white/50' : 'text-gray-400'}`}>
+                        <span className={`text-[11px] shrink-0 ${selectedContact?.id === c.id ? 'text-white/50' : 'text-ink-soft'}`}>
                           {formatDate(c.createdAt)}
                         </span>
                       </div>
-                      <p className={`text-xs truncate ${selectedContact?.id === c.id ? 'text-white/60' : 'text-gray-500'}`}>{c.email}</p>
-                      <p className={`text-xs mt-0.5 line-clamp-1 ${selectedContact?.id === c.id ? 'text-white/50' : 'text-gray-400'}`}>{c.message}</p>
+                      <p className={`text-xs truncate ${selectedContact?.id === c.id ? 'text-white/60' : 'text-ink-soft'}`}>{c.email}</p>
+                      <p className={`text-xs mt-0.5 line-clamp-1 ${selectedContact?.id === c.id ? 'text-white/50' : 'text-ink-soft/70'}`}>{c.message}</p>
                     </div>
                   </div>
                 </button>
@@ -238,31 +238,31 @@ export default function ContactsList() {
 
         {/* Right: Detail */}
         {selectedContact ? (
-          <div className="flex-1 bg-white rounded-2xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
+          <div className="flex-1 bg-paper rounded-2xl border border-line flex flex-col overflow-hidden shadow-sm">
             {/* Detail header */}
-            <div className="px-6 py-5 border-b border-gray-100 flex items-start justify-between">
+            <div className="px-6 py-5 border-b border-line flex items-start justify-between">
               <div className="flex items-center gap-4">
                 <div className={`w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${getAvatarColor(selectedContact.name)}`}>
                   {getInitials(selectedContact.name)}
                 </div>
                 <div>
-                  <h2 className="text-base font-bold text-gray-900">{selectedContact.name}</h2>
-                  <a href={`mailto:${selectedContact.email}`} className="text-sm text-blue-600 hover:underline">{selectedContact.email}</a>
+                  <h2 className="text-base font-bold text-white">{selectedContact.name}</h2>
+                  <a href={`mailto:${selectedContact.email}`} className="text-sm text-brand hover:underline">{selectedContact.email}</a>
                 </div>
               </div>
-              <button onClick={() => setSelectedContact(null)} className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-400 hover:text-gray-600">
+              <button onClick={() => setSelectedContact(null)} className="p-2 hover:bg-white/[0.05] rounded-lg transition-colors text-ink-soft hover:text-white">
                 <X size={16} />
               </button>
             </div>
 
             {/* Meta bar */}
-            <div className="px-6 py-2.5 bg-gray-50/50 border-b border-gray-100 flex items-center gap-4">
-              <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                <Clock size={12} className="text-gray-400" />
+            <div className="px-6 py-2.5 bg-ink border-b border-line flex items-center gap-4">
+              <div className="flex items-center gap-1.5 text-xs text-ink-soft">
+                <Clock size={12} className="text-ink-soft/70" />
                 {formatFullDate(selectedContact.createdAt)}
               </div>
-              <span className={`inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full font-semibold ${
-                selectedContact.status === 'read' ? 'bg-gray-100 text-gray-500' : 'bg-blue-50 text-blue-600'
+              <span className={`inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full font-semibold border ${
+                selectedContact.status === 'read' ? 'bg-white/[0.03] text-ink-soft border-line' : 'bg-brand/10 text-brand border-brand/20'
               }`}>
                 {selectedContact.status === 'read' ? <><MailOpen size={10} /> Read</> : <><Mail size={10} /> Unread</>}
               </span>
@@ -270,31 +270,31 @@ export default function ContactsList() {
 
             {/* Message body */}
             <div className="flex-1 overflow-y-auto px-6 py-6">
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Message</p>
-              <div className="bg-gray-50 rounded-xl p-5 border border-gray-100 max-w-2xl">
-                <p className="text-gray-800 leading-relaxed whitespace-pre-wrap text-sm">{selectedContact.message}</p>
+              <p className="text-[10px] font-bold text-ink-soft uppercase tracking-widest mb-3">Message</p>
+              <div className="bg-ink rounded-xl p-5 border border-line max-w-2xl">
+                <p className="text-white/90 leading-relaxed whitespace-pre-wrap text-sm">{selectedContact.message}</p>
               </div>
             </div>
 
             {/* Actions */}
-            <div className="px-6 py-4 border-t border-gray-100 flex items-center justify-between bg-gray-50/30">
+            <div className="px-6 py-4 border-t border-line flex items-center justify-between bg-ink/50">
               <a href={`mailto:${selectedContact.email}?subject=Re: Your message to Botmartz`}
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-900 text-white text-sm font-semibold rounded-xl hover:bg-gray-700 transition-colors shadow-sm">
+                className="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-ink text-sm font-semibold rounded-xl hover:bg-gray-200 transition-colors shadow-sm">
                 <Reply size={14} /> Reply via Email
               </a>
               <button onClick={() => setDeleteTarget(selectedContact)}
-                className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-red-500 hover:bg-red-50 rounded-xl transition-colors">
+                className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-red-500 hover:bg-red-500/10 hover:border-red-500/20 border border-transparent rounded-xl transition-colors">
                 <Trash2 size={14} /> Delete
               </button>
             </div>
           </div>
         ) : (
-          <div className="flex-1 bg-white rounded-2xl border border-gray-200 border-dashed flex flex-col items-center justify-center text-center shadow-sm">
-            <div className="w-14 h-14 bg-gray-50 border border-gray-100 rounded-2xl flex items-center justify-center mb-4">
-              <Mail size={24} className="text-gray-300" />
+          <div className="flex-1 bg-paper rounded-2xl border border-line border-dashed flex flex-col items-center justify-center text-center shadow-sm">
+            <div className="w-14 h-14 bg-white/[0.03] border border-line rounded-2xl flex items-center justify-center mb-4">
+              <Mail size={24} className="text-ink-soft" />
             </div>
-            <p className="text-sm font-semibold text-gray-500">Select a message</p>
-            <p className="text-xs text-gray-400 mt-1">Click any message from the list to read it</p>
+            <p className="text-sm font-semibold text-ink-soft">Select a message</p>
+            <p className="text-xs text-ink-soft/50 mt-1">Click any message from the list to read it</p>
           </div>
         )}
       </div>

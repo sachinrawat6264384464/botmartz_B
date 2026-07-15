@@ -1,17 +1,23 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "./client-layout";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
   display: "swap",
 });
@@ -19,28 +25,22 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://botmartz.com"),
   title: {
-    default: "Botmartz | Premium Generative AI & Automation Solutions",
+    default: "Botmartz | AI Engineering for Production AI Systems",
     template: "%s | Botmartz"
   },
-  description: "Transforming enterprise performance through intelligent AI agents, custom RAG systems, and next-gen workflow automation ecosystems.",
+  description: "Botmartz helps organizations design, build, and deploy Enterprise RAG systems and AI Agents. Our engineering team works with modern AI technologies like PyTorch, LangGraph, and FastAPI.",
   keywords: [
-    "Generative AI Solutions",
-    "Enterprise AI Agents",
-    "Custom RAG Systems",
-    "Workflow Automation",
-    "AI Consulting",
-    "Indore AI Company",
+    "AI Engineering",
+    "Enterprise RAG",
+    "AI Agents",
+    "PyTorch",
+    "LangGraph",
+    "FastAPI",
+    "Google ADK",
+    "Production AI",
     "Botmartz",
     "Soham Sharma",
-    "GenAI Architect",
-    "Corporate AI Training",
-    "Next.js Development Agency",
-    "Large Language Models LLM",
-    "Vector Database integration",
-    "LlamaIndex LangChain",
-    "Agentic AI Development",
-    "Custom Chatbot Solutions",
-    "Software Development Indore"
+    "Document AI"
   ],
   authors: [{ name: "Soham Sharma", url: "https://www.linkedin.com/in/soham-sharma/" }],
   creator: "Soham Sharma",
@@ -60,8 +60,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://botmartz.com",
-    title: "Botmartz | Premium Generative AI & Automation Solutions",
-    description: "Transforming enterprise performance through intelligent AI agents, custom RAG systems, and next-gen workflow automation ecosystems.",
+    title: "Botmartz | AI Engineering for Production AI Systems",
+    description: "Botmartz helps organizations design, build, and deploy Enterprise RAG systems and AI Agents.",
     siteName: "Botmartz",
     images: [
       {
@@ -74,8 +74,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Botmartz | Premium Generative AI & Automation Solutions",
-    description: "Transforming enterprise performance through intelligent AI agents, custom RAG systems, and next-gen workflow automation ecosystems.",
+    title: "Botmartz | AI Engineering for Production AI Systems",
+    description: "Botmartz helps organizations design, build, and deploy Enterprise RAG systems and AI Agents.",
     images: ["/BotmartzNewLogo.png"],
     creator: "@botmartz"
   }
@@ -108,9 +108,30 @@ export default function RootLayout({
           as="image"
           type="image/png"
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Botmartz",
+              "url": "https://botmartz.com",
+              "logo": "https://botmartz.com/Logo-removebg-preview.png",
+              "sameAs": [
+                "https://www.linkedin.com/in/soham-sharma/",
+                "https://github.com/botmartz"
+              ],
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "email": "hello@botmartz.com",
+                "contactType": "customer support"
+              }
+            })
+          }}
+        />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`}
         suppressHydrationWarning
       >
         <ClientLayout>{children}</ClientLayout>

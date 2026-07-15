@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Botmartz — Brand Guide</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B1C2C;
+    --ink-soft:#3C4C5C;
+    --deep:#0678BE;
+    --brand:#0092D7;
+    --signal:#00B8F0;
+    --grid-bg:#EFF5FA;
+    --paper:#FCFDFE;
+    --line:#C9DCE9;
+    --redline:#FF5C35;
+    --white:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Inter',sans-serif; line-height:1.6;
+    background-image:
+      linear-gradient(var(--grid-bg) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-bg) 1px, transparent 1px);
+    background-size:28px 28px;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:0 32px;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--brand); margin:0 0 10px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--redline);display:inline-block;}
+
+  /* COVER */
+  header.cover{
+    background:linear-gradient(180deg, var(--ink) 0%, #142B3F 100%);
+    color:var(--white); padding:90px 0 70px; position:relative; overflow:hidden;
+    border-bottom:3px solid var(--redline);
+  }
+  header.cover::after{
+    content:""; position:absolute; right:-120px; top:-120px; width:420px; height:420px;
+    border-radius:50%; border:1px solid rgba(255,255,255,.08);
+  }
+  header.cover .tag{font-family:'JetBrains Mono',monospace; color:var(--signal); font-size:13px; letter-spacing:.15em; text-transform:uppercase;}
+  header.cover h1{
+    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:64px; line-height:1.02;
+    margin:18px 0 14px; background:linear-gradient(100deg,var(--deep),var(--signal));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  header.cover p.sub{font-size:19px; color:#B9C9D6; max-width:620px; margin:0;}
+  .revline{
+    display:flex; gap:28px; margin-top:46px; font-family:'JetBrains Mono',monospace;
+    font-size:12px; color:#7E93A3; flex-wrap:wrap;
+  }
+  .revline b{color:#D7E4EC;}
+
+  section{padding:64px 0; border-bottom:1px solid var(--line);}
+  h2{font-family:'Space Grotesk',sans-serif; font-size:32px; margin:0 0 8px; font-weight:600;}
+  h3{font-family:'Space Grotesk',sans-serif; font-size:20px; margin:0 0 10px; font-weight:600;}
+  .lede{font-size:17px; color:var(--ink-soft); max-width:720px; margin:0 0 32px;}
+
+  /* CALLOUT / VERDICT BOX */
+  .callout{
+    background:var(--white); border:1px solid var(--line); border-left:4px solid var(--redline);
+    padding:22px 26px; border-radius:2px; margin:26px 0;
+  }
+  .callout .k{font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--redline); font-weight:600;}
+
+  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+  @media(max-width:760px){.two-col{grid-template-columns:1fr;}}
+
+  .card{background:var(--white); border:1px solid var(--line); padding:24px; border-radius:2px;}
+  .card h4{margin:0 0 10px; font-family:'Space Grotesk',sans-serif; font-size:16px;}
+  .card ul{margin:0; padding-left:18px; font-size:14.5px; color:var(--ink-soft);}
+  .card ul li{margin-bottom:6px;}
+
+  /* LOGO LOCKUPS */
+  .lockup-row{display:flex; gap:20px; flex-wrap:wrap; margin:28px 0;}
+  .lockup{
+    flex:1; min-width:260px; background:var(--white); border:1px solid var(--line);
+    padding:30px 24px; text-align:center; position:relative;
+  }
+  .lockup .tag2{
+    position:absolute; top:10px; left:12px; font-family:'JetBrains Mono',monospace;
+    font-size:10px; color:#9AAAB6; letter-spacing:.08em;
+  }
+  .wordmark{
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:34px; letter-spacing:-.01em;
+    background:linear-gradient(100deg,var(--deep),var(--signal)); -webkit-background-clip:text;
+    background-clip:text; color:transparent;
+  }
+  .wordmark small{
+    display:block; font-family:'JetBrains Mono',monospace; font-weight:500; font-size:11px;
+    letter-spacing:.22em; color:var(--brand); margin-top:6px; -webkit-text-fill-color:var(--brand);
+  }
+  .signalmark{width:52px;height:52px;margin:0 auto 14px;}
+  .full-lockup-note{font-size:13px;color:var(--ink-soft); margin-top:14px;}
+
+  /* COLOR SWATCHES */
+  .swatch-grid{display:grid; grid-template-columns:repeat(6,1fr); gap:14px; margin:26px 0;}
+  @media(max-width:900px){.swatch-grid{grid-template-columns:repeat(3,1fr);}}
+  .swatch{border:1px solid var(--line); background:var(--white);}
+  .swatch .chip{height:84px;}
+  .swatch .meta{padding:10px 12px;}
+  .swatch .name{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:13px;}
+  .swatch .hex{font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink-soft);}
+  .swatch .use{font-size:11.5px; color:#8598A6; margin-top:4px;}
+
+  /* TYPE SPECIMENS */
+  .type-row{display:flex; align-items:baseline; gap:18px; padding:16px 0; border-bottom:1px dashed var(--line);}
+  .type-row:last-child{border-bottom:none;}
+  .type-label{font-family:'JetBrains Mono',monospace; font-size:11px; color:#8598A6; width:150px; flex-shrink:0; text-transform:uppercase; letter-spacing:.08em;}
+  .display-xl{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:44px;}
+  .display-l{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:28px;}
+  .body-sample{font-family:'Inter',sans-serif; font-size:17px; color:var(--ink);}
+  .mono-sample{font-family:'JetBrains Mono',monospace; font-size:14px; color:var(--brand);}
+
+  /* CLEARSPACE DIAGRAM */
+  .clearspace-demo{
+    background:repeating-linear-gradient(45deg, #fff, #fff 8px, #F2F7FA 8px, #F2F7FA 16px);
+    border:1px dashed var(--brand); padding:44px; display:inline-block; position:relative;
+  }
+  .clearspace-demo .inner{border:1px solid var(--redline); padding:14px 22px;}
+
+  /* GRID SIGNATURE MOTIF */
+  .blueprint-box{
+    background:linear-gradient(180deg,#08243A,#0B1C2C); border:1px solid #163247; border-radius:2px;
+    padding:34px; color:#CFE3EE; position:relative; overflow:hidden;
+  }
+  .blueprint-box::before{
+    content:""; position:absolute; inset:0;
+    background-image:linear-gradient(rgba(0,184,240,.09) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(0,184,240,.09) 1px, transparent 1px);
+    background-size:24px 24px;
+  }
+  .blueprint-box .corner{position:absolute; width:16px; height:16px; border:2px solid var(--signal);}
+  .blueprint-box .c1{top:10px;left:10px;border-right:none;border-bottom:none;}
+  .blueprint-box .c2{top:10px;right:10px;border-left:none;border-bottom:none;}
+  .blueprint-box .c3{bottom:10px;left:10px;border-right:none;border-top:none;}
+  .blueprint-box .c4{bottom:10px;right:10px;border-left:none;border-top:none;}
+  .blueprint-box .tagline{font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em; color:#5D8AA0; position:relative;}
+  .blueprint-box h3{color:#fff; position:relative; font-size:24px; margin-top:8px;}
+  .blueprint-box p{position:relative; color:#9FB9C8; max-width:480px; font-size:14.5px;}
+
+  /* MOCKUPS */
+  .mock-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:26px;}
+  @media(max-width:760px){.mock-grid{grid-template-columns:1fr;}}
+  .mock{background:var(--white); border:1px solid var(--line);}
+  .mock .frame-label{font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#8598A6; padding:8px 12px; border-bottom:1px solid var(--line); letter-spacing:.08em; text-transform:uppercase;}
+  .li-banner{
+    height:180px; background:linear-gradient(120deg,#0B1C2C 0%, #0678BE 55%, #00B8F0 100%);
+    display:flex; align-items:center; padding:0 30px; position:relative; overflow:hidden;
+  }
+  .li-banner::after{content:""; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px); background-size:20px 20px;}
+  .li-banner .t{position:relative; color:#fff;}
+  .li-banner .t .b1{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:26px;}
+  .li-banner .t .b2{font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em; color:var(--signal); margin-top:6px;}
+
+  .ig-post{height:280px; background:var(--ink); position:relative; display:flex; flex-direction:column; justify-content:space-between; padding:26px; overflow:hidden;}
+  .ig-post::before{content:""; position:absolute; inset:0; background-image:radial-gradient(circle at 85% 15%, rgba(0,184,240,.35), transparent 55%);}
+  .ig-post .eb{position:relative; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.14em; color:var(--signal); text-transform:uppercase;}
+  .ig-post .hl{position:relative; font-family:'Space Grotesk',sans-serif; color:#fff; font-size:22px; font-weight:600; line-height:1.25; max-width:80%;}
+  .ig-post .fb{position:relative; font-family:'JetBrains Mono',monospace; color:#6E8898; font-size:10.5px;}
+
+  .card-biz{height:180px; background:var(--white); border:1px solid var(--line); padding:20px; position:relative;}
+  .card-biz .bw{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;background:linear-gradient(100deg,var(--deep),var(--signal));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .card-biz .role{font-family:'JetBrains Mono',monospace;font-size:10px;color:#8598A6;letter-spacing:.08em;text-transform:uppercase;margin-top:30px;}
+  .card-biz .nm{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;margin-top:2px;}
+  .card-biz .line{position:absolute;bottom:20px;left:20px;right:20px;height:1px;background:var(--line);}
+  .card-biz .contact{position:absolute; bottom:0; left:20px; font-family:'JetBrains Mono',monospace; font-size:10px; color:#8598A6; padding-bottom:10px;}
+
+  .web-header{background:#fff; border-bottom:1px solid var(--line); padding:16px 24px; display:flex; justify-content:space-between; align-items:center;}
+  .web-header .navwm{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;background:linear-gradient(100deg,var(--deep),var(--signal));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .web-header nav{display:flex; gap:18px; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.06em;}
+  .web-header .cta{background:var(--ink); color:#fff; font-family:'JetBrains Mono',monospace; font-size:10.5px; padding:8px 14px; letter-spacing:.06em;}
+
+  table.spec{width:100%; border-collapse:collapse; font-size:14px; margin-top:10px;}
+  table.spec th{text-align:left; font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:#8598A6; padding:8px 10px; border-bottom:1px solid var(--line);}
+  table.spec td{padding:9px 10px; border-bottom:1px solid var(--line); color:var(--ink-soft);}
+  table.spec td:first-child{color:var(--ink); font-weight:600;}
+
+  .dont-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:20px;}
+  @media(max-width:760px){.dont-grid{grid-template-columns:1fr;}}
+  .do,.dont{padding:18px 20px; border-radius:2px;}
+  .do{background:#EEF9F2; border:1px solid #BFE6CC;}
+  .dont{background:#FDECE8; border:1px solid #F5C2B4;}
+  .do .k{color:#1E8A4C;} .dont .k{color:var(--redline);}
+  .do .k, .dont .k{font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.1em; font-weight:700;}
+  .do ul,.dont ul{margin:10px 0 0; padding-left:18px; font-size:13.5px;}
+
+  footer{padding:40px 0 70px; text-align:center;}
+  footer p{font-family:'JetBrains Mono',monospace; font-size:11.5px; color:#8598A6;}
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="wrap">
+    <div class="tag">Brand Guide · v1.0 · July 2026</div>
+    <h1>Botmartz<br>Brand System</h1>
+    <p class="sub">A working brand guide for an AI Engineering company — built to make "Botmartz builds production Enterprise RAG systems and AI Agents" visible in every color, typeface, and pixel, not just in copy.</p>
+    <div class="revline">
+      <span><b>Positioning</b>: AI Engineering — Enterprise RAG & AI Agents</span>
+      <span><b>Source</b>: Existing logomark, extracted palette</span>
+      <span><b>Status</b>: Draft for review</span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">01 — Honest Read on the Current Logo</div>
+    <h2>What your logo says today, versus what you need it to say</h2>
+    <p class="lede">Before any color palette or type system, this is the actual strategic question: does the logo help a CTO believe you can build a production RAG system, or does it work against that?</p>
+
+    <div class="callout">
+      <div class="k">Verdict</div>
+      <p style="margin:10px 0 0;">The mark itself is well-made — clean gradient, confident wordmark, a nice detail in the cable-line that flows into the underline beneath "AI Solutions." But the mascot (a smiling, headset-wearing robot head) reads as <em>consumer chatbot / assistant app</em>, not <em>enterprise AI engineering firm</em>. That's fine for Academy and community-facing content, where warmth helps. It's the wrong signal on a proposal, a LinkedIn company page, or a website header aimed at a CTO evaluating a RAG vendor.</p>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <h4>Where the mascot logo still works well</h4>
+        <ul>
+          <li>Botmartz Academy — students respond to warmth and approachability</li>
+          <li>Instagram, community posts, event badges, meetup slides</li>
+          <li>Merch, stickers, informal social assets</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Where it should step back</h4>
+        <ul>
+          <li>Website header / footer on botmartz.com (main company site)</li>
+          <li>Proposals, case studies, client-facing decks</li>
+          <li>LinkedIn company page banner and profile</li>
+          <li>Anywhere the audience is a CTO, founder, or engineering lead</li>
+        </ul>
+      </div>
+    </div>
+
+    <p style="margin-top:22px; font-size:15px; color:var(--ink-soft);">The fix isn't a new logo from scratch — it's a <strong>two-lockup system</strong>. Keep the full mascot mark for Academy/Community. Introduce a wordmark-led lockup, using the exact same gradient and letterforms, for every enterprise-facing surface. Same brand, two registers — this is normal practice (think Google vs. Google Developers, or Meta vs. Instagram's own separate mark).</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">02 — Logo Lockup System</div>
+    <h2>Two lockups, one brand</h2>
+    <p class="lede">Use Lockup A wherever you're selling Enterprise RAG / AI Agents to a business buyer. Use Lockup B (your existing full mark) wherever the audience is students, community, or social.</p>
+
+    <div class="lockup-row">
+      <div class="lockup">
+        <span class="tag2">LOCKUP A — ENTERPRISE</span>
+        <div class="wordmark">BOTMARTZ<small>AI ENGINEERING</small></div>
+        <p class="full-lockup-note">Wordmark only, same blue gradient as your existing logo. Use on the main site, proposals, LinkedIn company page, case studies, client decks.</p>
+      </div>
+      <div class="lockup">
+        <span class="tag2">LOCKUP B — COMMUNITY</span>
+        <svg class="signalmark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#0678BE"/><stop offset="1" stop-color="#00B8F0"/>
+          </linearGradient></defs>
+          <rect x="20" y="18" width="60" height="50" rx="14" fill="none" stroke="url(#g1)" stroke-width="5"/>
+          <circle cx="38" cy="42" r="5" fill="url(#g1)"/><circle cx="62" cy="42" r="5" fill="url(#g1)"/>
+          <path d="M38 56 Q50 64 62 56" stroke="url(#g1)" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <line x1="50" y1="18" x2="50" y2="6" stroke="url(#g1)" stroke-width="4"/>
+          <circle cx="50" cy="5" r="3.5" fill="#00B8F0"/>
+        </svg>
+        <div class="wordmark" style="font-size:24px;">BOTMARTZ<small>AI SOLUTIONS</small></div>
+        <p class="full-lockup-note">Your existing full mark — mascot + wordmark. Keep exactly as-is for Academy, Instagram, community, events.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h4>Clear space & minimum size</h4>
+      <p style="font-size:14px;color:var(--ink-soft);margin:0 0 16px;">Minimum clear space around either lockup = the height of the "B" in Botmartz, measured on all four sides. Never let text, photography, or UI chrome enter that margin.</p>
+      <div class="clearspace-demo"><div class="inner"><div class="wordmark" style="font-size:22px;">BOTMARTZ</div></div></div>
+      <table class="spec" style="margin-top:20px;">
+        <tr><th>Context</th><th>Minimum width</th></tr>
+        <tr><td>Digital (web, social)</td><td>120px</td></tr>
+        <tr><td>Print (business card, letterhead)</td><td>28mm</td></tr>
+        <tr><td>Favicon / avatar</td><td>Use Lockup B's signal mark only, simplified, no text</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">03 — Color System</div>
+    <h2>Botmartz Blue, extended</h2>
+    <p class="lede">Your existing logo is a single blue gradient (#0678BE → #00B8F0) on white. That's a strong, disciplined starting point — the system below keeps that gradient as the hero color and adds only what's missing: a working ink for text, a quiet background, and one accent used sparingly.</p>
+
+    <div class="swatch-grid">
+      <div class="swatch"><div class="chip" style="background:#0678BE;"></div><div class="meta"><div class="name">Deep Blue</div><div class="hex">#0678BE</div><div class="use">Gradient start · dark UI</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#0092D7;"></div><div class="meta"><div class="name">Botmartz Blue</div><div class="hex">#0092D7</div><div class="use">Primary brand color</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#00B8F0;"></div><div class="meta"><div class="name">Signal Cyan</div><div class="hex">#00B8F0</div><div class="use">Gradient end · highlights</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#0B1C2C;"></div><div class="meta"><div class="name">Ink</div><div class="hex">#0B1C2C</div><div class="use">Body text, dark sections</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#EFF5FA;"></div><div class="meta"><div class="name">Blueprint Grid</div><div class="hex">#EFF5FA</div><div class="use">Backgrounds, grid tint</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#FF5C35;"></div><div class="meta"><div class="name">Redline</div><div class="hex">#FF5C35</div><div class="use">One accent only — CTAs, emphasis</div></div></div>
+    </div>
+
+    <div class="callout">
+      <div class="k">Why an orange at all, in a blue brand</div>
+      <p style="margin:10px 0 0;">"Redline" is a real engineering term — the red-ink annotations made on a blueprint during revision. It's the one warm mark against an otherwise all-blue, all-technical palette, used only for calls to action, key stats, or "here's the one thing that changed" moments. It should never appear as a background or a large fill — treat it like a pen mark, not a paint color.</p>
+    </div>
+
+    <table class="spec">
+      <tr><th>Color</th><th>Do</th><th>Don't</th></tr>
+      <tr><td>Deep Blue / Botmartz Blue / Signal Cyan gradient</td><td>Logo, hero headlines, section dividers, diagrams</td><td>Body text (fails contrast below 18px)</td></tr>
+      <tr><td>Ink #0B1C2C</td><td>All body copy, dark-mode sections</td><td>Pure black — never use #000</td></tr>
+      <tr><td>Blueprint Grid #EFF5FA</td><td>Page backgrounds, card fills, subtle grid pattern</td><td>As a text color — too low contrast</td></tr>
+      <tr><td>Redline #FF5C35</td><td>One CTA button, one stat, one underline per screen</td><td>More than one redline element per view</td></tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">04 — Typography</div>
+    <h2>Three typefaces, three jobs</h2>
+    <p class="lede">Display face carries personality. Body face carries clarity. Mono face carries the "engineering" part of AI Engineering — it's used the way a codebase uses it, not decoratively.</p>
+
+    <div class="type-row"><div class="type-label">Display / Headlines</div><div class="display-xl">Space Grotesk</div></div>
+    <div class="type-row"><div class="type-label">Sub-headlines</div><div class="display-l">Production AI, engineered.</div></div>
+    <div class="type-row"><div class="type-label">Body / Inter</div><div class="body-sample">We design, build, and deploy Enterprise RAG systems and AI Agents using PyTorch, LangGraph, and FastAPI.</div></div>
+    <div class="type-row"><div class="type-label">Mono / Utility</div><div class="mono-sample">stack: [pytorch, langgraph, fastapi]</div></div>
+
+    <table class="spec" style="margin-top:26px;">
+      <tr><th>Role</th><th>Typeface</th><th>Weights used</th><th>Where</th></tr>
+      <tr><td>Display</td><td>Space Grotesk</td><td>500 / 600 / 700</td><td>H1–H3, hero statements, section titles</td></tr>
+      <tr><td>Body</td><td>Inter</td><td>400 / 500 / 600</td><td>Paragraphs, UI copy, nav</td></tr>
+      <tr><td>Utility / Mono</td><td>JetBrains Mono</td><td>400 / 500</td><td>Eyebrows, stack labels, code, stat labels, timestamps</td></tr>
+    </table>
+    <p style="font-size:13.5px;color:var(--ink-soft);margin-top:14px;">Why this pairing and not a generic sans: Space Grotesk has the slightly geometric, technical character your gradient wordmark already has — it doesn't fight the logo. Inter stays invisible for long-form reading. JetBrains Mono is a literal signal — it's the font engineers already read code in, so every time a stack name or metric appears in it, it reinforces "engineering," not "marketing."</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">05 — Signature Motif: The Blueprint Grid</div>
+    <h2>One recurring visual idea, everywhere</h2>
+    <p class="lede">Your existing logo already has a great unused detail: the thin cable line that runs from the robot's antenna down into an underline beneath "AI Solutions." Extend that single idea — a thin signal line — into the whole system's signature: a faint dot/line grid standing in for a blueprint or schematic, with corner registration marks, exactly like an engineering drawing.</p>
+
+    <div class="blueprint-box">
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <div class="tagline">FIG. 01 — ENTERPRISE RAG / REV A</div>
+      <h3>This is the one visual idea to reuse everywhere</h3>
+      <p>Grid backgrounds, corner marks, and a single signal-blue line running through diagrams, decks, and social templates. It should feel like a schematic, not a startup gradient poster.</p>
+    </div>
+    <p style="font-size:13.5px;color:var(--ink-soft);margin-top:16px;">Use this motif on: blog post headers, Instagram carousel backgrounds, event slides, the AI Frontier stage backdrop, and architecture diagrams in case studies. It is the one place this brand is allowed to be a little more designed — keep everything else (type, layout, color count) restrained around it.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">06 — Voice & Tone</div>
+    <h2>How Botmartz sounds</h2>
+    <div class="dont-grid">
+      <div class="do">
+        <div class="k">Do</div>
+        <ul>
+          <li>Lead with the technical claim, then explain it plainly</li>
+          <li>Use precise nouns: "chunking," "retrieval," "agent memory" — not "AI magic"</li>
+          <li>Show the architecture before the outcome</li>
+          <li>Write like an engineer explaining a decision to another engineer</li>
+        </ul>
+      </div>
+      <div class="dont">
+        <div class="k">Don't</div>
+        <ul>
+          <li>"AI is changing the world" — style openers</li>
+          <li>Hype adjectives: revolutionary, game-changing, cutting-edge</li>
+          <li>Framework-name-dropping as the headline ("We know LangChain!")</li>
+          <li>Salary-bump or urgency-driven sales language</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">07 — Imagery & Iconography</div>
+    <h2>What appears in photos and diagrams</h2>
+    <div class="two-col">
+      <div class="card">
+        <h4>Use</h4>
+        <ul>
+          <li>Real architecture diagrams (retrieval pipelines, agent flow charts)</li>
+          <li>Screen recordings of actual demos, not staged stock photography</li>
+          <li>Whiteboard / working sessions, meetups, terminal and code screenshots</li>
+          <li>The blueprint grid motif as a background device</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Avoid</h4>
+        <ul>
+          <li>Generic stock photos of glowing brains, circuit-board humanoid heads, "robot handshake"</li>
+          <li>Abstract particle/neural-network wallpaper art with no informational content</li>
+          <li>Stock photography of unrelated diverse office teams pointing at a screen</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">08 — Applications</div>
+    <h2>How this looks in the real world</h2>
+
+    <div class="mock-grid">
+      <div class="mock">
+        <div class="frame-label">LinkedIn Company Banner</div>
+        <div class="li-banner"><div class="t"><div class="b1">Botmartz AI Solutions</div><div class="b2">ENTERPRISE RAG · AI AGENTS</div></div></div>
+      </div>
+      <div class="mock">
+        <div class="frame-label">Instagram Post Template</div>
+        <div class="ig-post">
+          <div class="eb">Engineering Insights · 04</div>
+          <div class="hl">Why your RAG system gives wrong answers</div>
+          <div class="fb">@botmartzai_solutions</div>
+        </div>
+      </div>
+      <div class="mock">
+        <div class="frame-label">Business Card</div>
+        <div class="card-biz">
+          <div class="bw">BOTMARTZ</div>
+          <div class="role">Founder</div>
+          <div class="nm">Soham Sharma</div>
+          <div class="line"></div>
+          <div class="contact">soham@botmartz.com · botmartz.com</div>
+        </div>
+      </div>
+      <div class="mock">
+        <div class="frame-label">Website Header (Enterprise Lockup)</div>
+        <div class="web-header">
+          <div class="navwm">BOTMARTZ</div>
+          <nav><span>Services</span><span>Work</span><span>Insights</span></nav>
+          <div class="cta">Book a Call</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="border-bottom:none;">
+  <div class="wrap">
+    <div class="eyebrow">09 — Quick Reference</div>
+    <h2>The one-page version</h2>
+    <table class="spec">
+      <tr><th>Element</th><th>Rule</th></tr>
+      <tr><td>Logo</td><td>Lockup A (wordmark) for enterprise · Lockup B (full mark) for Academy/community</td></tr>
+      <tr><td>Colors</td><td>Deep Blue → Signal Cyan gradient is the hero color; Ink for text; Redline for one CTA only</td></tr>
+      <tr><td>Type</td><td>Space Grotesk (headlines) · Inter (body) · JetBrains Mono (stack labels, data, code)</td></tr>
+      <tr><td>Motif</td><td>Blueprint grid + corner marks + one signal line, reused across decks, social, and diagrams</td></tr>
+      <tr><td>Voice</td><td>Engineer-to-engineer, plain nouns, architecture before outcome, zero hype adjectives</td></tr>
+      <tr><td>Imagery</td><td>Real diagrams and demos only — no stock "AI brain" photography</td></tr>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <p>BOTMARTZ AI SOLUTIONS — BRAND GUIDE V1.0 — INTERNAL REFERENCE</p>
+</footer>
+
+</body>
+</html>

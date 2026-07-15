@@ -51,7 +51,7 @@ export default function AdminLogin() {
         {/* Login Card */}
         <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
           {/* Glow Effect */}
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-[#D4AF37]/20 to-[#D4AF37]/5 rounded-2xl blur opacity-30" />
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-brand/20 to-brand/5 rounded-2xl blur opacity-30" />
           
           <div className="relative">
             <h1 className="text-2xl font-bold text-white mb-2">Admin Login</h1>
@@ -80,7 +80,7 @@ export default function AdminLogin() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg pl-12 pr-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37]/50 focus:bg-white/10 transition-all"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg pl-12 pr-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-brand/50 focus:bg-white/10 transition-all"
                     placeholder="admin@botmartz.com"
                     required
                   />
@@ -98,7 +98,7 @@ export default function AdminLogin() {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg pl-12 pr-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37]/50 focus:bg-white/10 transition-all"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg pl-12 pr-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-brand/50 focus:bg-white/10 transition-all"
                     placeholder="••••••••"
                     required
                   />
@@ -109,7 +109,7 @@ export default function AdminLogin() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-black font-semibold py-3.5 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-brand hover:bg-brand/90 text-white font-semibold py-3.5 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <>

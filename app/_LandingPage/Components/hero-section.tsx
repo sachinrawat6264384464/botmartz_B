@@ -114,10 +114,10 @@ export default function HeroSection() {
       >
         {mounted && !isMobile && (
           <>
-            <FloatingShard top="15%" left="5%" label="AI-POWERED" sublabel="Neural Networks" delay={0} color={ACCENT_COLOR} />
-            <FloatingShard top="25%" right="5%" label="SECURE" sublabel="256-bit Encryption" delay={0.1} color={ACCENT_COLOR} />
-            <FloatingShard bottom="20%" left="8%" label="SCALABLE" sublabel="Cloud Infrastructure" delay={0.2} color={ACCENT_COLOR} />
-            <FloatingShard bottom="25%" right="8%" label="99.9% UPTIME" sublabel="Enterprise Grade" delay={0.3} color={ACCENT_COLOR} />
+            <FloatingShard top="15%" left="5%" label="ENTERPRISE RAG" sublabel="Document AI" delay={0} color={ACCENT_COLOR} />
+            <FloatingShard top="25%" right="5%" label="AI AGENTS" sublabel="Autonomous Workflows" delay={0.1} color={ACCENT_COLOR} />
+            <FloatingShard bottom="20%" left="8%" label="PRODUCTION READY" sublabel="FastAPI & LangGraph" delay={0.2} color={ACCENT_COLOR} />
+            <FloatingShard bottom="25%" right="8%" label="AI ENGINEERING" sublabel="PyTorch Ecosystem" delay={0.3} color={ACCENT_COLOR} />
           </>
         )}
 
@@ -203,13 +203,12 @@ export default function HeroSection() {
               className="pt-6 md:pt-8 flex flex-col items-center gap-6 md:gap-8 max-w-2xl px-4"
             >
               <p className={`${interTight.className} text-gray-300 text-base sm:text-lg md:text-xl font-light tracking-wide leading-relaxed text-center`}>
-                Transforming businesses through{' '}
+                We design, build, and deploy{' '}
                 <span className="relative inline-block">
-                  {/* Reverted to white glow and text */}
                   <span className="absolute inset-0 bg-white/10 blur-xl" />
-                  <span className="relative text-white font-medium drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">next-gen automation</span>
+                  <span className="relative text-white font-medium drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">Enterprise RAG & AI Agents</span>
                 </span>
-                , intelligent software, and scalable digital ecosystems.
+                {' '}for production environments.
               </p>
 
               <div className="flex flex-row gap-3 sm:gap-4 mt-2 w-full sm:w-auto">

@@ -209,8 +209,8 @@ export default function CommentsAdminPage() {
     return (
       <div className={`${interTight.className} flex items-center justify-center h-64`}>
         <div className="flex flex-col items-center gap-3">
-          <div className="w-5 h-5 rounded-full border-2 border-gray-200 border-t-gray-600 animate-spin" />
-          <p className="text-xs text-gray-400">Loading comments…</p>
+          <div className="w-5 h-5 rounded-full border-2 border-line border-t-white animate-spin" />
+          <p className="text-xs text-ink-soft">Loading comments…</p>
         </div>
       </div>
     );
@@ -223,14 +223,14 @@ export default function CommentsAdminPage() {
       <div className="mb-8">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Comments</h1>
-            <p className="text-sm text-gray-500 mt-0.5">Moderate and manage reader comments</p>
+            <h1 className="text-2xl font-bold text-white">Comments</h1>
+            <p className="text-sm text-ink-soft mt-0.5">Moderate and manage reader comments</p>
           </div>
           <div className="flex items-center gap-2">
             {selectedComments.size > 0 && (
               <button
                 onClick={() => setShowBulkDeleteConfirm(true)}
-                className="flex items-center gap-2 px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-semibold transition-all shadow-sm"
+                className="flex items-center gap-2 px-3 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20 rounded-xl text-xs font-semibold transition-all shadow-sm"
               >
                 <Trash2 size={13} />
                 Delete ({selectedComments.size})
@@ -238,7 +238,7 @@ export default function CommentsAdminPage() {
             )}
             <button
               onClick={handleExportCSV}
-              className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 hover:border-gray-300 text-gray-600 hover:text-gray-900 rounded-xl text-xs font-semibold transition-all shadow-sm"
+              className="flex items-center gap-2 px-3 py-2 bg-paper border border-line hover:bg-white/[0.03] text-ink-soft hover:text-white rounded-xl text-xs font-semibold transition-all shadow-sm"
             >
               <Download size={13} />
               Export CSV
@@ -250,47 +250,47 @@ export default function CommentsAdminPage() {
       {/* Stat Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {[
-          { label: "Total Comments", value: counts.all, icon: MessageCircle, bg: "bg-blue-50", border: "border-blue-100", color: "text-blue-600" },
-          { label: "Pending", value: counts.pending, icon: MessageCircle, bg: "bg-amber-50", border: "border-amber-100", color: "text-amber-600" },
-          { label: "Approved", value: counts.approved, icon: CheckCircle2, bg: "bg-green-50", border: "border-green-100", color: "text-green-600" },
-          { label: "Rejected", value: counts.rejected, icon: XCircle, bg: "bg-red-50", border: "border-red-100", color: "text-red-600" },
+          { label: "Total Comments", value: counts.all, icon: MessageCircle, bg: "bg-brand/10", border: "border-brand/20", color: "text-brand" },
+          { label: "Pending", value: counts.pending, icon: MessageCircle, bg: "bg-amber-500/10", border: "border-amber-500/20", color: "text-amber-500" },
+          { label: "Approved", value: counts.approved, icon: CheckCircle2, bg: "bg-green-500/10", border: "border-green-500/20", color: "text-green-500" },
+          { label: "Rejected", value: counts.rejected, icon: XCircle, bg: "bg-red-500/10", border: "border-red-500/20", color: "text-red-500" },
         ].map(({ label, value, icon: Icon, bg, border, color }) => (
-          <div key={label} className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
+          <div key={label} className="bg-paper border border-line rounded-2xl p-5 shadow-sm">
             <div className="flex items-start justify-between mb-4">
               <div className={`w-10 h-10 ${bg} ${border} border rounded-xl flex items-center justify-center`}>
                 <Icon size={18} className={color} />
               </div>
             </div>
-            <p className="text-3xl font-bold text-gray-900 tracking-tight">{value}</p>
-            <p className="text-xs font-semibold text-gray-600 mt-0.5">{label}</p>
+            <p className="text-3xl font-bold text-white tracking-tight">{value}</p>
+            <p className="text-xs font-semibold text-ink-soft mt-0.5">{label}</p>
           </div>
         ))}
       </div>
 
       {/* Main Table Card */}
-      <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+      <div className="bg-paper border border-line rounded-2xl overflow-hidden shadow-sm">
 
         {/* Filters */}
-        <div className="px-5 py-4 border-b border-gray-100 flex flex-col md:flex-row gap-3">
+        <div className="px-5 py-4 border-b border-line flex flex-col md:flex-row gap-3">
           <div className="flex-1 relative">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-soft" />
             <input
               type="text"
               placeholder="Search author, email, content…"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+              className="w-full pl-9 pr-3 py-2 bg-ink border border-line rounded-xl text-sm text-white placeholder-ink-soft focus:outline-none focus:border-brand transition-all"
             />
           </div>
-          <div className="flex gap-1 bg-gray-100 rounded-xl p-1">
+          <div className="flex gap-1 bg-ink rounded-xl p-1 border border-line">
             {(["all", "pending", "approved", "rejected"] as const).map((s) => (
               <button
                 key={s}
                 onClick={() => setStatusFilter(s)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all capitalize ${
                   statusFilter === s
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-500 hover:text-gray-700"
+                    ? "bg-paper text-white shadow-sm border border-line"
+                    : "text-ink-soft hover:text-white"
                 }`}
               >
                 {s}
@@ -305,11 +305,11 @@ export default function CommentsAdminPage() {
         {/* Table or empty */}
         {paginated.length === 0 ? (
           <div className="py-24 flex flex-col items-center text-center">
-            <div className="w-12 h-12 bg-gray-50 border border-gray-100 rounded-2xl flex items-center justify-center mb-3">
-              <MessageCircle size={20} className="text-gray-300" />
+            <div className="w-12 h-12 bg-white/[0.03] border border-line rounded-2xl flex items-center justify-center mb-3">
+              <MessageCircle size={20} className="text-ink-soft" />
             </div>
-            <p className="text-sm font-semibold text-gray-500">No comments found</p>
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-sm font-semibold text-ink-soft">No comments found</p>
+            <p className="text-xs text-ink-soft/70 mt-1">
               {searchQuery ? "Try a different search" : "Comments will appear here once submitted"}
             </p>
           </div>
@@ -317,46 +317,46 @@ export default function CommentsAdminPage() {
           <>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="border-b border-gray-100 bg-gray-50/70">
+                <thead className="border-b border-line bg-ink/50">
                   <tr>
                     <th className="px-4 py-3 text-left">
                       <input
                         type="checkbox"
                         checked={selectedComments.size === paginated.length && paginated.length > 0}
                         onChange={handleSelectAll}
-                        className="w-3.5 h-3.5 cursor-pointer rounded accent-gray-900"
+                        className="w-3.5 h-3.5 cursor-pointer rounded accent-brand"
                       />
                     </th>
                     {["#", "Author", "Blog Post", "Comment", "Status", "Date", "Actions"].map((h) => (
                       <th
                         key={h}
-                        className="px-3 py-3 text-left text-[10px] font-semibold text-gray-400 uppercase tracking-wider"
+                        className="px-3 py-3 text-left text-[10px] font-semibold text-ink-soft uppercase tracking-wider"
                       >
                         {h}
                       </th>
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50">
+                <tbody className="divide-y divide-line">
                   {paginated.map((comment, idx) => (
-                    <tr key={comment.id} className="hover:bg-gray-50/70 transition-colors">
+                    <tr key={comment.id} className="hover:bg-white/[0.03] transition-colors">
                       <td className="px-4 py-3">
                         <input
                           type="checkbox"
                           checked={selectedComments.has(comment.id)}
                           onChange={() => toggleSelect(comment.id)}
-                          className="w-3.5 h-3.5 cursor-pointer rounded accent-gray-900"
+                          className="w-3.5 h-3.5 cursor-pointer rounded accent-brand"
                         />
                       </td>
-                      <td className="px-3 py-3 text-xs text-gray-400">{startIndex + idx + 1}</td>
+                      <td className="px-3 py-3 text-xs text-ink-soft">{startIndex + idx + 1}</td>
                       <td className="px-3 py-3">
                         <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 text-[10px] font-bold shrink-0">
+                          <div className="w-7 h-7 rounded-full bg-ink flex items-center justify-center text-ink-soft text-[10px] font-bold shrink-0 border border-line">
                             {getAuthorName(comment).charAt(0).toUpperCase()}
                           </div>
                           <div>
-                            <div className="text-xs font-semibold text-gray-900">{getAuthorName(comment)}</div>
-                            <div className="text-[10px] text-gray-400">{getAuthorEmail(comment)}</div>
+                            <div className="text-xs font-semibold text-white">{getAuthorName(comment)}</div>
+                            <div className="text-[10px] text-ink-soft">{getAuthorEmail(comment)}</div>
                           </div>
                         </div>
                       </td>
@@ -365,23 +365,23 @@ export default function CommentsAdminPage() {
                           href={`/blog/${getBlogSlug(getBlogRef(comment))}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xs text-gray-600 hover:text-gray-900 transition-colors max-w-[150px] truncate block"
+                          className="text-xs text-ink-soft hover:text-brand transition-colors max-w-[150px] truncate block"
                         >
                           {getBlogTitle(getBlogRef(comment))}
                         </a>
                       </td>
                       <td className="px-3 py-3">
-                        <p className="text-xs text-gray-500 max-w-[180px] truncate">{comment.content}</p>
+                        <p className="text-xs text-ink-soft max-w-[180px] truncate">{comment.content}</p>
                       </td>
                       <td className="px-3 py-3">{statusBadge(comment.status)}</td>
-                      <td className="px-3 py-3 text-[10px] text-gray-400 whitespace-nowrap">
+                      <td className="px-3 py-3 text-[10px] text-ink-soft whitespace-nowrap">
                         {formatDate(comment.createdAt)}
                       </td>
                       <td className="px-3 py-3">
                         <div className="flex items-center gap-1">
                           <button
                             onClick={() => setSelectedComment(comment)}
-                            className="p-1.5 hover:bg-blue-50 text-gray-400 hover:text-blue-600 rounded-lg transition-all"
+                            className="p-1.5 hover:bg-brand/10 text-ink-soft hover:text-brand rounded-lg transition-all"
                             title="View"
                           >
                             <Eye size={13} />
@@ -389,7 +389,7 @@ export default function CommentsAdminPage() {
                           {comment.status !== "approved" && (
                             <button
                               onClick={() => handleApprove(comment.id)}
-                              className="p-1.5 hover:bg-green-50 text-gray-400 hover:text-green-600 rounded-lg transition-all"
+                              className="p-1.5 hover:bg-green-500/10 text-ink-soft hover:text-green-500 rounded-lg transition-all"
                               title="Approve"
                             >
                               <CheckCircle2 size={13} />
@@ -398,7 +398,7 @@ export default function CommentsAdminPage() {
                           {comment.status !== "rejected" && (
                             <button
                               onClick={() => handleReject(comment.id)}
-                              className="p-1.5 hover:bg-red-50 text-gray-400 hover:text-red-500 rounded-lg transition-all"
+                              className="p-1.5 hover:bg-red-500/10 text-ink-soft hover:text-red-500 rounded-lg transition-all"
                               title="Reject"
                             >
                               <XCircle size={13} />
@@ -406,7 +406,7 @@ export default function CommentsAdminPage() {
                           )}
                           <button
                             onClick={() => setCommentToDelete(comment)}
-                            className="p-1.5 hover:bg-red-50 text-gray-400 hover:text-red-500 rounded-lg transition-all"
+                            className="p-1.5 hover:bg-red-500/10 text-ink-soft hover:text-red-500 rounded-lg transition-all"
                             title="Delete"
                           >
                             <Trash2 size={13} />
@@ -421,17 +421,17 @@ export default function CommentsAdminPage() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="px-5 py-3 border-t border-gray-100 flex items-center justify-between">
-                <span className="text-xs text-gray-400">
+              <div className="px-5 py-3 border-t border-line flex items-center justify-between">
+                <span className="text-xs text-ink-soft">
                   Showing {startIndex + 1}–{Math.min(startIndex + COMMENTS_PER_PAGE, filtered.length)} of {filtered.length}
                 </span>
                 <div className="flex items-center gap-1.5">
                   <button
                     onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                     disabled={currentPage === 1}
-                    className="p-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                    className="p-1.5 border border-line rounded-lg hover:bg-white/[0.03] disabled:opacity-30 disabled:cursor-not-allowed transition-all text-ink-soft hover:text-white"
                   >
-                    <ChevronLeft size={13} className="text-gray-500" />
+                    <ChevronLeft size={13} className="text-inherit" />
                   </button>
                   {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
                     let p = i + 1;
@@ -446,8 +446,8 @@ export default function CommentsAdminPage() {
                         onClick={() => setCurrentPage(p)}
                         className={`min-w-7 h-7 px-1.5 rounded-lg text-xs font-semibold transition-all ${
                           currentPage === p
-                            ? "bg-gray-900 text-white"
-                            : "border border-gray-200 text-gray-500 hover:bg-gray-50"
+                            ? "bg-white text-ink"
+                            : "border border-line text-ink-soft hover:bg-white/[0.03] hover:text-white"
                         }`}
                       >
                         {p}
@@ -457,9 +457,9 @@ export default function CommentsAdminPage() {
                   <button
                     onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                     disabled={currentPage === totalPages}
-                    className="p-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                    className="p-1.5 border border-line rounded-lg hover:bg-white/[0.03] disabled:opacity-30 disabled:cursor-not-allowed transition-all text-ink-soft hover:text-white"
                   >
-                    <ChevronRight size={13} className="text-gray-500" />
+                    <ChevronRight size={13} className="text-inherit" />
                   </button>
                 </div>
               </div>
@@ -476,8 +476,8 @@ export default function CommentsAdminPage() {
           onConfirm={handleBulkDelete}
           confirmLabel={`Delete ${selectedComments.size} Comment${selectedComments.size > 1 ? "s" : ""}`}
         >
-          <p className="text-sm text-gray-500">
-            Delete <span className="font-semibold text-gray-900">{selectedComments.size}</span> selected comment{selectedComments.size > 1 ? "s" : ""}? This cannot be undone.
+          <p className="text-sm text-ink-soft">
+            Delete <span className="font-semibold text-white">{selectedComments.size}</span> selected comment{selectedComments.size > 1 ? "s" : ""}? This cannot be undone.
           </p>
         </ConfirmModal>
       )}
@@ -490,56 +490,56 @@ export default function CommentsAdminPage() {
           onConfirm={handleDeleteConfirm}
           confirmLabel="Delete Comment"
         >
-          <p className="text-sm text-gray-500 mb-3">This action cannot be undone.</p>
-          <div className="bg-gray-50 border border-gray-100 rounded-xl p-3">
-            <p className="text-sm font-semibold text-gray-900">{getAuthorName(commentToDelete)}</p>
-            <p className="text-xs text-gray-400 mb-1.5">{getAuthorEmail(commentToDelete)}</p>
-            <p className="text-xs text-gray-500 line-clamp-3">{commentToDelete.content}</p>
+          <p className="text-sm text-ink-soft mb-3">This action cannot be undone.</p>
+          <div className="bg-ink border border-line rounded-xl p-3">
+            <p className="text-sm font-semibold text-white">{getAuthorName(commentToDelete)}</p>
+            <p className="text-xs text-ink-soft mb-1.5">{getAuthorEmail(commentToDelete)}</p>
+            <p className="text-xs text-ink-soft line-clamp-3">{commentToDelete.content}</p>
           </div>
         </ConfirmModal>
       )}
 
       {/* View Detail Modal */}
       {selectedComment && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className={`${interTight.className} bg-white border border-gray-200 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-hidden`}>
-            <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className={`${interTight.className} bg-paper border border-line rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-hidden`}>
+            <div className="px-5 py-4 border-b border-line flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-gray-700 text-sm font-bold shrink-0">
+                <div className="w-9 h-9 bg-ink rounded-xl border border-line flex items-center justify-center text-ink-soft text-sm font-bold shrink-0">
                   {getAuthorName(selectedComment).charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-900">Comment Detail</h3>
-                  <p className="text-xs text-gray-400">{getAuthorEmail(selectedComment)}</p>
+                  <h3 className="text-sm font-semibold text-white">Comment Detail</h3>
+                  <p className="text-xs text-ink-soft">{getAuthorEmail(selectedComment)}</p>
                 </div>
               </div>
               <button
                 onClick={() => setSelectedComment(null)}
-                className="p-1.5 hover:bg-gray-100 rounded-lg transition-all"
+                className="p-1.5 hover:bg-white/[0.05] text-ink-soft hover:text-white rounded-lg transition-all"
               >
-                <XCircle size={16} className="text-gray-400" />
+                <XCircle size={16} />
               </button>
             </div>
 
             <div className="p-5 overflow-y-auto space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 font-bold text-base">
+                <div className="w-10 h-10 rounded-full bg-ink border border-line flex items-center justify-center text-ink-soft font-bold text-base">
                   {getAuthorName(selectedComment).charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-900 text-sm">{getAuthorName(selectedComment)}</p>
-                  <p className="text-xs text-gray-500">{getAuthorEmail(selectedComment)}</p>
+                  <p className="font-semibold text-white text-sm">{getAuthorName(selectedComment)}</p>
+                  <p className="text-xs text-ink-soft">{getAuthorEmail(selectedComment)}</p>
                   <div className="mt-1">{statusBadge(selectedComment.status)}</div>
                 </div>
               </div>
 
               <div>
-                <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Blog Post</p>
+                <p className="text-[10px] font-semibold text-ink-soft uppercase tracking-wider mb-1">Blog Post</p>
                 <a
                   href={`/blog/${getBlogSlug(getBlogRef(selectedComment))}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1 text-xs text-blue-600 hover:underline font-medium"
+                  className="flex items-center gap-1 text-xs text-brand hover:underline font-medium"
                 >
                   {getBlogTitle(getBlogRef(selectedComment))}
                   <ExternalLink size={10} />
@@ -547,31 +547,31 @@ export default function CommentsAdminPage() {
               </div>
 
               <div>
-                <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Submitted</p>
-                <p className="text-xs text-gray-600">{formatDate(selectedComment.createdAt)}</p>
+                <p className="text-[10px] font-semibold text-ink-soft uppercase tracking-wider mb-1">Submitted</p>
+                <p className="text-xs text-ink-soft">{formatDate(selectedComment.createdAt)}</p>
               </div>
 
               <div>
-                <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1.5">Comment</p>
-                <div className="bg-gray-50 border border-gray-100 rounded-xl p-3">
-                  <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">
+                <p className="text-[10px] font-semibold text-ink-soft uppercase tracking-wider mb-1.5">Comment</p>
+                <div className="bg-ink border border-line rounded-xl p-3">
+                  <p className="text-sm text-ink-soft leading-relaxed whitespace-pre-wrap">
                     {selectedComment.content}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="px-5 py-4 border-t border-gray-100 flex items-center justify-end gap-2">
+            <div className="px-5 py-4 border-t border-line flex items-center justify-end gap-2 bg-paper">
               <button
                 onClick={() => setSelectedComment(null)}
-                className="px-3 py-2 border border-gray-200 hover:bg-gray-50 text-gray-500 rounded-xl text-xs font-medium transition-all"
+                className="px-3 py-2 border border-line hover:bg-white/[0.03] text-ink-soft hover:text-white rounded-xl text-xs font-medium transition-all"
               >
                 Close
               </button>
               {selectedComment.status !== "approved" && (
                 <button
                   onClick={() => { handleApprove(selectedComment.id); setSelectedComment(null); }}
-                  className="flex items-center gap-1.5 px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl text-xs font-semibold transition-all"
+                  className="flex items-center gap-1.5 px-3 py-2 bg-green-500/10 hover:bg-green-500/20 text-green-500 border border-green-500/20 rounded-xl text-xs font-semibold transition-all"
                 >
                   <CheckCircle2 size={13} /> Approve
                 </button>
@@ -579,14 +579,14 @@ export default function CommentsAdminPage() {
               {selectedComment.status !== "rejected" && (
                 <button
                   onClick={() => { handleReject(selectedComment.id); setSelectedComment(null); }}
-                  className="flex items-center gap-1.5 px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-semibold transition-all"
+                  className="flex items-center gap-1.5 px-3 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20 rounded-xl text-xs font-semibold transition-all"
                 >
                   <XCircle size={13} /> Reject
                 </button>
               )}
               <button
                 onClick={() => { setSelectedComment(null); setCommentToDelete(selectedComment); }}
-                className="flex items-center gap-1.5 px-3 py-2 border border-gray-200 hover:bg-gray-50 text-gray-500 rounded-xl text-xs font-medium transition-all"
+                className="flex items-center gap-1.5 px-3 py-2 border border-line hover:bg-red-500/10 hover:border-red-500/20 text-ink-soft hover:text-red-500 rounded-xl text-xs font-medium transition-all"
               >
                 <Trash2 size={13} /> Delete
               </button>
@@ -608,25 +608,25 @@ function ConfirmModal({
   confirmLabel: string;
 }) {
   return (
-    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white border border-gray-200 rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden">
-        <div className="px-5 py-4 border-b border-red-100 bg-red-50/50 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-red-100 flex items-center justify-center">
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-paper border border-line rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden">
+        <div className="px-5 py-4 border-b border-red-500/20 bg-red-500/10 flex items-center gap-3">
+          <div className="w-8 h-8 rounded-xl bg-red-500/10 flex items-center justify-center border border-red-500/20">
             <AlertTriangle size={15} className="text-red-500" />
           </div>
-          <h3 className="text-sm font-semibold text-gray-900">{title}</h3>
+          <h3 className="text-sm font-semibold text-white">{title}</h3>
         </div>
-        <div className="p-5">{children}</div>
-        <div className="px-5 py-4 border-t border-gray-100 flex items-center justify-end gap-2">
+        <div className="p-5 text-white">{children}</div>
+        <div className="px-5 py-4 border-t border-line flex items-center justify-end gap-2 bg-paper">
           <button
             onClick={onCancel}
-            className="px-3 py-2 border border-gray-200 hover:bg-gray-50 text-gray-500 rounded-xl text-xs font-medium transition-all"
+            className="px-3 py-2 border border-line hover:bg-white/[0.03] text-ink-soft hover:text-white rounded-xl text-xs font-medium transition-all"
           >
             Cancel
           </button>
           <button
             onClick={onConfirm}
-            className="flex items-center gap-1.5 px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-semibold transition-all"
+            className="flex items-center gap-1.5 px-3 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20 rounded-xl text-xs font-semibold transition-all"
           >
             <Trash2 size={13} /> {confirmLabel}
           </button>

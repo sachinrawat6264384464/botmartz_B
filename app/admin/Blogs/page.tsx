@@ -70,7 +70,7 @@ export default function BlogsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-8 h-8 border-2 border-gray-300 border-t-black rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-line border-t-white rounded-full animate-spin" />
       </div>
     );
   }

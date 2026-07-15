@@ -14,9 +14,10 @@ import { collection, query, where, getCountFromServer } from 'firebase/firestore
 const interTight = Inter_Tight({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
 const SECTION_GROUPS: { label: string; ids: ModuleId[] }[] = [
-  { label: 'Overview', ids: ['dashboard'] },
+  { label: 'Main', ids: ['dashboard', 'crm', 'projects', 'events', 'ai-agents'] },
   { label: 'Content',  ids: ['blogs', 'case-studies', 'comments', 'newsletter'] },
   { label: 'Inbox',    ids: ['contacts'] },
+  { label: 'System', ids: ['settings', 'super-admin'] },
 ];
 
 const BADGE_STYLE: Partial<Record<ModuleId, string>> = {
@@ -63,9 +64,9 @@ export default function AdminSidebar() {
       {/* Mobile Toggle */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2.5 bg-[#111114] rounded-xl border border-white/10 shadow-lg"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2.5 bg-admin-card rounded-xl border border-admin-border shadow-lg"
       >
-        {isOpen ? <X size={18} className="text-white/70" /> : <Menu size={18} className="text-white/70" />}
+        {isOpen ? <X size={18} className="text-admin-text-muted" /> : <Menu size={18} className="text-admin-text-muted" />}
       </button>
 
       {/* Mobile Overlay */}
@@ -75,7 +76,7 @@ export default function AdminSidebar() {
 
       {/* Sidebar */}
       <aside
-        className={`${interTight.className} fixed lg:static inset-y-0 left-0 z-40 flex flex-col bg-[#111114] border-r border-white/[0.07] transform transition-all duration-300 ease-in-out lg:transform-none ${
+        className={`${interTight.className} fixed lg:static inset-y-0 left-0 z-40 flex flex-col bg-admin-card border-r border-admin-border transform transition-all duration-300 ease-in-out lg:transform-none ${
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         } ${collapsed ? 'w-[62px]' : 'w-[232px]'}`}
       >
@@ -87,14 +88,14 @@ export default function AdminSidebar() {
           </div>
           {!collapsed && (
             <div>
-              <p className="text-[13px] font-bold text-white tracking-tight leading-none">BOTMARTZ</p>
-              <p className="text-[9px] text-white/30 tracking-[0.2em] uppercase mt-1">Admin Panel</p>
+              <p className="text-[13px] font-bold text-admin-text tracking-tight leading-none">BOTMARTZ</p>
+              <p className="text-[9px] text-admin-text-muted tracking-[0.2em] uppercase mt-1">Admin Panel</p>
             </div>
           )}
         </div>
 
         {/* Hairline */}
-        <div className="mx-3 h-px bg-white/[0.06]" />
+        <div className="mx-3 h-px bg-admin-border/50" />
 
         {/* ── Navigation ── */}
         <nav className="flex-1 overflow-y-auto py-4 px-2 space-y-5" style={{ scrollbarWidth: 'none' }}>
@@ -106,13 +107,13 @@ export default function AdminSidebar() {
               <div key={group.label}>
                 {!collapsed ? (
                   <div className="flex items-center gap-2 px-3 mb-2">
-                    <span className="text-[9px] font-semibold text-white/30 uppercase tracking-[0.2em] shrink-0">
+                    <span className="text-[9px] font-semibold text-admin-text-muted uppercase tracking-[0.2em] shrink-0">
                       {group.label}
                     </span>
-                    <div className="flex-1 h-px bg-white/[0.06]" />
+                    <div className="flex-1 h-px bg-admin-border/50" />
                   </div>
                 ) : (
-                  <div className="mx-2 mb-2 h-px bg-white/[0.06]" />
+                  <div className="mx-2 mb-2 h-px bg-admin-border/50" />
                 )}
 
                 <div className="space-y-0.5">
@@ -132,25 +133,25 @@ export default function AdminSidebar() {
                           collapsed ? 'justify-center' : ''
                         } ${
                           isActive
-                            ? 'bg-white/[0.09] text-white'
-                            : 'text-white/50 hover:text-white/80 hover:bg-white/[0.05]'
+                            ? 'bg-admin-accent-muted text-admin-accent'
+                            : 'text-admin-text-muted hover:text-admin-text hover:bg-admin-bg'
                         }`}
                       >
                         {/* Active left bar */}
                         {isActive && (
                           <span
-                            className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-5 rounded-r-full bg-white/80"
+                            className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-5 rounded-r-full bg-admin-accent"
                           />
                         )}
 
                         <Icon
                           size={16}
-                          className={`shrink-0 transition-colors ${isActive ? 'text-white' : 'text-white/40 group-hover:text-white/70'}`}
+                          className={`shrink-0 transition-colors ${isActive ? 'text-admin-accent' : 'text-admin-text-muted group-hover:text-admin-text'}`}
                         />
 
                         {!collapsed && (
                           <>
-                            <span className={`text-[13px] flex-1 leading-none ${isActive ? 'font-semibold text-white' : 'font-medium'}`}>
+                            <span className={`text-[13px] flex-1 leading-none ${isActive ? 'font-semibold text-admin-accent' : 'font-medium'}`}>
                               {mod.label}
                             </span>
                             {showBadge && (
@@ -166,9 +167,9 @@ export default function AdminSidebar() {
                             {showBadge && (
                               <span className="absolute top-1.5 right-1.5 w-[5px] h-[5px] rounded-full bg-sky-400" />
                             )}
-                            {/* Tooltip */}
+                              {/* Tooltip */}
                             <div className="absolute left-full ml-3 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-                              <div className="flex items-center gap-2 px-3 py-2 bg-[#1e1e22] border border-white/10 text-white/80 text-xs font-medium rounded-xl whitespace-nowrap shadow-xl">
+                              <div className="flex items-center gap-2 px-3 py-2 bg-admin-card border border-admin-border text-admin-text text-xs font-medium rounded-xl whitespace-nowrap shadow-xl">
                                 {mod.label}
                                 {showBadge && (
                                   <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${badgeClass}`}>
@@ -190,10 +191,10 @@ export default function AdminSidebar() {
 
         {/* ── Collapse toggle — desktop only ── */}
         <div className="hidden lg:block px-2 pb-2">
-          <div className="mx-1 mb-2 h-px bg-white/[0.06]" />
+          <div className="mx-1 mb-2 h-px bg-admin-border/50" />
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className={`w-full flex items-center gap-2.5 px-3 py-2 text-white/30 hover:text-white/60 hover:bg-white/[0.04] rounded-xl transition-all text-xs font-medium ${
+            className={`w-full flex items-center gap-2.5 px-3 py-2 text-admin-text-muted hover:text-admin-text hover:bg-admin-bg rounded-xl transition-all text-xs font-medium ${
               collapsed ? 'justify-center' : ''
             }`}
           >
@@ -205,24 +206,24 @@ export default function AdminSidebar() {
         {/* ── User card + sign out ── */}
         <div className="px-2 pb-3">
           {/* Card */}
-          <div className="p-2.5 bg-white/[0.04] border border-white/[0.07] rounded-xl mb-1.5">
+          <div className="p-2.5 bg-admin-bg border border-admin-border rounded-xl mb-1.5">
             <div className={`flex items-center gap-2.5 ${collapsed ? 'justify-center' : ''}`}>
               <div className="relative shrink-0">
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-zinc-600 to-zinc-800 flex items-center justify-center">
                   <span className="text-[11px] font-bold text-white/80">{initials}</span>
                 </div>
-                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-[#111114]" />
+                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-admin-card" />
               </div>
               {!collapsed && (
                 <div className="flex-1 min-w-0">
-                  <p className="text-[12px] font-semibold text-white/80 truncate leading-tight">{displayName}</p>
+                  <p className="text-[12px] font-semibold text-admin-text truncate leading-tight">{displayName}</p>
                   <div className="mt-0.5">
                     {userRole?.isSuperAdmin ? (
-                      <span className="inline-flex items-center gap-1 text-[9px] font-bold text-yellow-400/80">
+                      <span className="inline-flex items-center gap-1 text-[9px] font-bold text-yellow-500">
                         <Zap size={8} /> Super Admin
                       </span>
                     ) : (
-                      <span className="text-[9px] text-white/25 truncate block">{displayEmail}</span>
+                      <span className="text-[9px] text-admin-text-muted truncate block">{displayEmail}</span>
                     )}
                   </div>
                 </div>
@@ -235,7 +236,7 @@ export default function AdminSidebar() {
             onClick={handleSignOut}
             disabled={signingOut}
             title={collapsed ? 'Sign Out' : undefined}
-            className={`group w-full flex items-center gap-2.5 px-3 py-2 text-white/30 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all text-xs font-medium disabled:opacity-30 ${
+            className={`group w-full flex items-center gap-2.5 px-3 py-2 text-admin-text-muted hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all text-xs font-medium disabled:opacity-30 ${
               collapsed ? 'justify-center' : ''
             }`}
           >

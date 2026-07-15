@@ -1054,16 +1054,16 @@ const handleInsertCode = (code: string, language: string) => {
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-        <div className="bg-white rounded-lg w-full max-w-6xl my-8 shadow-2xl">
+      <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 overflow-y-auto">
+        <div className="bg-paper border border-line rounded-lg w-full max-w-6xl my-8 shadow-2xl">
           {/* Header */}
-          <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white z-10 rounded-t-lg">
-            <h2 className="text-xl font-bold text-gray-900">
+          <div className="px-6 py-4 border-b border-line flex items-center justify-between sticky top-0 bg-paper z-10 rounded-t-lg">
+            <h2 className="text-xl font-bold text-white">
               {blog ? "Edit Blog Post" : "Create New Blog Post"}
             </h2>
             <button
               onClick={handleCancel}
-              className="p-2 hover:bg-gray-100 text-gray-600 rounded-lg transition-colors"
+              className="p-2 hover:bg-white/[0.05] text-ink-soft hover:text-white rounded-lg transition-colors"
               aria-label="Close editor"
             >
               <X size={24} />
@@ -1093,7 +1093,7 @@ const handleInsertCode = (code: string, language: string) => {
               generateSlugRaw={generateSlugRaw}
             />
 
-            <hr className="border-gray-200" />
+            <hr className="border-line" />
 
             {/* Editor Area */}
             <div>
@@ -1101,8 +1101,8 @@ const handleInsertCode = (code: string, language: string) => {
                 <label className="block text-sm font-semibold text-gray-700">
                   Content *
                 </label>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-1.5">
-                  <p className="text-xs font-medium text-blue-900">
+                <div className="bg-brand/10 border border-brand/20 rounded-lg px-3 py-1.5">
+                  <p className="text-xs font-medium text-brand">
                     💡 Click images to edit alt text
                     {localImages.length > 0 && !saving && (
                       <>
@@ -1125,15 +1125,15 @@ const handleInsertCode = (code: string, language: string) => {
               />
 
               {/* Editor Input */}
-              <div className="border border-t-0 border-gray-300 rounded-b-lg bg-white min-h-[400px] overflow-x-auto">
+              <div className="border border-t-0 border-line rounded-b-lg bg-ink min-h-[400px] overflow-x-auto text-white">
                 <EditorContent editor={editor} />
               </div>
             </div>
           </div>
 
           {/* Footer */}
-          <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-end gap-3 bg-gray-50 rounded-b-lg">
-            <div className="text-sm text-gray-600">
+          <div className="px-6 py-4 border-t border-line flex items-center justify-end gap-3 bg-paper rounded-b-lg">
+            <div className="text-sm text-ink-soft">
               {localImages.length > 0 && (
                 <p className="font-medium">
                   {localImages.length} image
@@ -1144,7 +1144,7 @@ const handleInsertCode = (code: string, language: string) => {
             <div className="flex gap-3">
               <button
                 onClick={handleCancel}
-                className="px-5 py-2.5 text-gray-700 hover:bg-gray-100 text-sm font-medium rounded-lg transition-colors border border-gray-300"
+                className="px-5 py-2.5 text-ink-soft hover:bg-white/[0.03] text-sm font-medium rounded-lg transition-colors border border-line"
                 type="button"
               >
                 Cancel
@@ -1152,7 +1152,7 @@ const handleInsertCode = (code: string, language: string) => {
               <button
                 onClick={handleSave}
                 disabled={saving || !isSlugUnique}
-                className="px-8 py-2.5 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="px-8 py-2.5 bg-white hover:bg-gray-200 text-ink text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 type="button"
               >
                 {saving ? (
