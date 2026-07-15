@@ -1,22 +1,112 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Database, FileText, Search, ShieldCheck, Zap, Layers, RefreshCw, BarChart, Server, LayoutTemplate, Briefcase, FileSearch, HelpCircle, Calendar } from "lucide-react";
+import { db } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { 
+  ArrowRight, Database, FileText, Search, ShieldCheck, Zap, 
+  Layers, RefreshCw, BarChart, Server, LayoutTemplate, Briefcase, 
+  FileSearch, HelpCircle, Calendar 
+} from "lucide-react";
+import DynamicIcon from "@/app/_components/DynamicIcon";
+
+// Fallback Default Content
+const DEFAULT_CONTENT = {
+  hero: {
+    badge: "Services / Enterprise RAG",
+    title: "Turn Your Enterprise Knowledge Into Actionable Intelligence.",
+    subtitle: "Our Enterprise RAG solutions help organizations securely connect, retrieve, and reason over their data—delivering accurate answers and insights from documents, databases, and internal systems.",
+    ctaText: "Book a Discovery Call →",
+    ctaLink: "/contact",
+  },
+  aeoQuestion: "What is enterprise RAG?",
+  aeoAnswer: "Enterprise RAG (Retrieval-Augmented Generation) is an AI architecture that connects large language models securely to a company's internal data. Unlike public chatbots, enterprise RAG systems use advanced chunking, hybrid search, and strict access controls to ensure the AI generates accurate, verifiable answers based exclusively on proprietary business knowledge.",
+  useCases: [
+    { iconName: "Search", title: "Knowledge Search", description: "Find answers instantly across manuals, policies, and internal docs." },
+    { iconName: "FileText", title: "Document Intelligence", description: "Extract insights and summaries from contracts, reports, and PDFs." },
+    { iconName: "HelpCircle", title: "PDF AI & Q&A", description: "Ask questions and get accurate answers from complex documents." },
+    { iconName: "Server", title: "Enterprise Search", description: "Go beyond keyword search with semantic understanding of your data." },
+    { iconName: "RefreshCw", title: "Support AI", description: "Empower support teams with instant, accurate responses." },
+    { iconName: "FileSearch", title: "Research Copilot", description: "Accelerate research with contextual insights from multiple sources." },
+  ],
+  techStack: ["PyTorch", "LangChain", "LangGraph", "FastAPI", "Chroma", "PostgreSQL", "Docker", "AWS"],
+  cta: {
+    title: "Ready to Unlock the Power of Your Enterprise Data?",
+    subtitle: "Book a free discovery call and let's explore how Enterprise RAG can drive real impact for your business.",
+    buttonText: "Book a Discovery Call →"
+  },
+  structuredData: JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Enterprise RAG Development",
+    "provider": {
+      "@type": "Organization",
+      "name": "Botmartz"
+    },
+    "description": "Enterprise RAG (Retrieval-Augmented Generation) is an AI architecture that connects large language models securely to a company's internal data. We build RAG systems using advanced chunking, hybrid search, and strict access controls.",
+    "serviceType": "AI Engineering Services"
+  })
+};
 
 export default function EnterpriseRAGPage() {
+  const [content, setContent] = useState(DEFAULT_CONTENT);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchPageConfig() {
+      try {
+        const docRef = doc(db, "dynamic_pages", "enterprise-rag");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setContent({
+            hero: data.hero || DEFAULT_CONTENT.hero,
+            aeoQuestion: data.aeoQuestion || DEFAULT_CONTENT.aeoQuestion,
+            aeoAnswer: data.aeoAnswer || DEFAULT_CONTENT.aeoAnswer,
+            useCases: data.useCases || DEFAULT_CONTENT.useCases,
+            techStack: data.techStack || DEFAULT_CONTENT.techStack,
+            cta: data.cta || DEFAULT_CONTENT.cta,
+            structuredData: data.structuredData || DEFAULT_CONTENT.structuredData
+          });
+        }
+      } catch (err) {
+        console.error("Error loading dynamic content for Enterprise RAG:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchPageConfig();
+  }, []);
+
   return (
     <main>
+      {content.structuredData && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: content.structuredData
+          }}
+        />
+      )}
+
       {/* HERO SECTION */}
       <section className="relative pt-[80px] pb-0 bg-ink text-white overflow-hidden blueprint" style={{ backgroundImage: 'linear-gradient(rgba(0,184,240,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,.08) 1px, transparent 1px)' }}>
         <div className="wrap relative z-10 flex flex-col md:flex-row items-center gap-10 pb-16">
           <div className="flex-1">
-            <div className="font-mono text-[11px] text-signal uppercase tracking-[0.12em] mb-4 flex items-center gap-2"><Link href="/services" className="hover:text-white transition-colors">Services</Link> <span>/</span> <span className="text-white">Enterprise RAG</span></div>
+            <div className="font-mono text-[11px] text-signal uppercase tracking-[0.12em] mb-4 flex items-center gap-2">
+              <Link href="/services" className="hover:text-white transition-colors">Services</Link> <span>/</span> <span className="text-white">{content.hero.badge || "Enterprise RAG"}</span>
+            </div>
             <h1 className="text-[clamp(32px,4.5vw,50px)] leading-[1.1] font-semibold mb-6">
-              Turn Your Enterprise Knowledge Into <span className="text-brand">Actionable Intelligence.</span>
+              {content.hero.title}
             </h1>
             <p className="text-[17px] text-[#9FB9C8] max-w-[540px] mb-8">
-              Our Enterprise RAG solutions help organizations securely connect, retrieve, and reason over their data—delivering accurate answers and insights from documents, databases, and internal systems.
+              {content.hero.subtitle}
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link href="/contact" className="btn btn-primary bg-brand text-white hover:bg-deep">Book a Discovery Call →</Link>
+              <Link href={content.hero.ctaLink || "/contact"} className="btn btn-primary bg-brand text-white hover:bg-deep">
+                {content.hero.ctaText}
+              </Link>
               <Link href="/work/case-studies" className="btn btn-ghost border-line text-white hover:border-brand hover:text-brand">Explore Case Studies ↗</Link>
             </div>
           </div>
@@ -24,27 +114,27 @@ export default function EnterpriseRAGPage() {
             {/* Abstract Graphics */}
             <div className="w-full aspect-video max-w-[500px] ml-auto relative">
                <div className="absolute inset-0 flex items-center justify-center">
-                 <div className="w-full h-full border border-brand/20 rounded-xl relative overflow-hidden bg-white/5 backdrop-blur-sm p-6 flex flex-col gap-4 shadow-[0_20px_60px_rgba(0,146,215,0.15)]">
-                   <div className="flex justify-between items-center text-signal/50 font-mono text-[10px]">
-                     <span>QUERY_INPUT</span>
-                     <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"/> LIVE</span>
-                   </div>
-                   <div className="h-6 w-3/4 bg-white/10 rounded-sm"></div>
-                   <div className="flex-1 flex gap-4">
-                     <div className="w-1/3 border border-white/10 rounded-sm bg-white/5 p-3 flex flex-col gap-2">
-                       <div className="h-2 w-full bg-white/10 rounded-sm"></div>
-                       <div className="h-2 w-4/5 bg-white/10 rounded-sm"></div>
-                       <div className="h-2 w-full bg-white/10 rounded-sm"></div>
-                       <div className="mt-auto pt-2 border-t border-white/10 font-mono text-[8px] text-brand">VECTOR_DB</div>
-                     </div>
-                     <div className="flex-1 border border-brand/30 rounded-sm bg-brand/10 p-3 shadow-[inset_0_0_20px_rgba(0,146,215,0.2)]">
-                       <div className="font-mono text-[10px] text-white mb-2">SYNTHESIZING...</div>
-                       <div className="h-2 w-full bg-brand/40 rounded-sm mb-2"></div>
-                       <div className="h-2 w-5/6 bg-brand/40 rounded-sm mb-2"></div>
-                       <div className="h-2 w-full bg-brand/40 rounded-sm"></div>
-                     </div>
-                   </div>
-                 </div>
+                  <div className="w-full h-full border border-brand/20 rounded-xl relative overflow-hidden bg-white/5 backdrop-blur-sm p-6 flex flex-col gap-4 shadow-[0_20px_60px_rgba(0,146,215,0.15)]">
+                    <div className="flex justify-between items-center text-signal/50 font-mono text-[10px]">
+                      <span>QUERY_INPUT</span>
+                      <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"/> LIVE</span>
+                    </div>
+                    <div className="h-6 w-3/4 bg-white/10 rounded-sm"></div>
+                    <div className="flex-1 flex gap-4">
+                      <div className="w-1/3 border border-white/10 rounded-sm bg-white/5 p-3 flex flex-col gap-2">
+                        <div className="h-2 w-full bg-white/10 rounded-sm"></div>
+                        <div className="h-2 w-4/5 bg-white/10 rounded-sm"></div>
+                        <div className="h-2 w-full bg-white/10 rounded-sm"></div>
+                        <div className="mt-auto pt-2 border-t border-white/10 font-mono text-[8px] text-brand">VECTOR_DB</div>
+                      </div>
+                      <div className="flex-1 border border-brand/30 rounded-sm bg-brand/10 p-3 shadow-[inset_0_0_20px_rgba(0,146,215,0.2)]">
+                        <div className="font-mono text-[10px] text-white mb-2">SYNTHESIZING...</div>
+                        <div className="h-2 w-full bg-brand/40 rounded-sm mb-2"></div>
+                        <div className="h-2 w-5/6 bg-brand/40 rounded-sm mb-2"></div>
+                        <div className="h-2 w-full bg-brand/40 rounded-sm"></div>
+                      </div>
+                    </div>
+                  </div>
                </div>
             </div>
           </div>
@@ -72,9 +162,9 @@ export default function EnterpriseRAGPage() {
       <section className="section-pad">
         <div className="wrap mb-12 flex flex-col md:flex-row gap-10 items-center">
           <div className="md:w-1/2">
-            <h2 className="text-[30px] font-semibold mb-4">What is enterprise RAG?</h2>
+            <h2 className="text-[30px] font-semibold mb-4">{content.aeoQuestion}</h2>
             <p className="text-[16px] text-ink leading-relaxed">
-              Enterprise RAG (Retrieval-Augmented Generation) is an AI architecture that connects large language models securely to a company's internal data. Unlike public chatbots, enterprise RAG systems use advanced chunking, hybrid search, and strict access controls to ensure the AI generates accurate, verifiable answers based exclusively on proprietary business knowledge.
+              {content.aeoAnswer}
             </p>
           </div>
           <div className="md:w-1/2 bg-paper p-8 border border-line rounded-sm">
@@ -84,6 +174,8 @@ export default function EnterpriseRAGPage() {
              <cite className="text-[13px] font-semibold font-mono text-brand not-italic">— Soham Sharma, Founder at Botmartz</cite>
           </div>
         </div>
+        
+        {/* Core RAG Benefits */}
         <div className="wrap grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
             { icon: Search, title: 'Unified Knowledge Access', desc: 'Connect siloed data across documents, databases, and apps into one intelligent interface.' },
@@ -179,20 +271,13 @@ export default function EnterpriseRAGPage() {
           <h2 className="text-[30px] font-semibold">Where Enterprise RAG Delivers Value.</h2>
         </div>
         <div className="wrap grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {[
-            { icon: Search, title: 'Knowledge Search', desc: 'Find answers instantly across manuals, policies, and internal docs.' },
-            { icon: FileText, title: 'Document Intelligence', desc: 'Extract insights and summaries from contracts, reports, and PDFs.' },
-            { icon: HelpCircle, title: 'PDF AI & Q&A', desc: 'Ask questions and get accurate answers from complex documents.' },
-            { icon: Server, title: 'Enterprise Search', desc: 'Go beyond keyword search with semantic understanding of your data.' },
-            { icon: RefreshCw, title: 'Support AI', desc: 'Empower support teams with instant, accurate responses.' },
-            { icon: FileSearch, title: 'Research Copilot', desc: 'Accelerate research with contextual insights from multiple sources.' }
-          ].map((item, i) => (
+          {content.useCases.map((item, i) => (
             <div key={i} className="bg-white border border-line p-6 hover:shadow-lg transition-shadow">
               <div className="text-brand mb-4">
-                <item.icon className="w-6 h-6" />
+                <DynamicIcon name={item.iconName} className="w-6 h-6" />
               </div>
               <h4 className="text-[17px] font-semibold mb-2">{item.title}</h4>
-              <p className="text-[14px] text-ink-soft leading-relaxed">{item.desc}</p>
+              <p className="text-[14px] text-ink-soft leading-relaxed">{item.description}</p>
             </div>
           ))}
         </div>
@@ -203,81 +288,12 @@ export default function EnterpriseRAGPage() {
         <div className="wrap flex flex-col md:flex-row items-center">
           <div className="font-mono text-[11px] text-brand uppercase tracking-[0.08em] py-4 pr-8 border-b md:border-b-0 md:border-r border-line w-full md:w-auto text-center md:text-left">Built With Modern AI Engineering Stack</div>
           <div className="flex flex-wrap flex-1">
-            {['PyTorch', 'LangChain', 'LangGraph', 'FastAPI', 'Chroma', 'PostgreSQL', 'Docker'].map((tech, i) => (
+            {content.techStack.map((tech, i) => (
               <div key={tech} className="flex-1 min-w-[100px] p-[16px_10px] font-mono text-[12px] text-ink-soft text-center border-r border-line last:border-r-0">
                 {tech}
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* CASE STUDIES */}
-      <section className="section-pad section-alt">
-        <div className="wrap flex justify-between items-end gap-6 mb-10">
-          <div>
-            <div className="eyebrow">Case Studies</div>
-            <h2 className="text-[30px] font-semibold">Real Results from Real Organizations.</h2>
-          </div>
-          <Link href="/work/case-studies" className="btn btn-ghost hidden md:inline-flex">View All Case Studies →</Link>
-        </div>
-        
-        <div className="wrap grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="bg-white border border-line rounded-sm overflow-hidden group cursor-pointer hover:border-brand transition-colors flex flex-col">
-              <div className="h-[180px] bg-ink border-b border-line relative p-6">
-                <div className="absolute inset-0 blueprint opacity-20"></div>
-                <div className="relative z-10 w-full h-full border border-white/20 bg-white/5 rounded backdrop-blur flex items-center justify-center shadow-lg">
-                  <span className="font-mono text-white/50 text-[12px]">LOGISTICS_SEARCH_UI</span>
-                </div>
-              </div>
-              <div className="p-6 flex-1 flex flex-col">
-                <div className="font-mono text-[10px] text-brand uppercase tracking-wider mb-2">Enterprise RAG</div>
-                <h4 className="text-[18px] font-semibold mb-2">Global Logistics Company</h4>
-                <p className="text-[13.5px] text-ink-soft mb-6">Built an internal knowledge assistant that reduced information lookup time by 75% and improved operational efficiency.</p>
-                <div className="mt-auto font-mono text-[12px] text-brand flex items-center gap-2 group-hover:gap-3 transition-all">Read Case Study <ArrowRight className="w-3 h-3" /></div>
-              </div>
-            </div>
-            
-            <div className="bg-white border border-line rounded-sm overflow-hidden group cursor-pointer hover:border-brand transition-colors flex flex-col">
-              <div className="h-[180px] bg-grid-bg border-b border-line relative p-6">
-                <div className="relative z-10 w-full h-full border border-line bg-white rounded shadow-sm flex items-center justify-center p-4">
-                  <div className="w-full flex gap-4">
-                    <div className="flex-1 bg-grid-bg rounded-sm border border-line" />
-                    <div className="flex-1 flex flex-col gap-2">
-                       <div className="h-2 w-full bg-line rounded-sm" />
-                       <div className="h-2 w-3/4 bg-line rounded-sm" />
-                       <div className="h-2 w-full bg-line rounded-sm" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="p-6 flex-1 flex flex-col">
-                <div className="font-mono text-[10px] text-brand uppercase tracking-wider mb-2">Document Intelligence</div>
-                <h4 className="text-[18px] font-semibold mb-2">Legal Tech Platform</h4>
-                <p className="text-[13.5px] text-ink-soft mb-6">Automated document analysis and Q&A across 10K+ legal documents with 95% accuracy.</p>
-                <div className="mt-auto font-mono text-[12px] text-brand flex items-center gap-2 group-hover:gap-3 transition-all">Read Case Study <ArrowRight className="w-3 h-3" /></div>
-              </div>
-            </div>
-            
-            <div className="bg-white border border-line rounded-sm overflow-hidden group cursor-pointer hover:border-brand transition-colors flex flex-col">
-              <div className="h-[180px] bg-grid-bg border-b border-line relative p-6">
-                 <div className="relative z-10 w-full h-full border border-line bg-white rounded shadow-sm flex flex-col items-center justify-center gap-2 p-4">
-                    <div className="w-8 h-8 rounded-full bg-brand/20 self-start" />
-                    <div className="w-3/4 h-8 bg-grid-bg rounded self-start border border-line" />
-                    <div className="w-3/4 h-8 bg-brand/10 rounded self-end border border-brand/20" />
-                 </div>
-              </div>
-              <div className="p-6 flex-1 flex flex-col">
-                <div className="font-mono text-[10px] text-brand uppercase tracking-wider mb-2">Support AI</div>
-                <h4 className="text-[18px] font-semibold mb-2">SaaS Company</h4>
-                <p className="text-[13.5px] text-ink-soft mb-6">Deployed a RAG-powered support assistant that resolved 60% of tickets automatically.</p>
-                <div className="mt-auto font-mono text-[12px] text-brand flex items-center gap-2 group-hover:gap-3 transition-all">Read Case Study <ArrowRight className="w-3 h-3" /></div>
-              </div>
-            </div>
-        </div>
-        
-        <div className="wrap mt-6 text-center md:hidden">
-            <Link href="/work/case-studies" className="btn btn-ghost w-full">View All Case Studies →</Link>
         </div>
       </section>
 
@@ -288,9 +304,15 @@ export default function EnterpriseRAGPage() {
             <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(rgba(0,184,240,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,.05) 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
             
             <div className="relative z-10 max-w-[480px]">
-              <h2 className="text-[36px] font-semibold leading-[1.1] mb-4">Ready to <span className="text-signal">Unlock</span> the Power of Your Enterprise Data?</h2>
-              <p className="text-[15px] text-[#9FB9C8] mb-8">Book a free discovery call and let's explore how Enterprise RAG can drive real impact for your business.</p>
-              <Link href="/contact" className="btn btn-primary bg-brand hover:bg-deep">Book a Discovery Call →</Link>
+              <h2 className="text-[36px] font-semibold leading-[1.1] mb-4">
+                {content.cta.title}
+              </h2>
+              <p className="text-[15px] text-[#9FB9C8] mb-8">
+                {content.cta.subtitle}
+              </p>
+              <Link href="/contact" className="btn btn-primary bg-brand hover:bg-deep">
+                {content.cta.buttonText}
+              </Link>
             </div>
 
             <div className="relative z-10 flex flex-col gap-4 w-full max-w-[340px]">
@@ -325,24 +347,6 @@ export default function EnterpriseRAGPage() {
           </div>
         </div>
       </section>
-
-      {/* SCHEMA */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "name": "Enterprise RAG Development",
-            "provider": {
-              "@type": "Organization",
-              "name": "Botmartz"
-            },
-            "description": "Enterprise RAG (Retrieval-Augmented Generation) is an AI architecture that connects large language models securely to a company's internal data. We build RAG systems using advanced chunking, hybrid search, and strict access controls.",
-            "serviceType": "AI Engineering Services"
-          })
-        }}
-      />
     </main>
   );
 }

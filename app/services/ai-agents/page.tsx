@@ -1,24 +1,116 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Database, Layout, Mail, MessageSquare, Calendar, Globe, Server, ShieldCheck, Zap, Activity, Code, Briefcase, FileSearch, HelpCircle, Users, Speaker, PieChart, Workflow, Lock, Settings } from "lucide-react";
+import { db } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { 
+  ArrowRight, Database, Layout, Mail, MessageSquare, Calendar, 
+  Globe, Server, ShieldCheck, Zap, Activity, Code, Briefcase, 
+  FileSearch, HelpCircle, Users, Speaker, PieChart, Workflow, Lock, Settings 
+} from "lucide-react";
+import DynamicIcon from "@/app/_components/DynamicIcon";
+import SchemaMarkup from "@/app/_components/SchemaMarkup";
+
+// Fallback Default Content
+const DEFAULT_CONTENT = {
+  hero: {
+    badge: "Services / AI Agents",
+    title: "Intelligent AI Agents That Get Things Done.",
+    subtitle: "We build production-ready AI agents that reason, plan, take action, and deliver real business outcomes across your tools, data, and workflows.",
+    ctaText: "Book an AI Strategy Session →",
+    ctaLink: "/contact",
+  },
+  aeoQuestion: "What are AI agents for business?",
+  aeoAnswer: "AI agents for business are autonomous software systems that can plan, reason, and take action to solve complex workflows. Unlike traditional chatbots that only answer questions, enterprise AI agents connect to your internal tools (like CRM, databases, and email) to execute multi-step tasks such as customer support, sales research, and data analysis.",
+  useCases: [
+    { iconName: "Briefcase", title: "Sales Agents", description: "Qualify leads, research prospects, and draft personalized outreach that converts." },
+    { iconName: "HelpCircle", title: "Support Agents", description: "Resolve tickets, find answers, and take actions across your systems." },
+    { iconName: "FileSearch", title: "Research Agents", description: "Deep research, data synthesis, and insight reports in minutes, not hours." },
+    { iconName: "Speaker", title: "Marketing Agents", description: "Create content, run campaigns, analyze performance, and optimize results." },
+    { iconName: "Users", title: "HR Agents", description: "Screen resumes, answer employee queries, and streamline HR workflows." },
+    { iconName: "Settings", title: "Ops Agents", description: "Monitor systems, trigger workflows, and ensure smooth operations." },
+    { iconName: "Code", title: "Dev Agents", description: "Write code, review PRs, generate tests, and accelerate engineering velocity." },
+    { iconName: "PieChart", title: "Finance Agents", description: "Reconcile data, flag anomalies, and generate financial reports." },
+  ],
+  techStack: ["LangGraph", "Google ADK", "OpenAI", "Anthropic", "FastAPI", "Pydantic", "PostgreSQL", "Redis"],
+  cta: {
+    title: "Ready to Deploy Intelligent AI Agents in Your Organization?",
+    subtitle: "Let's design and build AI agents that automate work, enhance productivity, and drive real business outcomes.",
+    buttonText: "Book an AI Strategy Session →"
+  },
+  structuredData: JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Enterprise AI Agents Development",
+    "provider": {
+      "@type": "Organization",
+      "name": "Botmartz"
+    },
+    "description": "AI agents for business are autonomous software systems that can plan, reason, and take action to solve complex workflows. We build enterprise AI agents that connect to your internal tools.",
+    "serviceType": "AI Engineering Services"
+  })
+};
 
 export default function AIAgentsPage() {
+  const [content, setContent] = useState(DEFAULT_CONTENT);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchPageConfig() {
+      try {
+        const docRef = doc(db, "dynamic_pages", "ai-agents");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setContent({
+            hero: data.hero || DEFAULT_CONTENT.hero,
+            aeoQuestion: data.aeoQuestion || DEFAULT_CONTENT.aeoQuestion,
+            aeoAnswer: data.aeoAnswer || DEFAULT_CONTENT.aeoAnswer,
+            useCases: data.useCases || DEFAULT_CONTENT.useCases,
+            techStack: data.techStack || DEFAULT_CONTENT.techStack,
+            cta: data.cta || DEFAULT_CONTENT.cta,
+            structuredData: data.structuredData || DEFAULT_CONTENT.structuredData
+          });
+        }
+      } catch (err) {
+        console.error("Error loading dynamic content for AI Agents:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchPageConfig();
+  }, []);
+
   return (
     <main>
+      {/* Dynamic SEO JSON-LD injection */}
+      {content.structuredData && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: content.structuredData
+          }}
+        />
+      )}
+
       {/* HERO SECTION */}
       <section className="relative pt-[80px] pb-0 bg-ink text-white overflow-hidden blueprint" style={{ backgroundImage: 'linear-gradient(rgba(0,184,240,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,.08) 1px, transparent 1px)' }}>
         <div className="wrap relative z-10 flex flex-col lg:flex-row items-center gap-10 pb-16">
           <div className="flex-1 lg:max-w-[580px]">
             <div className="font-mono text-[11px] text-signal uppercase tracking-[0.12em] mb-4 flex items-center gap-2">
-              <Link href="/services" className="hover:text-white transition-colors">Services</Link> <span>/</span> <span className="text-white">AI Agents</span>
+              <Link href="/services" className="hover:text-white transition-colors">Services</Link> <span>/</span> <span className="text-white">{content.hero.badge || "AI Agents"}</span>
             </div>
             <h1 className="text-[clamp(32px,4.5vw,54px)] leading-[1.05] font-semibold mb-6">
-              Intelligent AI Agents<br/>That <span className="text-brand">Get Things Done.</span>
+              {content.hero.title}
             </h1>
             <p className="text-[17px] text-[#9FB9C8] max-w-[540px] mb-8">
-              We build production-ready AI agents that reason, plan, take action, and deliver real business outcomes across your tools, data, and workflows.
+              {content.hero.subtitle}
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link href="/contact" className="btn btn-primary bg-brand text-white hover:bg-deep">Book an AI Strategy Session →</Link>
+              <Link href={content.hero.ctaLink || "/contact"} className="btn btn-primary bg-brand text-white hover:bg-deep">
+                {content.hero.ctaText}
+              </Link>
               <Link href="/work/case-studies" className="btn btn-ghost border-line text-white hover:border-brand hover:text-brand">Explore Case Studies ↗</Link>
             </div>
           </div>
@@ -92,7 +184,6 @@ export default function AIAgentsPage() {
                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-brand/20 rounded-full flex items-center justify-center shadow-[0_0_60px_rgba(0,146,215,0.4)]">
                    <div className="w-24 h-24 bg-gradient-to-br from-brand to-deep rounded-2xl flex items-center justify-center shadow-lg border border-brand/50 z-10 relative">
                      <Settings className="w-10 h-10 text-white animate-[spin_10s_linear_infinite]" />
-                     {/* Connecting lines SVG overlay would go here in prod */}
                    </div>
                  </div>
 
@@ -123,9 +214,9 @@ export default function AIAgentsPage() {
       <section className="section-pad">
         <div className="wrap mb-12 flex flex-col md:flex-row gap-10 items-center">
           <div className="md:w-1/2">
-            <h2 className="text-[30px] font-semibold mb-4">What are AI agents for business?</h2>
+            <h2 className="text-[30px] font-semibold mb-4">{content.aeoQuestion}</h2>
             <p className="text-[16px] text-ink leading-relaxed">
-              AI agents for business are autonomous software systems that can plan, reason, and take action to solve complex workflows. Unlike traditional chatbots that only answer questions, enterprise AI agents connect to your internal tools (like CRM, databases, and email) to execute multi-step tasks such as customer support, sales research, and data analysis.
+              {content.aeoAnswer}
             </p>
           </div>
           <div className="md:w-1/2 bg-paper p-8 border border-line rounded-sm">
@@ -145,22 +236,13 @@ export default function AIAgentsPage() {
         </div>
         
         <div className="wrap grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {[
-            { icon: Briefcase, title: 'Sales Agents', desc: 'Qualify leads, research prospects, and draft personalized outreach that converts.' },
-            { icon: HelpCircle, title: 'Support Agents', desc: 'Resolve tickets, find answers, and take actions across your systems.' },
-            { icon: FileSearch, title: 'Research Agents', desc: 'Deep research, data synthesis, and insight reports in minutes, not hours.' },
-            { icon: Speaker, title: 'Marketing Agents', desc: 'Create content, run campaigns, analyze performance, and optimize results.' },
-            { icon: Users, title: 'HR Agents', desc: 'Screen resumes, answer employee queries, and streamline HR workflows.' },
-            { icon: Settings, title: 'Ops Agents', desc: 'Monitor systems, trigger workflows, and ensure smooth operations.' },
-            { icon: Code, title: 'Dev Agents', desc: 'Write code, review PRs, generate tests, and accelerate engineering velocity.' },
-            { icon: PieChart, title: 'Finance Agents', desc: 'Reconcile data, flag anomalies, and generate financial reports.' },
-          ].map((item, i) => (
+          {content.useCases.map((item, i) => (
             <div key={i} className="bg-white border border-line p-6 hover:border-brand transition-colors text-center sm:text-left flex flex-col items-center sm:items-start">
               <div className="w-12 h-12 rounded-full bg-grid-bg border border-line flex items-center justify-center text-brand mb-4">
-                <item.icon className="w-6 h-6" />
+                <DynamicIcon name={item.iconName} className="w-6 h-6" />
               </div>
               <h3 className="text-[17px] font-semibold mb-2">{item.title}</h3>
-              <p className="text-[13.5px] text-ink-soft leading-relaxed">{item.desc}</p>
+              <p className="text-[13.5px] text-ink-soft leading-relaxed">{item.description}</p>
             </div>
           ))}
         </div>
@@ -249,7 +331,7 @@ export default function AIAgentsPage() {
             <h3 className="text-[28px] font-semibold">Best-in-Class Technologies.<br/>Production-Ready.</h3>
           </div>
           <div className="flex-1 grid grid-cols-2 sm:grid-cols-4 gap-4 w-full">
-            {['LangGraph', 'Google ADK', 'OpenAI', 'Anthropic', 'FastAPI', 'Pydantic', 'PostgreSQL', 'Redis'].map((tech) => (
+            {content.techStack.map((tech) => (
               <div key={tech} className="bg-grid-bg border border-line p-4 rounded flex items-center justify-center font-mono text-[13px] text-ink font-semibold">
                 {tech}
               </div>
@@ -282,46 +364,6 @@ export default function AIAgentsPage() {
         </div>
       </section>
 
-      {/* CASE STUDIES */}
-      <section className="section-pad bg-ink text-white">
-        <div className="wrap flex justify-between items-end gap-6 mb-10">
-          <div>
-            <div className="font-mono text-[11px] text-brand uppercase tracking-[0.08em] mb-3">AI Agents In Action</div>
-            <h2 className="text-[34px] font-semibold">Real Results. Real Impact.</h2>
-          </div>
-          <Link href="/work/case-studies" className="btn border border-white/20 hover:border-white transition-colors text-[13px] px-6 py-2 rounded-sm hidden md:inline-flex">View All Case Studies →</Link>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 wrap">
-            <div className="bg-white/5 border border-white/10 rounded-sm overflow-hidden group cursor-pointer hover:border-brand/50 transition-colors flex flex-col">
-              <div className="p-8 flex-1 flex flex-col">
-                <div className="font-mono text-[10px] text-brand uppercase bg-brand/20 inline-block px-2 py-1 rounded mb-4 self-start">Support Agent</div>
-                <h4 className="text-[22px] font-semibold mb-3">70% Faster Ticket Resolution</h4>
-                <p className="text-[14px] text-[#9FB9C8] mb-6">An AI support agent that answers questions, takes actions, and escalates only when needed.</p>
-                <div className="mt-auto font-mono text-[12px] text-brand flex items-center gap-2 group-hover:gap-3 transition-all">Read Case Study <ArrowRight className="w-3 h-3" /></div>
-              </div>
-            </div>
-            
-            <div className="bg-white/5 border border-white/10 rounded-sm overflow-hidden group cursor-pointer hover:border-brand/50 transition-colors flex flex-col">
-              <div className="p-8 flex-1 flex flex-col">
-                <div className="font-mono text-[10px] text-brand uppercase bg-brand/20 inline-block px-2 py-1 rounded mb-4 self-start">Sales Agent</div>
-                <h4 className="text-[22px] font-semibold mb-3">3X More Qualified Meetings</h4>
-                <p className="text-[14px] text-[#9FB9C8] mb-6">Autonomous research agent that qualifies leads and books meetings on autopilot.</p>
-                <div className="mt-auto font-mono text-[12px] text-brand flex items-center gap-2 group-hover:gap-3 transition-all">Read Case Study <ArrowRight className="w-3 h-3" /></div>
-              </div>
-            </div>
-            
-            <div className="bg-white/5 border border-white/10 rounded-sm overflow-hidden group cursor-pointer hover:border-brand/50 transition-colors flex flex-col">
-              <div className="p-8 flex-1 flex flex-col">
-                <div className="font-mono text-[10px] text-brand uppercase bg-brand/20 inline-block px-2 py-1 rounded mb-4 self-start">Doc Intelligence Agent</div>
-                <h4 className="text-[22px] font-semibold mb-3">90% Time Saved In Analysis</h4>
-                <p className="text-[14px] text-[#9FB9C8] mb-6">AI agent that extracts, analyzes, and summarizes documents with high accuracy.</p>
-                <div className="mt-auto font-mono text-[12px] text-brand flex items-center gap-2 group-hover:gap-3 transition-all">Read Case Study <ArrowRight className="w-3 h-3" /></div>
-              </div>
-            </div>
-        </div>
-      </section>
-
       {/* CTA BANNER */}
       <section className="py-[80px]">
         <div className="wrap">
@@ -329,9 +371,15 @@ export default function AIAgentsPage() {
             <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(rgba(0,184,240,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,.05) 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
             
             <div className="relative z-10 max-w-[500px]">
-              <h2 className="text-[36px] font-semibold leading-[1.1] mb-4">Ready to Deploy <span className="text-signal">Intelligent AI Agents</span> in Your Organization?</h2>
-              <p className="text-[15px] text-[#9FB9C8] mb-8">Let's design and build AI agents that automate work, enhance productivity, and drive real business outcomes.</p>
-              <Link href="/contact" className="btn btn-primary bg-brand hover:bg-deep">Book an AI Strategy Session →</Link>
+              <h2 className="text-[36px] font-semibold leading-[1.1] mb-4">
+                {content.cta.title}
+              </h2>
+              <p className="text-[15px] text-[#9FB9C8] mb-8">
+                {content.cta.subtitle}
+              </p>
+              <Link href="/contact" className="btn btn-primary bg-brand hover:bg-deep">
+                {content.cta.buttonText}
+              </Link>
             </div>
 
             <div className="relative z-10 flex flex-col gap-4 w-full max-w-[340px]">
@@ -366,24 +414,6 @@ export default function AIAgentsPage() {
           </div>
         </div>
       </section>
-
-      {/* SCHEMA */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "name": "Enterprise AI Agents Development",
-            "provider": {
-              "@type": "Organization",
-              "name": "Botmartz"
-            },
-            "description": "AI agents for business are autonomous software systems that can plan, reason, and take action to solve complex workflows. We build enterprise AI agents that connect to your internal tools.",
-            "serviceType": "AI Engineering Services"
-          })
-        }}
-      />
     </main>
   );
 }

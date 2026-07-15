@@ -11,6 +11,7 @@ export type ModuleId =
   | 'case-studies'
   | 'events'
   | 'ai-agents'
+  | 'pages'
   | 'settings'
   | 'super-admin';
 
@@ -37,6 +38,7 @@ export const MODULES: AppModule[] = [
   { id: 'newsletter',label: 'Newsletter',href: '/admin/newsletter', icon: Send },
   { id: 'contacts',  label: 'Contact Form', href: '/admin/contacts',icon: Mail, badge: true },
   { id: 'ai-agents', label: 'AI Agents', href: '/admin/ai-agents', icon: Bot },
+  { id: 'pages',     label: 'Page Manager', href: '/admin/pages', icon: FileText },
   { id: 'settings',  label: 'Settings',  href: '/admin/settings',  icon: Settings },
   { id: 'super-admin',label: 'Super Admin',href: '/admin/super-admin',icon: ShieldAlert },
 ];
@@ -53,6 +55,7 @@ export const ROUTE_MODULE_MAP: Partial<Record<string, ModuleId>> = {
   '/admin/newsletter':          'newsletter',
   '/admin/contacts':            'contacts',
   '/admin/ai-agents':           'ai-agents',
+  '/admin/pages':               'pages',
   '/admin/settings':            'settings',
   '/admin/super-admin':         'super-admin',
 };

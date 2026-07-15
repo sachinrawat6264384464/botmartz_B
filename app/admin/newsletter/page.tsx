@@ -127,17 +127,17 @@ function Pagination({ total, page, pageSize, pageSizeOptions = [10, 25, 50], onP
   }
 
   return (
-    <div className="flex items-center justify-between px-5 py-3.5 border-t border-line bg-paper">
+    <div className="flex items-center justify-between px-5 py-3.5 border-t border-admin-border bg-admin-card rounded-b-2xl">
       <div className="flex items-center gap-3">
-        <span className="text-xs text-ink-soft">
+        <span className="text-xs text-admin-text-muted">
           {total === 0 ? 'No results' : `Showing ${from}–${to} of ${total}`}
         </span>
         <div className="flex items-center gap-1.5">
-          <span className="text-xs text-ink-soft">Rows:</span>
+          <span className="text-xs text-admin-text-muted">Rows:</span>
           <select
             value={pageSize}
             onChange={(e) => { onPageSizeChange(Number(e.target.value)); onPageChange(1); }}
-            className="text-xs border border-line rounded-lg px-2 py-1 bg-ink text-white focus:outline-none focus:border-brand"
+            className="text-xs border border-admin-border rounded-lg px-2 py-1 bg-admin-bg text-admin-text focus:outline-none focus:border-admin-accent"
           >
             {pageSizeOptions.map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
@@ -147,19 +147,19 @@ function Pagination({ total, page, pageSize, pageSizeOptions = [10, 25, 50], onP
         <button
           onClick={() => onPageChange(page - 1)}
           disabled={page === 1}
-          className="p-1.5 rounded-lg text-ink-soft hover:text-white hover:bg-white/[0.05] disabled:opacity-30 disabled:cursor-not-allowed transition-colors border border-transparent hover:border-line"
+          className="p-1.5 rounded-lg text-admin-text-muted hover:text-admin-text hover:bg-admin-bg disabled:opacity-30 disabled:cursor-not-allowed transition-colors border border-transparent hover:border-admin-border"
         >
           <ChevronLeft size={14} />
         </button>
         {pages.map((p, i) =>
           p === '…' ? (
-            <span key={`ellipsis-${i}`} className="px-1 text-ink-soft text-xs">…</span>
+            <span key={`ellipsis-${i}`} className="px-1 text-admin-text-muted text-xs">…</span>
           ) : (
             <button
               key={p}
               onClick={() => onPageChange(p as number)}
               className={`w-7 h-7 rounded-lg text-xs font-medium transition-colors border ${
-                p === page ? 'bg-white text-ink border-white' : 'text-ink-soft hover:bg-white/[0.03] border-transparent hover:border-line'
+                p === page ? 'bg-admin-accent text-white border-transparent' : 'text-admin-text-muted hover:bg-admin-bg border-transparent hover:border-admin-border'
               }`}
             >
               {p}
@@ -169,7 +169,7 @@ function Pagination({ total, page, pageSize, pageSizeOptions = [10, 25, 50], onP
         <button
           onClick={() => onPageChange(page + 1)}
           disabled={page === totalPages}
-          className="p-1.5 rounded-lg text-ink-soft hover:text-white hover:bg-white/[0.05] disabled:opacity-30 disabled:cursor-not-allowed transition-colors border border-transparent hover:border-line"
+          className="p-1.5 rounded-lg text-admin-text-muted hover:text-admin-text hover:bg-admin-bg disabled:opacity-30 disabled:cursor-not-allowed transition-colors border border-transparent hover:border-admin-border"
         >
           <ChevronRight size={14} />
         </button>
@@ -508,7 +508,7 @@ export default function NewsletterPage() {
   ];
 
   return (
-    <div className={`${interTight.className} p-6 max-w-[1400px]`}>
+    <div className={`${interTight.className} p-6 max-w-[1400px] text-admin-text`}>
       {toast && <Toast msg={toast.msg} type={toast.type} onClose={() => setToast(null)} />}
       {confirmModal && (
         <ConfirmModal title={confirmModal.title} body={confirmModal.body} confirmLabel={confirmModal.confirmLabel}
@@ -519,28 +519,28 @@ export default function NewsletterPage() {
       <div className="flex items-start justify-between mb-8">
         <div>
           <div className="flex items-center gap-2.5 mb-1">
-            <div className="w-8 h-8 rounded-lg bg-white/[0.03] border border-line flex items-center justify-center">
-              <Megaphone size={16} className="text-ink-soft" />
+            <div className="w-8 h-8 rounded-lg bg-admin-accent/10 border border-admin-accent/20 flex items-center justify-center">
+              <Megaphone size={16} className="text-admin-accent" />
             </div>
-            <h1 className="text-2xl font-bold text-white">Newsletter</h1>
+            <h1 className="text-2xl font-bold text-admin-text">Newsletter</h1>
           </div>
-          <p className="text-sm text-ink-soft ml-10.5">Manage subscribers, send campaigns and blog announcements</p>
+          <p className="text-sm text-admin-text-muted ml-10.5">Manage subscribers, send campaigns and blog announcements</p>
         </div>
         <button
           onClick={() => setShowAddModal(true)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-white text-ink text-sm font-semibold rounded-xl hover:bg-gray-200 transition-colors shadow-sm"
+          className="flex items-center gap-2 px-4 py-2.5 bg-admin-accent hover:bg-admin-accent/80 text-white text-sm font-semibold rounded-xl transition-all shadow-sm"
         >
           <Plus size={15} /> Add Subscriber
         </button>
       </div>
 
       {/* ── Stats Row ── */}
-      <div className="grid grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {[
-          { label: 'Total Subscribers', value: subscribers.length, icon: Users, color: 'text-white', bg: 'bg-paper', border: 'border-line', sub: 'All time' },
-          { label: 'Active', value: activeCount, icon: TrendingUp, color: 'text-green-500', bg: 'bg-green-500/5', border: 'border-green-500/20', sub: `${subscribers.length > 0 ? Math.round((activeCount / subscribers.length) * 100) : 0}% of total` },
-          { label: 'Unsubscribed', value: unsubCount, icon: UserMinus, color: 'text-red-500', bg: 'bg-red-500/5', border: 'border-red-500/20', sub: `${subscribers.length > 0 ? Math.round((unsubCount / subscribers.length) * 100) : 0}% of total` },
-          { label: 'Campaigns Sent', value: campaigns.length, icon: Activity, color: 'text-brand', bg: 'bg-brand/5', border: 'border-brand/20', sub: `${websiteCount} from website` },
+          { label: 'Total Subscribers', value: subscribers.length, icon: Users, color: 'text-admin-accent', bg: 'bg-admin-card', border: 'border-admin-border', sub: 'All time' },
+          { label: 'Active', value: activeCount, icon: TrendingUp, color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/20', sub: `${subscribers.length > 0 ? Math.round((activeCount / subscribers.length) * 100) : 0}% of total` },
+          { label: 'Unsubscribed', value: unsubCount, icon: UserMinus, color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/20', sub: `${subscribers.length > 0 ? Math.round((unsubCount / subscribers.length) * 100) : 0}% of total` },
+          { label: 'Campaigns Sent', value: campaigns.length, icon: Activity, color: 'text-admin-accent', bg: 'bg-admin-accent/10', border: 'border-admin-accent/20', sub: `${websiteCount} from website` },
         ].map((s) => {
           const Icon = s.icon;
           return (
@@ -550,23 +550,23 @@ export default function NewsletterPage() {
                   <Icon size={16} className={s.color} />
                 </div>
               </div>
-              <p className="text-2xl font-bold text-white tracking-tight">{s.value}</p>
-              <p className="text-xs font-semibold text-ink-soft mt-0.5">{s.label}</p>
-              <p className="text-[11px] text-ink-soft/70 mt-0.5">{s.sub}</p>
+              <p className="text-2xl font-bold text-admin-text tracking-tight">{s.value}</p>
+              <p className="text-xs font-semibold text-admin-text-muted mt-0.5">{s.label}</p>
+              <p className="text-[11px] text-admin-text-muted/70 mt-0.5">{s.sub}</p>
             </div>
           );
         })}
       </div>
 
       {/* ── Tabs ── */}
-      <div className="flex gap-1 p-1 bg-ink border border-line rounded-xl w-fit mb-6">
+      <div className="flex gap-1 p-1 bg-admin-bg border border-admin-border rounded-xl w-fit mb-6">
         {tabs.map((t) => (
           <button key={t.id} onClick={() => setTab(t.id)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 ${tab === t.id ? 'bg-white text-ink shadow-sm' : 'text-ink-soft hover:text-white'}`}>
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 ${tab === t.id ? 'bg-admin-card text-admin-text shadow-sm border border-admin-border' : 'text-admin-text-muted hover:text-admin-text'}`}>
             {t.icon}
             {t.label}
             {t.count !== undefined && (
-              <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${tab === t.id ? 'bg-ink/10 text-ink' : 'bg-white/[0.05] text-ink-soft'}`}>
+              <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${tab === t.id ? 'bg-admin-bg text-admin-text' : 'bg-admin-bg text-admin-text-muted'}`}>
                 {t.count}
               </span>
             )}
@@ -576,36 +576,36 @@ export default function NewsletterPage() {
 
       {/* ══ SUBSCRIBERS TAB ══════════════════════════════════════════════════ */}
       {tab === 'subscribers' && (
-        <div className="bg-paper border border-line rounded-2xl overflow-hidden shadow-sm">
+        <div className="bg-admin-card border border-admin-border rounded-2xl overflow-hidden shadow-sm">
           {/* Toolbar */}
-          <div className="flex items-center gap-3 px-5 py-4 border-b border-line">
+          <div className="flex items-center gap-3 px-5 py-4 border-b border-admin-border">
             <div className="relative flex-1 max-w-xs">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-soft" />
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-admin-text-muted" />
               <input value={subSearch} onChange={(e) => setSubSearch(e.target.value)} placeholder="Search by email or name…"
-                className="w-full pl-8 pr-3 py-2 text-sm border border-line rounded-lg bg-ink text-white placeholder-ink-soft focus:outline-none focus:border-brand transition-all" />
-              {subSearch && <button onClick={() => setSubSearch('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-ink-soft hover:text-white"><X size={13} /></button>}
+                className="w-full pl-8 pr-3 py-2 text-sm border border-admin-border rounded-lg bg-admin-bg text-admin-text placeholder-admin-text-muted focus:outline-none focus:border-admin-accent transition-all" />
+              {subSearch && <button onClick={() => setSubSearch('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-admin-text-muted hover:text-admin-text"><X size={13} /></button>}
             </div>
-            <div className="flex gap-0.5 p-0.5 bg-ink rounded-lg border border-line">
+            <div className="flex gap-0.5 p-0.5 bg-admin-bg rounded-lg border border-admin-border">
               {(['all', 'active', 'unsubscribed'] as const).map((f) => (
                 <button key={f} onClick={() => setSubFilter(f)}
-                  className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${subFilter === f ? 'bg-white text-ink shadow-sm' : 'text-ink-soft hover:text-white'}`}>
+                  className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${subFilter === f ? 'bg-admin-card text-admin-text shadow-sm border border-admin-border' : 'text-admin-text-muted hover:text-admin-text'}`}>
                   {f === 'all' ? 'All' : f === 'active' ? `Active (${activeCount})` : `Unsubscribed (${unsubCount})`}
                 </button>
               ))}
             </div>
             <div className="ml-auto flex items-center gap-2">
               {selectedCount > 0 && (
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-brand/20 border border-brand/30 text-brand rounded-lg">
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-admin-accent/20 border border-admin-accent/30 text-admin-accent rounded-lg">
                   <span className="text-xs font-semibold">{selectedCount} selected</span>
-                  <button onClick={() => setSelectedIds(new Set())} className="text-brand/70 hover:text-brand transition-colors"><X size={12} /></button>
-                  <div className="w-px h-4 bg-brand/30" />
+                  <button onClick={() => setSelectedIds(new Set())} className="text-admin-accent/70 hover:text-admin-accent transition-colors"><X size={12} /></button>
+                  <div className="w-px h-4 bg-admin-accent/30" />
                   <button onClick={bulkDelete} className="flex items-center gap-1 text-xs text-red-500 hover:text-red-400 font-semibold transition-colors">
                     <Trash2 size={12} /> Delete
                   </button>
                 </div>
               )}
               <button onClick={() => exportCSV(filteredSubs)}
-                className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-ink-soft hover:text-white border border-line bg-white/[0.03] hover:bg-white/[0.05] rounded-lg transition-colors">
+                className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-admin-text-muted hover:text-admin-text border border-admin-border bg-admin-bg hover:bg-admin-bg/60 rounded-lg transition-colors">
                 <Download size={13} /> Export
               </button>
             </div>
@@ -613,69 +613,69 @@ export default function NewsletterPage() {
 
           {/* Table */}
           {subLoading ? (
-            <div className="flex items-center justify-center h-48"><Loader2 size={24} className="animate-spin text-ink-soft" /></div>
+            <div className="flex items-center justify-center h-48"><Loader2 size={24} className="animate-spin text-admin-text-muted" /></div>
           ) : filteredSubs.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20">
-              <div className="w-14 h-14 rounded-2xl bg-white/[0.03] border border-line flex items-center justify-center mb-4">
-                <Users size={24} className="text-ink-soft" />
+              <div className="w-14 h-14 rounded-2xl bg-admin-bg border border-admin-border flex items-center justify-center mb-4">
+                <Users size={24} className="text-admin-text-muted" />
               </div>
-              <p className="text-sm font-semibold text-ink-soft">No subscribers found</p>
-              <p className="text-xs text-ink-soft/70 mt-1">{subSearch ? 'Try a different search term' : 'Add your first subscriber to get started'}</p>
+              <p className="text-sm font-semibold text-admin-text-muted">No subscribers found</p>
+              <p className="text-xs text-admin-text-muted/70 mt-1">{subSearch ? 'Try a different search term' : 'Add your first subscriber to get started'}</p>
             </div>
           ) : (
             <>
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="bg-ink/50 border-b border-line">
+                    <tr className="bg-admin-bg/50 border-b border-admin-border">
                       <th className="w-10 px-4 py-3">
-                        <button onClick={() => toggleSelectAll(pageIds)} className="text-ink-soft hover:text-white transition-colors">
-                          {allPageSelected ? <CheckSquare size={15} className="text-white" /> : somePageSelected ? <CheckSquare size={15} className="text-ink-soft" /> : <Square size={15} />}
+                        <button onClick={() => toggleSelectAll(pageIds)} className="text-admin-text-muted hover:text-admin-text transition-colors">
+                          {allPageSelected ? <CheckSquare size={15} className="text-admin-text" /> : somePageSelected ? <CheckSquare size={15} className="text-admin-text-muted" /> : <Square size={15} />}
                         </button>
                       </th>
                       {['Subscriber', 'Source', 'Status', 'Joined', ''].map((h) => (
-                        <th key={h} className="text-left px-4 py-3 text-[11px] font-semibold text-ink-soft uppercase tracking-wider">{h}</th>
+                        <th key={h} className="text-left px-4 py-3 text-[11px] font-semibold text-admin-text-muted uppercase tracking-wider">{h}</th>
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-line">
+                  <tbody className="divide-y divide-admin-border">
                     {pagedSubs.map((sub) => (
-                      <tr key={sub.id} className={`hover:bg-white/[0.03] transition-colors group ${selectedIds.has(sub.id) ? 'bg-brand/5' : ''}`}>
+                      <tr key={sub.id} className={`hover:bg-admin-bg/40 transition-colors group ${selectedIds.has(sub.id) ? 'bg-admin-accent/5' : ''}`}>
                         <td className="px-4 py-3.5">
-                          <button onClick={() => toggleSelect(sub.id)} className="text-ink-soft hover:text-white transition-colors">
-                            {selectedIds.has(sub.id) ? <CheckSquare size={15} className="text-white" /> : <Square size={15} />}
+                          <button onClick={() => toggleSelect(sub.id)} className="text-admin-text-muted hover:text-admin-text transition-colors">
+                            {selectedIds.has(sub.id) ? <CheckSquare size={15} className="text-admin-text" /> : <Square size={15} />}
                           </button>
                         </td>
                         <td className="px-4 py-3.5">
                           <div className="flex items-center gap-3">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${sub.status === 'active' ? 'bg-green-500/10 text-green-500' : 'bg-ink border border-line text-ink-soft'}`}>
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${sub.status === 'active' ? 'bg-green-500/10 text-green-500' : 'bg-admin-bg border border-admin-border text-admin-text-muted'}`}>
                               {sub.email[0].toUpperCase()}
                             </div>
                             <div>
-                              <p className="text-sm font-medium text-white">{sub.email}</p>
-                              {sub.name && <p className="text-xs text-ink-soft">{sub.name}</p>}
+                              <p className="text-sm font-medium text-admin-text">{sub.email}</p>
+                              {sub.name && <p className="text-xs text-admin-text-muted">{sub.name}</p>}
                             </div>
                           </div>
                         </td>
                         <td className="px-4 py-3.5">
-                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold border ${sub.source === 'website' ? 'bg-brand/10 text-brand border-brand/20' : 'bg-purple-500/10 text-purple-500 border-purple-500/20'}`}>
+                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold border ${sub.source === 'website' ? 'bg-admin-accent/10 text-admin-accent border-admin-accent/20' : 'bg-purple-500/10 text-purple-400 border-purple-500/20'}`}>
                             {sub.source}
                           </span>
                         </td>
                         <td className="px-4 py-3.5">
-                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold border ${sub.status === 'active' ? 'bg-green-500/10 text-green-500 border-green-500/20' : 'bg-white/[0.05] text-ink-soft border-line'}`}>
-                            <span className={`w-1.5 h-1.5 rounded-full ${sub.status === 'active' ? 'bg-green-500' : 'bg-ink-soft'}`} />
+                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold border ${sub.status === 'active' ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-admin-bg/50 text-admin-text-muted border-admin-border'}`}>
+                            <span className={`w-1.5 h-1.5 rounded-full ${sub.status === 'active' ? 'bg-green-500' : 'bg-admin-text-muted'}`} />
                             {sub.status === 'active' ? 'Active' : 'Unsubscribed'}
                           </span>
                         </td>
-                        <td className="px-4 py-3.5 text-xs text-ink-soft">{formatDate(sub.subscribedAt)}</td>
+                        <td className="px-4 py-3.5 text-xs text-admin-text-muted">{formatDate(sub.subscribedAt)}</td>
                         <td className="px-4 py-3.5">
                           <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
                             <button onClick={() => toggleSubscriberStatus(sub)} title={sub.status === 'active' ? 'Unsubscribe' : 'Reactivate'}
-                              className={`p-1.5 rounded-lg transition-colors border border-transparent ${sub.status === 'active' ? 'hover:bg-orange-500/10 text-ink-soft hover:text-orange-500 hover:border-orange-500/20' : 'hover:bg-green-500/10 text-ink-soft hover:text-green-500 hover:border-green-500/20'}`}>
+                              className={`p-1.5 rounded-lg transition-colors border border-transparent ${sub.status === 'active' ? 'hover:bg-orange-500/10 text-admin-text-muted hover:text-orange-500 hover:border-orange-500/20' : 'hover:bg-green-500/10 text-admin-text-muted hover:text-green-500 hover:border-green-500/20'}`}>
                               {sub.status === 'active' ? <UserX size={14} /> : <UserCheck size={14} />}
                             </button>
-                            <button onClick={() => deleteSubscriber(sub)} className="p-1.5 rounded-lg hover:bg-red-500/10 text-ink-soft hover:text-red-500 border border-transparent hover:border-red-500/20 transition-colors">
+                            <button onClick={() => deleteSubscriber(sub)} className="p-1.5 rounded-lg hover:bg-red-500/10 text-admin-text-muted hover:text-red-500 border border-transparent hover:border-red-500/20 transition-colors">
                               <Trash2 size={14} />
                             </button>
                           </div>
@@ -695,56 +695,56 @@ export default function NewsletterPage() {
       {/* ══ COMPOSE TAB ══════════════════════════════════════════════════════ */}
       {tab === 'compose' && (
         <div className="max-w-3xl">
-          <div className="bg-paper border border-line rounded-2xl overflow-hidden shadow-sm">
-            <div className="px-6 py-4 border-b border-line flex items-center justify-between">
+          <div className="bg-admin-card border border-admin-border rounded-2xl overflow-hidden shadow-sm">
+            <div className="px-6 py-4 border-b border-admin-border flex items-center justify-between">
               <div>
-                <h2 className="text-sm font-semibold text-white">Compose Campaign</h2>
-                <p className="text-xs text-ink-soft mt-0.5">Sending to <strong className="text-white">{activeCount}</strong> active subscriber{activeCount !== 1 ? 's' : ''}</p>
+                <h2 className="text-sm font-semibold text-admin-text">Compose Campaign</h2>
+                <p className="text-xs text-admin-text-muted mt-0.5">Sending to <strong className="text-admin-text">{activeCount}</strong> active subscriber{activeCount !== 1 ? 's' : ''}</p>
               </div>
               <button onClick={() => setShowPreview(!showPreview)}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-line rounded-lg hover:bg-white/[0.03] transition-colors text-ink-soft hover:text-white">
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-admin-border rounded-lg hover:bg-admin-bg transition-colors text-admin-text-muted hover:text-admin-text">
                 {showPreview ? <><EyeOff size={12} /> Hide Preview</> : <><Eye size={12} /> Preview</>}
               </button>
             </div>
-            <div className={showPreview ? 'grid grid-cols-2 divide-x divide-line' : ''}>
+            <div className={showPreview ? 'grid grid-cols-2 divide-x divide-admin-border' : ''}>
               <div>
-                <div className="px-6 pt-5 pb-3 border-b border-line">
-                  <label className="block text-[10px] font-bold text-ink-soft uppercase tracking-widest mb-2">Subject Line *</label>
+                <div className="px-6 pt-5 pb-3 border-b border-admin-border">
+                  <label className="block text-[10px] font-bold text-admin-text-muted uppercase tracking-widest mb-2">Subject Line *</label>
                   <input value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="Your email subject…"
-                    className="w-full text-base font-semibold text-white placeholder-ink-soft focus:outline-none border-0 bg-transparent" />
+                    className="w-full text-base font-semibold text-admin-text placeholder-admin-text-muted focus:outline-none border-0 bg-transparent" />
                 </div>
-                <div className="px-6 py-3 border-b border-line">
-                  <label className="block text-[10px] font-bold text-ink-soft uppercase tracking-widest mb-2">Preview Text <span className="font-normal normal-case text-ink-soft/70">(inbox snippet)</span></label>
+                <div className="px-6 py-3 border-b border-admin-border">
+                  <label className="block text-[10px] font-bold text-admin-text-muted uppercase tracking-widest mb-2">Preview Text <span className="font-normal normal-case text-admin-text-muted/70">(inbox snippet)</span></label>
                   <input value={previewText} onChange={(e) => setPreviewText(e.target.value)} placeholder="Short text shown in inbox…"
-                    className="w-full text-sm text-ink-soft placeholder-ink-soft/70 focus:outline-none border-0 bg-transparent" />
+                    className="w-full text-sm text-admin-text-muted placeholder-admin-text-muted/70 focus:outline-none border-0 bg-transparent" />
                 </div>
                 <EditorToolbar editor={editor} />
                 <EditorContent editor={editor} />
               </div>
               {showPreview && (
-                <div className="bg-ink overflow-y-auto max-h-[580px] p-4">
-                  <p className="text-[10px] font-bold text-ink-soft uppercase tracking-widest mb-3">Inbox Preview</p>
-                  <div className="bg-paper rounded-xl border border-line overflow-hidden text-sm shadow-sm">
-                    <div className="bg-white px-5 py-3"><p className="text-ink font-bold tracking-tight uppercase">Botmartz</p></div>
+                <div className="bg-admin-bg overflow-y-auto max-h-[580px] p-4">
+                  <p className="text-[10px] font-bold text-admin-text-muted uppercase tracking-widest mb-3">Inbox Preview</p>
+                  <div className="bg-admin-card rounded-xl border border-admin-border overflow-hidden text-sm shadow-sm">
+                    <div className="bg-admin-bg px-5 py-3"><p className="text-admin-text font-bold tracking-tight uppercase">Botmartz</p></div>
                     <div className="px-5 py-4">
-                      <p className="text-ink-soft text-sm mb-4">Hi there,</p>
-                      <div className="prose prose-sm prose-invert max-w-none text-white" dangerouslySetInnerHTML={{ __html: editor?.getHTML() || '' }} />
+                      <p className="text-admin-text-muted text-sm mb-4">Hi there,</p>
+                      <div className="prose prose-sm prose-invert max-w-none text-admin-text" dangerouslySetInnerHTML={{ __html: editor?.getHTML() || '' }} />
                     </div>
-                    <div className="px-5 py-3 bg-ink border-t border-line text-center">
-                      <p className="text-xs text-ink-soft">You received this because you subscribed.</p>
-                      <p className="text-xs text-ink-soft mt-1 underline">Unsubscribe</p>
+                    <div className="px-5 py-3 bg-admin-bg border-t border-admin-border text-center">
+                      <p className="text-xs text-admin-text-muted">You received this because you subscribed.</p>
+                      <p className="text-xs text-admin-text-muted mt-1 underline">Unsubscribe</p>
                     </div>
                   </div>
                 </div>
               )}
             </div>
-            <div className="px-6 py-4 border-t border-line bg-ink flex items-center justify-between">
-              <div className="flex items-center gap-2 text-xs text-ink-soft">
+            <div className="px-6 py-4 border-t border-admin-border bg-admin-bg/30 flex items-center justify-between">
+              <div className="flex items-center gap-2 text-xs text-admin-text-muted">
                 <Mail size={13} />
-                <span>Sending to <strong className="text-white">{activeCount}</strong> active subscriber{activeCount !== 1 ? 's' : ''}</span>
+                <span>Sending to <strong className="text-admin-text">{activeCount}</strong> active subscriber{activeCount !== 1 ? 's' : ''}</span>
               </div>
               <button onClick={handleSend} disabled={sending || activeCount === 0}
-                className="flex items-center gap-2 px-5 py-2.5 bg-white text-ink text-sm font-semibold rounded-xl hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                className="flex items-center gap-2 px-5 py-2.5 bg-admin-accent hover:bg-admin-accent/80 text-white text-sm font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
                 {sending ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
                 {sending ? 'Sending…' : 'Send Campaign'}
               </button>
@@ -757,53 +757,53 @@ export default function NewsletterPage() {
       {tab === 'campaigns' && (
         <div>
           {campLoading ? (
-            <div className="flex items-center justify-center h-48"><Loader2 size={24} className="animate-spin text-ink-soft" /></div>
+            <div className="flex items-center justify-center h-48"><Loader2 size={24} className="animate-spin text-admin-text-muted" /></div>
           ) : campaigns.length === 0 ? (
-            <div className="bg-paper border border-line border-dashed rounded-2xl flex flex-col items-center justify-center py-20">
-              <div className="w-14 h-14 rounded-2xl bg-white/[0.03] border border-line flex items-center justify-center mb-4">
-                <History size={24} className="text-ink-soft" />
+            <div className="bg-admin-card border border-admin-border border-dashed rounded-2xl flex flex-col items-center justify-center py-20">
+              <div className="w-14 h-14 rounded-2xl bg-admin-bg border border-admin-border flex items-center justify-center mb-4">
+                <History size={24} className="text-admin-text-muted" />
               </div>
-              <p className="text-sm font-semibold text-ink-soft">No campaigns yet</p>
-              <p className="text-xs text-ink-soft/70 mt-1">Send your first campaign from the Compose tab</p>
-              <button onClick={() => setTab('compose')} className="mt-4 flex items-center gap-2 px-4 py-2 bg-white text-ink text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors">
+              <p className="text-sm font-semibold text-admin-text-muted">No campaigns yet</p>
+              <p className="text-xs text-admin-text-muted/70 mt-1">Send your first campaign from the Compose tab</p>
+              <button onClick={() => setTab('compose')} className="mt-4 flex items-center gap-2 px-4 py-2 bg-admin-accent text-white text-sm font-medium rounded-lg hover:bg-admin-accent/85 transition-colors">
                 <Send size={13} /> Compose
               </button>
             </div>
           ) : (
-            <div className="bg-paper border border-line rounded-2xl overflow-hidden shadow-sm">
-              <div className="px-5 py-3.5 border-b border-line flex items-center justify-between">
-                <p className="text-xs font-semibold text-ink-soft uppercase tracking-wider">Campaign History</p>
-                <span className="text-xs text-ink-soft">{campaigns.length} total</span>
+            <div className="bg-admin-card border border-admin-border rounded-2xl overflow-hidden shadow-sm">
+              <div className="px-5 py-3.5 border-b border-admin-border flex items-center justify-between bg-admin-bg/10">
+                <p className="text-xs font-semibold text-admin-text-muted uppercase tracking-wider">Campaign History</p>
+                <span className="text-xs text-admin-text-muted">{campaigns.length} total</span>
               </div>
-              <div className="divide-y divide-line">
+              <div className="divide-y divide-admin-border">
                 {pagedCamps.map((camp) => (
                   <div key={camp.id}>
                     <button onClick={() => setExpandedCamp(expandedCamp === camp.id ? null : camp.id)}
-                      className="w-full flex items-center gap-4 px-5 py-4 hover:bg-white/[0.03] transition-colors text-left">
+                      className="w-full flex items-center gap-4 px-5 py-4 hover:bg-admin-bg/40 transition-colors text-left">
                       <div className="w-10 h-10 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center shrink-0">
                         <MailOpen size={16} className="text-green-500" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-white truncate">{camp.subject}</p>
+                        <p className="text-sm font-semibold text-admin-text truncate">{camp.subject}</p>
                         <div className="flex items-center gap-3 mt-0.5">
-                          <span className="text-xs text-ink-soft">{formatDate(camp.sentAt)}</span>
-                          <span className="text-xs text-ink-soft/50">·</span>
-                          <span className="text-xs text-ink-soft">{camp.recipientCount} delivered</span>
-                          {camp.failedCount > 0 && <><span className="text-xs text-ink-soft/50">·</span><span className="text-xs text-red-500">{camp.failedCount} failed</span></>}
+                          <span className="text-xs text-admin-text-muted">{formatDate(camp.sentAt)}</span>
+                          <span className="text-xs text-admin-text-muted/50">·</span>
+                          <span className="text-xs text-admin-text-muted">{camp.recipientCount} delivered</span>
+                          {camp.failedCount > 0 && <><span className="text-xs text-admin-text-muted/50">·</span><span className="text-xs text-red-400">{camp.failedCount} failed</span></>}
                         </div>
                       </div>
                       <div className="flex items-center gap-3 shrink-0">
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-green-500/10 text-green-500 border border-green-500/20">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-green-500/10 text-green-400 border border-green-500/20">
                           <span className="w-1.5 h-1.5 rounded-full bg-green-500" /> Sent
                         </span>
-                        {expandedCamp === camp.id ? <ChevronUp size={14} className="text-ink-soft" /> : <ChevronDown size={14} className="text-ink-soft" />}
+                        {expandedCamp === camp.id ? <ChevronUp size={14} className="text-admin-text-muted" /> : <ChevronDown size={14} className="text-admin-text-muted" />}
                       </div>
                     </button>
                     {expandedCamp === camp.id && (
-                      <div className="border-t border-line px-5 py-5 bg-ink/50">
-                        {camp.previewText && <p className="text-xs text-ink-soft italic mb-4">Preview text: {camp.previewText}</p>}
-                        <div className="bg-paper rounded-xl border border-line px-6 py-5">
-                          <div className="prose prose-sm prose-invert max-w-none text-white" dangerouslySetInnerHTML={{ __html: camp.html }} />
+                      <div className="border-t border-admin-border px-5 py-5 bg-admin-bg/50">
+                        {camp.previewText && <p className="text-xs text-admin-text-muted italic mb-4">Preview text: {camp.previewText}</p>}
+                        <div className="bg-admin-card rounded-xl border border-admin-border px-6 py-5">
+                          <div className="prose prose-sm prose-invert max-w-none text-admin-text" dangerouslySetInnerHTML={{ __html: camp.html }} />
                         </div>
                       </div>
                     )}
@@ -819,63 +819,63 @@ export default function NewsletterPage() {
 
       {/* ══ BLOG POSTS TAB ═══════════════════════════════════════════════════ */}
       {tab === 'blogs' && (
-        <div className="flex gap-6">
+        <div className="flex gap-6 animate-in fade-in-50 duration-200">
           <div className="flex-1 min-w-0">
             {/* Blog toolbar */}
             <div className="flex items-center gap-3 mb-5">
               <div className="relative flex-1 max-w-xs">
-                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-soft" />
+                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-admin-text-muted" />
                 <input value={blogSearch} onChange={(e) => setBlogSearch(e.target.value)} placeholder="Search blog posts…"
-                  className="w-full pl-8 pr-3 py-2 text-sm border border-line rounded-lg bg-ink text-white placeholder-ink-soft focus:outline-none focus:border-brand" />
-                {blogSearch && <button onClick={() => setBlogSearch('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-ink-soft hover:text-white"><X size={13} /></button>}
+                  className="w-full pl-8 pr-3 py-2 text-sm border border-admin-border rounded-lg bg-admin-bg text-admin-text placeholder-admin-text-muted focus:outline-none focus:border-admin-accent" />
+                {blogSearch && <button onClick={() => setBlogSearch('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-admin-text-muted hover:text-admin-text"><X size={13} /></button>}
               </div>
-              <p className="text-xs text-ink-soft ml-auto">
+              <p className="text-xs text-admin-text-muted ml-auto">
                 {filteredBlogs.length} post{filteredBlogs.length !== 1 ? 's' : ''} · click to send announcement
               </p>
             </div>
 
             {blogLoading ? (
-              <div className="flex items-center justify-center h-48"><Loader2 size={24} className="animate-spin text-ink-soft" /></div>
+              <div className="flex items-center justify-center h-48"><Loader2 size={24} className="animate-spin text-admin-text-muted" /></div>
             ) : filteredBlogs.length === 0 ? (
-              <div className="bg-paper border border-line border-dashed rounded-2xl flex flex-col items-center justify-center py-20">
-                <div className="w-14 h-14 rounded-2xl bg-white/[0.03] border border-line flex items-center justify-center mb-4">
-                  <FileText size={24} className="text-ink-soft" />
+              <div className="bg-admin-card border border-admin-border border-dashed rounded-2xl flex flex-col items-center justify-center py-20">
+                <div className="w-14 h-14 rounded-2xl bg-admin-bg border border-admin-border flex items-center justify-center mb-4">
+                  <FileText size={24} className="text-admin-text-muted" />
                 </div>
-                <p className="text-sm font-semibold text-ink-soft">No blog posts found</p>
-                <p className="text-xs text-ink-soft/70 mt-1">Create posts in the Blog Posts section first</p>
+                <p className="text-sm font-semibold text-admin-text-muted">No blog posts found</p>
+                <p className="text-xs text-admin-text-muted/70 mt-1">Create posts in the Blog Posts section first</p>
               </div>
             ) : (
-              <div className="bg-paper border border-line rounded-2xl overflow-hidden shadow-sm">
-                <div className="divide-y divide-line">
+              <div className="bg-admin-card border border-admin-border rounded-2xl overflow-hidden shadow-sm">
+                <div className="divide-y divide-admin-border">
                   {pagedBlogs.map((blog) => {
                     const cover = blog.coverImage || blog.thumbnail;
                     const desc = blog.excerpt || blog.summary || '';
                     const isSelected = selectedBlog?.id === blog.id;
                     return (
                       <button key={blog.id} onClick={() => setSelectedBlog(isSelected ? null : blog)}
-                        className={`w-full text-left flex gap-4 px-5 py-4 hover:bg-white/[0.03] transition-all ${isSelected ? 'bg-brand/5 border-l-2 border-l-brand' : ''}`}>
+                        className={`w-full text-left flex gap-4 px-5 py-4 hover:bg-admin-bg/30 transition-all ${isSelected ? 'bg-admin-accent/5 border-l-2 border-l-admin-accent' : ''}`}>
                         {cover ? (
-                          <img src={cover} alt={blog.title} className="w-16 h-12 object-cover rounded-xl shrink-0 bg-ink" />
+                          <img src={cover} alt={blog.title} className="w-16 h-12 object-cover rounded-xl shrink-0 bg-admin-bg" />
                         ) : (
-                          <div className="w-16 h-12 rounded-xl bg-ink border border-line flex items-center justify-center shrink-0">
-                            <FileText size={18} className="text-ink-soft" />
+                          <div className="w-16 h-12 rounded-xl bg-admin-bg border border-admin-border flex items-center justify-center shrink-0">
+                            <FileText size={18} className="text-admin-text-muted" />
                           </div>
                         )}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between gap-2">
-                            <p className="text-sm font-semibold text-white leading-snug">{blog.title}</p>
+                            <p className="text-sm font-semibold text-admin-text leading-snug">{blog.title}</p>
                             {isSelected && (
-                              <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 bg-brand text-white text-[10px] font-bold rounded-full">
+                              <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 bg-admin-accent text-white text-[10px] font-bold rounded-full">
                                 <CheckCircle size={10} /> Selected
                               </span>
                             )}
                           </div>
-                          {desc && <p className="text-xs text-ink-soft mt-0.5 line-clamp-1">{desc}</p>}
+                          {desc && <p className="text-xs text-admin-text-muted mt-0.5 line-clamp-1">{desc}</p>}
                           <div className="flex items-center gap-2 mt-1.5">
                             {blog.tags?.slice(0, 3).map((tag) => (
-                              <span key={tag} className="px-1.5 py-0.5 bg-white/[0.05] text-ink-soft text-[10px] font-medium rounded">{tag}</span>
+                              <span key={tag} className="px-1.5 py-0.5 bg-admin-bg/50 text-admin-text-muted text-[10px] font-medium rounded">{tag}</span>
                             ))}
-                            <span className="text-[10px] text-ink-soft/50 ml-auto">{formatDate(blog.publishedAt || blog.createdAt)}</span>
+                            <span className="text-[10px] text-admin-text-muted/50 ml-auto">{formatDate(blog.publishedAt || blog.createdAt)}</span>
                           </div>
                         </div>
                       </button>
@@ -890,22 +890,22 @@ export default function NewsletterPage() {
 
           {/* Send panel */}
           {selectedBlog && (
-            <div className="w-80 shrink-0">
-              <div className="sticky top-6 bg-paper border border-line rounded-2xl overflow-hidden shadow-sm">
-                <div className="px-5 py-4 border-b border-line flex items-center justify-between">
+            <div className="w-80 shrink-0 animate-in slide-in-from-right-4 duration-200">
+              <div className="sticky top-6 bg-admin-card border border-admin-border rounded-2xl overflow-hidden shadow-sm">
+                <div className="px-5 py-4 border-b border-admin-border flex items-center justify-between">
                   <div>
-                    <h3 className="text-sm font-semibold text-white">Blog Announcement</h3>
-                    <p className="text-xs text-ink-soft mt-0.5">→ {activeCount} active subscribers</p>
+                    <h3 className="text-sm font-semibold text-admin-text">Blog Announcement</h3>
+                    <p className="text-xs text-admin-text-muted mt-0.5">→ {activeCount} active subscribers</p>
                   </div>
-                  <button onClick={() => setSelectedBlog(null)} className="p-1 hover:bg-white/[0.05] rounded-lg transition-colors">
-                    <X size={14} className="text-ink-soft" />
+                  <button onClick={() => setSelectedBlog(null)} className="p-1 hover:bg-admin-bg rounded-lg transition-colors">
+                    <X size={14} className="text-admin-text-muted" />
                   </button>
                 </div>
 
                 {/* Dark email preview */}
                 <div className="p-4">
-                  <div className="rounded-xl overflow-hidden text-xs border border-line" style={{ background: '#0a0a0a' }}>
-                    <div className="px-4 py-2.5 border-b border-line" style={{ background: '#0d0d0d' }}>
+                  <div className="rounded-xl overflow-hidden text-xs border border-admin-border" style={{ background: '#0a0a0a' }}>
+                    <div className="px-4 py-2.5 border-b border-admin-border" style={{ background: '#0d0d0d' }}>
                       <div className="flex items-center justify-between">
                         <span className="font-black text-white text-sm tracking-tight">BOTMARTZ</span>
                         <span className="text-[10px] font-semibold" style={{ color: '#00B8F0' }}>/ Blog</span>
@@ -917,31 +917,31 @@ export default function NewsletterPage() {
                         <img src={selectedBlog.coverImage || selectedBlog.thumbnail} alt={selectedBlog.title} className="w-full h-20 object-cover rounded-lg mb-3" />
                       )}
                       {selectedBlog.tags?.slice(0, 2).map((t) => (
-                        <span key={t} className="inline-block mr-1 mb-2 px-1.5 py-0.5 rounded text-[9px] font-semibold tracking-wide bg-paper border border-line text-ink-soft">{t}</span>
+                        <span key={t} className="inline-block mr-1 mb-2 px-1.5 py-0.5 rounded text-[9px] font-semibold tracking-wide bg-admin-bg border border-admin-border text-admin-text-muted">{t}</span>
                       ))}
                       <p className="font-black text-white text-xs leading-tight mb-2">{selectedBlog.title}</p>
                       {(selectedBlog.excerpt || selectedBlog.summary) && (
-                        <p className="text-[10px] leading-relaxed mb-3 line-clamp-2 text-ink-soft/80">{selectedBlog.excerpt || selectedBlog.summary}</p>
+                        <p className="text-[10px] leading-relaxed mb-3 line-clamp-2 text-admin-text-muted/80">{selectedBlog.excerpt || selectedBlog.summary}</p>
                       )}
                       <div className="inline-block text-ink text-[10px] font-bold px-3 py-1.5 rounded bg-white">Read Story →</div>
                     </div>
-                    <div className="px-4 py-2.5 border-t border-line text-center bg-ink">
-                      <span className="text-[9px] text-ink-soft">Unsubscribe</span>
+                    <div className="px-4 py-2.5 border-t border-admin-border text-center bg-admin-bg">
+                      <span className="text-[9px] text-admin-text-muted">Unsubscribe</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Subject */}
                 <div className="px-5 pb-4">
-                  <label className="block text-[10px] font-bold text-ink-soft uppercase tracking-widest mb-1.5">Subject Line</label>
+                  <label className="block text-[10px] font-bold text-admin-text-muted uppercase tracking-widest mb-1.5">Subject Line</label>
                   <input value={blogEmailSubject} onChange={(e) => setBlogEmailSubject(e.target.value)} placeholder="New Post: Your Blog Title"
-                    className="w-full border border-line rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-brand bg-ink text-white transition-all placeholder-ink-soft/50" />
+                    className="w-full border border-admin-border rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-admin-accent bg-admin-bg text-admin-text transition-all placeholder-admin-text-muted/50" />
                 </div>
 
                 {/* Link */}
                 <div className="px-5 pb-4">
                   <a href={getBlogUrl(selectedBlog.slug)} target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-xs text-brand hover:text-brand/80 transition-colors truncate">
+                    className="flex items-center gap-1.5 text-xs text-admin-accent hover:text-admin-accent/80 transition-colors truncate">
                     <ExternalLink size={11} /><span className="truncate">{getBlogUrl(selectedBlog.slug)}</span>
                   </a>
                 </div>
@@ -949,7 +949,7 @@ export default function NewsletterPage() {
                 {/* Send */}
                 <div className="px-5 pb-5">
                   <button onClick={sendBlogAnnouncement} disabled={blogSending || activeCount === 0}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-white text-ink text-sm font-semibold rounded-xl hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-admin-accent hover:bg-admin-accent/80 text-white text-sm font-semibold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
                     {blogSending ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
                     {blogSending ? 'Sending…' : `Send to ${activeCount} Subscriber${activeCount !== 1 ? 's' : ''}`}
                   </button>
@@ -963,32 +963,32 @@ export default function NewsletterPage() {
 
       {/* ── Add Subscriber Modal ── */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-paper border border-line rounded-2xl shadow-2xl w-full max-w-sm">
-            <div className="flex items-center justify-between p-5 border-b border-line">
-              <h2 className="text-base font-semibold text-white">Add Subscriber</h2>
-              <button onClick={() => { setShowAddModal(false); setAddError(''); setNewEmail(''); setNewName(''); }} className="p-1.5 hover:bg-white/[0.05] rounded-lg transition-colors">
-                <X size={16} className="text-ink-soft" />
+        <div className="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-admin-card border border-admin-border rounded-2xl shadow-2xl w-full max-w-sm">
+            <div className="flex items-center justify-between p-5 border-b border-admin-border">
+              <h2 className="text-base font-semibold text-admin-text">Add Subscriber</h2>
+              <button onClick={() => { setShowAddModal(false); setAddError(''); setNewEmail(''); setNewName(''); }} className="p-1.5 hover:bg-admin-bg rounded-lg transition-colors">
+                <X size={16} className="text-admin-text-muted" />
               </button>
             </div>
             <div className="p-5 space-y-4">
               <div>
-                <label className="block text-[10px] font-bold text-ink-soft uppercase tracking-widest mb-1.5">Email *</label>
+                <label className="block text-[10px] font-bold text-admin-text-muted uppercase tracking-widest mb-1.5">Email *</label>
                 <input type="email" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && addSubscriber()}
-                  placeholder="subscriber@example.com" className="w-full border border-line rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand bg-ink text-white placeholder-ink-soft/50" />
+                  placeholder="subscriber@example.com" className="w-full border border-admin-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-admin-accent bg-admin-bg text-admin-text placeholder-admin-text-muted/50" />
               </div>
               <div>
-                <label className="block text-[10px] font-bold text-ink-soft uppercase tracking-widest mb-1.5">Name <span className="font-normal normal-case text-ink-soft/70">(optional)</span></label>
+                <label className="block text-[10px] font-bold text-admin-text-muted uppercase tracking-widest mb-1.5">Name <span className="font-normal normal-case text-admin-text-muted/70">(optional)</span></label>
                 <input type="text" value={newName} onChange={(e) => setNewName(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && addSubscriber()}
-                  placeholder="John Doe" className="w-full border border-line rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand bg-ink text-white placeholder-ink-soft/50" />
+                  placeholder="John Doe" className="w-full border border-admin-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-admin-accent bg-admin-bg text-admin-text placeholder-admin-text-muted/50" />
               </div>
               {addError && <p className="text-xs text-red-500 flex items-center gap-1.5"><AlertCircle size={12} /> {addError}</p>}
             </div>
             <div className="flex gap-3 px-5 pb-5">
               <button onClick={() => { setShowAddModal(false); setAddError(''); setNewEmail(''); setNewName(''); }}
-                className="flex-1 px-4 py-2.5 border border-line text-ink-soft rounded-xl text-sm font-medium hover:text-white hover:bg-white/[0.03] transition-colors">Cancel</button>
+                className="flex-1 px-4 py-2.5 border border-admin-border text-admin-text-muted rounded-xl text-sm font-medium hover:text-admin-text hover:bg-admin-bg transition-colors">Cancel</button>
               <button onClick={addSubscriber} disabled={adding}
-                className="flex-1 px-4 py-2.5 bg-white text-ink rounded-xl text-sm font-medium flex items-center justify-center gap-2 hover:bg-gray-200 transition-colors disabled:opacity-50">
+                className="flex-1 px-4 py-2.5 bg-admin-accent hover:bg-admin-accent/80 text-white rounded-xl text-sm font-medium flex items-center justify-center gap-2 transition-colors disabled:opacity-50">
                 {adding ? <Loader2 size={13} className="animate-spin" /> : <Plus size={13} />}
                 {adding ? 'Adding…' : 'Add Subscriber'}
               </button>

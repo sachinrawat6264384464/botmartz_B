@@ -1,7 +1,9 @@
 "use client";
-import { memo } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { db } from "@/lib/firebase";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 
 interface Project {
   id: string;
@@ -11,8 +13,8 @@ interface Project {
   result: string;
 }
 
-// Static data outside component with unique IDs
-const PROJECTS: readonly Project[] = [
+// Fallback static data
+const FALLBACK_PROJECTS: readonly Project[] = [
   { id: "lotus", title: "Lotus Skincare", url: "https://lotusskin.in/", tag: "E-commerce", result: "Upto 20% Off" },
   { id: "safari", title: "Safari Bags", url: "https://www.safaribags.com/", tag: "Retail", result: "Premium Collection" },
   { id: "yashueprem", title: "Yashueprem", url: "https://yashueprem.com/", tag: "E-commerce", result: "Curated Products" },
@@ -90,6 +92,33 @@ ProjectRow.displayName = 'ProjectRow';
 
 // Main Component
 export const ProjectManifest = memo(function ProjectManifest() {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const q = query(collection(db, "projects"), orderBy("createdAt", "desc"));
+        const snap = await getDocs(q);
+        const list: Project[] = [];
+        snap.forEach((d) => {
+          list.push({ id: d.id, ...d.data() } as Project);
+        });
+        if (list.length > 0) {
+          setProjects(list);
+        } else {
+          setProjects([...FALLBACK_PROJECTS]);
+        }
+      } catch (err) {
+        console.error("Error loading project manifest:", err);
+        setProjects([...FALLBACK_PROJECTS]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProjects();
+  }, []);
+
   return (
     <section className="py-32 bg-[#080808] relative overflow-hidden">
       {/* Optional: Add subtle background gradient */}
@@ -100,15 +129,21 @@ export const ProjectManifest = memo(function ProjectManifest() {
           Deployment Log
         </h2>
         
-        <div className="flex flex-col">
-          {PROJECTS.map((project, i) => (
-            <ProjectRow 
-              key={project.id} 
-              project={project} 
-              index={i} 
-            />
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex items-center justify-center py-20">
+            <div className="w-8 h-8 border-2 border-white/20 border-t-[#D4AF37] rounded-full animate-spin" />
+          </div>
+        ) : (
+          <div className="flex flex-col">
+            {projects.map((project, i) => (
+              <ProjectRow 
+                key={project.id} 
+                project={project} 
+                index={i} 
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

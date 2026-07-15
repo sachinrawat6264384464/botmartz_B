@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/context/AuthContext';
 import { ROUTE_MODULE_MAP } from '@/lib/modules';
@@ -57,11 +57,13 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
 
   // All authenticated pages — sidebar + header shell
   return (
-    <div className="flex h-screen bg-ink overflow-hidden">
-      <AdminSidebar />
+    <div className="flex h-screen bg-admin-bg overflow-hidden">
+      <Suspense fallback={<div className="w-[232px] bg-admin-card border-r border-admin-border" />}>
+        <AdminSidebar />
+      </Suspense>
       <div className="flex-1 flex flex-col overflow-hidden">
         <AdminHeader />
-        <main className="flex-1 overflow-y-auto bg-ink">
+        <main className="flex-1 overflow-y-auto bg-admin-bg">
           {children}
         </main>
       </div>

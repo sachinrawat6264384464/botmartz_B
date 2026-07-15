@@ -27,7 +27,7 @@ service cloud.firestore {
     // (needed by AuthContext on login).
     // Only super-admins can write role documents.
     match /user_roles/{userId} {
-      allow read: if isSignedIn() && request.auth.uid == userId;
+      allow read: if (isSignedIn() && request.auth.uid == userId) || isSuperAdmin();
       allow write: if isSuperAdmin();
     }
 
@@ -42,9 +42,33 @@ service cloud.firestore {
     }
 
     // ── case-studies ──────────────────────────────────────────────
-    // Hidden from public frontend. Only super-admins can read or write.
+    // Anyone can read case-studies. Only super-admins can write.
     match /case-studies/{docId} {
-      allow read, write: if isSuperAdmin();
+      allow read: if true;
+      allow write: if isSuperAdmin();
+    }
+
+    // ── dynamic_pages ──────────────────────────────────────────────
+    // Anyone can read page configs. Only super-admins can write.
+    match /dynamic_pages/{docId} {
+      allow read: if true;
+      allow write: if isSuperAdmin();
+    }
+
+    // ── labs ──────────────────────────────────────────────────────
+    // Anyone can read labs (used by public Labs page).
+    // Only super-admins can create, update, or delete labs.
+    match /labs/{docId} {
+      allow read: if true;
+      allow write: if isSuperAdmin();
+    }
+
+    // ── projects ──────────────────────────────────────────────────
+    // Anyone can read projects (used by public landing page log).
+    // Only super-admins can write to projects.
+    match /projects/{docId} {
+      allow read: if true;
+      allow write: if isSuperAdmin();
     }
 
     // ── comments ──────────────────────────────────────────────────

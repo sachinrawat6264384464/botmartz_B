@@ -188,9 +188,9 @@ export default function CommentsAdminPage() {
 
   const statusBadge = (status: string) => {
     const styles: Record<string, string> = {
-      pending: "bg-amber-50 text-amber-700 border-amber-200",
-      approved: "bg-green-50 text-green-700 border-green-200",
-      rejected: "bg-red-50 text-red-700 border-red-200",
+      pending: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+      approved: "bg-green-500/10 text-green-400 border-green-500/20",
+      rejected: "bg-red-500/10 text-red-400 border-red-500/20",
     };
     const dot: Record<string, string> = {
       pending: "bg-amber-500",
@@ -209,22 +209,22 @@ export default function CommentsAdminPage() {
     return (
       <div className={`${interTight.className} flex items-center justify-center h-64`}>
         <div className="flex flex-col items-center gap-3">
-          <div className="w-5 h-5 rounded-full border-2 border-line border-t-white animate-spin" />
-          <p className="text-xs text-ink-soft">Loading comments…</p>
+          <div className="w-5 h-5 rounded-full border-2 border-admin-border border-t-admin-accent animate-spin" />
+          <p className="text-xs text-admin-text-muted">Loading comments…</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={`${interTight.className} p-6 max-w-[1400px]`}>
+    <div className={`${interTight.className} p-6 max-w-[1400px] text-admin-text`}>
 
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white">Comments</h1>
-            <p className="text-sm text-ink-soft mt-0.5">Moderate and manage reader comments</p>
+            <h1 className="text-2xl font-bold text-admin-text">Comments</h1>
+            <p className="text-sm text-admin-text-muted mt-0.5">Moderate and manage reader comments</p>
           </div>
           <div className="flex items-center gap-2">
             {selectedComments.size > 0 && (
@@ -238,7 +238,7 @@ export default function CommentsAdminPage() {
             )}
             <button
               onClick={handleExportCSV}
-              className="flex items-center gap-2 px-3 py-2 bg-paper border border-line hover:bg-white/[0.03] text-ink-soft hover:text-white rounded-xl text-xs font-semibold transition-all shadow-sm"
+              className="flex items-center gap-2 px-3 py-2 bg-admin-bg border border-admin-border hover:bg-admin-bg/60 text-admin-text-muted hover:text-admin-text rounded-xl text-xs font-semibold transition-all shadow-sm"
             >
               <Download size={13} />
               Export CSV
@@ -248,49 +248,49 @@ export default function CommentsAdminPage() {
       </div>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {[
-          { label: "Total Comments", value: counts.all, icon: MessageCircle, bg: "bg-brand/10", border: "border-brand/20", color: "text-brand" },
+          { label: "Total Comments", value: counts.all, icon: MessageCircle, bg: "bg-admin-accent/10", border: "border-admin-accent/20", color: "text-admin-accent" },
           { label: "Pending", value: counts.pending, icon: MessageCircle, bg: "bg-amber-500/10", border: "border-amber-500/20", color: "text-amber-500" },
-          { label: "Approved", value: counts.approved, icon: CheckCircle2, bg: "bg-green-500/10", border: "border-green-500/20", color: "text-green-500" },
-          { label: "Rejected", value: counts.rejected, icon: XCircle, bg: "bg-red-500/10", border: "border-red-500/20", color: "text-red-500" },
+          { label: "Approved", value: counts.approved, icon: CheckCircle2, bg: "bg-green-500/10", border: "border-green-500/20", color: "text-green-400" },
+          { label: "Rejected", value: counts.rejected, icon: XCircle, bg: "bg-red-500/10", border: "border-red-500/20", color: "text-red-400" },
         ].map(({ label, value, icon: Icon, bg, border, color }) => (
-          <div key={label} className="bg-paper border border-line rounded-2xl p-5 shadow-sm">
+          <div key={label} className="bg-admin-card border border-admin-border rounded-2xl p-5 shadow-sm">
             <div className="flex items-start justify-between mb-4">
               <div className={`w-10 h-10 ${bg} ${border} border rounded-xl flex items-center justify-center`}>
                 <Icon size={18} className={color} />
               </div>
             </div>
-            <p className="text-3xl font-bold text-white tracking-tight">{value}</p>
-            <p className="text-xs font-semibold text-ink-soft mt-0.5">{label}</p>
+            <p className="text-3xl font-bold text-admin-text tracking-tight">{value}</p>
+            <p className="text-xs font-semibold text-admin-text-muted mt-0.5">{label}</p>
           </div>
         ))}
       </div>
 
       {/* Main Table Card */}
-      <div className="bg-paper border border-line rounded-2xl overflow-hidden shadow-sm">
+      <div className="bg-admin-card border border-admin-border rounded-2xl overflow-hidden shadow-sm">
 
         {/* Filters */}
-        <div className="px-5 py-4 border-b border-line flex flex-col md:flex-row gap-3">
+        <div className="px-5 py-4 border-b border-admin-border flex flex-col md:flex-row gap-3 bg-admin-card">
           <div className="flex-1 relative">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-soft" />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-admin-text-muted" />
             <input
               type="text"
               placeholder="Search author, email, content…"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 bg-ink border border-line rounded-xl text-sm text-white placeholder-ink-soft focus:outline-none focus:border-brand transition-all"
+              className="w-full pl-9 pr-3 py-2 bg-admin-bg border border-admin-border rounded-xl text-sm text-admin-text placeholder-admin-text-muted focus:outline-none focus:border-admin-accent transition-all"
             />
           </div>
-          <div className="flex gap-1 bg-ink rounded-xl p-1 border border-line">
+          <div className="flex gap-1 bg-admin-bg rounded-xl p-1 border border-admin-border">
             {(["all", "pending", "approved", "rejected"] as const).map((s) => (
               <button
                 key={s}
                 onClick={() => setStatusFilter(s)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all capitalize ${
                   statusFilter === s
-                    ? "bg-paper text-white shadow-sm border border-line"
-                    : "text-ink-soft hover:text-white"
+                    ? "bg-admin-card text-admin-text shadow-sm border border-admin-border"
+                    : "text-admin-text-muted hover:text-admin-text"
                 }`}
               >
                 {s}
@@ -305,58 +305,58 @@ export default function CommentsAdminPage() {
         {/* Table or empty */}
         {paginated.length === 0 ? (
           <div className="py-24 flex flex-col items-center text-center">
-            <div className="w-12 h-12 bg-white/[0.03] border border-line rounded-2xl flex items-center justify-center mb-3">
-              <MessageCircle size={20} className="text-ink-soft" />
+            <div className="w-12 h-12 bg-admin-bg border border-admin-border rounded-2xl flex items-center justify-center mb-3">
+              <MessageCircle size={20} className="text-admin-text-muted" />
             </div>
-            <p className="text-sm font-semibold text-ink-soft">No comments found</p>
-            <p className="text-xs text-ink-soft/70 mt-1">
+            <p className="text-sm font-semibold text-admin-text-muted">No comments found</p>
+            <p className="text-xs text-admin-text-muted/70 mt-1">
               {searchQuery ? "Try a different search" : "Comments will appear here once submitted"}
             </p>
           </div>
         ) : (
           <>
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto bg-admin-card">
               <table className="w-full">
-                <thead className="border-b border-line bg-ink/50">
+                <thead className="border-b border-admin-border bg-admin-bg/50">
                   <tr>
                     <th className="px-4 py-3 text-left">
                       <input
                         type="checkbox"
                         checked={selectedComments.size === paginated.length && paginated.length > 0}
                         onChange={handleSelectAll}
-                        className="w-3.5 h-3.5 cursor-pointer rounded accent-brand"
+                        className="w-3.5 h-3.5 cursor-pointer rounded accent-admin-accent"
                       />
                     </th>
                     {["#", "Author", "Blog Post", "Comment", "Status", "Date", "Actions"].map((h) => (
                       <th
                         key={h}
-                        className="px-3 py-3 text-left text-[10px] font-semibold text-ink-soft uppercase tracking-wider"
+                        className="px-3 py-3 text-left text-[10px] font-semibold text-admin-text-muted uppercase tracking-wider"
                       >
                         {h}
                       </th>
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-line">
+                <tbody className="divide-y divide-admin-border bg-admin-card">
                   {paginated.map((comment, idx) => (
-                    <tr key={comment.id} className="hover:bg-white/[0.03] transition-colors">
+                    <tr key={comment.id} className="hover:bg-admin-bg/40 transition-colors">
                       <td className="px-4 py-3">
                         <input
                           type="checkbox"
                           checked={selectedComments.has(comment.id)}
                           onChange={() => toggleSelect(comment.id)}
-                          className="w-3.5 h-3.5 cursor-pointer rounded accent-brand"
+                          className="w-3.5 h-3.5 cursor-pointer rounded accent-admin-accent"
                         />
                       </td>
-                      <td className="px-3 py-3 text-xs text-ink-soft">{startIndex + idx + 1}</td>
+                      <td className="px-3 py-3 text-xs text-admin-text-muted">{startIndex + idx + 1}</td>
                       <td className="px-3 py-3">
                         <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-full bg-ink flex items-center justify-center text-ink-soft text-[10px] font-bold shrink-0 border border-line">
+                          <div className="w-7 h-7 rounded-full bg-admin-bg flex items-center justify-center text-admin-text-muted text-[10px] font-bold shrink-0 border border-admin-border">
                             {getAuthorName(comment).charAt(0).toUpperCase()}
                           </div>
                           <div>
-                            <div className="text-xs font-semibold text-white">{getAuthorName(comment)}</div>
-                            <div className="text-[10px] text-ink-soft">{getAuthorEmail(comment)}</div>
+                            <div className="text-xs font-semibold text-admin-text">{getAuthorName(comment)}</div>
+                            <div className="text-[10px] text-admin-text-muted">{getAuthorEmail(comment)}</div>
                           </div>
                         </div>
                       </td>
@@ -365,23 +365,23 @@ export default function CommentsAdminPage() {
                           href={`/blog/${getBlogSlug(getBlogRef(comment))}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xs text-ink-soft hover:text-brand transition-colors max-w-[150px] truncate block"
+                          className="text-xs text-admin-text-muted hover:text-admin-accent transition-colors max-w-[150px] truncate block"
                         >
                           {getBlogTitle(getBlogRef(comment))}
                         </a>
                       </td>
                       <td className="px-3 py-3">
-                        <p className="text-xs text-ink-soft max-w-[180px] truncate">{comment.content}</p>
+                        <p className="text-xs text-admin-text-muted max-w-[180px] truncate">{comment.content}</p>
                       </td>
                       <td className="px-3 py-3">{statusBadge(comment.status)}</td>
-                      <td className="px-3 py-3 text-[10px] text-ink-soft whitespace-nowrap">
+                      <td className="px-3 py-3 text-[10px] text-admin-text-muted whitespace-nowrap">
                         {formatDate(comment.createdAt)}
                       </td>
                       <td className="px-3 py-3">
                         <div className="flex items-center gap-1">
                           <button
                             onClick={() => setSelectedComment(comment)}
-                            className="p-1.5 hover:bg-brand/10 text-ink-soft hover:text-brand rounded-lg transition-all"
+                            className="p-1.5 hover:bg-admin-accent/10 text-admin-text-muted hover:text-admin-accent rounded-lg transition-all"
                             title="View"
                           >
                             <Eye size={13} />
@@ -389,7 +389,7 @@ export default function CommentsAdminPage() {
                           {comment.status !== "approved" && (
                             <button
                               onClick={() => handleApprove(comment.id)}
-                              className="p-1.5 hover:bg-green-500/10 text-ink-soft hover:text-green-500 rounded-lg transition-all"
+                              className="p-1.5 hover:bg-green-500/10 text-admin-text-muted hover:text-green-500 rounded-lg transition-all"
                               title="Approve"
                             >
                               <CheckCircle2 size={13} />
@@ -398,7 +398,7 @@ export default function CommentsAdminPage() {
                           {comment.status !== "rejected" && (
                             <button
                               onClick={() => handleReject(comment.id)}
-                              className="p-1.5 hover:bg-red-500/10 text-ink-soft hover:text-red-500 rounded-lg transition-all"
+                              className="p-1.5 hover:bg-red-500/10 text-admin-text-muted hover:text-red-500 rounded-lg transition-all"
                               title="Reject"
                             >
                               <XCircle size={13} />
@@ -406,7 +406,7 @@ export default function CommentsAdminPage() {
                           )}
                           <button
                             onClick={() => setCommentToDelete(comment)}
-                            className="p-1.5 hover:bg-red-500/10 text-ink-soft hover:text-red-500 rounded-lg transition-all"
+                            className="p-1.5 hover:bg-red-500/10 text-admin-text-muted hover:text-red-500 rounded-lg transition-all"
                             title="Delete"
                           >
                             <Trash2 size={13} />
@@ -421,15 +421,15 @@ export default function CommentsAdminPage() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="px-5 py-3 border-t border-line flex items-center justify-between">
-                <span className="text-xs text-ink-soft">
+              <div className="px-5 py-3 border-t border-admin-border flex items-center justify-between bg-admin-card">
+                <span className="text-xs text-admin-text-muted">
                   Showing {startIndex + 1}–{Math.min(startIndex + COMMENTS_PER_PAGE, filtered.length)} of {filtered.length}
                 </span>
                 <div className="flex items-center gap-1.5">
                   <button
                     onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                     disabled={currentPage === 1}
-                    className="p-1.5 border border-line rounded-lg hover:bg-white/[0.03] disabled:opacity-30 disabled:cursor-not-allowed transition-all text-ink-soft hover:text-white"
+                    className="p-1.5 border border-admin-border rounded-lg hover:bg-admin-bg disabled:opacity-30 disabled:cursor-not-allowed transition-all text-admin-text-muted hover:text-admin-text"
                   >
                     <ChevronLeft size={13} className="text-inherit" />
                   </button>
@@ -446,8 +446,8 @@ export default function CommentsAdminPage() {
                         onClick={() => setCurrentPage(p)}
                         className={`min-w-7 h-7 px-1.5 rounded-lg text-xs font-semibold transition-all ${
                           currentPage === p
-                            ? "bg-white text-ink"
-                            : "border border-line text-ink-soft hover:bg-white/[0.03] hover:text-white"
+                            ? "bg-admin-accent text-white"
+                            : "border border-admin-border text-admin-text-muted hover:bg-admin-bg hover:text-admin-text"
                         }`}
                       >
                         {p}
@@ -457,7 +457,7 @@ export default function CommentsAdminPage() {
                   <button
                     onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                     disabled={currentPage === totalPages}
-                    className="p-1.5 border border-line rounded-lg hover:bg-white/[0.03] disabled:opacity-30 disabled:cursor-not-allowed transition-all text-ink-soft hover:text-white"
+                    className="p-1.5 border border-admin-border rounded-lg hover:bg-admin-bg disabled:opacity-30 disabled:cursor-not-allowed transition-all text-admin-text-muted hover:text-admin-text"
                   >
                     <ChevronRight size={13} className="text-inherit" />
                   </button>
@@ -476,8 +476,8 @@ export default function CommentsAdminPage() {
           onConfirm={handleBulkDelete}
           confirmLabel={`Delete ${selectedComments.size} Comment${selectedComments.size > 1 ? "s" : ""}`}
         >
-          <p className="text-sm text-ink-soft">
-            Delete <span className="font-semibold text-white">{selectedComments.size}</span> selected comment{selectedComments.size > 1 ? "s" : ""}? This cannot be undone.
+          <p className="text-sm text-admin-text-muted">
+            Delete <span className="font-semibold text-admin-text">{selectedComments.size}</span> selected comment{selectedComments.size > 1 ? "s" : ""}? This cannot be undone.
           </p>
         </ConfirmModal>
       )}
@@ -490,11 +490,11 @@ export default function CommentsAdminPage() {
           onConfirm={handleDeleteConfirm}
           confirmLabel="Delete Comment"
         >
-          <p className="text-sm text-ink-soft mb-3">This action cannot be undone.</p>
-          <div className="bg-ink border border-line rounded-xl p-3">
-            <p className="text-sm font-semibold text-white">{getAuthorName(commentToDelete)}</p>
-            <p className="text-xs text-ink-soft mb-1.5">{getAuthorEmail(commentToDelete)}</p>
-            <p className="text-xs text-ink-soft line-clamp-3">{commentToDelete.content}</p>
+          <p className="text-sm text-admin-text-muted mb-3">This action cannot be undone.</p>
+          <div className="bg-admin-bg border border-admin-border rounded-xl p-3">
+            <p className="text-sm font-semibold text-admin-text">{getAuthorName(commentToDelete)}</p>
+            <p className="text-xs text-admin-text-muted mb-1.5">{getAuthorEmail(commentToDelete)}</p>
+            <p className="text-xs text-admin-text-muted line-clamp-3">{commentToDelete.content}</p>
           </div>
         </ConfirmModal>
       )}
@@ -502,20 +502,20 @@ export default function CommentsAdminPage() {
       {/* View Detail Modal */}
       {selectedComment && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className={`${interTight.className} bg-paper border border-line rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-hidden`}>
-            <div className="px-5 py-4 border-b border-line flex items-center justify-between">
+          <div className={`${interTight.className} bg-admin-card border border-admin-border rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-hidden`}>
+            <div className="px-5 py-4 border-b border-admin-border flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 bg-ink rounded-xl border border-line flex items-center justify-center text-ink-soft text-sm font-bold shrink-0">
+                <div className="w-9 h-9 bg-admin-bg rounded-xl border border-admin-border flex items-center justify-center text-admin-text-muted text-sm font-bold shrink-0">
                   {getAuthorName(selectedComment).charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-white">Comment Detail</h3>
-                  <p className="text-xs text-ink-soft">{getAuthorEmail(selectedComment)}</p>
+                  <h3 className="text-sm font-semibold text-admin-text">Comment Detail</h3>
+                  <p className="text-xs text-admin-text-muted">{getAuthorEmail(selectedComment)}</p>
                 </div>
               </div>
               <button
                 onClick={() => setSelectedComment(null)}
-                className="p-1.5 hover:bg-white/[0.05] text-ink-soft hover:text-white rounded-lg transition-all"
+                className="p-1.5 hover:bg-admin-bg text-admin-text-muted hover:text-admin-text rounded-lg transition-all"
               >
                 <XCircle size={16} />
               </button>
@@ -523,23 +523,23 @@ export default function CommentsAdminPage() {
 
             <div className="p-5 overflow-y-auto space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-ink border border-line flex items-center justify-center text-ink-soft font-bold text-base">
+                <div className="w-10 h-10 rounded-full bg-admin-bg border border-admin-border flex items-center justify-center text-admin-text-muted font-bold text-base">
                   {getAuthorName(selectedComment).charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <p className="font-semibold text-white text-sm">{getAuthorName(selectedComment)}</p>
-                  <p className="text-xs text-ink-soft">{getAuthorEmail(selectedComment)}</p>
+                  <p className="font-semibold text-admin-text text-sm">{getAuthorName(selectedComment)}</p>
+                  <p className="text-xs text-admin-text-muted">{getAuthorEmail(selectedComment)}</p>
                   <div className="mt-1">{statusBadge(selectedComment.status)}</div>
                 </div>
               </div>
 
               <div>
-                <p className="text-[10px] font-semibold text-ink-soft uppercase tracking-wider mb-1">Blog Post</p>
+                <p className="text-[10px] font-semibold text-admin-text-muted uppercase tracking-wider mb-1">Blog Post</p>
                 <a
                   href={`/blog/${getBlogSlug(getBlogRef(selectedComment))}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1 text-xs text-brand hover:underline font-medium"
+                  className="flex items-center gap-1 text-xs text-admin-accent hover:underline font-medium"
                 >
                   {getBlogTitle(getBlogRef(selectedComment))}
                   <ExternalLink size={10} />
@@ -547,24 +547,24 @@ export default function CommentsAdminPage() {
               </div>
 
               <div>
-                <p className="text-[10px] font-semibold text-ink-soft uppercase tracking-wider mb-1">Submitted</p>
-                <p className="text-xs text-ink-soft">{formatDate(selectedComment.createdAt)}</p>
+                <p className="text-[10px] font-semibold text-admin-text-muted uppercase tracking-wider mb-1">Submitted</p>
+                <p className="text-xs text-admin-text-muted">{formatDate(selectedComment.createdAt)}</p>
               </div>
 
               <div>
-                <p className="text-[10px] font-semibold text-ink-soft uppercase tracking-wider mb-1.5">Comment</p>
-                <div className="bg-ink border border-line rounded-xl p-3">
-                  <p className="text-sm text-ink-soft leading-relaxed whitespace-pre-wrap">
+                <p className="text-[10px] font-semibold text-admin-text-muted uppercase tracking-wider mb-1.5">Comment</p>
+                <div className="bg-admin-bg border border-admin-border rounded-xl p-3">
+                  <p className="text-sm text-admin-text-muted leading-relaxed whitespace-pre-wrap">
                     {selectedComment.content}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="px-5 py-4 border-t border-line flex items-center justify-end gap-2 bg-paper">
+            <div className="px-5 py-4 border-t border-admin-border flex items-center justify-end gap-2 bg-admin-bg/10">
               <button
                 onClick={() => setSelectedComment(null)}
-                className="px-3 py-2 border border-line hover:bg-white/[0.03] text-ink-soft hover:text-white rounded-xl text-xs font-medium transition-all"
+                className="px-3 py-2 border border-admin-border hover:bg-admin-bg text-admin-text-muted hover:text-admin-text rounded-xl text-xs font-medium transition-all"
               >
                 Close
               </button>
@@ -586,7 +586,7 @@ export default function CommentsAdminPage() {
               )}
               <button
                 onClick={() => { setSelectedComment(null); setCommentToDelete(selectedComment); }}
-                className="flex items-center gap-1.5 px-3 py-2 border border-line hover:bg-red-500/10 hover:border-red-500/20 text-ink-soft hover:text-red-500 rounded-xl text-xs font-medium transition-all"
+                className="flex items-center gap-1.5 px-3 py-2 border border-admin-border hover:bg-red-500/10 hover:border-red-500/20 text-admin-text-muted hover:text-red-500 rounded-xl text-xs font-medium transition-all"
               >
                 <Trash2 size={13} /> Delete
               </button>
@@ -609,18 +609,18 @@ function ConfirmModal({
 }) {
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-paper border border-line rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden">
+      <div className="bg-admin-card border border-admin-border rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden">
         <div className="px-5 py-4 border-b border-red-500/20 bg-red-500/10 flex items-center gap-3">
           <div className="w-8 h-8 rounded-xl bg-red-500/10 flex items-center justify-center border border-red-500/20">
             <AlertTriangle size={15} className="text-red-500" />
           </div>
-          <h3 className="text-sm font-semibold text-white">{title}</h3>
+          <h3 className="text-sm font-semibold text-admin-text">{title}</h3>
         </div>
-        <div className="p-5 text-white">{children}</div>
-        <div className="px-5 py-4 border-t border-line flex items-center justify-end gap-2 bg-paper">
+        <div className="p-5 text-admin-text">{children}</div>
+        <div className="px-5 py-4 border-t border-admin-border flex items-center justify-end gap-2 bg-admin-bg/10">
           <button
             onClick={onCancel}
-            className="px-3 py-2 border border-line hover:bg-white/[0.03] text-ink-soft hover:text-white rounded-xl text-xs font-medium transition-all"
+            className="px-3 py-2 border border-admin-border hover:bg-admin-bg text-admin-text-muted hover:text-admin-text rounded-xl text-xs font-medium transition-all"
           >
             Cancel
           </button>

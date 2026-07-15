@@ -4,20 +4,43 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
-  { name: 'Services', path: '/services' },
-  { name: 'Industries', path: '/industries' },
-  { name: 'Work', path: '/work' },
-  { name: 'Insights', path: '/insights' },
+  { 
+    name: 'Services', 
+    path: '/services',
+    dropdown: [
+      { name: 'Enterprise RAG', path: '/services/enterprise-rag' },
+      { name: 'AI Agents', path: '/services/ai-agents' },
+    ]
+  },
+  { 
+    name: 'Industries', 
+    path: '/industries',
+    dropdown: [
+      { name: 'Education', path: '/industries/education' },
+      { name: 'Logistics', path: '/industries/logistics' },
+      { name: 'Legal', path: '/industries/legal' },
+    ]
+  },
+  { 
+    name: 'Work', 
+    path: '/work',
+    dropdown: [
+      { name: 'Case Studies', path: '/work/case-studies' },
+      { name: 'Labs', path: '/work/labs' },
+    ]
+  },
+  { name: 'Engineering Insights', path: '/insights' },
   { name: 'Community', path: '/community' },
   { name: 'About', path: '/about' },
 ];
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();
 
   return (
@@ -40,15 +63,47 @@ export default function Navbar() {
           {/* DESKTOP NAV */}
           <nav className="hidden lg:flex gap-[30px] items-center" aria-label="Primary">
             {NAV_ITEMS.map((item) => (
-              <Link 
-                key={item.name} 
-                href={item.path}
-                className={`font-mono text-[12px] tracking-[0.06em] uppercase transition-colors ${
-                  pathname === item.path ? 'text-brand' : 'text-ink-soft hover:text-brand'
-                }`}
+              <div
+                key={item.name}
+                className="relative py-5 group cursor-pointer"
+                onMouseEnter={() => setActiveDropdown(item.name)}
+                onMouseLeave={() => setActiveDropdown(null)}
               >
-                {item.name}
-              </Link>
+                <Link 
+                  href={item.path}
+                  className={`font-mono text-[12px] tracking-[0.06em] uppercase transition-colors py-2 flex items-center gap-1 ${
+                    pathname === item.path || (item.dropdown && item.dropdown.some(sub => pathname === sub.path)) ? 'text-brand' : 'text-ink-soft hover:text-brand'
+                  }`}
+                >
+                  <span>{item.name}</span>
+                  {item.dropdown && (
+                    <ChevronDown className="w-3 h-3 opacity-60 group-hover:opacity-100 group-hover:rotate-180 transition-all duration-200" />
+                  )}
+                </Link>
+
+                <AnimatePresence>
+                  {item.dropdown && activeDropdown === item.name && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 8 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute top-[90%] left-1/2 -translate-x-1/2 mt-2 w-60 bg-white border border-gray-200/80 rounded-xl shadow-[0_12px_36px_rgba(0,0,0,0.12)] p-2 flex flex-col gap-1 z-[100]"
+                    >
+                      {item.dropdown.map((sub) => (
+                        <Link
+                          key={sub.name}
+                          href={sub.path}
+                          className="px-4 py-3 text-left font-mono text-[11px] font-semibold tracking-wider text-ink hover:text-brand hover:bg-slate-100/50 rounded-lg transition-all flex items-center justify-between group/sub"
+                        >
+                          <span>{sub.name}</span>
+                          <span className="opacity-0 group-hover/sub:opacity-100 group-hover/sub:translate-x-1 transition-all duration-200 text-brand">→</span>
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             ))}
           </nav>
 
@@ -96,16 +151,33 @@ export default function Navbar() {
               </button>
             </div>
             
-            <nav className="flex flex-col gap-6 p-8 flex-1">
+            <nav className="flex flex-col gap-6 p-8 flex-1 overflow-y-auto">
               {NAV_ITEMS.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.path}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="font-heading text-2xl font-bold text-ink hover:text-brand transition-colors"
-                >
-                  {item.name}
-                </Link>
+                <div key={item.name} className="flex flex-col gap-2">
+                  <Link
+                    key={item.name}
+                    href={item.path}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="font-heading text-2xl font-bold text-ink hover:text-brand transition-colors"
+                  >
+                    {item.name}
+                  </Link>
+
+                  {item.dropdown && (
+                    <div className="flex flex-col gap-3 pl-4 border-l border-line mt-1">
+                      {item.dropdown.map((sub) => (
+                        <Link
+                          key={sub.name}
+                          href={sub.path}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="font-mono text-xs text-ink-soft hover:text-brand transition-colors"
+                        >
+                          {sub.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
               <div className="mt-8">
                 <Link 

@@ -4,7 +4,10 @@
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import { ThemeProvider } from "next-themes";
-import Navbar from "./_components/navbar";
+
+const Navbar = dynamic(() => import("./_components/navbar"), {
+  ssr: false,
+});
 
 const Footer = dynamic(() => import("./_components/footer").then(m => ({ default: m.Footer })), {
   ssr: false,

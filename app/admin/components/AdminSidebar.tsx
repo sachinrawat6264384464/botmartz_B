@@ -2,8 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { Menu, X, LogOut, ChevronLeft, ChevronRight, Zap } from 'lucide-react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { 
+  Menu, X, LogOut, ChevronLeft, ChevronRight, Zap,
+  ChevronDown, Globe, Briefcase, Layers, Bot,
+  Home, Mail, BookOpen, MessageSquare, Send, Users, FolderKanban, CalendarDays, Settings, ShieldAlert
+} from 'lucide-react';
 import Image from 'next/image';
 import { Inter_Tight } from 'next/font/google';
 import { useAuth } from '@/lib/context/AuthContext';
@@ -12,13 +16,6 @@ import { db } from '@/lib/firebase';
 import { collection, query, where, getCountFromServer } from 'firebase/firestore';
 
 const interTight = Inter_Tight({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
-
-const SECTION_GROUPS: { label: string; ids: ModuleId[] }[] = [
-  { label: 'Main', ids: ['dashboard', 'crm', 'projects', 'events', 'ai-agents'] },
-  { label: 'Content',  ids: ['blogs', 'case-studies', 'comments', 'newsletter'] },
-  { label: 'Inbox',    ids: ['contacts'] },
-  { label: 'System', ids: ['settings', 'super-admin'] },
-];
 
 const BADGE_STYLE: Partial<Record<ModuleId, string>> = {
   contacts: 'bg-sky-500/20 text-sky-300 border border-sky-500/30',
@@ -30,8 +27,15 @@ export default function AdminSidebar() {
   const [signingOut, setSigningOut] = useState(false);
   const [liveCounts, setLiveCounts] = useState<Partial<Record<ModuleId, number>>>({});
 
+  // Collapsible Submenus Open States
+  const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isIndustriesOpen, setIsIndustriesOpen] = useState(false);
+  const [isWorkOpen, setIsWorkOpen] = useState(false);
+
   const pathname = usePathname();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const pageParam = searchParams ? searchParams.get('page') : '';
   const { user, userRole, hasAccess, logout } = useAuth();
 
   useEffect(() => {
@@ -44,6 +48,19 @@ export default function AdminSidebar() {
     fetchCounts();
   }, [pathname]);
 
+  // Auto-expand parents based on current sub-page path or query params
+  useEffect(() => {
+    if (pageParam === 'enterprise-rag' || pageParam === 'ai-agents') {
+      setIsServicesOpen(true);
+    }
+    if (pageParam === 'education' || pageParam === 'logistics' || pageParam === 'legal') {
+      setIsIndustriesOpen(true);
+    }
+    if (pathname === '/admin/case-studies' || pathname === '/admin/labs' || pageParam === 'labs') {
+      setIsWorkOpen(true);
+    }
+  }, [pathname, pageParam]);
+
   const allowedModules = MODULES.filter((mod) => {
     if (userRole?.isSuperAdmin) return true;
     return hasAccess(mod.id);
@@ -51,13 +68,149 @@ export default function AdminSidebar() {
 
   const handleSignOut = async () => {
     setSigningOut(true);
-    try { await logout(); router.push('/admin/login'); }
-    catch { setSigningOut(false); }
+    try { 
+      await logout(); 
+      router.push('/admin/login'); 
+    } catch { 
+      setSigningOut(false); 
+    }
   };
 
   const displayName = userRole?.displayName || user?.displayName || 'Admin User';
   const displayEmail = userRole?.email || user?.email || '';
   const initials = displayName.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) || 'AD';
+
+  const canAccess = (modId: ModuleId) => allowedModules.some(m => m.id === modId);
+
+  // Helper to render flat sidebar items
+  const renderFlatItem = (modId: ModuleId, icon: any, label: string, href: string, hasBadge?: boolean) => {
+    if (!canAccess(modId)) return null;
+
+    const Icon = icon;
+    const count = liveCounts[modId] ?? 0;
+    const showBadge = hasBadge && count > 0;
+    const badgeClass = BADGE_STYLE[modId] ?? '';
+    const isActive = pathname === href || (href !== '/admin' && pathname.startsWith(href));
+
+    return (
+      <Link
+        href={href}
+        onClick={() => setIsOpen(false)}
+        className={`group relative flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-150 ${
+          collapsed ? 'justify-center' : ''
+        } ${
+          isActive
+            ? 'bg-admin-accent-muted text-admin-accent font-semibold shadow-sm'
+            : 'text-admin-text-muted hover:text-admin-text hover:bg-admin-bg'
+        }`}
+      >
+        {isActive && (
+          <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-5 rounded-r-full bg-admin-accent" />
+        )}
+
+        <Icon
+          size={16}
+          className={`shrink-0 transition-colors ${isActive ? 'text-admin-accent' : 'text-admin-text-muted group-hover:text-admin-text'}`}
+        />
+
+        {!collapsed && (
+          <>
+            <span className="text-[13px] flex-1 leading-none">{label}</span>
+            {showBadge && (
+              <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${badgeClass}`}>
+                {count}
+              </span>
+            )}
+          </>
+        )}
+
+        {collapsed && (
+          <>
+            {showBadge && (
+              <span className="absolute top-1.5 right-1.5 w-[5px] h-[5px] rounded-full bg-sky-400" />
+            )}
+            <div className="absolute left-full ml-3 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="flex items-center gap-2 px-3 py-2 bg-admin-card border border-admin-border text-admin-text text-xs font-medium rounded-xl whitespace-nowrap shadow-xl">
+                {label}
+                {showBadge && (
+                  <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${badgeClass}`}>
+                    {count}
+                  </span>
+                )}
+              </div>
+            </div>
+          </>
+        )}
+      </Link>
+    );
+  };
+
+  // Helper to render collapsible sidebar sections
+  const renderCollapsibleGroup = (
+    label: string, 
+    isGroupOpen: boolean, 
+    setIsGroupOpen: (val: boolean) => void, 
+    icon: any, 
+    subItems: { label: string; href: string; active: boolean; moduleId: ModuleId }[]
+  ) => {
+    const visibleSubItems = subItems.filter(item => canAccess(item.moduleId));
+    if (visibleSubItems.length === 0) return null;
+
+    const Icon = icon;
+    const isGroupActive = subItems.some(item => item.active);
+
+    return (
+      <div className="space-y-1">
+        <button
+          onClick={() => setIsGroupOpen(!isGroupOpen)}
+          className={`w-full group flex items-center justify-between px-3 py-2.5 rounded-xl transition-all duration-150 ${
+            collapsed ? 'justify-center' : ''
+          } ${
+            isGroupActive
+              ? 'bg-admin-accent-muted/40 text-admin-accent'
+              : 'text-admin-text-muted hover:text-admin-text hover:bg-admin-bg'
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            <Icon
+              size={16}
+              className={`shrink-0 transition-colors ${isGroupActive ? 'text-admin-accent animate-pulse' : 'text-admin-text-muted group-hover:text-admin-text'}`}
+            />
+            {!collapsed && (
+              <span className={`text-[13px] leading-none ${isGroupActive ? 'font-semibold text-admin-accent' : 'font-medium'}`}>
+                {label}
+              </span>
+            )}
+          </div>
+          {!collapsed && (
+            <ChevronDown 
+              size={13} 
+              className={`text-admin-text-muted transition-transform duration-200 ${isGroupOpen ? 'rotate-180' : ''}`} 
+            />
+          )}
+        </button>
+
+        {!collapsed && isGroupOpen && (
+          <div className="pl-4 flex flex-col gap-1 border-l border-admin-border/50 ml-5 mt-1">
+            {visibleSubItems.map((sub, idx) => (
+              <Link
+                key={idx}
+                href={sub.href}
+                onClick={() => setIsOpen(false)}
+                className={`px-3 py-2 rounded-lg text-[12px] transition-all ${
+                  sub.active
+                    ? 'text-admin-accent font-semibold bg-admin-accent-muted'
+                    : 'text-admin-text-muted hover:text-admin-text hover:bg-admin-bg'
+                }`}
+              >
+                {sub.label}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <>
@@ -99,94 +252,105 @@ export default function AdminSidebar() {
 
         {/* ── Navigation ── */}
         <nav className="flex-1 overflow-y-auto py-4 px-2 space-y-5" style={{ scrollbarWidth: 'none' }}>
-          {SECTION_GROUPS.map((group) => {
-            const groupMods = allowedModules.filter((m) => group.ids.includes(m.id));
-            if (groupMods.length === 0) return null;
-
-            return (
-              <div key={group.label}>
-                {!collapsed ? (
-                  <div className="flex items-center gap-2 px-3 mb-2">
-                    <span className="text-[9px] font-semibold text-admin-text-muted uppercase tracking-[0.2em] shrink-0">
-                      {group.label}
-                    </span>
-                    <div className="flex-1 h-px bg-admin-border/50" />
-                  </div>
-                ) : (
-                  <div className="mx-2 mb-2 h-px bg-admin-border/50" />
-                )}
-
-                <div className="space-y-0.5">
-                  {groupMods.map((mod) => {
-                    const isActive = pathname === mod.href || (mod.href !== '/admin' && pathname.startsWith(mod.href));
-                    const Icon = mod.icon;
-                    const count = liveCounts[mod.id] ?? 0;
-                    const showBadge = mod.badge && count > 0;
-                    const badgeClass = BADGE_STYLE[mod.id] ?? '';
-
-                    return (
-                      <Link
-                        key={mod.id}
-                        href={mod.href}
-                        onClick={() => setIsOpen(false)}
-                        className={`group relative flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-150 ${
-                          collapsed ? 'justify-center' : ''
-                        } ${
-                          isActive
-                            ? 'bg-admin-accent-muted text-admin-accent'
-                            : 'text-admin-text-muted hover:text-admin-text hover:bg-admin-bg'
-                        }`}
-                      >
-                        {/* Active left bar */}
-                        {isActive && (
-                          <span
-                            className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-5 rounded-r-full bg-admin-accent"
-                          />
-                        )}
-
-                        <Icon
-                          size={16}
-                          className={`shrink-0 transition-colors ${isActive ? 'text-admin-accent' : 'text-admin-text-muted group-hover:text-admin-text'}`}
-                        />
-
-                        {!collapsed && (
-                          <>
-                            <span className={`text-[13px] flex-1 leading-none ${isActive ? 'font-semibold text-admin-accent' : 'font-medium'}`}>
-                              {mod.label}
-                            </span>
-                            {showBadge && (
-                              <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${badgeClass}`}>
-                                {count}
-                              </span>
-                            )}
-                          </>
-                        )}
-
-                        {collapsed && (
-                          <>
-                            {showBadge && (
-                              <span className="absolute top-1.5 right-1.5 w-[5px] h-[5px] rounded-full bg-sky-400" />
-                            )}
-                              {/* Tooltip */}
-                            <div className="absolute left-full ml-3 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-                              <div className="flex items-center gap-2 px-3 py-2 bg-admin-card border border-admin-border text-admin-text text-xs font-medium rounded-xl whitespace-nowrap shadow-xl">
-                                {mod.label}
-                                {showBadge && (
-                                  <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${badgeClass}`}>
-                                    {count}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-                          </>
-                        )}
-                      </Link>
-                    );
-                  })}
-                </div>
+          
+          {/* GROUP 1: MAIN */}
+          <div>
+            {!collapsed ? (
+              <div className="flex items-center gap-2 px-3 mb-2">
+                <span className="text-[9px] font-semibold text-admin-text-muted uppercase tracking-[0.2em] shrink-0">
+                  Main
+                </span>
+                <div className="flex-1 h-px bg-admin-border/50" />
               </div>
-            );
-          })}
+            ) : (
+              <div className="mx-2 mb-2 h-px bg-admin-border/50" />
+            )}
+            
+            <div className="space-y-0.5">
+              {renderFlatItem('dashboard', Home, 'Dashboard', '/admin')}
+              {renderFlatItem('crm', Users, 'CRM', '/admin/crm')}
+              {renderFlatItem('projects', FolderKanban, 'Projects', '/admin/projects')}
+              {renderFlatItem('events', CalendarDays, 'Events', '/admin/events')}
+            </div>
+          </div>
+
+          {/* GROUP 2: CONTENT */}
+          <div>
+            {!collapsed ? (
+              <div className="flex items-center gap-2 px-3 mb-2">
+                <span className="text-[9px] font-semibold text-admin-text-muted uppercase tracking-[0.2em] shrink-0">
+                  Content
+                </span>
+                <div className="flex-1 h-px bg-admin-border/50" />
+              </div>
+            ) : (
+              <div className="mx-2 mb-2 h-px bg-admin-border/50" />
+            )}
+
+            <div className="space-y-0.5">
+              {/* Services Collapsible Dropdown */}
+              {renderCollapsibleGroup('Services', isServicesOpen, setIsServicesOpen, Bot, [
+                { label: 'Enterprise RAG', href: '/admin/pages?page=enterprise-rag', active: pathname === '/admin/pages' && pageParam === 'enterprise-rag', moduleId: 'pages' },
+                { label: 'AI Agents', href: '/admin/pages?page=ai-agents', active: pathname === '/admin/pages' && pageParam === 'ai-agents', moduleId: 'pages' },
+              ])}
+
+              {/* Industries Collapsible Dropdown */}
+              {renderCollapsibleGroup('Industries', isIndustriesOpen, setIsIndustriesOpen, Globe, [
+                { label: 'Education', href: '/admin/pages?page=education', active: pathname === '/admin/pages' && pageParam === 'education', moduleId: 'pages' },
+                { label: 'Logistics', href: '/admin/pages?page=logistics', active: pathname === '/admin/pages' && pageParam === 'logistics', moduleId: 'pages' },
+                { label: 'Legal', href: '/admin/pages?page=legal', active: pathname === '/admin/pages' && pageParam === 'legal', moduleId: 'pages' },
+              ])}
+
+              {/* Work Collapsible Dropdown */}
+              {renderCollapsibleGroup('Work', isWorkOpen, setIsWorkOpen, Briefcase, [
+                { label: 'Case Studies', href: '/admin/case-studies', active: pathname === '/admin/case-studies', moduleId: 'case-studies' },
+                { label: 'Labs', href: '/admin/labs', active: pathname === '/admin/labs', moduleId: 'pages' },
+              ])}
+
+              {/* Flat Content Items */}
+              {renderFlatItem('blogs', BookOpen, 'Blogs', '/admin/Blogs')}
+              {renderFlatItem('comments', MessageSquare, 'Comments', '/admin/comments')}
+              {renderFlatItem('newsletter', Send, 'Newsletter', '/admin/newsletter')}
+            </div>
+          </div>
+
+          {/* GROUP 3: INBOX */}
+          <div>
+            {!collapsed ? (
+              <div className="flex items-center gap-2 px-3 mb-2">
+                <span className="text-[9px] font-semibold text-admin-text-muted uppercase tracking-[0.2em] shrink-0">
+                  Inbox
+                </span>
+                <div className="flex-1 h-px bg-admin-border/50" />
+              </div>
+            ) : (
+              <div className="mx-2 mb-2 h-px bg-admin-border/50" />
+            )}
+
+            <div className="space-y-0.5">
+              {renderFlatItem('contacts', Mail, 'Contact Form', '/admin/contacts', true)}
+            </div>
+          </div>
+
+          {/* GROUP 4: SYSTEM */}
+          <div>
+            {!collapsed ? (
+              <div className="flex items-center gap-2 px-3 mb-2">
+                <span className="text-[9px] font-semibold text-admin-text-muted uppercase tracking-[0.2em] shrink-0">
+                  System
+                </span>
+                <div className="flex-1 h-px bg-admin-border/50" />
+              </div>
+            ) : (
+              <div className="mx-2 mb-2 h-px bg-admin-border/50" />
+            )}
+
+            <div className="space-y-0.5">
+              {renderFlatItem('settings', Settings, 'Settings', '/admin/settings')}
+              {renderFlatItem('super-admin', ShieldAlert, 'Super Admin', '/admin/super-admin')}
+            </div>
+          </div>
+
         </nav>
 
         {/* ── Collapse toggle — desktop only ── */}

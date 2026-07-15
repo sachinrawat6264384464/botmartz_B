@@ -74,20 +74,20 @@ function ConfirmDialog({
 }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={!isLoading ? onCancel : undefined} />
-      <div className="relative bg-paper rounded-2xl shadow-2xl max-w-md w-full p-6 border border-line">
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={!isLoading ? onCancel : undefined} />
+      <div className="relative bg-admin-card rounded-2xl shadow-2xl max-w-md w-full p-6 border border-admin-border">
         <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-4">
           <Trash2 size={18} className="text-red-500" />
         </div>
         <div className="text-center mb-6">
-          <h3 className="text-sm font-semibold text-white mb-2">{title}</h3>
-          <p className="text-xs text-ink-soft">{message}</p>
+          <h3 className="text-sm font-semibold text-admin-text mb-2">{title}</h3>
+          <p className="text-xs text-admin-text-muted">{message}</p>
         </div>
         <div className="flex gap-2">
           <button
             onClick={onCancel}
             disabled={isLoading}
-            className="flex-1 px-4 py-2.5 bg-ink hover:bg-white/[0.03] border border-line text-ink-soft hover:text-white font-medium rounded-xl text-sm transition-colors disabled:opacity-50"
+            className="flex-1 px-4 py-2.5 bg-admin-bg hover:bg-admin-bg/60 border border-admin-border text-admin-text-muted hover:text-admin-text font-medium rounded-xl text-sm transition-colors disabled:opacity-50"
           >
             Cancel
           </button>
@@ -165,16 +165,16 @@ export default function CaseStudiesTab({
   };
 
   return (
-    <div className={`${interTight.className} p-6 max-w-[1400px]`}>
+    <div className={`${interTight.className} p-6 max-w-[1400px] text-admin-text`}>
       {/* Header */}
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Case Studies</h1>
-          <p className="text-sm text-ink-soft mt-0.5">Manage portfolio projects and case studies</p>
+          <h1 className="text-2xl font-bold text-admin-text">Case Studies</h1>
+          <p className="text-sm text-admin-text-muted mt-0.5">Manage portfolio projects and case studies</p>
         </div>
         <button
           onClick={onNewCaseStudy}
-          className="flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-gray-200 text-ink text-sm font-semibold rounded-xl transition-colors shadow-sm"
+          className="flex items-center gap-2 px-4 py-2.5 bg-admin-accent hover:bg-admin-accent/80 text-white text-sm font-semibold rounded-xl transition-all shadow-sm"
         >
           <Plus size={15} />
           New Case Study
@@ -184,44 +184,44 @@ export default function CaseStudiesTab({
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
         {[
-          { label: "Total Studies", value: caseStudies.length, icon: FileText, bg: "bg-brand/10", border: "border-brand/20", color: "text-brand" },
-          { label: "Published", value: caseStudies.filter((b) => b.status === "published").length, icon: CheckCircle, bg: "bg-green-500/10", border: "border-green-500/20", color: "text-green-500" },
-          { label: "Drafts", value: caseStudies.filter((b) => b.status === "draft").length, icon: FileText, bg: "bg-amber-500/10", border: "border-amber-500/20", color: "text-amber-500" },
-          { label: "Total Views", value: totalViewsFormatted, icon: Eye, bg: "bg-purple-500/10", border: "border-purple-500/20", color: "text-purple-500" },
-          { label: "Total Likes", value: totalLikesFormatted, icon: Heart, bg: "bg-rose-500/10", border: "border-rose-500/20", color: "text-rose-500" },
+          { label: "Total Studies", value: caseStudies.length, icon: FileText, bg: "bg-sky-500/10", border: "border-sky-500/20", color: "text-sky-400" },
+          { label: "Published", value: caseStudies.filter((b) => b.status === "published").length, icon: CheckCircle, bg: "bg-emerald-500/10", border: "border-emerald-500/20", color: "text-emerald-400" },
+          { label: "Drafts", value: caseStudies.filter((b) => b.status === "draft").length, icon: FileText, bg: "bg-amber-500/10", border: "border-amber-500/20", color: "text-amber-400" },
+          { label: "Total Views", value: totalViewsFormatted, icon: Eye, bg: "bg-purple-500/10", border: "border-purple-500/20", color: "text-purple-400" },
+          { label: "Total Likes", value: totalLikesFormatted, icon: Heart, bg: "bg-rose-500/10", border: "border-rose-500/20", color: "text-rose-400" },
         ].map(({ label, value, icon: Icon, bg, border, color }) => (
-          <div key={label} className="bg-paper border border-line rounded-2xl p-5 shadow-sm">
-            <div className="flex items-start justify-between mb-4">
-              <div className={`w-10 h-10 ${bg} ${border} border rounded-xl flex items-center justify-center`}>
-                <Icon size={18} className={color} />
-              </div>
+          <div key={label} className="bg-admin-card border border-admin-border rounded-2xl p-5 flex items-center gap-4">
+            <div className={`${bg} ${border} border rounded-xl p-3 shrink-0`}>
+              <Icon size={18} className={color} />
             </div>
-            <p className="text-2xl font-bold text-white tracking-tight">{value}</p>
-            <p className="text-xs font-semibold text-ink-soft mt-0.5">{label}</p>
+            <div>
+              <p className={`text-2xl font-bold tracking-tight ${color}`}>{value}</p>
+              <p className="text-xs font-semibold text-admin-text-muted mt-0.5">{label}</p>
+            </div>
           </div>
         ))}
       </div>
 
       {/* Grid Table Card */}
-      <div className="bg-paper border border-line rounded-2xl overflow-hidden shadow-sm">
-        <div className="px-5 py-4 border-b border-line flex flex-col sm:flex-row gap-3">
+      <div className="bg-admin-card border border-admin-border rounded-2xl overflow-hidden shadow-sm">
+        <div className="px-5 py-4 border-b border-admin-border flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-soft" />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-admin-text-muted" />
             <input
               type="text"
               placeholder="Search case studies…"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-ink border border-line rounded-xl pl-9 pr-4 py-2 text-sm text-white placeholder-ink-soft focus:outline-none focus:border-brand transition-all"
+              className="w-full bg-admin-bg border border-admin-border rounded-xl pl-9 pr-4 py-2 text-sm text-admin-text placeholder-admin-text-muted focus:outline-none focus:border-admin-accent transition-all"
             />
           </div>
-          <div className="flex gap-1 bg-ink rounded-xl p-1 border border-line">
+          <div className="flex gap-1 bg-admin-bg rounded-xl p-1 border border-admin-border">
             {(["all", "published", "draft"] as const).map((s) => (
               <button
                 key={s}
                 onClick={() => setFilterStatus(s)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all capitalize ${
-                  filterStatus === s ? "bg-paper text-white shadow-sm border border-line" : "text-ink-soft hover:text-white"
+                  filterStatus === s ? "bg-admin-card text-admin-text shadow-sm border border-admin-border" : "text-admin-text-muted hover:text-admin-text"
                 }`}
               >
                 {s === "all" ? "All" : s.charAt(0).toUpperCase() + s.slice(1)}
@@ -232,22 +232,22 @@ export default function CaseStudiesTab({
 
         {filtered.length === 0 ? (
           <div className="py-24 flex flex-col items-center text-center">
-            <div className="w-12 h-12 bg-white/[0.03] border border-line rounded-2xl flex items-center justify-center mb-3">
-              <FileText size={20} className="text-ink-soft" />
+            <div className="w-12 h-12 bg-admin-bg border border-admin-border rounded-2xl flex items-center justify-center mb-3">
+              <FileText size={20} className="text-admin-text-muted" />
             </div>
-            <p className="text-sm font-semibold text-ink-soft">No case studies found</p>
-            <p className="text-xs text-ink-soft/70 mt-1">Create your first case study to get started</p>
+            <p className="text-sm font-semibold text-admin-text-muted">No case studies found</p>
+            <p className="text-xs text-admin-text-muted/70 mt-1">Create your first case study to get started</p>
           </div>
         ) : (
           <>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="border-b border-line bg-ink/50">
+                <thead className="border-b border-admin-border bg-admin-bg/50">
                   <tr>
                     {["Title", "Client", "Category", "Views", "Likes", "Status", "Actions"].map((h) => (
                       <th
                         key={h}
-                        className={`px-5 py-3 text-[10px] font-semibold text-ink-soft uppercase tracking-wider ${
+                        className={`px-5 py-3 text-[10px] font-semibold text-admin-text-muted uppercase tracking-wider ${
                           h === "Actions" ? "text-right" : "text-left"
                         }`}
                       >
@@ -256,12 +256,12 @@ export default function CaseStudiesTab({
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-line">
+                <tbody className="divide-y divide-admin-border">
                   {paginated.map((c) => {
                     const { formatted: viewsFormatted } = formatViewCount(c.views, "intl");
                     const { formatted: likesFormatted } = formatViewCount(c.likes, "intl");
                     return (
-                      <tr key={c.id} className="hover:bg-white/[0.03] transition-colors">
+                      <tr key={c.id} className="hover:bg-admin-bg/40 transition-colors">
                         <td className="px-5 py-4">
                           <div className="flex items-center gap-3">
                             {c.featuredImage && (
@@ -272,12 +272,12 @@ export default function CaseStudiesTab({
                               />
                             )}
                             <div className="min-w-0">
-                              <p className="text-sm font-semibold text-white truncate">{c.title}</p>
-                              <p className="text-xs text-ink-soft">{formatDate(c.createdAt)}</p>
+                              <p className="text-sm font-semibold text-admin-text truncate">{c.title}</p>
+                              <p className="text-xs text-admin-text-muted">{formatDate(c.createdAt)}</p>
                             </div>
                           </div>
                         </td>
-                        <td className="px-5 py-4 whitespace-nowrap text-sm text-ink-soft">
+                        <td className="px-5 py-4 whitespace-nowrap text-sm text-admin-text-muted">
                           {c.clientName || "N/A"}
                         </td>
                         <td className="px-5 py-4 whitespace-nowrap">
@@ -285,13 +285,13 @@ export default function CaseStudiesTab({
                             {c.category}
                           </span>
                         </td>
-                        <td className="px-5 py-4 whitespace-nowrap text-sm font-semibold text-white">
+                        <td className="px-5 py-4 whitespace-nowrap text-sm font-semibold text-admin-text">
                           {viewsFormatted}
                         </td>
                         <td className="px-5 py-4 whitespace-nowrap">
                           <div className="flex items-center gap-1">
                             <Heart size={13} className="text-rose-500" />
-                            <span className="text-sm font-semibold text-white">{likesFormatted}</span>
+                            <span className="text-sm font-semibold text-admin-text">{likesFormatted}</span>
                           </div>
                         </td>
                         <td className="px-5 py-4 whitespace-nowrap">
@@ -313,16 +313,16 @@ export default function CaseStudiesTab({
                         <td className="px-5 py-4 whitespace-nowrap text-right">
                           <div className="flex items-center justify-end gap-1">
                             <button
-                              onClick={() => onEditCaseStudy(c)}
-                              disabled={deletingId === c.id}
-                              className="p-1.5 hover:bg-white/[0.05] text-ink-soft hover:text-brand rounded-lg transition-all disabled:opacity-50"
+                               onClick={() => onEditCaseStudy(c)}
+                               disabled={deletingId === c.id}
+                               className="p-1.5 hover:bg-admin-accent/10 text-admin-text-muted hover:text-admin-accent rounded-lg transition-all disabled:opacity-50"
                             >
                               <Edit size={14} />
                             </button>
                             <button
-                              onClick={() => setCaseStudyToDelete(c)}
-                              disabled={deletingId === c.id}
-                              className="p-1.5 hover:bg-red-500/10 text-ink-soft hover:text-red-500 rounded-lg transition-all disabled:opacity-50"
+                               onClick={() => setCaseStudyToDelete(c)}
+                               disabled={deletingId === c.id}
+                               className="p-1.5 hover:bg-red-500/10 text-admin-text-muted hover:text-red-500 rounded-lg transition-all disabled:opacity-50"
                             >
                               <Trash2 size={14} />
                             </button>
@@ -336,21 +336,21 @@ export default function CaseStudiesTab({
             </div>
 
             {totalPages > 1 && (
-              <div className="px-5 py-3 border-t border-line flex items-center justify-end gap-1.5 bg-paper">
+              <div className="px-5 py-3 border-t border-admin-border flex items-center justify-end gap-1.5 bg-admin-card">
                 <button
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
-                  className="p-1.5 border border-line rounded-lg hover:bg-white/[0.03] disabled:opacity-30 transition-all text-ink-soft hover:text-white"
+                  className="p-1.5 border border-admin-border rounded-lg hover:bg-admin-bg/30 disabled:opacity-30 transition-all text-admin-text-muted hover:text-admin-text"
                 >
                   <ChevronLeft size={13} />
                 </button>
-                <span className="text-xs text-ink-soft px-3">
+                <span className="text-xs text-admin-text-muted px-3">
                   Page {currentPage} of {totalPages}
                 </span>
                 <button
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages}
-                  className="p-1.5 border border-line rounded-lg hover:bg-white/[0.03] disabled:opacity-30 transition-all text-ink-soft hover:text-white"
+                  className="p-1.5 border border-admin-border rounded-lg hover:bg-admin-bg/30 disabled:opacity-30 transition-all text-admin-text-muted hover:text-admin-text"
                 >
                   <ChevronRight size={13} />
                 </button>

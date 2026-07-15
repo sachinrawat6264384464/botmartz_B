@@ -28,7 +28,8 @@ const CATEGORY_META = {
 export default function AdminHeader() {
   const { user, userRole } = useAuth();
   const router = useRouter();
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, systemTheme } = useTheme();
+  const currentTheme = theme === 'system' ? systemTheme : theme;
 
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
@@ -262,11 +263,11 @@ export default function AdminHeader() {
         {/* Right Actions */}
         <div className="flex items-center gap-3 ml-6">
           <button
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            onClick={() => setTheme(currentTheme === 'dark' ? 'light' : 'dark')}
             className="p-2 text-admin-text-muted hover:text-admin-text hover:bg-admin-bg rounded-xl transition-colors"
             title="Toggle theme"
           >
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            {currentTheme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
 
           <div className="w-px h-8 bg-admin-border" />
