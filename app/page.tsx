@@ -560,7 +560,6 @@ export default function Home() {
           </Link>
         </div>
       </section>
->>>>>>> new-positioning-updates
     </main>
   );
 }
