@@ -1,203 +1,124 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Inter_Tight } from 'next/font/google';
-import { 
-  Users, UserCheck, Mic, Award, ArrowUpRight, ArrowDownRight, 
-  Calendar, MoreVertical, Search, Filter, Plus
-} from 'lucide-react';
-import { 
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell
-} from 'recharts';
+import { Plus, Edit2, Trash2, Calendar, MapPin, Eye } from 'lucide-react';
+import Link from 'next/link';
+import { db } from '@/lib/firebase';
+import { collection, getDocs, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
 
 const interTight = Inter_Tight({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
-// Mock Data
-const registrationsOverTime = [
-  { name: 'May 1', value: 10 },
-  { name: 'May 5', value: 50 },
-  { name: 'May 10', value: 120 },
-  { name: 'May 15', value: 250 },
-  { name: 'May 20', value: 400 },
-  { name: 'May 25', value: 500 },
-];
-
-const registrationsByType = [
-  { name: 'Full Pass', value: 250, color: '#3b82f6' },
-  { name: 'Student', value: 150, color: '#00B8F0' },
-  { name: 'Workshop', value: 70, color: '#eab308' },
-  { name: 'VIP', value: 30, color: '#22c55e' },
-];
-
-const RECENT_REGISTRATIONS = [
-  { id: 1, name: 'Sagar Kumar', type: 'Full Pass', date: 'May 25, 2025' },
-  { id: 2, title: 'Aditi Patel', type: 'Student', date: 'May 25, 2025' },
-  { id: 3, title: 'Kunal Varma', type: 'Workshop', date: 'May 24, 2025' },
-  { id: 4, title: 'Neha Gupta', type: 'Full Pass', date: 'May 24, 2025' },
-];
-
-const TOP_SESSIONS = [
-  { id: 1, title: 'Building Scalable AI Systems', attendees: 240 },
-  { id: 2, title: 'RAG in Production', attendees: 180 },
-  { id: 3, title: 'AI Agents Deep Dive', attendees: 150 },
-  { id: 4, title: 'LLM Evaluation', attendees: 120 },
-];
-
 export default function EventsDashboard() {
+  const [events, setEvents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchEvents = async () => {
+    setLoading(true);
+    try {
+      const q = query(collection(db, "events"), orderBy("date", "desc"));
+      const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setEvents(data);
+    } catch (e) {
+      console.error("Error fetching events:", e);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const handleDelete = async (id: string) => {
+    if (confirm("Are you sure you want to delete this event? This action cannot be undone.")) {
+      try {
+        await deleteDoc(doc(db, "events", id));
+        setEvents(events.filter(e => e.id !== id));
+      } catch (e) {
+        console.error("Error deleting event:", e);
+      }
+    }
+  };
+
   return (
-    <div className={`${interTight.className} p-6 max-w-[1600px] mx-auto space-y-6`}>
-      {/* Header */}
+    <div className={`${interTight.className} p-6 max-w-[1200px] mx-auto space-y-6`}>
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-admin-text">Event Dashboard</h1>
-          <p className="text-sm text-admin-text-muted mt-1">Overview of the upcoming AI Frontier 2025 event.</p>
+          <h1 className="text-2xl font-bold text-admin-text">Events Management</h1>
+          <p className="text-sm text-admin-text-muted mt-1">Manage all Botmartz community events, meetups, and conferences.</p>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 bg-admin-card border border-admin-border px-4 py-2 rounded-lg text-sm text-admin-text-muted font-medium">
-            <Calendar size={14} />
-            <span>May 24 - May 25, 2025</span>
-          </div>
-          <button className="bg-admin-accent hover:bg-admin-accent/90 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
-            <Plus size={16} /> New Event
-          </button>
-        </div>
+        <Link 
+          href="/admin/events/new"
+          className="bg-admin-accent hover:bg-admin-accent/90 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+        >
+          <Plus size={16} /> New Event
+        </Link>
       </div>
 
-      {/* Metrics Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <MetricCard title="Registrations" value="500+" trend="+15.8%" isPositive={true} icon={Users} />
-        <MetricCard title="Attendees (Checked In)" value="420" trend="+12.4%" isPositive={true} icon={UserCheck} />
-        <MetricCard title="Speakers" value="40" trend="+10.0%" isPositive={true} icon={Mic} />
-        <MetricCard title="Sponsors" value="15" trend="+7.3%" isPositive={true} icon={Award} />
-      </div>
-
-      {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Line Chart */}
-        <div className="lg:col-span-2 bg-admin-card border border-admin-border rounded-xl p-5 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-sm font-semibold text-admin-text">Registrations Over Time</h2>
-            <button className="text-admin-text-muted hover:text-admin-text"><MoreVertical size={16} /></button>
+      <div className="bg-admin-card border border-admin-border rounded-xl shadow-sm overflow-hidden">
+        {loading ? (
+          <div className="p-12 text-center text-admin-text-muted">Loading events...</div>
+        ) : events.length === 0 ? (
+          <div className="p-12 text-center text-admin-text-muted">
+            <Calendar className="mx-auto w-12 h-12 mb-4 opacity-20" />
+            <p>No events found. Create your first event to get started.</p>
           </div>
-          <div className="h-[250px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={registrationsOverTime} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-admin-border)" />
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: 'var(--color-admin-text-muted)' }} dy={10} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: 'var(--color-admin-text-muted)' }} />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: 'var(--color-admin-bg)', borderColor: 'var(--color-admin-border)', borderRadius: '8px' }}
-                  itemStyle={{ color: 'var(--color-admin-text)' }}
-                />
-                <Line type="monotone" dataKey="value" stroke="var(--color-admin-accent)" strokeWidth={3} dot={false} activeDot={{ r: 6, fill: 'var(--color-admin-accent)' }} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Donut Chart */}
-        <div className="lg:col-span-1 bg-admin-card border border-admin-border rounded-xl p-5 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-semibold text-admin-text">Registrations by Type</h2>
-            <button className="text-admin-text-muted hover:text-admin-text"><MoreVertical size={16} /></button>
-          </div>
-          <div className="flex flex-col items-center justify-center h-[250px]">
-            <div className="w-[140px] h-[140px] relative mb-4">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie data={registrationsByType} innerRadius={50} outerRadius={70} paddingAngle={2} dataKey="value" stroke="none">
-                    {registrationsByType.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                </PieChart>
-              </ResponsiveContainer>
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-2xl font-bold text-admin-text">500</span>
-                <span className="text-[10px] text-admin-text-muted uppercase tracking-widest">Total</span>
-              </div>
-            </div>
-            <div className="w-full space-y-2">
-              {registrationsByType.map((d) => (
-                <div key={d.name} className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: d.color }} />
-                    <span className="text-xs text-admin-text-muted">{d.name}</span>
-                  </div>
-                  <span className="text-xs font-semibold text-admin-text">{d.value}</span>
-                </div>
+        ) : (
+          <table className="w-full text-left">
+            <thead className="bg-admin-bg border-b border-admin-border text-xs font-semibold text-admin-text-muted uppercase tracking-wider">
+              <tr>
+                <th className="px-6 py-4">Event Name</th>
+                <th className="px-6 py-4">Date</th>
+                <th className="px-6 py-4">Location</th>
+                <th className="px-6 py-4">Status</th>
+                <th className="px-6 py-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-admin-border">
+              {events.map((evt) => (
+                <tr key={evt.id} className="hover:bg-admin-bg/50 transition-colors">
+                  <td className="px-6 py-4">
+                    <div className="font-medium text-admin-text">{evt.title}</div>
+                    <div className="text-xs text-admin-text-muted font-mono">{evt.slug}</div>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-admin-text">
+                    <div className="flex items-center gap-2">
+                      <Calendar size={14} className="text-admin-text-muted" />
+                      {evt.date}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-admin-text">
+                    <div className="flex items-center gap-2">
+                      <MapPin size={14} className="text-admin-text-muted" />
+                      {evt.location}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className={`px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded ${
+                      evt.status === 'upcoming' ? 'bg-admin-accent/20 text-admin-accent' : 'bg-admin-border text-admin-text-muted'
+                    }`}>
+                      {evt.status || 'upcoming'}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <Link href={`/community/events/${evt.slug}`} target="_blank" className="p-2 text-admin-text-muted hover:text-white bg-admin-bg hover:bg-admin-border rounded-lg transition-colors">
+                        <Eye size={16} />
+                      </Link>
+                      <Link href={`/admin/events/${evt.id}`} className="p-2 text-admin-text-muted hover:text-white bg-admin-bg hover:bg-admin-border rounded-lg transition-colors">
+                        <Edit2 size={16} />
+                      </Link>
+                      <button onClick={() => handleDelete(evt.id)} className="p-2 text-red-500/70 hover:text-red-500 bg-admin-bg hover:bg-admin-border rounded-lg transition-colors">
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
               ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Recent Registrations */}
-        <div className="bg-admin-card border border-admin-border rounded-xl shadow-sm overflow-hidden flex flex-col">
-          <div className="px-5 py-4 border-b border-admin-border flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-admin-text">Recent Registrations</h2>
-            <button className="text-xs text-admin-accent hover:underline">View all</button>
-          </div>
-          <div className="divide-y divide-admin-border">
-            {RECENT_REGISTRATIONS.map((reg, i) => (
-              <div key={i} className="flex items-center justify-between px-5 py-3 hover:bg-admin-bg transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-admin-bg flex items-center justify-center text-xs font-bold text-admin-text border border-admin-border">
-                    {(reg.name || reg.title || 'U').charAt(0)}
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-admin-text">{reg.name || reg.title}</p>
-                    <p className="text-xs text-admin-text-muted mt-0.5">{reg.type}</p>
-                  </div>
-                </div>
-                <span className="text-xs text-admin-text-muted">{reg.date}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Top Sessions */}
-        <div className="bg-admin-card border border-admin-border rounded-xl shadow-sm overflow-hidden flex flex-col">
-          <div className="px-5 py-4 border-b border-admin-border flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-admin-text">Top Sessions</h2>
-            <button className="text-xs text-admin-accent hover:underline">View all</button>
-          </div>
-          <div className="divide-y divide-admin-border">
-            {TOP_SESSIONS.map((session, i) => (
-              <div key={session.id} className="flex items-center justify-between px-5 py-3.5 hover:bg-admin-bg transition-colors">
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-bold text-admin-text-muted w-4">{i + 1}</span>
-                  <p className="text-sm font-medium text-admin-text">{session.title}</p>
-                </div>
-                <span className="text-xs font-semibold text-admin-text">{session.attendees} <span className="font-normal text-admin-text-muted">attending</span></span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function MetricCard({ title, value, trend, isPositive, icon: Icon }: { title: string, value: string, trend: string, isPositive: boolean, icon: any }) {
-  return (
-    <div className="bg-admin-card border border-admin-border rounded-xl p-5 shadow-sm flex flex-col justify-between">
-      <div className="flex items-start justify-between mb-4">
-        <h3 className="text-sm font-medium text-admin-text-muted">{title}</h3>
-        <Icon size={16} className="text-admin-text-muted" />
-      </div>
-      <div>
-        <p className="text-2xl font-bold text-admin-text tracking-tight">{value}</p>
-        <div className="flex items-center gap-1.5 mt-2">
-          <span className={`flex items-center text-[11px] font-bold px-1.5 py-0.5 rounded ${isPositive ? 'text-emerald-500 bg-emerald-500/10' : 'text-rose-500 bg-rose-500/10'}`}>
-            {isPositive ? <ArrowUpRight size={12} className="mr-0.5" /> : <ArrowDownRight size={12} className="mr-0.5" />}
-            {trend}
-          </span>
-          <span className="text-[11px] text-admin-text-muted">vs last month</span>
-        </div>
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

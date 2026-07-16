@@ -214,8 +214,8 @@ function GeneralSettings({ data, onChange }: { data: any, onChange: (field: stri
 }
 
 function BrandingSettings({ data, onChange }: { data: any, onChange: (field: string, val: any) => void }) {
-  const primaryLogo = data.primaryLogo || "/BotmartznewBot.png";
-  const faviconUrl = data.faviconUrl || "";
+  const primaryLogo = data.primaryLogo ?? "/BotmartznewBot.png";
+  const faviconUrl = data.faviconUrl ?? "";
 
   return (
     <div className="space-y-8 max-w-2xl">
@@ -307,24 +307,34 @@ function EmailSettings({ data, onChange }: { data: any, onChange: (field: string
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-admin-text mb-1">Provider</label>
-            <select value={data.provider || "SendGrid"} onChange={(e) => onChange('provider', e.target.value)} className="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent transition-colors">
-              <option>SendGrid</option>
-              <option>AWS SES</option>
-              <option>Postmark</option>
+            <select value={data.provider || "Hostinger SMTP"} onChange={(e) => onChange('provider', e.target.value)} className="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent transition-colors">
+              <option>Hostinger SMTP</option>
               <option>Custom SMTP</option>
             </select>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-admin-text mb-1">API Key / Password</label>
-            <input type="password" value={data.apiKey || ""} onChange={(e) => onChange('apiKey', e.target.value)} placeholder="••••••••••••" className="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent transition-colors" />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-admin-text mb-1">SMTP Host</label>
+              <input type="text" value={data.smtpHost ?? "smtp.hostinger.com"} onChange={(e) => onChange('smtpHost', e.target.value)} placeholder="smtp.hostinger.com" className="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent transition-colors" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-admin-text mb-1">SMTP Port</label>
+              <input type="number" value={data.smtpPort ?? 465} onChange={(e) => onChange('smtpPort', Number(e.target.value))} placeholder="465" className="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent transition-colors" />
+            </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-admin-text mb-1">From Email</label>
-            <input type="email" value={data.fromEmail || "noreply@botmartz.com"} onChange={(e) => onChange('fromEmail', e.target.value)} className="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent transition-colors" />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-admin-text mb-1">SMTP User</label>
+              <input type="email" value={data.smtpUser ?? ""} onChange={(e) => onChange('smtpUser', e.target.value)} placeholder="you@domain.com" className="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent transition-colors" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-admin-text mb-1">SMTP Password</label>
+              <input type="password" value={data.smtpPass ?? ""} onChange={(e) => onChange('smtpPass', e.target.value)} placeholder="••••••••••••" className="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent transition-colors" />
+            </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-admin-text mb-1">From Name</label>
-            <input type="text" value={data.fromName || "Botmartz Team"} onChange={(e) => onChange('fromName', e.target.value)} className="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent transition-colors" />
+            <input type="text" value={data.fromName ?? "Botmartz Team"} onChange={(e) => onChange('fromName', e.target.value)} className="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent transition-colors" />
           </div>
         </div>
       </div>
@@ -341,11 +351,23 @@ function SEOSettings({ data, onChange }: { data: any, onChange: (field: string, 
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-admin-text mb-1">Default Title Suffix</label>
-            <input type="text" value={data.titleSuffix || "| Botmartz AI Solutions"} onChange={(e) => onChange('titleSuffix', e.target.value)} className="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent transition-colors" />
+            <input type="text" value={data.titleSuffix ?? "| Botmartz AI Solutions"} onChange={(e) => onChange('titleSuffix', e.target.value)} className="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent transition-colors" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-admin-text mb-1">Global Description</label>
+            <textarea rows={3} value={data.globalDescription ?? ""} onChange={(e) => onChange('globalDescription', e.target.value)} placeholder="Botmartz helps organizations design, build, and deploy..." className="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent transition-colors" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-admin-text mb-1">Global Keywords</label>
+            <input type="text" value={data.globalKeywords ?? ""} onChange={(e) => onChange('globalKeywords', e.target.value)} placeholder="AI Engineering, Enterprise RAG, AI Agents (comma separated)" className="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent transition-colors" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-admin-text mb-1">OpenGraph Default Image URL</label>
+            <input type="text" value={data.ogImageUrl ?? "/BotmartznewBot.png"} onChange={(e) => onChange('ogImageUrl', e.target.value)} placeholder="https://botmartz.com/og-image.jpg" className="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent transition-colors" />
           </div>
           <div>
             <label className="block text-sm font-medium text-admin-text mb-1">Google Analytics ID</label>
-            <input type="text" value={data.gaId || ""} onChange={(e) => onChange('gaId', e.target.value)} placeholder="G-XXXXXXXXXX" className="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent transition-colors" />
+            <input type="text" value={data.gaId ?? ""} onChange={(e) => onChange('gaId', e.target.value)} placeholder="G-XXXXXXXXXX" className="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent transition-colors" />
           </div>
           <div>
             <label className="block text-sm font-medium text-admin-text mb-1">Robots.txt Content</label>

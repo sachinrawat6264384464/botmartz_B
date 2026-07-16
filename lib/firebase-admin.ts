@@ -10,7 +10,30 @@ function getAdminApp(): App {
     return getApps()[0];
   }
 
-  const privateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, '\n');
+  // 1. Try local JSON first (bulletproof)
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const jsonPath = path.resolve(process.cwd(), 'botmartz-main-firebase-adminsdk-fbsvc-d220cfe485.json');
+    if (fs.existsSync(jsonPath)) {
+      const serviceAccount = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
+      adminApp = initializeApp({
+        credential: cert(serviceAccount),
+      });
+      return adminApp;
+    }
+  } catch (e) {
+    // Ignore and fallback
+  }
+
+  // 2. Fallback to ENV variables
+  let privateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY;
+  if (privateKey) {
+    if (privateKey.startsWith('"') && privateKey.endsWith('"')) {
+      privateKey = privateKey.slice(1, -1);
+    }
+    privateKey = privateKey.replace(/\\n/g, '\n').replace(/\r/g, '');
+  }
 
   adminApp = initializeApp({
     credential: cert({
