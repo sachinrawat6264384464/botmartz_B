@@ -167,7 +167,7 @@ export default async function CaseStudiesPage() {
         <div className="mt-16 relative w-full flex justify-center min-h-[400px]">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-[#0066FF]/20 blur-[100px] rounded-full pointer-events-none z-0" />
           <Image
-            src="/case-studies.png"
+            src="/case-studies2.png"
             alt="Case Studies"
             width={600}
             height={400}
