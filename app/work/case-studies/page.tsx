@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { adminDb } from '@/lib/firebase-admin';
 import { ArrowRight, Terminal, Code2, Layout, BookOpen } from "lucide-react";
 
@@ -162,16 +163,17 @@ export default async function CaseStudiesPage() {
           </div>
         </div>
 
-        {/* Decorative elements */}
-        <div className="mt-20 relative max-w-[1000px] mx-auto hidden md:block">
-           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#050B14] z-10"></div>
-           <div className="grid grid-cols-5 gap-4 opacity-30">
-              {Array.from({length: 15}).map((_, i) => (
-                 <div key={i} className="h-16 border border-[#1E293B] rounded bg-[#0A111F]/50 flex items-center justify-center">
-                    <div className="w-2 h-2 rounded-full bg-[#00B8F0]/30 animate-pulse" style={{ animationDelay: `${i * 150}ms`}}></div>
-                 </div>
-              ))}
-           </div>
+        {/* Hero Visual */}
+        <div className="mt-16 relative w-full flex justify-center min-h-[400px]">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-[#0066FF]/20 blur-[100px] rounded-full pointer-events-none z-0" />
+          <Image
+            src="/case-studies.png"
+            alt="Case Studies"
+            width={600}
+            height={400}
+            className="object-contain w-full max-w-[600px] h-auto relative z-10 drop-shadow-[0_0_30px_rgba(0,184,240,0.15)]"
+            priority
+          />
         </div>
       </section>
 
