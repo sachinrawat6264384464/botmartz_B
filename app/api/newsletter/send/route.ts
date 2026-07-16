@@ -11,10 +11,12 @@ import {
 } from 'firebase/firestore';
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: process.env.SMTP_HOST || 'smtp.hostinger.com',
+  port: parseInt(process.env.SMTP_PORT || '465', 10),
+  secure: true,
   auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASS,
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
   },
 });
 
@@ -26,9 +28,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Subject and content are required.' }, { status: 400 });
     }
 
-    if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASS) {
+    const smtpUser = process.env.SMTP_USER;
+    const smtpPass = process.env.SMTP_PASS;
+
+    if (!smtpUser || !smtpPass) {
       return NextResponse.json(
-        { error: 'GMAIL_USER or GMAIL_APP_PASS env vars are not set.' },
+        { error: 'SMTP_USER or SMTP_PASS env vars are not set.' },
         { status: 500 }
       );
     }
@@ -155,7 +160,7 @@ export async function POST(req: NextRequest) {
     const results = await Promise.allSettled(
       subscribers.map((sub) =>
         transporter.sendMail({
-          from: `"Botmartz" <${process.env.GMAIL_USER}>`,
+          from: `"Botmartz" <${smtpUser}>`,
           to: sub.email,
           subject,
           html: buildHtml(sub.email, sub.name),
