@@ -36,15 +36,28 @@ export default async function LabsPage() {
   try {
     const labsRef = adminDb.collection("labs");
     const snapshot = await labsRef.where("status", "==", "active").orderBy("createdAt", "desc").get();
-    initialLabs = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
+    initialLabs = snapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+        createdAt: data.createdAt ? new Date(data.createdAt.toDate()).toISOString() : null,
+        updatedAt: data.updatedAt ? new Date(data.updatedAt.toDate()).toISOString() : null,
+      };
+    });
   } catch (e) {
     try {
       const fallbackSnapshot = await adminDb.collection("labs").get();
       initialLabs = fallbackSnapshot.docs
-        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data,
+            createdAt: data.createdAt ? new Date(data.createdAt.toDate()).toISOString() : null,
+            updatedAt: data.updatedAt ? new Date(data.updatedAt.toDate()).toISOString() : null,
+          };
+        })
         .filter((d: any) => d.status === "active");
     } catch (err) {
       console.error("Error fetching labs:", err);
