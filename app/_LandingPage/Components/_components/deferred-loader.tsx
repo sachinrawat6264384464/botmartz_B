@@ -9,7 +9,7 @@ export default function DeferredLoader({ children }: { children: React.ReactNode
     // This pushes the heavy execution completely off the TBT radar
     if (typeof window !== "undefined" && (window as any).requestIdleCallback) {
       (window as any).requestIdleCallback(() => {
-        setTimeout(() => setIsReady(true), 2000); 
+        setTimeout(() => setIsReady(true), 2000);
       });
     } else {
       // Fallback

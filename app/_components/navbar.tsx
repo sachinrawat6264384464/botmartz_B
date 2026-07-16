@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ArrowRight } from "lucide-react";
+import { ChevronDown, ArrowRight, Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 /* ─── NAV STRUCTURE ─────────────────────────────────────────────────────────── */
@@ -67,7 +67,7 @@ export default function Navbar() {
   return (
     <>
       {/* ── HEADER ── */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-lg border-b border-gray-100 shadow-[0_2px_20px_rgba(0,0,0,0.06)]">
+      <header className="sticky top-0 z-50 bg-[#050B14]/90 backdrop-blur-md border-b border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.3)]">
         <div className="wrap flex items-center justify-between h-[70px]">
 
           {/* LOGO */}
@@ -75,15 +75,15 @@ export default function Navbar() {
             <Image
               src="/Logo-removebg-preview.png"
               alt="Botmartz AI Solutions"
-              width={200}
-              height={56}
-              className="h-[50px] w-auto object-contain"
+              width={180}
+              height={50}
+              className="h-[44px] w-auto object-contain"
               priority
             />
           </Link>
 
           {/* DESKTOP NAV */}
-          <nav className="hidden xl:flex items-center gap-1" aria-label="Primary navigation">
+          <nav className="hidden lg:flex items-center gap-1.5" aria-label="Primary navigation">
             {NAV_ITEMS.map((item) => (
               <div
                 key={item.name}
@@ -93,15 +93,15 @@ export default function Navbar() {
               >
                 <Link
                   href={item.path}
-                  className={`relative inline-flex items-center gap-1 px-3 py-2 rounded-md text-[13.5px] font-semibold tracking-[-0.01em] transition-colors whitespace-nowrap ${
+                  className={`relative inline-flex items-center gap-1 px-3 py-2 rounded-md text-[13px] font-semibold tracking-[-0.01em] transition-colors whitespace-nowrap ${
                     isActive(item)
-                      ? "text-[#0052FF]"
-                      : "text-[#1A2340] hover:text-[#0052FF]"
+                      ? "text-[#00B8F0]"
+                      : "text-[#8A9EB0] hover:text-[#00B8F0]"
                   }`}
                 >
                   {item.name}
                   {item.badge && (
-                    <span className="ml-1 -mt-3 bg-[#0052FF] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wide">
+                    <span className="ml-1 -mt-3 bg-[#00B8F0] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wide">
                       {item.badge}
                     </span>
                   )}
@@ -114,10 +114,9 @@ export default function Navbar() {
                   )}
                   {/* Active underline */}
                   {isActive(item) && (
-                    <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-[#0052FF] rounded-full" />
+                    <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-[#00B8F0] rounded-full" />
                   )}
                 </Link>
-
                 {/* DROPDOWN */}
                 <AnimatePresence>
                   {item.dropdown && activeDropdown === item.name && (
@@ -126,16 +125,16 @@ export default function Navbar() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 6 }}
                       transition={{ duration: 0.14 }}
-                      className="absolute top-[calc(100%+4px)] left-1/2 -translate-x-1/2 min-w-[200px] bg-white border border-gray-100 rounded-xl shadow-[0_16px_48px_rgba(0,0,0,0.12)] p-2 z-[100]"
+                      className="absolute top-[calc(100%+4px)] left-1/2 -translate-x-1/2 min-w-[240px] bg-[#0B1524] border border-white/10 rounded-xl shadow-[0_16px_48px_rgba(0,0,0,0.4)] p-2 z-[100]"
                     >
                       {item.dropdown.map((sub) => (
                         <Link
                           key={sub.name}
                           href={sub.path}
-                          className="flex items-center justify-between px-4 py-2.5 text-[13px] font-medium text-[#374151] hover:text-[#0052FF] hover:bg-[#0052FF]/5 rounded-lg transition-all group"
+                          className="flex items-center justify-between px-4 py-2.5 text-[13px] font-medium text-[#8A9EB0] hover:text-[#00B8F0] hover:bg-[#00B8F0]/5 rounded-lg transition-all group whitespace-nowrap"
                         >
                           <span>{sub.name}</span>
-                          <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-[#0052FF] text-xs">
+                          <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-[#00B8F0] text-xs">
                             →
                           </span>
                         </Link>
@@ -149,24 +148,22 @@ export default function Navbar() {
 
           {/* CTA + MOBILE TOGGLE */}
           <div className="flex items-center gap-3">
-            {/* Mobile hamburger */}
-            <button
-              className="xl:hidden flex flex-col gap-1.5 p-2"
-              onClick={() => setMobileMenuOpen(true)}
-              aria-label="Open menu"
-            >
-              <span className="w-5 h-0.5 bg-[#1A2340] rounded-full" />
-              <span className="w-5 h-0.5 bg-[#1A2340] rounded-full" />
-              <span className="w-3.5 h-0.5 bg-[#1A2340] rounded-full" />
-            </button>
-
             <Link
               href="/contact"
-              className="hidden sm:inline-flex items-center gap-2 bg-[#0052FF] hover:bg-[#003FCC] text-white text-[13px] font-bold px-5 py-2.5 rounded-lg shadow-[0_4px_14px_rgba(0,82,255,0.35)] transition-all hover:shadow-[0_4px_20px_rgba(0,82,255,0.5)] hover:-translate-y-px"
+              className="hidden sm:inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white text-[13px] font-bold px-5 py-2.5 rounded-lg shadow-[0_4px_14px_rgba(0,102,255,0.35)] transition-all hover:shadow-[0_4px_20px_rgba(0,102,255,0.5)] hover:-translate-y-px whitespace-nowrap"
             >
               Book a Discovery Call
               <ArrowRight size={14} />
             </Link>
+
+            {/* Mobile hamburger */}
+            <button
+              className="lg:hidden flex flex-col justify-center items-center p-2 text-white hover:bg-white/5 rounded-lg transition-colors"
+              onClick={() => setMobileMenuOpen(true)}
+              aria-label="Open menu"
+            >
+              <Menu size={22} />
+            </button>
           </div>
         </div>
       </header>
@@ -187,15 +184,16 @@ export default function Navbar() {
                   alt="Botmartz"
                   width={160}
                   height={44}
-                  className="h-[38px] w-auto object-contain brightness-0 invert"
+                  className="h-[38px] w-auto object-contain"
+                  onClick={() => setMobileMenuOpen(false)}
                 />
               </Link>
               <button
-                className="text-white p-2 hover:bg-white/5 rounded-lg"
+                className="text-white p-2 hover:bg-white/5 rounded-lg flex items-center justify-center"
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Close menu"
               >
-                <span className="text-2xl leading-none">×</span>
+                <X size={24} />
               </button>
             </div>
 
@@ -209,7 +207,7 @@ export default function Navbar() {
                   >
                     {item.name}
                     {item.badge && (
-                      <span className="text-xs bg-[#0052FF] text-white px-1.5 py-0.5 rounded-full font-semibold">
+                      <span className="text-xs bg-[#00B8F0] text-white px-1.5 py-0.5 rounded-full font-semibold">
                         {item.badge}
                       </span>
                     )}
@@ -234,7 +232,7 @@ export default function Navbar() {
                 <Link
                   href="/contact"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-center gap-2 bg-[#0052FF] text-white font-bold py-4 rounded-xl text-base"
+                  className="flex items-center justify-center gap-2 bg-[#0066FF] text-white font-bold py-4 rounded-xl text-base whitespace-nowrap"
                 >
                   Book a Discovery Call <ArrowRight size={16} />
                 </Link>
