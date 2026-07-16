@@ -46,8 +46,8 @@
   --line: #C9DCE9;
   --redline: #FF5C35;
   
-  --background: var(--paper);
-  --foreground: var(--ink);
+  --background: #050B14;
+  --foreground: #FFFFFF;
   --border: var(--line);
   --input: var(--line);
   --ring: var(--brand);

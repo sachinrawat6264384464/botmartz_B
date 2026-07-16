@@ -45,13 +45,13 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-[rgba(252,253,254,0.92)] backdrop-blur-md border-b border-line">
+      <header className="sticky top-0 z-50 bg-[#050B14]/90 backdrop-blur-md border-b border-white/10">
         <div className="wrap flex items-center justify-between py-[18px]">
           
           {/* LOGO */}
           <Link href="/" className="flex flex-col items-start gap-0 cursor-pointer" aria-label="Botmartz home">
             <Image 
-              src="/Logo-removebg-preview.png" 
+              src="/BotmartzNewLogo.png" 
               alt="Botmartz Logo" 
               width={240} 
               height={60} 
@@ -72,7 +72,7 @@ export default function Navbar() {
                 <Link 
                   href={item.path}
                   className={`font-mono text-[12px] tracking-[0.06em] uppercase transition-colors py-2 flex items-center gap-1 ${
-                    pathname === item.path || (item.dropdown && item.dropdown.some(sub => pathname === sub.path)) ? 'text-brand' : 'text-ink-soft hover:text-brand'
+                    pathname === item.path || (item.dropdown && item.dropdown.some(sub => pathname === sub.path)) ? 'text-[#00B8F0]' : 'text-[#8A9EB0] hover:text-white'
                   }`}
                 >
                   <span>{item.name}</span>
@@ -88,16 +88,16 @@ export default function Navbar() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 8 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute top-[90%] left-1/2 -translate-x-1/2 mt-2 w-60 bg-white border border-gray-200/80 rounded-xl shadow-[0_12px_36px_rgba(0,0,0,0.12)] p-2 flex flex-col gap-1 z-[100]"
+                      className="absolute top-[90%] left-1/2 -translate-x-1/2 mt-2 w-60 bg-[#0A111F] border border-[#00B8F0]/20 rounded-xl shadow-[0_12px_36px_rgba(0,0,0,0.4)] p-2 flex flex-col gap-1 z-[100]"
                     >
                       {item.dropdown.map((sub) => (
                         <Link
                           key={sub.name}
                           href={sub.path}
-                          className="px-4 py-3 text-left font-mono text-[11px] font-semibold tracking-wider text-ink hover:text-brand hover:bg-slate-100/50 rounded-lg transition-all flex items-center justify-between group/sub"
+                          className="px-4 py-3 text-left font-mono text-[11px] font-semibold tracking-wider text-white/80 hover:text-white hover:bg-[#00B8F0]/10 rounded-lg transition-all flex items-center justify-between group/sub"
                         >
                           <span>{sub.name}</span>
-                          <span className="opacity-0 group-hover/sub:opacity-100 group-hover/sub:translate-x-1 transition-all duration-200 text-brand">→</span>
+                          <span className="opacity-0 group-hover/sub:opacity-100 group-hover/sub:translate-x-1 transition-all duration-200 text-[#00B8F0]">→</span>
                         </Link>
                       ))}
                     </motion.div>
@@ -110,13 +110,13 @@ export default function Navbar() {
           {/* CTA / MOBILE TOGGLE */}
           <div className="flex items-center gap-5">
             <button 
-              className="lg:hidden font-mono text-[12px] border border-line px-3 py-2 rounded-sm text-ink flex items-center gap-2"
+              className="lg:hidden font-mono text-[12px] border border-white/20 px-3 py-2 rounded-sm text-white flex items-center gap-2 hover:bg-white/5 transition-colors"
               onClick={() => setMobileMenuOpen(true)}
               aria-label="Open menu"
             >
               MENU
             </button>
-            <Link href="/contact" className="btn btn-primary hidden sm:inline-flex">
+            <Link href="/contact" className="btn btn-primary hidden sm:inline-flex bg-[#0066FF] hover:bg-[#0052CC] border-none text-white shadow-[0_0_15px_rgba(0,102,255,0.4)]">
               Book a Call
             </Link>
           </div>
@@ -130,12 +130,12 @@ export default function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-paper/95 backdrop-blur-xl flex flex-col"
+            className="fixed inset-0 z-[60] bg-[#050B14]/95 backdrop-blur-xl flex flex-col"
           >
-            <div className="wrap flex items-center justify-between py-[18px] border-b border-line w-full">
+            <div className="wrap flex items-center justify-between py-[18px] border-b border-white/10 w-full">
               <Link href="/" className="flex flex-col items-start" onClick={() => setMobileMenuOpen(false)}>
                 <Image 
-                  src="/Logo-removebg-preview.png" 
+                  src="/BotmartzNewLogo.png" 
                   alt="Botmartz Logo" 
                   width={240} 
                   height={60} 
@@ -143,7 +143,7 @@ export default function Navbar() {
                 />
               </Link>
               <button 
-                className="text-ink p-2"
+                className="text-white p-2 hover:bg-white/5 rounded-lg transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Close menu"
               >
@@ -158,19 +158,19 @@ export default function Navbar() {
                     key={item.name}
                     href={item.path}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="font-heading text-2xl font-bold text-ink hover:text-brand transition-colors"
+                    className="font-heading text-2xl font-bold text-white hover:text-[#00B8F0] transition-colors"
                   >
                     {item.name}
                   </Link>
 
                   {item.dropdown && (
-                    <div className="flex flex-col gap-3 pl-4 border-l border-line mt-1">
+                    <div className="flex flex-col gap-3 pl-4 border-l border-white/10 mt-1">
                       {item.dropdown.map((sub) => (
                         <Link
                           key={sub.name}
                           href={sub.path}
                           onClick={() => setMobileMenuOpen(false)}
-                          className="font-mono text-xs text-ink-soft hover:text-brand transition-colors"
+                          className="font-mono text-xs text-[#8A9EB0] hover:text-[#00B8F0] transition-colors"
                         >
                           {sub.name}
                         </Link>

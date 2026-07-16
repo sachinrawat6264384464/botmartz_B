@@ -1,13 +1,36 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { db } from "@/lib/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { Metadata } from 'next';
+import Link from 'next/link';
+import { adminDb } from '@/lib/firebase-admin';
 import { ArrowRight, Truck, Map, Package, Activity, BarChart, Database, MapPin } from "lucide-react";
 import DynamicIcon from "@/app/_components/DynamicIcon";
 
-// Fallback Default Content
+export async function generateMetadata(): Promise<Metadata> {
+  let meta = {
+    title: 'AI Solutions for Global Logistics | Botmartz AI',
+    description: 'Optimize operations, streamline communications, and improve decision-making with AI-powered agents and intelligent enterprise search.',
+  };
+  
+  try {
+    const docSnap = await adminDb.collection("dynamic_pages").doc("logistics").get();
+    if (docSnap.exists) {
+      const data = docSnap.data();
+      if (data?.metadata) {
+        meta = { ...meta, ...data.metadata };
+      }
+    }
+  } catch (e) {}
+
+  return {
+    ...meta,
+    openGraph: {
+      title: meta.title,
+      description: meta.description,
+      url: 'https://botmartz.com/industries/logistics',
+      type: 'website',
+    },
+  };
+}
+
 const DEFAULT_CONTENT = {
   hero: {
     badge: "Industries / Logistics",
@@ -46,36 +69,25 @@ const DEFAULT_CONTENT = {
   })
 };
 
-export default function LogisticsIndustryPage() {
-  const [content, setContent] = useState(DEFAULT_CONTENT);
-  const [loading, setLoading] = useState(true);
+export default async function LogisticsIndustryPage() {
+  let content = { ...DEFAULT_CONTENT };
 
-  useEffect(() => {
-    async function fetchPageConfig() {
-      try {
-        const docRef = doc(db, "dynamic_pages", "logistics");
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setContent({
-            hero: data.hero || DEFAULT_CONTENT.hero,
-            useCases: data.useCases || DEFAULT_CONTENT.useCases,
-            featuredCaseStudy: data.featuredCaseStudy || DEFAULT_CONTENT.featuredCaseStudy,
-            cta: data.cta || DEFAULT_CONTENT.cta,
-            structuredData: data.structuredData || DEFAULT_CONTENT.structuredData
-          });
-        }
-      } catch (err) {
-        console.error("Error loading dynamic content for Logistics industry:", err);
-      } finally {
-        setLoading(false);
-      }
+  try {
+    const docSnap = await adminDb.collection("dynamic_pages").doc("logistics").get();
+    if (docSnap.exists) {
+      const data = docSnap.data();
+      content = {
+        hero: data?.hero || DEFAULT_CONTENT.hero,
+        useCases: data?.useCases || DEFAULT_CONTENT.useCases,
+        featuredCaseStudy: data?.featuredCaseStudy || DEFAULT_CONTENT.featuredCaseStudy,
+        cta: data?.cta || DEFAULT_CONTENT.cta,
+        structuredData: data?.structuredData || DEFAULT_CONTENT.structuredData
+      };
     }
-    fetchPageConfig();
-  }, []);
+  } catch (e) {}
 
   return (
-    <main>
+    <main className="bg-[#050B14] min-h-screen text-white">
       {content.structuredData && (
         <script
           type="application/ld+json"
@@ -85,104 +97,139 @@ export default function LogisticsIndustryPage() {
         />
       )}
       
-      {/* HERO SECTION */}
-      <section className="relative pt-[80px] pb-[60px] bg-ink text-white overflow-hidden blueprint" style={{ backgroundImage: 'linear-gradient(rgba(0,184,240,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,.08) 1px, transparent 1px)' }}>
-        <div className="wrap relative z-10 flex flex-col lg:flex-row items-center gap-10">
-          <div className="flex-1 lg:max-w-[600px]">
-            <div className="font-mono text-[11px] text-signal uppercase tracking-[0.12em] mb-4 flex items-center gap-2">
-              <Link href="/industries" className="hover:text-white transition-colors">Industries</Link> <span>/</span> <span className="text-white">{content.hero.badge || "Logistics"}</span>
+      {/* HERO SECTION (DARK CENTERED) */}
+      <section className="relative pt-[120px] pb-[80px] bg-[#050B14] text-white overflow-hidden">
+        {/* Background glow effects */}
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0066FF]/10 blur-[150px] rounded-full pointer-events-none" />
+
+        <div className="wrap relative z-10 flex flex-col items-center text-center max-w-[800px] mx-auto">
+          <div className="font-mono text-[11px] tracking-[0.14em] text-[#00B8F0] uppercase mb-6 flex items-center justify-center gap-3 font-semibold">
+            <span className="w-6 h-px bg-[#00B8F0]"></span>
+            {content.hero.badge || "Logistics"}
+            <span className="w-6 h-px bg-[#00B8F0]"></span>
+          </div>
+          <h1 
+            className="text-[clamp(40px,6vw,64px)] leading-[1.05] font-semibold mb-6 tracking-tight text-white"
+            dangerouslySetInnerHTML={{ __html: content.hero.title }}
+          />
+          <p className="text-[17px] sm:text-[19px] text-[#8A9EB0] mb-10 max-w-[600px] leading-relaxed font-light">
+            {content.hero.subtitle}
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link href={content.hero.ctaLink || "/contact"} className="btn btn-primary bg-[#00B8F0] text-white hover:bg-[#0096C7] px-8 py-3.5 rounded text-[15px] flex items-center gap-2">
+              {content.hero.ctaText || "Discuss Your Use Case →"}
+            </Link>
+          </div>
+        </div>
+
+        {/* Decorative elements */}
+        <div className="mt-20 relative max-w-[1000px] mx-auto hidden md:block">
+           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#050B14] z-10"></div>
+           <div className="grid grid-cols-5 gap-4 opacity-30">
+              {Array.from({length: 15}).map((_, i) => (
+                 <div key={i} className="h-16 border border-[#1E293B] rounded bg-[#0A111F]/50 flex items-center justify-center">
+                    <div className="w-2 h-2 rounded-full bg-[#00B8F0]/30 animate-pulse" style={{ animationDelay: `${i * 150}ms`}}></div>
+                 </div>
+              ))}
+           </div>
+        </div>
+      </section>
+
+      {/* USE CASES GRID */}
+      <section className="py-[100px] bg-[#0A111F] border-y border-[#1E293B]">
+        <div className="wrap">
+          <div className="text-center mb-16 max-w-[700px] mx-auto">
+             <h2 className="text-[32px] md:text-[40px] font-semibold tracking-tight text-white mb-4">Core Use Cases</h2>
+             <p className="text-[#8A9EB0] text-[17px]">We build specialized solutions for high-value logistics workflows.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {content.useCases.map((uc: any, i: number) => (
+              <div key={i} className="bg-[#050B14] border border-[#1E293B] rounded-xl p-8 hover:border-[#00B8F0]/50 hover:shadow-[0_0_30px_rgba(0,184,240,0.05)] transition-all group">
+                <div className="w-14 h-14 rounded-lg bg-[#0A111F] border border-[#1E293B] flex items-center justify-center mb-6 text-[#8A9EB0] group-hover:text-[#00B8F0] group-hover:border-[#00B8F0]/30 transition-colors">
+                  <DynamicIcon name={uc.iconName} />
+                </div>
+                <h3 className="text-[20px] font-semibold text-white mb-4">{uc.title}</h3>
+                <p className="text-[15px] text-[#8A9EB0] leading-relaxed">{uc.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURED CASE STUDY */}
+      <section className="py-[100px] bg-[#050B14]">
+        <div className="wrap">
+          <div className="bg-[#0A111F] border border-[#1E293B] rounded-2xl overflow-hidden flex flex-col lg:flex-row">
+            <div className="p-10 lg:p-16 lg:w-3/5 flex flex-col justify-center">
+              <div className="font-mono text-[11px] tracking-wider text-[#00B8F0] uppercase mb-4">Featured Case Study</div>
+              <h3 className="text-[28px] md:text-[32px] font-semibold text-white mb-6 leading-tight">
+                {content.featuredCaseStudy.title}
+              </h3>
+              <p className="text-[#8A9EB0] text-[17px] leading-relaxed mb-10">
+                {content.featuredCaseStudy.description}
+              </p>
+              <div className="grid grid-cols-2 gap-8 mb-10 border-t border-[#1E293B] pt-8">
+                <div>
+                  <div className="text-[36px] font-semibold text-white mb-1">{content.featuredCaseStudy.statValue1}</div>
+                  <div className="text-[13px] text-[#8A9EB0]">{content.featuredCaseStudy.statLabel1}</div>
+                </div>
+                <div>
+                  <div className="text-[36px] font-semibold text-white mb-1">{content.featuredCaseStudy.statValue2}</div>
+                  <div className="text-[13px] text-[#8A9EB0]">{content.featuredCaseStudy.statLabel2}</div>
+                </div>
+              </div>
+              <div>
+                <Link href={content.featuredCaseStudy.link || "/work/case-studies"} className="inline-flex items-center gap-2 text-[#00B8F0] hover:text-white transition-colors font-medium text-[15px]">
+                  Read full case study <ArrowRight size={16} />
+                </Link>
+              </div>
             </div>
-            <h1 className="text-[clamp(32px,4.5vw,50px)] leading-[1.05] font-semibold mb-6">
-              {content.hero.title}
-            </h1>
-            <p className="text-[17px] text-[#9FB9C8] mb-8">
-              {content.hero.subtitle}
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link href={content.hero.ctaLink || "/contact"} className="btn btn-primary bg-brand text-white hover:bg-deep">
-                {content.hero.ctaText}
+            <div className="lg:w-2/5 relative bg-[#050B14] min-h-[300px] lg:min-h-full border-t lg:border-t-0 lg:border-l border-[#1E293B] p-10 flex items-center justify-center overflow-hidden">
+               {/* Abstract decorative graphic for Logistics */}
+               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#00B8F0]/10 via-transparent to-transparent"></div>
+               <div className="relative z-10 w-full max-w-[280px]">
+                  <div className="bg-[#0A111F] rounded-xl border border-[#1E293B] p-4 shadow-2xl relative rotate-[2deg]">
+                     <div className="flex gap-2 mb-4">
+                        <div className="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/50"></div>
+                        <div className="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
+                        <div className="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50"></div>
+                     </div>
+                     <div className="space-y-3">
+                        <div className="h-2 w-full bg-[#1E293B] rounded"></div>
+                        <div className="h-2 w-5/6 bg-[#1E293B] rounded"></div>
+                        <div className="flex gap-2 pt-2">
+                           <div className="h-6 w-1/2 bg-[#1E293B] rounded"></div>
+                           <div className="h-6 w-1/2 bg-[#00B8F0]/20 border border-[#00B8F0]/50 rounded"></div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA SECTION */}
+      <section className="py-[100px] bg-[#0A111F] border-t border-[#1E293B]">
+        <div className="wrap">
+          <div className="bg-gradient-to-br from-[#0A111F] to-[#050B14] border border-[#1E293B] rounded-2xl p-10 md:p-16 text-center max-w-[900px] mx-auto relative overflow-hidden">
+            <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 mix-blend-overlay"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#00B8F0]/10 via-transparent to-transparent pointer-events-none"></div>
+            
+            <div className="relative z-10">
+              <h2 className="text-[32px] md:text-[40px] font-semibold tracking-tight text-white mb-6">
+                {content.cta.title}
+              </h2>
+              <p className="text-[#8A9EB0] text-[17px] md:text-[19px] max-w-[600px] mx-auto mb-10 leading-relaxed font-light">
+                {content.cta.subtitle}
+              </p>
+              <Link href="/contact" className="btn btn-primary bg-[#00B8F0] text-white hover:bg-[#0096C7] px-8 py-4 rounded text-[15px] inline-flex items-center gap-2 font-medium">
+                {content.cta.buttonText}
               </Link>
             </div>
           </div>
-          
-          <div className="flex-1 w-full lg:block border-l border-white/10 lg:pl-12 flex flex-col justify-center">
-             <div className="bg-white/5 border border-white/10 p-6 rounded-xl backdrop-blur-sm relative">
-                <Truck className="w-10 h-10 text-brand mb-4" />
-                <h3 className="text-[20px] font-semibold mb-2">Visibility & Optimization at Scale</h3>
-                <p className="text-[14px] text-[#9FB9C8]">We deploy intelligent systems that ingest unstructured logistics data (emails, PDFs, invoices) and transform them into actionable operations.</p>
-             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* USE CASES */}
-      <section className="section-pad">
-        <div className="wrap text-center mb-[60px]">
-          <div className="eyebrow justify-center">Key Use Cases</div>
-          <h2 className="text-[34px] font-semibold mb-4">Driving Supply Chain Efficiency.</h2>
-        </div>
-        
-        <div className="wrap grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {content.useCases.map((item, i) => (
-             <div key={i} className="bg-white border border-line p-6 rounded shadow-sm hover:border-brand transition-colors">
-                <div className="text-brand mb-4">
-                  <DynamicIcon name={item.iconName} className="w-8 h-8" />
-                </div>
-                <h4 className="font-semibold text-[18px] mb-2">{item.title}</h4>
-                <p className="text-[14px] text-ink-soft">{item.description}</p>
-             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* CASE STUDY HIGHLIGHT */}
-      <section className="section-pad bg-paper border-t border-line">
-        <div className="wrap flex flex-col md:flex-row items-center gap-12">
-           <div className="md:w-1/2">
-              <div className="font-mono text-[11px] text-brand uppercase tracking-[0.08em] mb-3">Featured Case Study</div>
-              <h2 className="text-[30px] font-semibold mb-4">{content.featuredCaseStudy.title}</h2>
-              <p className="text-[15px] text-ink-soft mb-6">
-                {content.featuredCaseStudy.description}
-              </p>
-              <div className="grid grid-cols-2 gap-6 mb-8">
-                 <div>
-                    <div className="text-[24px] font-semibold text-brand mb-1">{content.featuredCaseStudy.statValue1}</div>
-                    <div className="text-[12px] text-ink-soft">{content.featuredCaseStudy.statLabel1}</div>
-                 </div>
-                 <div>
-                    <div className="text-[24px] font-semibold text-brand mb-1">{content.featuredCaseStudy.statValue2}</div>
-                    <div className="text-[12px] text-ink-soft">{content.featuredCaseStudy.statLabel2}</div>
-                 </div>
-              </div>
-              <Link href={content.featuredCaseStudy.link || "/work/case-studies"} className="font-mono text-[13px] text-brand flex items-center gap-2 hover:gap-3 transition-all">View All Case Studies <ArrowRight className="w-3.5 h-3.5" /></Link>
-           </div>
-           <div className="md:w-1/2 w-full">
-              <div className="bg-white border border-line p-8 rounded shadow-sm w-full min-h-[300px] flex items-center justify-center relative overflow-hidden">
-                 <div className="absolute inset-0 bg-grid-bg opacity-50"></div>
-                 <div className="relative z-10 w-full max-w-[340px] bg-white border border-line rounded-lg shadow-xl overflow-hidden">
-                    <div className="bg-brand text-white p-3 font-semibold text-[13px] flex items-center gap-2"><MapPin className="w-4 h-4"/> Ops Agent</div>
-                    <div className="p-4 bg-gray-50 flex flex-col gap-3">
-                       <div className="bg-white border border-line rounded p-2.5 text-[12px] self-end max-w-[80%]">What is the SOP for hazardous material handling in port 4?</div>
-                       <div className="bg-brand/5 border border-brand/20 rounded p-2.5 text-[12px] self-start max-w-[80%] text-ink">For Port 4, Hazmat requires Form 82-B clearance prior to arrival... <br/><br/><span className="text-brand font-mono text-[10px]">Source: Safety_Manual_v2.pdf</span></div>
-                    </div>
-                 </div>
-              </div>
-           </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-[80px] bg-white">
-        <div className="wrap text-center max-w-[600px] mx-auto">
-          <h2 className="text-[32px] font-semibold leading-[1.1] mb-4">
-            {content.cta.title}
-          </h2>
-          <p className="text-[15px] text-ink-soft mb-8">
-            {content.cta.subtitle}
-          </p>
-          <Link href="/contact" className="btn btn-primary bg-brand hover:bg-deep">
-            {content.cta.buttonText}
-          </Link>
         </div>
       </section>
     </main>

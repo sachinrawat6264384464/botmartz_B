@@ -57,7 +57,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
 
   // All authenticated pages — sidebar + header shell
   return (
-    <div className="flex h-screen bg-admin-bg overflow-hidden">
+    <div className="flex h-screen bg-admin-bg overflow-hidden font-sans text-admin-text">
       <Suspense fallback={<div className="w-[232px] bg-admin-card border-r border-admin-border" />}>
         <AdminSidebar />
       </Suspense>

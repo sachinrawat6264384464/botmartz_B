@@ -9,13 +9,10 @@ import {
   Home, Mail, BookOpen, MessageSquare, Send, Users, FolderKanban, CalendarDays, Settings, ShieldAlert
 } from 'lucide-react';
 import Image from 'next/image';
-import { Inter_Tight } from 'next/font/google';
 import { useAuth } from '@/lib/context/AuthContext';
 import { MODULES, ModuleId } from '@/lib/modules';
 import { db } from '@/lib/firebase';
 import { collection, query, where, getCountFromServer } from 'firebase/firestore';
-
-const interTight = Inter_Tight({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
 const BADGE_STYLE: Partial<Record<ModuleId, string>> = {
   contacts: 'bg-sky-500/20 text-sky-300 border border-sky-500/30',
@@ -28,6 +25,8 @@ export default function AdminSidebar() {
   const [liveCounts, setLiveCounts] = useState<Partial<Record<ModuleId, number>>>({});
 
   // Collapsible Submenus Open States
+  const [isCompanyOpen, setIsCompanyOpen] = useState(false);
+  const [isCommunityOpen, setIsCommunityOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isIndustriesOpen, setIsIndustriesOpen] = useState(false);
   const [isWorkOpen, setIsWorkOpen] = useState(false);
@@ -50,13 +49,19 @@ export default function AdminSidebar() {
 
   // Auto-expand parents based on current sub-page path or query params
   useEffect(() => {
+    if (pageParam === 'home' || pageParam === 'about' || pageParam === 'contact') {
+      setIsCompanyOpen(true);
+    }
+    if (pageParam === 'community' || pageParam === 'ai-frontier') {
+      setIsCommunityOpen(true);
+    }
     if (pageParam === 'enterprise-rag' || pageParam === 'ai-agents') {
       setIsServicesOpen(true);
     }
     if (pageParam === 'education' || pageParam === 'logistics' || pageParam === 'legal') {
       setIsIndustriesOpen(true);
     }
-    if (pathname === '/admin/case-studies' || pathname === '/admin/labs' || pageParam === 'labs') {
+    if (pathname === '/admin/case-studies' || pathname === '/admin/labs' || pageParam === 'labs' || pageParam === 'case-studies') {
       setIsWorkOpen(true);
     }
   }, [pathname, pageParam]);
@@ -229,21 +234,21 @@ export default function AdminSidebar() {
 
       {/* Sidebar */}
       <aside
-        className={`${interTight.className} fixed lg:static inset-y-0 left-0 z-40 flex flex-col bg-admin-card border-r border-admin-border transform transition-all duration-300 ease-in-out lg:transform-none ${
+        className={`font-sans fixed lg:static inset-y-0 left-0 z-40 flex flex-col bg-admin-card border-r border-admin-border transform transition-all duration-300 ease-in-out lg:transform-none ${
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         } ${collapsed ? 'w-[62px]' : 'w-[232px]'}`}
       >
 
         {/* ── Logo ── */}
-        <div className={`flex items-center gap-3 px-4 py-5 ${collapsed ? 'justify-center' : ''}`}>
-          <div className="relative w-8 h-8 shrink-0">
-            <Image src="/BotmartzNewLogo.png" alt="BOTMARTZ" fill className="object-contain" />
-          </div>
-          {!collapsed && (
-            <div>
-              <p className="text-[13px] font-bold text-admin-text tracking-tight leading-none">BOTMARTZ</p>
-              <p className="text-[9px] text-admin-text-muted tracking-[0.2em] uppercase mt-1">Admin Panel</p>
-            </div>
+        <div className={`flex items-center px-4 py-5 ${collapsed ? 'justify-center' : ''}`}>
+          {!collapsed ? (
+            <Link href="/admin" className="relative h-[48px] w-[200px]">
+              <Image src="/BotmartznewBot.png" alt="BOTMARTZ" fill className="object-contain object-left" />
+            </Link>
+          ) : (
+            <Link href="/admin" className="relative w-8 h-8 shrink-0 overflow-hidden">
+              <Image src="/BotmartznewBot.png" alt="BOTMARTZ" fill className="object-cover object-left" />
+            </Link>
           )}
         </div>
 
@@ -288,6 +293,19 @@ export default function AdminSidebar() {
             )}
 
             <div className="space-y-0.5">
+              {/* Company Collapsible Dropdown */}
+              {renderCollapsibleGroup('Company', isCompanyOpen, setIsCompanyOpen, Briefcase, [
+                { label: 'Home Page', href: '/admin/pages?page=home', active: pathname === '/admin/pages' && pageParam === 'home', moduleId: 'pages' },
+                { label: 'About Us', href: '/admin/pages?page=about', active: pathname === '/admin/pages' && pageParam === 'about', moduleId: 'pages' },
+                { label: 'Contact', href: '/admin/pages?page=contact', active: pathname === '/admin/pages' && pageParam === 'contact', moduleId: 'pages' },
+              ])}
+
+              {/* Community Collapsible Dropdown */}
+              {renderCollapsibleGroup('Community', isCommunityOpen, setIsCommunityOpen, Users, [
+                { label: 'Community Hub', href: '/admin/pages?page=community', active: pathname === '/admin/pages' && pageParam === 'community', moduleId: 'pages' },
+                { label: 'AI Frontier 2026', href: '/admin/pages?page=ai-frontier', active: pathname === '/admin/pages' && pageParam === 'ai-frontier', moduleId: 'pages' },
+              ])}
+
               {/* Services Collapsible Dropdown */}
               {renderCollapsibleGroup('Services', isServicesOpen, setIsServicesOpen, Bot, [
                 { label: 'Enterprise RAG', href: '/admin/pages?page=enterprise-rag', active: pathname === '/admin/pages' && pageParam === 'enterprise-rag', moduleId: 'pages' },
@@ -302,9 +320,9 @@ export default function AdminSidebar() {
               ])}
 
               {/* Work Collapsible Dropdown */}
-              {renderCollapsibleGroup('Work', isWorkOpen, setIsWorkOpen, Briefcase, [
-                { label: 'Case Studies', href: '/admin/case-studies', active: pathname === '/admin/case-studies', moduleId: 'case-studies' },
-                { label: 'Labs', href: '/admin/labs', active: pathname === '/admin/labs', moduleId: 'pages' },
+              {renderCollapsibleGroup('Work', isWorkOpen, setIsWorkOpen, Layers, [
+                { label: 'Case Studies', href: '/admin/pages?page=case-studies', active: pathname === '/admin/pages' && pageParam === 'case-studies', moduleId: 'pages' },
+                { label: 'Labs', href: '/admin/pages?page=labs', active: pathname === '/admin/pages' && pageParam === 'labs', moduleId: 'pages' },
               ])}
 
               {/* Flat Content Items */}

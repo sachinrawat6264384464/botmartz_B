@@ -1,13 +1,35 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { db } from "@/lib/firebase";
-import { collection, query, where, orderBy, getDocs, doc, getDoc } from "firebase/firestore";
-import { CaseStudy } from "@/types/admin";
+import { Metadata } from 'next';
+import Link from 'next/link';
+import { adminDb } from '@/lib/firebase-admin';
 import { ArrowRight, Terminal, Code2, Layout, BookOpen } from "lucide-react";
 
-// Fallback Default Intro Content
+export async function generateMetadata(): Promise<Metadata> {
+  let meta = {
+    title: 'AI Case Studies | Botmartz AI',
+    description: 'Discover how we partner with leading organizations to deploy production-ready AI agents and RAG systems.',
+  };
+  
+  try {
+    const docSnap = await adminDb.collection("dynamic_pages").doc("case-studies").get();
+    if (docSnap.exists) {
+      const data = docSnap.data();
+      if (data?.metadata) {
+        meta = { ...meta, ...data.metadata };
+      }
+    }
+  } catch (e) {}
+
+  return {
+    ...meta,
+    openGraph: {
+      title: meta.title,
+      description: meta.description,
+      url: 'https://botmartz.com/work/case-studies',
+      type: 'website',
+    },
+  };
+}
+
 const DEFAULT_INTRO = {
   hero: {
     badge: "Work / Case Studies",
@@ -32,7 +54,6 @@ const DEFAULT_INTRO = {
   })
 };
 
-// Fallback Default Case Studies (in case firestore is empty)
 const DEFAULT_STUDIES = [
   {
     id: "logistics-rag",
@@ -66,56 +87,48 @@ const DEFAULT_STUDIES = [
   }
 ];
 
-export default function CaseStudiesPage() {
-  const [intro, setIntro] = useState(DEFAULT_INTRO);
-  const [studies, setStudies] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+export default async function CaseStudiesPage() {
+  let intro = { ...DEFAULT_INTRO };
+  let studies: any[] = [];
 
-  useEffect(() => {
-    async function loadData() {
-      try {
-        // 1. Fetch Intro configuration
-        const introRef = doc(db, "dynamic_pages", "case-studies");
-        const introSnap = await getDoc(introRef);
-        if (introSnap.exists()) {
-          const introData = introSnap.data();
-          setIntro({
-            hero: introData.hero || DEFAULT_INTRO.hero,
-            cta: introData.cta || DEFAULT_INTRO.cta,
-            structuredData: introData.structuredData || DEFAULT_INTRO.structuredData
-          });
-        }
-
-        // 2. Fetch published Case Studies from collection
-        const q = query(
-          collection(db, "case-studies"),
-          where("status", "==", "published"),
-          orderBy("createdAt", "desc")
-        );
-        const querySnapshot = await getDocs(q);
-        
-        if (querySnapshot.empty) {
-          setStudies(DEFAULT_STUDIES);
-        } else {
-          const items: any[] = [];
-          querySnapshot.forEach((doc) => {
-            items.push({ id: doc.id, ...doc.data() });
-          });
-          setStudies(items);
-        }
-      } catch (err) {
-        console.error("Error loading case studies content:", err);
-        // Fallback to defaults on error
-        setStudies(DEFAULT_STUDIES);
-      } finally {
-        setLoading(false);
-      }
+  try {
+    const docSnap = await adminDb.collection("dynamic_pages").doc("case-studies").get();
+    if (docSnap.exists) {
+      const data = docSnap.data();
+      intro = {
+        hero: data?.hero || DEFAULT_INTRO.hero,
+        cta: data?.cta || DEFAULT_INTRO.cta,
+        structuredData: data?.structuredData || DEFAULT_INTRO.structuredData
+      };
     }
-    loadData();
-  }, []);
+  } catch (e) {}
+
+  try {
+    const querySnapshot = await adminDb
+      .collection("case-studies")
+      .where("status", "==", "published")
+      .orderBy("createdAt", "desc")
+      .get();
+      
+    if (querySnapshot.empty) {
+      studies = DEFAULT_STUDIES;
+    } else {
+      studies = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    }
+  } catch (e) {
+    try {
+      const fallbackSnapshot = await adminDb.collection("case-studies").get();
+      studies = fallbackSnapshot.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .filter((d: any) => d.status === "published");
+      if (studies.length === 0) studies = DEFAULT_STUDIES;
+    } catch (err) {
+      studies = DEFAULT_STUDIES;
+    }
+  }
 
   return (
-    <main className="bg-paper">
+    <main className="bg-[#050B14] min-h-screen text-white">
       {intro.structuredData && (
         <script
           type="application/ld+json"
@@ -123,23 +136,47 @@ export default function CaseStudiesPage() {
         />
       )}
       
-      {/* HERO SECTION */}
-      <section className="relative pt-[80px] pb-[60px] bg-ink text-white overflow-hidden blueprint" style={{ backgroundImage: 'linear-gradient(rgba(0,184,240,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,.08) 1px, transparent 1px)' }}>
+      {/* HERO SECTION (DARK CENTERED) */}
+      <section className="relative pt-[120px] pb-[80px] bg-[#050B14] text-white overflow-hidden">
+        {/* Background glow effects */}
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0066FF]/10 blur-[150px] rounded-full pointer-events-none" />
+
         <div className="wrap relative z-10 flex flex-col items-center text-center max-w-[800px] mx-auto">
-          <div className="font-mono text-[11px] text-signal uppercase tracking-[0.12em] mb-4 flex items-center gap-2 justify-center">
-            <Link href="/work" className="hover:text-white transition-colors">Work</Link> <span>/</span> <span className="text-white">{intro.hero.badge || "Case Studies"}</span>
+          <div className="font-mono text-[11px] tracking-[0.14em] text-[#00B8F0] uppercase mb-6 flex items-center justify-center gap-3 font-semibold">
+            <span className="w-6 h-px bg-[#00B8F0]"></span>
+            {intro.hero.badge || "Case Studies"}
+            <span className="w-6 h-px bg-[#00B8F0]"></span>
           </div>
-          <h1 className="text-[clamp(32px,4.5vw,50px)] leading-[1.05] font-semibold mb-6">
-            {intro.hero.title}
-          </h1>
-          <p className="text-[17px] text-[#9FB9C8] mb-8 max-w-[600px] mx-auto">
+          <h1 
+            className="text-[clamp(40px,6vw,64px)] leading-[1.05] font-semibold mb-6 tracking-tight text-white"
+            dangerouslySetInnerHTML={{ __html: intro.hero.title }}
+          />
+          <p className="text-[17px] sm:text-[19px] text-[#8A9EB0] mb-10 max-w-[600px] leading-relaxed font-light">
             {intro.hero.subtitle}
           </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link href={intro.hero.ctaLink || "/contact"} className="btn btn-primary bg-[#00B8F0] text-white hover:bg-[#0096C7] px-8 py-3.5 rounded text-[15px] flex items-center gap-2">
+              {intro.hero.ctaText || "Start a Conversation →"}
+            </Link>
+          </div>
+        </div>
+
+        {/* Decorative elements */}
+        <div className="mt-20 relative max-w-[1000px] mx-auto hidden md:block">
+           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#050B14] z-10"></div>
+           <div className="grid grid-cols-5 gap-4 opacity-30">
+              {Array.from({length: 15}).map((_, i) => (
+                 <div key={i} className="h-16 border border-[#1E293B] rounded bg-[#0A111F]/50 flex items-center justify-center">
+                    <div className="w-2 h-2 rounded-full bg-[#00B8F0]/30 animate-pulse" style={{ animationDelay: `${i * 150}ms`}}></div>
+                 </div>
+              ))}
+           </div>
         </div>
       </section>
 
       {/* CASE STUDIES GRID */}
-      <section className="py-[60px] bg-white">
+      <section className="py-[100px] bg-[#0A111F] border-y border-[#1E293B]">
         <div className="wrap flex flex-col gap-10">
            
            {studies.map((study, idx) => {
@@ -149,26 +186,26 @@ export default function CaseStudiesPage() {
              const otherTags = tagsList.filter((t: string) => !t.includes("%") && !/^\d+(\.\d+)?x$/.test(t));
 
              return (
-               <div key={study.id} className="flex flex-col md:flex-row gap-8 items-stretch pb-10 border-b border-line group last:border-b-0">
+               <div key={study.id} className="flex flex-col md:flex-row gap-8 items-stretch pb-10 border-b border-[#1E293B] group last:border-b-0">
                   {/* Left Thumbnail visual placeholder */}
-                  <div className="w-full md:w-[45%] lg:w-[40%] bg-ink rounded border border-line overflow-hidden relative min-h-[260px]">
+                  <div className="w-full md:w-[45%] lg:w-[40%] bg-[#050B14] rounded-xl border border-[#1E293B] overflow-hidden relative min-h-[260px] group-hover:border-[#00B8F0]/50 transition-colors">
                      {study.featuredImage ? (
                        <img 
                          src={study.featuredImage} 
                          alt={study.title} 
-                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                         className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" 
                        />
                      ) : (
                        <>
-                         <div className="absolute inset-0 blueprint opacity-20"></div>
-                         <div className="absolute inset-4 bg-white/5 border border-white/10 rounded backdrop-blur flex items-center justify-center p-4">
-                           <div className="w-full h-full bg-grid-bg border border-line rounded flex flex-col opacity-50 overflow-hidden">
-                              <div className="h-4 border-b border-line w-full"></div>
+                         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#00B8F0]/5 via-transparent to-transparent"></div>
+                         <div className="absolute inset-4 bg-[#0A111F]/50 border border-[#1E293B] rounded-lg backdrop-blur flex items-center justify-center p-4">
+                           <div className="w-full h-full border border-[#1E293B] rounded flex flex-col opacity-50 overflow-hidden">
+                              <div className="h-4 border-b border-[#1E293B] w-full bg-[#050B14]"></div>
                               <div className="flex-1 flex gap-2 p-2">
-                                <div className="w-1/3 h-full border border-line rounded-sm"></div>
-                                <div className="flex-1 h-full border border-line rounded-sm flex flex-col gap-2 p-2">
-                                   <div className="h-2 w-full bg-line rounded"></div>
-                                   <div className="h-2 w-2/3 bg-line rounded"></div>
+                                <div className="w-1/3 h-full border border-[#1E293B] rounded-sm bg-[#050B14]"></div>
+                                <div className="flex-1 h-full border border-[#1E293B] rounded-sm flex flex-col gap-2 p-2 bg-[#050B14]">
+                                   <div className="h-2 w-full bg-[#1E293B] rounded"></div>
+                                   <div className="h-2 w-2/3 bg-[#1E293B] rounded"></div>
                                 </div>
                               </div>
                            </div>
@@ -178,42 +215,42 @@ export default function CaseStudiesPage() {
                   </div>
                   
                   {/* Right Details */}
-                  <div className="flex-1 flex flex-col justify-between">
+                  <div className="flex-1 flex flex-col justify-between py-2">
                      <div>
-                        <div className="font-mono text-[10px] text-brand uppercase bg-brand/10 inline-block px-2 py-1 rounded mb-3">
+                        <div className="font-mono text-[10px] text-[#00B8F0] uppercase bg-[#00B8F0]/10 inline-block px-3 py-1 rounded-sm mb-4 font-semibold tracking-wider">
                           {study.clientName || "Client"} • {study.category || "AI engineering"}
                         </div>
-                        <h3 className="text-[24px] font-semibold mb-3 group-hover:text-brand transition-colors">
+                        <h3 className="text-[24px] md:text-[28px] font-semibold mb-4 text-white group-hover:text-[#00B8F0] transition-colors leading-tight">
                           {study.title}
                         </h3>
-                        <p className="text-[15px] text-ink-soft mb-6">
+                        <p className="text-[15px] md:text-[16px] text-[#8A9EB0] mb-6 leading-relaxed">
                           {study.excerpt}
                         </p>
                         
                         {/* Tech Tags */}
-                        <div className="flex flex-wrap gap-2 mb-6">
+                        <div className="flex flex-wrap gap-2 mb-8">
                            {otherTags.map((t: string) => (
-                             <span key={t} className="font-mono text-[10.5px] border border-line text-ink-soft px-2 py-1 rounded-sm">{t}</span>
+                             <span key={t} className="font-mono text-[11px] border border-[#1E293B] bg-[#050B14] text-[#8A9EB0] px-2.5 py-1 rounded-sm">{t}</span>
                            ))}
                         </div>
                      </div>
                      
-                     <div className="flex items-center gap-8 border-t border-line pt-4">
+                     <div className="flex items-center gap-8 border-t border-[#1E293B] pt-6 mt-auto">
                         {metrics.map((m: string, mIdx: number) => (
                           <div key={mIdx}>
-                             <div className="text-[20px] font-semibold leading-none mb-1 text-brand">{m}</div>
-                             <div className="text-[12px] text-ink-soft">
+                             <div className="text-[24px] font-semibold leading-none mb-1 text-white group-hover:text-[#00B8F0] transition-colors">{m}</div>
+                             <div className="text-[12px] text-[#8A9EB0]">
                                {mIdx === 0 ? (m.includes("%") ? "Performance Gain" : "Scale Boost") : (m.includes("%") ? "Efficiency rate" : "Productivity factor")}
                              </div>
                           </div>
                         ))}
                         {metrics.length === 0 && (
                           <div>
-                            <div className="text-[20px] font-semibold leading-none mb-1 text-brand">Deploy</div>
-                            <div className="text-[12px] text-ink-soft">Production status</div>
+                            <div className="text-[24px] font-semibold leading-none mb-1 text-white group-hover:text-[#00B8F0] transition-colors">Deploy</div>
+                            <div className="text-[12px] text-[#8A9EB0]">Production status</div>
                           </div>
                         )}
-                        <Link href="/contact" className="ml-auto font-mono text-[13px] text-brand flex items-center gap-2 group-hover:gap-3 transition-all">
+                        <Link href="/contact" className="ml-auto font-mono text-[13px] text-[#00B8F0] hover:text-white flex items-center gap-2 group-hover:gap-3 transition-all">
                           Discuss a similar project <ArrowRight className="w-3.5 h-3.5" />
                         </Link>
                      </div>
@@ -225,18 +262,25 @@ export default function CaseStudiesPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-[80px] bg-white border-t border-line">
-        <div className="wrap text-center max-w-[600px] mx-auto">
-          <h2 className="text-[32px] font-semibold leading-[1.1] mb-4">
-            {intro.cta.title}
-          </h2>
-          <p className="text-[15px] text-ink-soft mb-8">
-            {intro.cta.subtitle}
-          </p>
-          <Link href="/contact" className="btn btn-primary bg-brand hover:bg-deep">
-            {intro.cta.buttonText}
-          </Link>
+      {/* CTA SECTION */}
+      <section className="py-[100px] bg-[#050B14]">
+        <div className="wrap">
+          <div className="bg-gradient-to-br from-[#0A111F] to-[#050B14] border border-[#1E293B] rounded-2xl p-10 md:p-16 text-center max-w-[900px] mx-auto relative overflow-hidden">
+            <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 mix-blend-overlay"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#00B8F0]/10 via-transparent to-transparent pointer-events-none"></div>
+            
+            <div className="relative z-10">
+              <h2 className="text-[32px] md:text-[40px] font-semibold tracking-tight text-white mb-6">
+                {intro.cta.title}
+              </h2>
+              <p className="text-[#8A9EB0] text-[17px] md:text-[19px] max-w-[600px] mx-auto mb-10 leading-relaxed font-light">
+                {intro.cta.subtitle}
+              </p>
+              <Link href="/contact" className="btn btn-primary bg-[#00B8F0] text-white hover:bg-[#0096C7] px-8 py-4 rounded text-[15px] inline-flex items-center gap-2 font-medium">
+                {intro.cta.buttonText}
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
     </main>

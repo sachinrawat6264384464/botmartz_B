@@ -12,13 +12,21 @@ export default function EventsIndexPage() {
     <main className="bg-paper min-h-screen">
       
       {/* HEADER */}
-      <section className="pt-[120px] pb-[60px] bg-ink text-white blueprint border-b border-white/10" style={{ backgroundImage: 'linear-gradient(rgba(0,184,240,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,.05) 1px, transparent 1px)' }}>
-        <div className="wrap">
-          <div className="font-mono text-[11px] text-brand uppercase tracking-[0.12em] mb-4">COMMUNITY EVENTS</div>
-          <h1 className="text-[40px] md:text-[50px] font-bold mb-4 font-space-grotesk tracking-tight">
-            Learn, Build & <span className="text-brand">Connect.</span>
+      <section className="relative pt-[120px] pb-[80px] bg-[#050B14] text-white overflow-hidden border-b border-white/10">
+        {/* Background glow effects */}
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0066FF]/10 blur-[150px] rounded-full pointer-events-none" />
+
+        <div className="wrap relative z-10 flex flex-col items-center text-center max-w-[800px] mx-auto">
+          <div className="font-mono text-[11px] tracking-[0.14em] text-[#00B8F0] uppercase mb-4 flex items-center gap-3 font-semibold justify-center">
+            <span className="w-6 h-px bg-[#00B8F0]"></span>
+            COMMUNITY EVENTS
+            <span className="w-6 h-px bg-[#00B8F0]"></span>
+          </div>
+          <h1 className="text-[clamp(36px,5vw,56px)] font-bold mb-6 tracking-tight text-white font-space-grotesk">
+            Learn, Build & <span className="text-[#00B8F0]">Connect.</span>
           </h1>
-          <p className="text-[18px] text-[#9FB9C8] max-w-[600px] leading-relaxed">
+          <p className="text-[17px] text-[#8A9EB0] max-w-[600px] leading-relaxed mx-auto">
             From our annual flagship conference to local engineering meetups, this is where the AI ecosystem comes together.
           </p>
         </div>

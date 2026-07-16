@@ -6,6 +6,7 @@ import {
   Activity, Database, Server, ShieldCheck, Cpu,
   Bot, Settings, Zap, ArrowRight, ChevronDown, CheckCircle2
 } from 'lucide-react';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'AI Frontier 2026 | Botmartz AI',
@@ -89,19 +90,23 @@ export default function CommunityPage() {
       />
       
       {/* HERO SECTION (DARK) */}
-      <section className="relative pt-[120px] pb-[80px] bg-ink text-white overflow-hidden">
-        {/* Background Grid */}
-        <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(rgba(0,184,240,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,.05) 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
-        
+      <section className="relative pt-[120px] pb-[80px] bg-[#050B14] text-white overflow-hidden">
+        {/* Background glow effects */}
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0066FF]/10 blur-[150px] rounded-full pointer-events-none" />
+
         <div className="wrap relative z-10 flex flex-col lg:flex-row items-center gap-12">
           
           <div className="flex-1 lg:max-w-[600px] text-center lg:text-left">
-            <div className="font-mono text-[11px] text-brand uppercase tracking-[0.12em] mb-4">AI FRONTIER 2026</div>
-            <h1 className="text-[clamp(40px,6vw,70px)] leading-[1] font-bold mb-4 font-space-grotesk tracking-tight">
-              AI <span className="text-brand">FRONTIER</span>
+            <div className="font-mono text-[11px] tracking-[0.14em] text-[#00B8F0] uppercase mb-6 flex items-center justify-center lg:justify-start gap-3 font-semibold">
+              <span className="w-6 h-px bg-[#00B8F0]"></span>
+              AI FRONTIER 2026
+            </div>
+            <h1 className="text-[clamp(40px,6vw,70px)] leading-[1] font-bold mb-4 font-space-grotesk tracking-tight text-white">
+              AI <span className="text-[#00B8F0]">FRONTIER</span>
             </h1>
             <p className="text-[22px] font-medium text-white mb-6">Build. Learn. Connect. Shape the Future.</p>
-            <p className="text-[16px] text-[#9FB9C8] mb-10 max-w-[540px] mx-auto lg:mx-0 leading-relaxed">
+            <p className="text-[17px] text-[#8A9EB0] mb-10 max-w-[540px] mx-auto lg:mx-0 leading-relaxed">
               AI Frontier is Botmartz's flagship event bringing together engineers, researchers, founders, and tech leaders to explore the frontier of Artificial Intelligence and build what's next.
             </p>
             
@@ -142,31 +147,18 @@ export default function CommunityPage() {
           <div className="flex-1 w-full relative h-[400px] lg:h-[500px]">
             {/* Glowing Hero Graphic */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] flex items-center justify-center">
-                {/* Outer rings */}
-                <div className="absolute inset-0 rounded-full border border-brand/20 border-dashed animate-[spin_60s_linear_infinite]" />
-                <div className="absolute inset-[20px] rounded-full border border-brand/40 animate-[spin_40s_linear_infinite_reverse]" />
-                <div className="absolute inset-[40px] rounded-full border border-brand/60 animate-[spin_20s_linear_infinite]" />
-                {/* Core glow */}
-                <div className="absolute inset-[60px] rounded-full bg-brand/10 shadow-[0_0_100px_rgba(0,146,215,0.6)] backdrop-blur-md border border-brand/80 flex flex-col items-center justify-center">
-                  <span className="text-[40px] lg:text-[50px] font-bold font-space-grotesk tracking-tighter text-white">AI</span>
-                  <span className="text-[20px] lg:text-[24px] font-medium tracking-widest text-brand">FRONTIER</span>
-                  <span className="text-[12px] font-mono mt-2 text-white/70">2026</span>
-                </div>
-
-                {/* Floating Badges */}
-                <div className="absolute top-[10%] left-[-20%] lg:left-[-10%] bg-ink border border-line text-white text-[11px] font-mono px-4 py-2 rounded-full whitespace-nowrap shadow-lg">AI Agents</div>
-                <div className="absolute top-[5%] right-[-10%] lg:right-[-5%] bg-ink border border-line text-white text-[11px] font-mono px-4 py-2 rounded-full whitespace-nowrap shadow-lg">Enterprise AI</div>
-                <div className="absolute bottom-[25%] left-[-30%] lg:left-[-20%] bg-ink border border-line text-white text-[11px] font-mono px-4 py-2 rounded-full whitespace-nowrap shadow-lg">MLOps & Observability</div>
-                <div className="absolute bottom-[10%] right-[-15%] lg:right-[-5%] bg-ink border border-line text-white text-[11px] font-mono px-4 py-2 rounded-full whitespace-nowrap shadow-lg">Responsible AI</div>
-                <div className="absolute top-[40%] left-[-35%] lg:left-[-25%] bg-ink border border-brand text-brand font-semibold text-[11px] font-mono px-4 py-2 rounded-full whitespace-nowrap shadow-[0_0_15px_rgba(0,146,215,0.3)]">RAG & Knowledge Systems</div>
-                <div className="absolute top-[30%] right-[-25%] lg:right-[-15%] bg-ink border border-line text-white text-[11px] font-mono px-4 py-2 rounded-full whitespace-nowrap shadow-lg">Computer Vision</div>
+              <div className="relative w-full h-full max-w-[600px] rounded-2xl overflow-hidden border border-[#00B8F0]/30 shadow-[0_0_50px_rgba(0,184,240,0.25)] group">
+                <Image 
+                  src="/ai-frontier-hero.png" 
+                  alt="AI Frontier 2026" 
+                  fill 
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  priority 
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050B14] via-transparent to-transparent opacity-60" />
+                <div className="absolute inset-0 bg-[#00B8F0]/10 mix-blend-overlay pointer-events-none" />
               </div>
             </div>
-            
-            {/* Glowing pedestal base */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[300px] h-[40px] bg-brand/20 rounded-[100%] blur-xl"></div>
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[150px] h-[10px] bg-brand/50 rounded-[100%] blur-md"></div>
           </div>
         </div>
       </section>

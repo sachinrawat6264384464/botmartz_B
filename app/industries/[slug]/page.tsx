@@ -64,21 +64,23 @@ export default function DynamicIndustryPage({ params }: { params: any }) {
       )}
 
       {/* HERO SECTION */}
-      <section
-        className="relative pt-[120px] pb-16 bg-ink text-white overflow-hidden blueprint"
-        style={{ backgroundImage: "linear-gradient(rgba(0,184,240,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,.08) 1px, transparent 1px)" }}
-      >
+      <section className="relative pt-[120px] pb-[80px] bg-[#050B14] text-white overflow-hidden">
+        {/* Background glow effects */}
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0066FF]/10 blur-[150px] rounded-full pointer-events-none" />
+
         <div className="wrap relative z-10 flex flex-col lg:flex-row items-center gap-10">
           <div className="flex-1 lg:max-w-[620px]">
-            <div className="font-mono text-[11px] text-signal uppercase tracking-[0.12em] mb-4 flex items-center gap-2">
+            <div className="font-mono text-[11px] tracking-[0.14em] text-[#00B8F0] uppercase mb-6 flex items-center gap-3 font-semibold">
+              <span className="w-6 h-px bg-[#00B8F0]"></span>
               <Link href="/industries" className="hover:text-white transition-colors">Industries</Link>{" "}
               <span>/</span>{" "}
               <span className="text-white">{content.hero?.badge || content.title}</span>
             </div>
-            <h1 className="text-[clamp(32px,4.5vw,52px)] leading-[1.05] font-semibold mb-6">
+            <h1 className="text-[clamp(36px,4.5vw,56px)] leading-[1.1] font-semibold mb-6 tracking-tight text-white">
               {content.hero?.title || content.title}
             </h1>
-            <p className="text-[17px] text-[#9FB9C8] max-w-[540px] mb-8 leading-relaxed">
+            <p className="text-[17px] text-[#8A9EB0] max-w-[540px] mb-8 leading-relaxed">
               {content.hero?.subtitle}
             </p>
             <div className="flex flex-wrap gap-4">

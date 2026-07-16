@@ -2,14 +2,11 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Search, X, Mail, FileText, Users, ArrowRight, Sun, Moon } from 'lucide-react';
-import { Inter_Tight } from 'next/font/google';
 import { useAuth } from '@/lib/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { db } from '@/lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
-
-const interTight = Inter_Tight({ subsets: ['latin'], weight: ['400', '500', '600'] });
 
 interface SearchResult {
   id: string;
@@ -179,8 +176,8 @@ export default function AdminHeader() {
   }, {});
 
   return (
-    <header className={`${interTight.className} bg-admin-card border-b border-admin-border px-8 py-4`}>
-      <div className="flex items-center justify-between">
+    <header className={`font-sans bg-admin-card border-b border-admin-border px-8 py-4`}>
+      <div className="flex items-center justify-between h-8">
         {/* Search Bar */}
         <div className="flex-1 max-w-2xl relative">
           <div className="relative">

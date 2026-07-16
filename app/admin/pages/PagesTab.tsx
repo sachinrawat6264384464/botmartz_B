@@ -21,9 +21,7 @@ import {
   HelpCircle,
   LucideIcon
 } from "lucide-react";
-import { Inter_Tight } from "next/font/google";
-
-const interTight = Inter_Tight({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
+import { Inter } from "next/font/google";
 
 // Types
 interface UseCase {
@@ -59,19 +57,82 @@ interface PageConfig {
   structuredData: string;
 }
 
-// 7 pages we can edit
+// 15 pages we can edit
 const AVAILABLE_PAGES = [
+  { id: "home", name: "Home Page" },
+  { id: "about", name: "About Us" },
+  { id: "contact", name: "Contact" },
+  { id: "community", name: "Community" },
+  { id: "ai-frontier", name: "Community / AI Frontier 2026" },
+  { id: "services", name: "Services Index" },
   { id: "ai-agents", name: "Services / AI Agents" },
   { id: "enterprise-rag", name: "Services / Enterprise RAG" },
+  { id: "industries", name: "Industries Index" },
   { id: "education", name: "Industries / Education" },
   { id: "logistics", name: "Industries / Logistics" },
   { id: "legal", name: "Industries / Legal" },
+  { id: "work", name: "Work Index" },
   { id: "labs", name: "Work / Labs" },
   { id: "case-studies", name: "Work / Case Studies" },
+  { id: "insights", name: "Insights" },
 ];
 
 // Fallback Default Content mapped by pageId
 const DEFAULT_PAGE_CONTENTS: Record<string, Partial<PageConfig>> = {
+  "home": {
+    title: "Home Page",
+    metadata: { title: "Botmartz - AI Solutions", description: "Home page description.", keywords: ["AI", "Botmartz"] },
+    hero: { badge: "Welcome", title: "Engineering the Future", subtitle: "Delivering Impact.", ctaText: "Learn More", ctaLink: "/about" },
+    useCases: [], techStack: []
+  },
+  "about": {
+    title: "About Us",
+    metadata: { title: "About Us | Botmartz", description: "About Botmartz", keywords: ["About"] },
+    hero: { badge: "About Botmartz", title: "Engineering the Future. Delivering Impact.", subtitle: "We are a premium AI engineering firm dedicated to helping enterprises navigate the complexity of Generative AI.", ctaText: "Contact Us", ctaLink: "/contact" },
+    useCases: [], techStack: []
+  },
+  "contact": {
+    title: "Contact",
+    metadata: { title: "Contact Us | Botmartz", description: "Contact Botmartz", keywords: ["Contact"] },
+    hero: { badge: "Get in Touch", title: "Let's Build Something Great", subtitle: "Reach out to our team to discuss your AI needs.", ctaText: "Email Us", ctaLink: "mailto:hello@botmartz.com" },
+    useCases: [], techStack: []
+  },
+  "community": {
+    title: "Community",
+    metadata: { title: "Community | Botmartz", description: "Join our community", keywords: ["Community"] },
+    hero: { badge: "Community", title: "Join the Botmartz Community", subtitle: "Connect with AI enthusiasts, engineers, and researchers.", ctaText: "Join Discord", ctaLink: "#" },
+    useCases: [], techStack: []
+  },
+  "ai-frontier": {
+    title: "AI Frontier 2026",
+    metadata: { title: "AI Frontier 2026 | Botmartz", description: "AI Frontier Event", keywords: ["Event", "AI"] },
+    hero: { badge: "Events", title: "AI Frontier 2026", subtitle: "The ultimate AI conference.", ctaText: "Register Now", ctaLink: "#register" },
+    useCases: [], techStack: []
+  },
+  "services": {
+    title: "Services Index",
+    metadata: { title: "Our Services | Botmartz", description: "Services we offer.", keywords: ["Services"] },
+    hero: { badge: "Our Core Services", title: "AI Solutions Built for Production.", subtitle: "We focus on solving real business problems with two core capabilities backed by robust engineering and seamless integrations.", ctaText: "Explore Solutions", ctaLink: "#solutions" },
+    useCases: [], techStack: []
+  },
+  "industries": {
+    title: "Industries Index",
+    metadata: { title: "Industries | Botmartz", description: "Industries we serve.", keywords: ["Industries"] },
+    hero: { badge: "Industries", title: "AI That Understands Your Industry.", subtitle: "We don't build generic solutions. We build highly specialized AI systems tailored to the exact regulatory, operational, and data requirements of your sector.", ctaText: "Explore Industries", ctaLink: "#industries" },
+    useCases: [], techStack: []
+  },
+  "work": {
+    title: "Work Index",
+    metadata: { title: "Our Work | Botmartz", description: "Our case studies and labs.", keywords: ["Work"] },
+    hero: { badge: "Our Work", title: "Proven AI Impact", subtitle: "See what we've built and how we've transformed businesses with Generative AI.", ctaText: "View Case Studies", ctaLink: "/work/case-studies" },
+    useCases: [], techStack: []
+  },
+  "insights": {
+    title: "Insights",
+    metadata: { title: "Insights | Botmartz", description: "Engineering insights.", keywords: ["Insights"] },
+    hero: { badge: "Insights", title: "Engineering Thoughts & Ideas", subtitle: "Deep dives into AI architecture, prompting techniques, and the future of generative models.", ctaText: "Read Articles", ctaLink: "#" },
+    useCases: [], techStack: []
+  },
   "ai-agents": {
     title: "AI Agents",
     metadata: {
@@ -598,7 +659,7 @@ export default function PagesTab() {
   }
 
   return (
-    <div className={`${interTight.className} p-6 max-w-[1400px] text-admin-text`}>
+    <div className={`font-sans p-6 max-w-[1400px] text-admin-text`}>
       {/* Top Header */}
       <div className="mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
