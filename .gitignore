@@ -50,3 +50,14 @@ node_modules/
 
 # Reference docs
 /reference_docs/
+
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+
+# Firebase Admin SDK
+*firebase-adminsdk*.json
+
+# Test/utility scripts with sensitive keys
+test-key.js
