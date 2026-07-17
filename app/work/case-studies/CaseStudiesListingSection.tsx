@@ -468,7 +468,7 @@ export function CaseStudiesListingSection({ initialStudies }: { initialStudies?:
                             TECHNOLOGIES
                           </div>
                           <div className="flex flex-wrap gap-2">
-                            {study.technologies.map((tech, i) => (
+                            {study.technologies.map((tech: string, i: number) => (
                               <span
                                 key={i}
                                 className="inline-flex items-center px-3 py-1 rounded bg-[#F1F5F9] border border-[#E2E8F0] text-[#334155] text-[12px] font-mono font-medium"
