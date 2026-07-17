@@ -37,7 +37,7 @@ export const MODULES: AppModule[] = [
   { id: 'events',    label: 'Events',    href: '/admin/events',    icon: CalendarDays },
   { id: 'jobs',      label: 'Careers / Jobs', href: '/admin/jobs', icon: Users, badge: true },
   { id: 'partnerships', label: 'Partnerships', href: '/admin/partnerships', icon: FileText, badge: true },
-  { id: 'blogs',     label: 'Blogs',     href: '/admin/Blogs',      icon: BookOpen },
+  { id: 'blogs',     label: 'Engineering Insights',     href: '/admin/Blogs',      icon: BookOpen },
   { id: 'case-studies', label: 'Case Studies', href: '/admin/case-studies', icon: FileText },
   { id: 'labs',      label: 'Labs',      href: '/admin/labs',      icon: Layers },
   { id: 'comments',  label: 'Comments',  href: '/admin/comments',   icon: MessageSquare },

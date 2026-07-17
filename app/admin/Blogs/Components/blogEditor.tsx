@@ -724,7 +724,7 @@ export default function BlogEditorModal({
         <div className="px-6 py-4 border-b border-line flex justify-between items-center bg-paper">
           <div>
             <h2 className="text-lg font-bold text-white">
-              {blog ? "Edit Blog Post" : "Create Blog Post"}
+              {blog ? "Edit Article" : "Create Article"}
             </h2>
             <p className="text-xs text-ink-soft">Configure parameters and content</p>
           </div>
@@ -881,7 +881,7 @@ export default function BlogEditorModal({
             Cancel
           </button>
           <button onClick={handleSave} disabled={saving} className="px-8 py-2.5 bg-white hover:bg-gray-200 text-ink rounded-lg text-sm font-bold disabled:opacity-50 transition-colors">
-            {saving ? "Saving..." : "Save Blog Post"}
+            {saving ? "Saving..." : "Save Article"}
           </button>
         </div>
       </div>

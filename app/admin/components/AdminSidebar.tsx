@@ -340,7 +340,7 @@ export default function AdminSidebar() {
               ])}
 
               {/* Flat Content Items */}
-              {renderFlatItem('blogs', BookOpen, 'Blogs', '/admin/Blogs')}
+              {renderFlatItem('blogs', BookOpen, 'Engineering Insights', '/admin/Blogs')}
               {renderFlatItem('comments', MessageSquare, 'Comments', '/admin/comments')}
               {renderFlatItem('newsletter', Send, 'Newsletter', '/admin/newsletter')}
             </div>

@@ -210,15 +210,15 @@ export default function BlogsTab({
       {/* Header */}
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-admin-text">Blog Posts</h1>
-          <p className="text-sm text-admin-text-muted mt-0.5">Manage and publish your content</p>
+          <h1 className="text-2xl font-bold text-admin-text">Engineering Insights</h1>
+          <p className="text-sm text-admin-text-muted mt-0.5">Manage and publish your engineering articles</p>
         </div>
         <button
           onClick={onNewBlog}
           className="flex items-center gap-2 px-4 py-2.5 bg-admin-accent hover:bg-admin-accent/80 text-white text-sm font-semibold rounded-xl transition-all shadow-sm"
         >
           <Plus size={15} />
-          New Post
+          New Article
         </button>
       </div>
 
@@ -283,16 +283,16 @@ export default function BlogsTab({
             <div className="w-12 h-12 bg-admin-bg border border-admin-border rounded-2xl flex items-center justify-center mb-3">
               <FileText size={20} className="text-admin-text-muted" />
             </div>
-            <p className="text-sm font-semibold text-admin-text-muted">No blog posts found</p>
+            <p className="text-sm font-semibold text-admin-text-muted">No articles found</p>
             <p className="text-xs text-admin-text-muted/70 mt-1">
-              {searchQuery ? 'Try adjusting your search or filters' : 'Create your first blog post to get started'}
+              {searchQuery ? 'Try adjusting your search or filters' : 'Create your first article to get started'}
             </p>
             {!searchQuery && (
               <button
                 onClick={onNewBlog}
                 className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-admin-accent hover:bg-admin-accent/80 text-white text-sm font-semibold rounded-xl transition-all"
               >
-                <Plus size={14} /> Create Post
+                <Plus size={14} /> Create Article
               </button>
             )}
           </div>

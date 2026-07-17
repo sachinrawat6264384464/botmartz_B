@@ -117,9 +117,6 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Preconnect to font CDN */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* DNS prefetch for Unsplash images */}
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         {/* Preload the logo used in the navbar */}
@@ -129,20 +126,13 @@ export default async function RootLayout({
           as="image"
           type="image/png"
         />
-        {/* Preload the logo shown during preloader */}
-        <link
-          rel="preload"
-          href="/BotmartzNewLogo.png"
-          as="image"
-          type="image/png"
-        />
         {/* Structured Data for SEO/AEO/GEO */}
         <StructuredData data={settings} />
 
         {/* Google Tag Manager */}
         <Script
           id="gtm-script"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

@@ -29,7 +29,13 @@ const DEFAULT_ITEMS: NavItem[] = [
       { name: "Open Source", path: "/work/open-source" },
     ],
   },
-  { name: "Engineering Insights", path: "/insights" },
+  {
+    name: "Engineering Insights", path: "/insights",
+    dropdown: [
+      { name: "New Updates", path: "/insights/updates" },
+      { name: "All Insights", path: "/insights" },
+    ],
+  },
   {
     name: "Community", path: "/community",
     dropdown: [
