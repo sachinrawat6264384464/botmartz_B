@@ -33,6 +33,7 @@ const NAV_ITEMS: Array<{ name: string; path: string; dropdown?: Array<{ name: st
     dropdown: [
       { name: "Case Studies", path: "/work/case-studies" },
       { name: "Labs", path: "/work/labs" },
+      { name: "Open Source", path: "/work/open-source" },
     ],
   },
   { name: "Engineering Insights", path: "/insights" },

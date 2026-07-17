@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#F5F8FC;font-family:'Montserrat',sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:#007BFF;text-decoration:none}
+  a:hover{color:#00A8E8}
+</style>
+</helmet>
+
+<div style="background:#060C1F;position:relative;overflow:hidden;padding:80px 40px 64px">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(0,198,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,198,255,0.06) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse 80% 60% at 65% 30%,black,transparent)"></div>
+  <div style="position:relative;max-width:1240px;margin:0 auto">
+    <div style="font:600 12.5px 'Montserrat';color:#5B6B85;margin-bottom:22px">Home&nbsp;&nbsp;›&nbsp;&nbsp;Company&nbsp;&nbsp;›&nbsp;&nbsp;<span style="color:#00C6FF">Partnerships</span></div>
+    <div style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;align-items:center">
+      <div>
+        <div style="font:700 12px 'Montserrat';letter-spacing:.1em;color:#00C6FF;text-transform:uppercase">Partnerships</div>
+        <h1 style="font:800 44px/1.15 'Montserrat';color:#fff;margin:16px 0 0">Grow the AI<br>Engineering <span style="color:#00C6FF">Ecosystem</span> With Us</h1>
+        <p style="font:500 14.5px/1.7 'Montserrat';color:#8FA3C4;margin:18px 0 0;max-width:480px">We partner with frameworks, cloud providers, universities and incubators to bring AI Frontier, our labs, and our community further — together.</p>
+        <div style="display:flex;gap:14px;margin-top:28px;flex-wrap:wrap">
+          <a href="#" style="display:inline-flex;align-items:center;gap:8px;background:#007BFF;color:#fff;font:700 14px 'Montserrat';padding:14px 24px;border-radius:9px;box-shadow:0 8px 24px rgba(0,123,255,0.35)" style-hover="background:#0069DB">Become a Partner →</a>
+          <a href="#" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.18);color:#fff;font:700 14px 'Montserrat';padding:14px 24px;border-radius:9px" style-hover="background:rgba(255,255,255,0.1)">Sponsor AI Frontier</a>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+        <sc-for list="{{ heroStats }}" as="s" hint-placeholder-count="4">
+          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px">
+            <div style="font:800 26px 'Montserrat';color:#00C6FF">{{ s.value }}</div>
+            <div style="font:600 12px 'Montserrat';color:#8FA3C4;margin-top:4px">{{ s.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="max-width:1240px;margin:0 auto;padding:64px 40px 0">
+  <div style="text-align:center;max-width:640px;margin:0 auto 40px">
+    <div style="font:700 12px 'Montserrat';letter-spacing:.1em;color:#007BFF;text-transform:uppercase">Ways to Partner</div>
+    <h2 style="font:800 28px/1.3 'Montserrat';color:#0B1220;margin:12px 0 0">Four Kinds of Partnerships</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+    <sc-for list="{{ partnerTypes }}" as="p" hint-placeholder-count="4">
+      <div style="background:#fff;border:1px solid #E7ECF3;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:10px">
+        <div style="width:34px;height:34px;border-radius:9px;background:#E8F2FF;display:flex;align-items:center;justify-content:center;font:700 10.5px 'Montserrat';color:#007BFF">{{ p.tag }}</div>
+        <div style="font:700 14.5px 'Montserrat';color:#0B1220">{{ p.title }}</div>
+        <div style="font:500 12px/1.55 'Montserrat';color:#5B6B85">{{ p.desc }}</div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+
+<div style="max-width:1240px;margin:56px auto 0;padding:0 40px;text-align:center">
+  <div style="font:700 11.5px 'Montserrat';letter-spacing:.08em;color:#007BFF;text-transform:uppercase">Ecosystem We Work With</div>
+  <div style="display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-top:22px">
+    <sc-for list="{{ ecosystem }}" as="e" hint-placeholder-count="6">
+      <span style="font:700 13px 'Montserrat';color:#3A4459;display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:{{ e.color }}"></span>{{ e.name }}</span>
+    </sc-for>
+  </div>
+</div>
+
+<div style="max-width:1240px;margin:64px auto 0;padding:0 40px">
+  <div style="background:#060C1F;border-radius:18px;padding:44px;position:relative;overflow:hidden">
+    <div style="position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(0,123,255,0.2),transparent 70%);left:-80px;bottom:-120px"></div>
+    <div style="position:relative">
+      <div style="font:700 11.5px 'Montserrat';letter-spacing:.08em;color:#00C6FF;text-transform:uppercase">How It Works</div>
+      <div style="font:800 26px 'Montserrat';color:#fff;margin-top:10px">From Conversation to Collaboration</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:32px">
+        <sc-for list="{{ steps }}" as="step" hint-placeholder-count="4">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="width:40px;height:40px;border-radius:50%;border:1px solid rgba(0,198,255,0.4);background:rgba(0,198,255,0.08);display:flex;align-items:center;justify-content:center;font:700 13px 'Montserrat';color:#00C6FF">{{ step.n }}</div>
+            <div style="font:700 13.5px 'Montserrat';color:#fff">{{ step.title }}</div>
+            <div style="font:500 12px/1.55 'Montserrat';color:#7C8CAD">{{ step.desc }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="max-width:1240px;margin:56px auto 88px;padding:0 40px">
+  <div style="background:#fff;border:1px solid #E7ECF3;border-radius:16px;padding:28px 32px;display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+    <div style="width:64px;height:64px;border-radius:50%;background:#E8F2FF;display:flex;align-items:center;justify-content:center;font:700 20px 'Montserrat';color:#007BFF;flex-shrink:0">◇</div>
+    <div style="flex:1;min-width:260px">
+      <div style="font:700 17px 'Montserrat';color:#0B1220">Have a Partnership in Mind?</div>
+      <div style="font:500 13px/1.6 'Montserrat';color:#5B6B85;margin-top:6px">Tell us about your organization and what you'd like to build together.</div>
+    </div>
+    <a href="#" style="font:700 13px 'Montserrat';color:#fff;background:#007BFF;padding:12px 20px;border-radius:9px;flex-shrink:0" style-hover="background:#0069DB">Start a Conversation →</a>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      heroStats: [
+        { value: '4', label: 'Partnership Types' },
+        { value: '2026', label: 'Program Launch' },
+        { value: '1', label: 'Flagship Event' },
+        { value: '∞', label: 'Long-Term Focus' },
+      ],
+      partnerTypes: [
+        { tag: 'EC', title: 'Ecosystem Partners', desc: 'Frameworks and platforms like PyTorch, AWS and NVIDIA collaborating on content and events.' },
+        { tag: 'UN', title: 'University Partners', desc: 'Departments and student communities bringing AI engineering to the next generation.' },
+        { tag: 'IN', title: 'Startups & Incubators', desc: 'Early-stage AI companies looking for community, visibility and technical talent.' },
+        { tag: 'ENT', title: 'Enterprise Partners', desc: 'Companies exploring production AI adoption through roundtables and workshops.' },
+      ],
+      ecosystem: [
+        { name: 'PyTorch', color: '#EE4C2C' },
+        { name: 'GDG', color: '#4285F4' },
+        { name: 'AWS', color: '#FF9900' },
+        { name: 'NVIDIA', color: '#76B900' },
+        { name: 'Incubators', color: '#007BFF' },
+        { name: 'Universities', color: '#7C3AED' },
+      ],
+      steps: [
+        { n: '1', title: 'Introduce', desc: 'Tell us who you are and what you\u2019re hoping to build with the community.' },
+        { n: '2', title: 'Align', desc: 'We shape a partnership that fits both your goals and our roadmap.' },
+        { n: '3', title: 'Activate', desc: 'Show up at AI Frontier, a meetup, or a labs collaboration.' },
+        { n: '4', title: 'Grow', desc: 'We revisit and expand the partnership as the community grows.' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

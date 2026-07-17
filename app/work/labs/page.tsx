@@ -80,9 +80,21 @@ export default async function LabsPage() {
     }
   } catch (e) {}
 
+  const sanitizedLabs = JSON.parse(JSON.stringify(initialLabs, (key, value) => {
+    if (value && typeof value === 'object' && ('_seconds' in value || 'seconds' in value) && ('_nanoseconds' in value || 'nanoseconds' in value)) {
+      const sec = value._seconds ?? value.seconds;
+      return new Date(sec * 1000).toISOString();
+    }
+    if (value && typeof value.toDate === 'function') {
+      return value.toDate().toISOString();
+    }
+    return value;
+  }));
+  const sanitizedHero = JSON.parse(JSON.stringify(heroContent));
+
   return (
     <main className="bg-[#F5F8FC] min-h-screen">
-      <LabsClient initialLabs={initialLabs} heroContent={heroContent} />
+      <LabsClient initialLabs={sanitizedLabs} heroContent={sanitizedHero} />
     </main>
   );
 }

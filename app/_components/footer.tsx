@@ -49,7 +49,7 @@ const FOOTER_COLS = [
     links: [
       { label: "Case Studies", href: "/work/case-studies" },
       { label: "Labs", href: "/work/labs" },
-      { label: "Open Source", href: "/work" },
+      { label: "Open Source", href: "/work/open-source" },
     ],
   },
   {
