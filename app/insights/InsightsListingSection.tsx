@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { 
   ArrowRight, 
@@ -224,6 +224,57 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
   const featuredArticle = filteredArticles.find((a) => a.featured) || filteredArticles[0] || ARTICLES_DATA[0];
   const gridArticles = filteredArticles.filter((a) => a.id !== featuredArticle?.id);
 
+  // Dynamic Pagination Logic
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const ITEMS_PER_PAGE = 6;
+  
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeCategory, searchQuery]);
+
+  const totalPages = Math.max(1, Math.ceil(gridArticles.length / ITEMS_PER_PAGE));
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedGridArticles = useMemo(() => {
+    return gridArticles.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [gridArticles, startIndex]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    const element = document.getElementById("articles");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const getPageNumbers = () => {
+    const pages = [];
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1);
+      if (currentPage > 3) {
+        pages.push("ellipsis-1");
+      }
+      
+      const start = Math.max(2, currentPage - 1);
+      const end = Math.min(totalPages - 1, currentPage + 1);
+      
+      for (let i = start; i <= end; i++) {
+        if (!pages.includes(i)) pages.push(i);
+      }
+      
+      if (currentPage < totalPages - 2) {
+        pages.push("ellipsis-2");
+      }
+      if (!pages.includes(totalPages)) {
+        pages.push(totalPages);
+      }
+    }
+    return pages;
+  };
+
   return (
     <div className="bg-[#F8FAFC] text-[#0F172A]" id="articles">
       {/* ── TOP FILTER & SEARCH BAR ── */}
@@ -383,13 +434,13 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
             )}
 
             {/* 2-COLUMN GRID OF ARTICLES */}
-            {gridArticles.length === 0 ? (
+            {paginatedGridArticles.length === 0 ? (
               <div className="bg-white rounded-2xl border border-[#E2E8F0] p-12 text-center text-[#64748B]">
                 No articles match your current search or filter. Try clearing your filters or search query.
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-                {gridArticles.map((art) => (
+                {paginatedGridArticles.map((art) => (
                   <Link key={art.id} href={`/insights/${art.slug}`} className="block group h-full">
                     <article className="bg-white border border-[#E2E8F0] rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all flex flex-col h-full">
                       
@@ -567,40 +618,59 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
             )}
 
             {/* PAGINATION BAR */}
-            <div className="flex items-center justify-between mt-8 pt-8 border-t border-[#E2E8F0]">
-              <button
-                disabled
-                className="flex items-center gap-1.5 px-4 py-2 border border-[#E2E8F0] rounded-lg text-[#94A3B8] font-medium text-[13.5px] bg-white cursor-not-allowed shadow-sm"
-              >
-                <ChevronLeft className="w-4 h-4" /> Previous
-              </button>
+            {totalPages > 1 && (
+              <div className="flex items-center justify-between mt-8 pt-8 border-t border-[#E2E8F0]">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  className={`flex items-center gap-1.5 px-4 py-2 border rounded-lg font-medium text-[13.5px] shadow-sm transition-all ${
+                    currentPage === 1
+                      ? "border-[#E2E8F0] text-[#94A3B8] bg-white cursor-not-allowed"
+                      : "border-[#E2E8F0] bg-white text-[#0F172A] hover:border-[#0066FF] hover:text-[#0066FF]"
+                  }`}
+                >
+                  <ChevronLeft className="w-4 h-4" /> Previous
+                </button>
 
-              <div className="flex items-center gap-1.5">
-                <button className="w-9 h-9 rounded-lg bg-[#0066FF] text-white font-bold text-[13.5px] flex items-center justify-center shadow-sm">
-                  1
-                </button>
-                <button className="w-9 h-9 rounded-lg border border-[#E2E8F0] bg-white text-[#475569] hover:border-[#0066FF] hover:text-[#0066FF] font-semibold text-[13.5px] flex items-center justify-center transition-all shadow-sm">
-                  2
-                </button>
-                <button className="w-9 h-9 rounded-lg border border-[#E2E8F0] bg-white text-[#475569] hover:border-[#0066FF] hover:text-[#0066FF] font-semibold text-[13.5px] flex items-center justify-center transition-all shadow-sm hidden sm:flex">
-                  3
-                </button>
-                <button className="w-9 h-9 rounded-lg border border-[#E2E8F0] bg-white text-[#475569] hover:border-[#0066FF] hover:text-[#0066FF] font-semibold text-[13.5px] flex items-center justify-center transition-all shadow-sm hidden sm:flex">
-                  4
-                </button>
-                <button className="w-9 h-9 rounded-lg border border-[#E2E8F0] bg-white text-[#475569] hover:border-[#0066FF] hover:text-[#0066FF] font-semibold text-[13.5px] flex items-center justify-center transition-all shadow-sm hidden md:flex">
-                  5
-                </button>
-                <span className="text-[#64748B] px-1 font-bold">...</span>
-                <button className="w-9 h-9 rounded-lg border border-[#E2E8F0] bg-white text-[#475569] hover:border-[#0066FF] hover:text-[#0066FF] font-semibold text-[13.5px] flex items-center justify-center transition-all shadow-sm">
-                  12
+                <div className="flex items-center gap-1.5">
+                  {getPageNumbers().map((p, idx) => {
+                    if (typeof p === 'string') {
+                      return (
+                        <span key={idx} className="text-[#64748B] px-1 font-bold">
+                          ...
+                        </span>
+                      );
+                    }
+                    const isCurrent = currentPage === p;
+                    return (
+                      <button
+                        key={p}
+                        onClick={() => handlePageChange(p)}
+                        className={`w-9 h-9 rounded-lg border font-semibold text-[13.5px] flex items-center justify-center transition-all shadow-sm ${
+                          isCurrent
+                            ? "bg-[#0066FF] text-white border-[#0066FF]"
+                            : "border-[#E2E8F0] bg-white text-[#475569] hover:border-[#0066FF] hover:text-[#0066FF]"
+                        }`}
+                      >
+                        {p}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  className={`flex items-center gap-1.5 px-4 py-2 border rounded-lg font-medium text-[13.5px] shadow-sm transition-all ${
+                    currentPage === totalPages
+                      ? "border-[#E2E8F0] text-[#94A3B8] bg-white cursor-not-allowed"
+                      : "border-[#E2E8F0] bg-white text-[#0F172A] hover:border-[#0066FF] hover:text-[#0066FF]"
+                  }`}
+                >
+                  Next <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
-
-              <button className="flex items-center gap-1.5 px-4 py-2 border border-[#E2E8F0] rounded-lg text-[#0F172A] hover:border-[#0066FF] hover:text-[#0066FF] font-medium text-[13.5px] bg-white transition-all shadow-sm">
-                Next <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
+            )}
 
           </div>
 
