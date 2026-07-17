@@ -58,6 +58,66 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Failed to generate sitemap for blog-posts:', error);
   }
 
+  // Static Fallback Blog URLs
+  const staticBlogSlugs = [
+    "building-a-scalable-enterprise-rag-system-architecture-components-best-practices",
+    "inside-ai-agents-from-reasoning-to-real-world-action",
+    "microservices-vs-monolith-for-ai-systems-what-we-learned",
+    "observability-for-llm-applications-metrics-that-matter",
+    "advanced-rag-techniques-hybrid-search-reranking-query-rewriting",
+    "build-an-ai-chatbot-with-langgraph-and-openai-step-by-step",
+    "open-source-projects-from-botmartz-labs-you-should-know",
+    "prompt-engineering-patterns-that-actually-work-in-production",
+    "how-we-built-a-legal-document-intelligence-system-for-100k-docs"
+  ];
+  const staticBlogUrls: MetadataRoute.Sitemap = staticBlogSlugs.map(slug => ({
+    url: `${baseUrl}/insights/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
+  // Dynamic Case Studies from Firestore
+  let caseStudyUrls: MetadataRoute.Sitemap = [];
+  try {
+    const snapshot = await adminDb
+      .collection('case-studies')
+      .where('status', '==', 'published')
+      .get();
+
+    caseStudyUrls = snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        url: `${baseUrl}/work/case-studies/${data.slug}`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly' as const,
+        priority: 0.75,
+      };
+    });
+  } catch (error) {
+    console.error('Failed to generate sitemap for case-studies:', error);
+  }
+
+  // Static Fallback Case Studies
+  const staticCaseStudiesSlugs = [
+    "logistics-rag",
+    "saas-support",
+    "legal-doc-intel",
+    "logistics-planner",
+    "ai-course-assistant-for-edtech-platform",
+    "route-optimization-agent-for-fleet-ops",
+    "clinical-documentation-copilot",
+    "enterprise-rag-for-support-teams",
+    "warehouse-vision-inspection",
+    "patient-intake-voice-agent"
+  ];
+  const staticCaseStudyUrls: MetadataRoute.Sitemap = staticCaseStudiesSlugs.map(slug => ({
+    url: `${baseUrl}/work/case-studies/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.75,
+  }));
+
   // Dynamic Events from Firestore
   let eventUrls: MetadataRoute.Sitemap = [];
   try {
@@ -81,5 +141,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Failed to generate sitemap for events:', error);
   }
 
-  return [...staticUrls, ...insightUrls, ...eventUrls];
+  return [
+    ...staticUrls,
+    ...insightUrls,
+    ...staticBlogUrls,
+    ...caseStudyUrls,
+    ...staticCaseStudyUrls,
+    ...eventUrls
+  ];
 }
