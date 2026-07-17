@@ -181,6 +181,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
       date: art.createdAt ? new Date(art.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent",
       readTime: `${art.readTime || 5} min read`,
       slug: art.slug || generateSlugRaw(art.title),
+      featured: !!art.featured,
       visualType: (art.visualType || "mlops-dashboard") as any
     }));
 
