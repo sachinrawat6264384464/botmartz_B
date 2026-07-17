@@ -119,6 +119,8 @@ export default async function RootLayout({
       <head>
         {/* DNS prefetch for Unsplash images */}
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        {/* Preconnect to Firestore API */}
+        <link rel="preconnect" href="https://firestore.googleapis.com" />
         {/* Preload the logo used in the navbar */}
         <link
           rel="preload"

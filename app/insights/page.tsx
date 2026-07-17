@@ -126,7 +126,6 @@ export default async function InsightsPage() {
               height={500}
               sizes="(max-width: 1024px) 1px, 700px"
               className="object-contain w-full h-auto max-w-[700px] relative z-10 drop-shadow-[0_0_20px_rgba(0,184,240,0.15)]"
-              priority
             />
           </div>
 

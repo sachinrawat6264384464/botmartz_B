@@ -18,6 +18,11 @@ const nextConfig = {
     ],
   },
 
+  // Remove console logs in production
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error', 'warn'] } : false,
+  },
+
   // Enable compression
   compress: true,
 

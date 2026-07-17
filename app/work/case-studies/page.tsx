@@ -215,6 +215,7 @@ export default async function CaseStudiesPage() {
                 alt="AI Performance Dashboard and Business Impact"
                 width={850}
                 height={620}
+                sizes="(max-width: 1024px) 100vw, 780px"
                 className="w-full max-w-[780px] h-auto object-contain relative z-10 drop-shadow-[0_0_50px_rgba(0,102,255,0.25)]"
                 priority
               />
