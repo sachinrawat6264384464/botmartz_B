@@ -34,10 +34,6 @@ const FOOTER_COLS = [
     links: [
       { label: "Enterprise RAG", href: "/services/enterprise-rag" },
       { label: "AI Agents", href: "/services/ai-agents" },
-      { label: "AI Integrations", href: "/services/ai-integrations" },
-      { label: "AI Strategy", href: "/services/ai-strategy" },
-      { label: "AI Consulting", href: "/services/ai-consulting" },
-      { label: "Model Fine-tuning", href: "/services/model-fine-tuning" },
     ],
   },
   {
@@ -46,9 +42,6 @@ const FOOTER_COLS = [
       { label: "Education", href: "/industries/education" },
       { label: "Logistics", href: "/industries/logistics" },
       { label: "Healthcare", href: "/industries/healthcare" },
-      { label: "Legal", href: "/industries/legal" },
-      { label: "Manufacturing", href: "/industries/manufacturing" },
-      { label: "SaaS & Technology", href: "/industries/saas-technology" },
     ],
   },
   {
@@ -56,7 +49,7 @@ const FOOTER_COLS = [
     links: [
       { label: "Case Studies", href: "/work/case-studies" },
       { label: "Labs", href: "/work/labs" },
-      { label: "Open Source", href: "/work" },
+      { label: "Open Source", href: "/work/open-source" },
     ],
   },
   {
@@ -128,21 +121,21 @@ export function Footer() {
       <div className="wrap relative z-10">
 
         {/* ── MAIN GRID ── */}
-        <div className="pt-[60px] pb-[40px] grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-16">
+        <div className="pt-[60px] pb-[40px] grid grid-cols-1 lg:grid-cols-[330px_1fr] gap-16">
 
           {/* LEFT: Brand */}
           <div className="flex flex-col">
-            <Link href="/" className="inline-block mb-5">
+            <Link href="/" className="inline-block mb-6">
               <Image
                 src="/Logo-removebg-preview.png"
                 alt="Botmartz AI Solutions"
-                width={180}
-                height={50}
-                className="h-[44px] w-auto object-contain brightness-0 invert"
+                width={280}
+                height={78}
+                className="h-[68px] sm:h-[78px] w-auto object-contain"
               />
             </Link>
 
-            <p className="text-[13.5px] text-[#8A9EB0] leading-relaxed max-w-[240px] mb-8">
+            <p className="text-[14px] text-[#8A9EB0] leading-relaxed max-w-[280px] mb-8">
               We engineer production AI systems and advance AI engineering through education, community, and open-source innovation.
             </p>
 
@@ -261,7 +254,7 @@ export function Footer() {
           <div className="flex items-center gap-1 text-[12px] text-[#8A9EB0]">
             <Link href="/privacy" className="hover:text-white transition-colors px-1">Privacy Policy</Link>
             <span className="text-white/20">•</span>
-            <Link href="/privacy" className="hover:text-white transition-colors px-1">Terms of Service</Link>
+            <Link href="/terms" className="hover:text-white transition-colors px-1">Terms of Service</Link>
             <span className="text-white/20">•</span>
             <Link href="/cookies" className="hover:text-white transition-colors px-1">Cookie Policy</Link>
           </div>

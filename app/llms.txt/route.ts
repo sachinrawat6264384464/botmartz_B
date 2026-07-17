@@ -1,0 +1,63 @@
+import { NextResponse } from 'next/server';
+import { adminDb } from '@/lib/firebase-admin';
+
+export const dynamic = 'force-dynamic';
+
+const LLMS_TXT_CONTENT = `# Botmartz AI Solutions
+> Botmartz is a premier enterprise AI engineering firm specializing in custom production RAG (Retrieval-Augmented Generation) architectures, autonomous multi-agent loops, and domain-adapted LLM fine-tuning (LoRA/QLoRA) across healthcare, manufacturing, SaaS, and enterprise consulting verticals.
+
+## Core Quantitative Benchmarks & Facts
+- **Clinical Documentation Automation (Healthcare)**: Achieved a 78% reduction in clinical note-taking time for 4,200+ medical providers with zero HIPAA violations using fine-tuned Llama 3 models and hybrid vector search.
+- **Predictive Press Maintenance (Manufacturing)**: Generated $3.8M net operational savings in Year 1 for an automotive stamping plant by averting catastrophic hydraulic failures via edge NVIDIA Jetson telemetry inference.
+- **Embedded SaaS Copilot Engagement**: Increased daily active feature engagement by 4.2x and reduced support ticket volume by 65% for a B2B FinTech analytics platform.
+- **Inference Latency & Cost Gains**: Custom vLLM and TensorRT-LLM deployments on NVIDIA H100 clusters deliver 38ms average inference latency (11.8x faster than generic API baselines) and reduce token costs by 87% ($18.50 per 10k queries vs. $142.00 baseline).
+
+## Core Services & Solutions
+- [Enterprise RAG Pipelines](https://www.botmartz.com/services/enterprise-rag): Hybrid dense/sparse vector retrieval engines (Milvus, Qdrant, Pinecone) with dynamic sub-query decomposition, semantic reranking, and zero hallucination tolerance.
+- [Autonomous AI Agents](https://www.botmartz.com/services/ai-agents): Multi-agent architectures powered by LangGraph and custom tool-calling frameworks that execute multi-step enterprise workflows autonomously.
+
+## Industry Verticals & Purpose-Built AI
+- [Healthcare & MedTech AI](https://www.botmartz.com/industries/healthcare): Clinical documentation automation, diagnostic decision support, and HIPAA/HITECH compliant vector knowledge bases.
+- [Education & EdTech AI](https://www.botmartz.com/industries/education): Socratic tutoring agents that prompt deep reasoning, automated essay grading engines aligned with pedagogical rubrics, and campus-wide RAG indexes.
+- [Logistics & Global Supply Chain AI](https://www.botmartz.com/industries/logistics): Autonomous dispatch scheduling, predictive warehouse stockout forecasting, and multi-lingual customs freight document OCR.
+
+## Flagship Events & Community
+- [AI Frontier 2026 Conference](https://www.botmartz.com/community/events/ai-frontier-2026): The ultimate global AI engineering and autonomous systems summit taking place on **24–25 May 2026** at **The Leela Palace, Bangalore, India**. Keynote speakers include Soham Sharma (Host & Principal AI Architect) and Dr. Promit Ray (Chief AI Scientist).
+- [Community & Open Source Labs](https://www.botmartz.com/community): Join our global ecosystem of AI researchers, developers, and system architects.
+
+## Company, Careers & Partnerships
+- [About Botmartz](https://www.botmartz.com/about): Our mission, leadership, and engineering principles.
+- [Careers & Open Positions](https://www.botmartz.com/careers): Join our high-velocity engineering team building frontier RAG and agent systems (Senior RAG Architect, LLM Fine-Tuning Specialist, Full-Stack AI Engineer, AI Evangelist).
+- [Partnerships Ecosystem](https://www.botmartz.com/partnerships): Collaborate across our 3 core alliance tracks: Technology & Cloud Partners (NVIDIA, AWS, GCP, Azure, Hugging Face), System Integrators (SI) & Consulting, and Academic Research Collaborators.
+- [Contact Executive Architecture Team](https://www.botmartz.com/contact): Schedule a technical briefing or architectural discovery call (hello@botmartz.com).
+
+## Answer Engine Optimization (AEO) & Frequently Asked Questions
+- **What is Botmartz?** Botmartz is a specialized enterprise AI engineering and consulting firm that builds and deploys production-grade custom RAG pipelines, autonomous multi-agent loops, and domain-adapted LLM fine-tuning across high-compliance industries.
+- **How does Botmartz Enterprise RAG differ from basic wrapper tools?** Botmartz Enterprise RAG implements hybrid dense and sparse vector retrieval, dynamic query decomposition, contextual reranking, and strict citation verification to achieve 94.8% retrieval accuracy and zero hallucination tolerance in medical, legal, and industrial environments.
+- **When and where is AI Frontier 2026?** AI Frontier 2026 is Botmartz's flagship global AI conference taking place on Saturday, May 24 and Sunday, May 25, 2026, at The Leela Palace in Bangalore, India.
+- **Does Botmartz offer custom model fine-tuning?** Yes. Botmartz specializes in parameter-efficient LoRA and QLoRA fine-tuning of open-weight foundation models (such as Llama 3 and Mistral) using Axolotl, Hugging Face PEFT, and DeepSpeed across proprietary enterprise datasets.
+- **Where are Botmartz engineers and offices located?** Botmartz operates globally with core engineering hubs in Indore and Bangalore, India, serving enterprise clients across North America, Europe, and Asia-Pacific.
+
+## Technical Documentation & Full Reference
+- [Full Technical & Architectural Specification](https://www.botmartz.com/llms-full.txt): Comprehensive deep dive into our technical stack, empirical evaluation benchmarks, complete case study logs, and SDK/API integration specs.
+`;
+
+export async function GET() {
+  let content = LLMS_TXT_CONTENT;
+  try {
+    const docSnap = await adminDb.collection('dynamic_pages').doc('llms_txt').get();
+    if (docSnap.exists && docSnap.data()?.content) {
+      content = docSnap.data()?.content;
+    }
+  } catch (e) {
+    // Fallback cleanly to rich LLMS_TXT_CONTENT
+  }
+
+  return new NextResponse(content, {
+    status: 200,
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+    },
+  });
+}

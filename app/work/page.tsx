@@ -1,12 +1,12 @@
 import { Metadata } from 'next';
-import Link from "next/link";
-import { ArrowRight, Briefcase, FileText, Layout, Terminal, Code2, Code, ShieldCheck, Zap, Layers, Star, GitFork, Calendar, CheckSquare } from "lucide-react";
 import { adminDb } from '@/lib/firebase-admin';
+import WorkClient from './WorkClient';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'Work | Botmartz AI',
-    description: 'We partner with organizations to design, build, and deploy production AI systems that solve complex business problems and deliver measurable outcomes.',
+    title: 'Production AI Systems, Shipped & Proven | Botmartz Work',
+    description: 'Case studies from enterprise clients across education, logistics, healthcare and SaaS — real production AI systems, not proofs of concept.',
+    keywords: ['Production AI Systems', 'Enterprise AI Case Studies', 'AI Route Optimization', 'Clinical AI Copilot', 'EdTech AI Assistant', 'Enterprise RAG Support'],
   };
   
   try {
@@ -31,381 +31,47 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function WorkPage() {
-  let heroData = {
+  let heroContent = {
     badge: "Our Work",
-    title: "Engineering Impact.<br/><span className=\"text-[#00B8F0]\">Real Results.</span>",
-    subtitle: "We partner with organizations to design, build, and deploy production AI systems that solve complex business problems and deliver measurable outcomes."
+    title: "Production AI Systems,<br><span class=\"text-[#00C6FF]\">Shipped &amp; Proven</span>",
+    subtitle: "Case studies from enterprise clients across education, logistics, healthcare and SaaS — real systems in production, not proofs of concept.",
+    ctaText: "Browse Case Studies →",
+    ctaLink: "#cases",
   };
+  let structuredData = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Production AI Systems, Shipped & Proven | Botmartz Work",
+    "description": "Case studies and real production AI systems built by Botmartz across education, logistics, healthcare and SaaS.",
+    "url": "https://botmartz.com/work",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Botmartz",
+      "url": "https://botmartz.com"
+    }
+  });
+  let aeoQuestion = "What kind of production AI systems has Botmartz built and deployed?";
+  let aeoAnswer = "Botmartz builds and deploys production AI systems across education, logistics, healthcare, and SaaS, including AI course assistants, route optimization agents, clinical documentation copilots, enterprise RAG support platforms, warehouse computer vision inspection, and voice agents for patient intake.";
 
   try {
     const docSnap = await adminDb.collection("dynamic_pages").doc("work").get();
     if (docSnap.exists) {
       const data = docSnap.data();
-      if (data?.hero) {
-        heroData = { ...heroData, ...data.hero };
-      }
+      if (data?.hero) heroContent = { ...heroContent, ...data.hero };
+      if (data?.structuredData) structuredData = data.structuredData;
+      if (data?.aeoQuestion) aeoQuestion = data.aeoQuestion;
+      if (data?.aeoAnswer) aeoAnswer = data.aeoAnswer;
     }
   } catch (e) {}
 
+  const sanitizedHero = JSON.parse(JSON.stringify(heroContent));
+
   return (
-    <main className="bg-[#050B14] min-h-screen text-white">
-      {/* HERO SECTION */}
-      <section className="relative pt-[120px] pb-[80px] bg-[#050B14] text-white overflow-hidden">
-        {/* Background glow effects */}
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[120px] rounded-full pointer-events-none" />
-        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0066FF]/10 blur-[150px] rounded-full pointer-events-none" />
-
-        <div className="wrap relative z-10 flex flex-col lg:flex-row items-center gap-12 pb-[20px]">
-          <div className="flex-1 lg:max-w-[500px]">
-            <div className="font-mono text-[11px] tracking-[0.14em] text-[#00B8F0] uppercase mb-6 flex items-center gap-3 font-semibold">
-              <span className="w-6 h-px bg-[#00B8F0]"></span>
-              {heroData.badge}
-            </div>
-            <h1 
-              className="text-[clamp(36px,4.5vw,56px)] leading-[1.1] font-semibold mb-6 tracking-tight text-white"
-              dangerouslySetInnerHTML={{ __html: heroData.title }}
-            />
-            <p className="text-[17px] text-[#8A9EB0] mb-8">
-              {heroData.subtitle}
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link href="/contact" className="btn btn-primary bg-[#00B8F0] text-white hover:bg-[#0096C7] px-6 py-3 rounded text-[14px]">Book a Discovery Call →</Link>
-              <Link href="#projects" className="btn border border-[#1E293B] hover:border-[#00B8F0] hover:text-[#00B8F0] transition-colors text-white px-6 py-3 rounded text-[14px] font-mono">Discuss Your Project</Link>
-            </div>
-          </div>
-          
-          <div className="flex-1 w-full lg:block border-l border-[#1E293B] lg:pl-12 flex flex-col justify-center">
-            {/* Stats Grid */}
-            <div className="grid grid-cols-2 gap-y-10 gap-x-6 max-w-[400px]">
-               <div className="flex gap-4">
-                  <Layers className="w-6 h-6 text-[#00B8F0] shrink-0" />
-                  <div>
-                     <div className="text-[24px] font-bold leading-none mb-1 text-white">20+</div>
-                     <div className="font-mono text-[11px] text-[#8A9EB0] uppercase tracking-wider">Projects Delivered</div>
-                  </div>
-               </div>
-               <div className="flex gap-4">
-                  <Briefcase className="w-6 h-6 text-[#00B8F0] shrink-0" />
-                  <div>
-                     <div className="text-[24px] font-bold leading-none mb-1 text-white">100+</div>
-                     <div className="font-mono text-[11px] text-[#8A9EB0] uppercase tracking-wider">Enterprise Clients</div>
-                  </div>
-               </div>
-               <div className="flex gap-4">
-                  <FileText className="w-6 h-6 text-[#00B8F0] shrink-0" />
-                  <div>
-                     <div className="text-[24px] font-bold leading-none mb-1 text-white">50M+</div>
-                     <div className="font-mono text-[11px] text-[#8A9EB0] uppercase tracking-wider">Documents Processed</div>
-                  </div>
-               </div>
-               <div className="flex gap-4">
-                  <ShieldCheck className="w-6 h-6 text-[#00B8F0] shrink-0" />
-                  <div>
-                     <div className="text-[24px] font-bold leading-none mb-1 text-white">95%</div>
-                     <div className="font-mono text-[11px] text-[#8A9EB0] uppercase tracking-wider">Client Satisfaction</div>
-                  </div>
-               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FILTER & PROJECTS SECTION */}
-      <section id="projects" className="py-[60px] bg-[#050B14]">
-        <div className="wrap flex flex-col lg:flex-row gap-10 lg:gap-14">
-          
-          {/* LEFT SIDEBAR: FILTERS */}
-          <div className="w-full lg:w-[260px] shrink-0">
-             <div className="font-mono text-[11px] uppercase tracking-[0.1em] text-[#00B8F0] border-b border-[#1E293B] pb-3 mb-6">Filter Projects</div>
-             
-             {/* Service Filter */}
-             <div className="mb-8">
-               <h4 className="font-semibold text-[14px] mb-3 text-white">Service</h4>
-               <ul className="space-y-2">
-                 {['Enterprise RAG', 'AI Agents', 'AI Integrations'].map((f) => (
-                   <li key={f} className="flex items-center gap-3">
-                     <div className="w-4 h-4 border border-[#1E293B] rounded-sm flex items-center justify-center text-transparent hover:border-[#00B8F0] cursor-pointer transition-colors" />
-                     <span className="text-[13.5px] text-[#8A9EB0] select-none cursor-pointer hover:text-white transition-colors">{f}</span>
-                   </li>
-                 ))}
-               </ul>
-             </div>
-
-             {/* Industry Filter */}
-             <div className="mb-8">
-               <h4 className="font-semibold text-[14px] mb-3 text-white">Industry</h4>
-               <ul className="space-y-2">
-                 {['Education', 'Logistics', 'Legal', 'Healthcare', 'SaaS & Technology', 'Manufacturing', 'Financial Services'].map((f) => (
-                   <li key={f} className="flex items-center gap-3">
-                     <div className="w-4 h-4 border border-[#1E293B] rounded-sm flex items-center justify-center text-transparent hover:border-[#00B8F0] cursor-pointer transition-colors" />
-                     <span className="text-[13.5px] text-[#8A9EB0] select-none cursor-pointer hover:text-white transition-colors">{f}</span>
-                   </li>
-                 ))}
-               </ul>
-             </div>
-
-             {/* Tag Filter */}
-             <div className="mb-8">
-               <h4 className="font-semibold text-[14px] mb-3 text-white">Tag / Capability</h4>
-               <ul className="space-y-2">
-                 <li className="flex items-center gap-3">
-                    <div className="w-4 h-4 bg-[#00B8F0] border border-[#00B8F0] rounded-sm flex items-center justify-center text-white cursor-pointer transition-colors">
-                      <CheckSquare className="w-3 h-3" />
-                    </div>
-                    <span className="text-[13.5px] text-white font-medium select-none cursor-pointer">All</span>
-                 </li>
-                 {['Knowledge Search', 'Document Intelligence', 'Multi-Agent Systems', 'Workflow Automation', 'LLM Integration', 'Computer Vision', 'Data Engineering'].map((f) => (
-                   <li key={f} className="flex items-center gap-3">
-                     <div className="w-4 h-4 border border-[#1E293B] rounded-sm flex items-center justify-center text-transparent hover:border-[#00B8F0] cursor-pointer transition-colors" />
-                     <span className="text-[13.5px] text-[#8A9EB0] select-none cursor-pointer hover:text-white transition-colors">{f}</span>
-                   </li>
-                 ))}
-               </ul>
-             </div>
-
-             {/* Sidebar CTA */}
-             <div className="bg-[#0A111F] border border-[#1E293B] rounded p-5 text-center flex flex-col items-center">
-                <div className="font-semibold text-[14px] mb-2 text-[#00B8F0]">Have a similar challenge?</div>
-                <p className="text-[12.5px] text-[#8A9EB0] mb-4">Let's build a solution tailored to your business.</p>
-                <Link href="/contact" className="font-mono text-[11px] border border-[#1E293B] px-4 py-2 hover:border-[#00B8F0] hover:text-[#00B8F0] transition-colors rounded-sm text-white w-full">Book a Discovery Call →</Link>
-             </div>
-          </div>
-
-          {/* RIGHT SIDEBAR: CONTENT */}
-          <div className="flex-1">
-             {/* Tab Navigation */}
-             <div className="flex overflow-x-auto hide-scrollbar gap-2 mb-8">
-                <div className="bg-[#00B8F0] text-white font-mono text-[12px] px-5 py-2 rounded cursor-pointer whitespace-nowrap">All Projects</div>
-                <div className="bg-[#0A111F] border border-[#1E293B] hover:border-[#00B8F0]/50 text-[#8A9EB0] font-mono text-[12px] px-5 py-2 rounded cursor-pointer transition-colors whitespace-nowrap">Featured</div>
-                <div className="bg-[#0A111F] border border-[#1E293B] hover:border-[#00B8F0]/50 text-[#8A9EB0] font-mono text-[12px] px-5 py-2 rounded cursor-pointer transition-colors whitespace-nowrap">Enterprise RAG</div>
-                <div className="bg-[#0A111F] border border-[#1E293B] hover:border-[#00B8F0]/50 text-[#8A9EB0] font-mono text-[12px] px-5 py-2 rounded cursor-pointer transition-colors whitespace-nowrap">AI Agents</div>
-                <div className="bg-[#0A111F] border border-[#1E293B] hover:border-[#00B8F0]/50 text-[#8A9EB0] font-mono text-[12px] px-5 py-2 rounded cursor-pointer transition-colors whitespace-nowrap">AI Integrations</div>
-                <div className="bg-[#0A111F] border border-[#1E293B] hover:border-[#00B8F0]/50 text-[#8A9EB0] font-mono text-[12px] px-5 py-2 rounded cursor-pointer transition-colors whitespace-nowrap">Open Source & Labs</div>
-             </div>
-
-             {/* Project List */}
-             <div className="flex flex-col gap-10">
-                
-                {/* Project 1 */}
-                <div className="flex flex-col md:flex-row gap-8 items-stretch pb-10 border-b border-[#1E293B] group">
-                   <div className="w-full md:w-[45%] lg:w-[40%] bg-[#0A111F] rounded border border-[#1E293B] overflow-hidden relative min-h-[220px]">
-                      {/* Image Placeholder */}
-                      <div className="absolute inset-0 bg-[#0A111F] opacity-20" style={{ backgroundImage: 'linear-gradient(rgba(0,184,240,.2) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,.2) 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
-                      <div className="absolute inset-4 bg-white/5 border border-white/10 rounded backdrop-blur flex items-center justify-center p-4">
-                        <div className="w-full h-full bg-[#0A111F] border border-[#1E293B] rounded flex flex-col opacity-50 overflow-hidden">
-                           <div className="h-4 border-b border-[#1E293B] w-full"></div>
-                           <div className="h-4 border-b border-[#1E293B] w-full"></div>
-                           <div className="flex-1 flex gap-2 p-2">
-                             <div className="w-1/3 h-full border border-[#1E293B] rounded-sm"></div>
-                             <div className="flex-1 h-full border border-[#1E293B] rounded-sm flex flex-col gap-2 p-2">
-                                <div className="h-2 w-full bg-[#1E293B] rounded"></div>
-                                <div className="h-2 w-2/3 bg-[#1E293B] rounded"></div>
-                             </div>
-                           </div>
-                        </div>
-                      </div>
-                   </div>
-                   <div className="flex-1 flex flex-col justify-between">
-                      <div>
-                         <div className="font-mono text-[10px] text-[#00B8F0] uppercase bg-[#00B8F0]/10 inline-block px-2 py-1 rounded mb-3">Enterprise RAG</div>
-                         <h3 className="text-[22px] font-semibold mb-3 group-hover:text-[#00B8F0] transition-colors text-white">Enterprise Knowledge Search for Global Logistics Company</h3>
-                         <p className="text-[14px] text-[#8A9EB0] mb-6">Built a secure enterprise RAG system to unify and search across 500K+ internal documents, policies, SOPs, and manuals.</p>
-                         
-                         {/* Tech Tags */}
-                         <div className="flex flex-wrap gap-2 mb-6">
-                            {['RAG', 'Hybrid Search', 'LangChain', 'Pinecone', 'FastAPI'].map(t => (
-                              <span key={t} className="font-mono text-[10.5px] border border-[#1E293B] text-[#8A9EB0] px-2 py-1 rounded-sm">{t}</span>
-                            ))}
-                         </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-8 border-t border-[#1E293B] pt-4">
-                         <div>
-                            <div className="text-[20px] font-semibold leading-none mb-1 text-[#00B8F0]">70%</div>
-                            <div className="text-[12px] text-[#8A9EB0]">Faster information retrieval</div>
-                         </div>
-                         <Link href="/contact" className="ml-auto font-mono text-[12px] text-[#00B8F0] flex items-center gap-2 group-hover:gap-3 transition-all hover:underline">View Case Study <ArrowRight className="w-3 h-3" /></Link>
-                      </div>
-                   </div>
-                </div>
-
-                {/* Project 2 */}
-                <div className="flex flex-col md:flex-row gap-8 items-stretch pb-10 border-b border-[#1E293B] group">
-                   <div className="w-full md:w-[45%] lg:w-[40%] bg-[#0A111F] rounded border border-[#1E293B] overflow-hidden relative min-h-[220px]">
-                      {/* Image Placeholder */}
-                      <div className="absolute inset-6 bg-[#050B14] border border-[#1E293B] rounded shadow-lg flex items-center justify-center p-4">
-                         <div className="flex items-center justify-center w-full h-full relative">
-                           <div className="w-10 h-10 border border-[#00B8F0]/50 rounded-full flex items-center justify-center absolute left-4 text-[#00B8F0] bg-[#00B8F0]/10 z-10"><Terminal className="w-5 h-5"/></div>
-                           <div className="h-px bg-[#00B8F0]/30 w-full absolute top-1/2 -translate-y-1/2"></div>
-                           <div className="w-12 h-12 border-2 border-[#00B8F0] rounded flex items-center justify-center absolute bg-[#050B14] z-10"><Code2 className="w-6 h-6 text-[#00B8F0]"/></div>
-                           <div className="w-10 h-10 border border-[#00B8F0]/50 rounded flex items-center justify-center absolute right-4 text-[#00B8F0] bg-[#00B8F0]/10 z-10"><Layout className="w-5 h-5"/></div>
-                         </div>
-                      </div>
-                   </div>
-                   <div className="flex-1 flex flex-col justify-between">
-                      <div>
-                         <div className="font-mono text-[10px] text-[#00B8F0] uppercase bg-[#00B8F0]/10 inline-block px-2 py-1 rounded mb-3">AI Agents</div>
-                         <h3 className="text-[22px] font-semibold mb-3 group-hover:text-[#00B8F0] transition-colors text-white">AI Support Agent for SaaS Customer Support</h3>
-                         <p className="text-[14px] text-[#8A9EB0] mb-6">Developed an autonomous AI support agent that resolves customer queries end-to-end with context, tools, and human escalation.</p>
-                         
-                         {/* Tech Tags */}
-                         <div className="flex flex-wrap gap-2 mb-6">
-                            {['LangGraph', 'OpenAI', 'Redis', 'FastAPI', 'Docker'].map(t => (
-                              <span key={t} className="font-mono text-[10.5px] border border-[#1E293B] text-[#8A9EB0] px-2 py-1 rounded-sm">{t}</span>
-                            ))}
-                         </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-8 border-t border-[#1E293B] pt-4">
-                         <div>
-                            <div className="text-[20px] font-semibold leading-none mb-1 text-[#00B8F0]">45%</div>
-                            <div className="text-[12px] text-[#8A9EB0]">Queries resolved automatically</div>
-                         </div>
-                         <div>
-                            <div className="text-[20px] font-semibold leading-none mb-1 text-[#00B8F0]">35%</div>
-                            <div className="text-[12px] text-[#8A9EB0]">Reduced first response time</div>
-                         </div>
-                         <Link href="/contact" className="ml-auto font-mono text-[12px] text-[#00B8F0] flex items-center gap-2 group-hover:gap-3 transition-all hidden sm:flex hover:underline">View Case Study <ArrowRight className="w-3 h-3" /></Link>
-                      </div>
-                   </div>
-                </div>
-
-                {/* Project 3 */}
-                <div className="flex flex-col md:flex-row gap-8 items-stretch group">
-                   <div className="w-full md:w-[45%] lg:w-[40%] bg-[#0A111F] rounded border border-[#1E293B] overflow-hidden relative min-h-[220px]">
-                      {/* Image Placeholder */}
-                      <div className="absolute inset-4 bg-[#050B14] border border-[#1E293B] rounded flex flex-col shadow-sm">
-                         <div className="h-6 border-b border-[#1E293B] bg-[#0A111F] rounded-t flex items-center px-2"><div className="w-2 h-2 rounded-full bg-[#1E293B] mx-1"></div><div className="w-2 h-2 rounded-full bg-[#1E293B] mx-1"></div></div>
-                         <div className="flex-1 flex gap-2 p-3">
-                           <div className="w-1/2 h-full flex flex-col gap-2">
-                             <div className="w-full h-3 bg-[#00B8F0]/10 rounded-sm"></div>
-                             <div className="w-full h-2 bg-[#1E293B] rounded-sm"></div>
-                             <div className="w-full h-2 bg-[#1E293B] rounded-sm"></div>
-                             <div className="w-full h-2 bg-[#1E293B] rounded-sm"></div>
-                             <div className="w-4/5 h-2 bg-[#1E293B] rounded-sm"></div>
-                             <div className="w-full h-2 bg-[#00B8F0]/20 mt-4 rounded-sm"></div>
-                           </div>
-                           <div className="w-1/2 h-full border border-[#00B8F0]/20 bg-[#00B8F0]/5 rounded-sm p-2 flex flex-col gap-2">
-                              <div className="text-[8px] font-mono text-[#00B8F0] mb-1">JSON EXTRACT</div>
-                              <div className="w-full h-2 bg-white/20 rounded-sm"></div>
-                              <div className="w-5/6 h-2 bg-white/20 rounded-sm"></div>
-                              <div className="w-full h-2 bg-white/20 rounded-sm"></div>
-                           </div>
-                         </div>
-                      </div>
-                   </div>
-                   <div className="flex-1 flex flex-col justify-between">
-                      <div>
-                         <div className="font-mono text-[10px] text-[#00B8F0] uppercase bg-[#00B8F0]/10 inline-block px-2 py-1 rounded mb-3">Document Intelligence</div>
-                         <h3 className="text-[22px] font-semibold mb-3 group-hover:text-[#00B8F0] transition-colors text-white">Legal Document Intelligence Platform</h3>
-                         <p className="text-[14px] text-[#8A9EB0] mb-6">Automated contract analysis and Q&A across 100K+ legal documents with 95% accuracy using advanced RAG and OCR.</p>
-                         
-                         {/* Tech Tags */}
-                         <div className="flex flex-wrap gap-2 mb-6">
-                            {['RAG', 'OCR', 'LlamaIndex', 'Qdrant', 'PostgreSQL'].map(t => (
-                              <span key={t} className="font-mono text-[10.5px] border border-[#1E293B] text-[#8A9EB0] px-2 py-1 rounded-sm">{t}</span>
-                            ))}
-                         </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-8 border-t border-[#1E293B] pt-4">
-                         <div>
-                            <div className="text-[20px] font-semibold leading-none mb-1 text-[#00B8F0]">90%</div>
-                            <div className="text-[12px] text-[#8A9EB0]">Time saved in analysis</div>
-                         </div>
-                         <div>
-                            <div className="text-[20px] font-semibold leading-none mb-1 text-[#00B8F0]">95%</div>
-                            <div className="text-[12px] text-[#8A9EB0]">Extraction accuracy</div>
-                         </div>
-                         <Link href="/contact" className="ml-auto font-mono text-[12px] text-[#00B8F0] flex items-center gap-2 group-hover:gap-3 transition-all hidden sm:flex hover:underline">View Case Study <ArrowRight className="w-3 h-3" /></Link>
-                      </div>
-                   </div>
-                </div>
-
-             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* OPEN SOURCE & LABS */}
-      <section className="section-pad bg-[#0A111F] border-y border-[#1E293B]">
-        <div className="wrap flex justify-between items-end gap-6 mb-10">
-          <div>
-            <div className="font-mono text-[11px] text-[#00B8F0] uppercase tracking-[0.08em] mb-3">Open Source & Labs</div>
-            <h2 className="text-[34px] font-semibold mb-2 text-white">Building the Future. In Public.</h2>
-            <p className="text-[15px] text-[#8A9EB0]">We build open source projects and labs that push the boundaries of AI engineering.</p>
-          </div>
-          <Link href="/community" className="font-mono text-[12.5px] border border-[#1E293B] bg-[#050B14] hover:border-[#00B8F0] hover:text-[#00B8F0] transition-colors px-5 py-2.5 rounded-sm text-white hidden md:inline-flex items-center gap-2">Explore All Projects →</Link>
-        </div>
-
-        <div className="wrap grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-           {[
-             { i: Code, n: 'enterprise-rag-starter', d: 'Production-ready RAG starter kit with chunking and eval.', s: '1.8k', f: '320' },
-             { i: GitFork, n: 'langgraph-agent-framework', d: 'Multi-agent framework with examples and tool connectors.', s: '2.3k', f: '410' },
-             { i: Zap, n: 'fastapi-ai-template', d: 'AI-ready FastAPI boilerplate with auth and streaming.', s: '1.2k', f: '240' },
-             { i: FileText, n: 'doc-parser', d: 'High-performance document parser for complex PDFs.', s: '980', f: '180' },
-             { i: Layout, n: 'vision-tryon-lab', d: 'Virtual try-on pipeline with diffusion models and ControlNet.', s: '1.6k', f: '300' },
-             { i: Terminal, n: 'ai-research-agent', d: 'Autonomous research agent with web browsing tools.', s: '1.9k', f: '350' },
-           ].map((lab, i) => (
-             <div key={i} className="bg-[#050B14] border border-[#1E293B] rounded-sm p-6 hover:border-[#00B8F0] hover:shadow-md transition-all cursor-pointer flex flex-col">
-               <div className="w-10 h-10 border border-[#1E293B] rounded flex items-center justify-center text-[#00B8F0] bg-[#0A111F] mb-4">
-                 <lab.i className="w-5 h-5" />
-               </div>
-               <h4 className="font-mono text-[14px] font-bold mb-2 text-white">{lab.n}</h4>
-               <p className="text-[13px] text-[#8A9EB0] mb-6 flex-1">{lab.d}</p>
-               <div className="flex items-center gap-4 text-[12px] font-mono text-[#8A9EB0]">
-                  <div className="flex items-center gap-1.5"><Star className="w-3.5 h-3.5" /> {lab.s}</div>
-                  <div className="flex items-center gap-1.5"><GitFork className="w-3.5 h-3.5" /> {lab.f}</div>
-               </div>
-             </div>
-           ))}
-        </div>
-      </section>
-
-      {/* CTA BANNER */}
-      <section className="py-[80px] bg-[#050B14]">
-        <div className="wrap">
-          <div className="bg-[#0A111F] border border-[#1E293B] rounded-[24px] p-[40px] md:p-[60px] text-white flex flex-col lg:flex-row items-center justify-between gap-10 relative overflow-hidden">
-            <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(rgba(0,184,240,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,.05) 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
-            
-            <div className="relative z-10 max-w-[480px]">
-              <div className="font-mono text-[11px] text-[#00B8F0] uppercase tracking-[0.12em] mb-3">Have a Project in mind?</div>
-              <h2 className="text-[36px] font-semibold leading-[1.1] mb-6">Let's Build AI Solutions That <span className="text-[#FF3366]">Drive Real Impact.</span></h2>
-              <Link href="/contact" className="btn btn-primary bg-[#00B8F0] hover:bg-[#0096C7] px-6 py-3 rounded text-[14px]">Book a Discovery Call →</Link>
-            </div>
-
-            <div className="relative z-10 flex flex-col gap-4 w-full max-w-[340px]">
-              <div className="bg-[#050B14] border border-[#1E293B] rounded-xl p-5 flex gap-4 items-start">
-                <div className="bg-[#00B8F0]/10 border border-[#00B8F0]/20 p-2.5 rounded-lg text-white">
-                  <Calendar className="w-5 h-5 text-[#00B8F0]" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-[15px] mb-1 text-white">Free Discovery Call</h4>
-                  <p className="text-[13px] text-[#8A9EB0]">60-minute strategy session with our AI experts.</p>
-                </div>
-              </div>
-              <div className="bg-[#050B14] border border-[#1E293B] rounded-xl p-5 flex gap-4 items-start">
-                <div className="bg-[#00B8F0]/10 border border-[#00B8F0]/20 p-2.5 rounded-lg text-white">
-                  <Terminal className="w-5 h-5 text-[#00B8F0]" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-[15px] mb-1 text-white">Custom Solution Roadmap</h4>
-                  <p className="text-[13px] text-[#8A9EB0]">Tailored plan & architecture for your use case.</p>
-                </div>
-              </div>
-              <div className="bg-[#050B14] border border-[#1E293B] rounded-xl p-5 flex gap-4 items-start">
-                <div className="bg-[#00B8F0]/10 border border-[#00B8F0]/20 p-2.5 rounded-lg text-white">
-                  <Layers className="w-5 h-5 text-[#00B8F0]" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-[15px] mb-1 text-white">Proven Delivery</h4>
-                  <p className="text-[13px] text-[#8A9EB0]">Production-ready solutions with measurable outcomes.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
+    <WorkClient 
+      heroContent={sanitizedHero}
+      structuredData={structuredData}
+      aeoQuestion={aeoQuestion}
+      aeoAnswer={aeoAnswer}
+    />
   );
 }

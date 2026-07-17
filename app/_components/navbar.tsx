@@ -4,11 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ArrowRight, Menu, X } from "lucide-react";
+import { ChevronDown, ArrowRight, Menu, X, PhoneCall } from "lucide-react";
 import { usePathname } from "next/navigation";
 
-/* ─── NAV STRUCTURE ─────────────────────────────────────────────────────────── */
-const NAV_ITEMS: Array<{ name: string; path: string; dropdown?: Array<{ name: string; path: string }>; badge?: string }> = [
+/* ─── NAV STRUCTURE (Without AI Frontier and About section, as requested) ─── */
+const NAV_ITEMS: Array<{ name: string; path: string; dropdown?: Array<{ name: string; path: string }> }> = [
   { name: "Home", path: "/" },
   {
     name: "Services",
@@ -16,22 +16,15 @@ const NAV_ITEMS: Array<{ name: string; path: string; dropdown?: Array<{ name: st
     dropdown: [
       { name: "Enterprise RAG", path: "/services/enterprise-rag" },
       { name: "AI Agents", path: "/services/ai-agents" },
-      { name: "AI Integrations", path: "/services/ai-integrations" },
-      { name: "AI Strategy", path: "/services/ai-strategy" },
-      { name: "AI Consulting", path: "/services/ai-consulting" },
-      { name: "Model Fine-tuning", path: "/services/model-fine-tuning" },
     ],
   },
   {
     name: "Industries",
     path: "/industries",
     dropdown: [
+      { name: "Healthcare", path: "/industries/healthcare" },
       { name: "Education", path: "/industries/education" },
       { name: "Logistics", path: "/industries/logistics" },
-      { name: "Healthcare", path: "/industries/healthcare" },
-      { name: "Legal", path: "/industries/legal" },
-      { name: "Manufacturing", path: "/industries/manufacturing" },
-      { name: "SaaS & Technology", path: "/industries/saas-technology" },
     ],
   },
   {
@@ -40,7 +33,7 @@ const NAV_ITEMS: Array<{ name: string; path: string; dropdown?: Array<{ name: st
     dropdown: [
       { name: "Case Studies", path: "/work/case-studies" },
       { name: "Labs", path: "/work/labs" },
-      { name: "Open Source", path: "/work" },
+      { name: "Open Source", path: "/work/open-source" },
     ],
   },
   { name: "Engineering Insights", path: "/insights" },
@@ -49,7 +42,7 @@ const NAV_ITEMS: Array<{ name: string; path: string; dropdown?: Array<{ name: st
     path: "/community",
     dropdown: [
       { name: "Events", path: "/community/events" },
-      { name: "AI Frontier 2026", path: "/community/events/ai-frontier-2026" },
+      { name: "Discord & Forum", path: "/community" },
     ],
   },
 ];
@@ -100,11 +93,6 @@ export default function Navbar() {
                   }`}
                 >
                   {item.name}
-                  {item.badge && (
-                    <span className="ml-1 -mt-3 bg-[#00B8F0] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wide">
-                      {item.badge}
-                    </span>
-                  )}
                   {item.dropdown && (
                     <ChevronDown
                       className={`w-3.5 h-3.5 transition-transform duration-200 ${
@@ -117,6 +105,7 @@ export default function Navbar() {
                     <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-[#00B8F0] rounded-full" />
                   )}
                 </Link>
+
                 {/* DROPDOWN */}
                 <AnimatePresence>
                   {item.dropdown && activeDropdown === item.name && (
@@ -152,8 +141,9 @@ export default function Navbar() {
               href="/contact"
               className="hidden sm:inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white text-[13px] font-bold px-5 py-2.5 rounded-lg shadow-[0_4px_14px_rgba(0,102,255,0.35)] transition-all hover:shadow-[0_4px_20px_rgba(0,102,255,0.5)] hover:-translate-y-px whitespace-nowrap"
             >
-              Book a Discovery Call
-              <ArrowRight size={14} />
+              <PhoneCall size={13} className="shrink-0" />
+              <span>Book a Discovery Call</span>
+              <ArrowRight size={13} className="shrink-0" />
             </Link>
 
             {/* Mobile hamburger */}
@@ -206,11 +196,6 @@ export default function Navbar() {
                     className="flex items-center gap-2 py-3 text-xl font-bold text-white hover:text-[#00B8F0] transition-colors"
                   >
                     {item.name}
-                    {item.badge && (
-                      <span className="text-xs bg-[#00B8F0] text-white px-1.5 py-0.5 rounded-full font-semibold">
-                        {item.badge}
-                      </span>
-                    )}
                   </Link>
                   {item.dropdown && (
                     <div className="flex flex-col gap-1 pl-4 border-l border-white/10 mb-3">
@@ -234,7 +219,9 @@ export default function Navbar() {
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center justify-center gap-2 bg-[#0066FF] text-white font-bold py-4 rounded-xl text-base whitespace-nowrap"
                 >
-                  Book a Discovery Call <ArrowRight size={16} />
+                  <PhoneCall size={15} />
+                  <span>Book a Discovery Call</span>
+                  <ArrowRight size={15} />
                 </Link>
               </div>
             </nav>

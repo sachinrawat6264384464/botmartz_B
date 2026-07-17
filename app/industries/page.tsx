@@ -7,7 +7,7 @@ export async function generateMetadata(): Promise<Metadata> {
   let meta = {
     title: 'Industries | Botmartz AI',
     description: 'We partner with organizations across key industries to build production AI systems that solve real-world problems, unlock knowledge, and drive measurable impact.',
-    keywords: ['AI in Education', 'AI in Logistics', 'AI in Legal', 'Industry AI Solutions'],
+    keywords: ['AI in Education', 'AI in Logistics', 'AI in Healthcare', 'Industry AI Solutions'],
   };
   
   try {
@@ -124,13 +124,13 @@ export default async function IndustriesPage() {
                     </div>
                     
                     <div className="bg-white/5 border border-white/10 p-3 rounded-lg flex flex-col items-center gap-2 backdrop-blur-sm relative group hover:border-[#00B8F0]/50 transition-colors w-28">
-                      <Factory className="text-[#8598A6] group-hover:text-[#00B8F0] w-6 h-6" />
-                      <div className="font-semibold text-[13px] text-white">Mfg.</div>
+                      <BookOpen className="text-[#8598A6] group-hover:text-[#00B8F0] w-6 h-6" />
+                      <div className="font-semibold text-[13px] text-white">Education</div>
                     </div>
                     
                     <div className="bg-white/5 border border-white/10 p-3 rounded-lg flex flex-col items-center gap-2 backdrop-blur-sm relative group hover:border-[#00B8F0]/50 transition-colors w-28">
-                      <Cloud className="text-[#8598A6] group-hover:text-[#00B8F0] w-6 h-6" />
-                      <div className="font-semibold text-[13px] text-white">SaaS</div>
+                      <Truck className="text-[#8598A6] group-hover:text-[#00B8F0] w-6 h-6" />
+                      <div className="font-semibold text-[13px] text-white">Logistics</div>
                     </div>
                  </div>
 
@@ -202,21 +202,21 @@ export default async function IndustriesPage() {
              </div>
           </div>
           
-          {/* Legal */}
+          {/* Healthcare */}
           <div className="flex flex-col">
              <div className="flex items-start gap-4 mb-6">
                 <div className="w-14 h-14 rounded bg-[#0A111F] border border-[#1E293B] flex items-center justify-center shrink-0 text-[#00B8F0] shadow-sm">
-                   <Scale className="w-7 h-7" />
+                   <HeartPulse className="w-7 h-7" />
                 </div>
                 <div>
-                   <h3 className="text-[22px] font-semibold mb-2 text-white">Legal</h3>
-                   <p className="text-[14px] text-[#8A9EB0]">Accelerate legal workflows, automate document analysis, and deliver accurate insights with secure AI systems.</p>
+                   <h3 className="text-[22px] font-semibold mb-2 text-white">Healthcare</h3>
+                   <p className="text-[14px] text-[#8A9EB0]">Enhance clinical workflows, automate medical documentation, and improve patient support with secure, HIPAA-compliant AI systems.</p>
                 </div>
              </div>
              <div className="bg-[#0A111F] border border-[#1E293B] p-6 rounded flex-1">
                 <div className="font-mono text-[10px] text-[#00B8F0] uppercase tracking-wider mb-4">Use Cases</div>
                 <ul className="space-y-3 mb-6">
-                  {['Legal Research Assistant', 'Contract Review & Analysis', 'Case Law Search', 'Document Intelligence', 'Litigation Support'].map(item => (
+                  {['Clinical Documentation Assistant', 'Medical Knowledge Base RAG', 'Patient Support Copilot', 'Automated Triage & Scheduling', 'Research Literature Analysis'].map(item => (
                     <li key={item} className="flex items-start gap-2.5 text-[14px] text-white">
                       <CheckCircle2 className="w-4 h-4 text-[#00B8F0] shrink-0 mt-0.5" />
                       {item}
@@ -233,12 +233,12 @@ export default async function IndustriesPage() {
            <div className="text-center font-mono text-[11px] text-[#00B8F0] uppercase tracking-[0.1em] mb-6">Other Industries We Serve</div>
            <div className="flex flex-wrap justify-center sm:justify-between items-center gap-6 py-6 border-y border-[#1E293B]">
               {[
-                { i: HeartPulse, l: 'Healthcare' },
-                { i: Factory, l: 'Manufacturing' },
-                { i: Cloud, l: 'SaaS & Technology' },
                 { i: Briefcase, l: 'Financial Services' },
                 { i: Building, l: 'Real Estate' },
-                { i: Landmark, l: 'Government' }
+                { i: Landmark, l: 'Government' },
+                { i: TrendingUp, l: 'Retail & E-Commerce' },
+                { i: Zap, l: 'Energy & Utilities' },
+                { i: Users, l: 'Professional Services' }
               ].map((ind, i) => (
                 <div key={i} className="flex items-center gap-2 text-[#8A9EB0]">
                   <ind.i className="w-5 h-5 text-[#00B8F0]/50" />

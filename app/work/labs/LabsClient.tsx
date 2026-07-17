@@ -1,180 +1,425 @@
 "use client";
 
 import React, { useState } from "react";
-import { Github, ExternalLink, Code, GitFork, Star } from "lucide-react";
-import { SiPytorch, SiGooglecloud, SiFastapi, SiPostgresql, SiRedis, SiDocker, SiAmazon } from "react-icons/si";
+import Link from "next/link";
+import { Github, ExternalLink, Code } from "lucide-react";
 
-interface LabItem {
-  id: string;
+export interface LabItem {
+  id?: string;
   title: string;
-  description: string;
+  description?: string;
+  desc?: string;
   category: string;
-  tags: string[];
+  tags?: string[];
   githubUrl?: string;
   demoUrl?: string;
   repoUrl?: string;
-  stars?: number;
-  forks?: number;
-  badge?: "" | "New" | "Live" | "Beta";
-  status: "active" | "inactive";
+  stars?: number | string;
+  forks?: number | string;
+  badge?: string;
+  isNew?: boolean;
+  glyph?: string;
+  status?: string;
   featured?: boolean;
 }
 
-const CATEGORY_COLORS: Record<string, { text: string; bg: string }> = {
-  "Enterprise RAG":  { text: "text-sky-400",    bg: "bg-sky-400/10" },
-  "AI Agents":       { text: "text-purple-400",  bg: "bg-purple-400/10" },
-  "Computer Vision": { text: "text-emerald-400", bg: "bg-emerald-400/10" },
-  "Developer Tools": { text: "text-amber-400",   bg: "bg-amber-400/10" },
-  "Infrastructure":  { text: "text-rose-400",    bg: "bg-rose-400/10" },
-  "Other":           { text: "text-zinc-400",    bg: "bg-zinc-400/10" },
-};
+const DEFAULT_LABS: LabItem[] = [
+  { id: 'rag-starter', category: 'Enterprise RAG', title: 'Enterprise RAG Starter', desc: 'A production-ready RAG platform with hybrid search, reranking, and advanced evaluation.', tags: ['LangChain', 'FastAPI', 'Qdrant', 'Docker'], stars: '1.0k', forks: '320', isNew: true, glyph: 'RAG', githubUrl: 'https://github.com/botmartz' },
+  { id: 'langgraph-agent', category: 'AI Agents', title: 'LangGraph Agent Framework', desc: 'A modular multi-agent framework built with LangGraph for complex reasoning and tool orchestration.', tags: ['LangGraph', 'Python', 'Redis', 'Docker'], stars: '2.3k', forks: '410', isNew: true, glyph: 'AG', githubUrl: 'https://github.com/botmartz' },
+  { id: 'virtual-tryon', category: 'Computer Vision', title: 'Virtual Try-On Lab', desc: 'Realistic virtual try-on system using diffusion models and garment warping techniques.', tags: ['PyTorch', 'Diffusers', 'ONNX', 'Gradio'], stars: '980', forks: '210', isNew: true, glyph: 'CV', githubUrl: 'https://github.com/botmartz' },
+  { id: 'ai-research', category: 'AI Agents', title: 'AI Research Agent', desc: 'Autonomous research agent that searches, reads, analyzes, and generates comprehensive reports.', tags: ['LangChain', 'OpenAI', 'Tavily', 'Pydantic'], stars: '1.4k', forks: '280', isNew: true, glyph: 'AG', githubUrl: 'https://github.com/botmartz' },
+  { id: 'ai-sdr', category: 'AI Agents', title: 'AI SDR (Sales Dev Rep)', desc: 'An agent that researches prospects, personalizes outreach, and books meetings autonomously.', tags: ['LangGraph', 'OpenAI', 'HubSpot', 'PostgreSQL'], stars: '760', forks: '140', isNew: false, glyph: 'AG', githubUrl: 'https://github.com/botmartz' },
+  { id: 'course-assistant', category: 'AI Agents', title: 'AI Course Assistant', desc: 'Intelligent assistant for courses that answers doubts, generates quizzes, and tracks progress.', tags: ['FastAPI', 'OpenAI', 'Chroma', 'Docker'], stars: '980', forks: '180', isNew: false, glyph: 'AG', githubUrl: 'https://github.com/botmartz' },
+  { id: 'meeting-agent', category: 'AI Agents', title: 'Meeting Agent', desc: 'AI meeting assistant that transcribes, summarizes, and extracts action items automatically.', tags: ['Whisper', 'LangChain', 'PostgreSQL', 'AWS'], stars: '1.8k', forks: '200', isNew: false, glyph: 'AG', githubUrl: 'https://github.com/botmartz' },
+  { id: 'legal-assistant', category: 'Enterprise RAG', title: 'Legal Assistant', desc: 'RAG-powered legal assistant for contract review, clause extraction, and risk analysis.', tags: ['LangChain', 'LlamaIndex', 'Qdrant', 'AWS'], stars: '1.3k', forks: '260', isNew: false, glyph: 'RAG', githubUrl: 'https://github.com/botmartz' },
+];
 
-const BADGE_STYLES: Record<string, string> = {
-  New:  "bg-emerald-500 text-white",
-  Live: "bg-[#00B8F0] text-white",
-  Beta: "bg-amber-500 text-white",
-};
+const CATEGORIES = ['All Labs', 'Enterprise RAG', 'AI Agents', 'Computer Vision', 'Developer Tools', 'Infrastructure'];
 
-function formatCount(n: number): string {
-  if (!n) return "0";
-  if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+const STACK_ITEMS = [
+  { name: 'PyTorch', color: '#EE4C2C' },
+  { name: 'LangChain', color: '#1C3C3C' },
+  { name: 'LangGraph', color: '#1C3C3C' },
+  { name: 'Google ADK', color: '#4285F4' },
+  { name: 'FastAPI', color: '#009688' },
+  { name: 'PostgreSQL', color: '#336791' },
+  { name: 'Redis', color: '#DC382D' },
+  { name: 'Docker', color: '#2496ED' },
+  { name: 'AWS', color: '#FF9900' },
+];
+
+const PROCESS_STEPS = [
+  { n: '1', title: 'Identify Real Problems', desc: 'We explore real-world challenges faced by businesses and developers.' },
+  { n: '2', title: 'Build & Experiment', desc: 'Rapid prototyping with the latest models, frameworks, and infrastructure.' },
+  { n: '3', title: 'Evaluate & Refine', desc: 'Rigorous testing, benchmarking, and iterative improvements for production readiness.' },
+  { n: '4', title: 'Open Source & Share', desc: 'We open source our best work to give back to the AI engineering community.' },
+];
+
+function formatCount(n?: number | string): string {
+  if (!n) return '0';
+  if (typeof n === 'string') return n;
+  if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
   return String(n);
 }
 
-const CATEGORIES = ["All Labs", "Enterprise RAG", "AI Agents", "Computer Vision", "Developer Tools", "Infrastructure"];
+function getGlyph(lab: LabItem): string {
+  if (lab.glyph) return lab.glyph;
+  const cat = lab.category || '';
+  if (cat.toLowerCase().includes('rag')) return 'RAG';
+  if (cat.toLowerCase().includes('agent')) return 'AG';
+  if (cat.toLowerCase().includes('vision')) return 'CV';
+  if (cat.toLowerCase().includes('tool') || cat.toLowerCase().includes('dev')) return 'DEV';
+  if (cat.toLowerCase().includes('infra')) return 'INF';
+  return cat.slice(0, 2).toUpperCase() || 'LB';
+}
 
-export default function LabsClient({ initialLabs }: { initialLabs: LabItem[] }) {
-  const [activeCategory, setActiveCategory] = useState("All Labs");
+interface LabsClientProps {
+  initialLabs?: LabItem[];
+  heroContent?: {
+    badge?: string;
+    title?: string;
+    subtitle?: string;
+    ctaText?: string;
+    ctaLink?: string;
+  };
+  structuredData?: string;
+  aeoQuestion?: string;
+  aeoAnswer?: string;
+}
 
-  const filteredLabs = activeCategory === "All Labs"
-    ? initialLabs
-    : initialLabs.filter((l) => l.category === activeCategory);
+export default function LabsClient({ initialLabs = [], heroContent, structuredData, aeoQuestion, aeoAnswer }: LabsClientProps) {
+  const [activeCategory, setActiveCategory] = useState('All Labs');
+
+  // Use initialLabs if populated, otherwise use DEFAULT_LABS
+  const labsData = initialLabs && initialLabs.length > 0
+    ? initialLabs.map((lab, i) => ({
+        ...lab,
+        desc: lab.desc || lab.description || 'A production-ready AI engineering lab.',
+        glyph: getGlyph(lab),
+        stars: formatCount(lab.stars || '1.1k'),
+        forks: formatCount(lab.forks || '230'),
+        isNew: lab.isNew || lab.badge === 'New' || i < 3,
+        tags: lab.tags && lab.tags.length > 0 ? lab.tags : ['Python', 'AI', 'Docker'],
+      }))
+    : DEFAULT_LABS;
+
+  const visibleLabs = activeCategory === 'All Labs'
+    ? labsData
+    : labsData.filter(l => l.category === activeCategory);
+
+  const defaultSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Botmartz AI Engineering Labs",
+    "description": "Where we experiment, build, and open source production-ready AI systems that solve real problems.",
+    "url": "https://botmartz.com/work/labs",
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": labsData.map((l, i) => ({
+        "@type": "SoftwareSourceCode",
+        "name": l.title,
+        "description": l.desc,
+        "codeRepository": l.githubUrl || "https://github.com/botmartz"
+      }))
+    }
+  };
 
   return (
-    <>
-      {/* ── FILTER BAR ── */}
-      <section className="py-5 border-b border-[#1E293B] bg-[#0A111F] sticky top-[60px] z-40" id="projects">
-        <div className="wrap flex flex-col md:flex-row justify-between items-center gap-3">
-          <div className="flex overflow-x-auto gap-1.5 pb-1 md:pb-0 hide-scrollbar w-full md:w-auto">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`whitespace-nowrap px-4 py-1.5 text-[13px] font-semibold rounded-sm transition-colors ${
-                  activeCategory === cat
-                    ? "bg-[#00B8F0] text-white"
-                    : "border border-[#1E293B] text-[#8A9EB0] hover:border-[#00B8F0] hover:text-[#00B8F0]"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+    <div className="bg-[#F5F8FC] min-h-screen text-[#0B1220] font-sans">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: structuredData ? structuredData : JSON.stringify(defaultSchema)
+        }}
+      />
+      {/* ══════════ HERO (DARK BACKGROUND #060C1F) ══════════ */}
+      <section className="bg-[#060C1F] relative overflow-hidden pt-20 pb-16 px-6 sm:px-10 border-b border-[#1E293B]">
+        {/* Background Grid & Mask */}
+        <div 
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(0,198,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,198,255,0.06) 1px, transparent 1px)',
+            backgroundSize: '44px 44px',
+            maskImage: 'radial-gradient(ellipse 80% 60% at 65% 30%, black, transparent)',
+            WebkitMaskImage: 'radial-gradient(ellipse 80% 60% at 65% 30%, black, transparent)'
+          }}
+        />
+
+        <div className="max-w-[1240px] mx-auto relative z-10">
+          {/* Breadcrumb */}
+          <div className="font-semibold text-[12.5px] text-[#5B6B85] mb-5.5">
+            <Link href="/" className="hover:text-[#00C6FF] transition-colors">Home</Link>
+            <span className="mx-2.5">›</span>
+            <Link href="/work" className="hover:text-[#00C6FF] transition-colors">Work</Link>
+            <span className="mx-2.5">›</span>
+            <span className="text-[#00C6FF]">Labs</span>
           </div>
-          <div className="flex items-center gap-2 border border-[#1E293B] px-3 py-1.5 rounded-sm shrink-0 text-[13px] text-[#8A9EB0]">
-            Sort by: <span className="font-semibold text-white ml-1">Latest</span>
+
+          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
+            {/* Left Column */}
+            <div>
+              <div className="font-bold text-[12px] tracking-[0.1em] text-[#00C6FF] uppercase">
+                {heroContent?.badge || 'Botmartz Labs'}
+              </div>
+              <h1 
+                className="font-extrabold text-4xl sm:text-[44px] text-white mt-4 leading-[1.15]"
+                dangerouslySetInnerHTML={{
+                  __html: heroContent?.title || 'Building Today.<br /><span class="text-[#00C6FF]">Engineering</span> Tomorrow.'
+                }}
+              />
+              <p className="font-medium text-[14.5px] leading-[1.7] text-[#8FA3C4] mt-4.5 max-w-[480px]">
+                {heroContent?.subtitle || 'Our labs is where we experiment, build, and open source production-ready AI systems that solve real problems. Every project is built with a focus on performance, scalability, and real-world impact.'}
+              </p>
+              
+              <div className="flex flex-wrap gap-3.5 mt-7">
+                <a 
+                  href={heroContent?.ctaLink || '#labs-grid'} 
+                  className="inline-flex items-center gap-2 bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] transition-all"
+                >
+                  {heroContent?.ctaText || 'Explore All Projects →'}
+                </a>
+                <a 
+                  href="https://github.com/botmartz" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="inline-flex items-center gap-2 bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.18] text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] transition-all"
+                >
+                  View on GitHub ⌥
+                </a>
+              </div>
+            </div>
+
+            {/* Right Column: Orbiting Pill Graphic */}
+            <div className="relative h-[300px] flex items-center justify-center">
+              <div className="w-[150px] h-[150px] bg-gradient-to-br from-[#0F1E3D] to-[#0A1630] border border-[#00C6FF]/35 rounded-2xl flex items-center justify-center shadow-[0_0_60px_rgba(0,123,255,0.35)] relative z-10">
+                <span className="font-extrabold text-[13px] tracking-[0.08em] text-[#00C6FF]">LABS</span>
+              </div>
+              <div className="absolute top-[18px] left-0 sm:left-[20px] font-bold text-[11.5px] text-[#C7D6EE] bg-white/[0.05] border border-white/[0.14] px-3 py-1.5 rounded-lg shadow-sm backdrop-blur-xs">Engineer</div>
+              <div className="absolute top-0 right-[30px] sm:right-[60px] font-bold text-[11.5px] text-[#C7D6EE] bg-white/[0.05] border border-white/[0.14] px-3 py-1.5 rounded-lg shadow-sm backdrop-blur-xs">Experiment</div>
+              <div className="absolute top-[60px] right-0 sm:right-[10px] font-bold text-[11.5px] text-[#C7D6EE] bg-white/[0.05] border border-white/[0.14] px-3 py-1.5 rounded-lg shadow-sm backdrop-blur-xs">Evaluate</div>
+              <div className="absolute bottom-[60px] right-0 sm:right-[0px] font-bold text-[11.5px] text-[#C7D6EE] bg-white/[0.05] border border-white/[0.14] px-3 py-1.5 rounded-lg shadow-sm backdrop-blur-xs">Open Source</div>
+              <div className="absolute bottom-[20px] right-[40px] sm:right-[60px] font-bold text-[11.5px] text-[#C7D6EE] bg-white/[0.05] border border-white/[0.14] px-3 py-1.5 rounded-lg shadow-sm backdrop-blur-xs">Impact</div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── LABS GRID ── */}
-      <section className="py-[60px] bg-[#050B14]">
-        {filteredLabs.length === 0 ? (
-          <div className="wrap text-center py-24 text-[#8A9EB0]">
-            <Code className="w-10 h-10 mx-auto mb-4 opacity-30" />
-            <p className="text-[18px] font-semibold mb-2">No labs found</p>
-            <p className="text-[14px]">Check back soon — we're always building.</p>
-          </div>
-        ) : (
-          <div className="wrap grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {filteredLabs.map((lab) => {
-              const catStyle = CATEGORY_COLORS[lab.category] || CATEGORY_COLORS["Other"];
-              const badgeStyle = lab.badge ? BADGE_STYLES[lab.badge] : null;
+      {/* ══════════ FILTER BAR & SORT ══════════ */}
+      <div className="max-w-[1240px] mx-auto px-6 sm:px-10 pt-9 pb-5 flex items-center justify-between flex-wrap gap-4" id="labs-grid">
+        <div className="flex gap-2 flex-wrap">
+          {CATEGORIES.map(label => {
+            const isActive = label === activeCategory;
+            return (
+              <button
+                key={label}
+                onClick={() => setActiveCategory(label)}
+                className={`font-bold text-[12.5px] px-4 py-2.2 rounded-lg cursor-pointer transition-all shadow-2xs ${
+                  isActive
+                    ? 'bg-[#007BFF] border border-[#007BFF] text-white'
+                    : 'bg-white border border-[#E2E8F0] text-[#3A4459] hover:border-[#007BFF] hover:text-[#007BFF]'
+                }`}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+        <div className="font-semibold text-[12.5px] text-[#5B6B85] flex items-center gap-1.5">
+          Sort by: <span className="text-[#0B1220] font-bold cursor-pointer">Latest ▾</span>
+        </div>
+      </div>
 
-              return (
-                <div
-                  key={lab.id}
-                  className="bg-[#0A111F] border border-[#1E293B] rounded-xl overflow-hidden hover:border-[#00B8F0] hover:shadow-[0_0_24px_rgba(0,184,240,0.15)] transition-all group flex flex-col"
+      {/* ══════════ LABS GRID ══════════ */}
+      <div className="max-w-[1240px] mx-auto px-6 sm:px-10 pt-2 pb-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {visibleLabs.map((lab, index) => (
+          <div 
+            key={lab.id || index}
+            className="bg-white border border-[#E7ECF3] rounded-[14px] overflow-hidden flex flex-col hover:shadow-lg hover:border-[#007BFF]/40 transition-all duration-300 group"
+          >
+            {/* Top Graphic Header */}
+            <div className="relative h-[120px] bg-gradient-to-br from-[#0A1630] to-[#060C1F] flex items-center justify-center p-4 overflow-hidden">
+              <div className="w-[34px] h-[34px] rounded-[9px] bg-[#00C6FF]/14 border border-[#00C6FF]/25 flex items-center justify-center font-bold text-[11px] text-[#00C6FF] group-hover:scale-110 transition-transform duration-300">
+                {lab.glyph || getGlyph(lab)}
+              </div>
+              {lab.isNew && (
+                <span className="absolute top-[10px] right-[10px] bg-[#0E9F6E] text-white font-bold text-[9.5px] px-2 py-[3px] rounded-[5px] shadow-xs">
+                  New
+                </span>
+              )}
+            </div>
+
+            {/* Card Content */}
+            <div className="p-4.5 flex flex-col gap-2 flex-1">
+              <span className="font-bold text-[10px] tracking-[0.05em] text-[#007BFF] uppercase">
+                {lab.category}
+              </span>
+              <div className="font-bold text-[15px] text-[#0B1220] group-hover:text-[#007BFF] transition-colors leading-snug">
+                {lab.title}
+              </div>
+              <div className="font-medium text-[12px] leading-[1.55] text-[#5B6B85] flex-1">
+                {lab.desc}
+              </div>
+
+              {/* Tags */}
+              <div className="flex gap-1.5 flex-wrap mt-1">
+                {(lab.tags || []).map(tag => (
+                  <span key={tag} className="font-semibold text-[10.5px] text-[#5B6B85] bg-[#F1F4F9] px-2 py-[3px] rounded-[5px]">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {/* Card Footer */}
+              <div className="flex items-center justify-between mt-2 pt-3 border-t border-[#EEF1F6]">
+                <a 
+                  href={lab.githubUrl || lab.repoUrl || "https://github.com/botmartz"} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="font-semibold text-[11.5px] text-[#3A4459] hover:text-[#007BFF] flex items-center gap-1.5 transition-colors"
                 >
-                  {/* ── Thumbnail ── */}
-                  <div
-                    className="h-[160px] relative overflow-hidden flex items-center justify-center p-4 bg-[#050B14]"
-                    style={{ backgroundImage: "linear-gradient(rgba(0,184,240,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,.06) 1px, transparent 1px)", backgroundSize: "24px 24px" }}
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#00B8F0]/15 via-transparent to-transparent" />
-                    
-                    {lab.badge && (
-                      <span className={`absolute top-3 left-3 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${badgeStyle} z-10 shadow-sm`}>
-                        {lab.badge}
-                      </span>
-                    )}
-                    
-                    <div className="relative z-10 w-16 h-16 rounded-xl bg-[#0A111F] border border-[#1E293B] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                      <Code className="text-[#8A9EB0] group-hover:text-[#00B8F0] transition-colors" size={28} />
-                    </div>
+                  <span>⌥</span> GitHub
+                </a>
+                <span className="font-semibold text-[11.5px] text-[#8A97AC] flex items-center gap-2.5">
+                  <span>★ {lab.stars}</span>
+                  <span>⑂ {lab.forks}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* ══════════ WHY OUR LABS MATTER Box ══════════ */}
+      <div className="max-w-[1240px] mx-auto mt-4 px-6 sm:px-10">
+        <div className="bg-[#060C1F] rounded-[18px] p-8 sm:p-11 relative overflow-hidden text-white shadow-xl">
+          <div className="absolute w-[300px] h-[300px] rounded-full bg-[radial-gradient(circle,rgba(0,123,255,0.2),transparent_70%)] right-[-60px] top-[-100px] pointer-events-none" />
+          <div className="relative z-10">
+            <div className="font-bold text-[11.5px] tracking-[0.08em] text-[#00C6FF] uppercase">
+              Why Our Labs Matter
+            </div>
+            <h2 className="font-extrabold text-2xl sm:text-[26px] text-white mt-2.5 mb-7">
+              From Experiment to <span className="text-[#00C6FF]">Enterprise.</span>
+            </h2>
+            <p className="font-medium text-[13px] leading-[1.6] text-[#8FA3C4] max-w-[460px] mt-2.5">
+              Our labs follow a rigorous engineering approach to turn innovative ideas into reliable, open-source solutions.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+              {PROCESS_STEPS.map((step) => (
+                <div key={step.n} className="flex flex-col gap-3">
+                  <div className="w-10 h-10 rounded-full border border-[#00C6FF]/40 bg-[#00C6FF]/[0.08] flex items-center justify-center font-bold text-[13px] text-[#00C6FF]">
+                    {step.n}
                   </div>
-
-                  {/* ── Content ── */}
-                  <div className="p-5 flex-1 flex flex-col">
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm ${catStyle.bg} ${catStyle.text}`}>
-                        {lab.category}
-                      </span>
-                    </div>
-
-                    <h3 className="text-[17px] font-semibold text-white mb-2 leading-tight group-hover:text-[#00B8F0] transition-colors">
-                      {lab.title}
-                    </h3>
-                    <p className="text-[13px] text-[#8A9EB0] line-clamp-3 mb-5 leading-relaxed flex-1">
-                      {lab.description}
-                    </p>
-
-                    {/* Tags */}
-                    {lab.tags && lab.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 mb-5">
-                        {lab.tags.slice(0, 3).map((tag, i) => (
-                          <span key={i} className="text-[11px] font-medium text-[#8A9EB0] bg-[#050B14] border border-[#1E293B] px-1.5 py-0.5 rounded-sm">
-                            {tag}
-                          </span>
-                        ))}
-                        {lab.tags.length > 3 && (
-                          <span className="text-[11px] font-medium text-[#8A9EB0] px-1">+{lab.tags.length - 3}</span>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Stats & Links */}
-                    <div className="flex items-center justify-between pt-4 border-t border-[#1E293B]">
-                      <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-1 text-[12px] font-medium text-[#8A9EB0]">
-                          <Star size={13} className="text-amber-400" />
-                          <span>{formatCount(lab.stars || 0)}</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-[12px] font-medium text-[#8A9EB0]">
-                          <GitFork size={13} />
-                          <span>{formatCount(lab.forks || 0)}</span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        {lab.githubUrl && (
-                          <a href={lab.githubUrl} target="_blank" rel="noopener noreferrer" className="p-1.5 text-[#8A9EB0] hover:text-white hover:bg-[#1E293B] rounded transition-colors" title="View Source">
-                            <Github size={16} />
-                          </a>
-                        )}
-                        {lab.demoUrl && (
-                          <a href={lab.demoUrl} target="_blank" rel="noopener noreferrer" className="p-1.5 text-[#00B8F0] hover:text-[#0096C7] hover:bg-[#00B8F0]/10 rounded transition-colors" title="Live Demo">
-                            <ExternalLink size={16} />
-                          </a>
-                        )}
-                      </div>
-                    </div>
+                  <div className="font-bold text-[13.5px] text-white mt-1">
+                    {step.title}
+                  </div>
+                  <div className="font-medium text-[12px] leading-[1.55] text-[#7C8CAD]">
+                    {step.desc}
                   </div>
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
-        )}
-      </section>
-    </>
+        </div>
+      </div>
+
+      {/* ══════════ MODERN AI ENGINEERING STACK ══════════ */}
+      <div className="max-w-[1240px] mx-auto pt-14 px-6 sm:px-10 text-center">
+        <div className="font-bold text-[11.5px] tracking-[0.08em] text-[#007BFF] uppercase">
+          Built With a Modern AI Engineering Stack
+        </div>
+        <div className="flex justify-center gap-4 sm:gap-7 flex-wrap mt-5.5">
+          {STACK_ITEMS.map((s) => (
+            <span 
+              key={s.name} 
+              className="font-bold text-[13px] text-[#3A4459] flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-full border border-[#E7ECF3] shadow-2xs"
+            >
+              <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: s.color }} />
+              {s.name}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* ══════════ OPEN SOURCE BANNER ══════════ */}
+      <div className="max-w-[1240px] mx-auto mt-14 px-6 sm:px-10">
+        <div className="bg-white border border-[#E7ECF3] rounded-2xl p-7 sm:p-8 flex items-center justify-between gap-6 flex-wrap shadow-sm">
+          <div className="w-16 h-16 rounded-full bg-[#E8F2FF] flex items-center justify-center font-bold text-[22px] text-[#007BFF] shrink-0">
+            ⌥
+          </div>
+          <div className="flex-1 min-w-[260px]">
+            <h3 className="font-bold text-[17px] text-[#0B1220]">Open Source is in Our DNA.</h3>
+            <p className="font-medium text-[13px] leading-[1.6] text-[#5B6B85] mt-1.5">
+              We believe sharing knowledge and code accelerates innovation for everyone. Explore our GitHub organization to see all our open-source projects.
+            </p>
+          </div>
+          <a 
+            href="https://github.com/botmartz" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="font-bold text-[13px] text-white bg-[#0B1220] hover:bg-[#1A2333] px-5 py-3 rounded-[9px] shrink-0 transition-colors shadow-sm"
+          >
+            View on GitHub ⌥
+          </a>
+        </div>
+      </div>
+
+      {/* ══════════ HAVE AN IDEA WORTH BUILDING? CTA Box ══════════ */}
+      <div className="max-w-[1240px] mx-auto mt-6 mb-22 px-6 sm:px-10">
+        <div className="bg-[#060C1F] rounded-[18px] p-8 sm:p-11 relative overflow-hidden text-white shadow-xl">
+          <div className="absolute w-[280px] h-[280px] rounded-full bg-[radial-gradient(circle,rgba(0,123,255,0.2),transparent_70%)] right-[-70px] bottom-[-120px] pointer-events-none" />
+          
+          <div className="relative z-10 flex items-start justify-between gap-8 flex-wrap">
+            <div className="max-w-[480px]">
+              <h2 className="font-extrabold text-2xl sm:text-[26px] leading-[1.3] text-white">
+                Have an <span className="text-[#00C6FF]">Idea</span> Worth Building?
+              </h2>
+              <p className="font-medium text-[13.5px] leading-[1.65] text-[#8FA3C4] mt-3">
+                Let&apos;s build the next lab together. We collaborate with founders, researchers, and engineers to build impactful AI systems.
+              </p>
+            </div>
+            <Link 
+              href="/contact" 
+              className="font-bold text-[13.5px] text-white bg-[#007BFF] hover:bg-[#0069DB] px-6 py-3.5 rounded-[9px] whitespace-nowrap shadow-[0_8px_24px_rgba(0,123,255,0.35)] shrink-0 transition-all"
+            >
+              Start a Conversation →
+            </Link>
+          </div>
+
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6 mt-9 pt-7 border-t border-white/10">
+            <div className="flex items-start gap-3">
+              <div className="w-[34px] h-[34px] shrink-0 rounded-[9px] bg-[#00C6FF]/12 flex items-center justify-center font-bold text-[10px] text-[#00C6FF]">
+                CO
+              </div>
+              <div>
+                <div className="font-bold text-[13px] text-white">Collaborate</div>
+                <div className="font-medium text-[11.5px] leading-[1.5] text-[#7C8CAD] mt-0.5">Partner with our engineering team</div>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="w-[34px] h-[34px] shrink-0 rounded-[9px] bg-[#00C6FF]/12 flex items-center justify-center font-bold text-[10px] text-[#00C6FF]">
+                AC
+              </div>
+              <div>
+                <div className="font-bold text-[13px] text-white">Accelerate</div>
+                <div className="font-medium text-[11.5px] leading-[1.5] text-[#7C8CAD] mt-0.5">Ship faster and smarter</div>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="w-[34px] h-[34px] shrink-0 rounded-[9px] bg-[#00C6FF]/12 flex items-center justify-center font-bold text-[10px] text-[#00C6FF]">
+                MI
+              </div>
+              <div>
+                <div className="font-bold text-[13px] text-white">Make Impact</div>
+                <div className="font-medium text-[11.5px] leading-[1.5] text-[#7C8CAD] mt-0.5">Solve real problems that matter</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   );
 }

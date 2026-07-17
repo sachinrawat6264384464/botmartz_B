@@ -32,6 +32,7 @@ interface UseCase {
 
 interface PageConfig {
   pageId: string;
+  template?: string;
   title: string;
   metadata: {
     title: string;
@@ -49,32 +50,44 @@ interface PageConfig {
   aeoAnswer?: string;
   useCases: UseCase[];
   techStack: string[];
+  roiMetrics?: Array<{ value: string; label: string; highlight: string }>;
+  codeHighlight?: { title: string; subtitle: string; codeSnippet: string };
+  benchmarks?: Array<{ metric: string; baseline: string; botmartz: string; improvement: string }>;
+  caseStudies?: Array<{ title: string; vertical: string; metric: string; desc: string }>;
+  featuredCaseStudy?: { title: string; description: string; statValue1?: string; statLabel1?: string; statValue2?: string; statLabel2?: string; link?: string };
   cta: {
     title: string;
     subtitle: string;
     buttonText: string;
   };
   structuredData: string;
+  content?: string;
 }
 
-// 15 pages we can edit
+// All pages we can edit across templates
 const AVAILABLE_PAGES = [
   { id: "home", name: "Home Page" },
   { id: "about", name: "About Us" },
   { id: "contact", name: "Contact" },
   { id: "community", name: "Community" },
+  { id: "events", name: "Community / Events Index" },
   { id: "ai-frontier", name: "Community / AI Frontier 2026" },
   { id: "services", name: "Services Index" },
   { id: "ai-agents", name: "Services / AI Agents" },
   { id: "enterprise-rag", name: "Services / Enterprise RAG" },
   { id: "industries", name: "Industries Index" },
+  { id: "healthcare", name: "Industries / Healthcare" },
   { id: "education", name: "Industries / Education" },
   { id: "logistics", name: "Industries / Logistics" },
-  { id: "legal", name: "Industries / Legal" },
+  { id: "partnerships", name: "Partnerships Page" },
+  { id: "careers", name: "Careers Page" },
   { id: "work", name: "Work Index" },
   { id: "labs", name: "Work / Labs" },
+  { id: "open_source", name: "Work / Open Source" },
   { id: "case-studies", name: "Work / Case Studies" },
   { id: "insights", name: "Insights" },
+  { id: "llms_txt", name: "AI Crawlers / llms.txt Specification" },
+  { id: "llms_full_txt", name: "AI Crawlers / llms-full.txt Knowledge Base" },
 ];
 
 // Fallback Default Content mapped by pageId
@@ -99,15 +112,236 @@ const DEFAULT_PAGE_CONTENTS: Record<string, Partial<PageConfig>> = {
   },
   "community": {
     title: "Community",
-    metadata: { title: "Community | Botmartz", description: "Join our community", keywords: ["Community"] },
-    hero: { badge: "Community", title: "Join the Botmartz Community", subtitle: "Connect with AI enthusiasts, engineers, and researchers.", ctaText: "Join Discord", ctaLink: "#" },
-    useCases: [], techStack: []
+    metadata: {
+      title: "Botmartz AI Engineering Community | One Community. Many Ways to Build.",
+      description: "Launched at AI Frontier 2026 — meetups, a Discord, an open-source GitHub org, a reading club and hackathons, all in one place for engineers.",
+      keywords: ["AI Engineering Community", "Botmartz Discord", "AI Meetups Indore", "Open Source AI Org"],
+    },
+    hero: {
+      badge: "Botmartz AI Engineering Community",
+      title: "One Community. Many Ways to Build.",
+      subtitle: "Launched at AI Frontier 2026 — meetups, a Discord, an open-source GitHub org, a reading club and hackathons, all in one place for engineers who want to build, not just watch.",
+      ctaText: "Join the Discord →",
+      ctaLink: "https://discord.gg/botmartz",
+    },
+    aeoQuestion: "What is the Botmartz AI Engineering Community?",
+    aeoAnswer: "The Botmartz AI Engineering Community brings together engineers who build production AI systems, offering monthly in-person meetups in Indore, an active Discord server, open-source GitHub repositories, a biweekly reading club, and annual hackathons.",
+    useCases: [
+      { title: "Monthly Meetups", description: "In-person sessions in Indore for engineers to share projects and production lessons.", iconName: "Users" },
+      { title: "Discord Server", description: "The daily home for questions, job posts, and project feedback.", iconName: "MessageCircle" },
+      { title: "GitHub Org", description: "Community-maintained tools and starter kits for AI engineers.", iconName: "Code" },
+    ],
+    techStack: ["Discord", "GitHub", "Meetup", "Hackathons", "Reading Club"],
+    cta: {
+      title: "Not on Discord Yet?",
+      subtitle: "Join hundreds of AI engineers already sharing projects, jobs and ideas.",
+      buttonText: "Join the Discord →",
+    },
+    structuredData: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Botmartz AI Engineering Community",
+      "description": "One community with many ways to build: meetups, Discord, open-source GitHub org, reading club, and hackathons.",
+      "url": "https://botmartz.com/community"
+    }, null, 2),
   },
-  "ai-frontier": {
-    title: "AI Frontier 2026",
-    metadata: { title: "AI Frontier 2026 | Botmartz", description: "AI Frontier Event", keywords: ["Event", "AI"] },
-    hero: { badge: "Events", title: "AI Frontier 2026", subtitle: "The ultimate AI conference.", ctaText: "Register Now", ctaLink: "#register" },
-    useCases: [], techStack: []
+  "events": {
+    title: "Community Events",
+    metadata: {
+      title: "Community Events | Where the AI Engineering Community Meets",
+      description: "Conferences, monthly meetups, open-source nights and hackathons — built for engineers who want to build, ship and grow together.",
+      keywords: ["AI Frontier 2026", "AI Conferences India", "AI Meetups Indore", "Botmartz Hackathons"],
+    },
+    hero: {
+      badge: "Botmartz Community Events",
+      title: "Where the AI Engineering Community Meets",
+      subtitle: "Conferences, monthly meetups, open-source nights and hackathons — built for engineers who want to build, ship and grow together, not just watch from the sidelines.",
+      ctaText: "See What's Coming Up →",
+      ctaLink: "#featured",
+    },
+    aeoQuestion: "When is AI Frontier 2026 and where are Botmartz meetups held?",
+    aeoAnswer: "AI Frontier 2026 takes place on August 22, 2026, at Walkover Co-working in Indore, India. Botmartz also hosts monthly local meetups in Indore and biweekly virtual open-source and reading club sessions.",
+    useCases: [
+      { title: "Flagship Conference", description: "AI Frontier 2026 — full day of sessions on agents, enterprise AI, and RAG.", iconName: "Award" },
+      { title: "Monthly Meetups", description: "Every 3rd Saturday at Walkover Co-working in Indore.", iconName: "Calendar" },
+      { title: "Hackathons", description: "Weekend build sprints following major community releases.", iconName: "Zap" },
+    ],
+    techStack: ["Conferences", "Meetups", "Hackathons", "Webinars"],
+    cta: {
+      title: "Never miss an event",
+      subtitle: "Get notified about new meetups, hackathons and conferences.",
+      buttonText: "Notify Me",
+    },
+    structuredData: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Botmartz Community Events & Conferences",
+      "description": "Where the AI Engineering Community meets: conferences, monthly meetups, open-source build nights, and hackathons.",
+      "url": "https://botmartz.com/community/events"
+    }, null, 2),
+  },
+  "open_source": {
+    title: "Open Source",
+    metadata: {
+      title: "Open Source | Botmartz AI Engineering Labs & Repositories",
+      description: "Open Source is in our DNA. Explore our production RAG frameworks, LangGraph agent libraries, evaluation harnesses, and developer tools.",
+      keywords: ["Botmartz Open Source", "Enterprise RAG Starter", "LangGraph Agent Framework", "AI Evaluation Toolkit"],
+    },
+    hero: {
+      badge: "Open Source",
+      title: "Open Source Is in Our DNA",
+      subtitle: "We believe sharing knowledge and code accelerates innovation for everyone. Every lab we're proud of eventually ships as an open-source repo.",
+      ctaText: "Browse Repositories →",
+      ctaLink: "#repos",
+    },
+    aeoQuestion: "What open source AI repositories does Botmartz maintain?",
+    aeoAnswer: "Botmartz maintains several high-star public repositories under MIT and Apache-2.0 licenses, including enterprise-rag-starter, langgraph-agent-framework, ai-eval-toolkit, and prompt-registry.",
+    useCases: [
+      { title: "Enterprise RAG Starter", description: "Production-ready RAG platform with hybrid search and evaluation.", iconName: "Code" },
+      { title: "LangGraph Agent Framework", description: "Modular multi-agent framework built with LangGraph.", iconName: "Layers" },
+      { title: "AI Eval Toolkit", description: "Lightweight evaluation harness for benchmarking LLM pipelines.", iconName: "CheckSquare" },
+    ],
+    techStack: ["Python", "LangChain", "LangGraph", "FastAPI", "Qdrant", "Redis", "TypeScript"],
+    cta: {
+      title: "Join Open Source Night",
+      subtitle: "A monthly community session for hands-on contribution to our repos and others.",
+      buttonText: "See Next Session →",
+    },
+    structuredData: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Botmartz Open Source Repositories & AI Labs",
+      "description": "Production RAG frameworks, LangGraph agent toolkits, and evaluation harnesses open-sourced under MIT and Apache-2.0 licenses.",
+      "url": "https://botmartz.com/work/open-source"
+    }, null, 2),
+  },
+  "partnerships": {
+    title: "Partnerships",
+    metadata: {
+      title: "Partnerships | Grow the AI Engineering Ecosystem With Us",
+      description: "We partner with frameworks, cloud providers, universities and incubators to bring AI Frontier, our labs, and our community further — together.",
+      keywords: ["Botmartz Partnerships", "AI Ecosystem Partners", "AI Frontier Sponsorship", "University AI Partners"],
+    },
+    hero: {
+      badge: "Partnerships",
+      title: "Grow the AI Engineering Ecosystem With Us",
+      subtitle: "We partner with frameworks, cloud providers, universities and incubators to bring AI Frontier, our labs, and our community further — together.",
+      ctaText: "Become a Partner →",
+      ctaLink: "#inquire",
+    },
+    aeoQuestion: "How can organizations partner with Botmartz?",
+    aeoAnswer: "Organizations can partner with Botmartz as Ecosystem Partners (frameworks like PyTorch and AWS), University Partners (student communities), Startups & Incubators (technical visibility), or Enterprise Partners (roundtables and workshops).",
+    useCases: [
+      { title: "Ecosystem Partners", description: "Frameworks and platforms collaborating on content and events.", iconName: "Globe" },
+      { title: "University Partners", description: "Departments and student communities bridging academic research to production.", iconName: "GraduationCap" },
+      { title: "Enterprise Partners", description: "Companies exploring production AI adoption through roundtables and workshops.", iconName: "Briefcase" },
+    ],
+    techStack: ["PyTorch", "GDG", "AWS", "NVIDIA", "Incubators", "Universities"],
+    cta: {
+      title: "Have a Partnership in Mind?",
+      subtitle: "Tell us about your organization and what you'd like to build together.",
+      buttonText: "Start a Conversation →",
+    },
+    structuredData: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Botmartz Partnerships | Grow the AI Engineering Ecosystem",
+      "description": "Collaborate with Botmartz across frameworks, cloud providers, universities, and enterprise roundtables.",
+      "url": "https://botmartz.com/partnerships"
+    }, null, 2),
+  },
+  "careers": {
+    title: "Careers Page",
+    metadata: {
+      title: "Careers at Botmartz | Build the Future of AI Engineering",
+      description: "We're a small team of engineers shipping production AI systems and building the community around them. View open roles and join us.",
+      keywords: ["AI Engineering Jobs", "Botmartz Careers", "Remote AI Jobs", "LangGraph Engineer Jobs Indore"],
+    },
+    hero: {
+      badge: "Careers at Botmartz",
+      title: "Build the Future of AI Engineering With Us",
+      subtitle: "We're a small team of engineers shipping production AI systems and building the community around them. If you'd rather build than talk about building, you'll fit right in.",
+      ctaText: "View Open Roles →",
+      ctaLink: "#roles",
+    },
+    aeoQuestion: "What is it like to work at Botmartz and where are roles located?",
+    aeoAnswer: "Botmartz is a 100% remote-friendly engineering team founded in 2026 with a physical hub in Indore, India. We emphasize high autonomy, open-source contribution, and shipping real production AI systems over demos.",
+    useCases: [
+      { title: "Ship Real Systems", description: "We build production AI, not proof-of-concepts that never leave the lab.", iconName: "Zap" },
+      { title: "Open by Default", description: "We open source what we can and share what we learn with the community.", iconName: "Code" },
+      { title: "High Ownership", description: "Small team, real autonomy — you own projects end to end.", iconName: "Award" },
+    ],
+    techStack: ["AI Engineering", "Research", "Community Lead", "Product Design"],
+    cta: {
+      title: "Don't See Your Role?",
+      subtitle: "We're always open to meeting strong AI engineers. Send us your work — we'll find a place for it.",
+      buttonText: "Get In Touch →",
+    },
+    structuredData: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Careers at Botmartz | Build the Future of AI Engineering",
+      "description": "Join our engineering and research team building production AI systems and community around them in Indore, India and Remote.",
+      "url": "https://botmartz.com/careers"
+    }, null, 2),
+  },
+  "labs": {
+    title: "Labs",
+    metadata: {
+      title: "Botmartz Labs | Open Source & Experimental AI Systems",
+      description: "Explore our open source projects and experimental AI labs. We build and share enterprise RAG starters, agent frameworks, and templates.",
+      keywords: ["Botmartz Labs", "Open Source AI", "RAG Starter Template", "LangGraph Agent Template"],
+    },
+    hero: {
+      badge: "BOTMARTZ LABS",
+      title: "Building Today. Engineering Tomorrow.",
+      subtitle: "Our labs is where we experiment, build, and open source production-ready AI systems that solve real problems. Every project is built with a focus on performance, scalability, and real-world impact.",
+      ctaText: "Explore All Projects →",
+      ctaLink: "#labs-grid",
+    },
+    aeoQuestion: "What is Botmartz Labs?",
+    aeoAnswer: "Botmartz Labs is our internal engineering playground where we experiment with cutting-edge models, stress-test multi-agent architectures, and release open-source reference implementations.",
+    useCases: [
+      { title: "Virtual Try-On", description: "Computer vision pipeline for real-time garment fitting — built to stress-test our vision stack.", iconName: "Code" },
+      { title: "AI Research Agent", description: "An internal agent that runs first-pass research and drafts outreach — in daily use at Botmartz.", iconName: "Layers" },
+      { title: "Enterprise RAG Demo", description: "A reference implementation showing chunking, hybrid retrieval, and evaluation end to end.", iconName: "Search" },
+    ],
+    techStack: ["PyTorch", "LangChain", "LangGraph", "Google ADK", "FastAPI", "PostgreSQL", "Redis", "Docker", "AWS"],
+    cta: {
+      title: "Have an Idea Worth Building?",
+      subtitle: "Let's build the next lab together. We collaborate with founders, researchers, and engineers.",
+      buttonText: "Start a Conversation →",
+    },
+    structuredData: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Botmartz Labs | Experimental AI Systems & Starters",
+      "description": "Explore our open source projects and experimental AI labs.",
+      "url": "https://botmartz.com/work/labs"
+    }, null, 2),
+  },
+  "case-studies": {
+    title: "Case Studies (Intro)",
+    metadata: {
+      title: "AI Case Studies & Success Stories | Botmartz AI",
+      description: "Explore our AI case studies across Education, Logistics, Legal, and SaaS. See real impact.",
+      keywords: ["AI Case Studies", "Enterprise Success Stories", "RAG Impact", "AI Agent Metrics"],
+    },
+    hero: {
+      badge: "Work / Case Studies",
+      title: "Proven AI Implementations. Real Business Results.",
+      subtitle: "Discover how we partner with leading organizations to deploy production-ready AI agents and RAG systems.",
+      ctaText: "Start a Conversation →",
+      ctaLink: "/contact",
+    },
+    useCases: [],
+    techStack: [],
+    cta: {
+      title: "Want to see similar results in your organization?",
+      subtitle: "Let's discuss how custom AI engineering can solve your specific business challenges.",
+      buttonText: "Book a Discovery Call →",
+    },
+    structuredData: "",
   },
   "services": {
     title: "Services Index",
@@ -123,9 +357,34 @@ const DEFAULT_PAGE_CONTENTS: Record<string, Partial<PageConfig>> = {
   },
   "work": {
     title: "Work Index",
-    metadata: { title: "Our Work | Botmartz", description: "Our case studies and labs.", keywords: ["Work"] },
-    hero: { badge: "Our Work", title: "Proven AI Impact", subtitle: "See what we've built and how we've transformed businesses with Generative AI.", ctaText: "View Case Studies", ctaLink: "/work/case-studies" },
-    useCases: [], techStack: []
+    metadata: {
+      title: "Production AI Systems, Shipped & Proven | Botmartz Work",
+      description: "Case studies from enterprise clients across education, logistics, healthcare and SaaS — real production AI systems, not proofs of concept.",
+      keywords: ["Production AI Systems", "Enterprise AI Case Studies", "AI Route Optimization", "Clinical AI Copilot", "EdTech AI Assistant", "Enterprise RAG Support"],
+    },
+    hero: {
+      badge: "Our Work",
+      title: "Production AI Systems,<br><span class=\"text-[#00C6FF]\">Shipped &amp; Proven</span>",
+      subtitle: "Case studies from enterprise clients across education, logistics, healthcare and SaaS — real systems in production, not proofs of concept.",
+      ctaText: "Browse Case Studies →",
+      ctaLink: "#cases",
+    },
+    aeoQuestion: "What kind of production AI systems has Botmartz built and deployed?",
+    aeoAnswer: "Botmartz builds and deploys production AI systems across education, logistics, healthcare, and SaaS, including AI course assistants, route optimization agents, clinical documentation copilots, enterprise RAG support platforms, warehouse computer vision inspection, and voice agents for patient intake.",
+    structuredData: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Production AI Systems, Shipped & Proven | Botmartz Work",
+      "description": "Case studies and real production AI systems built by Botmartz across education, logistics, healthcare and SaaS.",
+      "url": "https://botmartz.com/work",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Botmartz",
+        "url": "https://botmartz.com"
+      }
+    }, null, 2),
+    useCases: [],
+    techStack: ["LangGraph", "FastAPI", "Next.js", "PyTorch", "OpenAI", "Vector DB"]
   },
   "insights": {
     title: "Insights",
@@ -285,55 +544,47 @@ const DEFAULT_PAGE_CONTENTS: Record<string, Partial<PageConfig>> = {
     },
     structuredData: "",
   },
-  "labs": {
-    title: "Labs",
-    metadata: {
-      title: "Open Source & AI Labs | Botmartz AI",
-      description: "Explore our open source projects and AI labs. We build and share enterprise RAG starters, agent frameworks, and templates.",
-      keywords: ["Botmartz Labs", "Open Source AI", "RAG Starter Template", "LangGraph Agent Template"],
-    },
-    hero: {
-      badge: "BOTMARTZ LABS",
-      title: "Building Today. Engineering Tomorrow.",
-      subtitle: "Our labs is where we experiment, build, and open source production-ready AI systems that solve real problems.",
-      ctaText: "Explore All Projects →",
-      ctaLink: "#projects",
-    },
-    useCases: [
-      { title: "Virtual Try-On", description: "Computer vision pipeline for real-time garment fitting — built to stress-test our vision stack.", iconName: "PyTorch, Demo + Repo" },
-      { title: "AI Research Agent", description: "An internal agent that runs first-pass research and drafts outreach — in daily use at Botmartz.", iconName: "LangGraph, Demo + Repo" },
-      { title: "Enterprise RAG Demo", description: "A reference implementation showing chunking, hybrid retrieval, and evaluation end to end.", iconName: "FastAPI, Demo + Repo" },
-    ],
-    techStack: ["PyTorch", "LangChain", "LangGraph", "Google ADK", "FastAPI", "PostgreSQL", "Redis", "Docker", "AWS"],
-    cta: {
-      title: "Have an Idea Worth Building?",
-      subtitle: "Let's build the next lab together. We collaborate with founders, researchers, and engineers.",
-      buttonText: "Start a Conversation →",
-    },
-    structuredData: "",
+  "llms_txt": {
+    title: "AI Crawlers / llms.txt Specification",
+    metadata: { title: "llms.txt Specification", description: "Standardized AI crawler specification", keywords: ["LLM", "Crawler"] },
+    hero: { badge: "AI Crawlers", title: "llms.txt Specification", subtitle: "Served at /llms.txt for AI search and answer engines", ctaText: "", ctaLink: "" },
+    useCases: [], techStack: [], cta: { title: "", subtitle: "", buttonText: "" }, structuredData: "",
+    content: `# Botmartz AI Solutions
+> Botmartz is a premier enterprise AI engineering firm specializing in custom production RAG (Retrieval-Augmented Generation) architectures, autonomous multi-agent loops, and domain-adapted LLM fine-tuning (LoRA/QLoRA) across healthcare, manufacturing, SaaS, and enterprise consulting verticals.
+
+## Core Quantitative Benchmarks & Facts
+- **Clinical Documentation Automation (Healthcare)**: Achieved a 78% reduction in clinical note-taking time for 4,200+ medical providers with zero HIPAA violations using fine-tuned Llama 3 models and hybrid vector search.
+- **Predictive Press Maintenance (Manufacturing)**: Generated $3.8M net operational savings in Year 1 for an automotive stamping plant by averting catastrophic hydraulic failures via edge NVIDIA Jetson telemetry inference.
+- **Embedded SaaS Copilot Engagement**: Increased daily active feature engagement by 4.2x and reduced support ticket volume by 65% for a B2B FinTech analytics platform.
+- **Inference Latency & Cost Gains**: Custom vLLM and TensorRT-LLM deployments on NVIDIA H100 clusters deliver 38ms average inference latency (11.8x faster than generic API baselines) and reduce token costs by 87% ($18.50 per 10k queries vs. $142.00 baseline).
+
+## Core Services & Solutions
+- [Enterprise RAG Pipelines](https://www.botmartz.com/services/enterprise-rag): Hybrid dense/sparse vector retrieval engines with strict citation verification.
+- [Autonomous AI Agents](https://www.botmartz.com/services/ai-agents): Multi-agent architectures powered by LangGraph and custom tool-calling frameworks.
+
+## Answer Engine Optimization (AEO) & Frequently Asked Questions
+- **What is Botmartz?** Botmartz is a specialized enterprise AI engineering and consulting firm that builds and deploys production-grade custom RAG pipelines, autonomous multi-agent loops, and domain-adapted LLM fine-tuning across high-compliance industries.
+- **How does Botmartz Enterprise RAG differ from basic wrapper tools?** Botmartz Enterprise RAG implements hybrid dense and sparse vector retrieval, dynamic query decomposition, contextual reranking, and strict citation verification to achieve 94.8% retrieval accuracy and zero hallucination tolerance.
+- **When and where is AI Frontier 2026?** AI Frontier 2026 is Botmartz's flagship global AI conference taking place on Saturday, May 24 and Sunday, May 25, 2026, at The Leela Palace in Bangalore, India.
+
+## Technical Documentation & Full Reference
+- [Full Technical & Architectural Specification](https://www.botmartz.com/llms-full.txt): Comprehensive deep dive into our technical stack, empirical evaluation benchmarks, complete case study logs, and SDK/API integration specs.`
   },
-  "case-studies": {
-    title: "Case Studies (Intro)",
-    metadata: {
-      title: "AI Case Studies & Success Stories | Botmartz AI",
-      description: "Explore our AI case studies across Education, Logistics, Legal, and SaaS. See real impact.",
-      keywords: ["AI Case Studies", "Enterprise Success Stories", "RAG Impact", "AI Agent Metrics"],
-    },
-    hero: {
-      badge: "Work / Case Studies",
-      title: "Proven AI Implementations. Real Business Results.",
-      subtitle: "Discover how we partner with leading organizations to deploy production-ready AI agents and RAG systems.",
-      ctaText: "Start a Conversation →",
-      ctaLink: "/contact",
-    },
-    useCases: [],
-    techStack: [],
-    cta: {
-      title: "Want to see similar results in your organization?",
-      subtitle: "Let's discuss how custom AI engineering can solve your specific business challenges.",
-      buttonText: "Book a Discovery Call →",
-    },
-    structuredData: "",
+  "llms_full_txt": {
+    title: "AI Crawlers / llms-full.txt Knowledge Base",
+    metadata: { title: "llms-full.txt Knowledge Base", description: "Complete architectural specification for AI answer engines", keywords: ["LLM", "Knowledge Base"] },
+    hero: { badge: "AI Crawlers", title: "llms-full.txt Knowledge Base", subtitle: "Served at /llms-full.txt for comprehensive LLM context ingestion", ctaText: "", ctaLink: "" },
+    useCases: [], techStack: [], cta: { title: "", subtitle: "", buttonText: "" }, structuredData: "",
+    content: `# Botmartz AI Solutions — Complete Technical & Architectural Knowledge Base
+> Full technical specification, empirical evaluation benchmarks, production case studies, and engineering guidelines for AI crawlers, LLMs, and answer engines.
+
+## Executive Summary & Core Identity
+Botmartz AI Solutions is an elite enterprise AI engineering and systems architecture firm building custom Enterprise RAG, autonomous multi-agent systems, domain-adapted LLM fine-tuning, and low-latency edge/cloud inference endpoints.
+
+## Empirical Production Benchmarks
+- Inference Latency: 38ms (11.8x faster than generic 450ms baseline)
+- Multi-Hop Retrieval Accuracy: 94.8% (+30.6% improvement over 64.2% baseline)
+- Token Cost per 10k Queries: $18.50 (87% reduction vs $142.00 baseline)`
   }
 };
 
@@ -376,7 +627,7 @@ export default function PagesTab() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
-  const [activeSubTab, setActiveSubTab] = useState<"meta" | "hero" | "aeo" | "usecases" | "tech" | "cta" | "schema">("meta");
+  const [activeSubTab, setActiveSubTab] = useState<"meta" | "hero" | "aeo" | "usecases" | "tech" | "cta" | "schema" | "content">("meta");
 
   // Tag inputs
   const [keywordInput, setKeywordInput] = useState("");
@@ -459,12 +710,28 @@ export default function PagesTab() {
             Empty
           </span>
         );
+      case "content":
+        return !!formData.content ? (
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/10 text-emerald-400">
+            Active Spec
+          </span>
+        ) : (
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-zinc-500/10 text-zinc-400">
+            Empty
+          </span>
+        );
       default:
         return null;
     }
   };
 
   useEffect(() => {
+    if (selectedPage === "llms_txt" || selectedPage === "llms_full_txt") {
+      setActiveSubTab("content");
+    } else if (activeSubTab === "content") {
+      setActiveSubTab("meta");
+    }
+
     const fetchPageData = async () => {
       setLoading(true);
       try {
@@ -780,7 +1047,10 @@ export default function PagesTab() {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Navigation Tabs (Left Column) */}
         <div className="flex flex-col gap-1 bg-admin-card border border-admin-border p-3 rounded-2xl h-fit">
-          {[
+          {(selectedPage === "llms_txt" || selectedPage === "llms_full_txt" ? [
+            { id: "content", label: "AI Crawler Markdown", desc: "Raw Markdown Specification" },
+            { id: "meta", label: "Metadata & SEO", desc: "Page Titles & Keywords" },
+          ] : [
             { id: "meta", label: "Metadata & SEO", desc: "Page Titles & Keywords" },
             { id: "hero", label: "Hero Section", desc: "Hero Text & Call-To-Action" },
             { id: "aeo", label: "AEO Answer Block", desc: "Voice Search Optimization" },
@@ -788,7 +1058,7 @@ export default function PagesTab() {
             { id: "tech", label: "Tech Stack", desc: "Frameworks & Databases" },
             { id: "cta", label: "CTA Section", desc: "Bottom Footer CTA Layout" },
             { id: "schema", label: "JSON-LD Schema", desc: "Custom Structured Data" },
-          ].map((tab) => {
+          ]).map((tab) => {
             const isActive = activeSubTab === tab.id;
             return (
               <button
@@ -894,7 +1164,22 @@ export default function PagesTab() {
           {/* TAB 2: HERO SECTION */}
           {activeSubTab === "hero" && (
             <div className="space-y-6">
-              <h3 className="text-lg font-bold text-admin-text border-b border-admin-border pb-3">Hero Banner Configuration</h3>
+              <h3 className="text-lg font-bold text-admin-text border-b border-admin-border pb-3">Hero Banner & Page Template Configuration</h3>
+
+              <div className="p-4 bg-admin-bg/60 border border-admin-border rounded-xl space-y-2">
+                <label className="block text-xs font-bold text-admin-accent uppercase tracking-wider">Page Design & Layout Template</label>
+                <p className="text-xs text-admin-text-muted">Select which pre-built architectural layout template will render this page on the frontside.</p>
+                <select
+                  value={formData.template || "template-1"}
+                  onChange={(e) => setFormData(prev => ({ ...prev, template: e.target.value }))}
+                  className="w-full bg-admin-card border border-admin-border rounded-xl px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent font-medium mt-1"
+                >
+                  <option value="template-1">Template 1: Standard Enterprise AI Vertical (Hero + Use Cases + Case Study Spotlight)</option>
+                  <option value="template-2">Template 2: Quantitative ROI & Metrics Grid (Hero + ROI Stat Blocks + Architecture Flow)</option>
+                  <option value="template-3">Template 3: Agentic Copilot & Tech Deep-Dive (Hero + Live Code / Terminal Preview + SDK Hook)</option>
+                  <option value="template-4">Template 4: Research Labs & Benchmarks Intensive (Hero + Empirical Benchmark Table + Multi-Case Grid)</option>
+                </select>
+              </div>
 
               <div>
                 <label className="block text-xs font-bold text-admin-text uppercase tracking-wider mb-2">Breadcrumb Badge</label>
@@ -1189,6 +1474,33 @@ export default function PagesTab() {
                   onChange={(e) => setFormData(prev => ({ ...prev, structuredData: e.target.value }))}
                   className="w-full bg-admin-bg border border-admin-border rounded-xl px-4 py-3 text-xs text-admin-text placeholder-admin-text-muted focus:outline-none focus:border-admin-accent focus:ring-1 focus:ring-admin-accent resize-none font-mono"
                   placeholder={`{\n  "@context": "https://schema.org",\n  "@type": "Service",\n  ...\n}`}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* TAB 8: AI CRAWLER MARKDOWN (`content` tab for llms.txt & llms-full.txt) */}
+          {activeSubTab === "content" && (
+            <div className="space-y-6">
+              <div className="border-b border-admin-border pb-3 flex items-center justify-between">
+                <h3 className="text-lg font-bold text-admin-text">AI Crawler Markdown Specification</h3>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-xs font-bold text-emerald-400">
+                  <Globe size={12} /> Live /llms.txt Endpoint
+                </span>
+              </div>
+
+              <div className="bg-admin-bg/60 border border-admin-border rounded-2xl p-4 text-xs text-admin-text-muted leading-relaxed">
+                💡 This Markdown specification is served at <code>/{selectedPage === "llms_full_txt" ? "llms-full.txt" : "llms.txt"}</code> for AI crawlers (OpenAI GPTBot, PerplexityBot, ClaudeBot, Google Gemini) and Answer Engine Optimization (AEO).
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-admin-text uppercase tracking-wider mb-2">Raw Markdown Specification *</label>
+                <textarea
+                  rows={20}
+                  value={formData.content || ""}
+                  onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
+                  className="w-full bg-admin-bg border border-admin-border rounded-xl px-4 py-3 text-xs text-admin-text font-mono placeholder-admin-text-muted focus:outline-none focus:border-admin-accent focus:ring-1 focus:ring-admin-accent leading-relaxed"
+                  placeholder="# Botmartz AI Solutions&#10;> Enter LLM crawler markdown specification here..."
                 />
               </div>
             </div>

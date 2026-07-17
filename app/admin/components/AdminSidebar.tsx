@@ -6,7 +6,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { 
   Menu, X, LogOut, ChevronLeft, ChevronRight, Zap,
   ChevronDown, Globe, Briefcase, Layers, Bot,
-  Home, Mail, BookOpen, MessageSquare, Send, Users, FolderKanban, CalendarDays, Settings, ShieldAlert
+  Home, Mail, BookOpen, MessageSquare, Send, Users, FolderKanban, CalendarDays, Settings, ShieldAlert, FileText, Handshake
 } from 'lucide-react';
 import Image from 'next/image';
 import { useAuth } from '@/lib/context/AuthContext';
@@ -16,6 +16,8 @@ import { collection, query, where, getCountFromServer } from 'firebase/firestore
 
 const BADGE_STYLE: Partial<Record<ModuleId, string>> = {
   contacts: 'bg-sky-500/20 text-sky-300 border border-sky-500/30',
+  jobs: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30',
+  partnerships: 'bg-purple-500/20 text-purple-300 border border-purple-500/30',
 };
 
 export default function AdminSidebar() {
@@ -40,8 +42,16 @@ export default function AdminSidebar() {
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const c = await getCountFromServer(query(collection(db, 'contacts'), where('status', '==', 'unread')));
-        setLiveCounts({ contacts: c.data().count });
+        const [cContacts, cJobs, cPartnerships] = await Promise.all([
+          getCountFromServer(query(collection(db, 'contacts'), where('status', '==', 'unread'))).catch(() => ({ data: () => ({ count: 0 }) })),
+          getCountFromServer(query(collection(db, 'job_applications'), where('status', '==', 'new'))).catch(() => ({ data: () => ({ count: 0 }) })),
+          getCountFromServer(query(collection(db, 'partnership_inquiries'), where('status', '==', 'new'))).catch(() => ({ data: () => ({ count: 0 }) })),
+        ]);
+        setLiveCounts({
+          contacts: cContacts.data().count,
+          jobs: cJobs.data().count,
+          partnerships: cPartnerships.data().count,
+        });
       } catch { /* ignore */ }
     };
     fetchCounts();
@@ -276,6 +286,8 @@ export default function AdminSidebar() {
               {renderFlatItem('crm', Users, 'CRM', '/admin/crm')}
               {renderFlatItem('projects', FolderKanban, 'Projects', '/admin/projects')}
               {renderFlatItem('events', CalendarDays, 'Events', '/admin/events')}
+              {renderFlatItem('jobs', Users, 'Careers / Jobs', '/admin/jobs', true)}
+              {renderFlatItem('partnerships', Handshake, 'Partnerships', '/admin/partnerships', true)}
             </div>
           </div>
 

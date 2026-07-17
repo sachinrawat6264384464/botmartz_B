@@ -85,10 +85,11 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground font-sans selection:bg-brand/20;
+    @apply bg-background text-foreground font-sans selection:bg-brand/20 overflow-x-hidden max-w-full;
   }
   html {
     scroll-behavior: smooth;
+    @apply overflow-x-hidden max-w-full;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -160,12 +161,12 @@
 
 /* Shared Grid Container */
 .wrap {
-  @apply max-w-[1160px] mx-auto px-5 sm:px-8;
+  @apply max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 w-full;
 }
 
 /* Section Spacing */
 .section-pad {
-  @apply py-[80px];
+  @apply py-[60px] sm:py-[80px];
 }
 .section-alt {
   @apply bg-grid-bg;
