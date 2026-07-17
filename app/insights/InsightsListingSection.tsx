@@ -38,6 +38,7 @@ export interface InsightArticle {
   author: string;
   date: string;
   readTime: string;
+  slug?: string;
   featured?: boolean;
   visualType: "rag-featured" | "agents-circle" | "microservices-blocks" | "mlops-dashboard" | "rag-hybrid" | "langgraph-flow" | "open-source-hub" | "prompt-blueprint" | "legal-doc-flow";
 }
