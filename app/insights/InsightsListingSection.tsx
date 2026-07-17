@@ -146,7 +146,18 @@ const CATEGORIES_LIST = [
   { name: "Architecture", count: 12, icon: Layers },
   { name: "Tutorials", count: 20, icon: BookOpen },
   { name: "Open Source", count: 15, icon: Code2 },
-  { name: "Case Studies", count: 10, icon: FileText }
+  { name: "Case Studies", count: 10, icon: FileText },
+  { name: "Advanced Models", count: 10, icon: Network },
+  { name: "Models", count: 10, icon: Layers },
+  { name: "LLMs", count: 10, icon: Bot },
+  { name: "Optimization", count: 10, icon: SlidersHorizontal },
+  { name: "PyTorch", count: 10, icon: Cpu },
+  { name: "Research", count: 10, icon: Search },
+  { name: "Research Explained", count: 10, icon: BookOpen },
+  { name: "Spiking Neural Networks", count: 10, icon: Cpu },
+  { name: "TensorFlow", count: 10, icon: Terminal },
+  { name: "LangChain", count: 10, icon: GitBranch },
+  { name: "Notebooks", count: 10, icon: FileText }
 ];
 
 const POPULAR_ARTICLES = [

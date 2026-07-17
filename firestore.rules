@@ -114,6 +114,20 @@ service cloud.firestore {
       allow write: if isSuperAdmin();
     }
 
+    // ── events ────────────────────────────────────────────────────
+    match /events/{docId} {
+      allow read: if true;
+      allow write: if isSuperAdmin();
+    }
+
+    // ── event-registrations ───────────────────────────────────────
+    match /event-registrations/{docId} {
+      allow create: if true;
+      allow get: if true;
+      allow list: if isSuperAdmin();
+      allow update, delete: if isSuperAdmin();
+    }
+
     // ── Deny everything else ──────────────────────────────────────
     match /{document=**} {
       allow read, write: if false;

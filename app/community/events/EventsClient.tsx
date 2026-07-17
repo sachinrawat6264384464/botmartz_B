@@ -351,9 +351,24 @@ export default function EventsClient({
               <div className="font-semibold text-[12px] text-[#3A4459]">
                 {ev.date}
               </div>
-              <div className="font-medium text-[11.5px] text-[#8A97AC]">
+              <div className="font-medium text-[11.5px] text-[#8A97AC] mb-3">
                 {ev.location}
               </div>
+              {ev.slug ? (
+                <Link 
+                  href={`/community/events/${ev.slug}`}
+                  className="mt-1 text-center bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[12.5px] py-2 rounded-lg transition-all"
+                >
+                  Register / View Details
+                </Link>
+              ) : (
+                <button 
+                  disabled
+                  className="mt-1 text-center bg-gray-200 text-gray-400 font-bold text-[12.5px] py-2 rounded-lg cursor-not-allowed"
+                >
+                  Details Coming Soon
+                </button>
+              )}
             </div>
           </div>
         ))}

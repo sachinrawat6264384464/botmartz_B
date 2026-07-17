@@ -71,7 +71,7 @@ export default function Navbar({ navItems }: { navItems?: NavItem[] }) {
   return (
     <>
       {/* ── HEADER ── */}
-      <header className="sticky top-0 z-50 bg-[#050B14]/90 backdrop-blur-md border-b border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.3)]">
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
         <div className="wrap flex items-center justify-between h-[70px]">
 
           {/* LOGO */}
@@ -99,8 +99,8 @@ export default function Navbar({ navItems }: { navItems?: NavItem[] }) {
                   href={item.path}
                   className={`relative inline-flex items-center gap-1 px-3 py-2 rounded-md text-[13px] font-semibold tracking-[-0.01em] transition-colors whitespace-nowrap ${
                     isActive(item)
-                      ? "text-[#00B8F0]"
-                      : "text-[#8A9EB0] hover:text-[#00B8F0]"
+                      ? "text-[#0066FF]"
+                      : "text-[#334155] hover:text-[#0066FF]"
                   }`}
                 >
                   {item.name}
@@ -113,7 +113,7 @@ export default function Navbar({ navItems }: { navItems?: NavItem[] }) {
                   )}
                   {/* Active underline */}
                   {isActive(item) && (
-                    <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-[#00B8F0] rounded-full" />
+                    <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-[#0066FF] rounded-full" />
                   )}
                 </Link>
 
@@ -125,16 +125,16 @@ export default function Navbar({ navItems }: { navItems?: NavItem[] }) {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 6 }}
                       transition={{ duration: 0.14 }}
-                      className="absolute top-[calc(100%+4px)] left-1/2 -translate-x-1/2 min-w-[240px] bg-[#0B1524] border border-white/10 rounded-xl shadow-[0_16px_48px_rgba(0,0,0,0.4)] p-2 z-[100]"
+                      className="absolute top-[calc(100%+4px)] left-1/2 -translate-x-1/2 min-w-[240px] bg-white border border-slate-200 rounded-xl shadow-lg p-2 z-[100]"
                     >
                       {item.dropdown.map((sub) => (
                         <Link
                           key={sub.name}
                           href={sub.path}
-                          className="flex items-center justify-between px-4 py-2.5 text-[13px] font-medium text-[#8A9EB0] hover:text-[#00B8F0] hover:bg-[#00B8F0]/5 rounded-lg transition-all group whitespace-nowrap"
+                          className="flex items-center justify-between px-4 py-2.5 text-[13px] font-medium text-[#475569] hover:text-[#0066FF] hover:bg-[#0066FF]/5 rounded-lg transition-all group whitespace-nowrap"
                         >
                           <span>{sub.name}</span>
-                          <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-[#00B8F0] text-xs">
+                          <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-[#0066FF] text-xs">
                             →
                           </span>
                         </Link>
@@ -159,7 +159,7 @@ export default function Navbar({ navItems }: { navItems?: NavItem[] }) {
 
             {/* Mobile hamburger */}
             <button
-              className="lg:hidden flex flex-col justify-center items-center p-2 text-white hover:bg-white/5 rounded-lg transition-colors"
+              className="lg:hidden flex flex-col justify-center items-center p-2 text-[#334155] hover:bg-slate-100 rounded-lg transition-colors"
               onClick={() => setMobileMenuOpen(true)}
               aria-label="Open menu"
             >
@@ -176,9 +176,9 @@ export default function Navbar({ navItems }: { navItems?: NavItem[] }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-[#050B14]/98 backdrop-blur-xl flex flex-col"
+            className="fixed inset-0 z-[60] bg-white/98 backdrop-blur-xl flex flex-col"
           >
-            <div className="wrap flex items-center justify-between h-[70px] border-b border-white/10">
+            <div className="wrap flex items-center justify-between h-[70px] border-b border-slate-200">
               <Link href="/" onClick={() => setMobileMenuOpen(false)}>
                 <Image
                   src="/Logo-removebg-preview.png"
@@ -190,7 +190,7 @@ export default function Navbar({ navItems }: { navItems?: NavItem[] }) {
                 />
               </Link>
               <button
-                className="text-white p-2 hover:bg-white/5 rounded-lg flex items-center justify-center"
+                className="text-[#334155] p-2 hover:bg-slate-100 rounded-lg flex items-center justify-center"
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Close menu"
               >
@@ -204,18 +204,18 @@ export default function Navbar({ navItems }: { navItems?: NavItem[] }) {
                   <Link
                     href={item.path}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-2 py-3 text-xl font-bold text-white hover:text-[#00B8F0] transition-colors"
+                    className="flex items-center gap-2 py-3 text-xl font-bold text-[#334155] hover:text-[#0066FF] transition-colors"
                   >
                     {item.name}
                   </Link>
                   {item.dropdown && (
-                    <div className="flex flex-col gap-1 pl-4 border-l border-white/10 mb-3">
+                    <div className="flex flex-col gap-1 pl-4 border-l border-slate-200 mb-3">
                       {item.dropdown.map((sub) => (
                         <Link
                           key={sub.name}
                           href={sub.path}
                           onClick={() => setMobileMenuOpen(false)}
-                          className="py-2 text-sm text-[#8A9EB0] hover:text-[#00B8F0] transition-colors"
+                          className="py-2 text-sm text-[#475569] hover:text-[#0066FF] transition-colors"
                         >
                           {sub.name}
                         </Link>

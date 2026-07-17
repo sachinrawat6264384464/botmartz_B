@@ -168,8 +168,23 @@ const faqJsonLd = {
   ],
 };
 
+import { adminDb } from '@/lib/firebase-admin';
+
 // ─── PAGE ─────────────────────────────────────────────────────────────────────
-export default function AIFrontierPage() {
+export default async function AIFrontierPage() {
+  let event: any = null;
+  try {
+    const q = adminDb.collection('events').where('slug', '==', 'ai-frontier-2026').limit(1);
+    const snap = await q.get();
+    if (!snap.empty) {
+      event = { id: snap.docs[0].id, ...snap.docs[0].data() };
+    }
+  } catch (e) {
+    console.error("Failed to load AI Frontier event document:", e);
+  }
+
+  const sanitizedEvent = event ? JSON.parse(JSON.stringify(event)) : null;
+
   return (
     <>
       {/* Structured Data */}
@@ -182,7 +197,7 @@ export default function AIFrontierPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      <AIFrontierEventBody />
+      <AIFrontierEventBody event={sanitizedEvent} />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { Home, Mail, BookOpen, MessageSquare, Send, LucideIcon, FileText, Users, FolderKanban, CalendarDays, Bot, Settings, ShieldAlert, Layers } from 'lucide-react';
+import { Home, Mail, BookOpen, MessageSquare, Send, LucideIcon, FileText, Users, FolderKanban, CalendarDays, Bot, Settings, ShieldAlert, Layers, CreditCard } from 'lucide-react';
 
 export type ModuleId =
   | 'dashboard'
@@ -16,7 +16,8 @@ export type ModuleId =
   | 'ai-agents'
   | 'pages'
   | 'settings'
-  | 'super-admin';
+  | 'super-admin'
+  | 'payments';
 
 export interface AppModule {
   id: ModuleId;
@@ -35,6 +36,7 @@ export const MODULES: AppModule[] = [
   { id: 'crm',       label: 'CRM',       href: '/admin/crm',       icon: Users },
   { id: 'projects',  label: 'Projects',  href: '/admin/projects',  icon: FolderKanban },
   { id: 'events',    label: 'Events',    href: '/admin/events',    icon: CalendarDays },
+  { id: 'payments',  label: 'Payments',  href: '/admin/payments',  icon: CreditCard },
   { id: 'jobs',      label: 'Careers / Jobs', href: '/admin/jobs', icon: Users, badge: true },
   { id: 'partnerships', label: 'Partnerships', href: '/admin/partnerships', icon: FileText, badge: true },
   { id: 'blogs',     label: 'Engineering Insights',     href: '/admin/Blogs',      icon: BookOpen },
@@ -55,6 +57,7 @@ export const ROUTE_MODULE_MAP: Partial<Record<string, ModuleId>> = {
   '/admin/crm':                 'crm',
   '/admin/projects':            'projects',
   '/admin/events':              'events',
+  '/admin/payments':            'payments',
   '/admin/jobs':                'jobs',
   '/admin/partnerships':        'partnerships',
   '/admin/Blogs':               'blogs',

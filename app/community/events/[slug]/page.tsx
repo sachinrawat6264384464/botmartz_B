@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { adminDb } from '@/lib/firebase-admin';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import RegisterButton from './RegisterButton';
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   let title = 'Event';
@@ -105,9 +106,7 @@ export default async function EventPage({ params }: { params: { slug: string } }
 
           <div className="mt-16 pt-8 border-t border-line text-center">
             <h3 className="font-space-grotesk text-2xl font-bold text-ink mb-4">Ready to Join?</h3>
-            <button className="btn btn-primary bg-brand text-white hover:bg-brand-dark px-8 py-3 rounded text-[15px] font-semibold transition-colors">
-              Register for Event
-            </button>
+            <RegisterButton event={event} />
           </div>
         </div>
       </section>

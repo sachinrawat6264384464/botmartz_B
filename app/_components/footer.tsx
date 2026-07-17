@@ -57,7 +57,6 @@ const FOOTER_COLS = [
     links: [
       { label: "About Us", href: "/about" },
       { label: "Careers", href: "/careers" },
-      { label: "Blog", href: "/insights" },
       { label: "Contact Us", href: "/contact" },
       { label: "Partnerships", href: "/partnerships" },
     ],
@@ -68,7 +67,6 @@ const FOOTER_COLS = [
       { label: "Engineering Insights", href: "/insights" },
       { label: "Community", href: "/community" },
       { label: "Academy ↗", href: "https://academy.botmartz.com" },
-      { label: "Documentation ↗", href: "https://github.com/botmartz" },
       { label: "Events", href: "/community/events" },
     ],
   },

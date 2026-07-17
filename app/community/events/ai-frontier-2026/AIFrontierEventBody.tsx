@@ -9,11 +9,22 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
-export default function AIFrontierEventBody() {
+import RegisterButton from "../[slug]/RegisterButton";
+
+export default function AIFrontierEventBody({ event }: { event?: any }) {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const [notifyEmail, setNotifyEmail] = useState("");
   const [notified, setNotified] = useState(false);
+
+  const activeEvent = {
+    id: event?.id || "ai-frontier-2026",
+    title: event?.title || "AI Frontier 2026 — The Future of AI Engineering",
+    slug: event?.slug || "ai-frontier-2026",
+    entryFee: (event?.entryFee !== undefined && event?.entryFee !== null) ? Number(event.entryFee) : 100,
+    date: event?.date || "May 24–25, 2026",
+    location: event?.location || "The Leela Palace, Bangalore"
+  };
 
   const heroHighlights = [
     { tag: "AE", title: "Top AI Engineers", desc: "Industry experts & practitioners" },
@@ -72,7 +83,7 @@ export default function AIFrontierEventBody() {
 
   return (
     <div className={`${montserrat.className} bg-[#F5F8FC] text-[#0B1220] antialiased overflow-x-hidden`}>
-      <style jsx global>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @keyframes ef-pulse {
           0%, 100% { opacity: 0.35; }
           50% { opacity: 0.85; }
@@ -82,7 +93,7 @@ export default function AIFrontierEventBody() {
           50% { transform: translateY(-10px); }
           100% { transform: translateY(0); }
         }
-      `}</style>
+      `}} />
 
       {/* ─── 1. HERO BANNER ─── */}
       <div className="bg-[#060C1F] relative overflow-hidden pt-[120px] pb-16 px-6 sm:px-10">
@@ -133,13 +144,8 @@ export default function AIFrontierEventBody() {
               </div>
             </div>
 
-            <div className="flex gap-3.5 mt-9 flex-wrap">
-              <a 
-                href="/contact" 
-                className="inline-flex items-center gap-2 bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-sm px-[26px] py-[15px] rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] transition-colors"
-              >
-                Register Your Interest →
-              </a>
+            <div className="flex gap-3.5 mt-9 flex-wrap items-center">
+              <RegisterButton event={activeEvent} />
               <a 
                 href="#agenda" 
                 className="inline-flex items-center gap-2 bg-[rgba(255,255,255,0.06)] hover:bg-[rgba(255,255,255,0.1)] border border-[rgba(255,255,255,0.18)] text-white font-bold text-sm px-[26px] py-[15px] rounded-[9px] transition-colors"
