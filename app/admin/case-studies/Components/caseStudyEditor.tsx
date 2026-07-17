@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { X, RefreshCw } from "lucide-react";
+import { X, RefreshCw, Plus, Trash2 } from "lucide-react";
 import { db } from "@/lib/firebase";
 import {
   doc,
@@ -46,6 +46,29 @@ import {
 
 const lowlight = createLowlight(common);
 
+interface ApproachStep {
+  n: string;
+  title: string;
+  desc: string;
+}
+
+interface TeamMember {
+  initials: string;
+  name: string;
+  role: string;
+}
+
+interface RelatedCase {
+  industry: string;
+  title: string;
+  result: string;
+}
+
+interface MetricItem {
+  value: string;
+  label: string;
+}
+
 function Toast({
   message,
   type,
@@ -61,7 +84,7 @@ function Toast({
         type === "success"
           ? "bg-green-50 border-green-200"
           : type === "error"
-            ? "bg-red-50 border-red-200"
+            ? "bg-red-550 border-red-200"
             : "bg-blue-50 border-blue-200"
       }`}
     >
@@ -315,17 +338,60 @@ export default function CaseStudyEditorModal({
   const originalFeaturedImage = useRef<string>(caseStudy?.featuredImage || "");
   const originalContentImages = useRef<string[]>([]);
 
-  useEffect(() => {
-    if (caseStudy?.category && !CATEGORIES.includes(caseStudy.category)) {
-      setFormData((prev) => ({
-        ...prev,
-        category: "Custom",
-        customCategory: caseStudy.category,
-      }));
-    }
+  // Tab Manager
+  const [activeTab, setActiveTab] = useState<'meta' | 'details' | 'content'>('meta');
 
-    if (caseStudy?.content) {
-      originalContentImages.current = extractImagesFromHTML(caseStudy.content);
+  // Detailed Section fields
+  const [challenge, setChallenge] = useState("");
+  const [outcome, setOutcome] = useState("");
+  const [visualType, setVisualType] = useState<"dashboard" | "workflow" | "document" | "map">("dashboard");
+  const [timeline, setTimeline] = useState("12 Weeks");
+  const [teamSize, setTeamSize] = useState("3 Engineers");
+  const [lessonsInput, setLessonsInput] = useState("");
+  const [clientQuoteText, setClientQuoteText] = useState("");
+  const [clientQuoteAuthor, setClientQuoteAuthor] = useState("");
+  const [clientQuoteRole, setClientQuoteRole] = useState("");
+  const [techStackInput, setTechStackInput] = useState("");
+
+  const [approach, setApproach] = useState<ApproachStep[]>([]);
+  const [team, setTeam] = useState<TeamMember[]>([]);
+  const [relatedCases, setRelatedCases] = useState<RelatedCase[]>([]);
+  const [metrics, setMetrics] = useState<MetricItem[]>([]);
+
+  useEffect(() => {
+    if (caseStudy) {
+      if (caseStudy.category && !CATEGORIES.includes(caseStudy.category)) {
+        setFormData((prev) => ({
+          ...prev,
+          category: "Custom",
+          customCategory: caseStudy.category,
+        }));
+      }
+
+      if (caseStudy.content) {
+        originalContentImages.current = extractImagesFromHTML(caseStudy.content);
+      }
+
+      // Load extra detail fields
+      const anyCS = caseStudy as any;
+      if (anyCS.challenge) setChallenge(anyCS.challenge);
+      if (anyCS.outcome) setOutcome(anyCS.outcome);
+      if (anyCS.visualType) setVisualType(anyCS.visualType);
+      if (anyCS.timeline) setTimeline(anyCS.timeline);
+      if (anyCS.teamSize) setTeamSize(anyCS.teamSize);
+      if (anyCS.lessons) setLessonsInput(Array.isArray(anyCS.lessons) ? anyCS.lessons.join('\n') : anyCS.lessons);
+      if (anyCS.clientQuote) {
+        setClientQuoteText(anyCS.clientQuote.text || "");
+        setClientQuoteAuthor(anyCS.clientQuote.author || "");
+        setClientQuoteRole(anyCS.clientQuote.role || "");
+      }
+      if (anyCS.stack) {
+        setTechStackInput(Array.isArray(anyCS.stack) ? anyCS.stack.join(', ') : anyCS.stack);
+      }
+      if (anyCS.approach) setApproach(anyCS.approach);
+      if (anyCS.team) setTeam(anyCS.team);
+      if (anyCS.relatedCases) setRelatedCases(anyCS.relatedCases);
+      if (anyCS.metrics) setMetrics(anyCS.metrics);
     }
   }, [caseStudy]);
 
@@ -556,9 +622,45 @@ export default function CaseStudyEditorModal({
     }
   };
 
+  // Approach steps manager
+  const handleApproachChange = (index: number, key: keyof ApproachStep, value: string) => {
+    const updated = [...approach];
+    updated[index] = { ...updated[index], [key]: value };
+    setApproach(updated);
+  };
+  const addApproachStep = () => setApproach([...approach, { n: (approach.length + 1).toString(), title: '', desc: '' }]);
+  const removeApproachStep = (index: number) => setApproach(approach.filter((_, i) => i !== index));
+
+  // Team list manager
+  const handleTeamChange = (index: number, key: keyof TeamMember, value: string) => {
+    const updated = [...team];
+    updated[index] = { ...updated[index], [key]: value };
+    setTeam(updated);
+  };
+  const addTeamMember = () => setTeam([...team, { initials: '', name: '', role: '' }]);
+  const removeTeamMember = (index: number) => setTeam(team.filter((_, i) => i !== index));
+
+  // Related Cases manager
+  const handleRelatedChange = (index: number, key: keyof RelatedCase, value: string) => {
+    const updated = [...relatedCases];
+    updated[index] = { ...updated[index], [key]: value };
+    setRelatedCases(updated);
+  };
+  const addRelatedCase = () => setRelatedCases([...relatedCases, { industry: '', title: '', result: '' }]);
+  const removeRelatedCase = (index: number) => setRelatedCases(relatedCases.filter((_, i) => i !== index));
+
+  // Metrics list manager
+  const handleMetricChange = (index: number, key: keyof MetricItem, value: string) => {
+    const updated = [...metrics];
+    updated[index] = { ...updated[index], [key]: value };
+    setMetrics(updated);
+  };
+  const addMetric = () => setMetrics([...metrics, { value: '', label: '' }]);
+  const removeMetric = (index: number) => setMetrics(metrics.filter((_, i) => i !== index));
+
   const handleSave = async () => {
-    if (!formData.title || !editor?.getHTML()) {
-      alert("Title and content are required");
+    if (!formData.title) {
+      alert("Title is required");
       return;
     }
     if (!isSlugUnique) {
@@ -576,7 +678,7 @@ export default function CaseStudyEditorModal({
         urlMap.set(img.tempUrl, uploadedUrl);
       }
 
-      let finalContent = editor.getHTML();
+      let finalContent = editor?.getHTML() || "";
       urlMap.forEach((uploadedUrl, blobUrl) => {
         finalContent = finalContent.replaceAll(blobUrl, uploadedUrl);
       });
@@ -598,8 +700,25 @@ export default function CaseStudyEditorModal({
         featuredImageName: formData.featuredImageName,
         status: formData.status,
         content: finalContent,
-        readTime: calculateReadingTime(editor.getText()),
+        readTime: editor ? calculateReadingTime(editor.getText()) : 5,
         updatedAt: serverTimestamp(),
+        // Extra detail fields
+        challenge,
+        outcome,
+        visualType,
+        timeline,
+        teamSize,
+        approach,
+        lessons: lessonsInput.split('\n').map(l => l.trim()).filter(Boolean),
+        clientQuote: {
+          text: clientQuoteText,
+          author: clientQuoteAuthor,
+          role: clientQuoteRole
+        },
+        stack: techStackInput.split(',').map(s => s.trim()).filter(Boolean),
+        team,
+        relatedCases,
+        metrics
       };
 
       if (caseStudy) {
@@ -637,38 +756,272 @@ export default function CaseStudyEditorModal({
           </button>
         </div>
 
+        {/* Tab switcher */}
+        <div className="flex border-b border-line px-6 bg-paper gap-6 text-sm font-semibold">
+          <button
+            onClick={() => setActiveTab('meta')}
+            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${activeTab === 'meta' ? 'border-white text-white' : 'border-transparent text-ink-soft hover:text-white'}`}
+          >
+            Basic Metadata
+          </button>
+          <button
+            onClick={() => setActiveTab('details')}
+            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${activeTab === 'details' ? 'border-white text-white' : 'border-transparent text-ink-soft hover:text-white'}`}
+          >
+            Layout Sections (Advanced)
+          </button>
+          <button
+            onClick={() => setActiveTab('content')}
+            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${activeTab === 'content' ? 'border-white text-white' : 'border-transparent text-ink-soft hover:text-white'}`}
+          >
+            Rich Editor Content
+          </button>
+        </div>
+
         {/* Content panel */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
-          <CaseStudyMetadataForm
-            formData={formData}
-            setFormData={setFormData}
-            tags={tags}
-            setTags={setTags}
-            tagInput={tagInput}
-            setTagInput={setTagInput}
-            useCustomSlug={useCustomSlug}
-            setUseCustomSlug={setUseCustomSlug}
-            isSlugUnique={isSlugUnique}
-            slugChecking={slugChecking}
-            uploadingFeaturedImage={false}
-            onTitleChange={handleTitleChange}
-            onFeaturedImageUpload={handleFeaturedImageUpload}
-            onRemoveFeaturedImage={handleRemoveFeaturedImage}
-            generateSlugRaw={generateSlugRaw}
-          />
-
-          <div className="border border-line rounded-xl overflow-hidden">
-            <EditorToolbar
-              editor={editor}
-              uploadingImage={false}
-              onImageUpload={handleEditorImageUpload}
-              onLinkAdd={addLink}
-              onCodeBlockClick={() => setShowCodeModal(true)}
+          {activeTab === 'meta' && (
+            <CaseStudyMetadataForm
+              formData={formData}
+              setFormData={setFormData}
+              tags={tags}
+              setTags={setTags}
+              tagInput={tagInput}
+              setTagInput={setTagInput}
+              useCustomSlug={useCustomSlug}
+              setUseCustomSlug={setUseCustomSlug}
+              isSlugUnique={isSlugUnique}
+              slugChecking={slugChecking}
+              uploadingFeaturedImage={false}
+              onTitleChange={handleTitleChange}
+              onFeaturedImageUpload={handleFeaturedImageUpload}
+              onRemoveFeaturedImage={handleRemoveFeaturedImage}
+              generateSlugRaw={generateSlugRaw}
             />
-            <div className="p-4 bg-ink border-t border-line min-h-[400px] text-white overflow-x-auto">
-              <EditorContent editor={editor} />
+          )}
+
+          {activeTab === 'details' && (
+            <div className="space-y-6 text-white max-w-4xl">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-ink-soft mb-2">Visual Graphic Type</label>
+                  <select 
+                    value={visualType} 
+                    onChange={e => setVisualType(e.target.value as any)}
+                    className="w-full bg-ink border border-line rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-white"
+                  >
+                    <option value="dashboard">Dashboard Overview</option>
+                    <option value="workflow">Classifier / Agent Workflow</option>
+                    <option value="document">OCR Document Extraction</option>
+                    <option value="map">Route Shipping Map</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-ink-soft mb-2">Timeline</label>
+                  <input 
+                    type="text" 
+                    value={timeline} 
+                    onChange={e => setTimeline(e.target.value)}
+                    placeholder="e.g. 12 Weeks" 
+                    className="w-full bg-ink border border-line rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-ink-soft mb-2">Team Size</label>
+                  <input 
+                    type="text" 
+                    value={teamSize} 
+                    onChange={e => setTeamSize(e.target.value)}
+                    placeholder="e.g. 3 Engineers" 
+                    className="w-full bg-ink border border-line rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-white"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-ink-soft mb-2">Core Technologies (Comma separated)</label>
+                <input 
+                  type="text" 
+                  value={techStackInput} 
+                  onChange={e => setTechStackInput(e.target.value)}
+                  placeholder="LangChain, Pinecone, FastAPI, Docker, AWS" 
+                  className="w-full bg-ink border border-line rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-white"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-ink-soft mb-2">The Challenge</label>
+                <textarea 
+                  rows={4}
+                  value={challenge} 
+                  onChange={e => setChallenge(e.target.value)}
+                  placeholder="Describe the client's problem, constraints, and starting context..." 
+                  className="w-full bg-ink border border-line rounded-lg p-4 text-xs text-white focus:outline-none focus:border-white leading-relaxed"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-ink-soft mb-2">Outcomes & Impact</label>
+                <textarea 
+                  rows={4}
+                  value={outcome} 
+                  onChange={e => setOutcome(e.target.value)}
+                  placeholder="Describe the final results, metrics improvements, and business value generated..." 
+                  className="w-full bg-ink border border-line rounded-lg p-4 text-xs text-white focus:outline-none focus:border-white leading-relaxed"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-ink-soft mb-2">Key Lessons Learned (Enter one per line)</label>
+                <textarea 
+                  rows={3}
+                  value={lessonsInput} 
+                  onChange={e => setLessonsInput(e.target.value)}
+                  placeholder="Vector search alone is insufficient for structured customs queries&#10;Chunking must align with layout structures" 
+                  className="w-full bg-ink border border-line rounded-lg p-4 text-xs text-white font-mono focus:outline-none focus:border-white leading-relaxed"
+                />
+              </div>
+
+              {/* Client Quote Box */}
+              <div className="border border-line rounded-xl p-5 bg-ink/40 space-y-4">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-ink-soft">Client Quote</h3>
+                <div>
+                  <label className="block text-[10px] uppercase tracking-wider text-ink-soft mb-1">Quote Text</label>
+                  <textarea 
+                    rows={2}
+                    value={clientQuoteText} 
+                    onChange={e => setClientQuoteText(e.target.value)}
+                    placeholder="The custom search engine built by Botmartz changed how our operations team works..." 
+                    className="w-full bg-ink border border-line rounded-lg p-3 text-xs text-white focus:outline-none focus:border-white leading-relaxed"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[10px] uppercase tracking-wider text-ink-soft mb-1">Quote Author</label>
+                    <input 
+                      type="text" 
+                      value={clientQuoteAuthor} 
+                      onChange={e => setClientQuoteAuthor(e.target.value)}
+                      placeholder="e.g. Markus Vance" 
+                      className="w-full bg-ink border border-line rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] uppercase tracking-wider text-ink-soft mb-1">Author Role / Designation</label>
+                    <input 
+                      type="text" 
+                      value={clientQuoteRole} 
+                      onChange={e => setClientQuoteRole(e.target.value)}
+                      placeholder="e.g. VP of Operations" 
+                      className="w-full bg-ink border border-line rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-white"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Metrics list manager */}
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-ink-soft">Performance Metrics</label>
+                  <button onClick={addMetric} className="text-xs text-[#00B8F0] hover:underline flex items-center gap-1"><Plus size={14} /> Add Metric</button>
+                </div>
+                {metrics.length === 0 ? (
+                  <div className="text-xs text-ink-soft bg-ink/40 p-3 rounded-lg border border-line border-dashed text-center">No custom metrics. Standard default metrics will be loaded.</div>
+                ) : (
+                  <div className="space-y-2">
+                    {metrics.map((m, idx) => (
+                      <div key={idx} className="flex gap-3 bg-ink/50 p-2.5 rounded-lg border border-line items-center">
+                        <input className="w-24 bg-paper border border-line rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-white" placeholder="Value (70%)" value={m.value} onChange={e => handleMetricChange(idx, 'value', e.target.value)} />
+                        <input className="flex-1 bg-paper border border-line rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-white" placeholder="Metric label (Faster retrieval)" value={m.label} onChange={e => handleMetricChange(idx, 'label', e.target.value)} />
+                        <button onClick={() => removeMetric(idx)} className="p-1.5 text-red-500 hover:text-red-400 bg-paper border border-line rounded"><Trash2 size={13} /></button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Approach list manager */}
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-ink-soft">Approach Steps</label>
+                  <button onClick={addApproachStep} className="text-xs text-[#00B8F0] hover:underline flex items-center gap-1"><Plus size={14} /> Add Step</button>
+                </div>
+                {approach.length === 0 ? (
+                  <div className="text-xs text-ink-soft bg-ink/40 p-3 rounded-lg border border-line border-dashed text-center">No custom approach steps. Standard default steps will be loaded.</div>
+                ) : (
+                  <div className="space-y-2">
+                    {approach.map((step, idx) => (
+                      <div key={idx} className="flex gap-3 bg-ink/50 p-3 rounded-lg border border-line items-start">
+                        <input className="w-10 bg-paper border border-line rounded px-2 py-1.5 text-xs text-white focus:outline-none focus:border-white text-center shrink-0" placeholder="#" value={step.n} onChange={e => handleApproachChange(idx, 'n', e.target.value)} />
+                        <input className="w-1/3 bg-paper border border-line rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white shrink-0" placeholder="Step Title" value={step.title} onChange={e => handleApproachChange(idx, 'title', e.target.value)} />
+                        <input className="flex-1 bg-paper border border-line rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white" placeholder="Step description details" value={step.desc} onChange={e => handleApproachChange(idx, 'desc', e.target.value)} />
+                        <button onClick={() => removeApproachStep(idx)} className="p-1.5 text-red-500 hover:text-red-400 bg-paper border border-line rounded"><Trash2 size={13} /></button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Project team manager */}
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-ink-soft">Project Team Members</label>
+                  <button onClick={addTeamMember} className="text-xs text-[#00B8F0] hover:underline flex items-center gap-1"><Plus size={14} /> Add Team Member</button>
+                </div>
+                {team.length === 0 ? (
+                  <div className="text-xs text-ink-soft bg-ink/40 p-3 rounded-lg border border-line border-dashed text-center">No custom team. Standard default team will be loaded.</div>
+                ) : (
+                  <div className="space-y-2">
+                    {team.map((t, idx) => (
+                      <div key={idx} className="flex gap-3 bg-ink/50 p-2.5 rounded-lg border border-line items-center">
+                        <input className="w-16 bg-paper border border-line rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-white text-center shrink-0" placeholder="KG" value={t.initials} onChange={e => handleTeamChange(idx, 'initials', e.target.value)} />
+                        <input className="w-1/3 bg-paper border border-line rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white shrink-0" placeholder="Karan Goel" value={t.name} onChange={e => handleTeamChange(idx, 'name', e.target.value)} />
+                        <input className="flex-1 bg-paper border border-line rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white" placeholder="AI Engineer" value={t.role} onChange={e => handleTeamChange(idx, 'role', e.target.value)} />
+                        <button onClick={() => removeTeamMember(idx)} className="p-1.5 text-red-500 hover:text-red-400 bg-paper border border-line rounded"><Trash2 size={13} /></button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Related case studies manager */}
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-ink-soft">Related Case Studies</label>
+                  <button onClick={addRelatedCase} className="text-xs text-[#00B8F0] hover:underline flex items-center gap-1"><Plus size={14} /> Add Related Case</button>
+                </div>
+                {relatedCases.length === 0 ? (
+                  <div className="text-xs text-ink-soft bg-ink/40 p-3 rounded-lg border border-line border-dashed text-center">No custom related cases. Standard default cases will be loaded.</div>
+                ) : (
+                  <div className="space-y-2">
+                    {relatedCases.map((rc, idx) => (
+                      <div key={idx} className="flex gap-3 bg-ink/50 p-2.5 rounded-lg border border-line items-center">
+                        <input className="w-1/4 bg-paper border border-line rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-white shrink-0" placeholder="SaaS & Support" value={rc.industry} onChange={e => handleRelatedChange(idx, 'industry', e.target.value)} />
+                        <input className="flex-1 bg-paper border border-line rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white" placeholder="Case Study Title" value={rc.title} onChange={e => handleRelatedChange(idx, 'title', e.target.value)} />
+                        <input className="w-1/4 bg-paper border border-line rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-white shrink-0" placeholder="45% Auto-Resolution" value={rc.result} onChange={e => handleRelatedChange(idx, 'result', e.target.value)} />
+                        <button onClick={() => removeRelatedCase(idx)} className="p-1.5 text-red-500 hover:text-red-400 bg-paper border border-line rounded"><Trash2 size={13} /></button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          )}
+
+          {activeTab === 'content' && (
+            <div className="border border-line rounded-xl overflow-hidden">
+              <EditorToolbar
+                editor={editor}
+                uploadingImage={false}
+                onImageUpload={handleEditorImageUpload}
+                onLinkAdd={addLink}
+                onCodeBlockClick={() => setShowCodeModal(true)}
+              />
+              <div className="p-4 bg-ink border-t border-line min-h-[400px] text-white overflow-x-auto">
+                <EditorContent editor={editor} />
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Action buttons */}

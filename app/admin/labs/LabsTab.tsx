@@ -52,7 +52,7 @@ const EMPTY_LAB: Omit<Lab, "id"> = {
 
 const CATEGORIES = ["AI Agents", "Enterprise RAG", "Computer Vision", "Developer Tools", "Infrastructure", "Other"];
 
-export default function LabsTab() {
+export default function LabsTab({ isEmbedded = false, onLabsCountChange }: { isEmbedded?: boolean; onLabsCountChange?: (count: number) => void }) {
   const [labs, setLabs] = useState<Lab[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -78,6 +78,7 @@ export default function LabsTab() {
       const list: Lab[] = [];
       snap.forEach((d) => list.push({ id: d.id, ...d.data() } as Lab));
       setLabs(list);
+      if (onLabsCountChange) onLabsCountChange(list.length);
     } catch {
       // fallback: fetch without ordering if index not ready
       try {
@@ -85,13 +86,14 @@ export default function LabsTab() {
         const list: Lab[] = [];
         snap.forEach((d) => list.push({ id: d.id, ...d.data() } as Lab));
         setLabs(list);
+        if (onLabsCountChange) onLabsCountChange(list.length);
       } catch (e) {
         showToast("Failed to load labs", "error");
       }
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [onLabsCountChange]);
 
   useEffect(() => { fetchLabs(); }, [fetchLabs]);
 
@@ -197,7 +199,7 @@ export default function LabsTab() {
   };
 
   return (
-    <div className={`${interTight.className} p-6 max-w-[1400px] text-admin-text`}>
+    <div className={`${isEmbedded ? "" : `${interTight.className} p-6 max-w-[1400px]`} text-admin-text`}>
 
       {/* ── Toast ── */}
       {toast && (
@@ -212,22 +214,24 @@ export default function LabsTab() {
       )}
 
       {/* ── Header ── */}
-      <div className="mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-admin-text flex items-center gap-2">
-            <Layers size={24} className="text-admin-accent" /> Labs Manager
-          </h1>
-          <p className="text-sm text-admin-text-muted mt-0.5">
-            Manage all Botmartz Labs projects — visible on the public Labs page
-          </p>
+      {!isEmbedded && (
+        <div className="mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-admin-text flex items-center gap-2">
+              <Layers size={24} className="text-admin-accent" /> Labs Manager
+            </h1>
+            <p className="text-sm text-admin-text-muted mt-0.5">
+              Manage all Botmartz Labs projects — visible on the public Labs page
+            </p>
+          </div>
+          <button
+            onClick={openAdd}
+            className="flex items-center gap-2 px-5 py-2.5 bg-admin-accent hover:bg-admin-accent/80 text-white text-sm font-semibold rounded-xl transition-all shadow-sm shrink-0"
+          >
+            <Plus size={16} /> Add New Lab
+          </button>
         </div>
-        <button
-          onClick={openAdd}
-          className="flex items-center gap-2 px-5 py-2.5 bg-admin-accent hover:bg-admin-accent/80 text-white text-sm font-semibold rounded-xl transition-all shadow-sm shrink-0"
-        >
-          <Plus size={16} /> Add New Lab
-        </button>
-      </div>
+      )}
 
       {/* ── Stats Cards ── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -250,19 +254,30 @@ export default function LabsTab() {
       </div>
 
       {/* ── Search Bar ── */}
-      <div className="mb-4 flex items-center gap-3">
-        <div className="relative flex-1 max-w-xs">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-admin-text-muted" />
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search labs..."
-            className="w-full bg-admin-bg border border-admin-border rounded-xl pl-9 pr-4 py-2.5 text-sm text-admin-text placeholder-admin-text-muted focus:outline-none focus:border-admin-accent"
-          />
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3 flex-1">
+          <div className="relative flex-1 max-w-xs">
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-admin-text-muted" />
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search labs..."
+              className="w-full bg-admin-bg border border-admin-border rounded-xl pl-9 pr-4 py-2.5 text-sm text-admin-text placeholder-admin-text-muted focus:outline-none focus:border-admin-accent"
+            />
+          </div>
+          <button onClick={fetchLabs} className="p-2.5 rounded-xl border border-admin-border hover:bg-admin-bg transition-colors shrink-0">
+            <RefreshCw size={15} className="text-admin-text-muted" />
+          </button>
         </div>
-        <button onClick={fetchLabs} className="p-2.5 rounded-xl border border-admin-border hover:bg-admin-bg transition-colors">
-          <RefreshCw size={15} className="text-admin-text-muted" />
-        </button>
+
+        {isEmbedded && (
+          <button
+            onClick={openAdd}
+            className="flex items-center gap-2 px-5 py-2.5 bg-admin-accent hover:bg-admin-accent/80 text-white text-sm font-semibold rounded-xl transition-all shadow-sm shrink-0"
+          >
+            <Plus size={16} /> Add New Lab
+          </button>
+        )}
       </div>
 
       {/* ── Table ── */}

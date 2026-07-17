@@ -64,6 +64,32 @@ export default async function WorkPage() {
     }
   } catch (e) {}
 
+  let dbCases: any[] = [];
+  try {
+    const snapshot = await adminDb.collection("case-studies")
+      .where("status", "==", "published")
+      .orderBy("createdAt", "desc")
+      .get();
+    dbCases = snapshot.docs.map(doc => {
+        const data = doc.data();
+        const formatTimestamp = (ts: any) => {
+          if (!ts) return null;
+          if (typeof ts.toDate === 'function') {
+            return new Date(ts.toDate()).toISOString();
+          }
+          return new Date(ts).toISOString();
+        };
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: formatTimestamp(data.createdAt),
+        };
+    });
+  } catch (err) {
+    console.error("Error loading case studies:", err);
+  }
+
+  const sanitizedCases = JSON.parse(JSON.stringify(dbCases));
   const sanitizedHero = JSON.parse(JSON.stringify(heroContent));
 
   return (
@@ -72,6 +98,7 @@ export default async function WorkPage() {
       structuredData={structuredData}
       aeoQuestion={aeoQuestion}
       aeoAnswer={aeoAnswer}
+      dbCases={sanitizedCases}
     />
   );
 }

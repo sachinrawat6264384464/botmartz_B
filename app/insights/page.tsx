@@ -49,6 +49,33 @@ export default async function InsightsPage() {
     }
   } catch (e) {}
 
+  let dbArticles: any[] = [];
+  try {
+    const snapshot = await adminDb.collection("blog-posts")
+      .where("status", "==", "published")
+      .orderBy("createdAt", "desc")
+      .get();
+    dbArticles = snapshot.docs.map(doc => {
+        const data = doc.data();
+        const formatTimestamp = (ts: any) => {
+          if (!ts) return null;
+          if (typeof ts.toDate === 'function') {
+            return new Date(ts.toDate()).toISOString();
+          }
+          return new Date(ts).toISOString();
+        };
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: formatTimestamp(data.createdAt),
+        };
+    });
+  } catch (err) {
+    console.error("Error loading blog posts:", err);
+  }
+
+  const sanitizedArticles = JSON.parse(JSON.stringify(dbArticles));
+
   return (
     <main className="bg-[#050B14] min-h-screen text-white">
       
@@ -106,7 +133,7 @@ export default async function InsightsPage() {
       </section>
 
       {/* MAIN BODY CONTENT (EXACT SCREENSHOT DESIGN) */}
-      <InsightsListingSection />
+      <InsightsListingSection dbArticles={sanitizedArticles} />
 
     </main>
   );

@@ -156,14 +156,39 @@ const POPULAR_ARTICLES = [
   { id: 5, title: "Prompt Engineering Patterns That Work", date: "Apr 2, 2024", visual: "prompt" }
 ];
 
-export default function InsightsListingSection() {
+const generateSlugRaw = (title: string) => {
+  return title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .trim();
+};
+
+export default function InsightsListingSection({ dbArticles = [] }: { dbArticles?: any[] }) {
   const [activeCategory, setActiveCategory] = useState<string>("All Articles");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [mobileFilterOpen, setMobileFilterOpen] = useState<boolean>(false);
 
+  const mergedArticles = useMemo(() => {
+    const formattedDb = dbArticles.map((art) => ({
+      id: art.id,
+      title: art.title,
+      category: art.category?.toUpperCase() || "AI ENGINEERING",
+      description: art.excerpt || art.description || "",
+      author: art.author || "Botmartz Team",
+      date: art.createdAt ? new Date(art.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent",
+      readTime: `${art.readTime || 5} min read`,
+      slug: art.slug || generateSlugRaw(art.title),
+      visualType: (art.visualType || "mlops-dashboard") as any
+    }));
+
+    return [...formattedDb, ...ARTICLES_DATA.map(art => ({ ...art, slug: art.slug || generateSlugRaw(art.title) }))];
+  }, [dbArticles]);
+
   // Filter logic
   const filteredArticles = useMemo(() => {
-    return ARTICLES_DATA.filter((item) => {
+    return mergedArticles.filter((item) => {
       // Check category match
       const matchesCategory =
         activeCategory === "All Articles" ||
@@ -181,9 +206,9 @@ export default function InsightsListingSection() {
 
       return matchesCategory && matchesSearch;
     });
-  }, [activeCategory, searchQuery]);
+  }, [mergedArticles, activeCategory, searchQuery]);
 
-  const featuredArticle = filteredArticles.find((a) => a.featured) || ARTICLES_DATA[0];
+  const featuredArticle = filteredArticles.find((a) => a.featured) || filteredArticles[0] || ARTICLES_DATA[0];
   const gridArticles = filteredArticles.filter((a) => a.id !== featuredArticle?.id);
 
   return (
@@ -253,7 +278,7 @@ export default function InsightsListingSection() {
             
             {/* FEATURED ARTICLE CARD (If showing all or if featured matches) */}
             {featuredArticle && (
-              <Link href="/contact" className="block group">
+              <Link href={`/insights/${featuredArticle.slug}`} className="block group">
                 <article className="bg-white border border-[#E2E8F0] rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
                   
                   {/* Left Graphic Block: RAG Schematic */}
@@ -352,7 +377,7 @@ export default function InsightsListingSection() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
                 {gridArticles.map((art) => (
-                  <Link key={art.id} href="/contact" className="block group h-full">
+                  <Link key={art.id} href={`/insights/${art.slug}`} className="block group h-full">
                     <article className="bg-white border border-[#E2E8F0] rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all flex flex-col h-full">
                       
                       {/* Top Dark Graphic Box */}
@@ -575,24 +600,28 @@ export default function InsightsListingSection() {
                 POPULAR ARTICLES
               </div>
               <div className="space-y-5">
-                {POPULAR_ARTICLES.map((art, idx) => (
-                  <Link key={art.id} href="/contact" className="flex items-center gap-4 group block">
-                    <div className="w-14 h-12 rounded-lg bg-[#060D1A] border border-[#1E293B] relative flex items-center justify-center shrink-0 overflow-hidden shadow-inner">
-                      <div className="absolute top-1 left-1 w-4.5 h-4.5 rounded-full bg-[#0066FF] text-white text-[10px] font-bold flex items-center justify-center shadow z-10">
-                        {idx + 1}
+                {POPULAR_ARTICLES.map((art, idx) => {
+                  const matchingArt = mergedArticles.find(m => m.title.includes(art.title) || m.id === art.id);
+                  const href = matchingArt ? `/insights/${matchingArt.slug}` : "/contact";
+                  return (
+                    <Link key={art.id} href={href} className="flex items-center gap-4 group block">
+                      <div className="w-14 h-12 rounded-lg bg-[#060D1A] border border-[#1E293B] relative flex items-center justify-center shrink-0 overflow-hidden shadow-inner">
+                        <div className="absolute top-1 left-1 w-4.5 h-4.5 rounded-full bg-[#0066FF] text-white text-[10px] font-bold flex items-center justify-center shadow z-10">
+                          {idx + 1}
+                        </div>
+                        <Network className="w-5 h-5 text-[#8A9EB0] group-hover:text-[#00B8F0] transition-colors" />
                       </div>
-                      <Network className="w-5 h-5 text-[#8A9EB0] group-hover:text-[#00B8F0] transition-colors" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-semibold text-[13.5px] text-[#0F172A] group-hover:text-[#0066FF] transition-colors leading-snug line-clamp-2">
-                        {art.title}
-                      </h4>
-                      <div className="text-[12px] text-[#64748B] mt-1">
-                        {art.date}
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-[13.5px] text-[#0F172A] group-hover:text-[#0066FF] transition-colors leading-snug line-clamp-2">
+                          {art.title}
+                        </h4>
+                        <div className="text-[12px] text-[#64748B] mt-1">
+                          {art.date}
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
 

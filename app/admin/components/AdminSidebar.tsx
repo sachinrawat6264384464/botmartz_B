@@ -333,8 +333,10 @@ export default function AdminSidebar() {
 
               {/* Work Collapsible Dropdown */}
               {renderCollapsibleGroup('Work', isWorkOpen, setIsWorkOpen, Layers, [
-                { label: 'Case Studies', href: '/admin/pages?page=case-studies', active: pathname === '/admin/pages' && pageParam === 'case-studies', moduleId: 'pages' },
-                { label: 'Labs', href: '/admin/pages?page=labs', active: pathname === '/admin/pages' && pageParam === 'labs', moduleId: 'pages' },
+                { label: 'Case Studies (Posts)', href: '/admin/case-studies', active: pathname === '/admin/case-studies', moduleId: 'case-studies' },
+                { label: 'Case Studies SEO/Hero', href: '/admin/pages?page=case-studies', active: pathname === '/admin/pages' && pageParam === 'case-studies', moduleId: 'pages' },
+                { label: 'Labs (Projects)', href: '/admin/labs', active: pathname === '/admin/labs', moduleId: 'labs' },
+                { label: 'Labs SEO/Hero', href: '/admin/pages?page=labs', active: pathname === '/admin/pages' && pageParam === 'labs', moduleId: 'pages' },
               ])}
 
               {/* Flat Content Items */}
@@ -376,6 +378,7 @@ export default function AdminSidebar() {
             )}
 
             <div className="space-y-0.5">
+              {renderFlatItem('settings', Menu, 'Navigation', '/admin/navigation')}
               {renderFlatItem('settings', Settings, 'Settings', '/admin/settings')}
               {renderFlatItem('super-admin', ShieldAlert, 'Super Admin', '/admin/super-admin')}
             </div>

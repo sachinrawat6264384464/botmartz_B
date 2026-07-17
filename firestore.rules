@@ -10,6 +10,7 @@ service cloud.firestore {
 
     function isSuperAdmin() {
       return isSignedIn() &&
+        exists(/databases/$(database)/documents/user_roles/$(request.auth.uid)) &&
         get(/databases/$(database)/documents/user_roles/$(request.auth.uid))
           .data.isSuperAdmin == true;
     }
@@ -37,13 +38,20 @@ service cloud.firestore {
     // Only super-admins can create, delete, or do full writes.
     match /blog-posts/{docId} {
       allow read: if true;
-      allow update: if isSuperAdmin() ||
-        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views', 'likes']));
+      allow update: if (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views', 'likes'])) ||
+        isSuperAdmin();
     }
 
     // ── case-studies ──────────────────────────────────────────────
     // Anyone can read case-studies. Only super-admins can write.
     match /case-studies/{docId} {
+      allow read: if true;
+      allow write: if isSuperAdmin();
+    }
+
+    // ── jobs ──────────────────────────────────────────────────────
+    // Anyone can read jobs. Only super-admins can write.
+    match /jobs/{docId} {
       allow read: if true;
       allow write: if isSuperAdmin();
     }
@@ -88,6 +96,22 @@ service cloud.firestore {
     }
     match /newsletter_campaigns/{docId} {
       allow read, write: if isSuperAdmin();
+    }
+
+    // ── job_applications ──────────────────────────────────────────
+    // Anyone can submit a job application (create).
+    // Only super-admins can read, update, or delete.
+    match /job_applications/{docId} {
+      allow create: if true;
+      allow read, update, delete: if isSuperAdmin();
+    }
+
+    // ── site_config ───────────────────────────────────────────────
+    // Anyone can read site config (navbar, footer etc).
+    // Only super-admins can write.
+    match /site_config/{docId} {
+      allow read: if true;
+      allow write: if isSuperAdmin();
     }
 
     // ── Deny everything else ──────────────────────────────────────

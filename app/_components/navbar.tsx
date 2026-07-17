@@ -7,8 +7,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ArrowRight, Menu, X, PhoneCall } from "lucide-react";
 import { usePathname } from "next/navigation";
 
-/* ─── NAV STRUCTURE (Without AI Frontier and About section, as requested) ─── */
-const NAV_ITEMS: Array<{ name: string; path: string; dropdown?: Array<{ name: string; path: string }> }> = [
+export type NavDropdownItem = { name: string; path: string };
+export type NavItem = { name: string; path: string; dropdown?: NavDropdownItem[] };
+
+/* ─── DEFAULT NAV ITEMS (fallback if Firestore is empty) ─── */
+const DEFAULT_NAV_ITEMS: NavItem[] = [
   { name: "Home", path: "/" },
   {
     name: "Services",
@@ -45,10 +48,18 @@ const NAV_ITEMS: Array<{ name: string; path: string; dropdown?: Array<{ name: st
       { name: "Discord & Forum", path: "/community" },
     ],
   },
+  {
+    name: "Careers",
+    path: "/careers",
+    dropdown: [
+      { name: "Apply Now", path: "/careers#apply" },
+    ],
+  },
 ];
 
 /* ─── COMPONENT ──────────────────────────────────────────────────────────────── */
-export default function Navbar() {
+export default function Navbar({ navItems }: { navItems?: NavItem[] }) {
+  const NAV_ITEMS = (navItems && navItems.length > 0) ? navItems : DEFAULT_NAV_ITEMS;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();

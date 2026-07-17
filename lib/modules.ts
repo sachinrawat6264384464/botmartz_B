@@ -1,4 +1,4 @@
-import { Home, Mail, BookOpen, MessageSquare, Send, LucideIcon, FileText, Users, FolderKanban, CalendarDays, Bot, Settings, ShieldAlert } from 'lucide-react';
+import { Home, Mail, BookOpen, MessageSquare, Send, LucideIcon, FileText, Users, FolderKanban, CalendarDays, Bot, Settings, ShieldAlert, Layers } from 'lucide-react';
 
 export type ModuleId =
   | 'dashboard'
@@ -9,6 +9,7 @@ export type ModuleId =
   | 'comments'
   | 'newsletter'
   | 'case-studies'
+  | 'labs'
   | 'events'
   | 'jobs'
   | 'partnerships'
@@ -38,6 +39,7 @@ export const MODULES: AppModule[] = [
   { id: 'partnerships', label: 'Partnerships', href: '/admin/partnerships', icon: FileText, badge: true },
   { id: 'blogs',     label: 'Blogs',     href: '/admin/Blogs',      icon: BookOpen },
   { id: 'case-studies', label: 'Case Studies', href: '/admin/case-studies', icon: FileText },
+  { id: 'labs',      label: 'Labs',      href: '/admin/labs',      icon: Layers },
   { id: 'comments',  label: 'Comments',  href: '/admin/comments',   icon: MessageSquare },
   { id: 'newsletter',label: 'Newsletter',href: '/admin/newsletter', icon: Send },
   { id: 'contacts',  label: 'Contact Form', href: '/admin/contacts',icon: Mail, badge: true },
@@ -57,6 +59,7 @@ export const ROUTE_MODULE_MAP: Partial<Record<string, ModuleId>> = {
   '/admin/partnerships':        'partnerships',
   '/admin/Blogs':               'blogs',
   '/admin/case-studies':        'case-studies',
+  '/admin/labs':                'labs',
   '/admin/comments':            'comments',
   '/admin/newsletter':          'newsletter',
   '/admin/contacts':            'contacts',
@@ -64,4 +67,5 @@ export const ROUTE_MODULE_MAP: Partial<Record<string, ModuleId>> = {
   '/admin/pages':               'pages',
   '/admin/settings':            'settings',
   '/admin/super-admin':         'super-admin',
+  '/admin/navigation':          'settings',
 };

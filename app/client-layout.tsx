@@ -3,13 +3,14 @@
 
 import { usePathname } from "next/navigation";
 import { ThemeProvider } from "next-themes";
-import Navbar from "./_components/navbar";
 import { Footer } from "./_components/footer";
 
 export default function ClientLayout({
   children,
+  navbar,
 }: {
   children: React.ReactNode;
+  navbar: React.ReactNode;
 }) {
   const pathname = usePathname();
   const isAdminRoute = pathname?.startsWith('/admin');
@@ -17,7 +18,7 @@ export default function ClientLayout({
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <div id="main-content">
-        {!isAdminRoute && <Navbar />}
+        {!isAdminRoute && navbar}
         {children}
         {!isAdminRoute && <Footer />}
       </div>

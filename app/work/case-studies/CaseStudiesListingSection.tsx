@@ -110,8 +110,31 @@ export function CaseStudiesListingSection({ initialStudies }: { initialStudies?:
   const [selectedCapability, setSelectedCapability] = useState<string | null>(null);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false);
 
+  const combinedStudies = useMemo(() => {
+    const dynamic = (initialStudies || []).map(study => ({
+      id: study.id,
+      title: study.title,
+      slug: study.slug || study.id,
+      excerpt: study.excerpt || "",
+      category: (study.category || "AI Implementations").toUpperCase(),
+      service: study.category || "AI Implementations",
+      industry: study.industry || "Technology",
+      technologies: study.tags || study.technologies || [],
+      metrics: study.metrics || [
+        { value: "70%", label: "Faster information retrieval" },
+        { value: "60%", label: "Reduction in support tickets" }
+      ],
+      visualType: study.visualType || "dashboard"
+    }));
+
+    const dynamicSlugs = new Set(dynamic.map(d => d.slug));
+    const filteredStatic = RICH_CASE_STUDIES.filter(s => !dynamicSlugs.has(s.id));
+
+    return [...dynamic, ...filteredStatic];
+  }, [initialStudies]);
+
   const filteredStudies = useMemo(() => {
-    return RICH_CASE_STUDIES.filter(study => {
+    return combinedStudies.filter(study => {
       // Top filter pills check
       if (activeFilter !== "All Case Studies" && activeFilter !== "Featured") {
         if (activeFilter === "Enterprise RAG" && study.service !== "Enterprise RAG") return false;
@@ -125,7 +148,7 @@ export function CaseStudiesListingSection({ initialStudies }: { initialStudies?:
 
       return true;
     });
-  }, [activeFilter, selectedService, selectedIndustry, selectedCapability]);
+  }, [activeFilter, selectedService, selectedIndustry, selectedCapability, combinedStudies]);
 
   const handleTopFilterClick = (filter: string) => {
     setActiveFilter(filter);
@@ -474,7 +497,7 @@ export function CaseStudiesListingSection({ initialStudies }: { initialStudies?:
                       </div>
 
                       <Link
-                        href="/contact"
+                        href={`/work/case-studies/${study.slug || study.id}`}
                         className="font-semibold text-[14px] text-[#0066FF] hover:underline flex items-center gap-1.5 mt-auto group/link"
                       >
                         View Case Study <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />

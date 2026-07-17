@@ -55,8 +55,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } else {
           // No role doc yet — check if user_roles collection is empty.
           // The very first user to log in becomes super admin automatically.
-          const allRoles = await getDocs(collection(db, 'user_roles'));
-          const isSuperAdmin = allRoles.empty;
+          let isSuperAdmin = false;
+          try {
+            const allRoles = await getDocs(collection(db, 'user_roles'));
+            isSuperAdmin = allRoles.empty;
+          } catch (e) {
+            console.warn("Could not list user_roles (restricted access):", e);
+            isSuperAdmin = false;
+          }
 
           const newRole: UserRole = {
             email: firebaseUser.email ?? '',

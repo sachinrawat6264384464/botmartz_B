@@ -22,11 +22,29 @@ import {
   LucideIcon
 } from "lucide-react";
 import { Inter } from "next/font/google";
+import LabsTab from "../labs/LabsTab";
+
 
 // Types
 interface UseCase {
   title: string;
   description: string;
+  iconName: string;
+}
+
+interface TrustClient {
+  name: string;
+  iconName: string;
+}
+
+interface StatItem {
+  value: string;
+  label: string;
+  iconName: string;
+}
+
+interface TechStackItem {
+  name: string;
   iconName: string;
 }
 
@@ -43,6 +61,7 @@ interface PageConfig {
     badge: string;
     title: string;
     subtitle: string;
+    description?: string;
     ctaText: string;
     ctaLink: string;
   };
@@ -62,6 +81,10 @@ interface PageConfig {
   };
   structuredData: string;
   content?: string;
+  // Home-page-specific sections
+  trustBar?: TrustClient[];
+  stats?: StatItem[];
+  techStackItems?: TechStackItem[];
 }
 
 // All pages we can edit across templates
@@ -95,8 +118,42 @@ const DEFAULT_PAGE_CONTENTS: Record<string, Partial<PageConfig>> = {
   "home": {
     title: "Home Page",
     metadata: { title: "Botmartz - AI Solutions", description: "Home page description.", keywords: ["AI", "Botmartz"] },
-    hero: { badge: "Welcome", title: "Engineering the Future", subtitle: "Delivering Impact.", ctaText: "Learn More", ctaLink: "/about" },
-    useCases: [], techStack: []
+    hero: { badge: "AI Engineering Company", title: 'We Engineer <br /> Production <span class="text-[#00B8F0]">AI Systems</span>', subtitle: "Enterprise RAG. AI Agents. Real Impact.", description: "Botmartz designs, builds, and deploys secure, scalable, and production-ready AI systems for forward-thinking organizations.", ctaText: "Book a Discovery Call", ctaLink: "/contact" },
+    useCases: [
+      { title: "Enterprise RAG", description: "Connect, retrieve, and reason over your enterprise knowledge.", iconName: "Layers" },
+      { title: "AI Agents", description: "Autonomous agents that plan, act and deliver outcomes.", iconName: "Bot" },
+      { title: "Production Ready", description: "Secure, scalable and monitored systems that run in the real world.", iconName: "ShieldCheck" },
+      { title: "AI Engineering", description: "Modern stack. Clean architecture. Reliable engineering.", iconName: "Code2" }
+    ],
+    techStack: [],
+    trustBar: [
+      { name: "EduBridge", iconName: "Layers" },
+      { name: "ShipBank", iconName: "Blocks" },
+      { name: "LexIntell", iconName: "Check" },
+      { name: "DataKraft", iconName: "Code2" },
+      { name: "NextLearn", iconName: "Network" },
+    ],
+    stats: [
+      { value: "20+", label: "Projects Delivered", iconName: "Briefcase" },
+      { value: "2K+", label: "Engineers Trained", iconName: "Users" },
+      { value: "10+", label: "Open Source Repos", iconName: "Code2" },
+      { value: "5★", label: "Client Satisfaction", iconName: "Star" },
+    ],
+    techStackItems: [
+      { name: "OpenAI", iconName: "SiOpenai" },
+      { name: "Milvus", iconName: "Database" },
+      { name: "Weaviate", iconName: "Database" },
+      { name: "PostgreSQL", iconName: "SiPostgresql" },
+      { name: "Azure", iconName: "Cloud" },
+      { name: "Google Cloud", iconName: "SiGooglecloud" },
+      { name: "PyTorch", iconName: "SiPytorch" },
+      { name: "LangGraph", iconName: "LangGraph" },
+      { name: "LangChain", iconName: "LangChain" },
+      { name: "FastAPI", iconName: "SiFastapi" },
+      { name: "TensorFlow", iconName: "SiTensorflow" },
+      { name: "Docker", iconName: "SiDocker" },
+      { name: "AWS", iconName: "SiAmazonwebservices" },
+    ],
   },
   "about": {
     title: "About Us",
@@ -627,7 +684,12 @@ export default function PagesTab() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
-  const [activeSubTab, setActiveSubTab] = useState<"meta" | "hero" | "aeo" | "usecases" | "tech" | "cta" | "schema" | "content">("meta");
+  const [activeSubTab, setActiveSubTab] = useState<"meta" | "hero" | "aeo" | "usecases" | "tech" | "cta" | "schema" | "content" | "homesections">("meta");
+
+  // Home sections editor state
+  const [newTrustClient, setNewTrustClient] = useState<TrustClient>({ name: "", iconName: "" });
+  const [editingStatIndex, setEditingStatIndex] = useState<number | null>(null);
+  const [labsCount, setLabsCount] = useState(0);
 
   // Tag inputs
   const [keywordInput, setKeywordInput] = useState("");
@@ -646,7 +708,7 @@ export default function PagesTab() {
   const isHeroConfigured = !!(formData.hero?.title && formData.hero?.subtitle);
   const isAeoConfigured = !!(formData.aeoQuestion && formData.aeoAnswer);
   const useCaseCount = formData.useCases?.length || 0;
-  const techStackCount = formData.techStack?.length || 0;
+  const techStackCount = selectedPage === "home" ? (formData.techStackItems?.length || 0) : (formData.techStack?.length || 0);
   const isCtaConfigured = !!(formData.cta?.title && formData.cta?.subtitle);
   const isSchemaConfigured = !!formData.structuredData?.trim();
 
@@ -679,7 +741,11 @@ export default function PagesTab() {
           </span>
         );
       case "usecases":
-        return (
+        return selectedPage === "labs" ? (
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-purple-500/10 text-purple-400">
+            {labsCount} project{labsCount !== 1 ? 's' : ''}
+          </span>
+        ) : (
           <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-purple-500/10 text-purple-400">
             {useCaseCount} item{useCaseCount !== 1 ? 's' : ''}
           </span>
@@ -735,11 +801,25 @@ export default function PagesTab() {
     const fetchPageData = async () => {
       setLoading(true);
       try {
+        if (selectedPage === "labs") {
+          const labsSnap = await getDocs(collection(db, "labs"));
+          setLabsCount(labsSnap.size);
+        }
         const docRef = doc(db, "dynamic_pages", selectedPage);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          setFormData({ pageId: selectedPage, ...docSnap.data() } as PageConfig);
+          const dbData = docSnap.data();
+          const defaultData = DEFAULT_PAGE_CONTENTS[selectedPage] || {};
+          setFormData({
+            pageId: selectedPage,
+            ...defaultData,
+            ...dbData,
+            // Ensure trustBar and stats fall back to defaults if they are missing or empty in Firestore
+            trustBar: dbData.trustBar?.length ? dbData.trustBar : defaultData.trustBar,
+            stats: dbData.stats?.length ? dbData.stats : defaultData.stats,
+            techStackItems: dbData.techStackItems?.length ? dbData.techStackItems : defaultData.techStackItems,
+          } as PageConfig);
         } else {
           // Document does not exist in db, load hardcoded fallback default
           const defaultData = DEFAULT_PAGE_CONTENTS[selectedPage] || {};
@@ -1054,10 +1134,11 @@ export default function PagesTab() {
             { id: "meta", label: "Metadata & SEO", desc: "Page Titles & Keywords" },
             { id: "hero", label: "Hero Section", desc: "Hero Text & Call-To-Action" },
             { id: "aeo", label: "AEO Answer Block", desc: "Voice Search Optimization" },
-            { id: "usecases", label: "Use Cases", desc: "Features & Capabilities" },
+            { id: "usecases", label: selectedPage === "labs" ? "Labs Projects" : "Use Cases", desc: selectedPage === "labs" ? "Manage Labs Project Grid" : "Features & Capabilities" },
             { id: "tech", label: "Tech Stack", desc: "Frameworks & Databases" },
             { id: "cta", label: "CTA Section", desc: "Bottom Footer CTA Layout" },
             { id: "schema", label: "JSON-LD Schema", desc: "Custom Structured Data" },
+            ...(selectedPage === "home" ? [{ id: "homesections", label: "Trust Bar & Stats", desc: "Client Logos & Hero Metrics" }] : []),
           ]).map((tab) => {
             const isActive = activeSubTab === tab.id;
             return (
@@ -1223,6 +1304,20 @@ export default function PagesTab() {
                 />
               </div>
 
+              <div>
+                <label className="block text-xs font-bold text-admin-text uppercase tracking-wider mb-2">Detailed Hero Description</label>
+                <textarea
+                  rows={4}
+                  value={formData.hero?.description || ""}
+                  onChange={(e) => setFormData(prev => ({
+                    ...prev,
+                    hero: { ...prev.hero!, description: e.target.value }
+                  }))}
+                  className="w-full bg-admin-bg border border-admin-border rounded-xl px-4 py-3 text-sm text-admin-text placeholder-admin-text-muted focus:outline-none focus:border-admin-accent focus:ring-1 focus:ring-admin-accent resize-none"
+                  placeholder="Enter detailed description text..."
+                />
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-admin-text uppercase tracking-wider mb-2">CTA Button Text</label>
@@ -1290,8 +1385,14 @@ export default function PagesTab() {
 
           {/* TAB 4: USE CASES */}
           {activeSubTab === "usecases" && (
-            <div className="space-y-6">
-              <h3 className="text-lg font-bold text-admin-text border-b border-admin-border pb-3">Use Cases & Dynamic Offerings</h3>
+            selectedPage === "labs" ? (
+              <div className="space-y-6">
+                <h3 className="text-lg font-bold text-admin-text border-b border-admin-border pb-3">Labs Projects Manager</h3>
+                <LabsTab isEmbedded={true} onLabsCountChange={setLabsCount} />
+              </div>
+            ) : (
+              <div className="space-y-6">
+                <h3 className="text-lg font-bold text-admin-text border-b border-admin-border pb-3">Use Cases & Dynamic Offerings</h3>
 
               {/* Dynamic array listing */}
               <div className="space-y-4">
@@ -1363,46 +1464,165 @@ export default function PagesTab() {
                 </button>
               </div>
             </div>
-          )}
+          )
+        )}
 
           {/* TAB 5: TECH STACK */}
           {activeSubTab === "tech" && (
             <div className="space-y-6">
               <h3 className="text-lg font-bold text-admin-text border-b border-admin-border pb-3">Technical Stack & Frameworks</h3>
               
-              <div>
-                <label className="block text-xs font-bold text-admin-text uppercase tracking-wider mb-2">Add Tech Tool / Tag</label>
-                <div className="flex gap-2 mb-4">
-                  <input
-                    type="text"
-                    value={techInput}
-                    onChange={(e) => setTechInput(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && addTech()}
-                    placeholder="e.g. LangGraph, PyTorch, FastAPI"
-                    className="flex-1 bg-admin-bg border border-admin-border rounded-xl px-4 py-2.5 text-sm text-admin-text placeholder-admin-text-muted focus:outline-none focus:border-admin-accent focus:ring-1 focus:ring-admin-accent"
-                  />
-                  <button
-                    onClick={addTech}
-                    className="px-4 py-2.5 bg-admin-bg border border-admin-border rounded-xl text-admin-text hover:text-admin-accent transition-colors text-sm font-semibold"
-                  >
-                    Add
-                  </button>
-                </div>
+              {selectedPage === "home" ? (
+                // Dedicated Home Page Tech Stack Icon Editor
+                <div className="space-y-6">
+                  <div className="space-y-3">
+                    {(formData.techStackItems || []).map((item, i) => (
+                      <div key={i} className="flex items-center gap-3 p-3 bg-admin-bg/40 border border-admin-border rounded-xl">
+                        <span className="px-2 py-0.5 bg-admin-accent/10 border border-admin-accent/20 text-admin-accent font-mono text-[9px] uppercase font-bold rounded shrink-0">
+                          {item.iconName || 'icon'}
+                        </span>
+                        <span className="flex-1 text-sm font-semibold text-admin-text">{item.name}</span>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={item.name}
+                            onChange={(e) => {
+                              const updated = [...(formData.techStackItems || [])];
+                              updated[i] = { ...updated[i], name: e.target.value };
+                              setFormData(prev => ({ ...prev, techStackItems: updated }));
+                            }}
+                            className="w-36 bg-admin-bg border border-admin-border rounded-lg px-2 py-1 text-xs text-admin-text focus:outline-none focus:border-admin-accent"
+                            placeholder="Name"
+                          />
+                          <select
+                            value={item.iconName || "SiOpenai"}
+                            onChange={(e) => {
+                              const updated = [...(formData.techStackItems || [])];
+                              updated[i] = { ...updated[i], iconName: e.target.value };
+                              setFormData(prev => ({ ...prev, techStackItems: updated }));
+                            }}
+                            className="bg-admin-bg border border-admin-border rounded-lg px-2 py-1 text-xs text-admin-text focus:outline-none focus:border-admin-accent font-mono"
+                          >
+                            <option value="SiOpenai">SiOpenai (OpenAI)</option>
+                            <option value="SiPytorch">SiPytorch (PyTorch)</option>
+                            <option value="SiGooglecloud">SiGooglecloud (Google Cloud)</option>
+                            <option value="SiFastapi">SiFastapi (FastAPI)</option>
+                            <option value="SiTensorflow">SiTensorflow (TensorFlow)</option>
+                            <option value="SiDocker">SiDocker (Docker)</option>
+                            <option value="SiAmazonwebservices">SiAmazonwebservices (AWS)</option>
+                            <option value="SiPostgresql">SiPostgresql (PostgreSQL)</option>
+                            <option value="Database">Database (General DB)</option>
+                            <option value="Cloud">Cloud (General Cloud)</option>
+                            <option value="LangGraph">LangGraph (Emoji)</option>
+                            <option value="LangChain">LangChain (Emoji)</option>
+                          </select>
+                          <button
+                            onClick={() => {
+                              const updated = (formData.techStackItems || []).filter((_, idx) => idx !== i);
+                              setFormData(prev => ({ ...prev, techStackItems: updated }));
+                            }}
+                            className="p-1.5 hover:bg-red-500/10 text-admin-text-muted hover:text-red-500 rounded-lg transition-colors"
+                          >
+                            <Trash2 size={13} />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                    {(formData.techStackItems || []).length === 0 && (
+                      <div className="py-8 border border-dashed border-admin-border rounded-xl flex items-center justify-center text-xs text-admin-text-muted italic">
+                        No tech stack items added yet.
+                      </div>
+                    )}
+                  </div>
 
-                <div className="flex flex-wrap gap-2">
-                  {(formData.techStack || []).map((t) => (
-                    <span key={t} className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-admin-bg border border-admin-border text-admin-text font-mono text-xs font-semibold rounded-lg">
-                      {t}
-                      <button onClick={() => removeTech(t)} className="text-admin-text-muted hover:text-red-500 transition-colors">
-                        <X size={12} />
-                      </button>
-                    </span>
-                  ))}
-                  {(formData.techStack || []).length === 0 && (
-                    <p className="text-xs text-admin-text-muted italic">No stack tags configured</p>
-                  )}
+                  {/* Add Tech Stack Item */}
+                  <div className="bg-admin-bg/60 border border-admin-border rounded-2xl p-4 space-y-3">
+                    <h5 className="text-xs font-bold text-admin-text uppercase tracking-wider">Add Tech Stack Item</h5>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[10px] font-bold text-admin-text-muted uppercase mb-1">Name</label>
+                        <input
+                          id="new-tech-name"
+                          type="text"
+                          className="w-full bg-admin-bg border border-admin-border rounded-xl px-3 py-2 text-xs text-admin-text focus:outline-none focus:border-admin-accent"
+                          placeholder="e.g. PyTorch"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-admin-text-muted uppercase mb-1">Icon Key</label>
+                        <select
+                          id="new-tech-icon"
+                          className="w-full bg-admin-bg border border-admin-border rounded-xl px-3 py-2 text-xs text-admin-text font-mono focus:outline-none focus:border-admin-accent"
+                        >
+                          <option value="SiOpenai">SiOpenai (OpenAI)</option>
+                          <option value="SiPytorch">SiPytorch (PyTorch)</option>
+                          <option value="SiGooglecloud">SiGooglecloud (Google Cloud)</option>
+                          <option value="SiFastapi">SiFastapi (FastAPI)</option>
+                          <option value="SiTensorflow">SiTensorflow (TensorFlow)</option>
+                          <option value="SiDocker">SiDocker (Docker)</option>
+                          <option value="SiAmazonwebservices">SiAmazonwebservices (AWS)</option>
+                          <option value="SiPostgresql">SiPostgresql (PostgreSQL)</option>
+                          <option value="Database">Database (General DB)</option>
+                          <option value="Cloud">Cloud (General Cloud)</option>
+                          <option value="LangGraph">LangGraph (Emoji)</option>
+                          <option value="LangChain">LangChain (Emoji)</option>
+                        </select>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => {
+                        const nameVal = (document.getElementById('new-tech-name') as HTMLInputElement)?.value.trim();
+                        const iconVal = (document.getElementById('new-tech-icon') as HTMLSelectElement)?.value;
+                        if (nameVal && iconVal) {
+                          setFormData(prev => ({
+                            ...prev,
+                            techStackItems: [...(prev.techStackItems || []), { name: nameVal, iconName: iconVal }]
+                          }));
+                          (document.getElementById('new-tech-name') as HTMLInputElement).value = '';
+                        }
+                      }}
+                      className="flex items-center gap-1.5 px-4 py-2 bg-admin-accent/10 border border-admin-accent/20 hover:bg-admin-accent text-admin-accent hover:text-white text-xs font-bold rounded-xl transition-all"
+                    >
+                      <Plus size={13} /> Add Stack Item
+                    </button>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                // Regular Tag Editor for other pages
+                <div>
+                  <label className="block text-xs font-bold text-admin-text uppercase tracking-wider mb-2">Add Tech Tool / Tag</label>
+                  <div className="flex gap-2 mb-4">
+                    <input
+                      type="text"
+                      value={techInput}
+                      onChange={(e) => setTechInput(e.target.value)}
+                      onKeyDown={(e) => e.key === "Enter" && addTech()}
+                      placeholder="e.g. LangGraph, PyTorch, FastAPI"
+                      className="flex-1 bg-admin-bg border border-admin-border rounded-xl px-4 py-2.5 text-sm text-admin-text placeholder-admin-text-muted focus:outline-none focus:border-admin-accent focus:ring-1 focus:ring-admin-accent"
+                    />
+                    <button
+                      onClick={addTech}
+                      className="px-4 py-2.5 bg-admin-bg border border-admin-border rounded-xl text-admin-text hover:text-admin-accent transition-colors text-sm font-semibold"
+                    >
+                      Add
+                    </button>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    {(formData.techStack || []).map((t) => (
+                      <span key={t} className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-admin-bg border border-admin-border text-admin-text font-mono text-xs font-semibold rounded-lg">
+                        {t}
+                        <button onClick={() => removeTech(t)} className="text-admin-text-muted hover:text-red-500 transition-colors">
+                          <X size={12} />
+                        </button>
+                      </span>
+                    ))}
+                    {(formData.techStack || []).length === 0 && (
+                      <p className="text-xs text-admin-text-muted italic">No stack tags configured</p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -1450,6 +1670,268 @@ export default function PagesTab() {
                   }))}
                   className="w-full bg-admin-bg border border-admin-border rounded-xl px-4 py-3 text-sm text-admin-text placeholder-admin-text-muted focus:outline-none focus:border-admin-accent focus:ring-1 focus:ring-admin-accent"
                 />
+              </div>
+            </div>
+          )}
+
+          {/* TAB 7b: HOME SECTIONS (trust bar + stats) — only for home page */}
+          {activeSubTab === "homesections" && selectedPage === "home" && (
+            <div className="space-y-8">
+              <h3 className="text-lg font-bold text-admin-text border-b border-admin-border pb-3">Trust Bar & Stats Cards</h3>
+
+              {/* ── TRUST BAR ── */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-sm font-bold text-admin-text">Client Trust Bar</h4>
+                    <p className="text-[11px] text-admin-text-muted mt-0.5">Logos shown in the hero section "Trusted by teams" row</p>
+                  </div>
+                  <span className="inline-flex items-center px-2 py-1 bg-admin-accent/10 border border-admin-accent/20 rounded-full text-[10px] font-bold text-admin-accent">
+                    {(formData.trustBar || []).length} client{(formData.trustBar || []).length !== 1 ? 's' : ''}
+                  </span>
+                </div>
+
+                <div className="space-y-2">
+                  {(formData.trustBar || []).map((client, i) => (
+                    <div key={i} className="flex items-center gap-3 p-3 bg-admin-bg/40 border border-admin-border rounded-xl">
+                      <span className="px-2 py-0.5 bg-admin-accent/10 border border-admin-accent/20 text-admin-accent font-mono text-[9px] uppercase font-bold rounded shrink-0">
+                        {client.iconName || 'icon'}
+                      </span>
+                      <span className="flex-1 text-sm font-semibold text-admin-text">{client.name}</span>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={client.name}
+                          onChange={(e) => {
+                            const updated = [...(formData.trustBar || [])];
+                            updated[i] = { ...updated[i], name: e.target.value };
+                            setFormData(prev => ({ ...prev, trustBar: updated }));
+                          }}
+                          className="w-28 bg-admin-bg border border-admin-border rounded-lg px-2 py-1 text-xs text-admin-text focus:outline-none focus:border-admin-accent"
+                          placeholder="Name"
+                        />
+                        <select
+                          value={client.iconName || "Layers"}
+                          onChange={(e) => {
+                            const updated = [...(formData.trustBar || [])];
+                            updated[i] = { ...updated[i], iconName: e.target.value };
+                            setFormData(prev => ({ ...prev, trustBar: updated }));
+                          }}
+                          className="bg-admin-bg border border-admin-border rounded-lg px-2 py-1 text-xs text-admin-text focus:outline-none focus:border-admin-accent font-mono"
+                        >
+                          <option value="Layers">Layers (Default)</option>
+                          <option value="Blocks">Blocks</option>
+                          <option value="Check">Check</option>
+                          <option value="Code2">Code2</option>
+                          <option value="Network">Network</option>
+                          <option value="Briefcase">Briefcase</option>
+                          <option value="Users">Users</option>
+                          <option value="Star">Star</option>
+                          <option value="Bot">Bot</option>
+                          <option value="Globe">Globe</option>
+                          <option value="Database">Database</option>
+                          <option value="Cloud">Cloud</option>
+                        </select>
+                        <button
+                          onClick={() => {
+                            const updated = (formData.trustBar || []).filter((_, idx) => idx !== i);
+                            setFormData(prev => ({ ...prev, trustBar: updated }));
+                          }}
+                          className="p-1.5 hover:bg-red-500/10 text-admin-text-muted hover:text-red-500 rounded-lg transition-colors"
+                        >
+                          <Trash2 size={13} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  {(formData.trustBar || []).length === 0 && (
+                    <div className="py-8 border border-dashed border-admin-border rounded-xl flex items-center justify-center text-xs text-admin-text-muted italic">
+                      No clients added yet.
+                    </div>
+                  )}
+                </div>
+
+                {/* Add client */}
+                <div className="bg-admin-bg/60 border border-admin-border rounded-2xl p-4 space-y-3">
+                  <h5 className="text-xs font-bold text-admin-text uppercase tracking-wider">Add Client</h5>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold text-admin-text-muted uppercase mb-1">Client Name</label>
+                      <input
+                        type="text"
+                        value={newTrustClient.name}
+                        onChange={(e) => setNewTrustClient(prev => ({ ...prev, name: e.target.value }))}
+                        className="w-full bg-admin-bg border border-admin-border rounded-xl px-3 py-2 text-xs text-admin-text focus:outline-none focus:border-admin-accent"
+                        placeholder="e.g. EduBridge"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-admin-text-muted uppercase mb-1">Lucide Icon Key</label>
+                      <select
+                        value={newTrustClient.iconName || "Layers"}
+                        onChange={(e) => setNewTrustClient(prev => ({ ...prev, iconName: e.target.value }))}
+                        className="w-full bg-admin-bg border border-admin-border rounded-xl px-3 py-2 text-xs text-admin-text font-mono focus:outline-none focus:border-admin-accent"
+                      >
+                        <option value="Layers">Layers (Default)</option>
+                        <option value="Blocks">Blocks</option>
+                        <option value="Check">Check</option>
+                        <option value="Code2">Code2</option>
+                        <option value="Network">Network</option>
+                        <option value="Briefcase">Briefcase</option>
+                        <option value="Users">Users</option>
+                        <option value="Star">Star</option>
+                        <option value="Bot">Bot</option>
+                        <option value="Globe">Globe</option>
+                        <option value="Database">Database</option>
+                        <option value="Cloud">Cloud</option>
+                      </select>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      if (newTrustClient.name.trim()) {
+                        setFormData(prev => ({ ...prev, trustBar: [...(prev.trustBar || []), { ...newTrustClient, iconName: newTrustClient.iconName || "Layers" }] }));
+                        setNewTrustClient({ name: "", iconName: "Layers" });
+                      }
+                    }}
+                    className="flex items-center gap-1.5 px-4 py-2 bg-admin-accent/10 border border-admin-accent/20 hover:bg-admin-accent text-admin-accent hover:text-white text-xs font-bold rounded-xl transition-all"
+                  >
+                    <Plus size={13} /> Add Client
+                  </button>
+                </div>
+              </div>
+
+              {/* ── STATS BAR ── */}
+              <div className="space-y-4 border-t border-admin-border pt-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-sm font-bold text-admin-text">Hero Stats Cards</h4>
+                    <p className="text-[11px] text-admin-text-muted mt-0.5">The 4 metric boxes shown below the hero (20+, 2K+, 10+, 5★)</p>
+                  </div>
+                  <span className="inline-flex items-center px-2 py-1 bg-purple-500/10 border border-purple-500/20 rounded-full text-[10px] font-bold text-purple-400">
+                    {(formData.stats || []).length} stat{(formData.stats || []).length !== 1 ? 's' : ''}
+                  </span>
+                </div>
+
+                <div className="space-y-3">
+                  {(formData.stats || []).map((stat, i) => (
+                    <div key={i} className="flex items-center gap-3 p-3 bg-admin-bg/40 border border-admin-border rounded-xl">
+                      <span className="px-2 py-0.5 bg-purple-500/10 border border-purple-500/20 text-purple-400 font-mono text-[9px] uppercase font-bold rounded shrink-0">
+                        {stat.iconName || 'icon'}
+                      </span>
+                      <div className="flex-1 grid grid-cols-3 gap-2">
+                        <input
+                          type="text"
+                          value={stat.value}
+                          onChange={(e) => {
+                            const updated = [...(formData.stats || [])];
+                            updated[i] = { ...updated[i], value: e.target.value };
+                            setFormData(prev => ({ ...prev, stats: updated }));
+                          }}
+                          className="bg-admin-bg border border-admin-border rounded-lg px-2 py-1 text-xs text-admin-text font-bold focus:outline-none focus:border-admin-accent"
+                          placeholder="Value (e.g. 20+)"
+                        />
+                        <input
+                          type="text"
+                          value={stat.label}
+                          onChange={(e) => {
+                            const updated = [...(formData.stats || [])];
+                            updated[i] = { ...updated[i], label: e.target.value };
+                            setFormData(prev => ({ ...prev, stats: updated }));
+                          }}
+                          className="bg-admin-bg border border-admin-border rounded-lg px-2 py-1 text-xs text-admin-text focus:outline-none focus:border-admin-accent"
+                          placeholder="Label"
+                        />
+                        <select
+                          value={stat.iconName || "Star"}
+                          onChange={(e) => {
+                            const updated = [...(formData.stats || [])];
+                            updated[i] = { ...updated[i], iconName: e.target.value };
+                            setFormData(prev => ({ ...prev, stats: updated }));
+                          }}
+                          className="bg-admin-bg border border-admin-border rounded-lg px-2 py-1 text-xs text-admin-text font-mono focus:outline-none focus:border-admin-accent"
+                        >
+                          <option value="Briefcase">Briefcase</option>
+                          <option value="Users">Users</option>
+                          <option value="Code2">Code2</option>
+                          <option value="Star">Star</option>
+                          <option value="Layers">Layers</option>
+                          <option value="Blocks">Blocks</option>
+                          <option value="Check">Check</option>
+                          <option value="Bot">Bot</option>
+                          <option value="Network">Network</option>
+                          <option value="Globe">Globe</option>
+                          <option value="Database">Database</option>
+                          <option value="Cloud">Cloud</option>
+                        </select>
+                      </div>
+                      <button
+                        onClick={() => {
+                          const updated = (formData.stats || []).filter((_, idx) => idx !== i);
+                          setFormData(prev => ({ ...prev, stats: updated }));
+                        }}
+                        className="p-1.5 hover:bg-red-500/10 text-admin-text-muted hover:text-red-500 rounded-lg transition-colors"
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                    </div>
+                  ))}
+                  {(formData.stats || []).length === 0 && (
+                    <div className="py-8 border border-dashed border-admin-border rounded-xl flex items-center justify-center text-xs text-admin-text-muted italic">
+                      No stats configured.
+                    </div>
+                  )}
+                </div>
+
+                {/* Add stat */}
+                <div className="bg-admin-bg/60 border border-admin-border rounded-2xl p-4 space-y-3">
+                  <h5 className="text-xs font-bold text-admin-text uppercase tracking-wider">Add Stat Card</h5>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold text-admin-text-muted uppercase mb-1">Value *</label>
+                      <input id="new-stat-value" type="text" className="w-full bg-admin-bg border border-admin-border rounded-xl px-3 py-2 text-xs text-admin-text font-bold focus:outline-none focus:border-admin-accent" placeholder="e.g. 50+" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-admin-text-muted uppercase mb-1">Label *</label>
+                      <input id="new-stat-label" type="text" className="w-full bg-admin-bg border border-admin-border rounded-xl px-3 py-2 text-xs text-admin-text focus:outline-none focus:border-admin-accent" placeholder="e.g. Projects Delivered" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-admin-text-muted uppercase mb-1">Icon Key</label>
+                      <select
+                        id="new-stat-icon"
+                        className="w-full bg-admin-bg border border-admin-border rounded-xl px-3 py-2 text-xs text-admin-text font-mono focus:outline-none focus:border-admin-accent"
+                      >
+                        <option value="Briefcase">Briefcase</option>
+                        <option value="Users">Users</option>
+                        <option value="Code2">Code2</option>
+                        <option value="Star">Star</option>
+                        <option value="Layers">Layers</option>
+                        <option value="Blocks">Blocks</option>
+                        <option value="Check">Check</option>
+                        <option value="Bot">Bot</option>
+                        <option value="Network">Network</option>
+                        <option value="Globe">Globe</option>
+                        <option value="Database">Database</option>
+                        <option value="Cloud">Cloud</option>
+                      </select>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      const val = (document.getElementById('new-stat-value') as HTMLInputElement)?.value.trim();
+                      const lbl = (document.getElementById('new-stat-label') as HTMLInputElement)?.value.trim();
+                      const ico = (document.getElementById('new-stat-icon') as HTMLSelectElement)?.value;
+                      if (val && lbl) {
+                        setFormData(prev => ({ ...prev, stats: [...(prev.stats || []), { value: val, label: lbl, iconName: ico || 'Star' }] }));
+                        (document.getElementById('new-stat-value') as HTMLInputElement).value = '';
+                        (document.getElementById('new-stat-label') as HTMLInputElement).value = '';
+                      }
+                    }}
+                    className="flex items-center gap-1.5 px-4 py-2 bg-purple-500/10 border border-purple-500/20 hover:bg-purple-500 text-purple-400 hover:text-white text-xs font-bold rounded-xl transition-all"
+                  >
+                    <Plus size={13} /> Add Stat
+                  </button>
+                </div>
               </div>
             </div>
           )}

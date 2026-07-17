@@ -5,6 +5,7 @@ import "./globals.css";
 import ClientLayout from "./client-layout";
 import { adminDb } from "@/lib/firebase-admin";
 import StructuredData from "./_components/StructuredData";
+import NavbarWrapper from "./_components/NavbarWrapper";
 import Script from "next/script";
 
 const spaceGrotesk = Space_Grotesk({
@@ -167,7 +168,7 @@ export default async function RootLayout({
           ></iframe>
         </noscript>
         
-        <ClientLayout>{children}</ClientLayout>
+        <ClientLayout navbar={<NavbarWrapper />}>{children}</ClientLayout>
       </body>
     </html>
   );

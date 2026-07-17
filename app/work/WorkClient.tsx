@@ -22,11 +22,13 @@ export default function WorkClient({
   structuredData,
   aeoQuestion,
   aeoAnswer,
+  dbCases = [],
 }: {
   heroContent?: any;
   structuredData?: string;
   aeoQuestion?: string;
   aeoAnswer?: string;
+  dbCases?: any[];
 }) {
   const [filter, setFilter] = useState('All Work');
 
@@ -46,7 +48,7 @@ export default function WorkClient({
       desc: 'An always-on assistant that answers doubts, grades quizzes, and tracks learner progress.',
       result: '3x faster doubt resolution',
       glyph: 'ED',
-      slug: '/work/case-studies'
+      slug: '/work/case-studies/ai-course-assistant-for-edtech-platform'
     },
     {
       industry: 'Logistics',
@@ -54,7 +56,7 @@ export default function WorkClient({
       desc: 'An agent system that re-plans delivery routes in real time against traffic and demand.',
       result: '18% lower fuel cost',
       glyph: 'LG',
-      slug: '/work/case-studies'
+      slug: '/work/case-studies/route-optimization-agent-for-fleet-ops'
     },
     {
       industry: 'Healthcare',
@@ -62,7 +64,7 @@ export default function WorkClient({
       desc: 'Ambient documentation assistant that drafts clinical notes from patient conversations.',
       result: '40% less admin time',
       glyph: 'HC',
-      slug: '/work/case-studies'
+      slug: '/work/case-studies/clinical-documentation-copilot'
     },
     {
       industry: 'SaaS & Technology',
@@ -70,7 +72,7 @@ export default function WorkClient({
       desc: 'A production RAG platform giving support agents instant, cited answers from internal docs.',
       result: '55% faster resolution',
       glyph: 'SA',
-      slug: '/work/case-studies'
+      slug: '/work/case-studies/enterprise-rag-for-support-teams'
     },
     {
       industry: 'Logistics',
@@ -78,7 +80,7 @@ export default function WorkClient({
       desc: 'Computer-vision quality checks replacing manual inspection on the packing line.',
       result: '99.2% defect catch rate',
       glyph: 'LG',
-      slug: '/work/case-studies'
+      slug: '/work/case-studies/warehouse-vision-inspection'
     },
     {
       industry: 'Healthcare',
@@ -86,7 +88,7 @@ export default function WorkClient({
       desc: 'A voice agent that handles intake, scheduling and insurance verification calls.',
       result: '2,000+ calls/month automated',
       glyph: 'HC',
-      slug: '/work/case-studies'
+      slug: '/work/case-studies/patient-intake-voice-agent'
     },
   ];
 
@@ -97,7 +99,20 @@ export default function WorkClient({
     { n: '4', title: 'Ship & Support', desc: 'Production rollout with ongoing iteration as usage grows.' },
   ];
 
-  const visibleCases = filter === 'All Work' ? cases : cases.filter(c => c.industry === filter);
+  const mergedCases = React.useMemo(() => {
+    const formattedDb = dbCases.map((c) => ({
+      industry: c.category || c.industry || 'Technology',
+      title: c.title,
+      desc: c.excerpt || c.description || '',
+      result: c.outcome || 'Success',
+      glyph: c.clientName ? c.clientName.substring(0, 2).toUpperCase() : 'AI',
+      slug: `/work/case-studies/${c.slug}`
+    }));
+
+    return [...formattedDb, ...cases];
+  }, [dbCases]);
+
+  const visibleCases = filter === 'All Work' ? mergedCases : mergedCases.filter(c => c.industry === filter);
 
   return (
     <div className={`${montserrat.className} bg-[#F5F8FC] text-[#0B1220] antialiased overflow-x-hidden min-h-screen`}>

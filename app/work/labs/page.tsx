@@ -31,29 +31,42 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function LabsPage() {
   let initialLabs: any[] = [];
-  try {
     const labsRef = adminDb.collection("labs");
     const snapshot = await labsRef.where("status", "==", "active").orderBy("createdAt", "desc").get();
+    const formatTimestamp = (ts: any) => {
+      if (!ts) return null;
+      if (typeof ts.toDate === 'function') {
+        return new Date(ts.toDate()).toISOString();
+      }
+      return new Date(ts).toISOString();
+    };
     initialLabs = snapshot.docs.map(doc => {
       const data = doc.data();
       return {
         id: doc.id,
         ...data,
-        createdAt: data.createdAt ? new Date(data.createdAt.toDate()).toISOString() : null,
-        updatedAt: data.updatedAt ? new Date(data.updatedAt.toDate()).toISOString() : null,
+        createdAt: formatTimestamp(data.createdAt),
+        updatedAt: formatTimestamp(data.updatedAt),
       };
     });
   } catch (e) {
     try {
       const fallbackSnapshot = await adminDb.collection("labs").get();
+      const formatTimestamp = (ts: any) => {
+        if (!ts) return null;
+        if (typeof ts.toDate === 'function') {
+          return new Date(ts.toDate()).toISOString();
+        }
+        return new Date(ts).toISOString();
+      };
       initialLabs = fallbackSnapshot.docs
         .map(doc => {
           const data = doc.data();
           return {
             id: doc.id,
             ...data,
-            createdAt: data.createdAt ? new Date(data.createdAt.toDate()).toISOString() : null,
-            updatedAt: data.updatedAt ? new Date(data.updatedAt.toDate()).toISOString() : null,
+            createdAt: formatTimestamp(data.createdAt),
+            updatedAt: formatTimestamp(data.updatedAt),
           };
         })
         .filter((d: any) => d.status === "active");

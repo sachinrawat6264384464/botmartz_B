@@ -44,7 +44,6 @@ import {
 
 const lowlight = createLowlight(common);
 
-// Add this Toast component after imports
 function Toast({
   message,
   type,
@@ -109,6 +108,7 @@ function Toast({
     </div>
   );
 }
+
 function CodeBlockModal({
   onInsert,
   onCancel,
@@ -190,9 +190,6 @@ function CodeBlockModal({
     </div>
   );
 }
-// ============================================
-// CUSTOM EXTENSIONS
-// ============================================
 
 const FontSize = TextStyle.extend({
   addAttributes() {
@@ -238,10 +235,6 @@ const CustomHeading = Heading.extend({
   },
 });
 
-// ============================================
-// HELPER FUNCTIONS
-// ============================================
-
 const calculateReadingTime = (content: string): number => {
   const text = content.replace(/<[^>]*>/g, "");
   const wordCount = text
@@ -259,10 +252,6 @@ const generateSlugRaw = (title: string) => {
     .replace(/-+/g, "-")
     .trim();
 };
-
-// ============================================
-// TYPES
-// ============================================
 
 interface BlogPost {
   id: string;
@@ -288,27 +277,18 @@ interface BlogEditorModalProps {
   onSave: () => void;
 }
 
-// Local image tracking
 interface LocalImage {
-  tempUrl: string; // blob URL for preview
-  file: File; // actual file
+  tempUrl: string;
+  file: File;
   metadata: ImageMetadata;
   type: "featured" | "editor";
 }
-
-// ============================================
-// MAIN COMPONENT
-// ============================================
 
 export default function BlogEditorModal({
   blog,
   onClose,
   onSave,
 }: BlogEditorModalProps) {
-  // ==========================================
-  // STATE
-  // ==========================================
-
   const [formData, setFormData] = useState<BlogFormData>({
     title: blog?.title || "",
     slug: blog?.slug || "",
@@ -333,45 +313,62 @@ export default function BlogEditorModal({
     message: string;
     type: "success" | "error" | "loading";
   } | null>(null);
-  // Image selection/crop state
+
   const [selectionModalOpen, setSelectionModalOpen] = useState(false);
   const [imageToCrop, setImageToCrop] = useState<string | null>(null);
   const [cropType, setCropType] = useState<"featured" | "editor">("featured");
   const [pendingImageFile, setPendingImageFile] = useState<File | null>(null);
   const [showCodeModal, setShowCodeModal] = useState(false);
-  // Image edit state
+
   const [editingImage, setEditingImage] = useState<{
     src: string;
     alt: string;
     title: string;
   } | null>(null);
 
-  // Local images storage (NEW)
   const [localImages, setLocalImages] = useState<LocalImage[]>([]);
 
-  // Track original images for cleanup
   const originalFeaturedImage = useRef<string>(blog?.featuredImage || "");
   const originalContentImages = useRef<string[]>([]);
 
-  // ==========================================
-  // EFFECTS
-  // ==========================================
+  // Tab Manager
+  const [activeTab, setActiveTab] = useState<'meta' | 'details' | 'content'>('meta');
+
+  // Detailed Section fields
+  const [colabLink, setColabLink] = useState("");
+  const [githubLink, setGithubLink] = useState("");
+  const [failureModes, setFailureModes] = useState(5);
+  const [codeSnippets, setCodeSnippets] = useState(3);
+  const [runnableNotebooks, setRunnableNotebooks] = useState(1);
+  const [tocInput, setTocInput] = useState("");
+  const [closingPoints, setClosingPoints] = useState("");
 
   useEffect(() => {
-    if (blog?.category && !CATEGORIES.includes(blog.category)) {
-      setFormData((prev) => ({
-        ...prev,
-        category: "Custom",
-        customCategory: blog.category,
-      }));
-    }
+    if (blog) {
+      if (blog.category && !CATEGORIES.includes(blog.category)) {
+        setFormData((prev) => ({
+          ...prev,
+          category: "Custom",
+          customCategory: blog.category,
+        }));
+      }
 
-    if (blog?.content) {
-      originalContentImages.current = extractImagesFromHTML(blog.content);
+      if (blog.content) {
+        originalContentImages.current = extractImagesFromHTML(blog.content);
+      }
+
+      // Load extra detail fields
+      const anyBlog = blog as any;
+      if (anyBlog.colabLink) setColabLink(anyBlog.colabLink);
+      if (anyBlog.githubLink) setGithubLink(anyBlog.githubLink);
+      if (anyBlog.failureModes) setFailureModes(anyBlog.failureModes);
+      if (anyBlog.codeSnippets) setCodeSnippets(anyBlog.codeSnippets);
+      if (anyBlog.runnableNotebooks) setRunnableNotebooks(anyBlog.runnableNotebooks);
+      if (anyBlog.toc) setTocInput(Array.isArray(anyBlog.toc) ? anyBlog.toc.join(', ') : anyBlog.toc);
+      if (anyBlog.closingPoints) setClosingPoints(Array.isArray(anyBlog.closingPoints) ? anyBlog.closingPoints.join('\n') : anyBlog.closingPoints);
     }
   }, [blog]);
 
-  // Cleanup blob URLs on unmount
   useEffect(() => {
     return () => {
       localImages.forEach((img) => {
@@ -382,34 +379,23 @@ export default function BlogEditorModal({
     };
   }, [localImages]);
 
-  // ==========================================
-  // TIPTAP EDITOR SETUP
-  // ==========================================
-
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
       StarterKit.configure({
         heading: false,
-        codeBlock: false, // Disable default code block
-        bulletList: {
-          HTMLAttributes: { class: "list-disc pl-6 my-6 space-y-3" },
-        },
-        orderedList: {
-          HTMLAttributes: { class: "list-decimal pl-6 my-6 space-y-3" },
-        },
-        listItem: {
-          HTMLAttributes: { class: "text-gray-900 text-lg leading-relaxed" },
-        },
+        codeBlock: false,
+        bulletList: { HTMLAttributes: { class: "list-disc pl-6 my-6 space-y-3" } },
+        orderedList: { HTMLAttributes: { class: "list-decimal pl-6 my-6 space-y-3" } },
+        listItem: { HTMLAttributes: { class: "text-gray-900 text-lg leading-relaxed" } },
       }),
-     CodeBlockLowlight.configure({
-  lowlight,
-  HTMLAttributes: {
-    class:
-      "rounded-lg border border-gray-300 bg-gray-900 text-gray-100 p-4 my-6 overflow-x-auto font-mono text-sm",
-  },
-  languageClassPrefix: "language-",
-}),
+      CodeBlockLowlight.configure({
+        lowlight,
+        HTMLAttributes: {
+          class: "rounded-lg border border-gray-300 bg-gray-900 text-gray-100 p-4 my-6 overflow-x-auto font-mono text-sm",
+        },
+        languageClassPrefix: "language-",
+      }),
       CustomHeading.configure({ levels: [1, 2, 3] }),
       Table.configure({
         resizable: true,
@@ -418,21 +404,14 @@ export default function BlogEditorModal({
           style: "border: 2px solid #000000;",
         },
       }),
-      TableRow.configure({
-        HTMLAttributes: {
-          style: "border: 2px solid #000000;",
-        },
-      }),
+      TableRow.configure({ HTMLAttributes: { style: "border: 2px solid #000000;" } }),
       TableHeader.configure({
         HTMLAttributes: {
-          style:
-            "border: 2px solid #000000; padding: 12px; background-color: #755eb1; color: white; font-weight: bold;",
+          style: "border: 2px solid #000000; padding: 12px; background-color: #755eb1; color: white; font-weight: bold;",
         },
       }),
       TableCell.configure({
-        HTMLAttributes: {
-          style: "border: 2px solid #000000; padding: 12px; min-width: 100px;",
-        },
+        HTMLAttributes: { style: "border: 2px solid #000000; padding: 12px; min-width: 100px;" },
       }),
       Image.extend({
         addAttributes() {
@@ -441,37 +420,26 @@ export default function BlogEditorModal({
             width: {
               default: null,
               parseHTML: (element) => element.getAttribute("width"),
-              renderHTML: (attributes) => {
-                if (!attributes.width) return {};
-                return { width: attributes.width };
-              },
+              renderHTML: (attributes) => attributes.width ? { width: attributes.width } : {},
             },
             height: {
               default: null,
               parseHTML: (element) => element.getAttribute("height"),
-              renderHTML: (attributes) => {
-                if (!attributes.height) return {};
-                return { height: attributes.height };
-              },
+              renderHTML: (attributes) => attributes.height ? { height: attributes.height } : {},
             },
-            loading: {
-              default: "eager",
-            },
+            loading: { default: "eager" },
           };
         },
       }).configure({
         HTMLAttributes: {
-          class:
-            "max-w-full h-auto rounded-lg my-8 shadow-md cursor-pointer hover:shadow-xl transition-shadow",
+          class: "max-w-full h-auto rounded-lg my-8 shadow-md cursor-pointer hover:shadow-xl transition-shadow",
         },
         inline: false,
-        allowBase64: true, // Allow base64 for local preview
+        allowBase64: true,
       }),
       Link.configure({
         openOnClick: false,
-        HTMLAttributes: {
-          class: "text-[#755eb1] underline hover:text-[#6b54a5] font-medium",
-        },
+        HTMLAttributes: { class: "text-[#755eb1] underline hover:text-[#6b54a5] font-medium" },
       }),
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       Underline,
@@ -483,33 +451,15 @@ export default function BlogEditorModal({
     content: blog?.content || "<p>Start writing your blog post...</p>",
     editorProps: {
       attributes: {
-        class:
-          "prose prose-lg max-w-none focus:outline-none min-h-[400px] px-4 py-3 text-gray-900 prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-code:text-pink-600 prose-code:bg-pink-50 prose-code:px-1 prose-code:rounded",
-      },
-      handleKeyDown: (view, event) => {
-        if (event.key === "Backspace") {
-          const { state } = view;
-          const { selection } = state;
-          const { $from } = selection;
-
-          if ($from.node(-1)?.type.name === "table") {
-            const cell = $from.node(0);
-            if (cell && cell.textContent === "") {
-              editor?.chain().focus().deleteTable().run();
-              return true;
-            }
-          }
-        }
-        return false;
+        class: "prose prose-lg max-w-none focus:outline-none min-h-[400px] px-4 py-3 text-gray-900 prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-code:text-pink-600 prose-code:bg-pink-50 prose-code:px-1 prose-code:rounded",
       },
       handleClickOn: (view, pos, node, nodePos, event) => {
         if (node.type.name === "image") {
           event.preventDefault();
-          const attrs = node.attrs;
           setEditingImage({
-            src: attrs.src || "",
-            alt: attrs.alt || "",
-            title: attrs.title || "",
+            src: node.attrs.src || "",
+            alt: node.attrs.alt || "",
+            title: node.attrs.title || "",
           });
           return true;
         }
@@ -518,62 +468,15 @@ export default function BlogEditorModal({
     },
   });
 
-  useEffect(() => {
-    if (!editor) return;
-
-    const makeTablesAccessible = () => {
-      const editorElement = document.querySelector(".ProseMirror");
-      if (!editorElement) return;
-
-      const tables = editorElement.querySelectorAll("table");
-      tables.forEach((table) => {
-        if (table.scrollWidth > table.clientWidth) {
-          table.setAttribute("tabindex", "0");
-          table.setAttribute("role", "region");
-          table.setAttribute(
-            "aria-label",
-            "Scrollable data table - use arrow keys to scroll",
-          );
-        }
-      });
-    };
-
-    makeTablesAccessible();
-
-    const observer = new MutationObserver(makeTablesAccessible);
-    const editorElement = document.querySelector(".ProseMirror");
-
-    if (editorElement) {
-      observer.observe(editorElement, {
-        childList: true,
-        subtree: true,
-      });
-    }
-
-    return () => observer.disconnect();
-  }, [editor]);
-
-  // ==========================================
-  // HANDLERS
-  // ==========================================
-
-  // Helper function to show toast
-  const showToast = (
-    message: string,
-    type: "success" | "error" | "loading",
-  ) => {
+  const showToast = (message: string, type: "success" | "error" | "loading") => {
     setToast({ message, type });
-    if (type !== "loading") {
-      setTimeout(() => setToast(null), 5000);
-    }
+    if (type !== "loading") setTimeout(() => setToast(null), 5000);
   };
 
   const handleTitleChange = (title: string) => {
     setFormData((prev) => {
       const newState = { ...prev, title };
-      if (!useCustomSlug) {
-        newState.slug = generateSlugRaw(title);
-      }
+      if (!useCustomSlug) newState.slug = generateSlugRaw(title);
       return newState;
     });
   };
@@ -582,12 +485,8 @@ export default function BlogEditorModal({
     if (!slugToCheck) return;
     setSlugChecking(true);
     try {
-      const q = query(
-        collection(db, "blog-posts"),
-        where("slug", "==", slugToCheck),
-      );
+      const q = query(collection(db, "blog-posts"), where("slug", "==", slugToCheck));
       const snapshot = await getDocs(q);
-
       if (snapshot.empty) {
         setIsSlugUnique(true);
       } else {
@@ -608,17 +507,9 @@ export default function BlogEditorModal({
     return () => clearTimeout(timer);
   }, [formData.slug]);
 
-  // Featured Image Upload (LOCAL STORAGE)
-  const handleFeaturedImageUpload = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleFeaturedImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (!file.type.startsWith("image/") || file.size > 5 * 1024 * 1024) {
-      alert("Please upload a valid image under 5MB");
-      return;
-    }
-
     setPendingImageFile(file);
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -629,15 +520,18 @@ export default function BlogEditorModal({
     reader.readAsDataURL(file);
   };
 
-  // Editor Image Upload (LOCAL STORAGE)
+  const handleRemoveFeaturedImage = () => {
+    const imageToRemove = formData.featuredImage;
+    setFormData((prev) => ({ ...prev, featuredImage: "", featuredImageAlt: "", featuredImageName: "" }));
+    if (imageToRemove.startsWith("blob:")) {
+      setLocalImages((prev) => prev.filter((img) => img.tempUrl !== imageToRemove));
+      URL.revokeObjectURL(imageToRemove);
+    }
+  };
+
   const handleEditorImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file || !editor) return;
-    if (!file.type.startsWith("image/") || file.size > 5 * 1024 * 1024) {
-      alert("Please upload a valid image under 5MB");
-      return;
-    }
-
+    if (!file) return;
     setPendingImageFile(file);
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -648,39 +542,20 @@ export default function BlogEditorModal({
     reader.readAsDataURL(file);
   };
 
-  // Add image directly (LOCAL - NO UPLOAD YET)
-  const handleAddDirectly = async (
-    imageUrl: string,
-    metadata: ImageMetadata,
-  ) => {
+  const addLink = () => {
+    const url = window.prompt("Enter URL:");
+    if (url && editor) editor.chain().focus().setLink({ href: url }).run();
+  };
+
+  const handleAddDirectly = async (imageUrl: string, metadata: ImageMetadata) => {
     setSelectionModalOpen(false);
-
-    if (!pendingImageFile) {
-      alert("No file selected");
-      return;
-    }
-
-    // Create blob URL for preview
+    if (!pendingImageFile) return;
     const blobUrl = URL.createObjectURL(pendingImageFile);
-
-    // Store locally
-    const localImage: LocalImage = {
-      tempUrl: blobUrl,
-      file: pendingImageFile,
-      metadata,
-      type: cropType,
-    };
-
+    const localImage: LocalImage = { tempUrl: blobUrl, file: pendingImageFile, metadata, type: cropType };
     setLocalImages((prev) => [...prev, localImage]);
 
     if (cropType === "featured") {
-      // Remove old featured image from local storage if it was added this session
-      setLocalImages((prev) =>
-        prev.filter(
-          (img) => !(img.type === "featured" && img.tempUrl !== blobUrl),
-        ),
-      );
-
+      setLocalImages((prev) => prev.filter((img) => !(img.type === "featured" && img.tempUrl !== blobUrl)));
       setFormData((prev) => ({
         ...prev,
         featuredImage: blobUrl,
@@ -688,61 +563,22 @@ export default function BlogEditorModal({
         featuredImageName: metadata.name,
       }));
     } else if (cropType === "editor" && editor) {
-      const img = new window.Image();
-      img.onload = () => {
-        editor
-          .chain()
-          .focus()
-          .setImage({
-            src: blobUrl,
-            alt: metadata.altText,
-            title: metadata.name || metadata.altText,
-            width: img.naturalWidth,
-            height: img.naturalHeight,
-          })
-          .run();
-      };
-      img.src = blobUrl;
+      editor.chain().focus().setImage({ src: blobUrl, alt: metadata.altText, title: metadata.name }).run();
     }
-
     setImageToCrop(null);
     setPendingImageFile(null);
   };
 
-  // Handle cropped image (LOCAL - NO UPLOAD YET)
-  const handleCropComplete = async (
-    croppedImageUrl: string,
-    metadata: ImageMetadata,
-  ) => {
+  const handleCropComplete = async (croppedImageUrl: string, metadata: ImageMetadata) => {
     setSelectionModalOpen(false);
-
     try {
-      const croppedFile = await blobUrlToFile(
-        croppedImageUrl,
-        pendingImageFile?.name || "cropped-image.jpg",
-      );
-
-      // Create blob URL for preview
+      const croppedFile = await blobUrlToFile(croppedImageUrl, pendingImageFile?.name || "cropped.jpg");
       const blobUrl = URL.createObjectURL(croppedFile);
-
-      // Store locally
-      const localImage: LocalImage = {
-        tempUrl: blobUrl,
-        file: croppedFile,
-        metadata,
-        type: cropType,
-      };
-
+      const localImage: LocalImage = { tempUrl: blobUrl, file: croppedFile, metadata, type: cropType };
       setLocalImages((prev) => [...prev, localImage]);
 
       if (cropType === "featured") {
-        // Remove old featured image from local storage
-        setLocalImages((prev) =>
-          prev.filter(
-            (img) => !(img.type === "featured" && img.tempUrl !== blobUrl),
-          ),
-        );
-
+        setLocalImages((prev) => prev.filter((img) => !(img.type === "featured" && img.tempUrl !== blobUrl)));
         setFormData((prev) => ({
           ...prev,
           featuredImage: blobUrl,
@@ -750,49 +586,27 @@ export default function BlogEditorModal({
           featuredImageName: metadata.name,
         }));
       } else if (cropType === "editor" && editor) {
-        const img = new window.Image();
-        img.onload = () => {
-          editor
-            .chain()
-            .focus()
-            .setImage({
-              src: blobUrl,
-              alt: metadata.altText,
-              title: metadata.name || metadata.altText,
-              width: img.naturalWidth,
-              height: img.naturalHeight,
-            })
-            .run();
-        };
-        img.src = blobUrl;
+        editor.chain().focus().setImage({ src: blobUrl, alt: metadata.altText, title: metadata.name }).run();
       }
-    } catch (error) {
-      console.error("Error processing cropped image:", error);
-      alert("Failed to process cropped image. Please try again.");
+    } catch (e) {
+      console.error(e);
     } finally {
       setImageToCrop(null);
       setPendingImageFile(null);
-      URL.revokeObjectURL(croppedImageUrl);
     }
   };
 
-  const handleSelectionCancel = async () => {
+  const handleSelectionCancel = () => {
     setSelectionModalOpen(false);
     setImageToCrop(null);
     setPendingImageFile(null);
   };
 
-  const handleImageEditSave = (metadata: {
-    altText: string;
-    title: string;
-  }) => {
+  const handleImageEditSave = (metadata: { altText: string; title: string }) => {
     if (!editor || !editingImage) return;
-
     const { state } = editor;
     const { doc } = state;
-
     let imagePos: number | null = null;
-
     doc.descendants((node, pos) => {
       if (node.type.name === "image" && node.attrs.src === editingImage.src) {
         imagePos = pos;
@@ -805,216 +619,86 @@ export default function BlogEditorModal({
         .chain()
         .focus()
         .setNodeSelection(imagePos)
-        .updateAttributes("image", {
-          alt: metadata.altText,
-          title: metadata.title || metadata.altText,
-        })
+        .updateAttributes("image", { alt: metadata.altText, title: metadata.title || metadata.altText })
         .run();
-
-      // Update local image metadata if it's a blob URL
-      if (editingImage.src.startsWith("blob:")) {
-        setLocalImages((prev) =>
-          prev.map((img) =>
-            img.tempUrl === editingImage.src
-              ? {
-                  ...img,
-                  metadata: {
-                    ...img.metadata,
-                    altText: metadata.altText,
-                    name: metadata.title,
-                  },
-                }
-              : img,
-          ),
-        );
-      }
     }
-
     setEditingImage(null);
   };
 
-  const handleRemoveFeaturedImage = () => {
-    const imageToRemove = formData.featuredImage;
-
-    setFormData((prev) => ({
-      ...prev,
-      featuredImage: "",
-      featuredImageAlt: "",
-      featuredImageName: "",
-    }));
-
-    // Remove from local images
-    if (imageToRemove.startsWith("blob:")) {
-      setLocalImages((prev) =>
-        prev.filter((img) => img.tempUrl !== imageToRemove),
-      );
-      URL.revokeObjectURL(imageToRemove);
-    }
-  };
-
   const handleCancel = () => {
-    // Cleanup all blob URLs
     localImages.forEach((img) => {
-      if (img.tempUrl.startsWith("blob:")) {
-        URL.revokeObjectURL(img.tempUrl);
-      }
+      if (img.tempUrl.startsWith("blob:")) URL.revokeObjectURL(img.tempUrl);
     });
-
     onClose();
   };
 
-  const addLink = () => {
-    const url = window.prompt("Enter URL:");
-    if (url && editor) editor.chain().focus().setLink({ href: url }).run();
+  const handleInsertCode = (code: string, language: string) => {
+    if (editor) {
+      editor
+        .chain()
+        .focus()
+        .insertContent(`<pre><code class="language-${language}">${code.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</code></pre>`)
+        .run();
+    }
+    setShowCodeModal(false);
   };
-const handleInsertCode = (code: string, language: string) => {
-  if (editor) {
-    editor
-      .chain()
-      .focus()
-      .insertContent(
-        `<pre><code class="language-${language}">${code.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</code></pre>`
-      )
-      .run();
-  }
-  setShowCodeModal(false);
-};
-  // SAVE HANDLER - Upload all images at once
+
   const handleSave = async () => {
-    if (!formData.title || !editor?.getHTML()) {
-      alert("Title and content are required");
+    if (!formData.title) {
+      alert("Title is required");
       return;
     }
-
     if (!isSlugUnique) {
-      alert("This URL slug is already taken. Please choose another.");
-      return;
-    }
-
-    if (formData.category === "Custom" && !formData.customCategory) {
-      alert("Please enter a custom category name");
-      return;
-    }
-
-    if (formData.featuredImage && !formData.featuredImageAlt) {
-      alert(
-        "⚠️ Featured image is missing alt text. Please provide it for accessibility.",
-      );
-      return;
-    }
-
-    const currentContent = editor.getHTML();
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = currentContent;
-    const contentImages = tempDiv.querySelectorAll("img");
-
-    const imagesWithoutAlt: string[] = [];
-    contentImages.forEach((img) => {
-      const alt = img.getAttribute("alt");
-      const src = img.getAttribute("src");
-      if (!alt || alt.trim() === "") {
-        const urlPreview = src
-          ? src.startsWith("blob:")
-            ? "New image"
-            : new URL(src).pathname.split("/").pop()?.substring(0, 30)
-          : "Unknown";
-        imagesWithoutAlt.push(urlPreview || "Unknown image");
-      }
-    });
-
-    if (imagesWithoutAlt.length > 0) {
-      alert(
-        `⚠️ ${imagesWithoutAlt.length} image(s) in content are missing alt text:\n\n${imagesWithoutAlt.join("\n")}\n\nAll images must have alt text for accessibility.\n\nClick on images in the editor to add alt text.`,
-      );
+      alert("Slug already taken.");
       return;
     }
 
     setSaving(true);
-    const imageCount = localImages.length;
-    showToast(
-      imageCount > 0
-        ? `Uploading ${imageCount} image${imageCount !== 1 ? "s" : ""}...`
-        : "Saving blog post...",
-      "loading",
-    );
-    try {
-      // Map blob URLs to uploaded URLs
-      const urlMap = new Map<string, string>();
+    showToast("Saving blog post...", "loading");
 
-      // Upload all local images
-      for (const localImage of localImages) {
-        try {
-          const uploadedUrl = await uploadToCloudinary(localImage.file);
-          urlMap.set(localImage.tempUrl, uploadedUrl);
-        } catch (error) {
-          console.error("Failed to upload image:", error);
-          throw new Error(`Failed to upload ${localImage.metadata.name}`);
-        }
+    try {
+      const urlMap = new Map<string, string>();
+      for (const img of localImages) {
+        const uploadedUrl = await uploadToCloudinary(img.file);
+        urlMap.set(img.tempUrl, uploadedUrl);
       }
 
-      // Replace blob URLs with uploaded URLs in content
-      let finalContent = currentContent;
+      let finalContent = editor?.getHTML() || "";
       urlMap.forEach((uploadedUrl, blobUrl) => {
         finalContent = finalContent.replaceAll(blobUrl, uploadedUrl);
       });
 
-      // Replace featured image URL if needed
       let finalFeaturedImage = formData.featuredImage;
       if (formData.featuredImage.startsWith("blob:")) {
         finalFeaturedImage = urlMap.get(formData.featuredImage) || "";
       }
-
-      const tagsArray = tags;
-      const finalCategory =
-        formData.category === "Custom"
-          ? formData.customCategory
-          : formData.category;
-      const readTime = calculateReadingTime(editor.getText());
 
       const blogData = {
         title: formData.title,
         slug: formData.slug,
         excerpt: formData.excerpt,
         author: formData.author,
-        category: finalCategory,
-        tags: tagsArray,
+        category: formData.category === "Custom" ? formData.customCategory : formData.category,
+        tags: tags,
         featuredImage: finalFeaturedImage,
         featuredImageAlt: formData.featuredImageAlt,
         featuredImageName: formData.featuredImageName,
         status: formData.status,
         content: finalContent,
-        readTime: readTime,
+        readTime: editor ? calculateReadingTime(editor.getText()) : 5,
         updatedAt: serverTimestamp(),
-        ...(formData.status === "published" &&
-          !blog?.publishedAt && { publishedAt: serverTimestamp() }),
+        // Extra detail fields
+        colabLink,
+        githubLink,
+        failureModes: Number(failureModes) || 0,
+        codeSnippets: Number(codeSnippets) || 0,
+        runnableNotebooks: Number(runnableNotebooks) || 0,
+        toc: tocInput.split(',').map(t => t.trim()).filter(Boolean),
+        closingPoints: closingPoints.split('\n').map(l => l.trim()).filter(Boolean),
+        ...(formData.status === "published" && !blog?.publishedAt && { publishedAt: serverTimestamp() }),
       };
 
       if (blog) {
-        // Cleanup old images
-        if (
-          originalFeaturedImage.current &&
-          originalFeaturedImage.current !== finalFeaturedImage &&
-          finalFeaturedImage
-        ) {
-          deleteCloudinaryImage(originalFeaturedImage.current).catch((err) =>
-            console.error("Failed to cleanup old featured image:", err),
-          );
-        }
-
-        const currentContentImages = extractImagesFromHTML(finalContent);
-        const unusedImages = originalContentImages.current.filter(
-          (img) =>
-            !currentContentImages.includes(img) && img !== finalFeaturedImage,
-        );
-
-        if (unusedImages.length > 0) {
-          Promise.all(
-            unusedImages.map((img) => deleteCloudinaryImage(img)),
-          ).catch((err) =>
-            console.error("Failed to cleanup unused images:", err),
-          );
-        }
-
         await updateDoc(doc(db, "blog-posts", blog.id), blogData);
         showToast("Blog post updated successfully! 🎉", "success");
       } else {
@@ -1025,56 +709,55 @@ const handleInsertCode = (code: string, language: string) => {
         showToast("Blog post created successfully! 🎉", "success");
       }
 
-      // Cleanup blob URLs
-      localImages.forEach((img) => {
-        if (img.tempUrl.startsWith("blob:")) {
-          URL.revokeObjectURL(img.tempUrl);
-        }
-      });
-
-      setTimeout(() => {
-        onSave();
-      }, 1500);
-    } catch (error) {
-      console.error("Error saving blog:", error);
-      showToast(
-        "Failed to save blog post: " + (error as Error).message,
-        "error",
-      );
+      setTimeout(onSave, 1500);
+    } catch (e: any) {
+      showToast("Error saving: " + e.message, "error");
     } finally {
       setSaving(false);
     }
   };
 
-  // ==========================================
-  // RENDER
-  // ==========================================
-
-  if (!editor) return null;
-
   return (
-    <>
-      <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 overflow-y-auto">
-        <div className="bg-paper border border-line rounded-lg w-full max-w-6xl my-8 shadow-2xl">
-          {/* Header */}
-          <div className="px-6 py-4 border-b border-line flex items-center justify-between sticky top-0 bg-paper z-10 rounded-t-lg">
-            <h2 className="text-xl font-bold text-white">
-              {blog ? "Edit Blog Post" : "Create New Blog Post"}
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[80] flex items-center justify-center p-4">
+      <div className="bg-paper border border-line rounded-2xl w-full max-w-7xl h-[95vh] flex flex-col shadow-2xl overflow-hidden">
+        {/* Header */}
+        <div className="px-6 py-4 border-b border-line flex justify-between items-center bg-paper">
+          <div>
+            <h2 className="text-lg font-bold text-white">
+              {blog ? "Edit Blog Post" : "Create Blog Post"}
             </h2>
-            <button
-              onClick={handleCancel}
-              className="p-2 hover:bg-white/[0.05] text-ink-soft hover:text-white rounded-lg transition-colors"
-              aria-label="Close editor"
-            >
-              <X size={24} />
-            </button>
+            <p className="text-xs text-ink-soft">Configure parameters and content</p>
           </div>
+          <button onClick={onClose} className="p-2 hover:bg-white/[0.05] rounded-lg text-ink-soft hover:text-white transition-colors">
+            <X size={20} />
+          </button>
+        </div>
 
-          {/* Scrollable Content */}
-          <div className="px-6 py-6 space-y-8 max-h-[calc(100vh-200px)] overflow-y-auto">
-            {/* Loading Overlay */}
+        {/* Tab switcher */}
+        <div className="flex border-b border-line px-6 bg-paper gap-6 text-sm font-semibold">
+          <button
+            onClick={() => setActiveTab('meta')}
+            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${activeTab === 'meta' ? 'border-white text-white' : 'border-transparent text-ink-soft hover:text-white'}`}
+          >
+            Basic Metadata
+          </button>
+          <button
+            onClick={() => setActiveTab('details')}
+            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${activeTab === 'details' ? 'border-white text-white' : 'border-transparent text-ink-soft hover:text-white'}`}
+          >
+            Layout Sections (Advanced)
+          </button>
+          <button
+            onClick={() => setActiveTab('content')}
+            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${activeTab === 'content' ? 'border-white text-white' : 'border-transparent text-ink-soft hover:text-white'}`}
+          >
+            Rich Editor Content
+          </button>
+        </div>
 
-            {/* Metadata Form Component */}
+        {/* Content panel */}
+        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          {activeTab === 'meta' && (
             <BlogMetadataForm
               formData={formData}
               setFormData={setFormData}
@@ -1092,30 +775,92 @@ const handleInsertCode = (code: string, language: string) => {
               onRemoveFeaturedImage={handleRemoveFeaturedImage}
               generateSlugRaw={generateSlugRaw}
             />
+          )}
 
-            <hr className="border-line" />
-
-            {/* Editor Area */}
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <label className="block text-sm font-semibold text-gray-700">
-                  Content *
-                </label>
-                <div className="bg-brand/10 border border-brand/20 rounded-lg px-3 py-1.5">
-                  <p className="text-xs font-medium text-brand">
-                    💡 Click images to edit alt text
-                    {localImages.length > 0 && !saving && (
-                      <>
-                        {" "}
-                        • {localImages.length} image
-                        {localImages.length !== 1 ? "s" : ""} ready to upload
-                      </>
-                    )}
-                  </p>
+          {activeTab === 'details' && (
+            <div className="space-y-6 text-white max-w-4xl font-sans">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-ink-soft mb-2">Google Colab Link</label>
+                  <input 
+                    type="text" 
+                    value={colabLink} 
+                    onChange={e => setColabLink(e.target.value)}
+                    placeholder="https://colab.research.google.com/..." 
+                    className="w-full bg-ink border border-line rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-ink-soft mb-2">GitHub Code Repository Link</label>
+                  <input 
+                    type="text" 
+                    value={githubLink} 
+                    onChange={e => setGithubLink(e.target.value)}
+                    placeholder="https://github.com/..." 
+                    className="w-full bg-ink border border-line rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-white"
+                  />
                 </div>
               </div>
 
-              {/* Editor Toolbar Component */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-ink-soft mb-2">Failure Modes Count</label>
+                  <input 
+                    type="number" 
+                    value={failureModes} 
+                    onChange={e => setFailureModes(Number(e.target.value))}
+                    placeholder="e.g. 5" 
+                    className="w-full bg-ink border border-line rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-ink-soft mb-2">Code Snippets Count</label>
+                  <input 
+                    type="number" 
+                    value={codeSnippets} 
+                    onChange={e => setCodeSnippets(Number(e.target.value))}
+                    placeholder="e.g. 3" 
+                    className="w-full bg-ink border border-line rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-ink-soft mb-2">Runnable Notebooks Count</label>
+                  <input 
+                    type="number" 
+                    value={runnableNotebooks} 
+                    onChange={e => setRunnableNotebooks(Number(e.target.value))}
+                    placeholder="e.g. 1" 
+                    className="w-full bg-ink border border-line rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-white"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-ink-soft mb-2">Table of Contents Labels (Comma separated)</label>
+                <input 
+                  type="text" 
+                  value={tocInput} 
+                  onChange={e => setTocInput(e.target.value)}
+                  placeholder="Retrieval Quality, Chunking Strategy, Hybrid Search, Evaluation" 
+                  className="w-full bg-ink border border-line rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-white"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-ink-soft mb-2">Closing Takeaways (One point per line)</label>
+                <textarea 
+                  rows={4}
+                  value={closingPoints} 
+                  onChange={e => setClosingPoints(e.target.value)}
+                  placeholder="Measure retrieval precision and recall in isolation before touching the model&#10;Chunk along document structure, not arbitrary character counts" 
+                  className="w-full bg-ink border border-line rounded-lg p-4 text-xs text-white font-mono focus:outline-none focus:border-white leading-relaxed"
+                />
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'content' && (
+            <div className="border border-line rounded-xl overflow-hidden">
               <EditorToolbar
                 editor={editor}
                 uploadingImage={false}
@@ -1123,72 +868,35 @@ const handleInsertCode = (code: string, language: string) => {
                 onLinkAdd={addLink}
                 onCodeBlockClick={() => setShowCodeModal(true)}
               />
-
-              {/* Editor Input */}
-              <div className="border border-t-0 border-line rounded-b-lg bg-ink min-h-[400px] overflow-x-auto text-white">
+              <div className="p-4 bg-ink border-t border-line min-h-[400px] text-white overflow-x-auto">
                 <EditorContent editor={editor} />
               </div>
             </div>
-          </div>
+          )}
+        </div>
 
-          {/* Footer */}
-          <div className="px-6 py-4 border-t border-line flex items-center justify-end gap-3 bg-paper rounded-b-lg">
-            <div className="text-sm text-ink-soft">
-              {localImages.length > 0 && (
-                <p className="font-medium">
-                  {localImages.length} image
-                  {localImages.length !== 1 ? "s" : ""} will be uploaded on save
-                </p>
-              )}
-            </div>
-            <div className="flex gap-3">
-              <button
-                onClick={handleCancel}
-                className="px-5 py-2.5 text-ink-soft hover:bg-white/[0.03] text-sm font-medium rounded-lg transition-colors border border-line"
-                type="button"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSave}
-                disabled={saving || !isSlugUnique}
-                className="px-8 py-2.5 bg-white hover:bg-gray-200 text-ink text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                type="button"
-              >
-                {saving ? (
-                  <>
-                    <RefreshCw size={16} className="animate-spin" />
-                    Saving & Uploading...
-                  </>
-                ) : blog ? (
-                  "Update Post"
-                ) : (
-                  "Create Post"
-                )}
-              </button>
-            </div>
-          </div>
+        {/* Action buttons */}
+        <div className="px-6 py-4 border-t border-line flex justify-end gap-3 bg-paper">
+          <button onClick={onClose} className="px-5 py-2.5 border border-line rounded-lg hover:bg-white/[0.03] text-ink-soft text-sm font-medium transition-colors">
+            Cancel
+          </button>
+          <button onClick={handleSave} disabled={saving} className="px-8 py-2.5 bg-white hover:bg-gray-200 text-ink rounded-lg text-sm font-bold disabled:opacity-50 transition-colors">
+            {saving ? "Saving..." : "Save Blog Post"}
+          </button>
         </div>
       </div>
 
-      {/* Image Selection Modal */}
+      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+      
       {selectionModalOpen && imageToCrop && pendingImageFile && (
         <ImageSelectionModal
           imageFile={pendingImageFile}
           imageUrl={imageToCrop}
-          onAddDirectly={handleAddDirectly}
           onCropComplete={handleCropComplete}
+          onAddDirectly={handleAddDirectly}
           onCancel={handleSelectionCancel}
           defaultAspectRatio={cropType === "featured" ? 16 / 9 : undefined}
           type={cropType}
-        />
-      )}
-      {/* Toast Notification */}
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
         />
       )}
 
@@ -1196,35 +904,9 @@ const handleInsertCode = (code: string, language: string) => {
         <CodeBlockModal
           onInsert={handleInsertCode}
           onCancel={() => setShowCodeModal(false)}
+          initialLanguage="python"
         />
       )}
-
-      {/* Image Edit Modal */}
-      {editingImage && (
-        <ImageEditModal
-          imageUrl={editingImage.src}
-          currentAlt={editingImage.alt}
-          currentTitle={editingImage.title}
-          onSave={handleImageEditSave}
-          onCancel={() => setEditingImage(null)}
-        />
-      )}
-
-      <style jsx>{`
-        @keyframes slide-in {
-          from {
-            transform: translateX(100%);
-            opacity: 0;
-          }
-          to {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-        .animate-slide-in {
-          animation: slide-in 0.3s ease-out;
-        }
-      `}</style>
-    </>
+    </div>
   );
 }

@@ -34,24 +34,38 @@ export default async function CareersPage() {
   try {
     const jobsRef = adminDb.collection("jobs");
     const snapshot = await jobsRef.where("status", "==", "active").orderBy("createdAt", "desc").get();
+    const formatTimestamp = (ts: any) => {
+      if (!ts) return null;
+      if (typeof ts.toDate === 'function') {
+        return new Date(ts.toDate()).toISOString();
+      }
+      return new Date(ts).toISOString();
+    };
     initialJobs = snapshot.docs.map(doc => {
       const data = doc.data();
       return {
         id: doc.id,
         ...data,
-        createdAt: data.createdAt ? new Date(data.createdAt.toDate()).toISOString() : null,
+        createdAt: formatTimestamp(data.createdAt),
       };
     });
   } catch (e) {
     try {
       const fallbackSnapshot = await adminDb.collection("jobs").get();
+      const formatTimestamp = (ts: any) => {
+        if (!ts) return null;
+        if (typeof ts.toDate === 'function') {
+          return new Date(ts.toDate()).toISOString();
+        }
+        return new Date(ts).toISOString();
+      };
       initialJobs = fallbackSnapshot.docs
         .map(doc => {
           const data = doc.data();
           return {
             id: doc.id,
             ...data,
-            createdAt: data.createdAt ? new Date(data.createdAt.toDate()).toISOString() : null,
+            createdAt: formatTimestamp(data.createdAt),
           };
         })
         .filter((d: any) => d.status === "active");

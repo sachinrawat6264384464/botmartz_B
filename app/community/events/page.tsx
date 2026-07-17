@@ -31,10 +31,17 @@ export default async function EventsIndexPage() {
     const eventsSnap = await adminDb.collection("events").orderBy("date", "desc").get();
     eventsSnap.forEach(doc => {
       const data = doc.data();
+      const formatTimestamp = (ts: any) => {
+        if (!ts) return null;
+        if (typeof ts.toDate === 'function') {
+          return new Date(ts.toDate()).toISOString();
+        }
+        return new Date(ts).toISOString();
+      };
       initialEvents.push({ 
         id: doc.id, 
         ...data,
-        createdAt: data.createdAt ? new Date(data.createdAt.toDate()).toISOString() : null
+        createdAt: formatTimestamp(data.createdAt)
       });
     });
   } catch (e) {
