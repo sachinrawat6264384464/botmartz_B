@@ -31,6 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function LabsPage() {
   let initialLabs: any[] = [];
+  try {
     const labsRef = adminDb.collection("labs");
     const snapshot = await labsRef.where("status", "==", "active").orderBy("createdAt", "desc").get();
     const formatTimestamp = (ts: any) => {
