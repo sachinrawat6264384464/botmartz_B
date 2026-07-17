@@ -4,8 +4,61 @@ import React, { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { db } from "@/lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
-import { Code, Briefcase } from "lucide-react";
-import DynamicIcon from "@/app/_components/DynamicIcon";
+import TemplateRenderer from "@/app/_components/templates";
+
+const FALLBACK_CONFIGS: Record<string, any> = {
+  education: {
+    template: 'template-4',
+    hero: {
+      badge: 'Industries / Education & EdTech',
+      title: 'Autonomous Tutoring & Educational RAG Architectures.',
+      subtitle: 'We engineer fine-tuned Socratic tutoring copilots, automated curriculum grading models, and campus-wide RAG knowledge systems that scale personalized learning.',
+      ctaText: 'Deploy EdTech Copilots →',
+      ctaLink: '/contact'
+    },
+    benchmarks: [
+      { metric: 'Student Retention & Course Completion', baseline: '42.5%', botmartz: '78.4%', improvement: '+35.9% Net Gain' },
+      { metric: 'Grading & Rubric Evaluation Accuracy', baseline: '68.0%', botmartz: '96.2%', improvement: '+28.2% Accuracy' },
+      { metric: 'Inference Latency for Socratic Dialog', baseline: '580ms', botmartz: '42ms', improvement: '13.8× Faster Response' },
+    ],
+    caseStudies: [
+      { title: 'Personalized Socratic AI Tutor', vertical: 'Higher Ed', metric: '3.4× Engagement', desc: 'Fine-tuned Llama 3 model prompting deeper reasoning instead of direct answer dumping.' },
+      { title: 'Multi-Language Campus Knowledge RAG', vertical: 'EdTech Platform', metric: '89% Resolution', desc: 'Unified vector index over 50,000 course syllabi and university regulations.' },
+      { title: 'Automated Essay & Rubric Evaluator', vertical: 'K-12 Network', metric: '40hrs Saved/Wk', desc: 'Zero-shot structured feedback engine aligned with state pedagogical standards.' }
+    ],
+    cta: {
+      title: 'Ready to build next-generation educational AI platforms?',
+      subtitle: 'From personalized tutoring models to institutional RAG, we engineer educational AI with rigorous safety guardrails.',
+      buttonText: 'Book an EdTech Consultation →'
+    }
+  },
+  logistics: {
+    template: 'template-2',
+    hero: {
+      badge: 'Industries / Logistics & Global Supply Chain',
+      title: 'Predictive Routing & Supply Chain Intelligence.',
+      subtitle: 'Transform logistics operations with autonomous dispatch agents, demand forecasting reinforcement loops, and real-time shipment anomaly detection models.',
+      ctaText: 'Optimize Logistics AI →',
+      ctaLink: '/contact'
+    },
+    roiMetrics: [
+      { value: '38%', label: 'Reduction in Transit Bottlenecks', highlight: 'Real-time dynamic route rerouting' },
+      { value: '94.6%', label: 'Demand Forecasting Accuracy', highlight: 'Prevented warehouse stockouts globally' },
+      { value: '4.2hrs', label: 'Daily Dispatch Time Saved', highlight: 'Automated multi-agent fleet scheduling' },
+      { value: '22%', label: 'Fuel & Fleet Maintenance Savings', highlight: 'Predictive telematics telemetry analysis' },
+    ],
+    useCases: [
+      { iconName: 'Layers', title: 'Dynamic Multi-Agent Fleet Routing', description: 'Autonomous agents continuously re-optimizing delivery routes based on live traffic, weather patterns, and dock availability.' },
+      { iconName: 'BarChart', title: 'Predictive Warehouse Demand RAG', description: 'Vector databases indexing historical seasonal orders and macroeconomic trends to automate inventory re-ordering.' },
+      { iconName: 'Activity', title: 'Automated Customs & Freight Document OCR', description: 'Fine-tuned vision-language models extracting structured data from multi-lingual bills of lading instantly.' },
+    ],
+    cta: {
+      title: 'Ready to modernize your logistics and supply chain network?',
+      subtitle: 'We deploy production AI that cuts transport overhead and eliminates supply chain opacity.',
+      buttonText: 'Book a Supply Chain Discovery Call →'
+    }
+  }
+};
 
 export default function DynamicIndustryPage({ params }: { params: any }) {
   const resolvedParams = params instanceof Promise ? use(params) : params;
@@ -23,9 +76,14 @@ export default function DynamicIndustryPage({ params }: { params: any }) {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           setContent(docSnap.data());
+        } else if (FALLBACK_CONFIGS[slug]) {
+          setContent(FALLBACK_CONFIGS[slug]);
         }
       } catch (err) {
         console.error("Error loading dynamic industry page:", err);
+        if (FALLBACK_CONFIGS[slug]) {
+          setContent(FALLBACK_CONFIGS[slug]);
+        }
       } finally {
         setLoading(false);
       }
@@ -35,19 +93,19 @@ export default function DynamicIndustryPage({ params }: { params: any }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-ink flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-zinc-700 border-t-brand rounded-full animate-spin" />
+      <div className="min-h-screen bg-[#050B14] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-zinc-700 border-t-[#00B8F0] rounded-full animate-spin" />
       </div>
     );
   }
 
   if (!content) {
     return (
-      <div className="min-h-screen bg-ink text-white flex flex-col items-center justify-center px-4">
-        <h1 className="text-4xl font-bold mb-4 font-mono">404 - Page Not Found</h1>
-        <p className="text-[#9FB9C8] mb-8">This industry page has not been configured yet.</p>
-        <Link href="/" className="btn btn-primary bg-brand px-6 py-2.5 rounded-xl font-semibold text-white hover:bg-deep">
-          Return Home
+      <div className="min-h-screen bg-[#050B14] text-white flex flex-col items-center justify-center px-4 font-sans">
+        <h1 className="text-4xl font-bold mb-4 font-mono text-[#00B8F0]">404 - Industry Not Configured</h1>
+        <p className="text-[#8A9EB0] mb-8 text-center max-w-[500px]">This vertical page is currently under development or awaiting configuration in the Botmartz admin panel (`/admin/pages`).</p>
+        <Link href="/industries" className="btn btn-primary bg-[#00B8F0] px-6 py-3 rounded-lg font-semibold text-white hover:bg-[#0096C7] transition-colors">
+          Explore All Industries
         </Link>
       </div>
     );
@@ -59,127 +117,12 @@ export default function DynamicIndustryPage({ params }: { params: any }) {
       {content.structuredData && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: content.structuredData }}
+          dangerouslySetInnerHTML={{ __html: typeof content.structuredData === 'string' ? content.structuredData : JSON.stringify(content.structuredData) }}
         />
       )}
 
-      {/* HERO SECTION */}
-      <section className="relative pt-[120px] pb-[80px] bg-[#050B14] text-white overflow-hidden">
-        {/* Background glow effects */}
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[120px] rounded-full pointer-events-none" />
-        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0066FF]/10 blur-[150px] rounded-full pointer-events-none" />
-
-        <div className="wrap relative z-10 flex flex-col lg:flex-row items-center gap-10">
-          <div className="flex-1 lg:max-w-[620px]">
-            <div className="font-mono text-[11px] tracking-[0.14em] text-[#00B8F0] uppercase mb-6 flex items-center gap-3 font-semibold">
-              <span className="w-6 h-px bg-[#00B8F0]"></span>
-              <Link href="/industries" className="hover:text-white transition-colors">Industries</Link>{" "}
-              <span>/</span>{" "}
-              <span className="text-white">{content.hero?.badge || content.title}</span>
-            </div>
-            <h1 className="text-[clamp(36px,4.5vw,56px)] leading-[1.1] font-semibold mb-6 tracking-tight text-white">
-              {content.hero?.title || content.title}
-            </h1>
-            <p className="text-[17px] text-[#8A9EB0] max-w-[540px] mb-8 leading-relaxed">
-              {content.hero?.subtitle}
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link href={content.hero?.ctaLink || "/contact"} className="btn btn-primary bg-brand text-white hover:bg-deep">
-                {content.hero?.ctaText || "Discuss Your Use Case →"}
-              </Link>
-            </div>
-          </div>
-
-          <div className="flex-1 w-full lg:block border-l border-white/10 lg:pl-12 flex flex-col justify-center">
-            <div className="bg-white/5 border border-white/10 p-6 rounded-xl backdrop-blur-sm">
-              <Code className="w-10 h-10 text-brand mb-4" />
-              <h3 className="text-[20px] font-semibold mb-2">Purpose-Built AI for Your Industry</h3>
-              <p className="text-[14px] text-[#9FB9C8]">
-                Botmartz designs industry-specific AI systems that align with your operational context, compliance requirements, and business goals.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* AEO BLOCK */}
-      {content.aeoQuestion && content.aeoAnswer && (
-        <section className="section-pad border-y border-line bg-paper">
-          <div className="wrap max-w-[850px] mx-auto text-center">
-            <h3 className="text-xs font-bold text-brand uppercase tracking-widest mb-3 font-mono">AI Answer Engine Block</h3>
-            <h2 className="text-[24px] md:text-[28px] font-semibold text-ink mb-6 leading-tight">
-              {content.aeoQuestion}
-            </h2>
-            <div className="text-[15px] md:text-[16px] text-ink-soft leading-relaxed text-left bg-white border border-line rounded-2xl p-6 md:p-8 shadow-sm">
-              <span className="font-bold text-brand mr-2">Answer:</span>
-              {content.aeoAnswer}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* USE CASES */}
-      {content.useCases && content.useCases.length > 0 && (
-        <section className="section-pad">
-          <div className="wrap text-center mb-[60px]">
-            <div className="eyebrow justify-center">Key Use Cases</div>
-            <h2 className="text-[34px] font-semibold mb-4">Transforming {content.title} with AI</h2>
-          </div>
-
-          <div className="wrap grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {content.useCases.map((item: any, i: number) => (
-              <div
-                key={i}
-                className="bg-white border border-line p-6 rounded-xl shadow-sm hover:border-brand transition-colors"
-              >
-                <div className="text-brand mb-4">
-                  <DynamicIcon name={item.iconName || "Briefcase"} className="w-8 h-8" />
-                </div>
-                <h4 className="font-semibold text-[18px] mb-2 text-ink">{item.title}</h4>
-                <p className="text-[14px] text-ink-soft leading-relaxed">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* TECH STACK */}
-      {content.techStack && content.techStack.length > 0 && (
-        <section className="section-pad border-t border-line bg-paper">
-          <div className="wrap max-w-4xl text-center">
-            <div className="eyebrow justify-center mb-3">Tech Stack</div>
-            <h2 className="text-[28px] font-semibold mb-8 text-ink">Built With Best-in-Class Tooling</h2>
-            <div className="flex flex-wrap justify-center gap-3">
-              {content.techStack.map((tech: string, i: number) => (
-                <span key={i} className="px-4 py-2 bg-white border border-line rounded-xl text-sm font-semibold text-ink-soft shadow-xs font-mono">
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* CTA */}
-      {content.cta && (
-        <section className="section-pad bg-brand text-white relative overflow-hidden">
-          <div className="absolute inset-0 bg-radial-to-t from-deep/50 to-transparent" />
-          <div className="wrap relative z-10 text-center max-w-[720px] mx-auto">
-            <h2 className="text-[clamp(28px,4vw,42px)] leading-none font-semibold mb-4">
-              {content.cta.title}
-            </h2>
-            <p className="text-[17px] opacity-80 mb-8 max-w-[580px] mx-auto leading-relaxed">
-              {content.cta.subtitle}
-            </p>
-            <Link
-              href="/contact"
-              className="btn btn-primary bg-white text-brand hover:bg-neutral-50 px-8 py-3 rounded-xl font-bold transition-all shadow-md inline-block"
-            >
-              {content.cta.buttonText || "Schedule a Discovery Call →"}
-            </Link>
-          </div>
-        </section>
-      )}
+      {/* Render selected template (Template 1, 2, 3, or 4) */}
+      <TemplateRenderer content={content} />
     </main>
   );
 }

@@ -114,7 +114,7 @@ export default async function ServicesIndexPage() {
           </p>
         </div>
         
-        <div className="wrap grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="wrap grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[960px] mx-auto">
           {/* Service 1 */}
           <div className="bg-[#0A111F] border border-[#1E293B] p-8 transition-colors hover:border-[#00B8F0] rounded-sm">
             <div className="w-12 h-12 bg-[#050B14] rounded-lg flex items-center justify-center mb-6 border border-[#1E293B]">
@@ -149,23 +149,6 @@ export default async function ServicesIndexPage() {
               ))}
             </ul>
             <Link href="/services/ai-agents" className="font-mono text-[12px] text-[#00B8F0] relative z-10 hover:underline">Learn more →</Link>
-          </div>
-
-          {/* Service 3 */}
-          <div className="bg-[#0A111F] border border-[#1E293B] p-8 transition-colors hover:border-[#00B8F0] rounded-sm">
-            <div className="w-12 h-12 bg-[#050B14] rounded-lg flex items-center justify-center mb-6 border border-[#1E293B]">
-              <div className="w-6 h-6 border-2 border-[#0A111F] rounded-sm" />
-            </div>
-            <h3 className="text-[20px] font-semibold mb-3 text-white">AI Integrations</h3>
-            <p className="text-[14px] text-[#8A9EB0] mb-6">Seamlessly integrate AI capabilities into your existing systems.</p>
-            <ul className="space-y-2.5 mb-8">
-              {['Model Integration', 'API Development', 'Custom Workflows', 'LLM Fine-tuning', 'System Modernization'].map(i => (
-                <li key={i} className="flex items-center gap-2 text-[13.5px] text-[#8A9EB0]">
-                  <span className="text-[#00B8F0]">✓</span> {i}
-                </li>
-              ))}
-            </ul>
-            <Link href="/services" className="font-mono text-[12px] text-[#00B8F0] hover:underline">Learn more →</Link>
           </div>
         </div>
       </section>

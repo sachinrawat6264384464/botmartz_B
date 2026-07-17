@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from "next/link";
-import { ArrowRight, Briefcase, FileText, Layout, Terminal, Code2, Code, ShieldCheck, Zap, Layers, Star, GitFork, Calendar, CheckSquare } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, Briefcase, FileText, Layout, Terminal, Code2, Code, ShieldCheck, Zap, Layers, Star, GitFork, Calendar, CheckSquare, ExternalLink } from "lucide-react";
 import { adminDb } from '@/lib/firebase-admin';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -55,269 +56,447 @@ export default async function WorkPage() {
         <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[120px] rounded-full pointer-events-none" />
         <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0066FF]/10 blur-[150px] rounded-full pointer-events-none" />
 
-        <div className="wrap relative z-10 flex flex-col lg:flex-row items-center gap-12 pb-[20px]">
-          <div className="flex-1 lg:max-w-[500px]">
-            <div className="font-mono text-[11px] tracking-[0.14em] text-[#00B8F0] uppercase mb-6 flex items-center gap-3 font-semibold">
-              <span className="w-6 h-px bg-[#00B8F0]"></span>
-              {heroData.badge}
-            </div>
-            <h1 
-              className="text-[clamp(36px,4.5vw,56px)] leading-[1.1] font-semibold mb-6 tracking-tight text-white"
-              dangerouslySetInnerHTML={{ __html: heroData.title }}
-            />
-            <p className="text-[17px] text-[#8A9EB0] mb-8">
-              {heroData.subtitle}
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link href="/contact" className="btn btn-primary bg-[#00B8F0] text-white hover:bg-[#0096C7] px-6 py-3 rounded text-[14px]">Book a Discovery Call →</Link>
-              <Link href="#projects" className="btn border border-[#1E293B] hover:border-[#00B8F0] hover:text-[#00B8F0] transition-colors text-white px-6 py-3 rounded text-[14px] font-mono">Discuss Your Project</Link>
-            </div>
+        <div className="wrap relative z-10">
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-2 text-[13.5px] font-medium mb-6">
+            <Link href="/" className="text-[#00B8F0] hover:underline">Home</Link>
+            <span className="text-[#8A9EB0]">{'>'}</span>
+            <span className="text-[#8A9EB0]">Work</span>
           </div>
-          
-          <div className="flex-1 w-full lg:block border-l border-[#1E293B] lg:pl-12 flex flex-col justify-center">
-            {/* Stats Grid */}
-            <div className="grid grid-cols-2 gap-y-10 gap-x-6 max-w-[400px]">
-               <div className="flex gap-4">
-                  <Layers className="w-6 h-6 text-[#00B8F0] shrink-0" />
-                  <div>
-                     <div className="text-[24px] font-bold leading-none mb-1 text-white">20+</div>
-                     <div className="font-mono text-[11px] text-[#8A9EB0] uppercase tracking-wider">Projects Delivered</div>
-                  </div>
-               </div>
-               <div className="flex gap-4">
-                  <Briefcase className="w-6 h-6 text-[#00B8F0] shrink-0" />
-                  <div>
-                     <div className="text-[24px] font-bold leading-none mb-1 text-white">100+</div>
-                     <div className="font-mono text-[11px] text-[#8A9EB0] uppercase tracking-wider">Enterprise Clients</div>
-                  </div>
-               </div>
-               <div className="flex gap-4">
-                  <FileText className="w-6 h-6 text-[#00B8F0] shrink-0" />
-                  <div>
-                     <div className="text-[24px] font-bold leading-none mb-1 text-white">50M+</div>
-                     <div className="font-mono text-[11px] text-[#8A9EB0] uppercase tracking-wider">Documents Processed</div>
-                  </div>
-               </div>
-               <div className="flex gap-4">
-                  <ShieldCheck className="w-6 h-6 text-[#00B8F0] shrink-0" />
-                  <div>
-                     <div className="text-[24px] font-bold leading-none mb-1 text-white">95%</div>
-                     <div className="font-mono text-[11px] text-[#8A9EB0] uppercase tracking-wider">Client Satisfaction</div>
-                  </div>
-               </div>
+
+          {/* 3-Column Hero Layout */}
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-10 xl:gap-14 pb-8">
+            {/* Left Column: Text & CTA */}
+            <div className="w-full lg:w-[42%] xl:max-w-[480px] shrink-0">
+              <div className="font-mono text-[12px] tracking-[0.15em] text-[#00B8F0] font-bold uppercase mb-4">
+                {heroData.badge}
+              </div>
+              <h1 
+                className="text-[clamp(36px,4.5vw,56px)] leading-[1.1] font-bold mb-6 tracking-tight text-white"
+                dangerouslySetInnerHTML={{ __html: heroData.title }}
+              />
+              <p className="text-[16px] text-[#8A9EB0] leading-relaxed mb-8">
+                {heroData.subtitle}
+              </p>
+              <div className="flex flex-wrap items-center gap-4">
+                <Link href="/contact" className="btn bg-[#0066FF] hover:bg-[#0052CC] text-white px-6 py-3.5 rounded-lg font-semibold text-[14px] flex items-center gap-2 shadow-[0_4px_16px_rgba(0,102,255,0.3)] transition-all">
+                  Book a Discovery Call <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link href="#projects" className="btn border border-white/20 hover:border-white/40 hover:bg-white/5 transition-all text-white px-6 py-3.5 rounded-lg text-[14px] font-medium flex items-center gap-2.5">
+                  Discuss Your Project <ExternalLink className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+            
+            {/* Center Column: Hero Illustration /case-studies2.png */}
+            <div className="flex-1 flex justify-center items-center relative my-6 lg:my-0">
+              <div className="relative w-full max-w-[440px] xl:max-w-[500px] flex justify-center items-center">
+                <div className="absolute inset-0 bg-gradient-to-tr from-[#0066FF]/20 via-[#00B8F0]/25 to-transparent blur-[80px] rounded-full pointer-events-none" />
+                <Image
+                  src="/case-studies2.png"
+                  alt="AI Engineering Impact Illustration"
+                  width={520}
+                  height={420}
+                  className="w-full h-auto object-contain relative z-10 drop-shadow-[0_0_35px_rgba(0,184,240,0.25)]"
+                  priority
+                />
+              </div>
+            </div>
+
+            {/* Right Column: Stacked Stats */}
+            <div className="w-full lg:w-[240px] xl:w-[260px] shrink-0 flex flex-col justify-center gap-6 border-l border-white/10 lg:border-l-0 pl-6 lg:pl-0">
+              <div className="border-b border-white/10 pb-6">
+                <div className="flex items-center gap-3 mb-1">
+                  <Layers className="w-5 h-5 text-[#8A9EB0]" />
+                  <span className="text-[28px] sm:text-[32px] font-bold text-[#00B8F0] leading-none">20+</span>
+                </div>
+                <div className="text-[13.5px] text-[#8A9EB0] font-medium">Projects Delivered</div>
+              </div>
+
+              <div className="border-b border-white/10 pb-6">
+                <div className="flex items-center gap-3 mb-1">
+                  <Briefcase className="w-5 h-5 text-[#8A9EB0]" />
+                  <span className="text-[28px] sm:text-[32px] font-bold text-[#00B8F0] leading-none">100+</span>
+                </div>
+                <div className="text-[13.5px] text-[#8A9EB0] font-medium">Enterprise Clients</div>
+              </div>
+
+              <div className="border-b border-white/10 pb-6">
+                <div className="flex items-center gap-3 mb-1">
+                  <FileText className="w-5 h-5 text-[#8A9EB0]" />
+                  <span className="text-[28px] sm:text-[32px] font-bold text-[#00B8F0] leading-none">50M+</span>
+                </div>
+                <div className="text-[13.5px] text-[#8A9EB0] font-medium">Documents Processed</div>
+              </div>
+
+              <div>
+                <div className="flex items-center gap-3 mb-1">
+                  <ShieldCheck className="w-5 h-5 text-[#8A9EB0]" />
+                  <span className="text-[28px] sm:text-[32px] font-bold text-[#00B8F0] leading-none">95%</span>
+                </div>
+                <div className="text-[13.5px] text-[#8A9EB0] font-medium">Client Satisfaction</div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* FILTER & PROJECTS SECTION */}
-      <section id="projects" className="py-[60px] bg-[#050B14]">
-        <div className="wrap flex flex-col lg:flex-row gap-10 lg:gap-14">
+      <section id="projects" className="py-16 bg-[#F8FAFC] text-[#0B1C2C] border-y border-gray-200/80">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 flex flex-col lg:flex-row gap-10 lg:gap-12">
           
           {/* LEFT SIDEBAR: FILTERS */}
-          <div className="w-full lg:w-[260px] shrink-0">
-             <div className="font-mono text-[11px] uppercase tracking-[0.1em] text-[#00B8F0] border-b border-[#1E293B] pb-3 mb-6">Filter Projects</div>
-             
-             {/* Service Filter */}
-             <div className="mb-8">
-               <h4 className="font-semibold text-[14px] mb-3 text-white">Service</h4>
-               <ul className="space-y-2">
-                 {['Enterprise RAG', 'AI Agents', 'AI Integrations'].map((f) => (
-                   <li key={f} className="flex items-center gap-3">
-                     <div className="w-4 h-4 border border-[#1E293B] rounded-sm flex items-center justify-center text-transparent hover:border-[#00B8F0] cursor-pointer transition-colors" />
-                     <span className="text-[13.5px] text-[#8A9EB0] select-none cursor-pointer hover:text-white transition-colors">{f}</span>
-                   </li>
-                 ))}
-               </ul>
-             </div>
+          <div className="w-full lg:w-[280px] shrink-0">
+             <div className="bg-white border border-gray-200/80 rounded-2xl p-6 shadow-sm mb-6">
+               <div className="font-mono text-[11px] font-bold uppercase tracking-[0.12em] text-[#0066FF] border-b border-gray-100 pb-3 mb-6">
+                 Filter Projects
+               </div>
+               
+               {/* Service Filter */}
+               <div className="mb-7">
+                 <h4 className="font-semibold text-[14px] mb-3 text-[#0B1C2C]">Service</h4>
+                 <ul className="space-y-2.5">
+                   {['Enterprise RAG', 'AI Agents', 'AI Integrations'].map((f) => (
+                     <li key={f} className="flex items-center gap-3">
+                       <input 
+                         type="checkbox" 
+                         defaultChecked={f === 'Enterprise RAG' || f === 'AI Agents'}
+                         id={`chk-srv-${f}`}
+                         className="w-4 h-4 rounded border-gray-300 text-[#0066FF] focus:ring-[#0066FF] cursor-pointer"
+                       />
+                       <label htmlFor={`chk-srv-${f}`} className="text-[13.5px] text-[#475569] select-none cursor-pointer hover:text-[#0B1C2C] font-medium transition-colors">
+                         {f}
+                       </label>
+                     </li>
+                   ))}
+                 </ul>
+               </div>
 
-             {/* Industry Filter */}
-             <div className="mb-8">
-               <h4 className="font-semibold text-[14px] mb-3 text-white">Industry</h4>
-               <ul className="space-y-2">
-                 {['Education', 'Logistics', 'Legal', 'Healthcare', 'SaaS & Technology', 'Manufacturing', 'Financial Services'].map((f) => (
-                   <li key={f} className="flex items-center gap-3">
-                     <div className="w-4 h-4 border border-[#1E293B] rounded-sm flex items-center justify-center text-transparent hover:border-[#00B8F0] cursor-pointer transition-colors" />
-                     <span className="text-[13.5px] text-[#8A9EB0] select-none cursor-pointer hover:text-white transition-colors">{f}</span>
-                   </li>
-                 ))}
-               </ul>
-             </div>
+               {/* Industry Filter */}
+               <div className="mb-7 border-t border-gray-100 pt-6">
+                 <h4 className="font-semibold text-[14px] mb-3 text-[#0B1C2C]">Industry</h4>
+                 <ul className="space-y-2.5">
+                   {['Education', 'Logistics', 'Legal', 'Healthcare', 'SaaS & Technology', 'Manufacturing', 'Financial Services'].map((f) => (
+                     <li key={f} className="flex items-center gap-3">
+                       <input 
+                         type="checkbox" 
+                         defaultChecked={['Logistics', 'Legal', 'SaaS & Technology'].includes(f)}
+                         id={`chk-ind-${f}`}
+                         className="w-4 h-4 rounded border-gray-300 text-[#0066FF] focus:ring-[#0066FF] cursor-pointer"
+                       />
+                       <label htmlFor={`chk-ind-${f}`} className="text-[13.5px] text-[#475569] select-none cursor-pointer hover:text-[#0B1C2C] font-medium transition-colors">
+                         {f}
+                       </label>
+                     </li>
+                   ))}
+                 </ul>
+               </div>
 
-             {/* Tag Filter */}
-             <div className="mb-8">
-               <h4 className="font-semibold text-[14px] mb-3 text-white">Tag / Capability</h4>
-               <ul className="space-y-2">
-                 <li className="flex items-center gap-3">
-                    <div className="w-4 h-4 bg-[#00B8F0] border border-[#00B8F0] rounded-sm flex items-center justify-center text-white cursor-pointer transition-colors">
-                      <CheckSquare className="w-3 h-3" />
-                    </div>
-                    <span className="text-[13.5px] text-white font-medium select-none cursor-pointer">All</span>
-                 </li>
-                 {['Knowledge Search', 'Document Intelligence', 'Multi-Agent Systems', 'Workflow Automation', 'LLM Integration', 'Computer Vision', 'Data Engineering'].map((f) => (
-                   <li key={f} className="flex items-center gap-3">
-                     <div className="w-4 h-4 border border-[#1E293B] rounded-sm flex items-center justify-center text-transparent hover:border-[#00B8F0] cursor-pointer transition-colors" />
-                     <span className="text-[13.5px] text-[#8A9EB0] select-none cursor-pointer hover:text-white transition-colors">{f}</span>
+               {/* Tag Filter */}
+               <div className="border-t border-gray-100 pt-6">
+                 <h4 className="font-semibold text-[14px] mb-3 text-[#0B1C2C]">Tag / Capability</h4>
+                 <ul className="space-y-2.5">
+                   <li className="flex items-center gap-3">
+                     <input 
+                       type="checkbox" 
+                       defaultChecked={true}
+                       id="chk-tag-all"
+                       className="w-4 h-4 rounded border-gray-300 text-[#0066FF] focus:ring-[#0066FF] cursor-pointer"
+                     />
+                     <label htmlFor="chk-tag-all" className="text-[13.5px] text-[#0B1C2C] font-bold select-none cursor-pointer">
+                       All
+                     </label>
                    </li>
-                 ))}
-               </ul>
+                   {['Knowledge Search', 'Document Intelligence', 'Multi-Agent Systems', 'Workflow Automation', 'LLM Integration', 'Computer Vision', 'Data Engineering'].map((f) => (
+                     <li key={f} className="flex items-center gap-3">
+                       <input 
+                         type="checkbox" 
+                         defaultChecked={['Knowledge Search', 'Document Intelligence', 'Multi-Agent Systems'].includes(f)}
+                         id={`chk-tag-${f}`}
+                         className="w-4 h-4 rounded border-gray-300 text-[#0066FF] focus:ring-[#0066FF] cursor-pointer"
+                       />
+                       <label htmlFor={`chk-tag-${f}`} className="text-[13.5px] text-[#475569] select-none cursor-pointer hover:text-[#0B1C2C] font-medium transition-colors">
+                         {f}
+                       </label>
+                     </li>
+                   ))}
+                 </ul>
+               </div>
              </div>
 
              {/* Sidebar CTA */}
-             <div className="bg-[#0A111F] border border-[#1E293B] rounded p-5 text-center flex flex-col items-center">
-                <div className="font-semibold text-[14px] mb-2 text-[#00B8F0]">Have a similar challenge?</div>
-                <p className="text-[12.5px] text-[#8A9EB0] mb-4">Let's build a solution tailored to your business.</p>
-                <Link href="/contact" className="font-mono text-[11px] border border-[#1E293B] px-4 py-2 hover:border-[#00B8F0] hover:text-[#00B8F0] transition-colors rounded-sm text-white w-full">Book a Discovery Call →</Link>
+             <div className="bg-white border border-gray-200/80 rounded-2xl p-6 text-center shadow-sm flex flex-col items-center">
+                <div className="w-10 h-10 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-[#0066FF] mb-3">
+                  <Zap className="w-5 h-5" />
+                </div>
+                <div className="font-bold text-[15px] mb-1.5 text-[#0B1C2C]">Have a similar challenge?</div>
+                <p className="text-[13px] text-[#64748B] mb-5 leading-relaxed">Let&apos;s build a custom AI engineering solution tailored to your business goals.</p>
+                <Link href="/contact" className="btn bg-[#0066FF] hover:bg-[#0052CC] text-white font-semibold text-[13px] px-5 py-3 rounded-xl transition-all shadow-[0_4px_12px_rgba(0,102,255,0.2)] w-full">
+                  Book a Discovery Call →
+                </Link>
              </div>
           </div>
 
           {/* RIGHT SIDEBAR: CONTENT */}
           <div className="flex-1">
              {/* Tab Navigation */}
-             <div className="flex overflow-x-auto hide-scrollbar gap-2 mb-8">
-                <div className="bg-[#00B8F0] text-white font-mono text-[12px] px-5 py-2 rounded cursor-pointer whitespace-nowrap">All Projects</div>
-                <div className="bg-[#0A111F] border border-[#1E293B] hover:border-[#00B8F0]/50 text-[#8A9EB0] font-mono text-[12px] px-5 py-2 rounded cursor-pointer transition-colors whitespace-nowrap">Featured</div>
-                <div className="bg-[#0A111F] border border-[#1E293B] hover:border-[#00B8F0]/50 text-[#8A9EB0] font-mono text-[12px] px-5 py-2 rounded cursor-pointer transition-colors whitespace-nowrap">Enterprise RAG</div>
-                <div className="bg-[#0A111F] border border-[#1E293B] hover:border-[#00B8F0]/50 text-[#8A9EB0] font-mono text-[12px] px-5 py-2 rounded cursor-pointer transition-colors whitespace-nowrap">AI Agents</div>
-                <div className="bg-[#0A111F] border border-[#1E293B] hover:border-[#00B8F0]/50 text-[#8A9EB0] font-mono text-[12px] px-5 py-2 rounded cursor-pointer transition-colors whitespace-nowrap">AI Integrations</div>
-                <div className="bg-[#0A111F] border border-[#1E293B] hover:border-[#00B8F0]/50 text-[#8A9EB0] font-mono text-[12px] px-5 py-2 rounded cursor-pointer transition-colors whitespace-nowrap">Open Source & Labs</div>
+             <div className="flex flex-wrap gap-2.5 mb-8">
+                <div className="bg-[#0066FF] text-white font-semibold text-[13px] px-5 py-2.5 rounded-xl cursor-pointer shadow-sm transition-all">All Projects</div>
+                <div className="bg-white border border-gray-200 hover:border-[#0066FF]/40 text-[#475569] font-medium text-[13px] px-5 py-2.5 rounded-xl cursor-pointer transition-colors shadow-sm">Featured</div>
+                <div className="bg-white border border-gray-200 hover:border-[#0066FF]/40 text-[#475569] font-medium text-[13px] px-5 py-2.5 rounded-xl cursor-pointer transition-colors shadow-sm">Enterprise RAG</div>
+                <div className="bg-white border border-gray-200 hover:border-[#0066FF]/40 text-[#475569] font-medium text-[13px] px-5 py-2.5 rounded-xl cursor-pointer transition-colors shadow-sm">AI Agents</div>
+                <div className="bg-white border border-gray-200 hover:border-[#0066FF]/40 text-[#475569] font-medium text-[13px] px-5 py-2.5 rounded-xl cursor-pointer transition-colors shadow-sm">AI Integrations</div>
+                <div className="bg-white border border-gray-200 hover:border-[#0066FF]/40 text-[#475569] font-medium text-[13px] px-5 py-2.5 rounded-xl cursor-pointer transition-colors shadow-sm">Open Source &amp; Labs</div>
              </div>
 
              {/* Project List */}
-             <div className="flex flex-col gap-10">
+             <div className="flex flex-col gap-8">
                 
                 {/* Project 1 */}
-                <div className="flex flex-col md:flex-row gap-8 items-stretch pb-10 border-b border-[#1E293B] group">
-                   <div className="w-full md:w-[45%] lg:w-[40%] bg-[#0A111F] rounded border border-[#1E293B] overflow-hidden relative min-h-[220px]">
-                      {/* Image Placeholder */}
-                      <div className="absolute inset-0 bg-[#0A111F] opacity-20" style={{ backgroundImage: 'linear-gradient(rgba(0,184,240,.2) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,.2) 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
-                      <div className="absolute inset-4 bg-white/5 border border-white/10 rounded backdrop-blur flex items-center justify-center p-4">
-                        <div className="w-full h-full bg-[#0A111F] border border-[#1E293B] rounded flex flex-col opacity-50 overflow-hidden">
-                           <div className="h-4 border-b border-[#1E293B] w-full"></div>
-                           <div className="h-4 border-b border-[#1E293B] w-full"></div>
-                           <div className="flex-1 flex gap-2 p-2">
-                             <div className="w-1/3 h-full border border-[#1E293B] rounded-sm"></div>
-                             <div className="flex-1 h-full border border-[#1E293B] rounded-sm flex flex-col gap-2 p-2">
-                                <div className="h-2 w-full bg-[#1E293B] rounded"></div>
-                                <div className="h-2 w-2/3 bg-[#1E293B] rounded"></div>
-                             </div>
-                           </div>
-                        </div>
+                <div className="bg-white border border-gray-200/80 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all overflow-hidden p-6 sm:p-8 flex flex-col xl:flex-row gap-8 items-stretch group">
+                   <div className="w-full xl:w-[38%] bg-[#0B1C2C] rounded-xl overflow-hidden relative min-h-[240px] border border-gray-800 flex items-center justify-center">
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#0066FF]/20 via-transparent to-[#00B8F0]/10 opacity-60"></div>
+                      <div className="relative z-10 w-4/5 bg-gray-900/90 border border-gray-700/80 rounded-lg p-4 shadow-2xl space-y-3">
+                         <div className="flex items-center justify-between border-b border-gray-800 pb-2">
+                            <div className="flex gap-1.5">
+                              <div className="w-2.5 h-2.5 rounded-full bg-red-500/70"></div>
+                              <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/70"></div>
+                              <div className="w-2.5 h-2.5 rounded-full bg-green-500/70"></div>
+                            </div>
+                            <span className="font-mono text-[10px] text-gray-400">RAG Knowledge Base</span>
+                         </div>
+                         <div className="space-y-2">
+                            <div className="h-3 w-3/4 bg-blue-500/30 rounded"></div>
+                            <div className="h-2 w-full bg-gray-700 rounded"></div>
+                            <div className="h-2 w-5/6 bg-gray-700 rounded"></div>
+                            <div className="h-8 bg-gray-800 rounded border border-gray-700 mt-3 p-2 flex items-center justify-between">
+                              <span className="text-[10px] text-gray-300 font-mono">Query: Logistics SOPs</span>
+                              <span className="text-[9px] text-green-400 font-mono">0.12s</span>
+                            </div>
+                         </div>
                       </div>
                    </div>
+
                    <div className="flex-1 flex flex-col justify-between">
                       <div>
-                         <div className="font-mono text-[10px] text-[#00B8F0] uppercase bg-[#00B8F0]/10 inline-block px-2 py-1 rounded mb-3">Enterprise RAG</div>
-                         <h3 className="text-[22px] font-semibold mb-3 group-hover:text-[#00B8F0] transition-colors text-white">Enterprise Knowledge Search for Global Logistics Company</h3>
-                         <p className="text-[14px] text-[#8A9EB0] mb-6">Built a secure enterprise RAG system to unify and search across 500K+ internal documents, policies, SOPs, and manuals.</p>
+                         <div className="font-mono text-[11px] font-bold text-[#0066FF] uppercase bg-blue-50 border border-blue-100/80 inline-block px-3 py-1 rounded-md mb-3">
+                           Enterprise RAG
+                         </div>
+                         <h3 className="text-[22px] sm:text-[24px] font-bold mb-3 group-hover:text-[#0066FF] transition-colors text-[#0B1C2C]">
+                           Enterprise Knowledge Search for Global Logistics Company
+                         </h3>
+                         <p className="text-[14.5px] text-[#475569] leading-relaxed mb-6">
+                           Built a secure enterprise RAG system to unify and search across 500K+ internal documents, policies, SOPs, and shipping manuals.
+                         </p>
                          
                          {/* Tech Tags */}
                          <div className="flex flex-wrap gap-2 mb-6">
                             {['RAG', 'Hybrid Search', 'LangChain', 'Pinecone', 'FastAPI'].map(t => (
-                              <span key={t} className="font-mono text-[10.5px] border border-[#1E293B] text-[#8A9EB0] px-2 py-1 rounded-sm">{t}</span>
+                              <span key={t} className="font-mono text-[11px] bg-gray-100 border border-gray-200/80 text-[#334155] px-2.5 py-1 rounded-md font-medium">{t}</span>
                             ))}
                          </div>
                       </div>
                       
-                      <div className="flex items-center gap-8 border-t border-[#1E293B] pt-4">
-                         <div>
-                            <div className="text-[20px] font-semibold leading-none mb-1 text-[#00B8F0]">70%</div>
-                            <div className="text-[12px] text-[#8A9EB0]">Faster information retrieval</div>
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-t border-gray-100 pt-6">
+                         <div className="flex flex-wrap gap-6">
+                           <div>
+                              <div className="text-[22px] font-extrabold leading-none mb-1 text-[#0B1C2C]">70%</div>
+                              <div className="text-[12px] text-[#64748B] font-medium">Faster information retrieval</div>
+                           </div>
+                           <div className="border-l border-gray-200 pl-6">
+                              <div className="text-[22px] font-extrabold leading-none mb-1 text-[#0B1C2C]">60%</div>
+                              <div className="text-[12px] text-[#64748B] font-medium">Reduction in support tickets</div>
+                           </div>
+                           <div className="border-l border-gray-200 pl-6 hidden sm:block">
+                              <div className="text-[22px] font-extrabold leading-none mb-1 text-[#0B1C2C]">3.2x</div>
+                              <div className="text-[12px] text-[#64748B] font-medium">Increase in team productivity</div>
+                           </div>
                          </div>
-                         <Link href="/contact" className="ml-auto font-mono text-[12px] text-[#00B8F0] flex items-center gap-2 group-hover:gap-3 transition-all hover:underline">View Case Study <ArrowRight className="w-3 h-3" /></Link>
+                         <Link href="/work/case-studies" className="font-mono text-[13px] font-bold text-[#0066FF] flex items-center gap-2 group-hover:gap-3 transition-all hover:underline whitespace-nowrap">
+                           View Case Study: Logistics Knowledge Search →
+                         </Link>
                       </div>
                    </div>
                 </div>
 
                 {/* Project 2 */}
-                <div className="flex flex-col md:flex-row gap-8 items-stretch pb-10 border-b border-[#1E293B] group">
-                   <div className="w-full md:w-[45%] lg:w-[40%] bg-[#0A111F] rounded border border-[#1E293B] overflow-hidden relative min-h-[220px]">
-                      {/* Image Placeholder */}
-                      <div className="absolute inset-6 bg-[#050B14] border border-[#1E293B] rounded shadow-lg flex items-center justify-center p-4">
-                         <div className="flex items-center justify-center w-full h-full relative">
-                           <div className="w-10 h-10 border border-[#00B8F0]/50 rounded-full flex items-center justify-center absolute left-4 text-[#00B8F0] bg-[#00B8F0]/10 z-10"><Terminal className="w-5 h-5"/></div>
-                           <div className="h-px bg-[#00B8F0]/30 w-full absolute top-1/2 -translate-y-1/2"></div>
-                           <div className="w-12 h-12 border-2 border-[#00B8F0] rounded flex items-center justify-center absolute bg-[#050B14] z-10"><Code2 className="w-6 h-6 text-[#00B8F0]"/></div>
-                           <div className="w-10 h-10 border border-[#00B8F0]/50 rounded flex items-center justify-center absolute right-4 text-[#00B8F0] bg-[#00B8F0]/10 z-10"><Layout className="w-5 h-5"/></div>
+                <div className="bg-white border border-gray-200/80 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all overflow-hidden p-6 sm:p-8 flex flex-col xl:flex-row gap-8 items-stretch group">
+                   <div className="w-full xl:w-[38%] bg-[#0B1C2C] rounded-xl overflow-hidden relative min-h-[240px] border border-gray-800 flex items-center justify-center">
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#00B8F0]/20 via-transparent to-[#0066FF]/20 opacity-60"></div>
+                      <div className="relative z-10 w-4/5 bg-gray-900/90 border border-gray-700/80 rounded-lg p-4 shadow-2xl space-y-3">
+                         <div className="flex items-center justify-between border-b border-gray-800 pb-2">
+                            <span className="font-mono text-[10px] text-blue-400 font-bold">Autonomous Support Agent</span>
+                            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                         </div>
+                         <div className="space-y-2 font-mono text-[10px]">
+                            <div className="bg-gray-800 p-2 rounded border border-gray-700 text-gray-300">User: How do I upgrade my team plan API tier?</div>
+                            <div className="bg-[#0066FF]/20 p-2 rounded border border-[#0066FF]/40 text-blue-200">Agent: Checked billing quota. Executing upgrade flow... ✓</div>
                          </div>
                       </div>
                    </div>
+
                    <div className="flex-1 flex flex-col justify-between">
                       <div>
-                         <div className="font-mono text-[10px] text-[#00B8F0] uppercase bg-[#00B8F0]/10 inline-block px-2 py-1 rounded mb-3">AI Agents</div>
-                         <h3 className="text-[22px] font-semibold mb-3 group-hover:text-[#00B8F0] transition-colors text-white">AI Support Agent for SaaS Customer Support</h3>
-                         <p className="text-[14px] text-[#8A9EB0] mb-6">Developed an autonomous AI support agent that resolves customer queries end-to-end with context, tools, and human escalation.</p>
+                         <div className="font-mono text-[11px] font-bold text-[#0066FF] uppercase bg-blue-50 border border-blue-100/80 inline-block px-3 py-1 rounded-md mb-3">
+                           AI Agents
+                         </div>
+                         <h3 className="text-[22px] sm:text-[24px] font-bold mb-3 group-hover:text-[#0066FF] transition-colors text-[#0B1C2C]">
+                           AI Support Agent for SaaS Customer Support
+                         </h3>
+                         <p className="text-[14.5px] text-[#475569] leading-relaxed mb-6">
+                           Developed an autonomous AI support agent that resolves customer queries end-to-end with deep context, API tools, and human escalation.
+                         </p>
                          
                          {/* Tech Tags */}
                          <div className="flex flex-wrap gap-2 mb-6">
                             {['LangGraph', 'OpenAI', 'Redis', 'FastAPI', 'Docker'].map(t => (
-                              <span key={t} className="font-mono text-[10.5px] border border-[#1E293B] text-[#8A9EB0] px-2 py-1 rounded-sm">{t}</span>
+                              <span key={t} className="font-mono text-[11px] bg-gray-100 border border-gray-200/80 text-[#334155] px-2.5 py-1 rounded-md font-medium">{t}</span>
                             ))}
                          </div>
                       </div>
                       
-                      <div className="flex items-center gap-8 border-t border-[#1E293B] pt-4">
-                         <div>
-                            <div className="text-[20px] font-semibold leading-none mb-1 text-[#00B8F0]">45%</div>
-                            <div className="text-[12px] text-[#8A9EB0]">Queries resolved automatically</div>
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-t border-gray-100 pt-6">
+                         <div className="flex flex-wrap gap-6">
+                           <div>
+                              <div className="text-[22px] font-extrabold leading-none mb-1 text-[#0B1C2C]">45%</div>
+                              <div className="text-[12px] text-[#64748B] font-medium">Queries resolved automatically</div>
+                           </div>
+                           <div className="border-l border-gray-200 pl-6">
+                              <div className="text-[22px] font-extrabold leading-none mb-1 text-[#0B1C2C]">35%</div>
+                              <div className="text-[12px] text-[#64748B] font-medium">Reduced first response time</div>
+                           </div>
+                           <div className="border-l border-gray-200 pl-6 hidden sm:block">
+                              <div className="text-[22px] font-extrabold leading-none mb-1 text-[#0B1C2C]">90%</div>
+                              <div className="text-[12px] text-[#64748B] font-medium">Customer satisfaction score</div>
+                           </div>
                          </div>
-                         <div>
-                            <div className="text-[20px] font-semibold leading-none mb-1 text-[#00B8F0]">35%</div>
-                            <div className="text-[12px] text-[#8A9EB0]">Reduced first response time</div>
-                         </div>
-                         <Link href="/contact" className="ml-auto font-mono text-[12px] text-[#00B8F0] flex items-center gap-2 group-hover:gap-3 transition-all hidden sm:flex hover:underline">View Case Study <ArrowRight className="w-3 h-3" /></Link>
+                         <Link href="/work/case-studies" className="font-mono text-[13px] font-bold text-[#0066FF] flex items-center gap-2 group-hover:gap-3 transition-all hover:underline whitespace-nowrap">
+                           View Case Study: AI Support Agent →
+                         </Link>
                       </div>
                    </div>
                 </div>
 
                 {/* Project 3 */}
-                <div className="flex flex-col md:flex-row gap-8 items-stretch group">
-                   <div className="w-full md:w-[45%] lg:w-[40%] bg-[#0A111F] rounded border border-[#1E293B] overflow-hidden relative min-h-[220px]">
-                      {/* Image Placeholder */}
-                      <div className="absolute inset-4 bg-[#050B14] border border-[#1E293B] rounded flex flex-col shadow-sm">
-                         <div className="h-6 border-b border-[#1E293B] bg-[#0A111F] rounded-t flex items-center px-2"><div className="w-2 h-2 rounded-full bg-[#1E293B] mx-1"></div><div className="w-2 h-2 rounded-full bg-[#1E293B] mx-1"></div></div>
-                         <div className="flex-1 flex gap-2 p-3">
-                           <div className="w-1/2 h-full flex flex-col gap-2">
-                             <div className="w-full h-3 bg-[#00B8F0]/10 rounded-sm"></div>
-                             <div className="w-full h-2 bg-[#1E293B] rounded-sm"></div>
-                             <div className="w-full h-2 bg-[#1E293B] rounded-sm"></div>
-                             <div className="w-full h-2 bg-[#1E293B] rounded-sm"></div>
-                             <div className="w-4/5 h-2 bg-[#1E293B] rounded-sm"></div>
-                             <div className="w-full h-2 bg-[#00B8F0]/20 mt-4 rounded-sm"></div>
-                           </div>
-                           <div className="w-1/2 h-full border border-[#00B8F0]/20 bg-[#00B8F0]/5 rounded-sm p-2 flex flex-col gap-2">
-                              <div className="text-[8px] font-mono text-[#00B8F0] mb-1">JSON EXTRACT</div>
-                              <div className="w-full h-2 bg-white/20 rounded-sm"></div>
-                              <div className="w-5/6 h-2 bg-white/20 rounded-sm"></div>
-                              <div className="w-full h-2 bg-white/20 rounded-sm"></div>
-                           </div>
+                <div className="bg-white border border-gray-200/80 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all overflow-hidden p-6 sm:p-8 flex flex-col xl:flex-row gap-8 items-stretch group">
+                   <div className="w-full xl:w-[38%] bg-[#0B1C2C] rounded-xl overflow-hidden relative min-h-[240px] border border-gray-800 flex items-center justify-center">
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#0066FF]/20 via-transparent to-purple-600/20 opacity-60"></div>
+                      <div className="relative z-10 w-4/5 bg-gray-900/90 border border-gray-700/80 rounded-lg p-4 shadow-2xl space-y-3">
+                         <div className="flex items-center justify-between border-b border-gray-800 pb-2">
+                            <span className="font-mono text-[10px] text-purple-400 font-bold">Document Intelligence OCR</span>
+                            <span className="font-mono text-[9px] text-green-400">Accuracy: 95.8%</span>
+                         </div>
+                         <div className="space-y-2">
+                            <div className="h-3 w-full bg-purple-500/20 rounded border border-purple-500/40 p-1 flex items-center justify-between text-[8px] text-purple-200 font-mono">
+                              <span>Clause 14.2: Indemnification</span>
+                              <span className="text-green-300">EXTRACTED</span>
+                            </div>
+                            <div className="h-2 w-3/4 bg-gray-700 rounded"></div>
+                            <div className="h-2 w-full bg-gray-700 rounded"></div>
                          </div>
                       </div>
                    </div>
+
                    <div className="flex-1 flex flex-col justify-between">
                       <div>
-                         <div className="font-mono text-[10px] text-[#00B8F0] uppercase bg-[#00B8F0]/10 inline-block px-2 py-1 rounded mb-3">Document Intelligence</div>
-                         <h3 className="text-[22px] font-semibold mb-3 group-hover:text-[#00B8F0] transition-colors text-white">Legal Document Intelligence Platform</h3>
-                         <p className="text-[14px] text-[#8A9EB0] mb-6">Automated contract analysis and Q&A across 100K+ legal documents with 95% accuracy using advanced RAG and OCR.</p>
+                         <div className="font-mono text-[11px] font-bold text-[#0066FF] uppercase bg-blue-50 border border-blue-100/80 inline-block px-3 py-1 rounded-md mb-3">
+                           Enterprise RAG
+                         </div>
+                         <h3 className="text-[22px] sm:text-[24px] font-bold mb-3 group-hover:text-[#0066FF] transition-colors text-[#0B1C2C]">
+                           Legal Document Intelligence Platform
+                         </h3>
+                         <p className="text-[14.5px] text-[#475569] leading-relaxed mb-6">
+                           Automated contract analysis and risk review across 100K+ legal documents with 95% accuracy using advanced hybrid RAG and custom OCR.
+                         </p>
                          
                          {/* Tech Tags */}
                          <div className="flex flex-wrap gap-2 mb-6">
                             {['RAG', 'OCR', 'LlamaIndex', 'Qdrant', 'PostgreSQL'].map(t => (
-                              <span key={t} className="font-mono text-[10.5px] border border-[#1E293B] text-[#8A9EB0] px-2 py-1 rounded-sm">{t}</span>
+                              <span key={t} className="font-mono text-[11px] bg-gray-100 border border-gray-200/80 text-[#334155] px-2.5 py-1 rounded-md font-medium">{t}</span>
                             ))}
                          </div>
                       </div>
                       
-                      <div className="flex items-center gap-8 border-t border-[#1E293B] pt-4">
-                         <div>
-                            <div className="text-[20px] font-semibold leading-none mb-1 text-[#00B8F0]">90%</div>
-                            <div className="text-[12px] text-[#8A9EB0]">Time saved in analysis</div>
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-t border-gray-100 pt-6">
+                         <div className="flex flex-wrap gap-6">
+                           <div>
+                              <div className="text-[22px] font-extrabold leading-none mb-1 text-[#0B1C2C]">90%</div>
+                              <div className="text-[12px] text-[#64748B] font-medium">Time saved in analysis</div>
+                           </div>
+                           <div className="border-l border-gray-200 pl-6">
+                              <div className="text-[22px] font-extrabold leading-none mb-1 text-[#0B1C2C]">95%</div>
+                              <div className="text-[12px] text-[#64748B] font-medium">Extraction accuracy</div>
+                           </div>
+                           <div className="border-l border-gray-200 pl-6 hidden sm:block">
+                              <div className="text-[22px] font-extrabold leading-none mb-1 text-[#0B1C2C]">80%</div>
+                              <div className="text-[12px] text-[#64748B] font-medium">Faster contract review</div>
+                           </div>
                          </div>
-                         <div>
-                            <div className="text-[20px] font-semibold leading-none mb-1 text-[#00B8F0]">95%</div>
-                            <div className="text-[12px] text-[#8A9EB0]">Extraction accuracy</div>
+                         <Link href="/work/case-studies" className="font-mono text-[13px] font-bold text-[#0066FF] flex items-center gap-2 group-hover:gap-3 transition-all hover:underline whitespace-nowrap">
+                           View Case Study: Legal Document Intelligence →
+                         </Link>
+                      </div>
+                   </div>
+                </div>
+
+                {/* Project 4 */}
+                <div className="bg-white border border-gray-200/80 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all overflow-hidden p-6 sm:p-8 flex flex-col xl:flex-row gap-8 items-stretch group">
+                   <div className="w-full xl:w-[38%] bg-[#0B1C2C] rounded-xl overflow-hidden relative min-h-[240px] border border-gray-800 flex items-center justify-center">
+                      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 via-transparent to-[#0066FF]/20 opacity-60"></div>
+                      <div className="relative z-10 w-4/5 bg-gray-900/90 border border-gray-700/80 rounded-lg p-4 shadow-2xl space-y-3">
+                         <div className="flex items-center justify-between border-b border-gray-800 pb-2">
+                            <span className="font-mono text-[10px] text-emerald-400 font-bold">Supply Chain Optimizer Agent</span>
+                            <span className="font-mono text-[9px] text-gray-400">Active Routing</span>
                          </div>
-                         <Link href="/contact" className="ml-auto font-mono text-[12px] text-[#00B8F0] flex items-center gap-2 group-hover:gap-3 transition-all hidden sm:flex hover:underline">View Case Study <ArrowRight className="w-3 h-3" /></Link>
+                         <div className="space-y-2">
+                            <div className="h-3 w-full bg-emerald-500/20 rounded border border-emerald-500/40 p-1 flex items-center justify-between text-[8px] text-emerald-200 font-mono">
+                              <span>Shipment #IN-9082: Route Re-calculated</span>
+                              <span className="text-emerald-300">-4.2 hrs</span>
+                            </div>
+                            <div className="h-2 w-5/6 bg-gray-700 rounded"></div>
+                            <div className="h-2 w-full bg-gray-700 rounded"></div>
+                         </div>
+                      </div>
+                   </div>
+
+                   <div className="flex-1 flex flex-col justify-between">
+                      <div>
+                         <div className="font-mono text-[11px] font-bold text-[#0066FF] uppercase bg-blue-50 border border-blue-100/80 inline-block px-3 py-1 rounded-md mb-3">
+                           AI Agents
+                         </div>
+                         <h3 className="text-[22px] sm:text-[24px] font-bold mb-3 group-hover:text-[#0066FF] transition-colors text-[#0B1C2C]">
+                           Logistics Planner Agent for Global Supply Chain
+                         </h3>
+                         <p className="text-[14.5px] text-[#475569] leading-relaxed mb-6">
+                           Engineered a multi-agent logistics planning engine that predicts delays and re-routes high-value shipments in real time across global supply networks.
+                         </p>
+                         
+                         {/* Tech Tags */}
+                         <div className="flex flex-wrap gap-2 mb-6">
+                            {['LangGraph', 'vLLM', 'Milvus', 'PostgreSQL', 'Docker'].map(t => (
+                              <span key={t} className="font-mono text-[11px] bg-gray-100 border border-gray-200/80 text-[#334155] px-2.5 py-1 rounded-md font-medium">{t}</span>
+                            ))}
+                         </div>
+                      </div>
+                      
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 border-t border-gray-100 pt-6">
+                         <div className="flex flex-wrap gap-6">
+                           <div>
+                              <div className="text-[22px] font-extrabold leading-none mb-1 text-[#0B1C2C]">28%</div>
+                              <div className="text-[12px] text-[#64748B] font-medium">Improved on-time delivery</div>
+                           </div>
+                           <div className="border-l border-gray-200 pl-6">
+                              <div className="text-[22px] font-extrabold leading-none mb-1 text-[#0B1C2C]">22%</div>
+                              <div className="text-[12px] text-[#64748B] font-medium">Lower logistics cost</div>
+                           </div>
+                           <div className="border-l border-gray-200 pl-6 hidden sm:block">
+                              <div className="text-[22px] font-extrabold leading-none mb-1 text-[#0B1C2C]">3.5x</div>
+                              <div className="text-[12px] text-[#64748B] font-medium">Faster planning cycle</div>
+                           </div>
+                         </div>
+                         <Link href="/work/case-studies" className="font-mono text-[13px] font-bold text-[#0066FF] flex items-center gap-2 group-hover:gap-3 transition-all hover:underline whitespace-nowrap">
+                           View Case Study: Logistics Planner Agent →
+                         </Link>
                       </div>
                    </div>
                 </div>

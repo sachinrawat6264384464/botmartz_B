@@ -1,6 +1,4 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
-import Image from 'next/image';
 import { adminDb } from '@/lib/firebase-admin';
 import LabsClient from './LabsClient';
 
@@ -66,10 +64,10 @@ export default async function LabsPage() {
 
   let heroContent = {
     badge: "BOTMARTZ LABS",
-    title: "Building Today.<br /><span class=\"text-[#00B8F0]\">Engineering</span> Tomorrow.",
+    title: "Building Today.<br /><span class=\"text-[#00C6FF]\">Engineering</span> Tomorrow.",
     subtitle: "Our labs is where we experiment, build, and open source production-ready AI systems that solve real problems. Every project is built with a focus on performance, scalability, and real-world impact.",
     ctaText: "Explore All Projects",
-    ctaLink: "#projects"
+    ctaLink: "#labs-grid"
   };
 
   try {
@@ -83,58 +81,8 @@ export default async function LabsPage() {
   } catch (e) {}
 
   return (
-    <main className="bg-[#050B14] min-h-screen">
-      {/* ── HERO ── */}
-      <section className="relative pt-[120px] pb-[80px] bg-[#050B14] text-white overflow-hidden">
-        {/* Background glow effects */}
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[120px] rounded-full pointer-events-none" />
-        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0066FF]/10 blur-[150px] rounded-full pointer-events-none" />
-
-        <div className="wrap relative z-10 flex flex-col items-center text-center max-w-[900px] mx-auto">
-          <div className="font-mono text-[11px] tracking-[0.14em] text-[#00B8F0] uppercase mb-6 flex items-center justify-center gap-3 font-semibold">
-            <span className="w-6 h-px bg-[#00B8F0]"></span>
-            {heroContent.badge}
-            <span className="w-6 h-px bg-[#00B8F0]"></span>
-          </div>
-          
-          <h1 
-            className="text-[clamp(40px,6vw,64px)] leading-[1.05] font-semibold mb-6 tracking-tight text-white"
-            dangerouslySetInnerHTML={{ __html: heroContent.title }}
-          />
-          <p className="text-[17px] sm:text-[19px] text-[#8A9EB0] mb-10 max-w-[650px] leading-relaxed font-light">
-            {heroContent.subtitle}
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link href={heroContent.ctaLink || "#projects"} className="btn btn-primary bg-[#00B8F0] text-white hover:bg-[#0096C7] px-8 py-3.5 rounded text-[15px] flex items-center gap-2 font-medium">
-              {heroContent.ctaText || "Explore All Projects"}
-            </Link>
-          </div>
-        </div>
-
-        {/* 3D Hero Visual Centered Below Text */}
-        <div className="mt-16 relative w-full flex justify-center min-h-[400px]">
-          {/* Constellation / Network Background */}
-          <div className="absolute inset-0 z-0 opacity-20" style={{ 
-            backgroundImage: 'radial-gradient(circle at center, #00B8F0 1.5px, transparent 1.5px), radial-gradient(circle at center, #0066FF 1px, transparent 1px)', 
-            backgroundSize: '40px 40px, 60px 60px',
-            backgroundPosition: '0 0, 20px 20px'
-          }} />
-          
-          {/* Strong central glow behind the image */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-[#0066FF]/20 blur-[100px] rounded-full pointer-events-none z-0" />
-          
-          <Image 
-            src="/labs-hero.png"
-            alt="Botmartz Labs"
-            width={800}
-            height={500}
-            className="object-contain w-full max-w-[800px] h-auto relative z-10 drop-shadow-[0_0_30px_rgba(0,184,240,0.15)]"
-            priority
-          />
-        </div>
-      </section>
-
-      <LabsClient initialLabs={initialLabs} />
+    <main className="bg-[#F5F8FC] min-h-screen">
+      <LabsClient initialLabs={initialLabs} heroContent={heroContent} />
     </main>
   );
 }

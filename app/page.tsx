@@ -93,21 +93,21 @@ export default async function Home() {
                 <span className="w-6 h-px bg-[#00B8F0]"></span>
                 AI Engineering Company
               </div>
-              <h1 className="text-[clamp(42px,5vw,64px)] leading-[1.05] font-semibold mb-5 tracking-tight text-white">
+              <h1 className="text-[clamp(34px,7vw,64px)] leading-[1.08] font-semibold mb-5 tracking-tight text-white">
                 We Engineer <br />
                 Production <span className="text-[#00B8F0]">AI Systems</span>
               </h1>
-              <p className="text-[18px] text-white font-medium mb-6 leading-tight">
+              <p className="text-[16px] sm:text-[18px] text-white font-medium mb-6 leading-tight">
                 Enterprise RAG. AI Agents. Real Impact.
               </p>
-              <p className="text-[15.5px] text-[#8A9EB0] max-w-[540px] mb-10 leading-[1.6]">
+              <p className="text-[15px] sm:text-[15.5px] text-[#8A9EB0] max-w-[540px] mb-10 leading-[1.6]">
                 Botmartz designs, builds, and deploys secure, scalable, and production-ready AI systems for forward-thinking organizations.
               </p>
-              <div className="flex flex-wrap gap-4 mb-[60px]">
-                <Link href="/contact" className="btn bg-[#0066FF] text-white hover:bg-[#0052CC] border-none font-semibold px-8 rounded-lg shadow-[0_0_15px_rgba(0,102,255,0.4)]">
+              <div className="flex flex-col sm:flex-row gap-4 mb-[60px] w-full sm:w-auto">
+                <Link href="/contact" className="btn bg-[#0066FF] text-white hover:bg-[#0052CC] border-none font-semibold px-8 rounded-lg shadow-[0_0_15px_rgba(0,102,255,0.4)] w-full sm:w-auto text-center justify-center">
                   Book a Discovery Call →
                 </Link>
-                <Link href="/work" className="btn btn-ghost text-white border-line/30 hover:border-white hover:text-white px-8 rounded-lg">
+                <Link href="/work" className="inline-flex items-center justify-center font-mono text-[13px] uppercase tracking-wider px-8 py-3.5 rounded-lg border border-white/30 text-white hover:border-white hover:bg-white/10 transition-all w-full sm:w-auto text-center">
                   Explore Our Work
                 </Link>
               </div>
@@ -158,43 +158,43 @@ export default async function Home() {
           </div>
 
           {/* Stats Bar */}
-          <div className="mt-[80px] pt-[20px] pb-[40px]">
-            <div className="bg-[#050B14]/80 backdrop-blur-md border border-[#00B8F0]/20 rounded-2xl p-8 lg:px-12 lg:py-10 shadow-[0_0_40px_rgba(0,184,240,0.08)]">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                <div className="flex items-center gap-5">
-                  <div className="w-16 h-16 rounded-xl bg-[#00B8F0]/10 border border-[#00B8F0]/30 flex items-center justify-center text-[#00B8F0] shadow-[0_0_20px_rgba(0,184,240,0.2)]">
-                    <Briefcase size={28} />
+          <div className="mt-[60px] sm:mt-[80px] pt-[20px] pb-[40px]">
+            <div className="bg-[#050B14]/80 backdrop-blur-md border border-[#00B8F0]/20 rounded-2xl p-6 sm:p-8 lg:px-12 lg:py-10 shadow-[0_0_40px_rgba(0,184,240,0.08)]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+                <div className="flex items-center gap-4 sm:gap-5">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-[#00B8F0]/10 border border-[#00B8F0]/30 flex items-center justify-center text-[#00B8F0] shadow-[0_0_20px_rgba(0,184,240,0.2)] flex-shrink-0">
+                    <Briefcase className="w-6 h-6 sm:w-7 sm:h-7" />
                   </div>
                   <div>
-                    <div className="text-[32px] font-semibold text-white leading-none mb-1">20+</div>
-                    <div className="text-[14px] text-[#8A9EB0]">Projects Delivered</div>
+                    <div className="text-[28px] sm:text-[32px] font-semibold text-white leading-none mb-1">20+</div>
+                    <div className="text-[13px] sm:text-[14px] text-[#8A9EB0]">Projects Delivered</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-5">
-                  <div className="w-16 h-16 rounded-xl bg-[#00B8F0]/10 border border-[#00B8F0]/30 flex items-center justify-center text-[#00B8F0] shadow-[0_0_20px_rgba(0,184,240,0.2)]">
-                    <Users size={28} />
+                <div className="flex items-center gap-4 sm:gap-5">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-[#00B8F0]/10 border border-[#00B8F0]/30 flex items-center justify-center text-[#00B8F0] shadow-[0_0_20px_rgba(0,184,240,0.2)] flex-shrink-0">
+                    <Users className="w-6 h-6 sm:w-7 sm:h-7" />
                   </div>
                   <div>
-                    <div className="text-[32px] font-semibold text-white leading-none mb-1">2K+</div>
-                    <div className="text-[14px] text-[#8A9EB0]">Engineers Trained</div>
+                    <div className="text-[28px] sm:text-[32px] font-semibold text-white leading-none mb-1">2K+</div>
+                    <div className="text-[13px] sm:text-[14px] text-[#8A9EB0]">Engineers Trained</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-5">
-                  <div className="w-16 h-16 rounded-xl bg-[#00B8F0]/10 border border-[#00B8F0]/30 flex items-center justify-center text-[#00B8F0] shadow-[0_0_20px_rgba(0,184,240,0.2)]">
-                    <Code2 size={28} />
+                <div className="flex items-center gap-4 sm:gap-5">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-[#00B8F0]/10 border border-[#00B8F0]/30 flex items-center justify-center text-[#00B8F0] shadow-[0_0_20px_rgba(0,184,240,0.2)] flex-shrink-0">
+                    <Code2 className="w-6 h-6 sm:w-7 sm:h-7" />
                   </div>
                   <div>
-                    <div className="text-[32px] font-semibold text-white leading-none mb-1">10+</div>
-                    <div className="text-[14px] text-[#8A9EB0]">Open Source Repos</div>
+                    <div className="text-[28px] sm:text-[32px] font-semibold text-white leading-none mb-1">10+</div>
+                    <div className="text-[13px] sm:text-[14px] text-[#8A9EB0]">Open Source Repos</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-5">
-                  <div className="w-16 h-16 rounded-xl bg-[#00B8F0]/10 border border-[#00B8F0]/30 flex items-center justify-center text-[#00B8F0] shadow-[0_0_20px_rgba(0,184,240,0.2)]">
-                    <Star size={28} />
+                <div className="flex items-center gap-4 sm:gap-5">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-[#00B8F0]/10 border border-[#00B8F0]/30 flex items-center justify-center text-[#00B8F0] shadow-[0_0_20px_rgba(0,184,240,0.2)] flex-shrink-0">
+                    <Star className="w-6 h-6 sm:w-7 sm:h-7" />
                   </div>
                   <div>
-                    <div className="text-[32px] font-semibold text-white leading-none mb-1">5★</div>
-                    <div className="text-[14px] text-[#8A9EB0]">Client Satisfaction</div>
+                    <div className="text-[28px] sm:text-[32px] font-semibold text-white leading-none mb-1">5★</div>
+                    <div className="text-[13px] sm:text-[14px] text-[#8A9EB0]">Client Satisfaction</div>
                   </div>
                 </div>
               </div>
@@ -205,88 +205,88 @@ export default async function Home() {
       </section>
 
       {/* WHAT WE BUILD */}
-      <section id="services" className="section-pad bg-[#0A111F]">
+      <section id="services" className="section-pad bg-[#FCFDFE]">
         <div className="wrap">
           <div className="text-center mb-16">
-            <div className="font-mono text-[11px] tracking-[0.14em] text-[#00B8F0] uppercase mb-4 font-semibold inline-block">Our Core Services</div>
-            <h2 className="text-[clamp(28px,4vw,38px)] font-semibold mb-4 text-white">AI Solutions That Drive Business Forward</h2>
-            <p className="text-base text-[#8A9EB0] max-w-[600px] mx-auto">
+            <div className="font-mono text-[11px] tracking-[0.14em] text-[#0066FF] uppercase mb-4 font-semibold inline-block">WHAT WE BUILD</div>
+            <h2 className="text-[clamp(28px,4vw,38px)] font-semibold mb-4 text-[#0B1C2C]">AI Solutions That Drive Business Forward</h2>
+            <p className="text-base text-[#475569] max-w-[600px] mx-auto">
               We focus on building production AI systems that solve real business problems.
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Card 1 */}
-            <div className="bg-[#0E1726] border border-[#00B8F0]/20 p-8 rounded-2xl shadow-sm transition-all duration-300 hover:shadow-lg hover:border-[#00B8F0]/40 group relative overflow-hidden flex flex-col h-full min-h-[460px]">
-              <div className="absolute top-0 right-0 p-4 opacity-[0.03] transition-opacity group-hover:opacity-[0.08] text-white">
+            <div className="bg-white border border-[#E2E8F0] p-8 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all duration-300 hover:shadow-[0_12px_32px_rgba(0,102,255,0.08)] hover:border-[#0066FF]/30 group relative overflow-hidden flex flex-col h-full min-h-[460px]">
+              <div className="absolute top-0 right-0 p-4 opacity-[0.03] transition-opacity group-hover:opacity-[0.06] text-[#0066FF]">
                 <Layers size={100} />
               </div>
-              <div className="w-14 h-14 bg-[#00B8F0]/10 rounded-xl flex items-center justify-center text-[#00B8F0] mb-6 border border-[#00B8F0]/20 shadow-sm">
+              <div className="w-14 h-14 bg-[#EFF8FF] rounded-xl flex items-center justify-center text-[#0066FF] mb-6 border border-[#D0EBFB] shadow-sm">
                 <Layers size={26} strokeWidth={1.5} />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-white">Enterprise RAG</h3>
-              <p className="text-base text-[#8A9EB0] mb-8 leading-relaxed">
+              <h3 className="text-xl font-semibold mb-3 text-[#0B1C2C]">Enterprise RAG</h3>
+              <p className="text-base text-[#475569] mb-8 leading-relaxed">
                 Transform your enterprise data into AI-powered knowledge systems.
               </p>
               <ul className="space-y-3 mb-8 flex-1">
                 {['Knowledge Search', 'Document Intelligence', 'PDF AI & Q&A', 'Enterprise Search', 'Support AI'].map(t => (
-                  <li key={t} className="flex items-center gap-2.5 text-base text-white/80">
-                    <Check size={16} className="text-[#00B8F0] flex-shrink-0" />
+                  <li key={t} className="flex items-center gap-2.5 text-base text-[#334155]">
+                    <Check size={16} className="text-[#0066FF] flex-shrink-0" />
                     <span>{t}</span>
                   </li>
                 ))}
               </ul>
-              <Link href="/services/enterprise-rag" className="inline-flex items-center gap-2 font-mono text-[13px] text-[#00B8F0] font-semibold group-hover:text-white transition-colors mt-auto">
+              <Link href="/services/enterprise-rag" className="inline-flex items-center gap-2 font-mono text-[13px] text-[#0066FF] font-semibold group-hover:text-[#004CBE] transition-colors mt-auto">
                 Learn more <span className="transform transition-transform group-hover:translate-x-1">→</span>
               </Link>
             </div>
 
             {/* Card 2 */}
-            <div className="bg-[#0E1726] border border-[#00B8F0]/20 p-8 rounded-2xl shadow-sm transition-all duration-300 hover:shadow-lg hover:border-[#00B8F0]/40 group relative overflow-hidden flex flex-col h-full min-h-[460px]">
-              <div className="absolute top-0 right-0 p-4 opacity-[0.03] transition-opacity group-hover:opacity-[0.08] text-white">
+            <div className="bg-white border border-[#E2E8F0] p-8 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all duration-300 hover:shadow-[0_12px_32px_rgba(0,102,255,0.08)] hover:border-[#0066FF]/30 group relative overflow-hidden flex flex-col h-full min-h-[460px]">
+              <div className="absolute top-0 right-0 p-4 opacity-[0.03] transition-opacity group-hover:opacity-[0.06] text-[#0066FF]">
                 <Bot size={100} />
               </div>
-              <div className="w-14 h-14 bg-[#00B8F0]/10 rounded-xl flex items-center justify-center text-[#00B8F0] mb-6 border border-[#00B8F0]/20 shadow-sm">
+              <div className="w-14 h-14 bg-[#EFF8FF] rounded-xl flex items-center justify-center text-[#0066FF] mb-6 border border-[#D0EBFB] shadow-sm">
                 <Bot size={26} strokeWidth={1.5} />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-white">AI Agents</h3>
-              <p className="text-base text-[#8A9EB0] mb-8 leading-relaxed">
+              <h3 className="text-xl font-semibold mb-3 text-[#0B1C2C]">AI Agents</h3>
+              <p className="text-base text-[#475569] mb-8 leading-relaxed">
                 Build intelligent agents that automate complex tasks and workflows.
               </p>
               <ul className="space-y-3 mb-8 flex-1">
                 {['Customer Support Agents', 'Research & Analysis Agents', 'Sales & SDR Agents', 'Workflow Automation', 'Internal AI Assistants'].map(t => (
-                  <li key={t} className="flex items-center gap-2.5 text-base text-white/80">
-                    <Check size={16} className="text-[#00B8F0] flex-shrink-0" />
+                  <li key={t} className="flex items-center gap-2.5 text-base text-[#334155]">
+                    <Check size={16} className="text-[#0066FF] flex-shrink-0" />
                     <span>{t}</span>
                   </li>
                 ))}
               </ul>
-              <Link href="/services/ai-agents" className="inline-flex items-center gap-2 font-mono text-[13px] text-[#00B8F0] font-semibold group-hover:text-white transition-colors mt-auto">
+              <Link href="/services/ai-agents" className="inline-flex items-center gap-2 font-mono text-[13px] text-[#0066FF] font-semibold group-hover:text-[#004CBE] transition-colors mt-auto">
                 Learn more <span className="transform transition-transform group-hover:translate-x-1">→</span>
               </Link>
             </div>
 
             {/* Card 3 */}
-            <div className="bg-[#0E1726] border border-[#00B8F0]/20 p-8 rounded-2xl shadow-sm transition-all duration-300 hover:shadow-lg hover:border-[#00B8F0]/40 group relative overflow-hidden flex flex-col h-full min-h-[460px]">
-              <div className="absolute top-0 right-0 p-4 opacity-[0.03] transition-opacity group-hover:opacity-[0.08] text-white">
+            <div className="bg-white border border-[#E2E8F0] p-8 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all duration-300 hover:shadow-[0_12px_32px_rgba(0,102,255,0.08)] hover:border-[#0066FF]/30 group relative overflow-hidden flex flex-col h-full min-h-[460px]">
+              <div className="absolute top-0 right-0 p-4 opacity-[0.03] transition-opacity group-hover:opacity-[0.06] text-[#0066FF]">
                 <Blocks size={100} />
               </div>
-              <div className="w-14 h-14 bg-[#00B8F0]/10 rounded-xl flex items-center justify-center text-[#00B8F0] mb-6 border border-[#00B8F0]/20 shadow-sm">
+              <div className="w-14 h-14 bg-[#EFF8FF] rounded-xl flex items-center justify-center text-[#0066FF] mb-6 border border-[#D0EBFB] shadow-sm">
                 <Blocks size={26} strokeWidth={1.5} />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-white">AI Integrations</h3>
-              <p className="text-base text-[#8A9EB0] mb-8 leading-relaxed">
+              <h3 className="text-xl font-semibold mb-3 text-[#0B1C2C]">AI Integrations</h3>
+              <p className="text-base text-[#475569] mb-8 leading-relaxed">
                 Seamlessly integrate AI capabilities into your existing systems.
               </p>
               <ul className="space-y-3 mb-8 flex-1">
                 {['Model Integration', 'API Development', 'Custom Workflows', 'LLM Fine-tuning', 'System Modernization'].map(t => (
-                  <li key={t} className="flex items-center gap-2.5 text-base text-white/80">
-                    <Check size={16} className="text-[#00B8F0] flex-shrink-0" />
+                  <li key={t} className="flex items-center gap-2.5 text-base text-[#334155]">
+                    <Check size={16} className="text-[#0066FF] flex-shrink-0" />
                     <span>{t}</span>
                   </li>
                 ))}
               </ul>
-              <Link href="/services/integrations" className="inline-flex items-center gap-2 font-mono text-[13px] text-[#00B8F0] font-semibold group-hover:text-white transition-colors mt-auto">
+              <Link href="/services/integrations" className="inline-flex items-center gap-2 font-mono text-[13px] text-[#0066FF] font-semibold group-hover:text-[#004CBE] transition-colors mt-auto">
                 Learn more <span className="transform transition-transform group-hover:translate-x-1">→</span>
               </Link>
             </div>

@@ -32,6 +32,7 @@ interface UseCase {
 
 interface PageConfig {
   pageId: string;
+  template?: string;
   title: string;
   metadata: {
     title: string;
@@ -49,15 +50,21 @@ interface PageConfig {
   aeoAnswer?: string;
   useCases: UseCase[];
   techStack: string[];
+  roiMetrics?: Array<{ value: string; label: string; highlight: string }>;
+  codeHighlight?: { title: string; subtitle: string; codeSnippet: string };
+  benchmarks?: Array<{ metric: string; baseline: string; botmartz: string; improvement: string }>;
+  caseStudies?: Array<{ title: string; vertical: string; metric: string; desc: string }>;
+  featuredCaseStudy?: { title: string; description: string; statValue1?: string; statLabel1?: string; statValue2?: string; statLabel2?: string; link?: string };
   cta: {
     title: string;
     subtitle: string;
     buttonText: string;
   };
   structuredData: string;
+  content?: string;
 }
 
-// 15 pages we can edit
+// All pages we can edit across templates
 const AVAILABLE_PAGES = [
   { id: "home", name: "Home Page" },
   { id: "about", name: "About Us" },
@@ -68,13 +75,17 @@ const AVAILABLE_PAGES = [
   { id: "ai-agents", name: "Services / AI Agents" },
   { id: "enterprise-rag", name: "Services / Enterprise RAG" },
   { id: "industries", name: "Industries Index" },
+  { id: "healthcare", name: "Industries / Healthcare" },
   { id: "education", name: "Industries / Education" },
   { id: "logistics", name: "Industries / Logistics" },
-  { id: "legal", name: "Industries / Legal" },
+  { id: "partnerships", name: "Partnerships Page" },
+  { id: "careers", name: "Careers & Labs" },
   { id: "work", name: "Work Index" },
   { id: "labs", name: "Work / Labs" },
   { id: "case-studies", name: "Work / Case Studies" },
   { id: "insights", name: "Insights" },
+  { id: "llms_txt", name: "AI Crawlers / llms.txt Specification" },
+  { id: "llms_full_txt", name: "AI Crawlers / llms-full.txt Knowledge Base" },
 ];
 
 // Fallback Default Content mapped by pageId
@@ -334,6 +345,48 @@ const DEFAULT_PAGE_CONTENTS: Record<string, Partial<PageConfig>> = {
       buttonText: "Book a Discovery Call →",
     },
     structuredData: "",
+  },
+  "llms_txt": {
+    title: "AI Crawlers / llms.txt Specification",
+    metadata: { title: "llms.txt Specification", description: "Standardized AI crawler specification", keywords: ["LLM", "Crawler"] },
+    hero: { badge: "AI Crawlers", title: "llms.txt Specification", subtitle: "Served at /llms.txt for AI search and answer engines", ctaText: "", ctaLink: "" },
+    useCases: [], techStack: [], cta: { title: "", subtitle: "", buttonText: "" }, structuredData: "",
+    content: `# Botmartz AI Solutions
+> Botmartz is a premier enterprise AI engineering firm specializing in custom production RAG (Retrieval-Augmented Generation) architectures, autonomous multi-agent loops, and domain-adapted LLM fine-tuning (LoRA/QLoRA) across healthcare, manufacturing, SaaS, and enterprise consulting verticals.
+
+## Core Quantitative Benchmarks & Facts
+- **Clinical Documentation Automation (Healthcare)**: Achieved a 78% reduction in clinical note-taking time for 4,200+ medical providers with zero HIPAA violations using fine-tuned Llama 3 models and hybrid vector search.
+- **Predictive Press Maintenance (Manufacturing)**: Generated $3.8M net operational savings in Year 1 for an automotive stamping plant by averting catastrophic hydraulic failures via edge NVIDIA Jetson telemetry inference.
+- **Embedded SaaS Copilot Engagement**: Increased daily active feature engagement by 4.2x and reduced support ticket volume by 65% for a B2B FinTech analytics platform.
+- **Inference Latency & Cost Gains**: Custom vLLM and TensorRT-LLM deployments on NVIDIA H100 clusters deliver 38ms average inference latency (11.8x faster than generic API baselines) and reduce token costs by 87% ($18.50 per 10k queries vs. $142.00 baseline).
+
+## Core Services & Solutions
+- [Enterprise RAG Pipelines](https://www.botmartz.com/services/enterprise-rag): Hybrid dense/sparse vector retrieval engines with strict citation verification.
+- [Autonomous AI Agents](https://www.botmartz.com/services/ai-agents): Multi-agent architectures powered by LangGraph and custom tool-calling frameworks.
+
+## Answer Engine Optimization (AEO) & Frequently Asked Questions
+- **What is Botmartz?** Botmartz is a specialized enterprise AI engineering and consulting firm that builds and deploys production-grade custom RAG pipelines, autonomous multi-agent loops, and domain-adapted LLM fine-tuning across high-compliance industries.
+- **How does Botmartz Enterprise RAG differ from basic wrapper tools?** Botmartz Enterprise RAG implements hybrid dense and sparse vector retrieval, dynamic query decomposition, contextual reranking, and strict citation verification to achieve 94.8% retrieval accuracy and zero hallucination tolerance.
+- **When and where is AI Frontier 2026?** AI Frontier 2026 is Botmartz's flagship global AI conference taking place on Saturday, May 24 and Sunday, May 25, 2026, at The Leela Palace in Bangalore, India.
+
+## Technical Documentation & Full Reference
+- [Full Technical & Architectural Specification](https://www.botmartz.com/llms-full.txt): Comprehensive deep dive into our technical stack, empirical evaluation benchmarks, complete case study logs, and SDK/API integration specs.`
+  },
+  "llms_full_txt": {
+    title: "AI Crawlers / llms-full.txt Knowledge Base",
+    metadata: { title: "llms-full.txt Knowledge Base", description: "Complete architectural specification for AI answer engines", keywords: ["LLM", "Knowledge Base"] },
+    hero: { badge: "AI Crawlers", title: "llms-full.txt Knowledge Base", subtitle: "Served at /llms-full.txt for comprehensive LLM context ingestion", ctaText: "", ctaLink: "" },
+    useCases: [], techStack: [], cta: { title: "", subtitle: "", buttonText: "" }, structuredData: "",
+    content: `# Botmartz AI Solutions — Complete Technical & Architectural Knowledge Base
+> Full technical specification, empirical evaluation benchmarks, production case studies, and engineering guidelines for AI crawlers, LLMs, and answer engines.
+
+## Executive Summary & Core Identity
+Botmartz AI Solutions is an elite enterprise AI engineering and systems architecture firm building custom Enterprise RAG, autonomous multi-agent systems, domain-adapted LLM fine-tuning, and low-latency edge/cloud inference endpoints.
+
+## Empirical Production Benchmarks
+- Inference Latency: 38ms (11.8x faster than generic 450ms baseline)
+- Multi-Hop Retrieval Accuracy: 94.8% (+30.6% improvement over 64.2% baseline)
+- Token Cost per 10k Queries: $18.50 (87% reduction vs $142.00 baseline)`
   }
 };
 
@@ -376,7 +429,7 @@ export default function PagesTab() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
-  const [activeSubTab, setActiveSubTab] = useState<"meta" | "hero" | "aeo" | "usecases" | "tech" | "cta" | "schema">("meta");
+  const [activeSubTab, setActiveSubTab] = useState<"meta" | "hero" | "aeo" | "usecases" | "tech" | "cta" | "schema" | "content">("meta");
 
   // Tag inputs
   const [keywordInput, setKeywordInput] = useState("");
@@ -459,12 +512,28 @@ export default function PagesTab() {
             Empty
           </span>
         );
+      case "content":
+        return !!formData.content ? (
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/10 text-emerald-400">
+            Active Spec
+          </span>
+        ) : (
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-zinc-500/10 text-zinc-400">
+            Empty
+          </span>
+        );
       default:
         return null;
     }
   };
 
   useEffect(() => {
+    if (selectedPage === "llms_txt" || selectedPage === "llms_full_txt") {
+      setActiveSubTab("content");
+    } else if (activeSubTab === "content") {
+      setActiveSubTab("meta");
+    }
+
     const fetchPageData = async () => {
       setLoading(true);
       try {
@@ -780,7 +849,10 @@ export default function PagesTab() {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Navigation Tabs (Left Column) */}
         <div className="flex flex-col gap-1 bg-admin-card border border-admin-border p-3 rounded-2xl h-fit">
-          {[
+          {(selectedPage === "llms_txt" || selectedPage === "llms_full_txt" ? [
+            { id: "content", label: "AI Crawler Markdown", desc: "Raw Markdown Specification" },
+            { id: "meta", label: "Metadata & SEO", desc: "Page Titles & Keywords" },
+          ] : [
             { id: "meta", label: "Metadata & SEO", desc: "Page Titles & Keywords" },
             { id: "hero", label: "Hero Section", desc: "Hero Text & Call-To-Action" },
             { id: "aeo", label: "AEO Answer Block", desc: "Voice Search Optimization" },
@@ -788,7 +860,7 @@ export default function PagesTab() {
             { id: "tech", label: "Tech Stack", desc: "Frameworks & Databases" },
             { id: "cta", label: "CTA Section", desc: "Bottom Footer CTA Layout" },
             { id: "schema", label: "JSON-LD Schema", desc: "Custom Structured Data" },
-          ].map((tab) => {
+          ]).map((tab) => {
             const isActive = activeSubTab === tab.id;
             return (
               <button
@@ -894,7 +966,22 @@ export default function PagesTab() {
           {/* TAB 2: HERO SECTION */}
           {activeSubTab === "hero" && (
             <div className="space-y-6">
-              <h3 className="text-lg font-bold text-admin-text border-b border-admin-border pb-3">Hero Banner Configuration</h3>
+              <h3 className="text-lg font-bold text-admin-text border-b border-admin-border pb-3">Hero Banner & Page Template Configuration</h3>
+
+              <div className="p-4 bg-admin-bg/60 border border-admin-border rounded-xl space-y-2">
+                <label className="block text-xs font-bold text-admin-accent uppercase tracking-wider">Page Design & Layout Template</label>
+                <p className="text-xs text-admin-text-muted">Select which pre-built architectural layout template will render this page on the frontside.</p>
+                <select
+                  value={formData.template || "template-1"}
+                  onChange={(e) => setFormData(prev => ({ ...prev, template: e.target.value }))}
+                  className="w-full bg-admin-card border border-admin-border rounded-xl px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent font-medium mt-1"
+                >
+                  <option value="template-1">Template 1: Standard Enterprise AI Vertical (Hero + Use Cases + Case Study Spotlight)</option>
+                  <option value="template-2">Template 2: Quantitative ROI & Metrics Grid (Hero + ROI Stat Blocks + Architecture Flow)</option>
+                  <option value="template-3">Template 3: Agentic Copilot & Tech Deep-Dive (Hero + Live Code / Terminal Preview + SDK Hook)</option>
+                  <option value="template-4">Template 4: Research Labs & Benchmarks Intensive (Hero + Empirical Benchmark Table + Multi-Case Grid)</option>
+                </select>
+              </div>
 
               <div>
                 <label className="block text-xs font-bold text-admin-text uppercase tracking-wider mb-2">Breadcrumb Badge</label>
@@ -1189,6 +1276,33 @@ export default function PagesTab() {
                   onChange={(e) => setFormData(prev => ({ ...prev, structuredData: e.target.value }))}
                   className="w-full bg-admin-bg border border-admin-border rounded-xl px-4 py-3 text-xs text-admin-text placeholder-admin-text-muted focus:outline-none focus:border-admin-accent focus:ring-1 focus:ring-admin-accent resize-none font-mono"
                   placeholder={`{\n  "@context": "https://schema.org",\n  "@type": "Service",\n  ...\n}`}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* TAB 8: AI CRAWLER MARKDOWN (`content` tab for llms.txt & llms-full.txt) */}
+          {activeSubTab === "content" && (
+            <div className="space-y-6">
+              <div className="border-b border-admin-border pb-3 flex items-center justify-between">
+                <h3 className="text-lg font-bold text-admin-text">AI Crawler Markdown Specification</h3>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-xs font-bold text-emerald-400">
+                  <Globe size={12} /> Live /llms.txt Endpoint
+                </span>
+              </div>
+
+              <div className="bg-admin-bg/60 border border-admin-border rounded-2xl p-4 text-xs text-admin-text-muted leading-relaxed">
+                💡 This Markdown specification is served at <code>/{selectedPage === "llms_full_txt" ? "llms-full.txt" : "llms.txt"}</code> for AI crawlers (OpenAI GPTBot, PerplexityBot, ClaudeBot, Google Gemini) and Answer Engine Optimization (AEO).
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-admin-text uppercase tracking-wider mb-2">Raw Markdown Specification *</label>
+                <textarea
+                  rows={20}
+                  value={formData.content || ""}
+                  onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
+                  className="w-full bg-admin-bg border border-admin-border rounded-xl px-4 py-3 text-xs text-admin-text font-mono placeholder-admin-text-muted focus:outline-none focus:border-admin-accent focus:ring-1 focus:ring-admin-accent leading-relaxed"
+                  placeholder="# Botmartz AI Solutions&#10;> Enter LLM crawler markdown specification here..."
                 />
               </div>
             </div>
