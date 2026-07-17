@@ -32,7 +32,25 @@ const PROTOTYPE_PAST_EVENTS = [
   { type: 'Meetup', date: 'Apr 2026', title: 'Botmartz Community Kickoff Mixer', desc: 'The very first informal meetup that planted the seed for this community.' },
 ];
 
-export default function EventsClient({ initialEvents }: { initialEvents: any[] }) {
+export default function EventsClient({ 
+  initialEvents,
+  heroContent = {
+    badge: "Botmartz Community Events",
+    title: "Where the AI<br />Engineering <span class=\"text-[#00C6FF]\">Community</span> Meets",
+    subtitle: "Conferences, monthly meetups, open-source nights and hackathons — built for engineers who want to build, ship and grow together, not just watch from the sidelines.",
+    ctaText: "See What's Coming Up →",
+    ctaLink: "#featured",
+  },
+  structuredData,
+  aeoQuestion,
+  aeoAnswer
+}: { 
+  initialEvents: any[];
+  heroContent?: any;
+  structuredData?: string;
+  aeoQuestion?: string;
+  aeoAnswer?: string;
+}) {
   const [filter, setFilter] = useState('All Events');
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
@@ -89,8 +107,45 @@ export default function EventsClient({ initialEvents }: { initialEvents: any[] }
     setSubmitting(false);
   };
 
+  const defaultSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Botmartz Community Events & Conferences",
+    "description": "Where the AI Engineering Community meets: conferences, monthly meetups, open-source build nights, and hackathons.",
+    "url": "https://botmartz.com/community/events",
+    "mainEntity": {
+      "@type": "Event",
+      "name": "AI Frontier 2026 — The Future of AI Engineering",
+      "startDate": "2026-08-22T10:00:00+05:30",
+      "endDate": "2026-08-22T17:00:00+05:30",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "location": {
+        "@type": "Place",
+        "name": "Walkover Co-working",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Indore",
+          "addressCountry": "IN"
+        }
+      },
+      "description": "Agents, Enterprise AI, AI-Assisted Development, and Responsible AI. A full day of sessions, fireside Q&As, and closing panels plus the launch of the Botmartz AI Engineering Community.",
+      "organizer": {
+        "@type": "Organization",
+        "name": "Botmartz",
+        "url": "https://botmartz.com"
+      }
+    }
+  };
+
   return (
     <div className="bg-[#F5F8FC] min-h-screen font-sans text-[#0B1220]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: structuredData ? structuredData : JSON.stringify(defaultSchema)
+        }}
+      />
       {/* ── HERO SECTION ── */}
       <div className="bg-[#060C1F] relative overflow-hidden pt-24 pb-16 px-6 sm:px-10 lg:pt-28 lg:pb-20">
         <div 
@@ -114,21 +169,21 @@ export default function EventsClient({ initialEvents }: { initialEvents: any[] }
           <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
             <div>
               <div className="font-bold text-[12px] tracking-[0.1em] text-[#00C6FF] uppercase">
-                Botmartz Community Events
+                {heroContent.badge || "Botmartz Community Events"}
               </div>
-              <h1 className="font-extrabold text-[clamp(32px,4.5vw,44px)] leading-[1.15] text-white mt-4">
-                Where the AI<br />
-                Engineering <span className="text-[#00C6FF]">Community</span> Meets
-              </h1>
+              <h1 
+                className="font-extrabold text-[clamp(32px,4.5vw,44px)] leading-[1.15] text-white mt-4"
+                dangerouslySetInnerHTML={{ __html: heroContent.title || 'Where the AI<br />Engineering <span class="text-[#00C6FF]">Community</span> Meets' }}
+              />
               <p className="font-medium text-[14.5px] sm:text-[15.5px] leading-[1.7] text-[#8FA3C4] mt-4.5 max-w-[480px]">
-                Conferences, monthly meetups, open-source nights and hackathons — built for engineers who want to build, ship and grow together, not just watch from the sidelines.
+                {heroContent.subtitle || "Conferences, monthly meetups, open-source nights and hackathons — built for engineers who want to build, ship and grow together, not just watch from the sidelines."}
               </p>
               <div className="flex flex-wrap gap-3.5 mt-7">
                 <a 
-                  href="#featured" 
+                  href={heroContent.ctaLink || "#featured"} 
                   className="inline-flex items-center gap-2 bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] transition-all"
                 >
-                  See What's Coming Up →
+                  {heroContent.ctaText || "See What's Coming Up →"}
                 </a>
                 <Link 
                   href="/contact" 

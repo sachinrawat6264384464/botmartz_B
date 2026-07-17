@@ -23,7 +23,25 @@ const PROTOTYPE_ROLES: JobRole[] = [
   { id: '5', dept: 'Design', location: 'Remote', title: 'Product Designer', desc: 'Design interfaces for AI-native products used by engineers and enterprise teams.' },
 ];
 
-export default function CareersClient({ initialJobs }: { initialJobs: any[] }) {
+export default function CareersClient({ 
+  initialJobs,
+  heroContent = {
+    badge: "Careers at Botmartz",
+    title: "Build the Future of<br /><span class=\"text-[#00C6FF]\">AI Engineering</span> With Us",
+    subtitle: "We're a small team of engineers shipping production AI systems and building the community around them. If you'd rather build than talk about building, you'll fit right in.",
+    ctaText: "View Open Roles →",
+    ctaLink: "#roles",
+  },
+  structuredData,
+  aeoQuestion,
+  aeoAnswer
+}: { 
+  initialJobs: any[];
+  heroContent?: any;
+  structuredData?: string;
+  aeoQuestion?: string;
+  aeoAnswer?: string;
+}) {
   const [filter, setFilter] = useState('All Roles');
   const [selectedRoleForApply, setSelectedRoleForApply] = useState<JobRole | null>(null);
   const [applyForm, setApplyForm] = useState({ name: '', email: '', phone: '', linkedinOrResume: '', note: '' });
@@ -87,8 +105,38 @@ export default function CareersClient({ initialJobs }: { initialJobs: any[] }) {
     setSubmitting(false);
   };
 
+  const defaultSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Careers at Botmartz | Build the Future of AI Engineering",
+    "description": "Join our engineering and research team building production AI systems and community around them in Indore, India and Remote.",
+    "url": "https://botmartz.com/careers",
+    "about": {
+      "@type": "Organization",
+      "name": "Botmartz",
+      "sameAs": "https://botmartz.com"
+    },
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": roles.map((r, i) => ({
+        "@type": "JobPosting",
+        "title": r.title,
+        "description": r.desc,
+        "jobLocation": r.location.toLowerCase().includes('remote') ? { "@type": "Place", "address": "Remote" } : { "@type": "Place", "address": { "@type": "PostalAddress", "addressLocality": "Indore", "addressCountry": "IN" } },
+        "employmentType": "FULL_TIME",
+        "hiringOrganization": { "@type": "Organization", "name": "Botmartz", "sameAs": "https://botmartz.com" }
+      }))
+    }
+  };
+
   return (
     <div className="bg-[#F5F8FC] min-h-screen font-sans text-[#0B1220]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: structuredData ? structuredData : JSON.stringify(defaultSchema)
+        }}
+      />
       {/* ── HERO SECTION ── */}
       <div className="bg-[#060C1F] relative overflow-hidden pt-24 pb-16 px-6 sm:px-10 lg:pt-28 lg:pb-20">
         <div 
@@ -112,21 +160,21 @@ export default function CareersClient({ initialJobs }: { initialJobs: any[] }) {
           <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
             <div>
               <div className="font-bold text-[12px] tracking-[0.1em] text-[#00C6FF] uppercase">
-                Careers at Botmartz
+                {heroContent.badge || "Careers at Botmartz"}
               </div>
-              <h1 className="font-extrabold text-[clamp(32px,4.5vw,44px)] leading-[1.15] text-white mt-4">
-                Build the Future of<br />
-                <span className="text-[#00C6FF]">AI Engineering</span> With Us
-              </h1>
+              <h1 
+                className="font-extrabold text-[clamp(32px,4.5vw,44px)] leading-[1.15] text-white mt-4"
+                dangerouslySetInnerHTML={{ __html: heroContent.title || 'Build the Future of<br /><span class="text-[#00C6FF]">AI Engineering</span> With Us' }}
+              />
               <p className="font-medium text-[14.5px] sm:text-[15.5px] leading-[1.7] text-[#8FA3C4] mt-4.5 max-w-[480px]">
-                We're a small team of engineers shipping production AI systems and building the community around them. If you'd rather build than talk about building, you'll fit right in.
+                {heroContent.subtitle || "We're a small team of engineers shipping production AI systems and building the community around them. If you'd rather build than talk about building, you'll fit right in."}
               </p>
               <div className="flex flex-wrap gap-3.5 mt-7">
                 <a 
-                  href="#roles" 
+                  href={heroContent.ctaLink || "#roles"} 
                   className="inline-flex items-center gap-2 bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] transition-all"
                 >
-                  View Open Roles →
+                  {heroContent.ctaText || "View Open Roles →"}
                 </a>
                 <a 
                   href="#values" 

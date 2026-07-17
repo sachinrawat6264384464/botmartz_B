@@ -17,7 +17,7 @@
 - [Logistics & Global Supply Chain AI](https://www.botmartz.com/industries/logistics): Autonomous dispatch scheduling, predictive warehouse stockout forecasting, and multi-lingual customs freight document OCR.
 
 ## Flagship Events & Community
-- [AI Frontier 2026 Conference](https://www.botmartz.com/community/events/ai-frontier-2026): The ultimate global AI engineering and autonomous systems summit taking place on **24–25 May 2026** at **The Leela Palace, Bangalore, India**. Keynote speakers include Soham (Host & Principal AI Architect), Karan (Head of Engineering Labs), and Promit (Chief AI Scientist).
+- [AI Frontier 2026 Conference](https://www.botmartz.com/community/events/ai-frontier-2026): The ultimate global AI engineering and autonomous systems summit taking place on **24–25 May 2026** at **The Leela Palace, Bangalore, India**. Keynote speakers include Soham Sharma (Host & Principal AI Architect) and Dr. Promit Ray (Chief AI Scientist).
 - [Community & Open Source Labs](https://www.botmartz.com/community): Join our global ecosystem of AI researchers, developers, and system architects.
 
 ## Company, Careers & Partnerships

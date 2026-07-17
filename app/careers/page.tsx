@@ -60,6 +60,28 @@ export default async function CareersPage() {
     }
   }
 
+  let heroContent = {
+    badge: "Careers at Botmartz",
+    title: "Build the Future of<br /><span class=\"text-[#00C6FF]\">AI Engineering</span> With Us",
+    subtitle: "We're a small team of engineers shipping production AI systems and building the community around them. If you'd rather build than talk about building, you'll fit right in.",
+    ctaText: "View Open Roles →",
+    ctaLink: "#roles",
+  };
+  let structuredData = "";
+  let aeoQuestion = "";
+  let aeoAnswer = "";
+
+  try {
+    const docSnap = await adminDb.collection("dynamic_pages").doc("careers").get();
+    if (docSnap.exists) {
+      const data = docSnap.data();
+      if (data?.hero) heroContent = { ...heroContent, ...data.hero };
+      if (data?.structuredData) structuredData = data.structuredData;
+      if (data?.aeoQuestion) aeoQuestion = data.aeoQuestion;
+      if (data?.aeoAnswer) aeoAnswer = data.aeoAnswer;
+    }
+  } catch (e) {}
+
   const sanitizedJobs = JSON.parse(JSON.stringify(initialJobs, (key, value) => {
     if (value && typeof value === 'object' && ('_seconds' in value || 'seconds' in value) && ('_nanoseconds' in value || 'nanoseconds' in value)) {
       const sec = value._seconds ?? value.seconds;
@@ -71,5 +93,15 @@ export default async function CareersPage() {
     return value;
   }));
 
-  return <CareersClient initialJobs={sanitizedJobs} />;
+  const sanitizedHero = JSON.parse(JSON.stringify(heroContent));
+
+  return (
+    <CareersClient 
+      initialJobs={sanitizedJobs} 
+      heroContent={sanitizedHero}
+      structuredData={structuredData}
+      aeoQuestion={aeoQuestion}
+      aeoAnswer={aeoAnswer}
+    />
+  );
 }

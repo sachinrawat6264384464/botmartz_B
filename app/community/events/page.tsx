@@ -2,10 +2,28 @@ import { Metadata } from 'next';
 import { adminDb } from '@/lib/firebase-admin';
 import EventsClient from './EventsClient';
 
-export const metadata: Metadata = {
-  title: 'Community Events | Where the AI Engineering Community Meets',
-  description: 'Conferences, monthly meetups, open-source nights and hackathons — built for engineers who want to build, ship and grow together.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  let meta = {
+    title: 'Community Events | Where the AI Engineering Community Meets',
+    description: 'Conferences, monthly meetups, open-source nights and hackathons — built for engineers who want to build, ship and grow together.',
+  };
+  try {
+    const docSnap = await adminDb.collection("dynamic_pages").doc("events").get();
+    if (docSnap.exists) {
+      const data = docSnap.data();
+      if (data?.metadata) meta = { ...meta, ...data.metadata };
+    }
+  } catch (e) {}
+  return {
+    ...meta,
+    openGraph: {
+      title: meta.title,
+      description: meta.description,
+      url: 'https://botmartz.com/community/events',
+      type: 'website',
+    },
+  };
+}
 
 export default async function EventsIndexPage() {
   let initialEvents: any[] = [];
@@ -23,6 +41,28 @@ export default async function EventsIndexPage() {
     console.error("Failed to fetch events:", e);
   }
 
+  let heroContent = {
+    badge: "Botmartz Community Events",
+    title: "Where the AI<br />Engineering <span class=\"text-[#00C6FF]\">Community</span> Meets",
+    subtitle: "Conferences, monthly meetups, open-source nights and hackathons — built for engineers who want to build, ship and grow together, not just watch from the sidelines.",
+    ctaText: "See What's Coming Up →",
+    ctaLink: "#featured",
+  };
+  let structuredData = "";
+  let aeoQuestion = "";
+  let aeoAnswer = "";
+
+  try {
+    const docSnap = await adminDb.collection("dynamic_pages").doc("events").get();
+    if (docSnap.exists) {
+      const data = docSnap.data();
+      if (data?.hero) heroContent = { ...heroContent, ...data.hero };
+      if (data?.structuredData) structuredData = data.structuredData;
+      if (data?.aeoQuestion) aeoQuestion = data.aeoQuestion;
+      if (data?.aeoAnswer) aeoAnswer = data.aeoAnswer;
+    }
+  } catch (e) {}
+
   const sanitizedEvents = JSON.parse(JSON.stringify(initialEvents, (key, value) => {
     if (value && typeof value === 'object' && ('_seconds' in value || 'seconds' in value) && ('_nanoseconds' in value || 'nanoseconds' in value)) {
       const sec = value._seconds ?? value.seconds;
@@ -34,5 +74,15 @@ export default async function EventsIndexPage() {
     return value;
   }));
 
-  return <EventsClient initialEvents={sanitizedEvents} />;
+  const sanitizedHero = JSON.parse(JSON.stringify(heroContent));
+
+  return (
+    <EventsClient 
+      initialEvents={sanitizedEvents} 
+      heroContent={sanitizedHero}
+      structuredData={structuredData}
+      aeoQuestion={aeoQuestion}
+      aeoAnswer={aeoAnswer}
+    />
+  );
 }

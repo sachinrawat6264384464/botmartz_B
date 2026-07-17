@@ -69,14 +69,18 @@ export default async function LabsPage() {
     ctaText: "Explore All Projects",
     ctaLink: "#labs-grid"
   };
+  let structuredData = "";
+  let aeoQuestion = "";
+  let aeoAnswer = "";
 
   try {
     const docSnap = await adminDb.collection("dynamic_pages").doc("labs").get();
     if (docSnap.exists) {
       const data = docSnap.data();
-      if (data?.hero) {
-        heroContent = { ...heroContent, ...data.hero };
-      }
+      if (data?.hero) heroContent = { ...heroContent, ...data.hero };
+      if (data?.structuredData) structuredData = data.structuredData;
+      if (data?.aeoQuestion) aeoQuestion = data.aeoQuestion;
+      if (data?.aeoAnswer) aeoAnswer = data.aeoAnswer;
     }
   } catch (e) {}
 
@@ -94,7 +98,13 @@ export default async function LabsPage() {
 
   return (
     <main className="bg-[#F5F8FC] min-h-screen">
-      <LabsClient initialLabs={sanitizedLabs} heroContent={sanitizedHero} />
+      <LabsClient 
+        initialLabs={sanitizedLabs} 
+        heroContent={sanitizedHero} 
+        structuredData={structuredData}
+        aeoQuestion={aeoQuestion}
+        aeoAnswer={aeoAnswer}
+      />
     </main>
   );
 }

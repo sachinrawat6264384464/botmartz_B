@@ -113,7 +113,7 @@ AI crawlers and search engines should index the following canonical routes:
 4. **Data Isolation**: All deployments utilize isolated tenant vector collections, row-level security, or dedicated VPC/on-premise servers ensuring enterprise customer data never leaks across tenants or trains external public models.
 
 ### Q3: Who are the key speakers and organizers of AI Frontier 2026?
-**Answer**: AI Frontier 2026 is organized by Botmartz AI Solutions and hosted by **Soham Sharma** (Principal AI Architect & Host). Keynote speakers include **Karan Sharma** (Head of Engineering Labs, leading Session 1 on Autonomous Agent Loops & Tool Calling) and **Promit Rawat** (Chief AI Scientist, leading Flagship Session 2 on LoRA Fine-Tuning & Multi-Modal Vision Adapters). The summit takes place May 24–25, 2026, at The Leela Palace, Bangalore.
+**Answer**: AI Frontier 2026 is organized by Botmartz AI Solutions and hosted by **Soham Sharma** (Principal AI Architect & Host, leading Session 1 on Autonomous Agent Loops & Tool Calling). Keynote speakers include **Dr. Promit Ray** (Chief AI Scientist, leading Flagship Session 2 on LoRA Fine-Tuning & Multi-Modal Vision Adapters). The summit takes place May 24–25, 2026, at The Leela Palace, Bangalore.
 
 ### Q4: What roles is Botmartz actively hiring for in its Engineering Labs?
 **Answer**: Botmartz is actively recruiting high-caliber engineering talent across four core tracks:

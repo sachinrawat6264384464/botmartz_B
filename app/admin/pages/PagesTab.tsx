@@ -70,6 +70,7 @@ const AVAILABLE_PAGES = [
   { id: "about", name: "About Us" },
   { id: "contact", name: "Contact" },
   { id: "community", name: "Community" },
+  { id: "events", name: "Community / Events Index" },
   { id: "ai-frontier", name: "Community / AI Frontier 2026" },
   { id: "services", name: "Services Index" },
   { id: "ai-agents", name: "Services / AI Agents" },
@@ -79,9 +80,10 @@ const AVAILABLE_PAGES = [
   { id: "education", name: "Industries / Education" },
   { id: "logistics", name: "Industries / Logistics" },
   { id: "partnerships", name: "Partnerships Page" },
-  { id: "careers", name: "Careers & Labs" },
+  { id: "careers", name: "Careers Page" },
   { id: "work", name: "Work Index" },
   { id: "labs", name: "Work / Labs" },
+  { id: "open_source", name: "Work / Open Source" },
   { id: "case-studies", name: "Work / Case Studies" },
   { id: "insights", name: "Insights" },
   { id: "llms_txt", name: "AI Crawlers / llms.txt Specification" },
@@ -110,15 +112,236 @@ const DEFAULT_PAGE_CONTENTS: Record<string, Partial<PageConfig>> = {
   },
   "community": {
     title: "Community",
-    metadata: { title: "Community | Botmartz", description: "Join our community", keywords: ["Community"] },
-    hero: { badge: "Community", title: "Join the Botmartz Community", subtitle: "Connect with AI enthusiasts, engineers, and researchers.", ctaText: "Join Discord", ctaLink: "#" },
-    useCases: [], techStack: []
+    metadata: {
+      title: "Botmartz AI Engineering Community | One Community. Many Ways to Build.",
+      description: "Launched at AI Frontier 2026 — meetups, a Discord, an open-source GitHub org, a reading club and hackathons, all in one place for engineers.",
+      keywords: ["AI Engineering Community", "Botmartz Discord", "AI Meetups Indore", "Open Source AI Org"],
+    },
+    hero: {
+      badge: "Botmartz AI Engineering Community",
+      title: "One Community. Many Ways to Build.",
+      subtitle: "Launched at AI Frontier 2026 — meetups, a Discord, an open-source GitHub org, a reading club and hackathons, all in one place for engineers who want to build, not just watch.",
+      ctaText: "Join the Discord →",
+      ctaLink: "https://discord.gg/botmartz",
+    },
+    aeoQuestion: "What is the Botmartz AI Engineering Community?",
+    aeoAnswer: "The Botmartz AI Engineering Community brings together engineers who build production AI systems, offering monthly in-person meetups in Indore, an active Discord server, open-source GitHub repositories, a biweekly reading club, and annual hackathons.",
+    useCases: [
+      { title: "Monthly Meetups", description: "In-person sessions in Indore for engineers to share projects and production lessons.", iconName: "Users" },
+      { title: "Discord Server", description: "The daily home for questions, job posts, and project feedback.", iconName: "MessageCircle" },
+      { title: "GitHub Org", description: "Community-maintained tools and starter kits for AI engineers.", iconName: "Code" },
+    ],
+    techStack: ["Discord", "GitHub", "Meetup", "Hackathons", "Reading Club"],
+    cta: {
+      title: "Not on Discord Yet?",
+      subtitle: "Join hundreds of AI engineers already sharing projects, jobs and ideas.",
+      buttonText: "Join the Discord →",
+    },
+    structuredData: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Botmartz AI Engineering Community",
+      "description": "One community with many ways to build: meetups, Discord, open-source GitHub org, reading club, and hackathons.",
+      "url": "https://botmartz.com/community"
+    }, null, 2),
   },
-  "ai-frontier": {
-    title: "AI Frontier 2026",
-    metadata: { title: "AI Frontier 2026 | Botmartz", description: "AI Frontier Event", keywords: ["Event", "AI"] },
-    hero: { badge: "Events", title: "AI Frontier 2026", subtitle: "The ultimate AI conference.", ctaText: "Register Now", ctaLink: "#register" },
-    useCases: [], techStack: []
+  "events": {
+    title: "Community Events",
+    metadata: {
+      title: "Community Events | Where the AI Engineering Community Meets",
+      description: "Conferences, monthly meetups, open-source nights and hackathons — built for engineers who want to build, ship and grow together.",
+      keywords: ["AI Frontier 2026", "AI Conferences India", "AI Meetups Indore", "Botmartz Hackathons"],
+    },
+    hero: {
+      badge: "Botmartz Community Events",
+      title: "Where the AI Engineering Community Meets",
+      subtitle: "Conferences, monthly meetups, open-source nights and hackathons — built for engineers who want to build, ship and grow together, not just watch from the sidelines.",
+      ctaText: "See What's Coming Up →",
+      ctaLink: "#featured",
+    },
+    aeoQuestion: "When is AI Frontier 2026 and where are Botmartz meetups held?",
+    aeoAnswer: "AI Frontier 2026 takes place on August 22, 2026, at Walkover Co-working in Indore, India. Botmartz also hosts monthly local meetups in Indore and biweekly virtual open-source and reading club sessions.",
+    useCases: [
+      { title: "Flagship Conference", description: "AI Frontier 2026 — full day of sessions on agents, enterprise AI, and RAG.", iconName: "Award" },
+      { title: "Monthly Meetups", description: "Every 3rd Saturday at Walkover Co-working in Indore.", iconName: "Calendar" },
+      { title: "Hackathons", description: "Weekend build sprints following major community releases.", iconName: "Zap" },
+    ],
+    techStack: ["Conferences", "Meetups", "Hackathons", "Webinars"],
+    cta: {
+      title: "Never miss an event",
+      subtitle: "Get notified about new meetups, hackathons and conferences.",
+      buttonText: "Notify Me",
+    },
+    structuredData: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Botmartz Community Events & Conferences",
+      "description": "Where the AI Engineering Community meets: conferences, monthly meetups, open-source build nights, and hackathons.",
+      "url": "https://botmartz.com/community/events"
+    }, null, 2),
+  },
+  "open_source": {
+    title: "Open Source",
+    metadata: {
+      title: "Open Source | Botmartz AI Engineering Labs & Repositories",
+      description: "Open Source is in our DNA. Explore our production RAG frameworks, LangGraph agent libraries, evaluation harnesses, and developer tools.",
+      keywords: ["Botmartz Open Source", "Enterprise RAG Starter", "LangGraph Agent Framework", "AI Evaluation Toolkit"],
+    },
+    hero: {
+      badge: "Open Source",
+      title: "Open Source Is in Our DNA",
+      subtitle: "We believe sharing knowledge and code accelerates innovation for everyone. Every lab we're proud of eventually ships as an open-source repo.",
+      ctaText: "Browse Repositories →",
+      ctaLink: "#repos",
+    },
+    aeoQuestion: "What open source AI repositories does Botmartz maintain?",
+    aeoAnswer: "Botmartz maintains several high-star public repositories under MIT and Apache-2.0 licenses, including enterprise-rag-starter, langgraph-agent-framework, ai-eval-toolkit, and prompt-registry.",
+    useCases: [
+      { title: "Enterprise RAG Starter", description: "Production-ready RAG platform with hybrid search and evaluation.", iconName: "Code" },
+      { title: "LangGraph Agent Framework", description: "Modular multi-agent framework built with LangGraph.", iconName: "Layers" },
+      { title: "AI Eval Toolkit", description: "Lightweight evaluation harness for benchmarking LLM pipelines.", iconName: "CheckSquare" },
+    ],
+    techStack: ["Python", "LangChain", "LangGraph", "FastAPI", "Qdrant", "Redis", "TypeScript"],
+    cta: {
+      title: "Join Open Source Night",
+      subtitle: "A monthly community session for hands-on contribution to our repos and others.",
+      buttonText: "See Next Session →",
+    },
+    structuredData: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Botmartz Open Source Repositories & AI Labs",
+      "description": "Production RAG frameworks, LangGraph agent toolkits, and evaluation harnesses open-sourced under MIT and Apache-2.0 licenses.",
+      "url": "https://botmartz.com/work/open-source"
+    }, null, 2),
+  },
+  "partnerships": {
+    title: "Partnerships",
+    metadata: {
+      title: "Partnerships | Grow the AI Engineering Ecosystem With Us",
+      description: "We partner with frameworks, cloud providers, universities and incubators to bring AI Frontier, our labs, and our community further — together.",
+      keywords: ["Botmartz Partnerships", "AI Ecosystem Partners", "AI Frontier Sponsorship", "University AI Partners"],
+    },
+    hero: {
+      badge: "Partnerships",
+      title: "Grow the AI Engineering Ecosystem With Us",
+      subtitle: "We partner with frameworks, cloud providers, universities and incubators to bring AI Frontier, our labs, and our community further — together.",
+      ctaText: "Become a Partner →",
+      ctaLink: "#inquire",
+    },
+    aeoQuestion: "How can organizations partner with Botmartz?",
+    aeoAnswer: "Organizations can partner with Botmartz as Ecosystem Partners (frameworks like PyTorch and AWS), University Partners (student communities), Startups & Incubators (technical visibility), or Enterprise Partners (roundtables and workshops).",
+    useCases: [
+      { title: "Ecosystem Partners", description: "Frameworks and platforms collaborating on content and events.", iconName: "Globe" },
+      { title: "University Partners", description: "Departments and student communities bridging academic research to production.", iconName: "GraduationCap" },
+      { title: "Enterprise Partners", description: "Companies exploring production AI adoption through roundtables and workshops.", iconName: "Briefcase" },
+    ],
+    techStack: ["PyTorch", "GDG", "AWS", "NVIDIA", "Incubators", "Universities"],
+    cta: {
+      title: "Have a Partnership in Mind?",
+      subtitle: "Tell us about your organization and what you'd like to build together.",
+      buttonText: "Start a Conversation →",
+    },
+    structuredData: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Botmartz Partnerships | Grow the AI Engineering Ecosystem",
+      "description": "Collaborate with Botmartz across frameworks, cloud providers, universities, and enterprise roundtables.",
+      "url": "https://botmartz.com/partnerships"
+    }, null, 2),
+  },
+  "careers": {
+    title: "Careers Page",
+    metadata: {
+      title: "Careers at Botmartz | Build the Future of AI Engineering",
+      description: "We're a small team of engineers shipping production AI systems and building the community around them. View open roles and join us.",
+      keywords: ["AI Engineering Jobs", "Botmartz Careers", "Remote AI Jobs", "LangGraph Engineer Jobs Indore"],
+    },
+    hero: {
+      badge: "Careers at Botmartz",
+      title: "Build the Future of AI Engineering With Us",
+      subtitle: "We're a small team of engineers shipping production AI systems and building the community around them. If you'd rather build than talk about building, you'll fit right in.",
+      ctaText: "View Open Roles →",
+      ctaLink: "#roles",
+    },
+    aeoQuestion: "What is it like to work at Botmartz and where are roles located?",
+    aeoAnswer: "Botmartz is a 100% remote-friendly engineering team founded in 2026 with a physical hub in Indore, India. We emphasize high autonomy, open-source contribution, and shipping real production AI systems over demos.",
+    useCases: [
+      { title: "Ship Real Systems", description: "We build production AI, not proof-of-concepts that never leave the lab.", iconName: "Zap" },
+      { title: "Open by Default", description: "We open source what we can and share what we learn with the community.", iconName: "Code" },
+      { title: "High Ownership", description: "Small team, real autonomy — you own projects end to end.", iconName: "Award" },
+    ],
+    techStack: ["AI Engineering", "Research", "Community Lead", "Product Design"],
+    cta: {
+      title: "Don't See Your Role?",
+      subtitle: "We're always open to meeting strong AI engineers. Send us your work — we'll find a place for it.",
+      buttonText: "Get In Touch →",
+    },
+    structuredData: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Careers at Botmartz | Build the Future of AI Engineering",
+      "description": "Join our engineering and research team building production AI systems and community around them in Indore, India and Remote.",
+      "url": "https://botmartz.com/careers"
+    }, null, 2),
+  },
+  "labs": {
+    title: "Labs",
+    metadata: {
+      title: "Botmartz Labs | Open Source & Experimental AI Systems",
+      description: "Explore our open source projects and experimental AI labs. We build and share enterprise RAG starters, agent frameworks, and templates.",
+      keywords: ["Botmartz Labs", "Open Source AI", "RAG Starter Template", "LangGraph Agent Template"],
+    },
+    hero: {
+      badge: "BOTMARTZ LABS",
+      title: "Building Today. Engineering Tomorrow.",
+      subtitle: "Our labs is where we experiment, build, and open source production-ready AI systems that solve real problems. Every project is built with a focus on performance, scalability, and real-world impact.",
+      ctaText: "Explore All Projects →",
+      ctaLink: "#labs-grid",
+    },
+    aeoQuestion: "What is Botmartz Labs?",
+    aeoAnswer: "Botmartz Labs is our internal engineering playground where we experiment with cutting-edge models, stress-test multi-agent architectures, and release open-source reference implementations.",
+    useCases: [
+      { title: "Virtual Try-On", description: "Computer vision pipeline for real-time garment fitting — built to stress-test our vision stack.", iconName: "Code" },
+      { title: "AI Research Agent", description: "An internal agent that runs first-pass research and drafts outreach — in daily use at Botmartz.", iconName: "Layers" },
+      { title: "Enterprise RAG Demo", description: "A reference implementation showing chunking, hybrid retrieval, and evaluation end to end.", iconName: "Search" },
+    ],
+    techStack: ["PyTorch", "LangChain", "LangGraph", "Google ADK", "FastAPI", "PostgreSQL", "Redis", "Docker", "AWS"],
+    cta: {
+      title: "Have an Idea Worth Building?",
+      subtitle: "Let's build the next lab together. We collaborate with founders, researchers, and engineers.",
+      buttonText: "Start a Conversation →",
+    },
+    structuredData: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Botmartz Labs | Experimental AI Systems & Starters",
+      "description": "Explore our open source projects and experimental AI labs.",
+      "url": "https://botmartz.com/work/labs"
+    }, null, 2),
+  },
+  "case-studies": {
+    title: "Case Studies (Intro)",
+    metadata: {
+      title: "AI Case Studies & Success Stories | Botmartz AI",
+      description: "Explore our AI case studies across Education, Logistics, Legal, and SaaS. See real impact.",
+      keywords: ["AI Case Studies", "Enterprise Success Stories", "RAG Impact", "AI Agent Metrics"],
+    },
+    hero: {
+      badge: "Work / Case Studies",
+      title: "Proven AI Implementations. Real Business Results.",
+      subtitle: "Discover how we partner with leading organizations to deploy production-ready AI agents and RAG systems.",
+      ctaText: "Start a Conversation →",
+      ctaLink: "/contact",
+    },
+    useCases: [],
+    techStack: [],
+    cta: {
+      title: "Want to see similar results in your organization?",
+      subtitle: "Let's discuss how custom AI engineering can solve your specific business challenges.",
+      buttonText: "Book a Discovery Call →",
+    },
+    structuredData: "",
   },
   "services": {
     title: "Services Index",
@@ -134,9 +357,34 @@ const DEFAULT_PAGE_CONTENTS: Record<string, Partial<PageConfig>> = {
   },
   "work": {
     title: "Work Index",
-    metadata: { title: "Our Work | Botmartz", description: "Our case studies and labs.", keywords: ["Work"] },
-    hero: { badge: "Our Work", title: "Proven AI Impact", subtitle: "See what we've built and how we've transformed businesses with Generative AI.", ctaText: "View Case Studies", ctaLink: "/work/case-studies" },
-    useCases: [], techStack: []
+    metadata: {
+      title: "Production AI Systems, Shipped & Proven | Botmartz Work",
+      description: "Case studies from enterprise clients across education, logistics, healthcare and SaaS — real production AI systems, not proofs of concept.",
+      keywords: ["Production AI Systems", "Enterprise AI Case Studies", "AI Route Optimization", "Clinical AI Copilot", "EdTech AI Assistant", "Enterprise RAG Support"],
+    },
+    hero: {
+      badge: "Our Work",
+      title: "Production AI Systems,<br><span class=\"text-[#00C6FF]\">Shipped &amp; Proven</span>",
+      subtitle: "Case studies from enterprise clients across education, logistics, healthcare and SaaS — real systems in production, not proofs of concept.",
+      ctaText: "Browse Case Studies →",
+      ctaLink: "#cases",
+    },
+    aeoQuestion: "What kind of production AI systems has Botmartz built and deployed?",
+    aeoAnswer: "Botmartz builds and deploys production AI systems across education, logistics, healthcare, and SaaS, including AI course assistants, route optimization agents, clinical documentation copilots, enterprise RAG support platforms, warehouse computer vision inspection, and voice agents for patient intake.",
+    structuredData: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Production AI Systems, Shipped & Proven | Botmartz Work",
+      "description": "Case studies and real production AI systems built by Botmartz across education, logistics, healthcare and SaaS.",
+      "url": "https://botmartz.com/work",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Botmartz",
+        "url": "https://botmartz.com"
+      }
+    }, null, 2),
+    useCases: [],
+    techStack: ["LangGraph", "FastAPI", "Next.js", "PyTorch", "OpenAI", "Vector DB"]
   },
   "insights": {
     title: "Insights",
@@ -292,56 +540,6 @@ const DEFAULT_PAGE_CONTENTS: Record<string, Partial<PageConfig>> = {
     cta: {
       title: "Empower your legal team with secure AI.",
       subtitle: "Consult with our team to deploy private, isolated legal RAG pipelines.",
-      buttonText: "Book a Discovery Call →",
-    },
-    structuredData: "",
-  },
-  "labs": {
-    title: "Labs",
-    metadata: {
-      title: "Open Source & AI Labs | Botmartz AI",
-      description: "Explore our open source projects and AI labs. We build and share enterprise RAG starters, agent frameworks, and templates.",
-      keywords: ["Botmartz Labs", "Open Source AI", "RAG Starter Template", "LangGraph Agent Template"],
-    },
-    hero: {
-      badge: "BOTMARTZ LABS",
-      title: "Building Today. Engineering Tomorrow.",
-      subtitle: "Our labs is where we experiment, build, and open source production-ready AI systems that solve real problems.",
-      ctaText: "Explore All Projects →",
-      ctaLink: "#projects",
-    },
-    useCases: [
-      { title: "Virtual Try-On", description: "Computer vision pipeline for real-time garment fitting — built to stress-test our vision stack.", iconName: "PyTorch, Demo + Repo" },
-      { title: "AI Research Agent", description: "An internal agent that runs first-pass research and drafts outreach — in daily use at Botmartz.", iconName: "LangGraph, Demo + Repo" },
-      { title: "Enterprise RAG Demo", description: "A reference implementation showing chunking, hybrid retrieval, and evaluation end to end.", iconName: "FastAPI, Demo + Repo" },
-    ],
-    techStack: ["PyTorch", "LangChain", "LangGraph", "Google ADK", "FastAPI", "PostgreSQL", "Redis", "Docker", "AWS"],
-    cta: {
-      title: "Have an Idea Worth Building?",
-      subtitle: "Let's build the next lab together. We collaborate with founders, researchers, and engineers.",
-      buttonText: "Start a Conversation →",
-    },
-    structuredData: "",
-  },
-  "case-studies": {
-    title: "Case Studies (Intro)",
-    metadata: {
-      title: "AI Case Studies & Success Stories | Botmartz AI",
-      description: "Explore our AI case studies across Education, Logistics, Legal, and SaaS. See real impact.",
-      keywords: ["AI Case Studies", "Enterprise Success Stories", "RAG Impact", "AI Agent Metrics"],
-    },
-    hero: {
-      badge: "Work / Case Studies",
-      title: "Proven AI Implementations. Real Business Results.",
-      subtitle: "Discover how we partner with leading organizations to deploy production-ready AI agents and RAG systems.",
-      ctaText: "Start a Conversation →",
-      ctaLink: "/contact",
-    },
-    useCases: [],
-    techStack: [],
-    cta: {
-      title: "Want to see similar results in your organization?",
-      subtitle: "Let's discuss how custom AI engineering can solve your specific business challenges.",
       buttonText: "Book a Discovery Call →",
     },
     structuredData: "",

@@ -3,7 +3,23 @@
 import React from 'react';
 import Link from 'next/link';
 
-export default function CommunityClient() {
+export default function CommunityClient({
+  heroContent = {
+    badge: "Botmartz AI Engineering Community",
+    title: "One Community.<br /><span class=\"text-[#00C6FF]\">Many Ways</span> to Build.",
+    subtitle: "Launched at AI Frontier 2026 — meetups, a Discord, an open-source GitHub org, a reading club and hackathons, all in one place for engineers who want to build, not just watch.",
+    ctaText: "Join the Discord →",
+    ctaLink: "https://discord.gg/botmartz",
+  },
+  structuredData,
+  aeoQuestion,
+  aeoAnswer
+}: {
+  heroContent?: any;
+  structuredData?: string;
+  aeoQuestion?: string;
+  aeoAnswer?: string;
+}) {
   const heroStats = [
     { value: '5', label: 'Community Pillars' },
     { value: '2026', label: 'Community Launch' },
@@ -26,8 +42,35 @@ export default function CommunityClient() {
     { title: 'Commercial', desc: 'Discovery calls, follow-up meetings, pilots and partnerships — over time.' },
   ];
 
+  const defaultSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Botmartz AI Engineering Community",
+    "description": "One community with many ways to build: meetups, Discord, open-source GitHub org, reading club, and hackathons.",
+    "url": "https://botmartz.com/community",
+    "mainEntity": {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": aeoQuestion || "What is the Botmartz AI Engineering Community?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": aeoAnswer || "The Botmartz AI Engineering Community brings together engineers who build production AI systems, offering monthly in-person meetups in Indore, an active Discord server, open-source GitHub repositories, a biweekly reading club, and annual hackathons."
+          }
+        }
+      ]
+    }
+  };
+
   return (
     <div className="bg-[#F5F8FC] min-h-screen font-sans text-[#0B1220]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: structuredData ? structuredData : JSON.stringify(defaultSchema)
+        }}
+      />
       {/* ── HERO SECTION ── */}
       <div className="bg-[#060C1F] relative overflow-hidden pt-24 pb-16 px-6 sm:px-10 lg:pt-28 lg:pb-20">
         <div 
@@ -49,23 +92,23 @@ export default function CommunityClient() {
           <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
             <div>
               <div className="font-bold text-[12px] tracking-[0.1em] text-[#00C6FF] uppercase">
-                Botmartz AI Engineering Community
+                {heroContent.badge || "Botmartz AI Engineering Community"}
               </div>
-              <h1 className="font-extrabold text-[clamp(32px,4.5vw,44px)] leading-[1.15] text-white mt-4">
-                One Community.<br />
-                <span className="text-[#00C6FF]">Many Ways</span> to Build.
-              </h1>
+              <h1 
+                className="font-extrabold text-[clamp(32px,4.5vw,44px)] leading-[1.15] text-white mt-4"
+                dangerouslySetInnerHTML={{ __html: heroContent.title || 'One Community.<br /><span class="text-[#00C6FF]">Many Ways</span> to Build.' }}
+              />
               <p className="font-medium text-[14.5px] sm:text-[15.5px] leading-[1.7] text-[#8FA3C4] mt-4.5 max-w-[480px]">
-                Launched at AI Frontier 2026 — meetups, a Discord, an open-source GitHub org, a reading club and hackathons, all in one place for engineers who want to build, not just watch.
+                {heroContent.subtitle || "Launched at AI Frontier 2026 — meetups, a Discord, an open-source GitHub org, a reading club and hackathons, all in one place for engineers who want to build, not just watch."}
               </p>
               <div className="flex flex-wrap gap-3.5 mt-7">
                 <a 
-                  href="https://discord.gg/botmartz" 
+                  href={heroContent.ctaLink || "https://discord.gg/botmartz"} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] transition-all"
                 >
-                  Join the Discord →
+                  {heroContent.ctaText || "Join the Discord →"}
                 </a>
                 <Link 
                   href="/community/events" 

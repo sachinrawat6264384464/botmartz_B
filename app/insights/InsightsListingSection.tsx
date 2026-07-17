@@ -59,7 +59,7 @@ const ARTICLES_DATA: InsightArticle[] = [
     title: "Inside AI Agents: From Reasoning to Real-World Action",
     category: "AI AGENTS",
     description: "Explore the core components of AI agents, including planning, tool calling, memory, and evaluation.",
-    author: "Sanjay S.",
+    author: "Soham Sharma",
     date: "May 8, 2024",
     readTime: "9 min read",
     visualType: "agents-circle"

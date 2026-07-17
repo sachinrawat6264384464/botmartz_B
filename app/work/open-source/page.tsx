@@ -43,6 +43,28 @@ export default async function OpenSourcePage() {
     } catch (err) {}
   }
 
+  let heroContent = {
+    badge: "Open Source",
+    title: "Open Source Is<br />in Our <span class=\"text-[#00C6FF]\">DNA</span>",
+    subtitle: "We believe sharing knowledge and code accelerates innovation for everyone. Every lab we're proud of eventually ships as an open-source repo.",
+    ctaText: "Browse Repositories →",
+    ctaLink: "#repos",
+  };
+  let structuredData = "";
+  let aeoQuestion = "";
+  let aeoAnswer = "";
+
+  try {
+    const docSnap = await adminDb.collection("dynamic_pages").doc("open_source").get();
+    if (docSnap.exists) {
+      const data = docSnap.data();
+      if (data?.hero) heroContent = { ...heroContent, ...data.hero };
+      if (data?.structuredData) structuredData = data.structuredData;
+      if (data?.aeoQuestion) aeoQuestion = data.aeoQuestion;
+      if (data?.aeoAnswer) aeoAnswer = data.aeoAnswer;
+    }
+  } catch (e) {}
+
   const sanitizedRepos = JSON.parse(JSON.stringify(initialRepos, (key, value) => {
     if (value && typeof value === 'object' && ('_seconds' in value || 'seconds' in value) && ('_nanoseconds' in value || 'nanoseconds' in value)) {
       const sec = value._seconds ?? value.seconds;
@@ -54,5 +76,15 @@ export default async function OpenSourcePage() {
     return value;
   }));
 
-  return <OpenSourceClient initialRepos={sanitizedRepos} />;
+  const sanitizedHero = JSON.parse(JSON.stringify(heroContent));
+
+  return (
+    <OpenSourceClient 
+      initialRepos={sanitizedRepos} 
+      heroContent={sanitizedHero}
+      structuredData={structuredData}
+      aeoQuestion={aeoQuestion}
+      aeoAnswer={aeoAnswer}
+    />
+  );
 }

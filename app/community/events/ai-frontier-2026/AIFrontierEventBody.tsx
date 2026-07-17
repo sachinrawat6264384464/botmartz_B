@@ -227,8 +227,8 @@ export default function AIFrontierEventBody() {
                 SS
               </div>
               <div>
-                <div className="font-bold text-[12.5px] text-[#0B1220]">Sanjay Singh</div>
-                <div className="font-medium text-[11px] text-[#8A97AC]">Co-founder, Botmartz</div>
+                <div className="font-bold text-[12.5px] text-[#0B1220]">Soham Sharma</div>
+                <div className="font-medium text-[11px] text-[#8A97AC]">Principal AI Architect</div>
               </div>
             </div>
           </div>
@@ -250,11 +250,11 @@ export default function AIFrontierEventBody() {
             </div>
             <div className="flex items-center gap-2.5 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-[#EEF1F6] w-full md:w-auto">
               <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#007BFF] to-[#00C6FF] flex items-center justify-center font-bold text-[13px] text-white">
-                KG
+                SS
               </div>
               <div>
-                <div className="font-bold text-[12.5px] text-[#0B1220]">Karan Goel</div>
-                <div className="font-medium text-[11px] text-[#8A97AC]">AI Engineer, Botmartz</div>
+                <div className="font-bold text-[12.5px] text-[#0B1220]">Soham Sharma</div>
+                <div className="font-medium text-[11px] text-[#8A97AC]">Principal AI Architect</div>
               </div>
             </div>
           </div>
@@ -279,11 +279,11 @@ export default function AIFrontierEventBody() {
               </div>
               <div className="flex items-center gap-2.5 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-[#EEF1F6] w-full md:w-auto">
                 <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#007BFF] to-[#00C6FF] flex items-center justify-center font-bold text-[13px] text-white">
-                  PB
+                  PR
                 </div>
                 <div>
-                  <div className="font-bold text-[12.5px] text-[#0B1220]">Promit Basu</div>
-                  <div className="font-medium text-[11px] text-[#8A97AC]">AI/ML Engineer, Goa, India</div>
+                  <div className="font-bold text-[12.5px] text-[#0B1220]">Dr. Promit Ray</div>
+                  <div className="font-medium text-[11px] text-[#8A97AC]">Chief AI Scientist</div>
                 </div>
               </div>
             </div>
@@ -293,7 +293,7 @@ export default function AIFrontierEventBody() {
                   Fireside Q&amp;A
                 </span>
                 <span className="font-medium text-[13px] text-[#5B6B85]">
-                  20–30 min interactive Q&amp;A with Promit and the audience
+                  20–30 min interactive Q&amp;A with Dr. Promit Ray and the audience
                 </span>
               </div>
               <span className="font-bold text-xs text-[#7C3AED] bg-[#F1EBFE] px-3 py-1.5 rounded-full">
@@ -322,12 +322,9 @@ export default function AIFrontierEventBody() {
                 SS
               </div>
               <div className="w-9.5 h-9.5 rounded-full bg-gradient-to-br from-[#007BFF] to-[#00C6FF] border-2 border-white flex items-center justify-center font-bold text-[11px] text-white -ml-2.5 z-3">
-                KG
+                PR
               </div>
-              <div className="w-9.5 h-9.5 rounded-full bg-gradient-to-br from-[#007BFF] to-[#00C6FF] border-2 border-white flex items-center justify-center font-bold text-[11px] text-white -ml-2.5 z-2">
-                PB
-              </div>
-              <div className="w-9.5 h-9.5 rounded-full bg-[#EDF1F7] border-2 border-white flex items-center justify-center font-bold text-[11px] text-[#5B6B85] -ml-2.5 z-1">
+              <div className="w-9.5 h-9.5 rounded-full bg-[#EDF1F7] border-2 border-white flex items-center justify-center font-bold text-[11px] text-[#5B6B85] -ml-2.5 z-2">
                 +1
               </div>
             </div>
@@ -353,8 +350,8 @@ export default function AIFrontierEventBody() {
                 SS
               </div>
               <div>
-                <div className="font-bold text-[12.5px] text-[#0B1220]">Sanjay Singh</div>
-                <div className="font-medium text-[11px] text-[#8A97AC]">Co-founder, Botmartz</div>
+                <div className="font-bold text-[12.5px] text-[#0B1220]">Soham Sharma</div>
+                <div className="font-medium text-[11px] text-[#8A97AC]">Principal AI Architect</div>
               </div>
             </div>
           </div>

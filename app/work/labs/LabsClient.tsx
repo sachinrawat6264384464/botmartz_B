@@ -82,9 +82,12 @@ interface LabsClientProps {
     ctaText?: string;
     ctaLink?: string;
   };
+  structuredData?: string;
+  aeoQuestion?: string;
+  aeoAnswer?: string;
 }
 
-export default function LabsClient({ initialLabs = [], heroContent }: LabsClientProps) {
+export default function LabsClient({ initialLabs = [], heroContent, structuredData, aeoQuestion, aeoAnswer }: LabsClientProps) {
   const [activeCategory, setActiveCategory] = useState('All Labs');
 
   // Use initialLabs if populated, otherwise use DEFAULT_LABS
@@ -104,9 +107,31 @@ export default function LabsClient({ initialLabs = [], heroContent }: LabsClient
     ? labsData
     : labsData.filter(l => l.category === activeCategory);
 
+  const defaultSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Botmartz AI Engineering Labs",
+    "description": "Where we experiment, build, and open source production-ready AI systems that solve real problems.",
+    "url": "https://botmartz.com/work/labs",
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": labsData.map((l, i) => ({
+        "@type": "SoftwareSourceCode",
+        "name": l.title,
+        "description": l.desc,
+        "codeRepository": l.githubUrl || "https://github.com/botmartz"
+      }))
+    }
+  };
+
   return (
     <div className="bg-[#F5F8FC] min-h-screen text-[#0B1220] font-sans">
-      
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: structuredData ? structuredData : JSON.stringify(defaultSchema)
+        }}
+      />
       {/* ══════════ HERO (DARK BACKGROUND #060C1F) ══════════ */}
       <section className="bg-[#060C1F] relative overflow-hidden pt-20 pb-16 px-6 sm:px-10 border-b border-[#1E293B]">
         {/* Background Grid & Mask */}

@@ -76,13 +76,13 @@ const eventJsonLd = {
   performer: [
     {
       '@type': 'Person',
-      name: 'Karan',
-      jobTitle: 'AI Systems Engineer',
+      name: 'Dr. Promit Ray',
+      jobTitle: 'Chief AI Scientist',
     },
     {
       '@type': 'Person',
-      name: 'Promit',
-      jobTitle: 'AI Researcher & Engineering Leader',
+      name: 'Soham Sharma',
+      jobTitle: 'Principal AI Architect & Host',
     },
   ],
   about: [

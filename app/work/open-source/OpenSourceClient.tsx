@@ -24,7 +24,25 @@ const PROTOTYPE_REPOS: RepoItem[] = [
   { category: 'Developer Tools', license: 'MIT', name: 'prompt-registry', desc: 'Version-controlled prompt management for teams shipping multiple AI products.', tags: ['TypeScript', 'Redis', 'Docker'], stars: '520', forks: '80', githubUrl: 'https://github.com/botmartz/prompt-registry' },
 ];
 
-export default function OpenSourceClient({ initialRepos }: { initialRepos: any[] }) {
+export default function OpenSourceClient({ 
+  initialRepos,
+  heroContent = {
+    badge: "Open Source",
+    title: "Open Source Is<br />in Our <span class=\"text-[#00C6FF]\">DNA</span>",
+    subtitle: "We believe sharing knowledge and code accelerates innovation for everyone. Every lab we're proud of eventually ships as an open-source repo.",
+    ctaText: "Browse Repositories →",
+    ctaLink: "#repos",
+  },
+  structuredData,
+  aeoQuestion,
+  aeoAnswer
+}: { 
+  initialRepos: any[];
+  heroContent?: any;
+  structuredData?: string;
+  aeoQuestion?: string;
+  aeoAnswer?: string;
+}) {
   const [filter, setFilter] = useState('All Repos');
 
   const categoryList = ['All Repos', 'Enterprise RAG', 'AI Agents', 'Developer Tools', 'Infrastructure'];
@@ -65,8 +83,33 @@ export default function OpenSourceClient({ initialRepos }: { initialRepos: any[]
     return repos.filter(r => r.category.toLowerCase() === filter.toLowerCase() || r.category.toLowerCase().includes(filter.toLowerCase()));
   }, [filter, repos]);
 
+  const defaultSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Botmartz Open Source Repositories & AI Labs",
+    "description": "Production RAG frameworks, LangGraph agent toolkits, and evaluation harnesses open-sourced under MIT and Apache-2.0 licenses.",
+    "url": "https://botmartz.com/work/open-source",
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": repos.map((r, i) => ({
+        "@type": "SoftwareSourceCode",
+        "name": r.name,
+        "description": r.desc,
+        "license": r.license.toLowerCase().includes('mit') ? "https://opensource.org/licenses/MIT" : "https://opensource.org/licenses/Apache-2.0",
+        "codeRepository": r.githubUrl,
+        "programmingLanguage": r.tags
+      }))
+    }
+  };
+
   return (
     <div className="bg-[#F5F8FC] min-h-screen font-sans text-[#0B1220]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: structuredData ? structuredData : JSON.stringify(defaultSchema)
+        }}
+      />
       {/* ── HERO SECTION ── */}
       <div className="bg-[#060C1F] relative overflow-hidden pt-24 pb-16 px-6 sm:px-10 lg:pt-28 lg:pb-20">
         <div 
@@ -90,21 +133,21 @@ export default function OpenSourceClient({ initialRepos }: { initialRepos: any[]
           <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
             <div>
               <div className="font-bold text-[12px] tracking-[0.1em] text-[#00C6FF] uppercase">
-                Open Source
+                {heroContent.badge || "Open Source"}
               </div>
-              <h1 className="font-extrabold text-[clamp(32px,4.5vw,44px)] leading-[1.15] text-white mt-4">
-                Open Source Is<br />
-                in Our <span className="text-[#00C6FF]">DNA</span>
-              </h1>
+              <h1 
+                className="font-extrabold text-[clamp(32px,4.5vw,44px)] leading-[1.15] text-white mt-4"
+                dangerouslySetInnerHTML={{ __html: heroContent.title || 'Open Source Is<br />in Our <span class="text-[#00C6FF]">DNA</span>' }}
+              />
               <p className="font-medium text-[14.5px] sm:text-[15.5px] leading-[1.7] text-[#8FA3C4] mt-4.5 max-w-[480px]">
-                We believe sharing knowledge and code accelerates innovation for everyone. Every lab we're proud of eventually ships as an open-source repo.
+                {heroContent.subtitle || "We believe sharing knowledge and code accelerates innovation for everyone. Every lab we're proud of eventually ships as an open-source repo."}
               </p>
               <div className="flex flex-wrap gap-3.5 mt-7">
                 <a 
-                  href="#repos" 
+                  href={heroContent.ctaLink || "#repos"} 
                   className="inline-flex items-center gap-2 bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] transition-all"
                 >
-                  Browse Repositories →
+                  {heroContent.ctaText || "Browse Repositories →"}
                 </a>
                 <a 
                   href="https://github.com/botmartz" 

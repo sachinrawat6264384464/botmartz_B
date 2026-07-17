@@ -30,5 +30,36 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function PartnershipsPage() {
-  return <PartnershipsClient />;
+  let heroContent = {
+    badge: "Partnerships",
+    title: "Grow the AI<br />Engineering <span class=\"text-[#00C6FF]\">Ecosystem</span> With Us",
+    subtitle: "We partner with frameworks, cloud providers, universities and incubators to bring AI Frontier, our labs, and our community further — together.",
+    ctaText: "Become a Partner →",
+    ctaLink: "#partner-inquiry",
+  };
+  let structuredData = "";
+  let aeoQuestion = "";
+  let aeoAnswer = "";
+
+  try {
+    const docSnap = await adminDb.collection("dynamic_pages").doc("partnerships").get();
+    if (docSnap.exists) {
+      const data = docSnap.data();
+      if (data?.hero) heroContent = { ...heroContent, ...data.hero };
+      if (data?.structuredData) structuredData = data.structuredData;
+      if (data?.aeoQuestion) aeoQuestion = data.aeoQuestion;
+      if (data?.aeoAnswer) aeoAnswer = data.aeoAnswer;
+    }
+  } catch (e) {}
+
+  const sanitizedHero = JSON.parse(JSON.stringify(heroContent));
+
+  return (
+    <PartnershipsClient 
+      heroContent={sanitizedHero}
+      structuredData={structuredData}
+      aeoQuestion={aeoQuestion}
+      aeoAnswer={aeoAnswer}
+    />
+  );
 }
