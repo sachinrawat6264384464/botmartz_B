@@ -32,6 +32,7 @@ export interface CaseStudyItem {
   title: string;
   excerpt: string;
   category: string;
+  slug?: string;
   service?: string;
   industry?: string;
   tags?: string[];
