@@ -484,7 +484,7 @@ export function CaseStudiesListingSection({ initialStudies }: { initialStudies?:
                     {/* Right: Metrics + Action */}
                     <div className="lg:border-l lg:border-[#E2E8F0] lg:pl-8 flex flex-col justify-between h-full pt-5 lg:pt-0 border-t lg:border-t-0 border-[#F1F5F9]">
                       <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4 lg:space-y-5 mb-6">
-                        {study.metrics?.map((metric, i) => (
+                        {study.metrics?.map((metric: any, i: number) => (
                           <div key={i}>
                             <div className="text-[24px] sm:text-[26px] xl:text-[28px] font-bold text-[#0066FF] leading-none mb-1">
                               {metric.value}
