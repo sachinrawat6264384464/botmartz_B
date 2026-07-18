@@ -152,21 +152,21 @@ export default async function Home() {
     pageConfig?.trustBar?.length
       ? pageConfig.trustBar
       : [
-          { name: "EduBridge", iconName: "Layers" },
-          { name: "ShipBank", iconName: "Blocks" },
-          { name: "LexIntell", iconName: "Check" },
-          { name: "DataKraft", iconName: "Code2" },
-          { name: "NextLearn", iconName: "Network" },
+          { name: "Enterprise RAG", iconName: "Layers" },
+          { name: "Autonomous Agents", iconName: "Bot" },
+          { name: "HIPAA Compliant", iconName: "ShieldCheck" },
+          { name: "LLM Observability", iconName: "Code2" },
+          { name: "Production AI", iconName: "Network" },
         ];
 
   const heroStats: { value: string; label: string; iconName: string }[] =
     pageConfig?.stats?.length
       ? pageConfig.stats
       : [
-          { value: "20+", label: "Projects Delivered", iconName: "Briefcase" },
-          { value: "2K+", label: "Engineers Trained", iconName: "Users" },
-          { value: "10+", label: "Open Source Repos", iconName: "Code2" },
-          { value: "5★", label: "Client Satisfaction", iconName: "Star" },
+          { value: "20+", label: "Systems Shipped", iconName: "Briefcase" },
+          { value: "99%+", label: "Production Uptime", iconName: "ShieldCheck" },
+          { value: "Zero", label: "Hallucination Target", iconName: "Check" },
+          { value: "4", label: "Core Industries", iconName: "Layers" },
         ];
 
   const techStackItems: { name: string; iconName: string }[] =

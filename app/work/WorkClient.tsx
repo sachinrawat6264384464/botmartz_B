@@ -43,52 +43,20 @@ export default function WorkClient({
 
   const cases = [
     {
-      industry: 'Education',
-      title: 'AI Course Assistant for EdTech Platform',
-      desc: 'An always-on assistant that answers doubts, grades quizzes, and tracks learner progress.',
-      result: '3x faster doubt resolution',
-      glyph: 'ED',
-      slug: '/work/case-studies/ai-course-assistant-for-edtech-platform'
-    },
-    {
       industry: 'Logistics',
-      title: 'Route Optimization Agent for Fleet Ops',
-      desc: 'An agent system that re-plans delivery routes in real time against traffic and demand.',
-      result: '18% lower fuel cost',
+      title: 'Enterprise Knowledge Search for Global Logistics',
+      desc: 'A secure enterprise RAG system unifying search across 500K+ internal documents, complex SOPs, and manuals.',
+      result: '70% faster information retrieval',
       glyph: 'LG',
-      slug: '/work/case-studies/route-optimization-agent-for-fleet-ops'
+      slug: '/work/case-studies/logistics-rag'
     },
     {
       industry: 'Healthcare',
-      title: 'Clinical Documentation Copilot',
-      desc: 'Ambient documentation assistant that drafts clinical notes from patient conversations.',
-      result: '40% less admin time',
+      title: 'Clinical Documentation Copilot for Hospital Network',
+      desc: 'Ambient documentation assistant that drafts clinical notes and summaries from patient conversations and EMR inputs.',
+      result: '78% reduction in doc time',
       glyph: 'HC',
       slug: '/work/case-studies/clinical-documentation-copilot'
-    },
-    {
-      industry: 'SaaS & Technology',
-      title: 'Enterprise RAG for Support Teams',
-      desc: 'A production RAG platform giving support agents instant, cited answers from internal docs.',
-      result: '55% faster resolution',
-      glyph: 'SA',
-      slug: '/work/case-studies/enterprise-rag-for-support-teams'
-    },
-    {
-      industry: 'Logistics',
-      title: 'Warehouse Vision Inspection',
-      desc: 'Computer-vision quality checks replacing manual inspection on the packing line.',
-      result: '99.2% defect catch rate',
-      glyph: 'LG',
-      slug: '/work/case-studies/warehouse-vision-inspection'
-    },
-    {
-      industry: 'Healthcare',
-      title: 'Patient Intake Voice Agent',
-      desc: 'A voice agent that handles intake, scheduling and insurance verification calls.',
-      result: '2,000+ calls/month automated',
-      glyph: 'HC',
-      slug: '/work/case-studies/patient-intake-voice-agent'
     },
   ];
 
@@ -100,16 +68,24 @@ export default function WorkClient({
   ];
 
   const mergedCases = React.useMemo(() => {
-    const formattedDb = dbCases.map((c) => ({
-      industry: c.category || c.industry || 'Technology',
-      title: c.title,
-      desc: c.excerpt || c.description || '',
-      result: c.outcome || 'Success',
-      glyph: c.clientName ? c.clientName.substring(0, 2).toUpperCase() : 'AI',
-      slug: `/work/case-studies/${c.slug}`
-    }));
+    const formattedDb = dbCases
+      .filter((c: any) => c.slug === 'logistics-rag' || c.slug === 'clinical-documentation-copilot')
+      .map((c) => ({
+        industry: c.category || c.industry || 'Technology',
+        title: c.title,
+        desc: c.excerpt || c.description || '',
+        result: c.outcome || 'Success',
+        glyph: c.clientName ? c.clientName.substring(0, 2).toUpperCase() : 'AI',
+        slug: `/work/case-studies/${c.slug}`
+      }));
 
-    return [...formattedDb, ...cases];
+    const result = [...formattedDb, ...cases];
+    // Keep exact 2 unique works
+    const uniqueMap = new Map();
+    for (const item of result) {
+      if (!uniqueMap.has(item.slug)) uniqueMap.set(item.slug, item);
+    }
+    return Array.from(uniqueMap.values()).slice(0, 2);
   }, [dbCases]);
 
   const visibleCases = filter === 'All Work' ? mergedCases : mergedCases.filter(c => c.industry === filter);
@@ -174,17 +150,11 @@ export default function WorkClient({
                 </Link>
               </div>
 
-              {/* Sub-navigation to explore other Work hubs */}
+              {/* Sub-navigation */}
               <div className="mt-8 pt-6 border-t border-[rgba(255,255,255,0.08)] flex items-center gap-5 flex-wrap text-xs font-semibold text-[#8FA3C4]">
-                <span>Explore More:</span>
+                <span>Explore:</span>
                 <Link href="/work/case-studies" className="text-[#00C6FF] hover:underline flex items-center gap-1">
                   <Layers className="w-3.5 h-3.5" /> All Case Studies
-                </Link>
-                <Link href="/work/labs" className="text-[#00C6FF] hover:underline flex items-center gap-1">
-                  <Terminal className="w-3.5 h-3.5" /> Botmartz Labs
-                </Link>
-                <Link href="/work/open-source" className="text-[#00C6FF] hover:underline flex items-center gap-1">
-                  <Code2 className="w-3.5 h-3.5" /> Open Source
                 </Link>
               </div>
             </div>

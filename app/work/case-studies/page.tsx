@@ -59,41 +59,21 @@ const DEFAULT_INTRO = {
 const DEFAULT_STUDIES = [
   {
     id: "logistics-rag",
-    title: "Enterprise Knowledge Search for Global Logistics",
-    excerpt: "We partnered with a Fortune 500 logistics provider to build a secure enterprise RAG system. The solution unified search across 500K+ internal documents, complex SOPs, and manuals, allowing operations teams to instantly query policy data and compliance standards without hallucinations.",
-    clientName: "Global Logistics Company",
+    title: "Enterprise Knowledge Search for Global Logistics Company",
+    excerpt: "We partnered with a Fortune 500 logistics provider to build a secure enterprise RAG system. The solution unified search across 100M+ internal documents, complex SOPs, and manuals, allowing operations teams to instantly query policy data and compliance standards without hallucinations.",
+    clientName: "Global Logistics Leader",
     category: "Logistics",
     tags: ["RAG", "Hybrid Search", "70%", "3.2x", "LangChain", "Pinecone", "FastAPI"],
     featuredImage: "",
     status: "published"
   },
   {
-    id: "saas-support",
-    title: "Autonomous Support Agent for SaaS Platform",
-    excerpt: "Developed a context-aware AI support agent that integrates directly into the client's Zendesk and internal databases. The agent autonomously resolves Tier 1 and Tier 2 tickets, executes basic account actions via API, and seamlessly escalates complex issues to human agents with full context.",
-    clientName: "SaaS Platform",
-    category: "SaaS",
-    tags: ["LangGraph", "OpenAI", "45%", "35%", "Redis", "FastAPI", "Docker"],
-    featuredImage: "",
-    status: "published"
-  },
-  {
-    id: "legal-doc-intel",
-    title: "Legal Document Intelligence & Extraction Platform",
-    excerpt: "Built a highly specialized RAG pipeline featuring advanced OCR (Optical Character Recognition) to automate contract analysis. The system ingested over 100K dense legal documents, extracting key clauses, liabilities, and risks into structured data formats for immediate review.",
-    clientName: "Legal Tech Company",
-    category: "Legal",
-    tags: ["RAG", "OCR", "90%", "95%", "LlamaIndex", "Qdrant", "PostgreSQL"],
-    featuredImage: "",
-    status: "published"
-  },
-  {
-    id: "logistics-planner",
-    title: "Logistics Planner Agent for Global Supply Chain",
-    excerpt: "Engineered a multi-agent logistics planning engine that predicts bottlenecks and re-routes high-value shipments in real time across global supply networks. Achieved 28% improved on-time delivery and 22% lower logistics costs.",
-    clientName: "Global Supply Chain Leader",
-    category: "Logistics",
-    tags: ["LangGraph", "vLLM", "28%", "22%", "Milvus", "PostgreSQL", "Docker"],
+    id: "clinical-documentation-copilot",
+    title: "Clinical Documentation Copilot for Hospital Network",
+    excerpt: "Developed an ambient documentation assistant that drafts clinical notes from patient dictation and structured EMR inputs with 96% clinical accuracy. Reduced documentation burden by 78% while ensuring full HIPAA compliance.",
+    clientName: "Hospital Network",
+    category: "Healthcare",
+    tags: ["LangGraph", "OpenAI", "78%", "96%", "HIPAA Guardrails", "FastAPI", "Docker"],
     featuredImage: "",
     status: "published"
   }
@@ -156,7 +136,9 @@ export default async function CaseStudiesPage() {
   }
 
   // Ensure plain objects before passing to client components
-  const sanitizedStudies = JSON.parse(JSON.stringify(studies));
+  const allStudies = studies.filter((d: any) => d.slug === 'logistics-rag' || d.slug === 'clinical-documentation-copilot' || d.id === 'logistics-rag' || d.id === 'clinical-documentation-copilot');
+  const finalStudies = allStudies.length > 0 ? allStudies : DEFAULT_STUDIES;
+  const sanitizedStudies = JSON.parse(JSON.stringify(finalStudies));
 
   return (
     <main className="bg-[#050B14] min-h-screen text-white">

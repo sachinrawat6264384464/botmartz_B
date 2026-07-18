@@ -30,36 +30,32 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
       { name: "Logistics", path: "/industries/logistics" },
     ],
   },
-  {
-    name: "Work",
-    path: "/work",
-    dropdown: [
-      { name: "Case Studies", path: "/work/case-studies" },
-      { name: "Labs", path: "/work/labs" },
-      { name: "Open Source", path: "/work/open-source" },
-    ],
-  },
-  { name: "Engineering Insights", path: "/insights" },
-  {
-    name: "Community",
-    path: "/community",
-    dropdown: [
-      { name: "Events", path: "/community/events" },
-      { name: "Discord & Forum", path: "/community" },
-    ],
-  },
-  {
-    name: "Careers",
-    path: "/careers",
-    dropdown: [
-      { name: "Apply Now", path: "/careers#apply" },
-    ],
-  },
+  { name: "Case Studies", path: "/work/case-studies" },
+  { name: "Insights", path: "/insights" },
+  { name: "About", path: "/about" },
 ];
 
 /* ─── COMPONENT ──────────────────────────────────────────────────────────────── */
 export default function Navbar({ navItems }: { navItems?: NavItem[] }) {
-  const NAV_ITEMS = (navItems && navItems.length > 0) ? navItems : DEFAULT_NAV_ITEMS;
+  const rawItems = (navItems && navItems.length > 0) ? navItems : DEFAULT_NAV_ITEMS;
+  const NAV_ITEMS = rawItems
+    .filter(i => !["Careers", "Community", "Partnerships"].includes(i.name) && i.path !== "/careers" && i.path !== "/partnerships")
+    .map(i => {
+      if (i.name === "Work" || i.path === "/work") {
+        return {
+          name: "Case Studies",
+          path: "/work/case-studies",
+          dropdown: undefined
+        };
+      }
+      if (i.dropdown) {
+        return {
+          ...i,
+          dropdown: i.dropdown.filter(d => !["Labs", "Open Source", "Events", "Discord & Forum", "Apply Now"].includes(d.name) && !d.path.includes("/labs") && !d.path.includes("/open-source"))
+        };
+      }
+      return i;
+    });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();

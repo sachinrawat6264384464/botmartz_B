@@ -147,26 +147,24 @@ export default async function AboutPage() {
               <p className="text-[16px] text-[#8A9EB0] mb-6 font-medium">Founder & GenAI Architect</p>
               
               <p className="text-[15px] text-[#8A9EB0] mb-6 leading-relaxed">
-                With over a decade of experience spanning product architecture, deep learning, and cloud infrastructure, Soham founded Botmartz to bridge the gap between experimental AI models and production-ready enterprise systems.
+                With a deep background in product architecture, machine learning, and cloud infrastructure, Soham founded Botmartz to bridge the gap between experimental AI prototypes and production-ready enterprise systems.
               </p>
               <p className="text-[15px] text-[#8A9EB0] mb-8 leading-relaxed">
-                His expertise lies in designing robust RAG architectures, multi-agent frameworks, and ensuring that AI implementations are secure, compliant, and highly performant. Based in Indore, India, Soham has trained over 15,000 professionals and partnered with 20+ enterprise clients globally.
+                His practice focuses strictly on designing robust RAG architectures, multi-agent workflows, and rigorous evaluation pipelines that ensure AI implementations remain grounded, secure, and performant under production workloads.
               </p>
               
-              <div className="grid grid-cols-2 gap-4 mb-8">
-                 <div className="flex items-center gap-3">
-                    <Terminal className="w-5 h-5 text-[#00B8F0]" />
-                    <div>
-                       <div className="text-[18px] font-semibold text-white">11+</div>
-                       <div className="text-[11px] text-[#8A9EB0] font-mono uppercase">Years AI Exp</div>
-                    </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
+                 <div className="bg-[#0A111F] border border-[#1E293B] rounded-lg p-4 flex flex-col justify-center">
+                    <div className="text-[20px] font-bold text-[#00B8F0]">Production</div>
+                    <div className="text-[11px] text-[#8A9EB0] font-mono uppercase mt-1">Systems Shipped</div>
                  </div>
-                 <div className="flex items-center gap-3">
-                    <Globe className="w-5 h-5 text-[#00B8F0]" />
-                    <div>
-                       <div className="text-[18px] font-semibold text-white">20+</div>
-                       <div className="text-[11px] text-[#8A9EB0] font-mono uppercase">Clients</div>
-                    </div>
+                 <div className="bg-[#0A111F] border border-[#1E293B] rounded-lg p-4 flex flex-col justify-center">
+                    <div className="text-[20px] font-bold text-[#00B8F0]">Grounded</div>
+                    <div className="text-[11px] text-[#8A9EB0] font-mono uppercase mt-1">Zero Hallucination</div>
+                 </div>
+                 <div className="bg-[#0A111F] border border-[#1E293B] rounded-lg p-4 flex flex-col justify-center">
+                    <div className="text-[20px] font-bold text-[#00B8F0]">99%+</div>
+                    <div className="text-[11px] text-[#8A9EB0] font-mono uppercase mt-1">Reliability Target</div>
                  </div>
               </div>
               

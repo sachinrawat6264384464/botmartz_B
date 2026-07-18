@@ -53,6 +53,7 @@ const ARTICLES_DATA: InsightArticle[] = [
     date: "May 12, 2024",
     readTime: "12 min read",
     featured: true,
+    slug: "building-a-scalable-enterprise-rag-system-architecture-components-best-practices",
     visualType: "rag-featured"
   },
   {
@@ -63,17 +64,8 @@ const ARTICLES_DATA: InsightArticle[] = [
     author: "Soham Sharma",
     date: "May 8, 2024",
     readTime: "9 min read",
+    slug: "inside-ai-agents-from-reasoning-to-real-world-action",
     visualType: "agents-circle"
-  },
-  {
-    id: 3,
-    title: "Microservices vs Monolith for AI Systems: What We Learned",
-    category: "ARCHITECTURE",
-    description: "A practical comparison based on real production deployments and scalability requirements.",
-    author: "Renee D.",
-    date: "May 5, 2024",
-    readTime: "7 min read",
-    visualType: "microservices-blocks"
   },
   {
     id: 4,
@@ -83,89 +75,22 @@ const ARTICLES_DATA: InsightArticle[] = [
     author: "Harish R.",
     date: "Apr 30, 2024",
     readTime: "8 min read",
+    slug: "observability-for-llm-applications-metrics-that-matter",
     visualType: "mlops-dashboard"
-  },
-  {
-    id: 5,
-    title: "Advanced RAG Techniques: Hybrid Search, Reranking & Query Rewriting",
-    category: "ENTERPRISE RAG",
-    description: "Improve retrieval accuracy and reduce hallucinations with hybrid search, rerankers, and LLM-based query rewriting.",
-    author: "Botmartz Engineering Team",
-    date: "Apr 25, 2024",
-    readTime: "10 min read",
-    visualType: "rag-hybrid"
-  },
-  {
-    id: 6,
-    title: "Build an AI Chatbot with LangGraph and OpenAI (Step-by-Step)",
-    category: "TUTORIALS",
-    description: "A hands-on tutorial to build a production-ready agentic AI using LangGraph, FastAPI and OpenAI.",
-    author: "Rohit K.",
-    date: "Apr 15, 2024",
-    readTime: "15 min read",
-    visualType: "langgraph-flow"
-  },
-  {
-    id: 7,
-    title: "Open Source Projects from Botmartz Labs You Should Know",
-    category: "OPEN SOURCE",
-    description: "Explore our open-source projects that power real-world AI systems and developer productivity.",
-    author: "Botmartz Labs",
-    date: "Apr 10, 2024",
-    readTime: "6 min read",
-    visualType: "open-source-hub"
-  },
-  {
-    id: 8,
-    title: "Prompt Engineering Patterns That Actually Work in Production",
-    category: "AI ENGINEERING",
-    description: "Reusable prompt patterns to write for improved reliability, consistency and performance.",
-    author: "Ritesh K.",
-    date: "Apr 2, 2024",
-    readTime: "7 min read",
-    visualType: "prompt-blueprint"
-  },
-  {
-    id: 9,
-    title: "How We Built a Legal Document Intelligence System for 100K+ Docs",
-    category: "CASE STUDIES",
-    description: "Architecture, challenges, and lessons learned from building an end-to-end legal AI solution.",
-    author: "Team Botmartz",
-    date: "Mar 28, 2024",
-    readTime: "8 min read",
-    visualType: "legal-doc-flow"
   }
 ];
 
 const CATEGORIES_LIST = [
-  { name: "All Articles", count: 148, isAll: true },
-  { name: "AI Engineering", count: 24, icon: Cpu },
-  { name: "Enterprise RAG", count: 18, icon: Database },
-  { name: "AI Agents", count: 16, icon: Bot },
-  { name: "MLOps", count: 14, icon: BarChart3 },
-  { name: "Architecture", count: 12, icon: Layers },
-  { name: "Tutorials", count: 20, icon: BookOpen },
-  { name: "Open Source", count: 15, icon: Code2 },
-  { name: "Case Studies", count: 10, icon: FileText },
-  { name: "Advanced Models", count: 10, icon: Network },
-  { name: "Models", count: 10, icon: Layers },
-  { name: "LLMs", count: 10, icon: Bot },
-  { name: "Optimization", count: 10, icon: SlidersHorizontal },
-  { name: "PyTorch", count: 10, icon: Cpu },
-  { name: "Research", count: 10, icon: Search },
-  { name: "Research Explained", count: 10, icon: BookOpen },
-  { name: "Spiking Neural Networks", count: 10, icon: Cpu },
-  { name: "TensorFlow", count: 10, icon: Terminal },
-  { name: "LangChain", count: 10, icon: GitBranch },
-  { name: "Notebooks", count: 10, icon: FileText }
+  { name: "All Articles", count: 3, isAll: true },
+  { name: "Enterprise RAG", count: 1, icon: Database },
+  { name: "AI Agents", count: 1, icon: Bot },
+  { name: "MLOps", count: 1, icon: BarChart3 },
 ];
 
 const POPULAR_ARTICLES = [
   { id: 1, title: "Building a Scalable Enterprise RAG System", date: "May 12, 2024", visual: "rag" },
   { id: 2, title: "Inside AI Agents: From Reasoning to Real-World Action", date: "May 8, 2024", visual: "agents" },
-  { id: 3, title: "Observability for LLM Applications", date: "Apr 30, 2024", visual: "mlops" },
-  { id: 4, title: "Advanced RAG Techniques for Better Accuracy", date: "Apr 25, 2024", visual: "hybrid" },
-  { id: 5, title: "Prompt Engineering Patterns That Work", date: "Apr 2, 2024", visual: "prompt" }
+  { id: 4, title: "Observability for LLM Applications: Metrics That Matter", date: "Apr 30, 2024", visual: "mlops" },
 ];
 
 const generateSlugRaw = (title: string) => {
@@ -183,20 +108,34 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
   const [mobileFilterOpen, setMobileFilterOpen] = useState<boolean>(false);
 
   const mergedArticles = useMemo(() => {
-    const formattedDb = dbArticles.map((art) => ({
-      id: art.id,
-      title: art.title,
-      category: art.category?.toUpperCase() || "AI ENGINEERING",
-      description: art.excerpt || art.description || "",
-      author: art.author || "Botmartz Team",
-      date: art.createdAt ? new Date(art.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent",
-      readTime: `${art.readTime || 5} min read`,
-      slug: art.slug || generateSlugRaw(art.title),
-      featured: !!art.featured,
-      visualType: (art.visualType || "mlops-dashboard") as any
-    }));
+    const keptSlugs = new Set([
+      "building-a-scalable-enterprise-rag-system-architecture-components-best-practices",
+      "inside-ai-agents-from-reasoning-to-real-world-action",
+      "observability-for-llm-applications-metrics-that-matter"
+    ]);
 
-    return [...formattedDb, ...ARTICLES_DATA.map(art => ({ ...art, slug: art.slug || generateSlugRaw(art.title) }))];
+    const formattedDb = dbArticles
+      .filter((art: any) => {
+        const s = art.slug || generateSlugRaw(art.title);
+        return keptSlugs.has(s);
+      })
+      .map((art) => ({
+        id: art.id,
+        title: art.title,
+        category: art.category?.toUpperCase() || "AI ENGINEERING",
+        description: art.excerpt || art.description || "",
+        author: art.author || "Botmartz Team",
+        date: art.createdAt ? new Date(art.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent",
+        readTime: `${art.readTime || 8} min read`,
+        slug: art.slug || generateSlugRaw(art.title),
+        featured: !!art.featured,
+        visualType: (art.visualType || "mlops-dashboard") as any
+      }));
+
+    const dbSlugs = new Set(formattedDb.map(a => a.slug));
+    const staticKept = ARTICLES_DATA.filter(a => !dbSlugs.has(a.slug || generateSlugRaw(a.title)));
+
+    return [...formattedDb, ...staticKept];
   }, [dbArticles]);
 
   // Filter logic

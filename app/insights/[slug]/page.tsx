@@ -9,6 +9,12 @@ interface Props {
   }>;
 }
 
+const KEPT_SLUGS = new Set([
+  "building-a-scalable-enterprise-rag-system-architecture-components-best-practices",
+  "inside-ai-agents-from-reasoning-to-real-world-action",
+  "observability-for-llm-applications-metrics-that-matter"
+]);
+
 const STATIC_POSTS: Record<string, any> = {
   "building-a-scalable-enterprise-rag-system-architecture-components-best-practices": {
     title: "Building a Scalable Enterprise RAG System: Architecture, Components & Best Practices",
@@ -66,25 +72,6 @@ AI Agents represent the next frontier of LLM applications, transitioning from pa
 4. **Agentic Loops**: Self-correction and reflection mechanisms.
     `
   },
-  "microservices-vs-monolith-for-ai-systems-what-we-learned": {
-    title: "Microservices vs Monolith for AI Systems: What We Learned",
-    category: "ARCHITECTURE",
-    excerpt: "A practical comparison based on real production deployments and scalability requirements.",
-    author: "Renee D.",
-    createdAt: "2024-05-05T00:00:00.000Z",
-    updatedAt: "2024-05-05T00:00:00.000Z",
-    readTime: 7,
-    content: `
-# Microservices vs Monolith for AI Systems: What We Learned
-
-When building complex AI platforms, one of the most critical decisions is choosing the right system architecture. Over the past two years, we deployed both monolithic and microservices-based AI systems. Here is a breakdown of what we learned.
-
-## Performance and Resource Allocation
-
-- **Monoliths** are excellent for quick startup, simple deployments, and low-latency internal communication.
-- **Microservices** shine when different components have vastly different compute requirements (e.g., CPU-bound ingestion vs GPU-bound model inference).
-    `
-  },
   "observability-for-llm-applications-metrics-that-matter": {
     title: "Observability for LLM Applications: Metrics That Matter",
     category: "MLOPS",
@@ -105,107 +92,16 @@ Deploying LLMs to production is only the beginning. Keeping them running reliabl
 3. **Accuracy / Hallucination Rate**: Groundedness and relevance scores using LLM-as-a-judge.
 4. **Error Rates**: Rate-limit exceptions, timeouts, and guardrail blocks.
     `
-  },
-  "advanced-rag-techniques-hybrid-search-reranking-query-rewriting": {
-    title: "Advanced RAG Techniques: Hybrid Search, Reranking & Query Rewriting",
-    category: "ENTERPRISE RAG",
-    excerpt: "Improve retrieval accuracy and reduce hallucinations with hybrid search, rerankers, and LLM-based query rewriting.",
-    author: "Botmartz Engineering Team",
-    createdAt: "2024-04-25T00:00:00.000Z",
-    updatedAt: "2024-04-25T00:00:00.000Z",
-    readTime: 10,
-    content: `
-# Advanced RAG Techniques: Hybrid Search, Reranking & Query Rewriting
-
-Basic RAG systems often suffer from poor retrieval accuracy, fetching irrelevant context that leads to model hallucinations. To build high-quality production RAG, advanced retrieval techniques are necessary.
-
-## The Advanced Retrieval Stack
-
-1. **Query Rewriting**: Standardizing user queries before search to align with index terminology.
-2. **Hybrid Retrieval**: Joining dense vector search and sparse keyword search (BM25).
-3. **Reranking**: Sorting retrieved chunks using high-performance cross-encoders to bubble up the most relevant documents.
-    `
-  },
-  "build-an-ai-chatbot-with-langgraph-and-openai-step-by-step": {
-    title: "Build an AI Chatbot with LangGraph and OpenAI (Step-by-Step)",
-    category: "TUTORIALS",
-    excerpt: "A hands-on tutorial to build a production-ready agentic AI using LangGraph, FastAPI and OpenAI.",
-    author: "Rohit K.",
-    createdAt: "2024-04-15T00:00:00.000Z",
-    updatedAt: "2024-04-15T00:00:00.000Z",
-    readTime: 15,
-    content: `
-# Build an AI Chatbot with LangGraph and OpenAI (Step-by-Step)
-
-In this hands-on tutorial, we go through the step-by-step process of building a stateful, multi-agent chatbot using LangGraph, FastAPI, and OpenAI.
-
-## Why LangGraph?
-
-Traditional DAG frameworks struggle with loops and recursive flows. LangGraph addresses this by introducing a graph-based state machine, enabling complex reasoning loops and agent collaboration.
-    `
-  },
-  "open-source-projects-from-botmartz-labs-you-should-know": {
-    title: "Open Source Projects from Botmartz Labs You Should Know",
-    category: "OPEN SOURCE",
-    excerpt: "Explore our open-source projects that power real-world AI systems and developer productivity.",
-    author: "Botmartz Labs",
-    createdAt: "2024-04-10T00:00:00.000Z",
-    updatedAt: "2024-04-10T00:00:00.000Z",
-    readTime: 6,
-    content: `
-# Open Source Projects from Botmartz Labs You Should Know
-
-At Botmartz, we believe in giving back to the developer community. Our Labs division regularly open-sources core packages, datasets, and boilerplate templates.
-
-## Featured Repositories
-
-1. **RAG-Evaluation-Toolkit**: Tools to automate groundedness and relevance testing.
-2. **Agent-Orchestration-Boilerplate**: A fast, production-ready starting point for LangGraph agents.
-3. **Vector-Benchmarking-Suite**: Evaluate vector database performance across diverse datasets.
-    `
-  },
-  "prompt-engineering-patterns-that-actually-work-in-production": {
-    title: "Prompt Engineering Patterns That Actually Work in Production",
-    category: "AI ENGINEERING",
-    excerpt: "Reusable prompt patterns to write for improved reliability, consistency and performance.",
-    author: "Ritesh K.",
-    createdAt: "2024-04-02T00:00:00.000Z",
-    updatedAt: "2024-04-02T00:00:00.000Z",
-    readTime: 7,
-    content: `
-# Prompt Engineering Patterns That Actually Work in Production
-
-Prompt engineering is more than just writing instructions. To achieve consistent, structured output from LLMs in enterprise systems, we rely on established prompt design patterns.
-
-## Reusable Production Patterns
-
-- **Structured Output Constraints**: Enforcing JSON schemas directly in prompts.
-- **Few-Shot Delimiters**: Using specific tags to separate examples from inputs.
-- **Role-Based Framing**: Setting context parameters to limit response scope.
-    `
-  },
-  "how-we-built-a-legal-document-intelligence-system-for-100k-docs": {
-    title: "How We Built a Legal Document Intelligence System for 100K+ Docs",
-    category: "CASE STUDIES",
-    excerpt: "Architecture, challenges, and lessons learned from building an end-to-end legal AI solution.",
-    author: "Team Botmartz",
-    createdAt: "2024-03-28T00:00:00.000Z",
-    updatedAt: "2024-03-28T00:00:00.000Z",
-    readTime: 8,
-    content: `
-# How We Built a Legal Document Intelligence System for 100K+ Docs
-
-Processing large volumes of legal documents requires absolute precision. In this case study, we walk through the design of our Document Intelligence system, built to analyze over 100,000 corporate agreements.
-
-## High-Precision OCR & Processing
-
-We combined hybrid OCR strategies with structured extraction models to parse scans and contract clauses. Security and compliance were handled by isolating LLM contexts within dedicated enterprise tenants.
-    `
   }
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  if (!KEPT_SLUGS.has(slug)) {
+    return {
+      title: "Insight Not Found | Botmartz",
+    };
+  }
   let post: any = null;
   
   try {
@@ -246,6 +142,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function InsightsDetailPage({ params }: Props) {
   const { slug } = await params;
+  if (!KEPT_SLUGS.has(slug)) {
+    notFound();
+  }
   let post: any = null;
   let postId: string = "";
   
@@ -273,12 +172,11 @@ export default async function InsightsDetailPage({ params }: Props) {
     }
   }
   
-  // Fetch related articles (limit 3, other published blog posts in same category or general)
+  // Fetch related articles (only within kept engineering blogs)
   let related: any[] = [];
   try {
     const relatedSnapshot = await adminDb.collection("blog-posts")
       .where("status", "==", "published")
-      .limit(4)
       .get();
       
     related = relatedSnapshot.docs
@@ -288,15 +186,27 @@ export default async function InsightsDetailPage({ params }: Props) {
           id: doc.id,
           title: data.title || "",
           slug: data.slug || "",
-          category: data.category || "Technology",
-          author: data.author || "AI Team",
-          readTime: data.readTime || 5
+          category: data.category || "AI Engineering",
+          author: data.author || "Botmartz Team",
+          readTime: data.readTime || 8
         };
       })
-      .filter(p => p.slug !== slug)
-      .slice(0, 3);
+      .filter(p => KEPT_SLUGS.has(p.slug) && p.slug !== slug);
   } catch (err) {
     console.error("Error fetching related posts:", err);
+  }
+
+  if (related.length === 0) {
+    related = Object.entries(STATIC_POSTS)
+      .filter(([key]) => key !== slug)
+      .map(([key, val]) => ({
+        id: `static-${key}`,
+        title: val.title,
+        slug: key,
+        category: val.category,
+        author: val.author,
+        readTime: val.readTime
+      }));
   }
 
   const formatTimestamp = (ts: any) => {

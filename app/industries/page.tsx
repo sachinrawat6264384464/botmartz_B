@@ -173,7 +173,7 @@ export default async function IndustriesPage() {
                     </li>
                   ))}
                 </ul>
-                <Link href="/contact" className="font-mono text-[12.5px] text-[#00B8F0] flex items-center gap-2 hover:gap-3 transition-all hover:underline">Learn more <ArrowRight className="w-3 h-3"/></Link>
+                <Link href="/industries/education" className="font-mono text-[12.5px] text-[#00B8F0] flex items-center gap-2 hover:gap-3 transition-all hover:underline">Learn more <ArrowRight className="w-3 h-3"/></Link>
              </div>
           </div>
           
@@ -198,7 +198,7 @@ export default async function IndustriesPage() {
                     </li>
                   ))}
                 </ul>
-                <Link href="/contact" className="font-mono text-[12.5px] text-[#00B8F0] flex items-center gap-2 hover:gap-3 transition-all hover:underline">Learn more <ArrowRight className="w-3 h-3"/></Link>
+                <Link href="/industries/logistics" className="font-mono text-[12.5px] text-[#00B8F0] flex items-center gap-2 hover:gap-3 transition-all hover:underline">Learn more <ArrowRight className="w-3 h-3"/></Link>
              </div>
           </div>
           
@@ -223,7 +223,7 @@ export default async function IndustriesPage() {
                     </li>
                   ))}
                 </ul>
-                <Link href="/contact" className="font-mono text-[12.5px] text-[#00B8F0] flex items-center gap-2 hover:gap-3 transition-all hover:underline">Learn more <ArrowRight className="w-3 h-3"/></Link>
+                <Link href="/industries/healthcare" className="font-mono text-[12.5px] text-[#00B8F0] flex items-center gap-2 hover:gap-3 transition-all hover:underline">Learn more <ArrowRight className="w-3 h-3"/></Link>
              </div>
           </div>
         </div>
@@ -291,11 +291,11 @@ export default async function IndustriesPage() {
               <div className="font-mono text-[11px] text-[#FF3366] uppercase tracking-[0.1em] text-center mb-8">Our Impact Across Industries</div>
               <div className="flex flex-wrap justify-between items-center gap-8">
                  {[
-                   { i: Building2, s: '20+', l: 'Industries Served' },
-                   { i: Briefcase, s: '100+', l: 'Enterprise Clients' },
-                   { i: FileText, s: '50M+', l: 'Documents Processed' },
-                   { i: ShieldCheck, s: '95%', l: 'Client Satisfaction' },
-                   { i: TrendingUp, s: '40-60%', l: 'Operational Efficiency Gain' },
+                   { i: Building2, s: '20+', l: 'Systems Shipped' },
+                   { i: Briefcase, s: '4', l: 'Core Industries' },
+                   { i: FileText, s: '99%+', l: 'Production Uptime' },
+                   { i: ShieldCheck, s: '100%', l: 'Grounded Output Goal' },
+                   { i: TrendingUp, s: '40-70%', l: 'Efficiency Gain' },
                  ].map((stat, i) => (
                    <div key={i} className="flex flex-col items-center text-center">
                      <stat.i className="w-6 h-6 text-[#00B8F0]/50 mb-3" />

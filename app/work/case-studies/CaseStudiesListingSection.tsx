@@ -58,49 +58,19 @@ const RICH_CASE_STUDIES: CaseStudyItem[] = [
     visualType: "dashboard"
   },
   {
-    id: "saas-support",
-    title: "AI Support Agent for SaaS Customer Support",
-    excerpt: "Developed an autonomous AI support agent that resolves customer queries end-to-end via context, tools, and human escalation.",
+    id: "clinical-documentation-copilot",
+    title: "Clinical Documentation Copilot for Hospital Network",
+    excerpt: "Developed an ambient documentation assistant that drafts clinical notes from patient dictation and EMR inputs with 96% clinical accuracy.",
     category: "AI AGENTS",
     service: "AI Agents",
-    industry: "SaaS & Technology",
-    technologies: ["LangGraph", "OpenAI", "Redis", "FastAPI", "Docker"],
+    industry: "Healthcare",
+    technologies: ["LangGraph", "OpenAI", "HIPAA Guardrails", "FastAPI", "Docker"],
     metrics: [
-      { value: "45%", label: "Queries resolved automatically" },
-      { value: "35%", label: "Reduced first response time" },
-      { value: "90%", label: "Customer satisfaction score" }
+      { value: "78%", label: "Reduction in doc time" },
+      { value: "96%", label: "Clinical accuracy rate" },
+      { value: "4 min", label: "Average review time" }
     ],
     visualType: "workflow"
-  },
-  {
-    id: "legal-doc-intel",
-    title: "Legal Document Intelligence Platform",
-    excerpt: "Automated contract analysis and Q&A across 100K+ legal documents with 95%+ accuracy using advanced RAG and OCR.",
-    category: "ENTERPRISE RAG",
-    service: "Enterprise RAG",
-    industry: "Legal",
-    technologies: ["LlamaIndex", "GitHub", "OCR", "ReactJS", "AWS"],
-    metrics: [
-      { value: "90%", label: "Time saved in analysis" },
-      { value: "95%", label: "Extraction accuracy" },
-      { value: "80%", label: "Fewer contract reviews" }
-    ],
-    visualType: "document"
-  },
-  {
-    id: "logistics-planner",
-    title: "Logistics Planner Agent for Global Supply Chain",
-    excerpt: "AI agent that plans optimal routes, books shipments, and monitors disruptions in real-time.",
-    category: "AI AGENTS",
-    service: "AI Agents",
-    industry: "Logistics",
-    technologies: ["LangChain", "Google ADK", "PostgreSQL", "Maps API"],
-    metrics: [
-      { value: "28%", label: "Improved on-time delivery" },
-      { value: "22%", label: "Lower logistics cost" },
-      { value: "3.5x", label: "Faster planning cycle" }
-    ],
-    visualType: "map"
   }
 ];
 
@@ -112,26 +82,33 @@ export function CaseStudiesListingSection({ initialStudies }: { initialStudies?:
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false);
 
   const combinedStudies = useMemo(() => {
-    const dynamic = (initialStudies || []).map(study => ({
-      id: study.id,
-      title: study.title,
-      slug: study.slug || study.id,
-      excerpt: study.excerpt || "",
-      category: (study.category || "AI Implementations").toUpperCase(),
-      service: study.category || "AI Implementations",
-      industry: study.industry || "Technology",
-      technologies: study.tags || study.technologies || [],
-      metrics: study.metrics || [
-        { value: "70%", label: "Faster information retrieval" },
-        { value: "60%", label: "Reduction in support tickets" }
-      ],
-      visualType: study.visualType || "dashboard"
-    }));
+    const dynamic = (initialStudies || [])
+      .filter((s: any) => s.slug === 'logistics-rag' || s.slug === 'clinical-documentation-copilot' || s.id === 'logistics-rag' || s.id === 'clinical-documentation-copilot')
+      .map(study => ({
+        id: study.id || study.slug,
+        title: study.title,
+        slug: study.slug || study.id,
+        excerpt: study.excerpt || "",
+        category: (study.category || "AI Implementations").toUpperCase(),
+        service: study.category || "AI Implementations",
+        industry: study.industry || "Technology",
+        technologies: study.tags || study.technologies || [],
+        metrics: study.metrics || [
+          { value: "70%", label: "Faster information retrieval" },
+          { value: "60%", label: "Reduction in support tickets" }
+        ],
+        visualType: study.visualType || "dashboard"
+      }));
 
-    const dynamicSlugs = new Set(dynamic.map(d => d.slug));
-    const filteredStatic = RICH_CASE_STUDIES.filter(s => !dynamicSlugs.has(s.id));
+    const dynamicIds = new Set(dynamic.map(d => d.id));
+    const filteredStatic = RICH_CASE_STUDIES.filter(s => !dynamicIds.has(s.id));
 
-    return [...dynamic, ...filteredStatic];
+    const all = [...dynamic, ...filteredStatic];
+    const uniqueMap = new Map();
+    for (const item of all) {
+      if (!uniqueMap.has(item.id)) uniqueMap.set(item.id, item);
+    }
+    return Array.from(uniqueMap.values()).slice(0, 2);
   }, [initialStudies]);
 
   const filteredStudies = useMemo(() => {

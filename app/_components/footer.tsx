@@ -39,35 +39,29 @@ const FOOTER_COLS = [
   {
     heading: "Industries",
     links: [
+      { label: "Healthcare", href: "/industries/healthcare" },
       { label: "Education", href: "/industries/education" },
       { label: "Logistics", href: "/industries/logistics" },
-      { label: "Healthcare", href: "/industries/healthcare" },
     ],
   },
   {
     heading: "Work",
     links: [
       { label: "Case Studies", href: "/work/case-studies" },
-      { label: "Labs", href: "/work/labs" },
-      { label: "Open Source", href: "/work/open-source" },
     ],
   },
   {
     heading: "Company",
     links: [
       { label: "About Us", href: "/about" },
-      { label: "Careers", href: "/careers" },
       { label: "Contact Us", href: "/contact" },
-      { label: "Partnerships", href: "/partnerships" },
     ],
   },
   {
     heading: "Resources",
     links: [
       { label: "Engineering Insights", href: "/insights" },
-      { label: "Community", href: "/community" },
       { label: "Academy ↗", href: "https://academy.botmartz.com" },
-      { label: "Events", href: "/community/events" },
     ],
   },
 ];
