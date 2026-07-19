@@ -225,20 +225,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   
   if (!study) {
     return {
-      title: "Case Study | Botmartz",
+      title: "Case Study",
       description: "Explore our AI implementations and case studies.",
     };
   }
   
   return {
-    title: `${study.title} | Botmartz AI Case Study`,
+    title: `${study.title} | Case Studies`,
     description: study.excerpt || `Read how Botmartz delivered results for ${study.clientName || 'our client'}.`,
     openGraph: {
-      title: `${study.title} | Botmartz AI Case Study`,
+      title: `${study.title} | Botmartz Case Study`,
       description: study.excerpt || `Read how Botmartz delivered results for ${study.clientName || 'our client'}.`,
-      url: `https://botmartz.com/work/case-studies/${slug}`,
+      url: `https://www.botmartz.com/work/case-studies/${slug}`,
       type: "article",
-    }
+    },
+    alternates: {
+      canonical: `https://www.botmartz.com/work/case-studies/${slug}`,
+    },
   };
 }
 

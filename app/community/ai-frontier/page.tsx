@@ -4,7 +4,7 @@ import AIFrontierEventBody from '../events/ai-frontier-2026/AIFrontierEventBody'
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'AI Frontier 2026 | Botmartz AI',
+    title: 'AI Frontier 2026',
     description: 'Join us at AI Frontier 2026, the premier conference for AI engineering, RAG systems, and autonomous agents.',
   };
   
@@ -21,10 +21,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     ...meta,
     openGraph: {
-      title: meta.title,
+      title: `${meta.title} | Botmartz`,
       description: meta.description,
-      url: 'https://botmartz.com/community/ai-frontier',
+      url: 'https://www.botmartz.com/community/ai-frontier',
       type: 'website',
+    },
+    alternates: {
+      canonical: 'https://www.botmartz.com/community/ai-frontier',
     },
   };
 }

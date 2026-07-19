@@ -1,13 +1,18 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Careers | Join Botmartz AI Engineering Team',
+  title: {
+    absolute: 'Careers | Join Botmartz AI Engineering Team | Botmartz',
+  },
   description: 'Explore career opportunities at Botmartz AI. Build production-grade AI agents, enterprise RAG systems, and open-source infrastructure.',
   openGraph: {
-    title: 'Careers | Join Botmartz AI Engineering Team',
+    title: 'Careers | Join Botmartz AI Engineering Team | Botmartz',
     description: 'Explore career opportunities at Botmartz AI. Build production-grade AI agents, enterprise RAG systems, and open-source infrastructure.',
-    url: 'https://botmartz.com/careers',
+    url: 'https://www.botmartz.com/careers',
     type: 'website',
+  },
+  alternates: {
+    canonical: 'https://www.botmartz.com/careers',
   },
 };
 

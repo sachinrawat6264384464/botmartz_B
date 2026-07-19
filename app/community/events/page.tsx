@@ -17,10 +17,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     ...meta,
     openGraph: {
-      title: meta.title,
+      title: `${meta.title} | Botmartz`,
       description: meta.description,
-      url: 'https://botmartz.com/community/events',
+      url: 'https://www.botmartz.com/community/events',
       type: 'website',
+    },
+    alternates: {
+      canonical: 'https://www.botmartz.com/community/events',
     },
   };
 }

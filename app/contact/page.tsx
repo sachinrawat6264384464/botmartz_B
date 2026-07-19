@@ -4,7 +4,7 @@ import ContactClient from './ContactClient';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'Contact Us | Botmartz AI Solutions',
+    title: 'Contact Us',
     description: 'Book a discovery call with the Botmartz AI engineering team. Let\'s discuss how custom Generative AI and RAG solutions can impact your business.',
     keywords: ['Contact Botmartz', 'AI Consulting', 'Hire AI Engineers', 'Enterprise AI Solutions'],
   };
@@ -22,10 +22,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     ...meta,
     openGraph: {
-      title: meta.title,
+      title: `${meta.title} | Botmartz`,
       description: meta.description,
-      url: 'https://botmartz.com/contact',
+      url: 'https://www.botmartz.com/contact',
       type: 'website',
+    },
+    alternates: {
+      canonical: 'https://www.botmartz.com/contact',
     },
   };
 }

@@ -5,8 +5,8 @@ import { adminDb } from '@/lib/firebase-admin';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'Industries | Botmartz AI',
-    description: 'We partner with organizations across key industries to build production AI systems that solve real-world problems, unlock knowledge, and drive measurable impact.',
+    title: 'Industries',
+    description: 'We partner with key industry leaders to build production AI and RAG systems that solve complex problems, unlock knowledge, and drive measurable impact.',
     keywords: ['AI in Education', 'AI in Logistics', 'AI in Healthcare', 'Industry AI Solutions'],
   };
   
@@ -23,10 +23,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     ...meta,
     openGraph: {
-      title: meta.title,
+      title: `${meta.title} | Botmartz`,
       description: meta.description,
-      url: 'https://botmartz.com/industries',
+      url: 'https://www.botmartz.com/industries',
       type: 'website',
+    },
+    alternates: {
+      canonical: 'https://www.botmartz.com/industries',
     },
   };
 }
@@ -77,8 +80,8 @@ export default async function IndustriesPage() {
           
           <div className="flex-1 w-full lg:block">
             {/* Industry Node Graphic */}
-            <div className="w-full relative max-w-[600px] mx-auto ml-auto">
-               <div className="flex justify-between items-center h-[300px] relative">
+            <div className="w-full relative max-w-[600px] mx-auto ml-auto min-h-[300px] aspect-[2/1]">
+               <div className="flex justify-between items-center h-[300px] relative w-full">
                  
                  {/* Left Integrations */}
                  <div className="flex flex-col gap-6 justify-center z-10">
@@ -106,7 +109,7 @@ export default async function IndustriesPage() {
                  </div>
 
                  {/* Connecting lines */}
-                 <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
+                 <svg className="absolute inset-0 w-full h-full" width="600" height="300" viewBox="0 0 600 300" style={{ zIndex: 0 }}>
                     <path d="M 112 50 C 200 50, 200 150, 300 150" stroke="rgba(0,184,240,0.3)" strokeWidth="2" fill="none" className="animate-pulse" />
                     <path d="M 112 150 C 200 150, 200 150, 300 150" stroke="rgba(0,184,240,0.3)" strokeWidth="2" fill="none" className="animate-pulse" />
                     <path d="M 112 250 C 200 250, 200 150, 300 150" stroke="rgba(0,184,240,0.3)" strokeWidth="2" fill="none" className="animate-pulse" />
@@ -278,7 +281,7 @@ export default async function IndustriesPage() {
                        <feat.i className="w-5 h-5 text-[#00B8F0]" />
                      </div>
                      <div>
-                       <h4 className="font-semibold text-[15px] mb-1.5 text-white">{feat.t}</h4>
+                       <h3 className="font-semibold text-[15px] mb-1.5 text-white">{feat.t}</h3>
                        <p className="text-[13px] text-[#8A9EB0]">{feat.d}</p>
                      </div>
                    </div>
@@ -322,7 +325,7 @@ export default async function IndustriesPage() {
             <div className="border border-[#1E293B] rounded-sm overflow-hidden group cursor-pointer hover:border-[#00B8F0] transition-colors flex flex-col bg-[#0A111F]">
               <div className="p-8 flex-1 flex flex-col">
                 <div className="font-mono text-[10px] text-[#00B8F0] uppercase bg-[#00B8F0]/10 inline-block px-2 py-1 rounded mb-4 self-start">Education</div>
-                <h4 className="text-[20px] font-semibold mb-3 text-white">AI Course Assistant for Online Learning Platform</h4>
+                <h3 className="text-[20px] font-semibold mb-3 text-white">AI Course Assistant for Online Learning Platform</h3>
                 <p className="text-[14px] text-[#8A9EB0] mb-6">Built an AI assistant that answered student queries, reduced support tickets by 60%, and improved student engagement.</p>
                 <div className="mt-auto font-mono text-[12px] text-[#00B8F0] flex items-center gap-2 group-hover:gap-3 transition-all">Read Case Study <ArrowRight className="w-3 h-3" /></div>
               </div>
@@ -331,7 +334,7 @@ export default async function IndustriesPage() {
             <div className="border border-[#1E293B] rounded-sm overflow-hidden group cursor-pointer hover:border-[#00B8F0] transition-colors flex flex-col bg-[#0A111F]">
               <div className="p-8 flex-1 flex flex-col">
                 <div className="font-mono text-[10px] text-[#00B8F0] uppercase bg-[#00B8F0]/10 inline-block px-2 py-1 rounded mb-4 self-start">Logistics</div>
-                <h4 className="text-[20px] font-semibold mb-3 text-white">Logistics Planner Agent for Global Supply Chain</h4>
+                <h3 className="text-[20px] font-semibold mb-3 text-white">Logistics Planner Agent for Global Supply Chain</h3>
                 <p className="text-[14px] text-[#8A9EB0] mb-6">Implemented an AI agent that optimized routes and scheduling, improving on-time delivery rate by 28%.</p>
                 <div className="mt-auto font-mono text-[12px] text-[#00B8F0] flex items-center gap-2 group-hover:gap-3 transition-all">Read Case Study <ArrowRight className="w-3 h-3" /></div>
               </div>
@@ -340,7 +343,7 @@ export default async function IndustriesPage() {
             <div className="border border-[#1E293B] rounded-sm overflow-hidden group cursor-pointer hover:border-[#00B8F0] transition-colors flex flex-col bg-[#0A111F]">
               <div className="p-8 flex-1 flex flex-col">
                 <div className="font-mono text-[10px] text-[#00B8F0] uppercase bg-[#00B8F0]/10 inline-block px-2 py-1 rounded mb-4 self-start">Legal</div>
-                <h4 className="text-[20px] font-semibold mb-3 text-white">Contract Intelligence for Legal Tech Company</h4>
+                <h3 className="text-[20px] font-semibold mb-3 text-white">Contract Intelligence for Legal Tech Company</h3>
                 <p className="text-[14px] text-[#8A9EB0] mb-6">Automated contract analysis and risk extraction, reducing manual review time by 70% and improving accuracy.</p>
                 <div className="mt-auto font-mono text-[12px] text-[#00B8F0] flex items-center gap-2 group-hover:gap-3 transition-all">Read Case Study <ArrowRight className="w-3 h-3" /></div>
               </div>
@@ -366,7 +369,7 @@ export default async function IndustriesPage() {
                   <Calendar className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[15px] mb-1 text-white">Free Discovery Call</h4>
+                  <h3 className="font-semibold text-[15px] mb-1 text-white">Free Discovery Call</h3>
                   <p className="text-[13px] text-[#8A9EB0]">60-minute strategy session with our AI experts.</p>
                 </div>
               </div>
@@ -375,7 +378,7 @@ export default async function IndustriesPage() {
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[15px] mb-1 text-white">Custom Solution Roadmap</h4>
+                  <h3 className="font-semibold text-[15px] mb-1 text-white">Custom Solution Roadmap</h3>
                   <p className="text-[13px] text-[#8A9EB0]">Tailored plan & architecture for your use case.</p>
                 </div>
               </div>
@@ -384,7 +387,7 @@ export default async function IndustriesPage() {
                   <Briefcase className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[15px] mb-1 text-white">Proven Frameworks</h4>
+                  <h3 className="font-semibold text-[15px] mb-1 text-white">Proven Frameworks</h3>
                   <p className="text-[13px] text-[#8A9EB0]">Built on best practices and real-world experience.</p>
                 </div>
               </div>

@@ -7,7 +7,7 @@ import { CaseStudiesListingSection } from "./CaseStudiesListingSection";
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'AI Case Studies | Botmartz AI',
+    title: 'AI Case Studies',
     description: 'Discover how we partner with leading organizations to deploy production-ready AI agents and RAG systems.',
   };
   
@@ -24,10 +24,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     ...meta,
     openGraph: {
-      title: meta.title,
+      title: `${meta.title} | Botmartz`,
       description: meta.description,
-      url: 'https://botmartz.com/work/case-studies',
+      url: 'https://www.botmartz.com/work/case-studies',
       type: 'website',
+    },
+    alternates: {
+      canonical: 'https://www.botmartz.com/work/case-studies',
     },
   };
 }

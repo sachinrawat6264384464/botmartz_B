@@ -6,14 +6,22 @@ import { adminDb } from '@/lib/firebase-admin';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'AI Solutions for Healthcare & MedTech | Botmartz',
-    description: 'Botmartz engineers production AI systems for healthcare — from clinical documentation automation and diagnostic support to patient engagement AI and medical RAG systems.',
+    title: 'AI Solutions for Healthcare & MedTech',
+    description: 'Botmartz engineers secure AI systems for healthcare, including clinical documentation automation, diagnostic support, and medical RAG pipelines.',
   };
   try {
     const docSnap = await adminDb.collection('dynamic_pages').doc('healthcare').get();
-    if (docSnap.exists) { const data = docSnap.data(); if (data?.metadata) meta = { ...meta, ...data.metadata }; }
+    if (docSnap.exists) { 
+      const data = docSnap.data(); 
+      if (data?.metadata) {
+        meta = { ...meta, ...data.metadata }; 
+        if (meta.description && meta.description.length > 155) {
+          meta.description = meta.description.substring(0, 152) + '...';
+        }
+      }
+    }
   } catch (e) {}
-  return { ...meta, openGraph: { title: meta.title, description: meta.description, url: 'https://botmartz.com/industries/healthcare', type: 'website' }, alternates: { canonical: 'https://botmartz.com/industries/healthcare' } };
+  return { ...meta, openGraph: { title: `${meta.title} | Botmartz`, description: meta.description, url: 'https://www.botmartz.com/industries/healthcare', type: 'website' }, alternates: { canonical: 'https://www.botmartz.com/industries/healthcare' } };
 }
 
 const DEFAULT_CONTENT = {

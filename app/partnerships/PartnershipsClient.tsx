@@ -96,7 +96,7 @@ export default function PartnershipsClient({
     "@type": "WebPage",
     "name": "Botmartz Ecosystem & University Partnerships",
     "description": "Collaborate with Botmartz on AI Frontier, hackathons, open-source AI engineering labs, and university developer programs.",
-    "url": "https://botmartz.com/partnerships",
+    "url": "https://www.botmartz.com/partnerships",
     "mainEntity": {
       "@type": "FAQPage",
       "mainEntity": [

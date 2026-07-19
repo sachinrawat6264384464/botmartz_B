@@ -3,13 +3,16 @@ import { adminDb } from '@/lib/firebase-admin';
 import InsightsUpdatesClient from './InsightsUpdatesClient';
 
 export const metadata: Metadata = {
-  title: 'Engineering Updates & Technical Logs | Botmartz',
+  title: 'Engineering Updates & Technical Logs',
   description: 'Explore our latest system releases, technical logs, and engineering updates from the Botmartz team.',
   openGraph: {
     title: 'Engineering Updates & Technical Logs | Botmartz',
     description: 'Explore our latest system releases, technical logs, and engineering updates from the Botmartz team.',
-    url: 'https://botmartz.com/insights/updates',
+    url: 'https://www.botmartz.com/insights/updates',
     type: 'website',
+  },
+  alternates: {
+    canonical: 'https://www.botmartz.com/insights/updates',
   },
 };
 

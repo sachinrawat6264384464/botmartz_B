@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Mail, MapPin, Phone, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
+import { Mail, MapPin, Phone, CheckCircle, AlertCircle, RefreshCw, HelpCircle, ShieldCheck, Clock, Layers } from 'lucide-react';
 
 interface ContactClientProps {
   heroData: {
@@ -208,37 +208,100 @@ export default function ContactClient({ heroData, structuredData }: ContactClien
               )}
            </div>
 
-           {/* Info Side */}
-           <div className="lg:w-1/3 flex flex-col gap-8">
-              
-              <div className="bg-[#050B14] border border-[#1E293B] rounded-sm p-8">
-                 <div className="w-10 h-10 border border-[#00B8F0]/20 bg-[#00B8F0]/10 rounded flex items-center justify-center text-[#00B8F0] mb-4">
-                    <Mail className="w-5 h-5" />
-                 </div>
-                 <h4 className="font-semibold text-[16px] mb-2 text-white">Email Us</h4>
-                 <p className="text-[14px] text-[#8A9EB0] mb-4">For general inquiries and project requests.</p>
-                 <a href="mailto:soham@botmartz.com" className="font-mono text-[13px] text-[#00B8F0] hover:underline">soham@botmartz.com</a>
-              </div>
-              
-              <div className="bg-[#050B14] border border-[#1E293B] rounded-sm p-8">
-                 <div className="w-10 h-10 border border-[#00B8F0]/20 bg-[#00B8F0]/10 rounded flex items-center justify-center text-[#00B8F0] mb-4">
-                    <Phone className="w-5 h-5" />
-                 </div>
-                 <h4 className="font-semibold text-[16px] mb-2 text-white">Call Us</h4>
-                 <p className="text-[14px] text-[#8A9EB0] mb-4">Available during business hours (IST).</p>
-                 <a href="tel:+919407328842" className="font-mono text-[13px] text-[#00B8F0] hover:underline">+91 94073 28842</a>
-              </div>
+            {/* Info Side */}
+            <div className="lg:w-1/3 flex flex-col gap-8">
+               
+               <div className="bg-[#050B14] border border-[#1E293B] rounded-sm p-8">
+                  <div className="w-10 h-10 border border-[#00B8F0]/20 bg-[#00B8F0]/10 rounded flex items-center justify-center text-[#00B8F0] mb-4">
+                     <Mail className="w-5 h-5" />
+                  </div>
+                  <h3 className="font-semibold text-[16px] mb-2 text-white">Email Us</h3>
+                  <p className="text-[14px] text-[#8A9EB0] mb-4">For general inquiries and project requests.</p>
+                  <a href="mailto:soham@botmartz.com" className="font-mono text-[13px] text-[#00B8F0] hover:underline">soham@botmartz.com</a>
+               </div>
+               
+               <div className="bg-[#050B14] border border-[#1E293B] rounded-sm p-8">
+                  <div className="w-10 h-10 border border-[#00B8F0]/20 bg-[#00B8F0]/10 rounded flex items-center justify-center text-[#00B8F0] mb-4">
+                     <Phone className="w-5 h-5" />
+                  </div>
+                  <h3 className="font-semibold text-[16px] mb-2 text-white">Call Us</h3>
+                  <p className="text-[14px] text-[#8A9EB0] mb-4">Available during business hours (IST).</p>
+                  <a href="tel:+919407328842" className="font-mono text-[13px] text-[#00B8F0] hover:underline">+91 94073 28842</a>
+               </div>
 
-              <div className="bg-[#050B14] border border-[#1E293B] rounded-sm p-8">
-                 <div className="w-10 h-10 border border-[#00B8F0]/20 bg-[#00B8F0]/10 rounded flex items-center justify-center text-[#00B8F0] mb-4">
-                    <MapPin className="w-5 h-5" />
-                 </div>
-                 <h4 className="font-semibold text-[16px] mb-2 text-white">Headquarters</h4>
-                 <p className="text-[14px] text-[#8A9EB0] mb-4">We are a globally distributed team headquartered in India.</p>
-                 <span className="font-mono text-[13px] text-white uppercase">Indore, IN</span>
-              </div>
+               <div className="bg-[#050B14] border border-[#1E293B] rounded-sm p-8">
+                  <div className="w-10 h-10 border border-[#00B8F0]/20 bg-[#00B8F0]/10 rounded flex items-center justify-center text-[#00B8F0] mb-4">
+                     <MapPin className="w-5 h-5" />
+                  </div>
+                  <h3 className="font-semibold text-[16px] mb-2 text-white">Headquarters</h3>
+                  <p className="text-[14px] text-[#8A9EB0] mb-4">We are a globally distributed team headquartered in India.</p>
+                  <span className="font-mono text-[13px] text-white uppercase">Indore, IN</span>
+               </div>
 
-           </div>
+            </div>
+         </div>
+      </section>
+
+      {/* FAQ & ENGAGEMENT PROCESS */}
+      <section className="py-[100px] bg-[#050B14] border-t border-[#1E293B]">
+        <div className="wrap max-w-[1100px] mx-auto">
+          <div className="text-center mb-16">
+            <div className="font-mono text-[11px] tracking-[0.14em] text-[#00B8F0] uppercase mb-3 font-semibold">Discovery & Engagement Process</div>
+            <h2 className="text-[32px] md:text-[40px] font-semibold text-white mb-4">Frequently Asked Questions</h2>
+            <p className="text-[#8A9EB0] text-[16px] md:text-[18px] max-w-[640px] mx-auto">
+              Everything you need to know about our enterprise AI engineering workflows, security guarantees, and collaboration models.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-[#0A111F] border border-[#1E293B] p-8 rounded-xl hover:border-[#00B8F0]/40 transition-all flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-lg bg-[#00B8F0]/10 border border-[#00B8F0]/20 flex items-center justify-center text-[#00B8F0] mb-5">
+                  <HelpCircle className="w-6 h-6" />
+                </div>
+                <h3 className="text-[20px] font-semibold text-white mb-3">What happens during the initial Discovery Call?</h3>
+                <p className="text-[15px] text-[#8A9EB0] leading-relaxed">
+                  During our 60-minute strategy session, our AI engineering leadership meets with your technical and executive stakeholders. We analyze your existing data systems, identify high-value workflow bottlenecks, evaluate feasibility, and sketch an initial technical architecture tailored to your goals. You walk away with a clear roadmap whether we work together or not.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-[#0A111F] border border-[#1E293B] p-8 rounded-xl hover:border-[#00B8F0]/40 transition-all flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-lg bg-[#00B8F0]/10 border border-[#00B8F0]/20 flex items-center justify-center text-[#00B8F0] mb-5">
+                  <ShieldCheck className="w-6 h-6" />
+                </div>
+                <h3 className="text-[20px] font-semibold text-white mb-3">How do you ensure data privacy, security, and IP protection?</h3>
+                <p className="text-[15px] text-[#8A9EB0] leading-relaxed">
+                  We treat enterprise security as a first-class citizen. Before diving into proprietary codebase or dataset reviews, we execute standard mutual Non-Disclosure Agreements (NDAs). All custom RAG pipelines, autonomous agents, and fine-tuned models are built within your dedicated cloud infrastructure (AWS, Azure, or GCP), ensuring your proprietary data never leaves your VPC or trains public models.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-[#0A111F] border border-[#1E293B] p-8 rounded-xl hover:border-[#00B8F0]/40 transition-all flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-lg bg-[#00B8F0]/10 border border-[#00B8F0]/20 flex items-center justify-center text-[#00B8F0] mb-5">
+                  <Clock className="w-6 h-6" />
+                </div>
+                <h3 className="text-[20px] font-semibold text-white mb-3">What is your typical project timeline and engagement model?</h3>
+                <p className="text-[15px] text-[#8A9EB0] leading-relaxed">
+                  We offer flexible, results-oriented engagement tiers ranging from dedicated AI engineering squads to end-to-end custom system builds. Most initial Minimum Viable Production (MVP) architectures are designed, tested, and deployed within 6 to 8 weeks, followed by continuous monitoring, optimization, and scaling phases across your enterprise.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-[#0A111F] border border-[#1E293B] p-8 rounded-xl hover:border-[#00B8F0]/40 transition-all flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-lg bg-[#00B8F0]/10 border border-[#00B8F0]/20 flex items-center justify-center text-[#00B8F0] mb-5">
+                  <Layers className="w-6 h-6" />
+                </div>
+                <h3 className="text-[20px] font-semibold text-white mb-3">Do you integrate with our existing enterprise software stack?</h3>
+                <p className="text-[15px] text-[#8A9EB0] leading-relaxed">
+                  Absolutely. Our engineering team specializes in connecting modern AI layers (LangGraph, PyTorch, FastAPI, Milvus, Weaviate) directly into legacy enterprise systems, CRMs, SQL/NoSQL databases, and internal APIs. We ensure seamless authentication, robust error handling, and low-latency response times across all integrations.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </main>

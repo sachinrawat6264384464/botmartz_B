@@ -4,7 +4,7 @@ import WorkClient from './WorkClient';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'Production AI Systems, Shipped & Proven | Botmartz Work',
+    title: 'Our Work & Case Studies',
     description: 'Case studies from enterprise clients across education, logistics, healthcare and SaaS — real production AI systems, not proofs of concept.',
     keywords: ['Production AI Systems', 'Enterprise AI Case Studies', 'AI Route Optimization', 'Clinical AI Copilot', 'EdTech AI Assistant', 'Enterprise RAG Support'],
   };
@@ -22,10 +22,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     ...meta,
     openGraph: {
-      title: meta.title,
+      title: `${meta.title} | Botmartz`,
       description: meta.description,
-      url: 'https://botmartz.com/work',
+      url: 'https://www.botmartz.com/work',
       type: 'website',
+    },
+    alternates: {
+      canonical: 'https://www.botmartz.com/work',
     },
   };
 }
@@ -41,13 +44,13 @@ export default async function WorkPage() {
   let structuredData = JSON.stringify({
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "Production AI Systems, Shipped & Proven | Botmartz Work",
+    "name": "Our Work & Case Studies | Botmartz",
     "description": "Case studies and real production AI systems built by Botmartz across education, logistics, healthcare and SaaS.",
-    "url": "https://botmartz.com/work",
+    "url": "https://www.botmartz.com/work",
     "publisher": {
       "@type": "Organization",
       "name": "Botmartz",
-      "url": "https://botmartz.com"
+      "url": "https://www.botmartz.com"
     }
   });
   let aeoQuestion = "What kind of production AI systems has Botmartz built and deployed?";

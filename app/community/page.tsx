@@ -4,7 +4,7 @@ import CommunityClient from './CommunityClient';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'Botmartz AI Engineering Community | One Community. Many Ways to Build.',
+    title: 'Community | One Community. Many Ways to Build.',
     description: 'Launched at AI Frontier 2026 — meetups, a Discord, an open-source GitHub org, a reading club and hackathons, all in one place for engineers who want to build.',
   };
   
@@ -21,10 +21,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     ...meta,
     openGraph: {
-      title: meta.title,
+      title: `${meta.title} | Botmartz`,
       description: meta.description,
-      url: 'https://botmartz.com/community',
+      url: 'https://www.botmartz.com/community',
       type: 'website',
+    },
+    alternates: {
+      canonical: 'https://www.botmartz.com/community',
     },
   };
 }

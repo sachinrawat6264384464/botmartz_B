@@ -47,7 +47,7 @@ export default function CommunityClient({
     "@type": "WebPage",
     "name": "Botmartz AI Engineering Community",
     "description": "One community with many ways to build: meetups, Discord, open-source GitHub org, reading club, and hackathons.",
-    "url": "https://botmartz.com/community",
+    "url": "https://www.botmartz.com/community",
     "mainEntity": {
       "@type": "FAQPage",
       "mainEntity": [

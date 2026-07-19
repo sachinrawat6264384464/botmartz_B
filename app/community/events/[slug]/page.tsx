@@ -17,11 +17,24 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     if (!snap.empty) {
       const data = snap.docs[0].data();
       title = data.title;
-      description = data.shortDescription || description;
+      const rawDesc = data.shortDescription || description;
+      description = rawDesc.length > 155 ? rawDesc.substring(0, 152) + '...' : rawDesc;
     }
   } catch (e) {}
 
-  return { title: `${title} | Botmartz Events`, description };
+  return {
+    title: `${title} | Community Events`,
+    description,
+    openGraph: {
+      title: `${title} | Botmartz Events`,
+      description,
+      url: `https://www.botmartz.com/community/events/${params.slug}`,
+      type: 'website',
+    },
+    alternates: {
+      canonical: `https://www.botmartz.com/community/events/${params.slug}`,
+    },
+  };
 }
 
 export default async function EventPage({ params }: { params: { slug: string } }) {

@@ -4,8 +4,8 @@ import OpenSourceClient from './OpenSourceClient';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'Open Source | Botmartz AI Engineering Labs & Repositories',
-    description: "Open Source is in our DNA. We believe sharing knowledge and code accelerates innovation for everyone. Explore our production RAG frameworks, agent libraries, and tools.",
+    title: 'Open Source | AI Engineering Labs & Repositories',
+    description: "Open Source is in our DNA. We believe sharing code accelerates innovation. Explore our production RAG frameworks, agent libraries, and developer tools.",
   };
   
   try {
@@ -14,6 +14,9 @@ export async function generateMetadata(): Promise<Metadata> {
       const data = docSnap.data();
       if (data?.metadata) {
         meta = { ...meta, ...data.metadata };
+        if (meta.description && meta.description.length > 155) {
+          meta.description = meta.description.substring(0, 152) + '...';
+        }
       }
     }
   } catch (e) {}
@@ -21,10 +24,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     ...meta,
     openGraph: {
-      title: meta.title,
+      title: `${meta.title} | Botmartz`,
       description: meta.description,
-      url: 'https://botmartz.com/work/open-source',
+      url: 'https://www.botmartz.com/work/open-source',
       type: 'website',
+    },
+    alternates: {
+      canonical: 'https://www.botmartz.com/work/open-source',
     },
   };
 }

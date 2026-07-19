@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     type: 'website',
     title: 'AI Frontier 2026 — The Future of AI Engineering',
     description: 'The flagship AI Engineering Summit by Botmartz. May 24–25, 2026 · Bangalore, India. AI Agents, Enterprise RAG, LLMs, Responsible AI.',
-    url: 'https://botmartz.com/community/events/ai-frontier-2026',
+    url: 'https://www.botmartz.com/community/events/ai-frontier-2026',
     siteName: 'Botmartz',
     images: [{ url: '/BotmartznewBot.png', width: 1200, height: 630, alt: 'AI Frontier 2026 Event Banner' }],
   },
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     images: ['/BotmartznewBot.png'],
   },
   alternates: {
-    canonical: 'https://botmartz.com/community/events/ai-frontier-2026',
+    canonical: 'https://www.botmartz.com/community/events/ai-frontier-2026',
   },
 };
 
@@ -41,7 +41,7 @@ const eventJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Event',
   name: 'AI Frontier 2026 — The Future of AI Engineering',
-  url: 'https://botmartz.com/community/events/ai-frontier-2026',
+  url: 'https://www.botmartz.com/community/events/ai-frontier-2026',
   description:
     'AI Frontier 2026 is Botmartz\'s flagship AI Engineering Summit bringing together engineers, researchers, founders, and tech leaders to explore the frontiers of AI: Agents, Enterprise RAG, LLMs, Responsible AI, and AI-Assisted Development.',
   startDate: '2026-05-24T09:00:00+05:30',
@@ -60,16 +60,16 @@ const eventJsonLd = {
       addressCountry: 'IN',
     },
   },
-  image: 'https://botmartz.com/BotmartznewBot.png',
+  image: 'https://www.botmartz.com/BotmartznewBot.png',
   organizer: {
     '@type': 'Organization',
     name: 'Botmartz',
-    url: 'https://botmartz.com',
+    url: 'https://www.botmartz.com',
   },
   offers: {
     '@type': 'Offer',
     name: 'General Admission',
-    url: 'https://botmartz.com/contact',
+    url: 'https://www.botmartz.com/contact',
     availability: 'https://schema.org/InStock',
     validFrom: '2026-01-01',
   },

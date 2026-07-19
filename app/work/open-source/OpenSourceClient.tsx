@@ -88,7 +88,7 @@ export default function OpenSourceClient({
     "@type": "CollectionPage",
     "name": "Botmartz Open Source Repositories & AI Labs",
     "description": "Production RAG frameworks, LangGraph agent toolkits, and evaluation harnesses open-sourced under MIT and Apache-2.0 licenses.",
-    "url": "https://botmartz.com/work/open-source",
+    "url": "https://www.botmartz.com/work/open-source",
     "mainEntity": {
       "@type": "ItemList",
       "itemListElement": repos.map((r, i) => ({

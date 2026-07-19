@@ -12,7 +12,13 @@ interface Props {
 const KEPT_SLUGS = new Set([
   "building-a-scalable-enterprise-rag-system-architecture-components-best-practices",
   "inside-ai-agents-from-reasoning-to-real-world-action",
-  "observability-for-llm-applications-metrics-that-matter"
+  "microservices-vs-monolith-for-ai-systems-what-we-learned",
+  "observability-for-llm-applications-metrics-that-matter",
+  "advanced-rag-techniques-hybrid-search-reranking-query-rewriting",
+  "build-an-ai-chatbot-with-langgraph-and-openai-step-by-step",
+  "open-source-projects-from-botmartz-labs-you-should-know",
+  "prompt-engineering-patterns-that-actually-work-in-production",
+  "how-we-built-a-legal-document-intelligence-system-for-100k-docs"
 ]);
 
 const STATIC_POSTS: Record<string, any> = {
@@ -72,6 +78,25 @@ AI Agents represent the next frontier of LLM applications, transitioning from pa
 4. **Agentic Loops**: Self-correction and reflection mechanisms.
     `
   },
+  "microservices-vs-monolith-for-ai-systems-what-we-learned": {
+    title: "Microservices vs Monolith for AI Systems: What We Learned",
+    category: "ARCHITECTURE",
+    excerpt: "A practical comparison based on real production deployments and scalability requirements.",
+    author: "Renee D.",
+    createdAt: "2024-05-05T00:00:00.000Z",
+    updatedAt: "2024-05-05T00:00:00.000Z",
+    readTime: 7,
+    content: `
+# Microservices vs Monolith for AI Systems: What We Learned
+
+When designing scalable AI architectures, teams often face the trade-off between monolithic simplicity and microservices agility.
+
+## Architectural Trade-offs
+
+1. **Monolithic AI Applications**: Easier local debugging, shared memory space, simple CI/CD pipelines, but harder independent scaling of heavy ML inference.
+2. **Microservices Architecture**: Separate services for embedding generation, vector search, and model inference allow targeted GPU/CPU auto-scaling and independent deployments.
+    `
+  },
   "observability-for-llm-applications-metrics-that-matter": {
     title: "Observability for LLM Applications: Metrics That Matter",
     category: "MLOPS",
@@ -92,6 +117,106 @@ Deploying LLMs to production is only the beginning. Keeping them running reliabl
 3. **Accuracy / Hallucination Rate**: Groundedness and relevance scores using LLM-as-a-judge.
 4. **Error Rates**: Rate-limit exceptions, timeouts, and guardrail blocks.
     `
+  },
+  "advanced-rag-techniques-hybrid-search-reranking-query-rewriting": {
+    title: "Advanced RAG Techniques: Hybrid Search, Reranking & Query Rewriting",
+    category: "ENTERPRISE RAG",
+    excerpt: "Improve retrieval accuracy and reduce hallucinations with hybrid search, rerankers, and LLM-based query rewriting.",
+    author: "Botmartz Team",
+    createdAt: "2024-04-25T00:00:00.000Z",
+    updatedAt: "2024-04-25T00:00:00.000Z",
+    readTime: 10,
+    content: `
+# Advanced RAG Techniques: Hybrid Search, Reranking & Query Rewriting
+
+Basic dense vector retrieval often fails on exact keyword matches, SKU numbers, or domain-specific acronyms. Advanced RAG combines multiple retrieval techniques to dramatically boost precision.
+
+## Key Techniques
+
+- **Hybrid Search**: Combining sparse BM25 indexing with dense embedding cosine similarity.
+- **Cross-Encoder Reranking**: Passing retrieved candidate chunks through a cross-encoder model to accurately re-score context relevance.
+- **Query Rewriting (HyDE)**: Using an LLM to expand or transform ambiguous user queries before searching the vector space.
+    `
+  },
+  "build-an-ai-chatbot-with-langgraph-and-openai-step-by-step": {
+    title: "Build an AI Chatbot with LangGraph and OpenAI: Step-by-Step",
+    category: "AI AGENTS",
+    excerpt: "A step-by-step tutorial on building a stateful, cyclic conversational agent using LangGraph state machines.",
+    author: "Botmartz Engineering Team",
+    createdAt: "2024-04-20T00:00:00.000Z",
+    updatedAt: "2024-04-20T00:00:00.000Z",
+    readTime: 11,
+    content: `
+# Build an AI Chatbot with LangGraph and OpenAI: Step-by-Step
+
+Unlike traditional linear chains, complex conversational AI workflows require cycles, state persistence, and branching logic. LangGraph provides the ideal framework for building stateful agents.
+
+## Step-by-Step Implementation
+
+1. **State Definition**: Defining our graph state structure with message history and intermediate tool outputs.
+2. **Nodes & Edges**: Creating functional nodes for LLM reasoning and custom edge evaluators for conditional routing.
+3. **Checkpointers**: Persisting conversation checkpoints across multi-turn interactions.
+    `
+  },
+  "open-source-projects-from-botmartz-labs-you-should-know": {
+    title: "Open Source Projects from Botmartz Labs You Should Know",
+    category: "OPEN SOURCE",
+    excerpt: "Explore the open source developer tools, agent frameworks, and evaluation libraries published by Botmartz Labs.",
+    author: "Botmartz Engineering Team",
+    createdAt: "2024-04-15T00:00:00.000Z",
+    updatedAt: "2024-04-15T00:00:00.000Z",
+    readTime: 6,
+    content: `
+# Open Source Projects from Botmartz Labs You Should Know
+
+At Botmartz, open source engineering is core to our DNA. We continuously publish production-tested components and tools to help the AI engineering community build faster and more reliably.
+
+## Highlighted Repositories
+
+- **Agent Evaluation Harness**: Automated test suites for measuring agent tool-use accuracy.
+- **Hybrid Search Utilities**: High-performance BM25 and vector indexing connectors.
+- **Streamlined RAG Templates**: Ready-to-deploy Next.js and FastAPI starter kits.
+    `
+  },
+  "prompt-engineering-patterns-that-actually-work-in-production": {
+    title: "Prompt Engineering Patterns That Actually Work in Production",
+    category: "AI ENGINEERING",
+    excerpt: "Discover proven prompt patterns for structured outputs, error handling, and deterministic reasoning.",
+    author: "Botmartz Engineering Team",
+    createdAt: "2024-04-10T00:00:00.000Z",
+    updatedAt: "2024-04-10T00:00:00.000Z",
+    readTime: 8,
+    content: `
+# Prompt Engineering Patterns That Actually Work in Production
+
+Prompt engineering in enterprise production environments requires precision, consistency, and resilience to model drift.
+
+## Production Patterns
+
+1. **Structured Output Enforcement**: Utilizing schema-based JSON generation (\`response_format\`) to guarantee schema validity.
+2. **Chain-of-Verification (CoVe)**: Prompting the model to self-verify its intermediate claims against provided source documents before formulating a final answer.
+3. **System Guardrails**: Explicit demarcation of instruction boundaries to mitigate prompt injection vulnerabilities.
+    `
+  },
+  "how-we-built-a-legal-document-intelligence-system-for-100k-docs": {
+    title: "How We Built a Legal Document Intelligence System for 100K+ Docs",
+    category: "CASE STUDIES",
+    excerpt: "An inside look at our architecture for parsing, indexing, and reasoning over complex legal contracts and filings.",
+    author: "Botmartz Engineering Team",
+    createdAt: "2024-04-05T00:00:00.000Z",
+    updatedAt: "2024-04-05T00:00:00.000Z",
+    readTime: 14,
+    content: `
+# How We Built a Legal Document Intelligence System for 100K+ Docs
+
+Legal documents present unique AI challenges: dense terminology, multi-page cross-references, scanned PDF layouts, and strict accuracy mandates.
+
+## System Blueprint
+
+- **Layout-Aware Optical Character Recognition (OCR)**: Preserving table hierarchies and footnotes during ingestion.
+- **Hierarchical Indexing**: Indexing parent document summaries alongside fine-grained semantic clauses.
+- **Audit Trails & Exact Citations**: Providing verifiable paragraph-level source links for every generated legal synthesis.
+    `
   }
 };
 
@@ -99,7 +224,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   if (!KEPT_SLUGS.has(slug)) {
     return {
-      title: "Insight Not Found | Botmartz",
+      title: "Insight Not Found",
     };
   }
   let post: any = null;
@@ -123,20 +248,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   
   if (!post) {
     return {
-      title: "Insight | Botmartz",
+      title: "Insight",
       description: "Explore engineering insights and AI research from Botmartz.",
     };
   }
   
+  let desc = post.excerpt || `Read our latest insight article about ${post.title}.`;
+  if (desc.length < 50) {
+    desc = `Read our technical analysis and engineering deep dive on ${post.title} at Botmartz. Explore production AI workflows and real-world architectures.`;
+  }
+  if (desc.length > 155) {
+    desc = desc.substring(0, 152) + '...';
+  }
+
   return {
-    title: `${post.title} | Botmartz AI Insights`,
-    description: post.excerpt || `Read our latest insight article about ${post.title}.`,
+    title: `${post.title} | Engineering Insights`,
+    description: desc,
     openGraph: {
-      title: `${post.title} | Botmartz AI Insights`,
-      description: post.excerpt || `Read our latest insight article about ${post.title}.`,
-      url: `https://botmartz.com/insights/${slug}`,
+      title: `${post.title} | Botmartz`,
+      description: desc,
+      url: `https://www.botmartz.com/insights/${slug}`,
       type: "article",
-    }
+    },
+    alternates: {
+      canonical: `https://www.botmartz.com/insights/${slug}`,
+    },
   };
 }
 

@@ -10,7 +10,7 @@ import { adminDb } from '@/lib/firebase-admin';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'Enterprise RAG & Knowledge Intelligence | Botmartz AI',
+    title: 'Enterprise RAG & Knowledge Intelligence',
     description: 'Securely retrieve, reason over, and synthesize your proprietary documents, databases, and systems with custom Enterprise RAG.',
   };
   
@@ -27,10 +27,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     ...meta,
     openGraph: {
-      title: meta.title,
+      title: `${meta.title} | Botmartz`,
       description: meta.description,
-      url: 'https://botmartz.com/services/enterprise-rag',
+      url: 'https://www.botmartz.com/services/enterprise-rag',
       type: 'website',
+    },
+    alternates: {
+      canonical: 'https://www.botmartz.com/services/enterprise-rag',
     },
   };
 }

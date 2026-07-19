@@ -5,7 +5,7 @@ import { adminDb } from '@/lib/firebase-admin';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'AI Engineering Services | Botmartz',
+    title: 'AI Engineering Services',
     description: 'We design, build, and deploy secure, scalable, and production-ready Enterprise RAG systems and AI Agents that deliver real business impact.',
     keywords: ['AI Engineering Services', 'Enterprise RAG', 'AI Agents', 'LLM Integration'],
   };
@@ -23,10 +23,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     ...meta,
     openGraph: {
-      title: meta.title,
+      title: `${meta.title} | Botmartz`,
       description: meta.description,
-      url: 'https://botmartz.com/services',
+      url: 'https://www.botmartz.com/services',
       type: 'website',
+    },
+    alternates: {
+      canonical: 'https://www.botmartz.com/services',
     },
   };
 }
@@ -173,7 +176,7 @@ export default async function ServicesIndexPage() {
           ].map((item, i) => (
             <div key={i} className="flex flex-col items-center">
               <div className="w-10 h-10 bg-[#0A111F] border border-[#1E293B] rounded-full flex items-center justify-center mb-4 text-[#00B8F0] font-mono text-[14px]">0{i+1}</div>
-              <h4 className="text-[15px] font-semibold mb-2 text-white">{item.t}</h4>
+              <h3 className="text-[15px] font-semibold mb-2 text-white">{item.t}</h3>
               <p className="text-[13px] text-[#8A9EB0] leading-relaxed">{item.d}</p>
             </div>
           ))}
@@ -213,7 +216,7 @@ export default async function ServicesIndexPage() {
               </div>
               <div className="p-6 bg-[#0A111F]">
                 <div className="font-mono text-[10px] text-[#00B8F0] uppercase bg-[#00B8F0]/10 inline-block px-2 py-1 rounded mb-3">Enterprise RAG</div>
-                <h4 className="text-[18px] font-semibold mb-2 text-white">Enterprise Knowledge Search</h4>
+                <h3 className="text-[18px] font-semibold mb-2 text-white">Enterprise Knowledge Search</h3>
                 <p className="text-[13.5px] text-[#8A9EB0] mb-4">Built a secure RAG system to unify search across 50K+ internal documents.</p>
                 <div className="font-mono text-[12px] text-[#00B8F0] flex items-center gap-2 group-hover:gap-3 transition-all">Read Case Study <ArrowRight className="w-3 h-3" /></div>
               </div>
@@ -224,7 +227,7 @@ export default async function ServicesIndexPage() {
               </div>
               <div className="p-6 bg-[#0A111F]">
                 <div className="font-mono text-[10px] text-[#00B8F0] uppercase bg-[#00B8F0]/10 inline-block px-2 py-1 rounded mb-3">AI Agents</div>
-                <h4 className="text-[18px] font-semibold mb-2 text-white">AI Support Agent</h4>
+                <h3 className="text-[18px] font-semibold mb-2 text-white">AI Support Agent</h3>
                 <p className="text-[13.5px] text-[#8A9EB0] mb-4">Developed an AI support agent that resolved 70% of queries automatically.</p>
                 <div className="font-mono text-[12px] text-[#00B8F0] flex items-center gap-2 group-hover:gap-3 transition-all">Read Case Study <ArrowRight className="w-3 h-3" /></div>
               </div>
@@ -235,7 +238,7 @@ export default async function ServicesIndexPage() {
               </div>
               <div className="p-6 bg-[#0A111F]">
                 <div className="font-mono text-[10px] text-[#00B8F0] uppercase bg-[#00B8F0]/10 inline-block px-2 py-1 rounded mb-3">AI Automation</div>
-                <h4 className="text-[18px] font-semibold mb-2 text-white">AI SDR for Outreach</h4>
+                <h3 className="text-[18px] font-semibold mb-2 text-white">AI SDR for Outreach</h3>
                 <p className="text-[13.5px] text-[#8A9EB0] mb-4">Built an autonomous SDR agent that personalizes outreach and books 3X more meetings.</p>
                 <div className="font-mono text-[12px] text-[#00B8F0] flex items-center gap-2 group-hover:gap-3 transition-all">Read Case Study <ArrowRight className="w-3 h-3" /></div>
               </div>
@@ -263,7 +266,7 @@ export default async function ServicesIndexPage() {
                   <Calendar className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[15px] mb-1 text-white">Free Discovery Call</h4>
+                  <h3 className="font-semibold text-[15px] mb-1 text-white">Free Discovery Call</h3>
                   <p className="text-[13px] text-[#8A9EB0]">60-minute strategy session with our AI engineering experts.</p>
                 </div>
               </div>
@@ -272,7 +275,7 @@ export default async function ServicesIndexPage() {
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[15px] mb-1 text-white">Custom AI Roadmap</h4>
+                  <h3 className="font-semibold text-[15px] mb-1 text-white">Custom AI Roadmap</h3>
                   <p className="text-[13px] text-[#8A9EB0]">Get a tailored roadmap and project estimation.</p>
                 </div>
               </div>

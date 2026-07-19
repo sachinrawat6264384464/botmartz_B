@@ -28,20 +28,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   
   if (!job) {
     return {
-      title: "Job Opening | Botmartz",
+      title: "Job Opening",
       description: "Explore career opportunities at Botmartz.",
     };
   }
   
   return {
-    title: `${job.title} | Careers at Botmartz`,
+    title: `${job.title} | Careers`,
     description: job.shortDescription || `Join Botmartz as a ${job.title}. Learn more about the role and apply.`,
     openGraph: {
-      title: `${job.title} | Careers at Botmartz`,
+      title: `${job.title} | Botmartz Careers`,
       description: job.shortDescription || `Join Botmartz as a ${job.title}. Learn more about the role and apply.`,
-      url: `https://botmartz.com/careers/${slug}`,
+      url: `https://www.botmartz.com/careers/${slug}`,
       type: "website",
-    }
+    },
+    alternates: {
+      canonical: `https://www.botmartz.com/careers/${slug}`,
+    },
   };
 }
 

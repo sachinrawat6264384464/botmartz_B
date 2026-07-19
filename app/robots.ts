@@ -26,6 +26,6 @@ export default function robots(): MetadataRoute.Robots {
         ],
       }
     ],
-    sitemap: 'https://botmartz.com/sitemap.xml',
+    sitemap: 'https://www.botmartz.com/sitemap.xml',
   };
 }

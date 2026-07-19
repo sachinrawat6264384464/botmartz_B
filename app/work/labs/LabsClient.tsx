@@ -112,7 +112,7 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
     "@type": "CollectionPage",
     "name": "Botmartz AI Engineering Labs",
     "description": "Where we experiment, build, and open source production-ready AI systems that solve real problems.",
-    "url": "https://botmartz.com/work/labs",
+    "url": "https://www.botmartz.com/work/labs",
     "mainEntity": {
       "@type": "ItemList",
       "itemListElement": labsData.map((l, i) => ({

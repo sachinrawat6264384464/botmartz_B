@@ -22,9 +22,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Web Solutions & Edge Systems | Botmartz",
     description: "High-performance web development utilizing Next.js, Edge CDN, dynamic server-side rendering (SSR), and secure custom integrations with Stripe.",
-    url: "https://botmartz.com/services/web-development",
+    url: "https://www.botmartz.com/services/web-development",
     type: "website",
-  }
+  },
+  alternates: {
+    canonical: "https://www.botmartz.com/services/web-development",
+  },
 };
 
 export default function WebDevelopmentPage() {

@@ -1,7 +1,9 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Our Work & Case Studies | Botmartz Portfolio",
+  title: {
+    absolute: "Our Work & Case Studies | Botmartz Portfolio | Botmartz"
+  },
   description: "Explore our portfolio of successful projects including custom web apps, AI integrations, E-commerce stores, and high-performance digital systems.",
   keywords: [
     "Botmartz Portfolio",
@@ -9,6 +11,15 @@ export const metadata: Metadata = {
     "Web App Development Indore",
     "Completed AI Projects"
   ],
+  openGraph: {
+    title: "Our Work & Case Studies | Botmartz Portfolio | Botmartz",
+    description: "Explore our portfolio of successful projects including custom web apps, AI integrations, E-commerce stores, and high-performance digital systems.",
+    url: "https://www.botmartz.com/work",
+    type: "website",
+  },
+  alternates: {
+    canonical: "https://www.botmartz.com/work",
+  },
 };
 
 export default function WorkLayout({ children }: { children: React.ReactNode }) {

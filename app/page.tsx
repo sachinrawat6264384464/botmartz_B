@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, query, where, orderBy, limit, doc, getDoc } from "firebase/firestore";
@@ -250,7 +251,7 @@ export default async function Home() {
             <div className="flex-1 w-full relative min-h-[500px] hidden lg:block">
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] w-[500px] h-[500px] z-10 flex items-center justify-center pointer-events-none">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#050B14]/90 z-10 pointer-events-none" />
-                <img src="/robot2.png" alt="Botmartz AI Core" className="w-full h-full object-contain animate-float" />
+                <Image src="/robot2.png" alt="Botmartz AI Core" width={500} height={500} priority fetchPriority="high" className="w-full h-full object-contain animate-float" />
               </div>
               {heroUseCases.slice(0, 4).map((uc, index) => (
                 <div
@@ -372,7 +373,7 @@ export default async function Home() {
                 <div className="w-16 h-16 rounded-full bg-[#00B8F0]/10 border border-[#00B8F0]/20 flex items-center justify-center text-[#00B8F0] mb-5">
                   <DynamicIcon name={item.iconName} size={24} />
                 </div>
-                <h4 className="text-lg font-semibold mb-3 text-ink">{item.title}</h4>
+                <h3 className="text-lg font-semibold mb-3 text-ink">{item.title}</h3>
                 <p className="text-base text-[#475569] leading-relaxed">{item.desc}</p>
               </div>
             ))}
@@ -408,7 +409,7 @@ export default async function Home() {
                   </div>
                   <div className="p-6 flex flex-col flex-grow">
                     <div className="font-mono text-[10px] uppercase text-[#00B8F0] tracking-wider bg-[#00B8F0]/10 px-2 py-1 rounded-sm inline-block mb-3 self-start">{techTag}</div>
-                    <h4 className="text-xl font-semibold mb-2 text-ink">{lab.title}</h4>
+                    <h3 className="text-xl font-semibold mb-2 text-ink">{lab.title}</h3>
                     <p className="text-base text-[#475569] mb-6 line-clamp-3 flex-grow">{lab.description}</p>
                     <Link href={`/work/${lab.slug || 'lab'}`} className="font-mono text-[13px] text-[#00B8F0] font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">
                       View Project →
@@ -472,7 +473,7 @@ export default async function Home() {
                       <span className="w-1 h-1 rounded-full bg-ink/20 block" />
                       <span>{article.read}</span>
                     </div>
-                    <h4 className="text-[15px] font-semibold leading-snug mb-2 text-ink group-hover:text-[#00B8F0] transition-colors">{article.title}</h4>
+                    <h3 className="text-[15px] font-semibold leading-snug mb-2 text-ink group-hover:text-[#00B8F0] transition-colors">{article.title}</h3>
                     <p className="font-mono text-xs text-[#00B8F0] font-semibold mt-auto pt-2">Read More →</p>
                   </div>
                 ))}
@@ -497,7 +498,7 @@ export default async function Home() {
                       <DynamicIcon name={item.iconName} size={18} />
                     </div>
                     <div>
-                      <h5 className="text-base font-semibold mb-1 text-ink">{item.title}</h5>
+                      <h3 className="text-base font-semibold mb-1 text-ink">{item.title}</h3>
                       <p className="text-sm text-[#475569]">{item.desc}</p>
                     </div>
                   </div>
@@ -507,7 +508,7 @@ export default async function Home() {
               <div className="bg-[#050B14] border border-[#00B8F0]/20 rounded-xl p-8 relative overflow-hidden text-white shadow-[0_0_30px_rgba(0,184,240,0.1)]">
                 <div className="absolute inset-0 blueprint opacity-10 pointer-events-none" />
                 <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-[#0066FF]/30 blur-3xl rounded-full" />
-                <h4 className="text-[22px] font-bold mb-2 relative z-10 tracking-tight">AI FRONTIER<br />2026</h4>
+                <h3 className="text-[22px] font-bold mb-2 relative z-10 tracking-tight">AI FRONTIER<br />2026</h3>
                 <p className="text-sm text-[#8A9EB0] mb-6 relative z-10 max-w-[200px]">The Future of<br />AI Engineering</p>
                 <Link href="/community" className="btn bg-[#0066FF] hover:bg-[#0052CC] border-none text-white shadow-[0_0_15px_rgba(0,102,255,0.4)] text-[12px] px-5 py-2.5 relative z-10 rounded-lg">
                   Learn More →

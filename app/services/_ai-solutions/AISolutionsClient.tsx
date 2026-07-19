@@ -84,7 +84,7 @@ export default function AISolutionsClient() {
               <div className="w-12 h-12 rounded-xl bg-[#D4AF37]/10 text-[#D4AF37] border border-[#D4AF37]/20 flex items-center justify-center mb-6 group-hover:bg-[#D4AF37] group-hover:text-black transition-all">
                 {feature.icon}
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
+              <h2 className="text-xl font-bold text-white mb-3">{feature.title}</h2>
               <p className="text-gray-400 text-sm leading-relaxed font-light">{feature.desc}</p>
             </motion.div>
           ))}

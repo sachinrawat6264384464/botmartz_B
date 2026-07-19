@@ -1,0 +1,502 @@
+[
+  {
+    "url": "https://botmartz.com/",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 13
+  },
+  {
+    "url": "https://botmartz.com/about",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 9
+  },
+  {
+    "url": "https://botmartz.com/careers",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 26
+  },
+  {
+    "url": "https://botmartz.com/community",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 34
+  },
+  {
+    "url": "https://botmartz.com/community/events",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 36
+  },
+  {
+    "url": "https://botmartz.com/community/events/ai-frontier-2026",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 38
+  },
+  {
+    "url": "https://botmartz.com/contact",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 17
+  },
+  {
+    "url": "https://botmartz.com/cookies",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 41
+  },
+  {
+    "url": "https://botmartz.com/industries",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 14
+  },
+  {
+    "url": "https://botmartz.com/industries/education",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 15
+  },
+  {
+    "url": "https://botmartz.com/industries/healthcare",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 30
+  },
+  {
+    "url": "https://botmartz.com/industries/logistics",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 19
+  },
+  {
+    "url": "https://botmartz.com/insights",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 31
+  },
+  {
+    "url": "https://botmartz.com/insights/-",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 43
+  },
+  {
+    "url": "https://botmartz.com/insights/test-post-slug-comment-test-1783516027198",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 44
+  },
+  {
+    "url": "https://botmartz.com/insights/updates",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 39
+  },
+  {
+    "url": "https://botmartz.com/partnerships",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 31
+  },
+  {
+    "url": "https://botmartz.com/privacy",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 39
+  },
+  {
+    "url": "https://botmartz.com/services",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 12
+  },
+  {
+    "url": "https://botmartz.com/services/ai-agents",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 31
+  },
+  {
+    "url": "https://botmartz.com/services/enterprise-rag",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 9
+  },
+  {
+    "url": "https://botmartz.com/terms",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 38
+  },
+  {
+    "url": "https://botmartz.com/work",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 24
+  },
+  {
+    "url": "https://botmartz.com/work/case-studies",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 24
+  },
+  {
+    "url": "https://botmartz.com/work/labs",
+    "statusCode": 308,
+    "title": "",
+    "h1Count": 0,
+    "wordCount": 0,
+    "imagesTotal": 0,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 24
+  },
+  {
+    "url": "https://www.botmartz.com/",
+    "statusCode": 200,
+    "title": "Botmartz | AI Engineering for Production AI Systems",
+    "h1Count": 1,
+    "wordCount": 500,
+    "imagesTotal": 3,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 333
+  },
+  {
+    "url": "https://www.botmartz.com/about",
+    "statusCode": 200,
+    "title": "About Us | Botmartz AI Solutions | Botmartz",
+    "h1Count": 1,
+    "wordCount": 213,
+    "imagesTotal": 3,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 333
+  },
+  {
+    "url": "https://www.botmartz.com/careers",
+    "statusCode": 200,
+    "title": "Careers at Botmartz | Build the Future of AI Engineering | Botmartz",
+    "h1Count": 1,
+    "wordCount": 263,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 580
+  },
+  {
+    "url": "https://www.botmartz.com/community",
+    "statusCode": 200,
+    "title": "Botmartz AI Engineering Community | One Community. Many Ways to Build. | Botmartz",
+    "h1Count": 1,
+    "wordCount": 229,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 851
+  },
+  {
+    "url": "https://www.botmartz.com/community/events",
+    "statusCode": 200,
+    "title": "Community Events | Where the AI Engineering Community Meets | Botmartz",
+    "h1Count": 1,
+    "wordCount": 315,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 888
+  },
+  {
+    "url": "https://www.botmartz.com/community/events/ai-frontier-2026",
+    "statusCode": 200,
+    "title": "AI Frontier 2026 — The Future of AI Engineering | Botmartz | Botmartz",
+    "h1Count": 1,
+    "wordCount": 556,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 888
+  },
+  {
+    "url": "https://www.botmartz.com/contact",
+    "statusCode": 200,
+    "title": "Contact Us | Botmartz AI Solutions | Botmartz",
+    "h1Count": 1,
+    "wordCount": 114,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 333
+  },
+  {
+    "url": "https://www.botmartz.com/cookies",
+    "statusCode": 200,
+    "title": "Cookie Policy | Botmartz AI Solutions | Botmartz",
+    "h1Count": 1,
+    "wordCount": 192,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 1286
+  },
+  {
+    "url": "https://www.botmartz.com/industries",
+    "statusCode": 200,
+    "title": "Industries | Botmartz AI | Botmartz",
+    "h1Count": 1,
+    "wordCount": 395,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 549
+  },
+  {
+    "url": "https://www.botmartz.com/industries/education",
+    "statusCode": 200,
+    "title": "AI Solutions for Education & EdTech | Botmartz AI | Botmartz",
+    "h1Count": 1,
+    "wordCount": 203,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 517
+  },
+  {
+    "url": "https://www.botmartz.com/industries/healthcare",
+    "statusCode": 200,
+    "title": "AI Solutions for Healthcare & MedTech | Botmartz | Botmartz",
+    "h1Count": 1,
+    "wordCount": 269,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 485
+  },
+  {
+    "url": "https://www.botmartz.com/industries/logistics",
+    "statusCode": 200,
+    "title": "AI Solutions for Global Logistics | Botmartz AI | Botmartz",
+    "h1Count": 1,
+    "wordCount": 193,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 516
+  },
+  {
+    "url": "https://www.botmartz.com/insights",
+    "statusCode": 200,
+    "title": "Engineering Insights | Botmartz AI | Botmartz",
+    "h1Count": 1,
+    "wordCount": 448,
+    "imagesTotal": 3,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 721
+  },
+  {
+    "url": "https://www.botmartz.com/insights/-",
+    "statusCode": 200,
+    "title": ">- | Botmartz AI Insights",
+    "h1Count": 1,
+    "wordCount": 1771,
+    "imagesTotal": 4,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 5961
+  },
+  {
+    "url": "https://www.botmartz.com/insights/test-post-slug-comment-test-1783516027198",
+    "statusCode": 200,
+    "title": "Playwright E2E Test Post | Botmartz AI Insights",
+    "h1Count": 1,
+    "wordCount": 245,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 5816
+  },
+  {
+    "url": "https://www.botmartz.com/insights/updates",
+    "statusCode": 200,
+    "title": "Engineering Updates & Technical Logs | Botmartz",
+    "h1Count": 1,
+    "wordCount": 3938,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 1022
+  },
+  {
+    "url": "https://www.botmartz.com/partnerships",
+    "statusCode": 200,
+    "title": "Partnerships | Grow the AI Engineering Ecosystem With Us | Botmartz",
+    "h1Count": 1,
+    "wordCount": 204,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 581
+  },
+  {
+    "url": "https://www.botmartz.com/privacy",
+    "statusCode": 200,
+    "title": "Privacy Policy | Botmartz AI Solutions | Botmartz",
+    "h1Count": 1,
+    "wordCount": 257,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 921
+  },
+  {
+    "url": "https://www.botmartz.com/services",
+    "statusCode": 200,
+    "title": "AI Engineering Services | Botmartz | Botmartz",
+    "h1Count": 1,
+    "wordCount": 370,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 324
+  },
+  {
+    "url": "https://www.botmartz.com/services/ai-agents",
+    "statusCode": 200,
+    "title": "Intelligent AI Agents for Business | Botmartz AI | Botmartz",
+    "h1Count": 1,
+    "wordCount": 276,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 333
+  },
+  {
+    "url": "https://www.botmartz.com/services/enterprise-rag",
+    "statusCode": 200,
+    "title": "Enterprise RAG & Knowledge Intelligence | Botmartz AI | Botmartz",
+    "h1Count": 1,
+    "wordCount": 239,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 333
+  },
+  {
+    "url": "https://www.botmartz.com/terms",
+    "statusCode": 200,
+    "title": "Terms of Service | Botmartz AI Solutions | Botmartz",
+    "h1Count": 1,
+    "wordCount": 247,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 1025
+  },
+  {
+    "url": "https://www.botmartz.com/work",
+    "statusCode": 200,
+    "title": "Production AI Systems, Shipped & Proven | Botmartz Work | Botmartz",
+    "h1Count": 1,
+    "wordCount": 312,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 517
+  },
+  {
+    "url": "https://www.botmartz.com/work/case-studies",
+    "statusCode": 200,
+    "title": "AI Case Studies | Botmartz AI",
+    "h1Count": 1,
+    "wordCount": 416,
+    "imagesTotal": 3,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 547
+  },
+  {
+    "url": "https://www.botmartz.com/work/labs",
+    "statusCode": 200,
+    "title": "Botmartz Labs | AI Experiments & Open Source",
+    "h1Count": 1,
+    "wordCount": 280,
+    "imagesTotal": 2,
+    "imagesMissingAlt": 0,
+    "responseTimeMs": 579
+  }
+]

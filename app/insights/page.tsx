@@ -7,7 +7,7 @@ import InsightsListingSection from './InsightsListingSection';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'Engineering Insights | Botmartz AI',
+    title: 'Engineering Insights',
     description: 'Deep dives, technical tutorials, architecture breakdowns, and real-world lessons from building production AI systems.',
   };
   
@@ -24,10 +24,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     ...meta,
     openGraph: {
-      title: meta.title,
+      title: `${meta.title} | Botmartz`,
       description: meta.description,
-      url: 'https://botmartz.com/insights',
+      url: 'https://www.botmartz.com/insights',
       type: 'website',
+    },
+    alternates: {
+      canonical: 'https://www.botmartz.com/insights',
     },
   };
 }

@@ -136,7 +136,7 @@ export default function DynamicServicePage({ params }: { params: any }) {
                   <div className="text-brand mb-4">
                     <DynamicIcon name={item.iconName || "Briefcase"} className="w-8 h-8" />
                   </div>
-                  <h4 className="font-semibold text-[18px] mb-2">{item.title}</h4>
+                  <h3 className="font-semibold text-[18px] mb-2">{item.title}</h3>
                   <p className="text-[14px] text-[#9FB9C8] leading-relaxed">{item.description}</p>
                 </div>
               </div>

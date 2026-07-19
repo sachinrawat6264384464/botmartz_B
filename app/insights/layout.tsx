@@ -1,7 +1,9 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Botmartz Blog | AI Insights, Tech Trends & Solutions",
+  title: {
+    absolute: "Botmartz Blog | AI Insights, Tech Trends & Solutions | Botmartz"
+  },
   description: "Read our latest publications on Artificial Intelligence, neural systems, automated agent workflows, and modern high-performance web development.",
   keywords: [
     "Botmartz Blog",
@@ -9,6 +11,15 @@ export const metadata: Metadata = {
     "Generative AI Insights",
     "Software Engineering Trends"
   ],
+  openGraph: {
+    title: "Botmartz Blog | AI Insights, Tech Trends & Solutions | Botmartz",
+    description: "Read our latest publications on Artificial Intelligence, neural systems, automated agent workflows, and modern high-performance web development.",
+    url: "https://www.botmartz.com/insights",
+    type: "website",
+  },
+  alternates: {
+    canonical: "https://www.botmartz.com/insights",
+  },
 };
 
 export default function BlogLayout({ children }: { children: React.ReactNode }) {

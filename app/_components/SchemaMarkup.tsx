@@ -13,8 +13,8 @@ export default function SchemaMarkup({ type, data }: SchemaMarkupProps) {
       '@context': 'https://schema.org',
       '@type': 'Organization',
       name: 'Botmartz',
-      url: 'https://botmartz.com',
-      logo: 'https://botmartz.com/BotmartzNewLogo.png',
+      url: 'https://www.botmartz.com',
+      logo: 'https://www.botmartz.com/BotmartzNewLogo.png',
       sameAs: [
         'https://www.linkedin.com/in/soham-sharma/',
         'https://www.instagram.com/botmartzai_solutions/',
@@ -32,9 +32,9 @@ export default function SchemaMarkup({ type, data }: SchemaMarkupProps) {
       '@context': 'https://schema.org',
       '@type': 'ProfessionalService',
       name: 'Botmartz AI Solutions',
-      image: 'https://botmartz.com/BotmartzNewLogo.png',
-      '@id': 'https://botmartz.com/#localbusiness',
-      url: 'https://botmartz.com',
+      image: 'https://www.botmartz.com/BotmartzNewLogo.png',
+      '@id': 'https://www.botmartz.com/#localbusiness',
+      url: 'https://www.botmartz.com',
       telephone: '+91 94073 28842',
       priceRange: '$$$',
       address: {
@@ -84,11 +84,11 @@ export default function SchemaMarkup({ type, data }: SchemaMarkupProps) {
       '@type': 'TechArticle',
       mainEntityOfPage: {
         '@type': 'WebPage',
-        '@id': `https://botmartz.com/blog/${data.slug}`,
+        '@id': `https://www.botmartz.com/insights/${data.slug}`,
       },
       headline: data.title,
       description: data.excerpt,
-      image: data.featuredImage || 'https://botmartz.com/BotmartzNewLogo.png',
+      image: data.featuredImage || 'https://www.botmartz.com/BotmartzNewLogo.png',
       datePublished: data.createdAt,
       dateModified: data.updatedAt || data.createdAt,
       author: {
@@ -101,7 +101,7 @@ export default function SchemaMarkup({ type, data }: SchemaMarkupProps) {
         name: 'Botmartz',
         logo: {
           '@type': 'ImageObject',
-          url: 'https://botmartz.com/BotmartzNewLogo.png',
+          url: 'https://www.botmartz.com/BotmartzNewLogo.png',
         },
       },
       ...data.extra,

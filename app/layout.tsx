@@ -40,13 +40,16 @@ export async function generateMetadata(): Promise<Metadata> {
   const seo = settings.seo || {};
   const general = settings.general || {};
 
+  const rawDescription = seo.globalDescription || seo.geoEntityDescription || seo.aeoBrandPersona || "Botmartz engineers production-ready AI systems, Enterprise RAG, and autonomous agents using modern tech like LangGraph, PyTorch, and FastAPI.";
+  const description = rawDescription.length > 155 ? rawDescription.substring(0, 152) + "..." : rawDescription;
+
   return {
-    metadataBase: new URL(general.websiteUrl || "https://botmartz.com"),
+    metadataBase: new URL(general.websiteUrl || "https://www.botmartz.com"),
     title: {
       default: "Botmartz | AI Engineering for Production AI Systems",
       template: `%s ${seo.titleSuffix || "| Botmartz"}`
     },
-    description: seo.globalDescription || seo.geoEntityDescription || seo.aeoBrandPersona || "Botmartz helps organizations design, build, and deploy Enterprise RAG systems and AI Agents. Our engineering team works with modern AI technologies like PyTorch, LangGraph, and FastAPI.",
+    description,
     keywords: seo.globalKeywords ? seo.globalKeywords.split(',').map((k: string) => k.trim()) : [
       "AI Engineering",
       "Enterprise RAG",
@@ -59,7 +62,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "Botmartz",
       "Document AI"
     ],
-    authors: [{ name: "Botmartz Team", url: general.websiteUrl || "https://botmartz.com" }],
+    authors: [{ name: "Botmartz Team", url: general.websiteUrl || "https://www.botmartz.com" }],
     creator: "Botmartz",
     publisher: "Botmartz",
     robots: {
@@ -76,9 +79,9 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       type: "website",
       locale: "en_US",
-      url: general.websiteUrl || "https://botmartz.com",
+      url: general.websiteUrl || "https://www.botmartz.com",
       title: "Botmartz | AI Engineering for Production AI Systems",
-      description: seo.globalDescription || seo.geoEntityDescription || "Botmartz helps organizations design, build, and deploy Enterprise RAG systems and AI Agents.",
+      description,
       siteName: general.companyName || "Botmartz",
       images: [
         {
@@ -92,9 +95,12 @@ export async function generateMetadata(): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title: "Botmartz | AI Engineering for Production AI Systems",
-      description: seo.globalDescription || seo.geoEntityDescription || "Botmartz helps organizations design, build, and deploy Enterprise RAG systems and AI Agents.",
+      description,
       images: [seo.ogImageUrl || "/BotmartznewBot.png"],
       creator: "@botmartz"
+    },
+    alternates: {
+      canonical: general.websiteUrl || "https://www.botmartz.com",
     }
   };
 }

@@ -22,9 +22,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Generative AI Solutions & Neural Automation | Botmartz",
     description: "Accelerate operational efficiency with custom-trained AI agents, semantic RAG systems, context-aware LLMs, and multi-agent workflow automations.",
-    url: "https://botmartz.com/services/ai-solutions",
+    url: "https://www.botmartz.com/services/ai-solutions",
     type: "website",
-  }
+  },
+  alternates: {
+    canonical: "https://www.botmartz.com/services/ai-solutions",
+  },
 };
 
 export default function AISolutionsPage() {

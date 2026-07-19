@@ -110,11 +110,11 @@ export default function CareersClient({
     "@type": "WebPage",
     "name": "Careers at Botmartz | Build the Future of AI Engineering",
     "description": "Join our engineering and research team building production AI systems and community around them in Indore, India and Remote.",
-    "url": "https://botmartz.com/careers",
+    "url": "https://www.botmartz.com/careers",
     "about": {
       "@type": "Organization",
       "name": "Botmartz",
-      "sameAs": "https://botmartz.com"
+      "sameAs": "https://www.botmartz.com"
     },
     "mainEntity": {
       "@type": "ItemList",
@@ -124,7 +124,7 @@ export default function CareersClient({
         "description": r.desc,
         "jobLocation": r.location.toLowerCase().includes('remote') ? { "@type": "Place", "address": "Remote" } : { "@type": "Place", "address": { "@type": "PostalAddress", "addressLocality": "Indore", "addressCountry": "IN" } },
         "employmentType": "FULL_TIME",
-        "hiringOrganization": { "@type": "Organization", "name": "Botmartz", "sameAs": "https://botmartz.com" }
+        "hiringOrganization": { "@type": "Organization", "name": "Botmartz", "sameAs": "https://www.botmartz.com" }
       }))
     }
   };

@@ -6,7 +6,7 @@ import DynamicIcon from "@/app/_components/DynamicIcon";
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'AI Solutions for Global Logistics | Botmartz AI',
+    title: 'AI Solutions for Global Logistics',
     description: 'Optimize operations, streamline communications, and improve decision-making with AI-powered agents and intelligent enterprise search.',
   };
   
@@ -23,10 +23,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     ...meta,
     openGraph: {
-      title: meta.title,
+      title: `${meta.title} | Botmartz`,
       description: meta.description,
-      url: 'https://botmartz.com/industries/logistics',
+      url: 'https://www.botmartz.com/industries/logistics',
       type: 'website',
+    },
+    alternates: {
+      canonical: 'https://www.botmartz.com/industries/logistics',
     },
   };
 }

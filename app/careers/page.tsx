@@ -4,7 +4,7 @@ import CareersClient from './CareersClient';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'Careers at Botmartz | Build the Future of AI Engineering',
+    title: 'Careers | Build the Future of AI Engineering',
     description: "We're a small team of engineers shipping production AI systems and building the community around them. View open roles and join us.",
   };
   
@@ -21,10 +21,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     ...meta,
     openGraph: {
-      title: meta.title,
+      title: `${meta.title} | Botmartz`,
       description: meta.description,
-      url: 'https://botmartz.com/careers',
+      url: 'https://www.botmartz.com/careers',
       type: 'website',
+    },
+    alternates: {
+      canonical: 'https://www.botmartz.com/careers',
     },
   };
 }

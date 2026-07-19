@@ -112,7 +112,7 @@ export default function EventsClient({
     "@type": "CollectionPage",
     "name": "Botmartz Community Events & Conferences",
     "description": "Where the AI Engineering Community meets: conferences, monthly meetups, open-source build nights, and hackathons.",
-    "url": "https://botmartz.com/community/events",
+    "url": "https://www.botmartz.com/community/events",
     "mainEntity": {
       "@type": "Event",
       "name": "AI Frontier 2026 — The Future of AI Engineering",
@@ -133,7 +133,7 @@ export default function EventsClient({
       "organizer": {
         "@type": "Organization",
         "name": "Botmartz",
-        "url": "https://botmartz.com"
+        "url": "https://www.botmartz.com"
       }
     }
   };

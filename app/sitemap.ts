@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { adminDb } from '@/lib/firebase-admin';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://botmartz.com';
+  const baseUrl = 'https://www.botmartz.com';
 
   // Static URLs – priority and changeFrequency tuned per page importance
   const staticUrls: MetadataRoute.Sitemap = [
@@ -32,6 +32,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/cookies`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
   ];
 
+  const isValidSlug = (slug: any) =>
+    typeof slug === 'string' && slug.length > 2 && slug !== '-' && !slug.includes('test-');
+
   // Dynamic Insights / Blog URLs from Firestore
   let insightUrls: MetadataRoute.Sitemap = [];
   try {
@@ -40,21 +43,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .where('status', '==', 'published')
       .get();
 
-    insightUrls = snapshot.docs.map((doc) => {
-      const data = doc.data();
-      const lastModDate = data.updatedAt?.toDate
-        ? data.updatedAt.toDate()
-        : data.createdAt?.toDate
-        ? data.createdAt.toDate()
-        : new Date();
+    insightUrls = snapshot.docs
+      .filter((doc) => isValidSlug(doc.data().slug))
+      .map((doc) => {
+        const data = doc.data();
+        const lastModDate = data.updatedAt?.toDate
+          ? data.updatedAt.toDate()
+          : data.createdAt?.toDate
+          ? data.createdAt.toDate()
+          : new Date();
 
-      return {
-        url: `${baseUrl}/insights/${data.slug}`,
-        lastModified: lastModDate,
-        changeFrequency: 'monthly' as const,
-        priority: 0.7,
-      };
-    });
+        return {
+          url: `${baseUrl}/insights/${data.slug}`,
+          lastModified: lastModDate,
+          changeFrequency: 'monthly' as const,
+          priority: 0.7,
+        };
+      });
   } catch (error) {
     console.error('Failed to generate sitemap for blog-posts:', error);
   }
@@ -86,15 +91,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .where('status', '==', 'published')
       .get();
 
-    caseStudyUrls = snapshot.docs.map((doc) => {
-      const data = doc.data();
-      return {
-        url: `${baseUrl}/work/case-studies/${data.slug}`,
-        lastModified: new Date(),
-        changeFrequency: 'monthly' as const,
-        priority: 0.75,
-      };
-    });
+    caseStudyUrls = snapshot.docs
+      .filter((doc) => isValidSlug(doc.data().slug))
+      .map((doc) => {
+        const data = doc.data();
+        return {
+          url: `${baseUrl}/work/case-studies/${data.slug}`,
+          lastModified: new Date(),
+          changeFrequency: 'monthly' as const,
+          priority: 0.75,
+        };
+      });
   } catch (error) {
     console.error('Failed to generate sitemap for case-studies:', error);
   }
@@ -128,7 +135,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .get();
 
     eventUrls = snapshot.docs
-      .filter((doc) => doc.data().slug !== 'ai-frontier-2026') // already included above
+      .filter((doc) => doc.data().slug !== 'ai-frontier-2026' && isValidSlug(doc.data().slug)) // already included above
       .map((doc) => {
         const data = doc.data();
         return {

@@ -11,7 +11,7 @@ import { adminDb } from '@/lib/firebase-admin';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'Intelligent AI Agents for Business | Botmartz AI',
+    title: 'Intelligent AI Agents for Business',
     description: 'We build production-ready AI agents that reason, plan, take action, and deliver real business outcomes across your tools, data, and workflows.',
   };
   
@@ -28,10 +28,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     ...meta,
     openGraph: {
-      title: meta.title,
+      title: `${meta.title} | Botmartz`,
       description: meta.description,
-      url: 'https://botmartz.com/services/ai-agents',
+      url: 'https://www.botmartz.com/services/ai-agents',
       type: 'website',
+    },
+    alternates: {
+      canonical: 'https://www.botmartz.com/services/ai-agents',
     },
   };
 }

@@ -1,13 +1,18 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Partnerships | Partner with Botmartz AI Solutions',
+  title: {
+    absolute: 'Partnerships | Partner with Botmartz AI Solutions | Botmartz',
+  },
   description: 'Collaborate with Botmartz AI on strategic consulting, joint AI solutions, research programs, and ecosystem integrations.',
   openGraph: {
-    title: 'Partnerships | Partner with Botmartz AI Solutions',
+    title: 'Partnerships | Partner with Botmartz AI Solutions | Botmartz',
     description: 'Collaborate with Botmartz AI on strategic consulting, joint AI solutions, research programs, and ecosystem integrations.',
-    url: 'https://botmartz.com/partnerships',
+    url: 'https://www.botmartz.com/partnerships',
     type: 'website',
+  },
+  alternates: {
+    canonical: 'https://www.botmartz.com/partnerships',
   },
 };
 
