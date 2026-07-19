@@ -127,6 +127,8 @@ async function getHomePageConfig(): Promise<HomePageConfig | null> {
   return null;
 }
 
+export const revalidate = 3600;
+
 export default async function Home() {
   const [labs, pageConfig] = await Promise.all([getActiveLabs(), getHomePageConfig()]);
 
@@ -251,7 +253,7 @@ export default async function Home() {
             <div className="flex-1 w-full relative min-h-[500px] hidden lg:block">
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] w-[500px] h-[500px] z-10 flex items-center justify-center pointer-events-none">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#050B14]/90 z-10 pointer-events-none" />
-                <Image src="/robot2.png" alt="Botmartz AI Core" width={500} height={500} priority fetchPriority="high" sizes="(max-width: 1023px) 1px, 500px" className="w-full h-full object-contain animate-float" />
+                <Image src="/robot2.png" alt="Botmartz AI Core" width={500} height={500} sizes="(max-width: 1023px) 1px, 500px" className="w-full h-full object-contain animate-float" />
               </div>
               {heroUseCases.slice(0, 4).map((uc, index) => (
                 <div

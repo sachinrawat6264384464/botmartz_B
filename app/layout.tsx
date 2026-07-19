@@ -8,6 +8,7 @@ import { getCachedGlobalSettings } from "@/lib/fetch-helpers";
 import StructuredData from "./_components/StructuredData";
 import NavbarWrapper from "./_components/NavbarWrapper";
 import Script from "next/script";
+import { WebVitals } from "./web-vitals";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -154,6 +155,7 @@ export default async function RootLayout({
           ></iframe>
         </noscript>
         
+        <WebVitals />
         <ClientLayout navbar={<NavbarWrapper />}>{children}</ClientLayout>
       </body>
     </html>

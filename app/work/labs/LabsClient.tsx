@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Github, ExternalLink, Code } from "lucide-react";
+import InteractiveRAGSimulator from "@/app/_components/InteractiveRAGSimulator";
+import SpotlightCard from "@/app/_components/SpotlightCard";
 
 export interface LabItem {
   id?: string;
@@ -204,6 +206,11 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
         </div>
       </section>
 
+      {/* ══════════ LIVE RAG SIMULATOR ══════════ */}
+      <div className="max-w-[1240px] mx-auto px-6 sm:px-10">
+        <InteractiveRAGSimulator />
+      </div>
+
       {/* ══════════ FILTER BAR & SORT ══════════ */}
       <div className="max-w-[1240px] mx-auto px-6 sm:px-10 pt-9 pb-5 flex items-center justify-between flex-wrap gap-4" id="labs-grid">
         <div className="flex gap-2 flex-wrap">
@@ -232,9 +239,10 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
       {/* ══════════ LABS GRID ══════════ */}
       <div className="max-w-[1240px] mx-auto px-6 sm:px-10 pt-2 pb-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {visibleLabs.map((lab, index) => (
-          <div 
+          <SpotlightCard 
             key={lab.id || index}
-            className="bg-white border border-[#E7ECF3] rounded-[14px] overflow-hidden flex flex-col hover:shadow-lg hover:border-[#007BFF]/40 transition-all duration-300 group"
+            spotlightColor="rgba(0, 123, 255, 0.14)"
+            className="!bg-white border border-[#E7ECF3] rounded-[14px] overflow-hidden flex flex-col hover:shadow-xl hover:border-[#007BFF]/50 transition-all duration-300 group"
           >
             {/* Top Graphic Header */}
             <div className="relative h-[120px] bg-gradient-to-br from-[#0A1630] to-[#060C1F] flex items-center justify-center p-4 overflow-hidden">
@@ -285,7 +293,7 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
                 </span>
               </div>
             </div>
-          </div>
+          </SpotlightCard>
         ))}
       </div>
 

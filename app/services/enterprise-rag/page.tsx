@@ -6,7 +6,8 @@ import {
   FileSearch, HelpCircle, Calendar 
 } from "lucide-react";
 import DynamicIcon from "@/app/_components/DynamicIcon";
-import { adminDb } from '@/lib/firebase-admin';
+import { getCachedDynamicPage } from '@/lib/fetch-helpers';
+import InteractiveRAGSimulator from '@/app/_components/InteractiveRAGSimulator';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
@@ -15,12 +16,9 @@ export async function generateMetadata(): Promise<Metadata> {
   };
   
   try {
-    const docSnap = await adminDb.collection("dynamic_pages").doc("enterprise-rag").get();
-    if (docSnap.exists) {
-      const data = docSnap.data();
-      if (data?.metadata) {
-        meta = { ...meta, ...data.metadata };
-      }
+    const data = await getCachedDynamicPage("enterprise-rag");
+    if (data?.metadata) {
+      meta = { ...meta, ...data.metadata };
     }
   } catch (e) {}
 
@@ -79,9 +77,8 @@ export default async function EnterpriseRAGPage() {
   let content = { ...DEFAULT_CONTENT };
 
   try {
-    const docSnap = await adminDb.collection("dynamic_pages").doc("enterprise-rag").get();
-    if (docSnap.exists) {
-      const data = docSnap.data();
+    const data = await getCachedDynamicPage("enterprise-rag");
+    if (data) {
       content = {
         hero: data?.hero || DEFAULT_CONTENT.hero,
         aeoQuestion: data?.aeoQuestion || DEFAULT_CONTENT.aeoQuestion,
@@ -142,6 +139,11 @@ export default async function EnterpriseRAGPage() {
               ))}
            </div>
         </div>
+      </section>
+
+      {/* INTERACTIVE RAG SIMULATOR SECTION */}
+      <section className="wrap px-4 sm:px-6 md:px-8">
+        <InteractiveRAGSimulator />
       </section>
 
       {/* AEO / WHAT IS THIS SECTION */}
