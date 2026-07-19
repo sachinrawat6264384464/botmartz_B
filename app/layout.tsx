@@ -4,6 +4,7 @@ import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "./client-layout";
 import { adminDb } from "@/lib/firebase-admin";
+import { getCachedGlobalSettings } from "@/lib/fetch-helpers";
 import StructuredData from "./_components/StructuredData";
 import NavbarWrapper from "./_components/NavbarWrapper";
 import Script from "next/script";
@@ -29,10 +30,7 @@ const jetbrainsMono = JetBrains_Mono({
 export async function generateMetadata(): Promise<Metadata> {
   let settings: any = {};
   try {
-    const docSnap = await adminDb.collection('settings').doc('global').get();
-    if (docSnap.exists) {
-      settings = docSnap.data();
-    }
+    settings = await getCachedGlobalSettings();
   } catch (err) {
     console.error("Failed to fetch global settings for metadata:", err);
   }
@@ -112,10 +110,7 @@ export default async function RootLayout({
 }>) {
   let settings: any = {};
   try {
-    const docSnap = await adminDb.collection('settings').doc('global').get();
-    if (docSnap.exists) {
-      settings = docSnap.data();
-    }
+    settings = await getCachedGlobalSettings();
   } catch (err) {
     console.error("Failed to fetch global settings for JSON-LD:", err);
   }
@@ -127,13 +122,6 @@ export default async function RootLayout({
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         {/* Preconnect to Firestore API */}
         <link rel="preconnect" href="https://firestore.googleapis.com" />
-        {/* Preload the logo used in the navbar */}
-        <link
-          rel="preload"
-          href="/Logo-removebg-preview.png"
-          as="image"
-          type="image/png"
-        />
         {/* Structured Data for SEO/AEO/GEO */}
         <StructuredData data={settings} />
 

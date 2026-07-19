@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from "next/link";
 import { ArrowRight, BookOpen, Truck, Scale, HeartPulse, Factory, Cloud, ShieldCheck, Zap, Briefcase, FileText, CheckCircle2, TrendingUp, Users, Building, Building2, Landmark, Target, Calendar } from "lucide-react";
-import { adminDb } from '@/lib/firebase-admin';
+import { getCachedDynamicPage } from '@/lib/fetch-helpers';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
@@ -11,12 +11,9 @@ export async function generateMetadata(): Promise<Metadata> {
   };
   
   try {
-    const docSnap = await adminDb.collection("dynamic_pages").doc("industries").get();
-    if (docSnap.exists) {
-      const data = docSnap.data();
-      if (data?.metadata) {
-        meta = { ...meta, ...data.metadata };
-      }
+    const data = await getCachedDynamicPage("industries");
+    if (data?.metadata) {
+      meta = { ...meta, ...data.metadata };
     }
   } catch (e) {}
 
@@ -42,12 +39,9 @@ export default async function IndustriesPage() {
   };
 
   try {
-    const docSnap = await adminDb.collection("dynamic_pages").doc("industries").get();
-    if (docSnap.exists) {
-      const data = docSnap.data();
-      if (data?.hero) {
-        heroData = { ...heroData, ...data.hero };
-      }
+    const data = await getCachedDynamicPage("industries");
+    if (data?.hero) {
+      heroData = { ...heroData, ...data.hero };
     }
   } catch (e) {}
 

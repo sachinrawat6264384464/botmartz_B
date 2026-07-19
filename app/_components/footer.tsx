@@ -197,26 +197,31 @@ export function Footer() {
               onSubmit={handleSubscribe}
               className="flex-1 flex flex-col sm:flex-row gap-3 w-full md:max-w-[560px] ml-auto"
             >
+              <label htmlFor="newsletter-email" className="sr-only">
+                Email address for newsletter
+              </label>
               <input
+                id="newsletter-email"
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 disabled={status === "success"}
-                className="flex-1 bg-[#0E1726] border border-white/15 rounded-lg px-4 py-3 text-[13.5px] text-white placeholder:text-[#8A9EB0]/60 focus:outline-none focus:border-[#0052FF] transition-colors"
+                className="flex-1 bg-[#0E1726] border border-white/15 rounded-lg px-4 py-3 text-[13.5px] text-white placeholder:text-[#8A9EB0]/80 focus:outline-none focus:border-[#0052FF] focus:ring-2 focus:ring-[#00B8F0]/50 transition-colors"
               />
               <button
                 type="submit"
                 disabled={status === "loading" || status === "success"}
-                className="inline-flex items-center justify-center gap-2 bg-[#0052FF] hover:bg-[#003FCC] disabled:opacity-60 text-white font-bold text-[13px] px-6 py-3 rounded-lg transition-colors whitespace-nowrap flex-shrink-0"
+                aria-label="Subscribe to newsletter"
+                className="inline-flex items-center justify-center gap-2 bg-[#0052FF] hover:bg-[#003FCC] disabled:opacity-60 text-white font-bold text-[13px] px-6 py-3 rounded-lg transition-colors whitespace-nowrap flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-white"
               >
                 {status === "loading" ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
                 ) : status === "success" ? (
                   "Subscribed ✓"
                 ) : (
-                  <>Subscribe <ArrowRight size={14} /></>
+                  <>Subscribe <ArrowRight size={14} aria-hidden="true" /></>
                 )}
               </button>
             </form>

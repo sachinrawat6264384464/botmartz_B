@@ -1,7 +1,7 @@
 // app/_components/NavbarWrapper.tsx
 // Server Component — fetches nav config from Firestore, passes to client Navbar
 
-import { adminDb } from "@/lib/firebase-admin";
+import { getCachedNavbarConfig } from "@/lib/fetch-helpers";
 import Navbar, { NavItem } from "./navbar";
 
 const DEFAULT_ITEMS: NavItem[] = [
@@ -55,12 +55,9 @@ export default async function NavbarWrapper() {
   let navItems: NavItem[] = [];
 
   try {
-    const docSnap = await adminDb.collection("site_config").doc("navbar").get();
-    if (docSnap.exists) {
-      const data = docSnap.data();
-      if (Array.isArray(data?.items) && data.items.length > 0) {
-        navItems = data.items as NavItem[];
-      }
+    const cachedItems = await getCachedNavbarConfig();
+    if (cachedItems) {
+      navItems = cachedItems as NavItem[];
     }
   } catch (err) {
     console.warn("NavbarWrapper: Could not fetch navbar config, using defaults:", err);
