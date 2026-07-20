@@ -49,7 +49,7 @@ export default function AdminDashboard() {
   const displayName = userRole?.displayName || user?.displayName || 'Admin';
 
   return (
-    <div className={`${interTight.className} p-6 max-w-[1600px] mx-auto space-y-6`}>
+    <div className={`${interTight.className} p-6 w-full space-y-6`}>
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
@@ -61,9 +61,6 @@ export default function AdminDashboard() {
             <Calendar size={14} />
             <span>May 19 - May 25, 2025</span>
           </div>
-          <button className="bg-admin-bg hover:bg-admin-border border border-admin-border px-4 py-2 rounded-lg text-sm text-admin-text font-medium transition-colors">
-            Customize
-          </button>
         </div>
       </div>
 

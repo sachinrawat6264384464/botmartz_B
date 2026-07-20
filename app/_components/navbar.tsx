@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ArrowRight, Menu, X, PhoneCall } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { db } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 export type NavDropdownItem = { name: string; path: string };
 export type NavItem = { name: string; path: string; dropdown?: NavDropdownItem[] };
@@ -64,6 +66,20 @@ export default function Navbar({ navItems }: { navItems?: NavItem[] }) {
     pathname === item.path ||
     (item.dropdown && item.dropdown.some((s) => pathname === s.path));
 
+  const [logoUrl, setLogoUrl] = useState("/Logo-removebg-preview.png");
+
+  useEffect(() => {
+    async function fetchLogo() {
+      try {
+        const snap = await getDoc(doc(db, "settings", "global"));
+        if (snap.exists() && snap.data().branding?.primaryLogo) {
+          setLogoUrl(snap.data().branding.primaryLogo);
+        }
+      } catch (e) {}
+    }
+    fetchLogo();
+  }, []);
+
   return (
     <>
       {/* ── HEADER ── */}
@@ -72,13 +88,10 @@ export default function Navbar({ navItems }: { navItems?: NavItem[] }) {
 
           {/* LOGO */}
           <Link href="/" aria-label="Botmartz home" className="flex-shrink-0">
-            <Image
-              src="/Logo-removebg-preview.png"
+            <img
+              src={logoUrl}
               alt="Botmartz AI Solutions"
-              width={180}
-              height={50}
               className="h-[44px] w-auto object-contain"
-              priority
             />
           </Link>
 

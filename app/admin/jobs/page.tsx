@@ -79,7 +79,7 @@ export default function JobsDashboard() {
   };
 
   return (
-    <div className={`${interTight.className} p-6 max-w-[1200px] mx-auto space-y-6`}>
+    <div className={`${interTight.className} p-6 w-full space-y-6`}>
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-admin-text">Careers & Job Management</h1>

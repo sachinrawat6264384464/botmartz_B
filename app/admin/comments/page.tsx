@@ -84,16 +84,37 @@ export default function CommentsAdminPage() {
   // Reset page on filter/search change
   useEffect(() => { setCurrentPage(1); }, [statusFilter, searchQuery]);
 
-  const getBlogTitle = (blogId: string) =>
-    blogPosts.find((b) => b.id === blogId)?.title || "Unknown Post";
-
-  const getBlogSlug = (blogId: string) =>
-    blogPosts.find((b) => b.id === blogId)?.slug || "";
-
   // ── Normalizer helpers — support both old and new comment schemas
   const getAuthorName = (c: Comment) => c.authorName || c.name || "Anonymous";
   const getAuthorEmail = (c: Comment) => c.authorEmail || c.email || "";
-  const getBlogRef = (c: Comment) => c.blogId || c.postSlug || "";
+  const getBlogRef = (c: Comment) => c.blogId || c.postSlug || (c as any).blogSlug || (c as any).articleSlug || "";
+
+  const getBlogTitle = (blogRef: string, c?: Comment) => {
+    const explicitTitle = (c as any)?.postTitle || (c as any)?.blogTitle;
+    if (explicitTitle && explicitTitle !== "Unknown Post") return explicitTitle;
+
+    if (!blogRef) return "General Discussion";
+
+    const found = blogPosts.find(
+      (b) => b.id === blogRef || b.slug === blogRef
+    );
+    if (found) return found.title;
+
+    // Clean fallback: format slug into readable title
+    return blogRef
+      .replace(/-/g, " ")
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (l) => l.toUpperCase());
+  };
+
+  const getBlogSlug = (blogRef: string, c?: Comment) => {
+    if (c?.postSlug) return c.postSlug;
+    if (!blogRef) return "";
+    const found = blogPosts.find(
+      (b) => b.id === blogRef || b.slug === blogRef
+    );
+    return found?.slug || blogRef;
+  };
 
   const formatDate = (ts: any) => {
     if (!ts) return "N/A";
@@ -217,7 +238,7 @@ export default function CommentsAdminPage() {
   }
 
   return (
-    <div className={`${interTight.className} p-6 max-w-[1400px] text-admin-text`}>
+    <div className={`${interTight.className} p-6 w-full text-admin-text`}>
 
       {/* Header */}
       <div className="mb-8">
@@ -362,12 +383,12 @@ export default function CommentsAdminPage() {
                       </td>
                       <td className="px-3 py-3">
                         <a
-                          href={`/blog/${getBlogSlug(getBlogRef(comment))}`}
+                          href={`/insights/${getBlogSlug(getBlogRef(comment), comment)}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-xs text-admin-text-muted hover:text-admin-accent transition-colors max-w-[150px] truncate block"
                         >
-                          {getBlogTitle(getBlogRef(comment))}
+                          {getBlogTitle(getBlogRef(comment), comment)}
                         </a>
                       </td>
                       <td className="px-3 py-3">
@@ -536,12 +557,12 @@ export default function CommentsAdminPage() {
               <div>
                 <p className="text-[10px] font-semibold text-admin-text-muted uppercase tracking-wider mb-1">Blog Post</p>
                 <a
-                  href={`/blog/${getBlogSlug(getBlogRef(selectedComment))}`}
+                  href={`/insights/${getBlogSlug(getBlogRef(selectedComment), selectedComment)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1 text-xs text-admin-accent hover:underline font-medium"
                 >
-                  {getBlogTitle(getBlogRef(selectedComment))}
+                  {getBlogTitle(getBlogRef(selectedComment), selectedComment)}
                   <ExternalLink size={10} />
                 </a>
               </div>

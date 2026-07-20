@@ -178,6 +178,7 @@ export default function InsightsDetailClient({
         email: commentForm.email.trim(),
         content: commentForm.content.trim(),
         postSlug: post.slug,
+        postTitle: post.title,
         status: "pending",
         createdAt: serverTimestamp(),
       });

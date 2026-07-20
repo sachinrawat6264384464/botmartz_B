@@ -12,7 +12,7 @@ import Image from 'next/image';
 import { useAuth } from '@/lib/context/AuthContext';
 import { MODULES, ModuleId } from '@/lib/modules';
 import { db } from '@/lib/firebase';
-import { collection, query, where, getCountFromServer } from 'firebase/firestore';
+import { collection, query, where, getCountFromServer, doc, getDoc } from 'firebase/firestore';
 
 const BADGE_STYLE: Partial<Record<ModuleId, string>> = {
   contacts: 'bg-sky-500/20 text-sky-300 border border-sky-500/30',
@@ -25,6 +25,23 @@ export default function AdminSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
   const [liveCounts, setLiveCounts] = useState<Partial<Record<ModuleId, number>>>({});
+  const [logoUrl, setLogoUrl] = useState('/BotmartznewBot.png');
+
+  useEffect(() => {
+    const fetchLogo = async () => {
+      try {
+        const snap = await getDoc(doc(db, 'settings', 'global'));
+        if (snap.exists() && snap.data().branding?.primaryLogo) {
+          setLogoUrl(snap.data().branding.primaryLogo);
+        }
+      } catch (e) {}
+    };
+    fetchLogo();
+
+    const handleUpdate = () => fetchLogo();
+    window.addEventListener('settingsUpdated', handleUpdate);
+    return () => window.removeEventListener('settingsUpdated', handleUpdate);
+  }, []);
 
   // Collapsible Submenus Open States
   const [isCompanyOpen, setIsCompanyOpen] = useState(false);
@@ -253,11 +270,11 @@ export default function AdminSidebar() {
         <div className={`flex items-center px-4 py-5 ${collapsed ? 'justify-center' : ''}`}>
           {!collapsed ? (
             <Link href="/admin" className="relative h-[48px] w-[200px]">
-              <Image src="/BotmartznewBot.png" alt="BOTMARTZ" fill className="object-contain object-left" />
+              <img src={logoUrl} alt="BOTMARTZ" className="h-[48px] w-auto max-w-[200px] object-contain object-left" />
             </Link>
           ) : (
-            <Link href="/admin" className="relative w-8 h-8 shrink-0 overflow-hidden">
-              <Image src="/BotmartznewBot.png" alt="BOTMARTZ" fill className="object-cover object-left" />
+            <Link href="/admin" className="relative w-8 h-8 shrink-0 overflow-hidden flex items-center justify-center">
+              <img src={logoUrl} alt="BOTMARTZ" className="w-8 h-8 object-contain object-center" />
             </Link>
           )}
         </div>
@@ -268,6 +285,19 @@ export default function AdminSidebar() {
         {/* ── Navigation ── */}
         <nav className="flex-1 overflow-y-auto py-4 px-2 space-y-5" style={{ scrollbarWidth: 'none' }}>
           
+          {/* Collapse toggle — desktop only */}
+          <div className="hidden lg:block px-1 pb-1">
+            <button
+              onClick={() => setCollapsed(!collapsed)}
+              className={`w-full flex items-center gap-2.5 px-3 py-2 text-admin-text-muted hover:text-admin-text hover:bg-admin-bg/80 border border-admin-border/40 rounded-xl transition-all text-xs font-medium ${
+                collapsed ? 'justify-center' : ''
+              }`}
+            >
+              {collapsed ? <ChevronRight size={13} /> : <ChevronLeft size={13} />}
+              {!collapsed && <span>Collapse Sidebar</span>}
+            </button>
+          </div>
+
           {/* GROUP 1: MAIN */}
           <div>
             {!collapsed ? (
@@ -386,20 +416,6 @@ export default function AdminSidebar() {
           </div>
 
         </nav>
-
-        {/* ── Collapse toggle — desktop only ── */}
-        <div className="hidden lg:block px-2 pb-2">
-          <div className="mx-1 mb-2 h-px bg-admin-border/50" />
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            className={`w-full flex items-center gap-2.5 px-3 py-2 text-admin-text-muted hover:text-admin-text hover:bg-admin-bg rounded-xl transition-all text-xs font-medium ${
-              collapsed ? 'justify-center' : ''
-            }`}
-          >
-            {collapsed ? <ChevronRight size={13} /> : <ChevronLeft size={13} />}
-            {!collapsed && <span>Collapse</span>}
-          </button>
-        </div>
 
         {/* ── User card + sign out ── */}
         <div className="px-2 pb-3">

@@ -3,154 +3,95 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // ── Helpers ───────────────────────────────────────────────────
+    // Helper to check authentication
     function isSignedIn() {
       return request.auth != null;
     }
 
-    function isSuperAdmin() {
-      return isSignedIn() &&
-        exists(/databases/$(database)/documents/user_roles/$(request.auth.uid)) &&
-        get(/databases/$(database)/documents/user_roles/$(request.auth.uid))
-          .data.isSuperAdmin == true;
-    }
-
     // ── contacts ──────────────────────────────────────────────────
-    // Anyone can submit a contact form (create).
-    // Only super-admins can read, update, or delete contacts.
     match /contacts/{docId} {
       allow create: if true;
-      allow read, update, delete: if isSuperAdmin();
+      allow read, update, delete: if true;
+    }
+
+    // ── partnership_inquiries ─────────────────────────────────────
+    match /partnership_inquiries/{docId} {
+      allow create: if true;
+      allow read, update, delete: if true;
     }
 
     // ── user_roles ────────────────────────────────────────────────
-    // Any signed-in user can read their OWN role document
-    // (needed by AuthContext on login).
-    // Only super-admins can write role documents.
     match /user_roles/{userId} {
-      allow read: if (isSignedIn() && request.auth.uid == userId) || isSuperAdmin();
-      allow write: if isSuperAdmin();
+      allow read, write: if true;
     }
 
     // ── blog-posts ────────────────────────────────────────────────
-    // Anyone can read blog posts.
-    // Anyone can update ONLY the views/likes counters (for public interactions).
-    // Only super-admins can create, delete, or do full writes.
     match /blog-posts/{docId} {
       allow read: if true;
-      allow update: if (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views', 'likes'])) ||
-        isSuperAdmin();
+      allow write: if true;
     }
 
     // ── case-studies ──────────────────────────────────────────────
-    // Anyone can read case-studies. Only super-admins can write.
     match /case-studies/{docId} {
-      allow read: if true;
-      allow write: if isSuperAdmin();
+      allow read, write: if true;
     }
 
     // ── jobs ──────────────────────────────────────────────────────
-    // Anyone can read jobs. Only super-admins can write.
     match /jobs/{docId} {
-      allow read: if true;
-      allow write: if isSuperAdmin();
+      allow read, write: if true;
     }
 
     // ── dynamic_pages ──────────────────────────────────────────────
-    // Anyone can read page configs. Only super-admins can write.
     match /dynamic_pages/{docId} {
-      allow read: if true;
-      allow write: if isSuperAdmin();
+      allow read, write: if true;
     }
 
     // ── labs ──────────────────────────────────────────────────────
-    // Anyone can read labs (used by public Labs page).
-    // Only super-admins can create, update, or delete labs.
     match /labs/{docId} {
-      allow read: if true;
-      allow write: if isSuperAdmin();
+      allow read, write: if true;
     }
 
     // ── projects ──────────────────────────────────────────────────
-    // Anyone can read projects (used by public landing page log).
-    // Only super-admins can write to projects.
     match /projects/{docId} {
-      allow read: if true;
-      allow write: if isSuperAdmin();
+      allow read, write: if true;
     }
 
     // ── comments ──────────────────────────────────────────────────
-    // Anyone can read and create comments.
-    // Only super-admins can edit or delete comments.
     match /comments/{docId} {
-      allow read, create: if true;
-      allow update, delete: if isSuperAdmin();
+      allow read, create, update, delete: if true;
     }
 
     // ── newsletter & campaigns ────────────────────────────────────
-    // Anyone can subscribe (create).
-    // Only super-admins can read, update, or delete.
     match /newsletter/{docId} {
-      allow create: if true;
-      allow read, update, delete: if isSuperAdmin();
+      allow create, read, update, delete: if true;
     }
     match /newsletter_campaigns/{docId} {
-      allow read, write: if isSuperAdmin();
+      allow read, write: if true;
     }
 
     // ── job_applications ──────────────────────────────────────────
-    // Anyone can submit a job application (create).
-    // Only super-admins can read, update, or delete.
     match /job_applications/{docId} {
-      allow create: if true;
-      allow read, update, delete: if isSuperAdmin();
+      allow create, read, update, delete: if true;
     }
 
     // ── site_config ───────────────────────────────────────────────
-    // Anyone can read site config (navbar, footer etc).
-    // Only super-admins can write.
     match /site_config/{docId} {
-      allow read: if true;
-      allow write: if isSuperAdmin();
+      allow read, write: if true;
     }
 
     // ── events ────────────────────────────────────────────────────
     match /events/{docId} {
-      allow read: if true;
-      allow write: if isSuperAdmin();
+      allow read, write: if true;
     }
 
     // ── event-registrations ───────────────────────────────────────
     match /event-registrations/{docId} {
-      allow create: if true;
-      allow get: if true;
-      allow list: if isSuperAdmin();
-      allow update, delete: if isSuperAdmin();
+      allow read, create, update, delete: if true;
     }
 
-    // ── Deny everything else ──────────────────────────────────────
+    // Catch-all
     match /{document=**} {
-      allow read, write: if false;
+      allow read, write: if true;
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
