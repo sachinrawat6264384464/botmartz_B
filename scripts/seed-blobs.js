@@ -244,9 +244,12 @@ function getMarkdownFiles(dir, fileList = []) {
 async function seedBlobs() {
   console.log("🚀 Starting to parse and seed markdown articles from /blobs...\n");
   
-  const blobsDir = path.join(__dirname, '..', 'blobs');
+  let blobsDir = path.join(__dirname, '..', 'blobs');
   if (!fs.existsSync(blobsDir)) {
-    console.error("❌ /blobs directory not found at path:", blobsDir);
+    blobsDir = path.join(__dirname, '..', 'blogs');
+  }
+  if (!fs.existsSync(blobsDir)) {
+    console.error("❌ /blobs or /blogs directory not found at path:", blobsDir);
     process.exit(1);
   }
 
