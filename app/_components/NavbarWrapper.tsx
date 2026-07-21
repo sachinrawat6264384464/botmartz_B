@@ -53,6 +53,8 @@ const DEFAULT_ITEMS: NavItem[] = [
 
 export default async function NavbarWrapper() {
   let navItems: NavItem[] = [];
+  // Logo is hardcoded — same as footer and live site (not changeable from admin)
+  const logoUrl = "/Logo-removebg-preview.png";
 
   try {
     const cachedItems = await getCachedNavbarConfig();
@@ -60,8 +62,8 @@ export default async function NavbarWrapper() {
       navItems = cachedItems as NavItem[];
     }
   } catch (err) {
-    console.warn("NavbarWrapper: Could not fetch navbar config, using defaults:", err);
+    console.warn("NavbarWrapper: Could not fetch config, using defaults:", err);
   }
 
-  return <Navbar navItems={navItems.length > 0 ? navItems : DEFAULT_ITEMS} />;
+  return <Navbar navItems={navItems.length > 0 ? navItems : DEFAULT_ITEMS} logoUrl={logoUrl} />;
 }

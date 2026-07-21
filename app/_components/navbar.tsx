@@ -1,13 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ArrowRight, Menu, X, PhoneCall } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { db } from "@/lib/firebase";
-import { doc, getDoc } from "firebase/firestore";
 
 export type NavDropdownItem = { name: string; path: string };
 export type NavItem = { name: string; path: string; dropdown?: NavDropdownItem[] };
@@ -67,7 +64,13 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
 ];
 
 /* ─── COMPONENT ──────────────────────────────────────────────────────────────── */
-export default function Navbar({ navItems }: { navItems?: NavItem[] }) {
+export default function Navbar({
+  navItems,
+  logoUrl = "/Logo-removebg-preview.png",
+}: {
+  navItems?: NavItem[];
+  logoUrl?: string;
+}) {
   const rawItems = (navItems && navItems.length > 0) ? navItems : DEFAULT_NAV_ITEMS;
   const NAV_ITEMS = rawItems;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -77,20 +80,6 @@ export default function Navbar({ navItems }: { navItems?: NavItem[] }) {
   const isActive = (item: (typeof NAV_ITEMS)[number]) =>
     pathname === item.path ||
     (item.dropdown && item.dropdown.some((s) => pathname === s.path));
-
-  const [logoUrl, setLogoUrl] = useState("/Logo-removebg-preview.png");
-
-  useEffect(() => {
-    async function fetchLogo() {
-      try {
-        const snap = await getDoc(doc(db, "settings", "global"));
-        if (snap.exists() && snap.data().branding?.primaryLogo) {
-          setLogoUrl(snap.data().branding.primaryLogo);
-        }
-      } catch (e) {}
-    }
-    fetchLogo();
-  }, []);
 
   return (
     <>

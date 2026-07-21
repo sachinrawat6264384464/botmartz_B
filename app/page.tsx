@@ -199,7 +199,7 @@ export default async function Home() {
   ];
 
   return (
-    <main>
+    <>
       {/* HERO SECTION */}
       <section className="relative pt-[120px] pb-[80px] bg-[#050B14] text-white overflow-hidden">
         <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[120px] rounded-full pointer-events-none" />
@@ -541,6 +541,6 @@ export default async function Home() {
           </Link>
         </div>
       </section>
-    </main>
+    </>
   );
 }
