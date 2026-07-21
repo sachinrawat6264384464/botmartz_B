@@ -32,32 +32,44 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
       { name: "Logistics", path: "/industries/logistics" },
     ],
   },
-  { name: "Case Studies", path: "/work/case-studies" },
-  { name: "Insights", path: "/insights" },
-  { name: "About", path: "/about" },
+  {
+    name: "Work",
+    path: "/work",
+    dropdown: [
+      { name: "Case Studies", path: "/work/case-studies" },
+      { name: "Labs", path: "/work/labs" },
+      { name: "Open Source", path: "/work/open-source" },
+    ],
+  },
+  {
+    name: "Engineering Insights",
+    path: "/insights",
+    dropdown: [
+      { name: "New Updates", path: "/insights/updates" },
+      { name: "All Insights", path: "/insights" },
+    ],
+  },
+  {
+    name: "Community",
+    path: "/community",
+    dropdown: [
+      { name: "Events", path: "/community/events" },
+      { name: "Discord & Forum", path: "/community" },
+    ],
+  },
+  {
+    name: "Careers",
+    path: "/careers",
+    dropdown: [
+      { name: "Apply Now", path: "/careers#apply" },
+    ],
+  },
 ];
 
 /* ─── COMPONENT ──────────────────────────────────────────────────────────────── */
 export default function Navbar({ navItems }: { navItems?: NavItem[] }) {
   const rawItems = (navItems && navItems.length > 0) ? navItems : DEFAULT_NAV_ITEMS;
-  const NAV_ITEMS = rawItems
-    .filter(i => !["Careers", "Community", "Partnerships"].includes(i.name) && i.path !== "/careers" && i.path !== "/partnerships")
-    .map(i => {
-      if (i.name === "Work" || i.path === "/work") {
-        return {
-          name: "Case Studies",
-          path: "/work/case-studies",
-          dropdown: undefined
-        };
-      }
-      if (i.dropdown) {
-        return {
-          ...i,
-          dropdown: i.dropdown.filter(d => !["Labs", "Open Source", "Events", "Discord & Forum", "Apply Now"].includes(d.name) && !d.path.includes("/labs") && !d.path.includes("/open-source"))
-        };
-      }
-      return i;
-    });
+  const NAV_ITEMS = rawItems;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();
@@ -189,13 +201,10 @@ export default function Navbar({ navItems }: { navItems?: NavItem[] }) {
           >
             <div className="wrap flex items-center justify-between h-[70px] border-b border-slate-200">
               <Link href="/" onClick={() => setMobileMenuOpen(false)}>
-                <Image
-                  src="/Logo-removebg-preview.png"
+                <img
+                  src={logoUrl}
                   alt="Botmartz"
-                  width={160}
-                  height={44}
                   className="h-[38px] w-auto object-contain"
-                  onClick={() => setMobileMenuOpen(false)}
                 />
               </Link>
               <button
