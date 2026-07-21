@@ -18,7 +18,7 @@ interface EventItem {
 }
 
 const PROTOTYPE_EVENTS: EventItem[] = [
-  { type: 'Meetup', status: 'Monthly', statusColor: '#0E9F6E', title: 'AI Engineering Meetup — Indore Chapter', desc: 'A monthly gathering for local AI engineers to share projects, talk shop, and swap production lessons.', date: 'Every 3rd Saturday', location: 'Walkover Co-working, Indore' },
+  { type: 'Meetup', status: 'Monthly', statusColor: '#0E9F6E', title: 'AI Engineering Meetup — Indore Chapter', desc: 'A monthly gathering for local AI engineers to share projects, talk shop, and swap production lessons.', date: 'Every 3rd Saturday', location: 'Indore, India' },
   { type: 'Meetup', status: 'Upcoming', statusColor: '#0E9F6E', title: 'Open Source Night: Contributing to LangGraph', desc: 'A hands-on evening picking up good-first-issues and pairing on real open-source contributions.', date: 'Sep 12, 2026 · 6:00 PM', location: 'Online' },
   { type: 'Hackathon', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Frontier Hackathon 2026', desc: 'A weekend build sprint following the conference — teams ship an AI agent or RAG system from scratch.', date: 'Sep 26–27, 2026', location: 'Indore, India' },
   { type: 'Webinar', status: 'Upcoming', statusColor: '#0E9F6E', title: 'Enterprise RAG in Production', desc: 'A deep dive on evaluation, reranking, and guardrails for RAG systems that actually ship.', date: 'Oct 8, 2026 · 5:00 PM', location: 'Online' },
@@ -122,7 +122,7 @@ export default function EventsClient({
       "eventStatus": "https://schema.org/EventScheduled",
       "location": {
         "@type": "Place",
-        "name": "Walkover Co-working",
+        "name": "Indore, India",
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Indore",
@@ -278,8 +278,7 @@ export default function EventsClient({
                     ◎
                   </div>
                   <div>
-                    <div className="font-bold text-[12.5px] text-white">Walkover Co-working</div>
-                    <div className="font-medium text-[11px] text-[#7C8CAD]">Indore, India</div>
+                    <div className="font-bold text-[12.5px] text-white">Indore, India</div>
                   </div>
                 </div>
               </div>
