@@ -21,19 +21,9 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
     ],
   },
   {
-    name: "Industries",
-    path: "/industries",
-    dropdown: [
-      { name: "Healthcare", path: "/industries/healthcare" },
-      { name: "Education", path: "/industries/education" },
-      { name: "Logistics", path: "/industries/logistics" },
-    ],
-  },
-  {
     name: "Work",
     path: "/work",
     dropdown: [
-      { name: "Case Studies", path: "/work/case-studies" },
       { name: "Labs", path: "/work/labs" },
       { name: "Open Source", path: "/work/open-source" },
     ],
@@ -41,10 +31,6 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
   {
     name: "Engineering Insights",
     path: "/insights",
-    dropdown: [
-      { name: "New Updates", path: "/insights/updates" },
-      { name: "All Insights", path: "/insights" },
-    ],
   },
   {
     name: "Community",
@@ -52,13 +38,6 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
     dropdown: [
       { name: "Events", path: "/community/events" },
       { name: "Discord & Forum", path: "/community" },
-    ],
-  },
-  {
-    name: "Careers",
-    path: "/careers",
-    dropdown: [
-      { name: "Apply Now", path: "/careers#apply" },
     ],
   },
 ];
@@ -85,14 +64,14 @@ export default function Navbar({
     <>
       {/* ── HEADER ── */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
-        <div className="wrap flex items-center justify-between h-[70px]">
+        <div className="wrap flex items-center justify-between h-[80px] sm:h-[86px]">
 
           {/* LOGO */}
-          <Link href="/" aria-label="Botmartz home" className="flex-shrink-0">
+          <Link href="/" aria-label="Botmartz home" className="flex-shrink-0 flex items-center">
             <img
               src={logoUrl}
               alt="Botmartz AI Solutions"
-              className="h-[44px] w-auto object-contain"
+              className="h-[58px] sm:h-[66px] w-auto object-contain transition-transform duration-200 hover:scale-105"
             />
           </Link>
 
@@ -188,12 +167,12 @@ export default function Navbar({
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[60] bg-white/98 backdrop-blur-xl flex flex-col"
           >
-            <div className="wrap flex items-center justify-between h-[70px] border-b border-slate-200">
-              <Link href="/" onClick={() => setMobileMenuOpen(false)}>
+            <div className="wrap flex items-center justify-between h-[76px] border-b border-slate-200">
+              <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center">
                 <img
                   src={logoUrl}
                   alt="Botmartz"
-                  className="h-[38px] w-auto object-contain"
+                  className="h-[50px] sm:h-[56px] w-auto object-contain"
                 />
               </Link>
               <button

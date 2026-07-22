@@ -17,12 +17,14 @@ export default function PartnershipsDashboard() {
   const [savingContent, setSavingContent] = useState(false);
   const [contentMsg, setContentMsg] = useState('');
 
+  const [newPartnerInput, setNewPartnerInput] = useState('');
   const [pageContent, setPageContent] = useState({
     heroTitle: 'Partner with Botmartz. Accelerate the Enterprise AI Ecosystem.',
     heroSubtitle: 'We collaborate with frontier cloud providers, hardware innovators, system integrators, and academic institutions to deploy high-impact AI architectures globally.',
     technologyDescription: 'Collaborate with Botmartz on hardware acceleration (NVIDIA/AMD), cloud infrastructure (AWS/GCP/Azure), and foundation model ecosystems (OpenAI, Anthropic, Hugging Face).',
     siDescription: 'Enterprise consulting firms and system integrators deploying Botmartz custom RAG pipelines, fine-tuned LoRA models, and autonomous agent architectures for joint clients.',
-    researchDescription: 'Joint R&D initiatives with academic institutions, AI research labs, and contributions to our flagship AI Frontier 2026 conference.'
+    researchDescription: 'Joint R&D initiatives with academic institutions, AI research labs, and contributions to our flagship AI Frontier 2026 conference.',
+    ecosystemPartners: ['PyTorch', 'GDG', 'AWS', 'NVIDIA', 'Walkover', 'IDFC', 'Incubators', 'Universities']
   });
 
   const fetchInquiries = async () => {
@@ -50,6 +52,7 @@ export default function PartnershipsDashboard() {
           technologyDescription: data.programs?.technology || pageContent.technologyDescription,
           siDescription: data.programs?.si || pageContent.siDescription,
           researchDescription: data.programs?.research || pageContent.researchDescription,
+          ecosystemPartners: data.techStack || data.ecosystem || pageContent.ecosystemPartners,
         });
       }
     } catch (e) {
@@ -98,6 +101,7 @@ export default function PartnershipsDashboard() {
           si: pageContent.siDescription,
           research: pageContent.researchDescription,
         },
+        techStack: pageContent.ecosystemPartners,
         updatedAt: serverTimestamp()
       }, { merge: true });
       setContentMsg('Partnerships page content updated successfully across frontside public pages!');
@@ -296,6 +300,63 @@ export default function PartnershipsDashboard() {
                     className="w-full bg-admin-bg border border-admin-border rounded-lg p-4 text-sm text-admin-text focus:outline-none focus:border-admin-accent leading-relaxed"
                   />
                 </div>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-admin-border">
+              <h4 className="text-sm font-semibold text-admin-text mb-4">Ecosystem Partners List (Displayed under "Ecosystem We Work With")</h4>
+              <div className="flex flex-wrap gap-2 mb-3">
+                {(pageContent.ecosystemPartners || []).map((partner, idx) => (
+                  <span key={idx} className="bg-admin-bg border border-admin-border rounded-full px-3 py-1 text-xs font-medium text-admin-text flex items-center gap-1.5">
+                    {partner}
+                    <button
+                      type="button"
+                      onClick={() => setPageContent({
+                        ...pageContent,
+                        ecosystemPartners: pageContent.ecosystemPartners.filter((_, i) => i !== idx)
+                      })}
+                      className="text-admin-text-muted hover:text-red-400"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+              <div className="flex gap-2 max-w-md">
+                <input
+                  type="text"
+                  placeholder="Add partner (e.g. Walkover, IDFC)..."
+                  value={newPartnerInput}
+                  onChange={(e) => setNewPartnerInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && newPartnerInput.trim()) {
+                      e.preventDefault();
+                      if (!pageContent.ecosystemPartners.includes(newPartnerInput.trim())) {
+                        setPageContent({
+                          ...pageContent,
+                          ecosystemPartners: [...pageContent.ecosystemPartners, newPartnerInput.trim()]
+                        });
+                      }
+                      setNewPartnerInput('');
+                    }
+                  }}
+                  className="flex-1 bg-admin-bg border border-admin-border rounded-lg px-3 py-2 text-sm text-admin-text focus:outline-none focus:border-admin-accent"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (newPartnerInput.trim() && !pageContent.ecosystemPartners.includes(newPartnerInput.trim())) {
+                      setPageContent({
+                        ...pageContent,
+                        ecosystemPartners: [...pageContent.ecosystemPartners, newPartnerInput.trim()]
+                      });
+                      setNewPartnerInput('');
+                    }
+                  }}
+                  className="bg-admin-bg hover:bg-admin-border border border-admin-border text-admin-text px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                >
+                  Add Partner
+                </button>
               </div>
             </div>
           </div>

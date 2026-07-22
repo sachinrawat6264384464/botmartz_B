@@ -15,9 +15,9 @@ export default function WorkClient({
   heroContent = {
     badge: "Our Work",
     title: "Production AI Systems,<br><span class=\"text-[#00C6FF]\">Shipped &amp; Proven</span>",
-    subtitle: "Case studies from enterprise clients across education, logistics, healthcare and SaaS — real systems in production, not proofs of concept.",
-    ctaText: "Browse Case Studies →",
-    ctaLink: "#cases",
+    subtitle: "Explore our innovation labs, open-source AI projects, and engineering methodology for shipping real systems in production.",
+    ctaText: "Explore Labs →",
+    ctaLink: "/work/labs",
   },
   structuredData,
   aeoQuestion,
@@ -30,34 +30,11 @@ export default function WorkClient({
   aeoAnswer?: string;
   dbCases?: any[];
 }) {
-  const [filter, setFilter] = useState('All Work');
-
-  const industryList = ['All Work', 'Education', 'Logistics', 'Healthcare', 'SaaS & Technology'];
-
   const heroStats = [
     { value: '20+', label: 'Systems Shipped' },
-    { value: '4', label: 'Industries Served' },
+    { value: '10+', label: 'AI Models Deployed' },
     { value: '99%+', label: 'Uptime in Production' },
     { value: '2023', label: 'Building Since' },
-  ];
-
-  const cases = [
-    {
-      industry: 'Logistics',
-      title: 'Enterprise Knowledge Search for Global Logistics',
-      desc: 'A secure enterprise RAG system unifying search across 500K+ internal documents, complex SOPs, and manuals.',
-      result: '70% faster information retrieval',
-      glyph: 'LG',
-      slug: '/work/case-studies/logistics-rag'
-    },
-    {
-      industry: 'Healthcare',
-      title: 'Clinical Documentation Copilot for Hospital Network',
-      desc: 'Ambient documentation assistant that drafts clinical notes and summaries from patient conversations and EMR inputs.',
-      result: '78% reduction in doc time',
-      glyph: 'HC',
-      slug: '/work/case-studies/clinical-documentation-copilot'
-    },
   ];
 
   const steps = [
@@ -66,29 +43,6 @@ export default function WorkClient({
     { n: '3', title: 'Harden', desc: 'Evaluation, guardrails and monitoring built in before launch.' },
     { n: '4', title: 'Ship & Support', desc: 'Production rollout with ongoing iteration as usage grows.' },
   ];
-
-  const mergedCases = React.useMemo(() => {
-    const formattedDb = dbCases
-      .filter((c: any) => c.slug === 'logistics-rag' || c.slug === 'clinical-documentation-copilot')
-      .map((c) => ({
-        industry: c.category || c.industry || 'Technology',
-        title: c.title,
-        desc: c.excerpt || c.description || '',
-        result: c.outcome || 'Success',
-        glyph: c.clientName ? c.clientName.substring(0, 2).toUpperCase() : 'AI',
-        slug: `/work/case-studies/${c.slug}`
-      }));
-
-    const result = [...formattedDb, ...cases];
-    // Keep exact 2 unique works
-    const uniqueMap = new Map();
-    for (const item of result) {
-      if (!uniqueMap.has(item.slug)) uniqueMap.set(item.slug, item);
-    }
-    return Array.from(uniqueMap.values()).slice(0, 2);
-  }, [dbCases]);
-
-  const visibleCases = filter === 'All Work' ? mergedCases : mergedCases.filter(c => c.industry === filter);
 
   return (
     <div className={`${montserrat.className} bg-[#F5F8FC] text-[#0B1220] antialiased overflow-x-hidden min-h-screen`}>
@@ -153,8 +107,11 @@ export default function WorkClient({
               {/* Sub-navigation */}
               <div className="mt-8 pt-6 border-t border-[rgba(255,255,255,0.08)] flex items-center gap-5 flex-wrap text-xs font-semibold text-[#8FA3C4]">
                 <span>Explore:</span>
-                <Link href="/work/case-studies" className="text-[#00C6FF] hover:underline flex items-center gap-1">
-                  <Layers className="w-3.5 h-3.5" /> All Case Studies
+                <Link href="/work/labs" className="text-[#00C6FF] hover:underline flex items-center gap-1">
+                  <Terminal className="w-3.5 h-3.5" /> AI Innovation Labs
+                </Link>
+                <Link href="/work/open-source" className="text-[#00C6FF] hover:underline flex items-center gap-1">
+                  <Code2 className="w-3.5 h-3.5" /> Open Source Projects
                 </Link>
               </div>
             </div>
@@ -172,68 +129,7 @@ export default function WorkClient({
         </div>
       </div>
 
-      {/* ─── 2. SELECTED PROJECTS / CASE STUDIES GRID ─── */}
-      <div id="cases" className="max-w-[1240px] mx-auto pt-14 px-6 sm:px-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div>
-          <div className="font-bold text-xs tracking-[0.1em] text-[#007BFF] uppercase">Case Studies</div>
-          <div className="font-extrabold text-[26px] sm:text-[30px] text-[#0B1220] mt-2">Selected Projects</div>
-        </div>
-        <div className="flex gap-2 flex-wrap items-center">
-          {industryList.map((label) => {
-            const active = filter === label;
-            return (
-              <button
-                key={label}
-                onClick={() => setFilter(label)}
-                className={`font-bold text-[12.5px] px-4 py-2.5 rounded-[8px] cursor-pointer border transition-all ${
-                  active
-                    ? 'border-[#007BFF] bg-[#007BFF] text-white shadow-sm'
-                    : 'border-[#E2E8F0] bg-white text-[#3A4459] hover:border-[#007BFF]/40 hover:text-[#007BFF]'
-                }`}
-              >
-                {label}
-              </button>
-            );
-          })}
-        </div>
-      </div>
 
-      {/* Case Cards Grid */}
-      <div className="max-w-[1240px] mx-auto pt-6 px-6 sm:px-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {visibleCases.map((c, i) => (
-          <Link
-            key={i}
-            href={c.slug}
-            className="bg-white border border-[#E7ECF3] rounded-[14px] overflow-hidden flex flex-col transition-all duration-300 hover:shadow-[0_12px_32px_rgba(0,123,255,0.08)] hover:border-[#007BFF]/40 group"
-          >
-            <div className="h-[110px] bg-gradient-to-br from-[#0A1630] to-[#060C1F] flex items-center justify-center relative overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,198,255,0.15),transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="w-[38px] h-[38px] rounded-[9px] bg-[rgba(0,198,255,0.14)] border border-[rgba(0,198,255,0.3)] flex items-center justify-center font-bold text-[11px] text-[#00C6FF] relative z-10 shadow-sm group-hover:scale-105 transition-transform">
-                {c.glyph}
-              </div>
-            </div>
-            <div className="p-5.5 sm:p-6 flex flex-col gap-2.5 flex-1 justify-between">
-              <div>
-                <span className="font-bold text-[10px] tracking-[0.06em] text-[#007BFF] uppercase bg-[#E8F2FF] px-2 py-0.5 rounded">
-                  {c.industry}
-                </span>
-                <div className="font-bold text-[16.5px] text-[#0B1220] mt-2.5 group-hover:text-[#007BFF] transition-colors leading-snug">
-                  {c.title}
-                </div>
-                <div className="font-medium text-[13px] leading-[1.6] text-[#5B6B85] mt-2">
-                  {c.desc}
-                </div>
-              </div>
-              <div className="flex items-center gap-2 mt-4 pt-3.5 border-t border-[#EEF1F6]">
-                <div className="w-[26px] h-[26px] rounded-[7px] bg-[#E4F8EF] flex items-center justify-center font-bold text-[11px] text-[#0E9F6E] shrink-0">
-                  ↑
-                </div>
-                <div className="font-bold text-[12.5px] text-[#0B1220]">{c.result}</div>
-              </div>
-            </div>
-          </Link>
-        ))}
-      </div>
 
       {/* ─── 3. HOW WE WORK (FROM PROBLEM TO PRODUCTION) ─── */}
       <div className="max-w-[1240px] mx-auto mt-16 px-6 sm:px-10">

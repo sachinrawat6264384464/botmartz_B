@@ -37,17 +37,10 @@ const FOOTER_COLS = [
     ],
   },
   {
-    heading: "Industries",
-    links: [
-      { label: "Healthcare", href: "/industries/healthcare" },
-      { label: "Education", href: "/industries/education" },
-      { label: "Logistics", href: "/industries/logistics" },
-    ],
-  },
-  {
     heading: "Work",
     links: [
-      { label: "Case Studies", href: "/work/case-studies" },
+      { label: "Labs", href: "/work/labs" },
+      { label: "Open Source", href: "/work/open-source" },
     ],
   },
   {

@@ -12,17 +12,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/services`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
     { url: `${baseUrl}/services/enterprise-rag`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.85 },
     { url: `${baseUrl}/services/ai-agents`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.85 },
-    { url: `${baseUrl}/industries`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${baseUrl}/industries/education`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.75 },
-    { url: `${baseUrl}/industries/logistics`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.75 },
-    { url: `${baseUrl}/industries/healthcare`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.75 },
     { url: `${baseUrl}/work`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${baseUrl}/work/case-studies`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.85 },
     { url: `${baseUrl}/work/labs`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${baseUrl}/careers`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${baseUrl}/partnerships`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${baseUrl}/insights`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
-    { url: `${baseUrl}/insights/updates`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
     { url: `${baseUrl}/community`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${baseUrl}/community/events`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.85 },
     // AI Frontier 2026 — flagship event, highest event priority
@@ -83,48 +76,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  // Dynamic Case Studies from Firestore
-  let caseStudyUrls: MetadataRoute.Sitemap = [];
-  try {
-    const snapshot = await adminDb
-      .collection('case-studies')
-      .where('status', '==', 'published')
-      .get();
 
-    caseStudyUrls = snapshot.docs
-      .filter((doc) => isValidSlug(doc.data().slug))
-      .map((doc) => {
-        const data = doc.data();
-        return {
-          url: `${baseUrl}/work/case-studies/${data.slug}`,
-          lastModified: new Date(),
-          changeFrequency: 'monthly' as const,
-          priority: 0.75,
-        };
-      });
-  } catch (error) {
-    console.error('Failed to generate sitemap for case-studies:', error);
-  }
-
-  // Static Fallback Case Studies
-  const staticCaseStudiesSlugs = [
-    "logistics-rag",
-    "saas-support",
-    "legal-doc-intel",
-    "logistics-planner",
-    "ai-course-assistant-for-edtech-platform",
-    "route-optimization-agent-for-fleet-ops",
-    "clinical-documentation-copilot",
-    "enterprise-rag-for-support-teams",
-    "warehouse-vision-inspection",
-    "patient-intake-voice-agent"
-  ];
-  const staticCaseStudyUrls: MetadataRoute.Sitemap = staticCaseStudiesSlugs.map(slug => ({
-    url: `${baseUrl}/work/case-studies/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.75,
-  }));
 
   // Dynamic Events from Firestore
   let eventUrls: MetadataRoute.Sitemap = [];
@@ -153,8 +105,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...staticUrls,
     ...insightUrls,
     ...staticBlogUrls,
-    ...caseStudyUrls,
-    ...staticCaseStudyUrls,
     ...eventUrls
   ];
 }

@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Github, ExternalLink, Code } from "lucide-react";
-import InteractiveRAGSimulator from "@/app/_components/InteractiveRAGSimulator";
 import SpotlightCard from "@/app/_components/SpotlightCard";
 
 export interface LabItem {
@@ -206,10 +205,6 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
         </div>
       </section>
 
-      {/* ══════════ LIVE RAG SIMULATOR ══════════ */}
-      <div className="max-w-[1240px] mx-auto px-6 sm:px-10">
-        <InteractiveRAGSimulator />
-      </div>
 
       {/* ══════════ FILTER BAR & SORT ══════════ */}
       <div className="max-w-[1240px] mx-auto px-6 sm:px-10 pt-9 pb-5 flex items-center justify-between flex-wrap gap-4" id="labs-grid">

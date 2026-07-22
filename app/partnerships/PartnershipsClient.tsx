@@ -15,12 +15,14 @@ export default function PartnershipsClient({
   },
   structuredData,
   aeoQuestion,
-  aeoAnswer
+  aeoAnswer,
+  techStack
 }: {
   heroContent?: any;
   structuredData?: string;
   aeoQuestion?: string;
   aeoAnswer?: string;
+  techStack?: string[];
 }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [form, setForm] = useState({
@@ -49,14 +51,33 @@ export default function PartnershipsClient({
     { tag: 'ENT', title: 'Enterprise Partners', desc: 'Companies exploring production AI adoption through roundtables and workshops.' },
   ];
 
-  const ecosystem = [
-    { name: 'PyTorch', color: '#EE4C2C' },
-    { name: 'GDG', color: '#4285F4' },
-    { name: 'AWS', color: '#FF9900' },
-    { name: 'NVIDIA', color: '#76B900' },
-    { name: 'Incubators', color: '#007BFF' },
-    { name: 'Universities', color: '#7C3AED' },
-  ];
+  const colorPalette = ['#EE4C2C', '#4285F4', '#FF9900', '#76B900', '#00C6FF', '#9333EA', '#007BFF', '#7C3AED', '#E11D48', '#10B981'];
+  const getPartnerColor = (name: string, index: number) => {
+    const knownColors: Record<string, string> = {
+      'PyTorch': '#EE4C2C',
+      'GDG': '#4285F4',
+      'AWS': '#FF9900',
+      'NVIDIA': '#76B900',
+      'Walkover': '#00C6FF',
+      'IDFC': '#9333EA',
+      'Incubators': '#007BFF',
+      'Universities': '#7C3AED',
+    };
+    return knownColors[name] || colorPalette[index % colorPalette.length];
+  };
+
+  const ecosystem = (techStack && techStack.length > 0)
+    ? techStack.map((name, i) => ({ name, color: getPartnerColor(name, i) }))
+    : [
+        { name: 'PyTorch', color: '#EE4C2C' },
+        { name: 'GDG', color: '#4285F4' },
+        { name: 'AWS', color: '#FF9900' },
+        { name: 'NVIDIA', color: '#76B900' },
+        { name: 'Walkover', color: '#00C6FF' },
+        { name: 'IDFC', color: '#9333EA' },
+        { name: 'Incubators', color: '#007BFF' },
+        { name: 'Universities', color: '#7C3AED' },
+      ];
 
   const steps = [
     { n: '1', title: 'Introduce', desc: 'Tell us who you are and what you’re hoping to build with the community.' },

@@ -54,7 +54,7 @@ const DEFAULT_SETTINGS = {
     globalKeywords: "AI Engineering, Enterprise RAG, Autonomous AI Agents, LangChain, LlamaIndex, Indore Tech",
     ogImageUrl: "/BotmartznewBot.png",
     gaId: "G-BOTMARTZ2026",
-    robotsTxt: "User-agent: *\nAllow: /\nSitemap: https://botmartz.com/sitemap.xml",
+    robotsTxt: "User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /careers\nDisallow: /industries\nDisallow: /work/case-studies\nSitemap: https://botmartz.com/sitemap.xml",
     aeoBrandPersona: "Botmartz is an elite AI engineering firm specializing in Enterprise RAG, agentic workflows, and custom LLM model fine-tuning.",
     aeoKnowledgeContext: "Botmartz AI Solutions operates out of Indore, India. Key flagship events include AI Frontier 2026.",
     geoEntityDescription: "Botmartz AI Solutions - Premier Enterprise AI & Agent Development Agency",

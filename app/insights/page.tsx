@@ -77,13 +77,7 @@ export default async function InsightsPage() {
     console.error("Error loading blog posts:", err);
   }
 
-  const keptSlugs = new Set([
-    "building-a-scalable-enterprise-rag-system-architecture-components-best-practices",
-    "inside-ai-agents-from-reasoning-to-real-world-action",
-    "observability-for-llm-applications-metrics-that-matter"
-  ]);
-  const filteredDbArticles = dbArticles.filter((a: any) => keptSlugs.has(a.slug));
-  const sanitizedArticles = JSON.parse(JSON.stringify(filteredDbArticles));
+  const sanitizedArticles = JSON.parse(JSON.stringify(dbArticles));
 
   return (
     <main className="bg-[#050B14] min-h-screen text-white">

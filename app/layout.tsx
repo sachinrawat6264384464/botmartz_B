@@ -98,6 +98,15 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [seo.ogImageUrl || "/BotmartznewBot.png"],
       creator: "@botmartz"
     },
+    icons: {
+      icon: [
+        { url: '/botmartz_favicon.png', type: 'image/png' },
+      ],
+      shortcut: ['/botmartz_favicon.png'],
+      apple: [
+        { url: '/botmartz_favicon.png', sizes: '180x180', type: 'image/png' },
+      ],
+    },
     alternates: {
       canonical: general.websiteUrl || "https://www.botmartz.com",
     }
@@ -119,6 +128,9 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="icon" type="image/png" href="/botmartz_favicon.png" />
+        <link rel="shortcut icon" href="/botmartz_favicon.png" />
+        <link rel="apple-touch-icon" href="/botmartz_favicon.png" />
         {/* DNS prefetch for Unsplash images */}
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         {/* Preconnect to Firestore API */}

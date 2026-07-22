@@ -108,18 +108,8 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
   const [mobileFilterOpen, setMobileFilterOpen] = useState<boolean>(false);
 
   const mergedArticles = useMemo(() => {
-    const keptSlugs = new Set([
-      "building-a-scalable-enterprise-rag-system-architecture-components-best-practices",
-      "inside-ai-agents-from-reasoning-to-real-world-action",
-      "observability-for-llm-applications-metrics-that-matter"
-    ]);
-
     const formattedDb = dbArticles
-      .filter((art: any) => {
-        const s = art.slug || generateSlugRaw(art.title);
-        return keptSlugs.has(s);
-      })
-      .map((art) => ({
+      .map((art: any) => ({
         id: art.id,
         title: art.title,
         category: art.category?.toUpperCase() || "AI ENGINEERING",
@@ -138,17 +128,29 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
     return [...formattedDb, ...staticKept];
   }, [dbArticles]);
 
+  const categoriesList = useMemo(() => {
+    const counts: Record<string, number> = {};
+    mergedArticles.forEach((a) => {
+      const cat = a.category ? (a.category.charAt(0).toUpperCase() + a.category.slice(1).toLowerCase()) : "General";
+      counts[cat] = (counts[cat] || 0) + 1;
+    });
+    const list = Object.entries(counts).map(([name, count]) => ({
+      name: name.toUpperCase(),
+      count,
+    }));
+    return [
+      { name: "All Articles", count: mergedArticles.length, isAll: true },
+      ...list,
+    ];
+  }, [mergedArticles]);
+
   // Filter logic
   const filteredArticles = useMemo(() => {
     return mergedArticles.filter((item) => {
-      // Check category match
       const matchesCategory =
         activeCategory === "All Articles" ||
-        item.category.toUpperCase() === activeCategory.toUpperCase() ||
-        (activeCategory === "Tutorials" && item.category === "TUTORIALS") ||
-        (activeCategory === "Case Studies" && item.category === "CASE STUDIES");
+        item.category.toUpperCase() === activeCategory.toUpperCase();
 
-      // Check search match
       const matchesSearch =
         !searchQuery.trim() ||
         item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -163,7 +165,6 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
   const featuredArticle = filteredArticles.find((a) => a.featured) || filteredArticles[0] || ARTICLES_DATA[0];
   const gridArticles = filteredArticles.filter((a) => a.id !== featuredArticle?.id);
 
-  // Dynamic Pagination Logic
   const [currentPage, setCurrentPage] = useState<number>(1);
   const ITEMS_PER_PAGE = 6;
   
@@ -201,22 +202,77 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
       const end = Math.min(totalPages - 1, currentPage + 1);
       
       for (let i = start; i <= end; i++) {
-        if (!pages.includes(i)) pages.push(i);
+        pages.push(i);
       }
       
       if (currentPage < totalPages - 2) {
         pages.push("ellipsis-2");
       }
-      if (!pages.includes(totalPages)) {
-        pages.push(totalPages);
-      }
+      pages.push(totalPages);
     }
     return pages;
   };
 
   return (
-    <div className="bg-[#F8FAFC] text-[#0F172A]" id="articles">
-      {/* ── TOP FILTER & SEARCH BAR ── */}
+    <div className="bg-[#050B14] text-[#E2E8F0] min-h-screen">
+      {/* FEATURED HERO CARD AT TOP OF LISTING */}
+      {featuredArticle && (
+        <section id="articles" className="py-12 bg-[#050B14] border-b border-[#1E293B]">
+          <div className="wrap max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="font-mono text-[11px] tracking-[0.14em] text-[#00B8F0] uppercase mb-4 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#00B8F0] animate-pulse"></span>
+              Featured Insight
+            </div>
+            <Link
+              href={`/insights/${featuredArticle.slug || featuredArticle.id}`}
+              className="group block bg-[#0A111F] border border-[#1E293B] hover:border-[#00B8F0] rounded-2xl overflow-hidden transition-all duration-300 shadow-xl"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-8 p-6 sm:p-10 items-center">
+                <div className="flex flex-col justify-between h-full">
+                  <div>
+                    <div className="flex items-center gap-3 flex-wrap mb-4">
+                      <span className="bg-[#00B8F0]/10 border border-[#00B8F0]/30 text-[#00B8F0] font-mono text-[11px] font-semibold px-3 py-1 rounded-full uppercase">
+                        {featuredArticle.category}
+                      </span>
+                      <span className="text-xs text-[#8A9EB0] font-mono">{featuredArticle.date}</span>
+                      <span className="text-xs text-[#8A9EB0] font-mono">· {featuredArticle.readTime}</span>
+                    </div>
+                    <h2 className="text-[24px] sm:text-[32px] font-semibold leading-[1.25] text-white group-hover:text-[#00B8F0] transition-colors tracking-tight mb-4">
+                      {featuredArticle.title}
+                    </h2>
+                    <p className="text-[15px] sm:text-[16px] leading-[1.65] text-[#8A9EB0] mb-6">
+                      {featuredArticle.description}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between pt-6 border-t border-[#1E293B]">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-[#1E293B] flex items-center justify-center font-mono text-xs font-bold text-[#00B8F0]">
+                        {featuredArticle.author?.charAt(0) || "B"}
+                      </div>
+                      <span className="text-sm font-medium text-white">{featuredArticle.author}</span>
+                    </div>
+                    <span className="inline-flex items-center gap-2 text-sm font-semibold text-[#00B8F0] group-hover:gap-3 transition-all">
+                      Read Full Blueprint <ArrowRight className="w-4 h-4" />
+                    </span>
+                  </div>
+                </div>
+                
+                {/* Visual Preview Banner */}
+                <div className="bg-[#050B14] border border-[#1E293B] rounded-xl p-6 h-full min-h-[280px] flex items-center justify-center relative overflow-hidden group-hover:border-[#00B8F0]/40 transition-colors">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,184,240,0.1),transparent_70%)] pointer-events-none" />
+                  <div className="text-center relative z-10 p-4">
+                    <Database className="w-12 h-12 text-[#00B8F0] mx-auto mb-3 opacity-80" />
+                    <div className="font-mono text-xs text-[#8A9EB0] uppercase tracking-wider mb-1">Architecture Diagram</div>
+                    <div className="font-semibold text-sm text-white max-w-[260px] mx-auto">{featuredArticle.title}</div>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </div>
+        </section>
+      )}
+
+      {/* STICKY FILTER & SEARCH BAR */}
       <section className="bg-white border-y border-[#E2E8F0] sticky top-[60px] z-30 shadow-sm py-4">
         <div className="wrap max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between gap-4">
           
@@ -236,7 +292,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
 
           {/* Desktop Filter Pills / Collapsible Mobile Pills */}
           <div className={`${mobileFilterOpen ? "flex" : "hidden"} lg:flex flex-wrap items-center gap-2 w-full lg:w-auto`}>
-            {CATEGORIES_LIST.map((cat) => {
+            {categoriesList.map((cat) => {
               const isActive = activeCategory === cat.name;
               return (
                 <button

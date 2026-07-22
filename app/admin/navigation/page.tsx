@@ -19,11 +19,9 @@ interface NavItem {
 const DEFAULT_ITEMS: NavItem[] = [
   { name: "Home", path: "/" },
   { name: "Services", path: "/services", dropdown: [{ name: "Enterprise RAG", path: "/services/enterprise-rag" }, { name: "AI Agents", path: "/services/ai-agents" }] },
-  { name: "Industries", path: "/industries", dropdown: [{ name: "Healthcare", path: "/industries/healthcare" }, { name: "Education", path: "/industries/education" }, { name: "Logistics", path: "/industries/logistics" }] },
-  { name: "Work", path: "/work", dropdown: [{ name: "Case Studies", path: "/work/case-studies" }, { name: "Labs", path: "/work/labs" }, { name: "Open Source", path: "/work/open-source" }] },
-  { name: "Engineering Insights", path: "/insights", dropdown: [{ name: "New Updates", path: "/insights/updates" }, { name: "All Insights", path: "/insights" }] },
+  { name: "Work", path: "/work", dropdown: [{ name: "Labs", path: "/work/labs" }, { name: "Open Source", path: "/work/open-source" }] },
+  { name: "Engineering Insights", path: "/insights" },
   { name: "Community", path: "/community", dropdown: [{ name: "Events", path: "/community/events" }, { name: "Discord & Forum", path: "/community" }] },
-  { name: "Careers", path: "/careers", dropdown: [{ name: "Open Roles", path: "/careers" }, { name: "Apply Now", path: "/careers#apply" }] },
 ];
 
 export default function NavigationAdminPage() {
