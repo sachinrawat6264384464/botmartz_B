@@ -200,170 +200,292 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
         </div>
       </div>
 
-      {/* ─── 2. EVENT AGENDA ─── */}
-      <div id="agenda" className="max-w-[1120px] mx-auto pt-22 pb-5 px-6 sm:px-10">
-        <div className="text-center max-w-[680px] mx-auto mb-13">
-          <div className="font-bold text-xs tracking-[0.1em] text-[#007BFF] uppercase">Event Agenda</div>
-          <h2 className="font-extrabold text-[30px] sm:text-[36px] leading-[1.2] text-[#0B1220] mt-3">
-            A Day of Ideas, Insights &amp; Impact
-          </h2>
-          <p className="font-medium text-[15px] leading-[1.6] text-[#5B6B85] mt-3.5">
-            Curated sessions by industry experts to help you understand where AI is heading and how engineers can build, ship and grow in the age of intelligent systems.
+      {/* ─── 2. FOUR PILLARS & GOLDEN THREAD AGENDA ─── */}
+      <div id="agenda" className="max-w-[1120px] mx-auto pt-20 pb-10 px-6 sm:px-10">
+        
+        {/* Four Pillars */}
+        <div className="bg-white border border-[#E7ECF3] rounded-[18px] p-6 sm:p-8 mb-14 shadow-sm">
+          <div className="font-bold text-xs tracking-[0.12em] text-[#007BFF] uppercase mb-2">Four Pillars, One Lifecycle</div>
+          <div className="flex flex-wrap gap-2.5 my-4">
+            <span className="font-bold text-[13.5px] px-4 py-2 rounded-full border-2 border-[#0B1220] text-[#0B1220] bg-transparent">
+              Agents
+            </span>
+            <span className="font-bold text-[13.5px] px-4 py-2 rounded-full border-2 border-[#007BFF] text-white bg-[#007BFF] shadow-sm">
+              Enterprise AI
+            </span>
+            <span className="font-bold text-[13.5px] px-4 py-2 rounded-full border-2 border-[#0B1220] text-[#0B1220] bg-transparent">
+              AI-assisted development
+            </span>
+            <span className="font-bold text-[13.5px] px-4 py-2 rounded-full border-2 border-[#0B1220] text-[#0B1220] bg-transparent">
+              Responsible AI
+            </span>
+          </div>
+          <p className="font-medium text-[14px] leading-[1.6] text-[#5B6B85] mt-3">
+            These aren&apos;t four separate tracks. They surface at the moments in the lifecycle where they matter — <b className="text-[#0B1220]">and the golden thread below runs through all of them.</b>
           </p>
         </div>
 
-        <div className="flex flex-col gap-4">
-          {/* Agenda Item 1 */}
-          <div className="flex flex-col md:flex-row gap-5.5 items-start bg-white border border-[#E7ECF3] rounded-[14px] p-5.5 sm:px-6">
-            <div className="w-full md:w-[118px] shrink-0 flex md:flex-col justify-between md:justify-start">
-              <div className="font-bold text-sm text-[#0B1220]">10:00 AM</div>
-              <div className="font-medium text-xs text-[#8A97AC]">15 mins</div>
+        {/* Golden Thread Header */}
+        <div className="text-center max-w-[720px] mx-auto mb-14">
+          <div className="font-bold text-xs tracking-[0.14em] text-[#D97706] uppercase">The Golden Thread</div>
+          <h2 className="font-extrabold text-[30px] sm:text-[38px] leading-[1.18] text-[#0B1220] mt-3">
+            The Run of Show Is a Story
+          </h2>
+          <p className="font-medium text-[15.5px] leading-[1.65] text-[#5B6B85] mt-3.5">
+            Every session below sits on the thread and answers one step of the journey. The breaks sit off it. Follow the golden line from the first LLM call to a system running reliably in production.
+          </p>
+        </div>
+
+        {/* The Golden Thread Journey Timeline */}
+        <div className="relative pl-6 sm:pl-12 border-l-3 border-gradient-to-b from-[#00C6FF] via-[#007BFF] to-[#D97706] space-y-7 my-6" style={{ borderColor: '#007BFF' }}>
+          
+          {/* Registration Interlude */}
+          <div className="relative flex items-center gap-3.5 p-4 sm:px-5 border border-dashed border-[#C7CED6] rounded-xl bg-white/60 text-[#5B6B85] text-[13px] sm:text-[13.5px]">
+            <div className="absolute -left-[31px] sm:-left-[55px] top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-white border-2 border-[#8A97AC]" />
+            <span className="font-mono font-bold text-[#0B1220] shrink-0">09:30–10:00 AM</span>
+            <span className="font-medium">
+              <b className="text-[#0B1220]">Registration &amp; Networking</b> — live agent demos, sponsor booths, workshop repo QR, community sign-up &amp; leaderboard
+            </span>
+          </div>
+
+          {/* Beat 1: Opening (Soham - 15 mins) */}
+          <div className="relative pt-1">
+            <div className="absolute -left-[31px] sm:-left-[55px] top-3 w-4 h-4 rounded-full bg-[#007BFF] ring-4 ring-[#E8F2FF]" />
+            <div className="flex items-baseline gap-3 flex-wrap mb-2.5">
+              <span className="font-mono font-bold text-xs sm:text-[13px] text-[#8A97AC]">10:00–10:15 AM · 15 mins</span>
+              <span className="font-bold italic text-[16px] text-[#007BFF]">&quot;Why does AI engineering matter?&quot;</span>
             </div>
-            <div className="flex-1">
-              <span className="inline-block font-bold text-[10.5px] tracking-[0.06em] text-[#007BFF] bg-[#E8F2FF] px-2.5 py-[3px] rounded-[5px] uppercase">
-                Opening
-              </span>
-              <div className="font-bold text-[17px] text-[#0B1220] mt-2.5">Welcome &amp; Opening Keynote</div>
-              <div className="font-medium text-[13.5px] leading-[1.6] text-[#5B6B85] mt-1.5 max-w-[560px]">
-                Setting the stage for AI Frontier 2026 — why this event exists, why AI engineering matters, and what&apos;s ahead.
+            <div className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 shadow-sm hover:border-[#007BFF]/40 transition-all">
+              <div className="flex justify-between items-start flex-wrap gap-2">
+                <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#8A97AC] uppercase">Opening</span>
+                <span className="font-bold text-[11px] text-[#007BFF] bg-[#E8F2FF] px-2.5 py-1 rounded-full">Soham Sharma · Principal AI Architect</span>
               </div>
+              <h3 className="font-extrabold text-[20px] sm:text-[22px] text-[#0B1220] mt-2">Set the Frame</h3>
+              <p className="font-medium text-[14px] text-[#3A4459] mt-2 leading-[1.6]">
+                Not AI tools. Not prompting. Not ChatGPT — <b className="text-[#0B1220]">engineering</b>. Name the journey the room is about to walk, so every session that follows has a place to land.
+              </p>
             </div>
-            <div className="flex items-center gap-2.5 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-[#EEF1F6] w-full md:w-auto">
-              <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#007BFF] to-[#00C6FF] flex items-center justify-center font-bold text-[13px] text-white">
-                SS
+          </div>
+
+          {/* Beat 2: Keynote (Promit - 130 mins) */}
+          <div className="relative pt-1">
+            <div className="absolute -left-[31px] sm:-left-[55px] top-3 w-4 h-4 rounded-full bg-[#7C3AED] ring-4 ring-[#F1EBFE]" />
+            <div className="flex items-baseline gap-3 flex-wrap mb-2.5">
+              <span className="font-mono font-bold text-xs sm:text-[13px] text-[#8A97AC]">10:15 AM–12:25 PM · 130 mins</span>
+              <span className="font-bold italic text-[16px] text-[#7C3AED]">&quot;Where is AI heading?&quot;</span>
+            </div>
+            <div className="bg-white border-2 border-[#7C3AED]/30 rounded-[16px] p-6 sm:p-7 shadow-md relative overflow-hidden">
+              <div className="absolute top-0 right-0 bg-gradient-to-l from-[#7C3AED]/15 to-transparent w-40 h-full pointer-events-none" />
+              <div className="flex justify-between items-start flex-wrap gap-2">
+                <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#7C3AED] uppercase">Keynote · Flagship Deep Dive</span>
+                <span className="font-bold text-[11px] text-[#7C3AED] bg-[#F1EBFE] px-3 py-1 rounded-full">Dr. Promit Ray · Chief AI Scientist</span>
               </div>
-              <div>
-                <div className="font-bold text-[12.5px] text-[#0B1220]">Soham Sharma</div>
-                <div className="font-medium text-[11px] text-[#8A97AC]">Principal AI Architect</div>
+              <h3 className="font-extrabold text-[22px] sm:text-[24px] text-[#0B1220] mt-2.5">The State of AI Engineering 2026</h3>
+              <p className="font-medium text-[14.5px] text-[#3A4459] mt-2.5 leading-[1.65]">
+                The honest, rigorous picture of where the field is — and where it&apos;s going. We dive deep into foundation models, reasoning architectures, inference economics, agents, evaluation harnesses, and governance. Ends on the hook for the whole day: <i className="font-bold text-[#0B1220]">&quot;today, we&apos;ll build one.&quot;</i>
+              </p>
+              <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-[#EEF1F6]">
+                {["Foundation models", "Reasoning models", "Inference economics", "Agents", "Evals", "Governance", "Coding agents"].map((tag, i) => (
+                  <span key={i} className="font-mono font-medium text-[11px] text-[#4C1D95] bg-[#F3E8FF] border border-[#E9D5FF] px-2.5 py-1 rounded">
+                    {tag}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* Agenda Item 2 */}
-          <div className="flex flex-col md:flex-row gap-5.5 items-start bg-white border border-[#E7ECF3] rounded-[14px] p-5.5 sm:px-6">
-            <div className="w-full md:w-[118px] shrink-0 flex md:flex-col justify-between md:justify-start">
-              <div className="font-bold text-sm text-[#0B1220]">10:15 AM</div>
-              <div className="font-medium text-xs text-[#8A97AC]">60 mins</div>
+          {/* Lunch Interlude */}
+          <div className="relative flex items-center gap-3.5 p-4 sm:px-5 border border-dashed border-[#C7CED6] rounded-xl bg-white/60 text-[#5B6B85] text-[13px] sm:text-[13.5px]">
+            <div className="absolute -left-[31px] sm:-left-[55px] top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-white border-2 border-[#8A97AC]" />
+            <span className="font-mono font-bold text-[#0B1220] shrink-0">12:25–01:25 PM</span>
+            <span className="font-medium">
+              <b className="text-[#0B1220]">Lunch &amp; Networking Break</b> — connect with fellow builders, discuss morning insights, and explore the AI startup showcase
+            </span>
+          </div>
+
+          {/* Beat 3: Session 1 (Soham - 40 mins) */}
+          <div className="relative pt-1">
+            <div className="absolute -left-[31px] sm:-left-[55px] top-3 w-4 h-4 rounded-full bg-[#0E9F6E] ring-4 ring-[#E4F8EF]" />
+            <div className="flex items-baseline gap-3 flex-wrap mb-2.5">
+              <span className="font-mono font-bold text-xs sm:text-[13px] text-[#8A97AC]">01:25–02:05 PM · 40 mins</span>
+              <span className="font-bold italic text-[16px] text-[#0E9F6E]">&quot;How do modern AI systems actually work?&quot;</span>
             </div>
-            <div className="flex-1">
-              <span className="inline-block font-bold text-[10.5px] tracking-[0.06em] text-[#0E9F6E] bg-[#E4F8EF] px-2.5 py-[3px] rounded-[5px] uppercase">
-                Session 1
-              </span>
-              <div className="font-bold text-[17px] text-[#0B1220] mt-2.5">Engineering Production AI Systems</div>
-              <div className="font-medium text-[13.5px] leading-[1.6] text-[#5B6B85] mt-1.5 max-w-[560px]">
-                Enterprise AI today, AI Agents, Enterprise RAG, LangGraph — and what &quot;production&quot; actually means. Architecture-level, with optional live demos.
+            <div className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 shadow-sm hover:border-[#0E9F6E]/40 transition-all">
+              <div className="flex justify-between items-start flex-wrap gap-2">
+                <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#8A97AC] uppercase">Session 1</span>
+                <span className="font-bold text-[11px] text-[#0E9F6E] bg-[#E4F8EF] px-2.5 py-1 rounded-full">Soham Sharma · Principal AI Architect</span>
               </div>
-            </div>
-            <div className="flex items-center gap-2.5 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-[#EEF1F6] w-full md:w-auto">
-              <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#007BFF] to-[#00C6FF] flex items-center justify-center font-bold text-[13px] text-white">
-                SS
-              </div>
-              <div>
-                <div className="font-bold text-[12.5px] text-[#0B1220]">Soham Sharma</div>
-                <div className="font-medium text-[11px] text-[#8A97AC]">Principal AI Architect</div>
+              <h3 className="font-extrabold text-[20px] sm:text-[22px] text-[#0B1220] mt-2">Understanding &amp; Architecting Modern AI Systems</h3>
+              <p className="font-medium text-[14px] text-[#3A4459] mt-2 leading-[1.6]">
+                The shared mental model and engineering patterns: why a raw model call isn&apos;t a system, and what gets layered on top (RAG, MCP, tool calling, memory, and reflection). We examine abstraction layers from managed platforms (<b className="text-[#0B1220]">GTWY</b>) up through orchestration frameworks like <b className="text-[#0B1220]">LangChain &amp; LangGraph</b>.
+              </p>
+              <div className="flex flex-wrap gap-2 mt-4 pt-3.5 border-t border-[#EEF1F6]">
+                {["Prompt", "Model", "Context", "Memory", "Tools", "Workflow", "Agent", "Abstraction layers: GTWY · LangChain · LangGraph"].map((tag, i) => (
+                  <span key={i} className={`font-mono text-[11px] px-2.5 py-1 rounded border ${i === 7 ? 'bg-[#FEF3E2] text-[#D97706] border-[#FDE68A] font-bold' : 'bg-[#F8FAFC] text-[#3A4459] border-[#E2E8F0]'}`}>
+                    {tag}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* Agenda Item 3 (Flagship) */}
-          <div className="bg-white border border-[#E7ECF3] rounded-[14px] p-5.5 sm:px-6">
-            <div className="flex flex-col md:flex-row gap-5.5 items-start">
-              <div className="w-full md:w-[118px] shrink-0 flex md:flex-col justify-between md:justify-start">
-                <div className="font-bold text-sm text-[#0B1220]">11:15 AM</div>
-                <div className="font-medium text-xs text-[#8A97AC]">120 mins</div>
-              </div>
-              <div className="flex-1">
-                <span className="inline-block font-bold text-[10.5px] tracking-[0.06em] text-[#7C3AED] bg-[#F1EBFE] px-2.5 py-[3px] rounded-[5px] uppercase">
-                  Session 2 · Flagship
-                </span>
-                <div className="font-bold text-[17px] text-[#0B1220] mt-2.5">
-                  The State of AI Engineering — Where AI Is Going and How Engineers Stay Ahead
-                </div>
-                <div className="font-medium text-[13.5px] leading-[1.6] text-[#5B6B85] mt-1.5 max-w-[600px]">
-                  Part 1: the AI shift — ML → GenAI, copilots → agents, models → systems. Part 2: evaluation, governance, AI-assisted development, open source, responsible AI. Part 3: career roadmap — hiring, research vs. industry, portfolios, and how AI jobs are changing.
-                </div>
-              </div>
-              <div className="flex items-center gap-2.5 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-[#EEF1F6] w-full md:w-auto">
-                <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#007BFF] to-[#00C6FF] flex items-center justify-center font-bold text-[13px] text-white">
-                  PR
-                </div>
-                <div>
-                  <div className="font-bold text-[12.5px] text-[#0B1220]">Dr. Promit Ray</div>
-                  <div className="font-medium text-[11px] text-[#8A97AC]">Chief AI Scientist</div>
-                </div>
-              </div>
+          {/* Beat 4: Session 2 (Karan - 60 mins) */}
+          <div className="relative pt-1">
+            <div className="absolute -left-[31px] sm:-left-[55px] top-3 w-4 h-4 rounded-full bg-[#00C6FF] ring-4 ring-[#E0F2FE]" />
+            <div className="flex items-baseline gap-3 flex-wrap mb-2.5">
+              <span className="font-mono font-bold text-xs sm:text-[13px] text-[#8A97AC]">02:05–03:05 PM · 60 mins</span>
+              <span className="font-bold italic text-[16px] text-[#0092D7]">&quot;How do I run it at scale reliably?&quot;</span>
             </div>
-            <div className="mt-4 pt-4 border-t border-dashed border-[#E7ECF3] flex items-center justify-between flex-wrap gap-2.5">
-              <div className="flex items-center gap-2.5 flex-wrap">
-                <span className="inline-block font-bold text-[10.5px] tracking-[0.06em] text-[#7C3AED] bg-[#F1EBFE] px-2.5 py-[3px] rounded-[5px] uppercase">
-                  Fireside Q&amp;A
-                </span>
-                <span className="font-medium text-[13px] text-[#5B6B85]">
-                  20–30 min interactive Q&amp;A with Dr. Promit Ray and the audience
-                </span>
+            <div className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 shadow-sm hover:border-[#00C6FF]/40 transition-all">
+              <div className="flex justify-between items-start flex-wrap gap-2">
+                <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#8A97AC] uppercase">Session 2</span>
+                <span className="font-bold text-[11px] text-[#0092D7] bg-[#E0F2FE] px-2.5 py-1 rounded-full">Karan · Production Architect &amp; Practitioner</span>
               </div>
-              <span className="font-bold text-xs text-[#7C3AED] bg-[#F1EBFE] px-3 py-1.5 rounded-full">
-                12:45 – 1:15 PM
-              </span>
-            </div>
-          </div>
-
-          {/* Agenda Item 4 (Panel) */}
-          <div className="flex flex-col md:flex-row gap-5.5 items-start bg-white border border-[#E7ECF3] rounded-[14px] p-5.5 sm:px-6">
-            <div className="w-full md:w-[118px] shrink-0 flex md:flex-col justify-between md:justify-start">
-              <div className="font-bold text-sm text-[#0B1220]">1:15 PM</div>
-              <div className="font-medium text-xs text-[#8A97AC]">75 mins</div>
-            </div>
-            <div className="flex-1">
-              <span className="inline-block font-bold text-[10.5px] tracking-[0.06em] text-[#D97706] bg-[#FEF3E2] px-2.5 py-[3px] rounded-[5px] uppercase">
-                Panel Discussion
-              </span>
-              <div className="font-bold text-[17px] text-[#0B1220] mt-2.5">Building an AI Engineering Career in 2026</div>
-              <div className="font-medium text-[13.5px] leading-[1.6] text-[#5B6B85] mt-1.5 max-w-[600px]">
-                Skills that matter, open source, GitHub portfolios, hiring trends, math depth, AI-assisted development, and the future of engineering careers.
-              </div>
-            </div>
-            <div className="flex items-center shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-[#EEF1F6] w-full md:w-auto">
-              <div className="w-9.5 h-9.5 rounded-full bg-gradient-to-br from-[#007BFF] to-[#00C6FF] border-2 border-white flex items-center justify-center font-bold text-[11px] text-white relative z-4">
-                SS
-              </div>
-              <div className="w-9.5 h-9.5 rounded-full bg-gradient-to-br from-[#007BFF] to-[#00C6FF] border-2 border-white flex items-center justify-center font-bold text-[11px] text-white -ml-2.5 z-3">
-                PR
-              </div>
-              <div className="w-9.5 h-9.5 rounded-full bg-[#EDF1F7] border-2 border-white flex items-center justify-center font-bold text-[11px] text-[#5B6B85] -ml-2.5 z-2">
-                +1
+              <h3 className="font-extrabold text-[20px] sm:text-[22px] text-[#0B1220] mt-2">Running AI in Production at Scale</h3>
+              <p className="font-medium text-[14px] text-[#3A4459] mt-2 leading-[1.6]">
+                What engineers actually spend their days on, and what most events skip entirely: keeping a system alive, fast, cost-effective, secure, and observable once real users start pounding it.
+              </p>
+              <div className="flex flex-wrap gap-2 mt-4 pt-3.5 border-t border-[#EEF1F6]">
+                {["Deployment", "Observability", "Tracing", "Latency", "Retries", "Cost Governance", "Monitoring", "Security"].map((tag, i) => (
+                  <span key={i} className="font-mono text-[11px] bg-[#F8FAFC] text-[#3A4459] border border-[#E2E8F0] px-2.5 py-1 rounded">
+                    {tag}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* Agenda Item 5 */}
-          <div className="flex flex-col md:flex-row gap-5.5 items-start bg-white border border-[#E7ECF3] rounded-[14px] p-5.5 sm:px-6">
-            <div className="w-full md:w-[118px] shrink-0 flex md:flex-col justify-between md:justify-start">
-              <div className="font-bold text-sm text-[#0B1220]">2:30 PM</div>
-              <div className="font-medium text-xs text-[#8A97AC]">15 mins</div>
+          {/* Tea Break Interlude */}
+          <div className="relative flex items-center gap-3.5 p-4 sm:px-5 border border-dashed border-[#C7CED6] rounded-xl bg-white/60 text-[#5B6B85] text-[13px] sm:text-[13.5px]">
+            <div className="absolute -left-[31px] sm:-left-[55px] top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-white border-2 border-[#8A97AC]" />
+            <span className="font-mono font-bold text-[#0B1220] shrink-0">03:05–03:20 PM</span>
+            <span className="font-medium">
+              <b className="text-[#0B1220]">Tea Break &amp; Quick Refresh</b> — recharge before our hands-on evaluation &amp; building sprint
+            </span>
+          </div>
+
+          {/* Beat 5: Hands-on Workshop & Evaluation (55 mins) */}
+          <div className="relative pt-1">
+            <div className="absolute -left-[31px] sm:-left-[55px] top-3 w-4 h-4 rounded-full bg-[#D97706] ring-4 ring-[#FEF3E2]" />
+            <div className="flex items-baseline gap-3 flex-wrap mb-2.5">
+              <span className="font-mono font-bold text-xs sm:text-[13px] text-[#8A97AC]">03:20–04:15 PM · 55 mins</span>
+              <span className="font-bold italic text-[16px] text-[#D97706]">&quot;How do I build &amp; evaluate one right now?&quot;</span>
             </div>
-            <div className="flex-1">
-              <span className="inline-block font-bold text-[10.5px] tracking-[0.06em] text-[#0B1220] bg-[#EDF1F7] px-2.5 py-[3px] rounded-[5px] uppercase">
-                Closing
+            <div className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 shadow-sm hover:border-[#D97706]/40 transition-all">
+              <div className="flex justify-between items-start flex-wrap gap-2">
+                <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#8A97AC] uppercase">Hands-on Workshop · Bring Laptops</span>
+                <span className="font-bold text-[11px] text-[#D97706] bg-[#FEF3E2] px-2.5 py-1 rounded-full">Dr. Promit Ray &amp; Soham Sharma + Facilitators</span>
+              </div>
+              <h3 className="font-extrabold text-[20px] sm:text-[22px] text-[#0B1220] mt-2">Build &amp; Evaluate Your First Production AI Workflow</h3>
+              <p className="font-medium text-[14px] text-[#3A4459] mt-2 leading-[1.6]">
+                Not &quot;drag nodes in a builder.&quot; We write real code to assemble an orchestration pipeline with retrieval and tool calling, then rig up automated evaluation harnesses (<b className="text-[#0B1220]">DeepEval, Promptfoo, RAGAS</b>) to measure hallucinations, regression, and accuracy before deploying to an endpoint. Everyone leaves with something running.
+              </p>
+              <div className="flex flex-wrap gap-2 mt-4 pt-3.5 border-t border-[#EEF1F6]">
+                {["Retrieval", "Tool Calling", "Memory", "Evaluation harness", "DeepEval", "RAGAS", "Golden datasets", "Deployment endpoint"].map((tag, i) => (
+                  <span key={i} className="font-mono text-[11px] bg-[#F8FAFC] text-[#3A4459] border border-[#E2E8F0] px-2.5 py-1 rounded">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Beat 6: Closing Panel & Roadmap (30 mins) */}
+          <div className="relative pt-1">
+            <div className="absolute -left-[31px] sm:-left-[55px] top-3 w-4 h-4 rounded-full bg-[#0B1220] ring-4 ring-[#EEF1F6]" />
+            <div className="flex items-baseline gap-3 flex-wrap mb-2.5">
+              <span className="font-mono font-bold text-xs sm:text-[13px] text-[#8A97AC]">04:15–04:45 PM · 30 mins</span>
+              <span className="font-bold italic text-[16px] text-[#0B1220]">&quot;Where is AI engineering going next &amp; the roadmap we leave with?&quot;</span>
+            </div>
+            <div className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 shadow-sm">
+              <div className="flex justify-between items-start flex-wrap gap-2">
+                <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#8A97AC] uppercase">Panel &amp; Closing</span>
+                <span className="font-bold text-[11px] text-[#0B1220] bg-[#EDF1F7] px-2.5 py-1 rounded-full">Founders · Researchers · Industry Practitioners</span>
+              </div>
+              <h3 className="font-extrabold text-[20px] sm:text-[22px] text-[#0B1220] mt-2">The Future of AI Engineering &amp; Community Launch</h3>
+              <p className="font-medium text-[14px] text-[#3A4459] mt-2 leading-[1.6]">
+                The forward-looking close answering: <i className="text-[#0B1220]">Will everyone become an AI engineer? Agents vs software, and India&apos;s opportunity.</i> We return to our opening slide with the entire lifecycle on one line, and launch the Botmartz AI Engineering Community.
+              </p>
+              <div className="flex flex-wrap gap-2 mt-4 pt-3.5 border-t border-[#EEF1F6]">
+                {["Will everyone become an AI engineer?", "Agents vs software", "Skills that matter", "India's opportunity", "Community Launch"].map((tag, i) => (
+                  <span key={i} className="font-mono text-[11px] bg-[#F8FAFC] text-[#3A4459] border border-[#E2E8F0] px-2.5 py-1 rounded">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Networking & After-Party Wrap */}
+          <div className="relative flex items-center gap-3.5 p-4 sm:px-5 border border-solid border-[#007BFF]/40 rounded-xl bg-[#E8F2FF]/60 text-[#0B1220] text-[13px] sm:text-[14px] shadow-sm">
+            <div className="absolute -left-[31px] sm:-left-[55px] top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-[#007BFF] border-2 border-white ring-2 ring-[#007BFF]" />
+            <span className="font-mono font-bold text-[#007BFF] shrink-0">04:45–05:30 PM+</span>
+            <span className="font-medium">
+              <b className="text-[#0B1220]">AI Builders Networking &amp; Wrap Up</b> — certificates, group photos, 1-on-1 speaker discussions, and evening community networking (if formal sessions finish early around 4:00 PM, we transition directly to networking &amp; wrap up right around 4:30–5:00 PM!)
+            </span>
+          </div>
+
+        </div>
+
+        {/* Running Thread Note Banner */}
+        <div className="mt-14 bg-gradient-to-r from-[#0B162C] to-[#060C1F] text-white rounded-[16px] p-6 sm:p-8 border border-[rgba(0,198,255,0.2)] shadow-lg">
+          <div className="font-mono font-bold text-[11px] tracking-[0.16em] uppercase text-[#00C6FF] mb-2">
+            Running Through Every Session
+          </div>
+          <p className="font-medium text-[14.5px] leading-[1.65] text-[#D6DDE8] max-w-[820px]">
+            AI-assisted development isn&apos;t a standalone slot — each speaker shows how it&apos;s changing their own workflow, so attendees see it as a tool used across the whole lifecycle, not an isolated topic.
+          </p>
+          <div className="flex flex-wrap gap-2.5 mt-4 pt-4 border-t border-white/10">
+            {["Cursor", "Claude Code", "GitHub Copilot", "Windsurf"].map((tool, i) => (
+              <span key={i} className="font-mono text-[12px] font-semibold text-white bg-white/10 border border-white/20 px-3 py-1 rounded-md">
+                {tool}
               </span>
-              <div className="font-bold text-[17px] text-[#0B1220] mt-2.5">Closing &amp; Community Launch</div>
-              <div className="font-medium text-[13.5px] leading-[1.6] text-[#5B6B85] mt-1.5 max-w-[560px]">
-                Launch of the Botmartz AI Engineering Community, what&apos;s next, and how to stay involved.
-              </div>
-            </div>
-            <div className="flex items-center gap-2.5 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-[#EEF1F6] w-full md:w-auto">
-              <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#007BFF] to-[#00C6FF] flex items-center justify-center font-bold text-[13px] text-white">
-                SS
-              </div>
-              <div>
-                <div className="font-bold text-[12.5px] text-[#0B1220]">Soham Sharma</div>
-                <div className="font-medium text-[11px] text-[#8A97AC]">Principal AI Architect</div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
-        <p className="text-center font-medium text-xs text-[#9AA6BA] mt-4.5">
-          * Agenda timings are subject to change.
+
+        {/* Closing Roadmap Diagram */}
+        <div className="mt-10 bg-white border border-[#E7ECF3] rounded-[18px] p-6 sm:p-10 shadow-sm">
+          <div className="font-mono font-bold text-[11px] tracking-[0.16em] uppercase text-[#D97706] mb-1.5">
+            One Slide to Remember
+          </div>
+          <h2 className="font-extrabold text-[26px] sm:text-[32px] text-[#0B1220] mt-1">
+            The Roadmap They Leave With
+          </h2>
+          <p className="font-medium text-[14.5px] text-[#5B6B85] mt-2 max-w-[660px]">
+            The single diagram that ties the whole day together — the lifecycle every production AI system moves through from raw models to resilient enterprise engineering.
+          </p>
+
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3.5 mt-8 p-6 bg-[#F8FAFC] border border-[#E2E8F0] rounded-2xl">
+            <span className="font-bold text-[14px] sm:text-[15.5px] text-[#0B1220]">Foundation models</span>
+            <span className="font-mono text-[#007BFF] font-bold">→</span>
+            <span className="font-bold text-[14px] sm:text-[15.5px] text-[#0B1220]">Context</span>
+            <span className="font-mono text-[#007BFF] font-bold">→</span>
+            <span className="font-bold text-[14px] sm:text-[15.5px] text-[#0B1220]">Tools</span>
+            <span className="font-mono text-[#007BFF] font-bold">→</span>
+            <span className="font-bold text-[14px] sm:text-[15.5px] text-[#0B1220]">Workflows</span>
+            <span className="font-mono text-[#007BFF] font-bold">→</span>
+            <span className="font-bold text-[14px] sm:text-[15.5px] text-[#0B1220]">Agents</span>
+            <span className="font-mono text-[#007BFF] font-bold">→</span>
+            <span className="font-bold text-[14px] sm:text-[15.5px] text-[#0B1220]">Evaluation</span>
+            <span className="font-mono text-[#007BFF] font-bold">→</span>
+            <span className="font-bold text-[14px] sm:text-[15.5px] text-[#0B1220]">Deployment</span>
+            <span className="font-mono text-[#007BFF] font-bold">→</span>
+            <span className="font-extrabold text-[15px] sm:text-[17px] text-[#D97706] border-b-2 border-[#D97706] pb-0.5">AI Engineering</span>
+          </div>
+
+          <div className="mt-7 pt-6 border-t border-[#EEF1F6] flex items-start sm:items-center gap-4 flex-col sm:flex-row">
+            <span className="font-mono font-bold text-[11px] tracking-[0.12em] text-[#D97706] bg-[#FEF3E2] border border-[#FDE68A] px-3 py-1.5 rounded uppercase shrink-0">
+              Starts Here
+            </span>
+            <p className="font-medium text-[14px] sm:text-[14.5px] text-[#3A4459] leading-[1.6] m-0">
+              <b className="text-[#0B1220]">The Botmartz AI Engineering Community launches right at the close</b> — framed as the first meetup, not the end of an event. Sign-ups happen at the door and on the way out.
+            </p>
+          </div>
+        </div>
+
+        <p className="text-center font-medium text-xs text-[#9AA6BA] mt-6">
+          * Timings are adaptable: if live sessions run slightly ahead and conclude around 4:00 PM, we transition straight to evening networking and wrap up right around 4:30–5:00 PM.
         </p>
       </div>
 

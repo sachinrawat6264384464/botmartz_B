@@ -316,6 +316,115 @@ export default function EventsClient({
         </div>
       </div>
 
+      {/* ── FLAGSHIP EVENT FLOW & GOLDEN THREAD PREVIEW ── */}
+      <div className="max-w-[1240px] mx-auto pt-10 px-6 sm:px-10">
+        <div className="bg-white border border-[#E7ECF3] rounded-[18px] p-7 sm:p-9 shadow-sm relative overflow-hidden">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#EEF1F6] pb-6 mb-6">
+            <div>
+              <div className="font-bold text-xs tracking-[0.12em] text-[#007BFF] uppercase">
+                AI Frontier 2026 Flow
+              </div>
+              <h3 className="font-extrabold text-[22px] sm:text-[26px] text-[#0B1220] mt-1.5">
+                The Golden Thread Run of Show
+              </h3>
+              <p className="font-medium text-[13.5px] text-[#5B6B85] mt-1">
+                Every session answers one step along the production AI journey. Four pillars (`Agents`, `Enterprise AI`, `AI-Assisted Dev`, `Responsible AI`), one unified lifecycle.
+              </p>
+            </div>
+            <Link 
+              href="/community/events/ai-frontier-2026#agenda" 
+              className="inline-flex items-center gap-1.5 font-bold text-[13px] text-[#007BFF] hover:text-[#0052CC] shrink-0"
+            >
+              Explore Full Agenda &amp; Speakers →
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-4.5 flex flex-col justify-between">
+              <div>
+                <span className="font-mono font-bold text-[11px] text-[#007BFF] bg-[#E8F2FF] px-2.5 py-1 rounded">
+                  10:00 AM · 15 mins
+                </span>
+                <div className="font-bold text-[15px] text-[#0B1220] mt-2.5">
+                  Opening: Set the Frame
+                </div>
+                <p className="font-medium text-[12.5px] text-[#5B6B85] mt-1 leading-[1.5]">
+                  Why does AI engineering matter? Framing the journey from raw LLM calls to production systems.
+                </p>
+              </div>
+              <div className="font-bold text-[12px] text-[#3A4459] mt-3 pt-3 border-t border-[#EEF1F6]">
+                Soham Sharma
+              </div>
+            </div>
+
+            <div className="bg-[#F3E8FF]/50 border border-[#E9D5FF] rounded-xl p-4.5 flex flex-col justify-between">
+              <div>
+                <span className="font-mono font-bold text-[11px] text-[#7C3AED] bg-[#F1EBFE] px-2.5 py-1 rounded">
+                  10:15 AM · 130 mins
+                </span>
+                <div className="font-bold text-[15px] text-[#0B1220] mt-2.5">
+                  Keynote &amp; Flagship Deep Dive
+                </div>
+                <p className="font-medium text-[12.5px] text-[#5B6B85] mt-1 leading-[1.5]">
+                  Where is AI heading? Rigorous look at foundation models, reasoning architectures, coding agents &amp; evals.
+                </p>
+              </div>
+              <div className="font-bold text-[12px] text-[#4C1D95] mt-3 pt-3 border-t border-[#E9D5FF]/60">
+                Dr. Promit Ray
+              </div>
+            </div>
+
+            <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-4.5 flex flex-col justify-between">
+              <div>
+                <span className="font-mono font-bold text-[11px] text-[#0E9F6E] bg-[#E4F8EF] px-2.5 py-1 rounded">
+                  01:25 PM · 40 mins
+                </span>
+                <div className="font-bold text-[15px] text-[#0B1220] mt-2.5">
+                  Session 1: Modern AI Systems
+                </div>
+                <p className="font-medium text-[12.5px] text-[#5B6B85] mt-1 leading-[1.5]">
+                  How do systems actually work? RAG, MCP, memory, and orchestration layers from GTWY to LangGraph.
+                </p>
+              </div>
+              <div className="font-bold text-[12px] text-[#3A4459] mt-3 pt-3 border-t border-[#EEF1F6]">
+                Soham Sharma
+              </div>
+            </div>
+
+            <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-4.5 flex flex-col justify-between">
+              <div>
+                <span className="font-mono font-bold text-[11px] text-[#0092D7] bg-[#E0F2FE] px-2.5 py-1 rounded">
+                  02:05 PM · 60 mins
+                </span>
+                <div className="font-bold text-[15px] text-[#0B1220] mt-2.5">
+                  Session 2: Production at Scale
+                </div>
+                <p className="font-medium text-[12.5px] text-[#5B6B85] mt-1 leading-[1.5]">
+                  How do you run it at scale? Observability, latency, retries, security, and cost governance.
+                </p>
+              </div>
+              <div className="font-bold text-[12px] text-[#3A4459] mt-3 pt-3 border-t border-[#EEF1F6]">
+                Karan
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-5 pt-5 border-t border-[#EEF1F6] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[13px]">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-bold text-[#D97706] bg-[#FEF3E2] px-2.5 py-1 rounded">
+                03:20 PM · Workshop &amp; Evaluation
+              </span>
+              <span className="font-medium text-[#5B6B85]">
+                Write code &amp; run DeepEval / RAGAS harnesses before closing panel
+              </span>
+            </div>
+            <div className="font-mono font-bold text-[#007BFF] bg-[#E8F2FF] px-3 py-1 rounded-full shrink-0">
+              Wrap up &amp; Networking: 04:30 – 05:00 PM
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* ── MORE FROM THE COMMUNITY ── */}
       <div className="max-w-[1240px] mx-auto pt-14 px-6 sm:px-10">
         <div className="font-bold text-[12px] tracking-[0.1em] text-[#007BFF] uppercase">
