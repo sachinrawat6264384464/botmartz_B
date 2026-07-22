@@ -1,4 +1,4 @@
-// app/_components/AccessibilityToolbox.tsx
+// app/_components/AccessibilityToolbox.tsxhhhhhhhhh
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -93,7 +93,7 @@ export function AccessibilityToolbox() {
           aria-label="Web Accessibility Toolbox"
         >
           <div className="relative w-full sm:w-[440px] max-h-[90vh] sm:max-h-[85vh] bg-[#060C17]/98 text-white border sm:border-2 border-[#0066FF]/60 rounded-t-3xl sm:rounded-3xl shadow-[0_15px_60px_rgba(0,102,255,0.45)] flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-300">
-            
+
             {/* HEADER */}
             <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-[#0066FF]/20 to-transparent border-b border-white/10 shrink-0">
               <div className="flex items-center gap-2.5">
@@ -125,33 +125,30 @@ export function AccessibilityToolbox() {
             <div className="flex items-center border-b border-white/10 bg-[#0A1128]/50 px-3 pt-2 shrink-0">
               <button
                 onClick={() => setActiveTab("presets")}
-                className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold border-b-2 transition-colors ${
-                  activeTab === "presets"
+                className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold border-b-2 transition-colors ${activeTab === "presets"
                     ? "border-[#0066FF] text-[#0066FF]"
                     : "border-transparent text-slate-400 hover:text-white"
-                }`}
+                  }`}
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 Profiles
               </button>
               <button
                 onClick={() => setActiveTab("controls")}
-                className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold border-b-2 transition-colors ${
-                  activeTab === "controls"
+                className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold border-b-2 transition-colors ${activeTab === "controls"
                     ? "border-[#0066FF] text-[#0066FF]"
                     : "border-transparent text-slate-400 hover:text-white"
-                }`}
+                  }`}
               >
                 <Eye className="w-3.5 h-3.5" />
                 Custom Controls
               </button>
               <button
                 onClick={() => setActiveTab("guide")}
-                className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold border-b-2 transition-colors ${
-                  activeTab === "guide"
+                className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold border-b-2 transition-colors ${activeTab === "guide"
                     ? "border-[#0066FF] text-[#0066FF]"
                     : "border-transparent text-slate-400 hover:text-white"
-                }`}
+                  }`}
               >
                 <HelpCircle className="w-3.5 h-3.5" />
                 Guide
@@ -160,14 +157,14 @@ export function AccessibilityToolbox() {
 
             {/* TAB CONTENTS */}
             <div className="flex-1 overflow-y-auto p-5 space-y-6 custom-scrollbar">
-              
+
               {/* TAB 1: PRESETS */}
               {activeTab === "presets" && (
                 <div className="space-y-4">
                   <p className="text-xs text-slate-300 font-medium">
                     Select a curated accessibility profile or customize individually:
                   </p>
-                  
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <button
                       onClick={() => applyPreset("visual")}
@@ -247,7 +244,7 @@ export function AccessibilityToolbox() {
               {/* TAB 2: GRANULAR CONTROLS */}
               {activeTab === "controls" && (
                 <div className="space-y-6">
-                  
+
                   {/* TEXT SIZE STEPPER */}
                   <div>
                     <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5 mb-2.5">
@@ -259,11 +256,10 @@ export function AccessibilityToolbox() {
                         <button
                           key={item.value}
                           onClick={() => updateSetting("textSize", item.value)}
-                          className={`py-2 px-1 rounded-lg text-xs font-bold transition-all ${
-                            settings.textSize === item.value
+                          className={`py-2 px-1 rounded-lg text-xs font-bold transition-all ${settings.textSize === item.value
                               ? "bg-[#0066FF] text-white shadow-md"
                               : "text-slate-400 hover:text-white hover:bg-white/5"
-                          }`}
+                            }`}
                         >
                           {item.label}
                         </button>
@@ -282,11 +278,10 @@ export function AccessibilityToolbox() {
                         <button
                           key={item.value}
                           onClick={() => updateSetting("contrastMode", item.value)}
-                          className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold border transition-all ${
-                            settings.contrastMode === item.value
+                          className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold border transition-all ${settings.contrastMode === item.value
                               ? "border-[#0066FF] bg-[#0066FF]/20 text-white shadow-sm"
                               : "border-white/10 bg-white/5 text-slate-300 hover:border-white/30"
-                          }`}
+                            }`}
                         >
                           <span>{item.label}</span>
                           {settings.contrastMode === item.value && (
@@ -304,7 +299,7 @@ export function AccessibilityToolbox() {
                       Cognitive & Visual Assists
                     </label>
                     <div className="space-y-2">
-                      
+
                       {/* Dyslexia Font */}
                       <ToggleRow
                         label="Dyslexia Friendly Font"
@@ -473,14 +468,12 @@ function ToggleRow({
         role="switch"
         aria-checked={checked}
         onClick={() => onChange(!checked)}
-        className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#0066FF] focus:ring-offset-2 focus:ring-offset-slate-900 ${
-          checked ? "bg-[#0066FF]" : "bg-slate-700"
-        }`}
+        className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#0066FF] focus:ring-offset-2 focus:ring-offset-slate-900 ${checked ? "bg-[#0066FF]" : "bg-slate-700"
+          }`}
       >
         <span
-          className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-            checked ? "translate-x-5" : "translate-x-0"
-          }`}
+          className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${checked ? "translate-x-5" : "translate-x-0"
+            }`}
         />
       </button>
     </div>

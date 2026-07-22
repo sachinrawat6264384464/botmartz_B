@@ -32,7 +32,7 @@ const PROTOTYPE_PAST_EVENTS = [
   { type: 'Meetup', date: 'Apr 2026', title: 'Botmartz Community Kickoff Mixer', desc: 'The very first informal meetup that planted the seed for this community.' },
 ];
 
-export default function EventsClient({ 
+export default function EventsClient({
   initialEvents,
   heroContent = {
     badge: "Botmartz Community Events",
@@ -44,7 +44,7 @@ export default function EventsClient({
   structuredData,
   aeoQuestion,
   aeoAnswer
-}: { 
+}: {
   initialEvents: any[];
   heroContent?: any;
   structuredData?: string;
@@ -148,7 +148,7 @@ export default function EventsClient({
       />
       {/* ── HERO SECTION ── */}
       <div className="bg-[#060C1F] relative overflow-hidden pt-24 pb-16 px-6 sm:px-10 lg:pt-28 lg:pb-20">
-        <div 
+        <div
           className="absolute inset-0 pointer-events-none"
           style={{
             backgroundImage: 'linear-gradient(rgba(0,198,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,198,255,0.06) 1px, transparent 1px)',
@@ -171,7 +171,7 @@ export default function EventsClient({
               <div className="font-bold text-[12px] tracking-[0.1em] text-[#00C6FF] uppercase">
                 {heroContent.badge || "Botmartz Community Events"}
               </div>
-              <h1 
+              <h1
                 className="font-extrabold text-[clamp(32px,4.5vw,44px)] leading-[1.15] text-white mt-4"
                 dangerouslySetInnerHTML={{ __html: heroContent.title || 'Where the AI<br />Engineering <span class="text-[#00C6FF]">Community</span> Meets' }}
               />
@@ -179,14 +179,14 @@ export default function EventsClient({
                 {heroContent.subtitle || "Conferences, monthly meetups, open-source nights and hackathons — built for engineers who want to build, ship and grow together, not just watch from the sidelines."}
               </p>
               <div className="flex flex-wrap gap-3.5 mt-7">
-                <a 
-                  href={heroContent.ctaLink || "#featured"} 
+                <a
+                  href={heroContent.ctaLink || "#featured"}
                   className="inline-flex items-center gap-2 bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] transition-all"
                 >
                   {heroContent.ctaText || "See What's Coming Up →"}
                 </a>
-                <Link 
-                  href="/contact" 
+                <Link
+                  href="/contact"
                   className="inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/20 text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] transition-all"
                 >
                   Host an Event With Us
@@ -196,7 +196,7 @@ export default function EventsClient({
 
             <div className="grid grid-cols-2 gap-3.5">
               {heroStats.map((s, idx) => (
-                <div 
+                <div
                   key={idx}
                   className="bg-white/[0.04] border border-white/10 rounded-[14px] p-5 backdrop-blur-sm"
                 >
@@ -222,11 +222,10 @@ export default function EventsClient({
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
-                className={`font-bold text-[12.5px] px-4 py-2.5 rounded-[8px] border transition-all ${
-                  active
+                className={`font-bold text-[12.5px] px-4 py-2.5 rounded-[8px] border transition-all ${active
                     ? 'bg-[#007BFF] border-[#007BFF] text-white shadow-sm'
                     : 'bg-white border-[#E2E8F0] text-[#3A4459] hover:bg-[#F8FAFC]'
-                }`}
+                  }`}
               >
                 {cat}
               </button>
@@ -241,7 +240,7 @@ export default function EventsClient({
       {/* ── FEATURED CONFERENCE CARD ── */}
       <div id="featured" className="max-w-[1240px] mx-auto pt-8 px-6 sm:px-10">
         <div className="bg-gradient-to-br from-[#0A1630] to-[#060C1F] border border-white/10 rounded-[18px] overflow-hidden grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] relative shadow-xl">
-          <div 
+          <div
             className="absolute w-[320px] h-[320px] rounded-full right-[-60px] top-[-100px] pointer-events-none"
             style={{ background: 'radial-gradient(circle, rgba(0,123,255,0.22), transparent 70%)' }}
           />
@@ -285,14 +284,14 @@ export default function EventsClient({
             </div>
 
             <div className="flex flex-wrap gap-3 mt-7 pt-4">
-              <Link 
-                href="/community/events/ai-frontier-2026" 
+              <Link
+                href="/community/events/ai-frontier-2026"
                 className="bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[13px] px-6 py-3.5 rounded-[9px] shadow-md transition-all"
               >
                 Register Your Interest →
               </Link>
-              <Link 
-                href="/community/events/ai-frontier-2026" 
+              <Link
+                href="/community/events/ai-frontier-2026"
                 className="bg-white/5 hover:bg-white/10 border border-white/20 text-white font-bold text-[13px] px-6 py-3.5 rounded-[9px] transition-all"
               >
                 View Event Page
@@ -331,8 +330,8 @@ export default function EventsClient({
                 Every session answers one step along the production AI journey. Four pillars (`Agents`, `Enterprise AI`, `AI-Assisted Dev`, `Responsible AI`), one unified lifecycle.
               </p>
             </div>
-            <Link 
-              href="/community/events/ai-frontier-2026#agenda" 
+            <Link
+              href="/community/events/ai-frontier-2026#agenda"
               className="inline-flex items-center gap-1.5 font-bold text-[13px] text-[#007BFF] hover:text-[#0052CC] shrink-0"
             >
               Explore Full Agenda &amp; Speakers →
@@ -437,7 +436,7 @@ export default function EventsClient({
 
       <div className="max-w-[1240px] mx-auto pt-6 px-6 sm:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {visibleEvents.map((ev, idx) => (
-          <div 
+          <div
             key={idx}
             className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 flex flex-col gap-2.5 shadow-sm hover:shadow-md transition-all hover:border-[#007BFF]/40"
           >
@@ -463,14 +462,14 @@ export default function EventsClient({
                 {ev.location}
               </div>
               {ev.slug ? (
-                <Link 
+                <Link
                   href={`/community/events/${ev.slug}`}
                   className="mt-1 text-center bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[12.5px] py-2 rounded-lg transition-all"
                 >
                   Register / View Details
                 </Link>
               ) : (
-                <button 
+                <button
                   disabled
                   className="mt-1 text-center bg-gray-200 text-gray-400 font-bold text-[12.5px] py-2 rounded-lg cursor-not-allowed"
                 >
@@ -485,7 +484,7 @@ export default function EventsClient({
       {/* ── THIS IS JUST THE BEGINNING & NEWSLETTER BOX ── */}
       <div className="max-w-[1240px] mx-auto mt-16 px-6 sm:px-10">
         <div className="bg-[#060C1F] rounded-[18px] p-8 sm:p-11 relative overflow-hidden shadow-xl">
-          <div 
+          <div
             className="absolute w-[300px] h-[300px] rounded-full left-[-80px] bottom-[-120px] pointer-events-none"
             style={{ background: 'radial-gradient(circle, rgba(0,123,255,0.2), transparent 70%)' }}
           />
@@ -514,15 +513,15 @@ export default function EventsClient({
                 Never miss an event
               </div>
               <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2 mt-3.5">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email" 
+                <input
+                  type="email"
+                  placeholder="Enter your email"
                   value={email}
                   required
                   onChange={(e) => setEmail(e.target.value)}
                   className="flex-1 min-w-0 border border-white/15 bg-white/5 rounded-[8px] px-3.5 py-3 font-medium text-[13px] text-white placeholder-[#7C8CAD] outline-none focus:border-[#00C6FF] transition-colors"
                 />
-                <button 
+                <button
                   type="submit"
                   disabled={submitting || subscribed}
                   className="bg-[#007BFF] hover:bg-[#0069DB] text-white border-none rounded-[8px] px-5 py-3 font-bold text-[13px] shrink-0 transition-colors cursor-pointer"
@@ -545,7 +544,7 @@ export default function EventsClient({
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {PROTOTYPE_PAST_EVENTS.map((p, idx) => (
-            <div 
+            <div
               key={idx}
               className="bg-white border border-[#E7ECF3] rounded-[12px] p-5 flex flex-col gap-1.5 opacity-85 shadow-sm"
             >
