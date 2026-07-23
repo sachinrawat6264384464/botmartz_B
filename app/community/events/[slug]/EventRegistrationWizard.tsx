@@ -75,12 +75,20 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
   const unsubscribeRef = useRef<(() => void) | null>(null);
 
   // Calculate dynamic entry fee
+  const isEarlyBird = new Date() <= new Date("2026-07-30T23:59:59Z");
+  
   const calculateFee = () => {
     let basePrice = formData.attendeeType === "student" ? 399 : 699;
+    
+    if (isEarlyBird) {
+      basePrice = Math.round(basePrice * 0.85);
+    }
+
     let discount = 0;
     if (formData.quantity >= 10) discount = 100;
     else if (formData.quantity >= 5) discount = 50;
-    return (basePrice - discount) * formData.quantity;
+    
+    return Math.max(0, (basePrice - discount) * formData.quantity);
   };
   const entryFee = calculateFee();
 
@@ -287,7 +295,14 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
           {step === 1 && (
             <form onSubmit={handleStep1Submit} className="space-y-4">
               <div>
-                <h3 className="text-xl font-bold font-space-grotesk tracking-tight">Register for Event</h3>
+                <div className="flex items-center gap-3">
+                  <h3 className="text-xl font-bold font-space-grotesk tracking-tight">Register for Event</h3>
+                  {isEarlyBird && (
+                    <span className="bg-green-500/20 text-green-400 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-green-500/30">
+                      Early Bird -15%
+                    </span>
+                  )}
+                </div>
                 <p className="text-sm text-[#8A9EB0] mt-1">{event.title}</p>
               </div>
 
@@ -343,8 +358,8 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                       onChange={(e) => setFormData({...formData, attendeeType: e.target.value})}
                       className="w-full bg-[#050C18] border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#00B8F0] transition-colors"
                     >
-                      <option value="student">Student (₹399)</option>
-                      <option value="professional">Professional (₹699)</option>
+                      <option value="student">Student (₹{isEarlyBird ? Math.round(399 * 0.85) : 399})</option>
+                      <option value="professional">Professional (₹{isEarlyBird ? Math.round(699 * 0.85) : 699})</option>
                     </select>
                   </div>
                   <div>

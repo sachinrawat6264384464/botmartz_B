@@ -18,7 +18,6 @@ interface NavItem {
 
 const DEFAULT_ITEMS: NavItem[] = [
   { name: "Home", path: "/" },
-  { name: "Services", path: "/services", dropdown: [{ name: "Enterprise RAG", path: "/services/enterprise-rag" }, { name: "AI Agents", path: "/services/ai-agents" }] },
   { name: "Work", path: "/work", dropdown: [{ name: "Labs", path: "/work/labs" }, { name: "Open Source", path: "/work/open-source" }] },
   { name: "Engineering Insights", path: "/insights" },
   { name: "Community", path: "/community", dropdown: [{ name: "Events", path: "/community/events" }, { name: "Discord & Forum", path: "/community" }] },

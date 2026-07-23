@@ -127,6 +127,8 @@ async function getHomePageConfig(): Promise<HomePageConfig | null> {
   return null;
 }
 
+import EventCountdownBanner from "@/app/_components/EventCountdownBanner";
+
 export const revalidate = 3600;
 
 export default async function Home() {
@@ -200,8 +202,9 @@ export default async function Home() {
 
   return (
     <>
+      <EventCountdownBanner />
       {/* HERO SECTION */}
-      <section className="relative pt-[120px] pb-[80px] bg-[#050B14] text-white overflow-hidden">
+      <section className="relative pt-[100px] pb-[80px] bg-[#050B14] text-white overflow-hidden">
         <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[120px] rounded-full pointer-events-none" />
         <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0066FF]/10 blur-[150px] rounded-full pointer-events-none" />
 

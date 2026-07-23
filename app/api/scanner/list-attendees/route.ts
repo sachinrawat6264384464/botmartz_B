@@ -13,7 +13,6 @@ export async function GET(req: NextRequest) {
     // Fetch all paid attendees
     const snapshot = await adminDb.collection('event-registrations')
       .where('paymentStatus', '==', 'paid')
-      .orderBy('createdAt', 'desc')
       .get();
 
     const attendees = snapshot.docs.map(doc => {
@@ -26,8 +25,9 @@ export async function GET(req: NextRequest) {
         quantity: data.quantity || 1,
         attended: data.attended || false,
         checkInCode: data.checkInCode || '',
+        createdAt: data.createdAt ? data.createdAt.toMillis() : 0,
       };
-    });
+    }).sort((a, b) => b.createdAt - a.createdAt);
 
     return NextResponse.json({ success: true, attendees });
 

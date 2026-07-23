@@ -572,31 +572,31 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
         </div>
       </div>
 
-      {/* ─── 4. ENTERPRISE ROUNDTABLE ─── */}
+      {/* ─── 4. OPEN FORUM (Q & A) ─── */}
       <div className="max-w-[1120px] mx-auto py-6 px-6 sm:px-10 pb-14">
         <div className="bg-gradient-to-r from-[#0A1327] to-[#060C1F] rounded-[18px] p-8 sm:p-10 grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-8 items-center relative overflow-hidden shadow-md">
           <div className="absolute w-[280px] h-[280px] rounded-full bg-[radial-gradient(circle,rgba(0,198,255,0.18),transparent_70%)] -right-[60px] -top-[80px] pointer-events-none" />
           <div className="relative">
             <span className="inline-block font-bold text-[10.5px] tracking-[0.06em] text-[#00C6FF] bg-[rgba(0,198,255,0.12)] px-2.5 py-1 rounded-[5px] uppercase">
-              By Invitation
+              Interactive
             </span>
-            <div className="font-extrabold text-2xl leading-[1.3] text-white mt-3.5">Enterprise Roundtable</div>
+            <div className="font-extrabold text-2xl leading-[1.3] text-white mt-3.5">Open Forum (Q & A)</div>
             <p className="font-medium text-[13.5px] leading-[1.7] text-[#8FA3C4] mt-3 max-w-[480px]">
-              A closed-door session immediately following AI Frontier — founders, CTOs and engineering managers only. No students, no pitches: an honest conversation on adopting AI engineering inside real organizations.
+              A dynamic Q&A session wrapping up AI Frontier. Bring your hardest questions about AI engineering, prompt injection, vector databases, or scaling models in production. Open to everyone.
             </p>
           </div>
           <div className="relative flex gap-3.5 justify-start lg:justify-end flex-wrap">
             <div className="bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-xl p-4 sm:px-5 text-center min-w-[96px]">
-              <div className="font-extrabold text-[22px] text-[#00C6FF]">10</div>
-              <div className="font-semibold text-[11px] text-[#8FA3C4]">Founders</div>
-            </div>
-            <div className="bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-xl p-4 sm:px-5 text-center min-w-[96px]">
-              <div className="font-extrabold text-[22px] text-[#00C6FF]">5</div>
-              <div className="font-semibold text-[11px] text-[#8FA3C4]">CTOs</div>
+              <div className="font-extrabold text-[22px] text-[#00C6FF]">∞</div>
+              <div className="font-semibold text-[11px] text-[#8FA3C4]">Questions</div>
             </div>
             <div className="bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-xl p-4 sm:px-5 text-center min-w-[96px]">
               <div className="font-extrabold text-[22px] text-[#00C6FF]">3</div>
-              <div className="font-semibold text-[11px] text-[#8FA3C4]">Eng Managers</div>
+              <div className="font-semibold text-[11px] text-[#8FA3C4]">Speakers</div>
+            </div>
+            <div className="bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] rounded-xl p-4 sm:px-5 text-center min-w-[96px]">
+              <div className="font-extrabold text-[22px] text-[#00C6FF]">45m</div>
+              <div className="font-semibold text-[11px] text-[#8FA3C4]">Duration</div>
             </div>
           </div>
         </div>
