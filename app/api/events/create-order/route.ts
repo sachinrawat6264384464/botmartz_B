@@ -69,7 +69,12 @@ export async function POST(req: NextRequest) {
     if (!razorpayResponse.ok) {
       const errorText = await razorpayResponse.text();
       console.error('[Razorpay Order Creation Error]', errorText);
-      return NextResponse.json({ error: 'Failed to create payment order with gateway.' }, { status: 500 });
+      try {
+        const parsed = JSON.parse(errorText);
+        return NextResponse.json({ error: parsed.error?.description || parsed.error?.code || 'Failed to create payment order with gateway.' }, { status: 500 });
+      } catch {
+        return NextResponse.json({ error: `Failed to create payment order with gateway: ${errorText}` }, { status: 500 });
+      }
     }
 
     const orderData = await razorpayResponse.json();

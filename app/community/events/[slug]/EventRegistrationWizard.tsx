@@ -410,20 +410,31 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
           {step === 2 && (
             <div className="space-y-5">
               <div>
-                <h3 className="text-xl font-bold font-space-grotesk tracking-tight">Razorpay Checkout</h3>
-                <p className="text-xs text-[#8A9EB0] mt-0.5">Event: {event.title}</p>
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#00B8F0]/15 text-[#00B8F0] text-[10px] font-bold font-mono uppercase tracking-wider border border-[#00B8F0]/30">
+                    ⚡ Gateway Secure
+                  </span>
+                </div>
+                <h3 className="text-2xl font-black font-space-grotesk tracking-tight text-white flex items-center gap-2">
+                  Razorpay Checkout
+                </h3>
+                <p className="text-xs text-slate-300 mt-1 font-medium">Event: {event.title}</p>
               </div>
 
               {error && !isVerifying && (
-                <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-xs flex items-center gap-2">
-                  <AlertCircle size={14} /> {error}
+                <div className="p-3.5 bg-rose-500/15 border border-rose-500/30 rounded-xl text-rose-300 text-xs flex items-start gap-2.5 shadow-sm">
+                  <AlertCircle size={16} className="text-rose-400 shrink-0 mt-0.5" />
+                  <div className="space-y-0.5">
+                    <span className="font-bold text-rose-200 block">Payment Error</span>
+                    <span>{error}</span>
+                  </div>
                 </div>
               )}
 
               {isVerifying ? (
-                <div className="bg-[#040A15] border border-white/5 p-5 rounded-xl font-mono text-xs text-[#00B8F0] space-y-2 h-[180px] flex flex-col justify-end">
+                <div className="bg-[#040A15] border border-white/10 p-5 rounded-xl font-mono text-xs text-[#00B8F0] space-y-2 h-[180px] flex flex-col justify-end shadow-inner">
                   <div className="flex items-center gap-2 mb-2 text-white border-b border-white/10 pb-2">
-                    <Terminal size={14} className="text-brand" /> SECURE LEDGER VERIFIER
+                    <Terminal size={14} className="text-[#00B8F0]" /> SECURE LEDGER VERIFIER
                   </div>
                   <div className="flex-1 space-y-1 overflow-y-auto">
                     {verificationLogs.map((log, idx) => (
@@ -431,30 +442,31 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                     ))}
                   </div>
                   <div className="flex items-center gap-2 text-white/50 text-[10px] pt-1">
-                    <Loader2 size={10} className="animate-spin" /> WAITING FOR BANK CONFIRMATION...
+                    <Loader2 size={10} className="animate-spin text-[#00B8F0]" /> WAITING FOR BANK CONFIRMATION...
                   </div>
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="bg-[#050C18] border border-white/5 p-5 rounded-xl text-center space-y-3.5">
-                    <div className="w-12 h-12 rounded-full bg-brand/10 text-brand flex items-center justify-center mx-auto">
-                      <ShieldCheck size={26} />
+                  <div className="bg-[#050C18] border border-white/10 p-6 rounded-2xl text-center space-y-4 shadow-xl relative overflow-hidden">
+                    <div className="w-14 h-14 rounded-2xl bg-[#00B8F0]/15 border border-[#00B8F0]/30 text-[#00B8F0] flex items-center justify-center mx-auto shadow-inner">
+                      <ShieldCheck size={30} />
                     </div>
                     <div className="space-y-1">
-                      <h4 className="font-bold text-base text-white">Payment Amount: ₹{entryFee}</h4>
-                      <p className="text-xs text-[#8A9EB0] max-w-[280px] mx-auto">
-                        Please complete the checkout to secure your registration pass.
+                      <span className="text-[11px] uppercase tracking-widest font-mono font-bold text-slate-400 block">Total Payable</span>
+                      <h4 className="font-extrabold text-3xl text-white font-mono">₹{entryFee}</h4>
+                      <p className="text-xs text-slate-300 max-w-[280px] mx-auto pt-1 font-medium">
+                        Complete checkout to secure your official registration pass.
                       </p>
                     </div>
 
                     <button
                       onClick={() => initiatePayment(pendingRegId || "")}
                       disabled={loading}
-                      className="w-full bg-brand hover:bg-[#00B8F0] text-white py-3 rounded-xl font-semibold text-xs transition-colors shrink-0 flex items-center justify-center gap-2 disabled:opacity-50"
+                      className="w-full bg-[#00B8F0] hover:bg-[#00A0D0] text-white py-3.5 rounded-xl font-bold text-sm transition-all shrink-0 flex items-center justify-center gap-2 shadow-lg shadow-[#00B8F0]/25 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
                     >
                       {loading ? (
                         <>
-                          <Loader2 className="w-3.5 h-3.5 animate-spin" /> Launching Checkout...
+                          <Loader2 className="w-4 h-4 animate-spin" /> Launching Checkout...
                         </>
                       ) : (
                         `Pay Entry Fee (₹${entryFee})`
@@ -463,18 +475,18 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                   </div>
 
                   {/* Payment methods description */}
-                  <div className="grid grid-cols-3 gap-3 border-t border-white/5 pt-4">
-                    <div className="flex flex-col items-center gap-1.5 p-3 rounded-lg bg-white/[0.02] text-center border border-white/5">
-                      <CreditCard size={18} className="text-[#8A9EB0]" />
-                      <span className="text-[10px] font-semibold text-[#8A9EB0]">Cards</span>
+                  <div className="grid grid-cols-3 gap-3 border-t border-white/10 pt-4">
+                    <div className="flex flex-col items-center gap-2 p-3 rounded-xl bg-white/[0.03] text-center border border-white/10 hover:border-[#00B8F0]/30 transition-all">
+                      <CreditCard size={20} className="text-[#00B8F0]" />
+                      <span className="text-[11px] font-bold text-slate-200">Cards</span>
                     </div>
-                    <div className="flex flex-col items-center gap-1.5 p-3 rounded-lg bg-white/[0.02] text-center border border-white/5">
-                      <Smartphone size={18} className="text-[#8A9EB0]" />
-                      <span className="text-[10px] font-semibold text-[#8A9EB0]">UPI Apps</span>
+                    <div className="flex flex-col items-center gap-2 p-3 rounded-xl bg-white/[0.03] text-center border border-white/10 hover:border-[#00B8F0]/30 transition-all">
+                      <Smartphone size={20} className="text-[#00B8F0]" />
+                      <span className="text-[11px] font-bold text-slate-200">UPI Apps</span>
                     </div>
-                    <div className="flex flex-col items-center gap-1.5 p-3 rounded-lg bg-white/[0.02] text-center border border-white/5">
-                      <ShieldCheck size={18} className="text-[#8A9EB0]" />
-                      <span className="text-[10px] font-semibold text-[#8A9EB0]">Banking</span>
+                    <div className="flex flex-col items-center gap-2 p-3 rounded-xl bg-white/[0.03] text-center border border-white/10 hover:border-[#00B8F0]/30 transition-all">
+                      <ShieldCheck size={20} className="text-[#00B8F0]" />
+                      <span className="text-[11px] font-bold text-slate-200">Net Banking</span>
                     </div>
                   </div>
                 </div>

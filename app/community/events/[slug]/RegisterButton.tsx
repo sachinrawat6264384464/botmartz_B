@@ -22,15 +22,15 @@ export default function RegisterButton({ event }: RegisterButtonProps) {
     setMounted(true);
   }, []);
 
-  const entryFee = (event.entryFee !== undefined && event.entryFee !== null) ? Number(event.entryFee) : 100;
+  const entryFee = (event.entryFee !== undefined && event.entryFee !== null) ? Number(event.entryFee) : 399;
 
   return (
     <>
       <button 
         onClick={() => setIsOpen(true)}
-        className="btn btn-primary bg-brand hover:bg-[#00B8F0] text-white px-8 py-3.5 rounded-lg text-[15px] font-semibold transition-all hover:scale-[1.02] shadow-lg"
+        className="btn btn-primary bg-brand hover:bg-[#00B8F0] text-white px-8 py-3.5 rounded-lg text-[15px] font-semibold transition-all hover:scale-[1.02] shadow-lg cursor-pointer"
       >
-        Register for Event {!mounted ? "(₹100)" : (entryFee > 0 ? `(₹${entryFee})` : '(Free)')}
+        Register for Event {!mounted ? "(₹399)" : (entryFee > 0 ? `(₹${entryFee})` : '(Free)')}
       </button>
 
       <EventRegistrationWizard
