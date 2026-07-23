@@ -61,7 +61,9 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
     phone: "",
     company: "",
     role: "",
-    apiInfo: ""
+    apiInfo: "",
+    attendeeType: "student",
+    quantity: 1
   });
 
   // Step 2 states
@@ -72,7 +74,15 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
 
   const unsubscribeRef = useRef<(() => void) | null>(null);
 
-  const entryFee = (event.entryFee !== undefined && event.entryFee !== null) ? Number(event.entryFee) : 100;
+  // Calculate dynamic entry fee
+  const calculateFee = () => {
+    let basePrice = formData.attendeeType === "student" ? 399 : 699;
+    let discount = 0;
+    if (formData.quantity >= 10) discount = 100;
+    else if (formData.quantity >= 5) discount = 50;
+    return (basePrice - discount) * formData.quantity;
+  };
+  const entryFee = calculateFee();
 
   // Cleanup listeners
   useEffect(() => {
@@ -215,6 +225,8 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
         company: formData.company,
         role: formData.role,
         apiInfo: formData.apiInfo,
+        attendeeType: formData.attendeeType,
+        quantity: formData.quantity,
         amountPaid: entryFee,
         utr: "Razorpay Checkout",
         paymentStatus: entryFee === 0 ? "paid" : "pending",
@@ -318,6 +330,32 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                       value={formData.phone}
                       onChange={(e) => setFormData({...formData, phone: e.target.value})}
                       placeholder="e.g. +91 98765 43210"
+                      className="w-full bg-[#050C18] border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#00B8F0] transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-[#8A9EB0] uppercase tracking-wider mb-1">Attendee Type *</label>
+                    <select
+                      value={formData.attendeeType}
+                      onChange={(e) => setFormData({...formData, attendeeType: e.target.value})}
+                      className="w-full bg-[#050C18] border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#00B8F0] transition-colors"
+                    >
+                      <option value="student">Student (₹399)</option>
+                      <option value="professional">Professional (₹699)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-[#8A9EB0] uppercase tracking-wider mb-1">Quantity * (Group Discount)</label>
+                    <input
+                      type="number"
+                      required
+                      min={1}
+                      max={100}
+                      value={formData.quantity}
+                      onChange={(e) => setFormData({...formData, quantity: parseInt(e.target.value) || 1})}
                       className="w-full bg-[#050C18] border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#00B8F0] transition-colors"
                     />
                   </div>
