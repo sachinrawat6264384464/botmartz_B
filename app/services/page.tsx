@@ -46,7 +46,7 @@ export default async function ServicesIndexPage() {
   } catch (e) {}
 
   return (
-    <main className="bg-[#050B14] min-h-screen text-white">
+    <main className="bg-white min-h-screen">
       {/* HERO SECTION */}
       <section className="relative pt-[120px] pb-[80px] bg-[#050B14] text-white overflow-hidden">
         {/* Background glow effects */}
@@ -87,41 +87,28 @@ export default async function ServicesIndexPage() {
         </div>
       </section>
 
-      {/* TRUSTED BY */}
-      <div className="bg-[#0A111F] border-b border-[#1E293B] py-6">
-        <div className="wrap flex flex-wrap items-center justify-between gap-6 text-[#5B6B7C] font-mono text-[12px] uppercase tracking-wider">
-          <span>Trusted by Innovative Companies</span>
-          <div className="flex flex-wrap gap-8 opacity-70">
-            <span>EduBridge</span>
-            <span>ShipSure</span>
-            <span>LexIntell</span>
-            <span>DataKraft</span>
-            <span>NextLearn</span>
-          </div>
-        </div>
-      </div>
 
       {/* CORE SERVICES */}
-      <section className="section-pad">
+      <section className="section-pad bg-white">
         <div className="wrap text-center mb-[50px]">
           <div className="font-mono text-[11px] text-[#00B8F0] uppercase tracking-[0.1em] mb-4 flex justify-center items-center gap-3">Our Core Services</div>
-          <h2 className="text-[34px] font-semibold mb-4 text-white">AI Solutions Built for Production.</h2>
-          <p className="text-[15.5px] text-[#8A9EB0] max-w-[500px] mx-auto">
+          <h2 className="text-[34px] font-semibold mb-4 text-slate-900">AI Solutions Built for Production.</h2>
+          <p className="text-[15.5px] text-slate-600 max-w-[500px] mx-auto">
             We focus on solving real business problems with two core capabilities backed by robust engineering and seamless integrations.
           </p>
         </div>
         
         <div className="wrap grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[960px] mx-auto">
           {/* Service 1 */}
-          <div className="bg-[#0A111F] border border-[#1E293B] p-8 transition-colors hover:border-[#00B8F0] rounded-sm">
-            <div className="w-12 h-12 bg-[#050B14] rounded-lg flex items-center justify-center mb-6 border border-[#1E293B]">
+          <div className="bg-slate-50 border border-slate-200 p-8 transition-colors hover:border-[#00B8F0] hover:shadow-[0_0_30px_rgba(0,184,240,0.1)] rounded-sm">
+            <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center mb-6 border border-slate-200">
               <div className="w-6 h-6 bg-[#00B8F0]/20 rounded" />
             </div>
-            <h3 className="text-[20px] font-semibold mb-3 text-white">Enterprise RAG</h3>
-            <p className="text-[14px] text-[#8A9EB0] mb-6">Transform enterprise knowledge into actionable intelligence.</p>
+            <h3 className="text-[20px] font-semibold mb-3 text-slate-900">Enterprise RAG</h3>
+            <p className="text-[14px] text-slate-600 mb-6">Transform enterprise knowledge into actionable intelligence.</p>
             <ul className="space-y-2.5 mb-8">
               {['Knowledge Search', 'Document Intelligence', 'PDF AI & Q&A', 'Enterprise Search', 'Support AI Copilots'].map(i => (
-                <li key={i} className="flex items-center gap-2 text-[13.5px] text-[#8A9EB0]">
+                <li key={i} className="flex items-center gap-2 text-[13.5px] text-slate-600">
                   <span className="text-[#00B8F0]">✓</span> {i}
                 </li>
               ))}
@@ -130,17 +117,17 @@ export default async function ServicesIndexPage() {
           </div>
           
           {/* Service 2 */}
-          <div className="bg-[#0A111F] border border-[#1E293B] p-8 transition-colors hover:border-[#00B8F0] relative overflow-hidden rounded-sm">
+          <div className="bg-slate-50 border border-slate-200 p-8 transition-colors hover:border-[#00B8F0] hover:shadow-[0_0_30px_rgba(0,184,240,0.1)] relative overflow-hidden rounded-sm">
              {/* Subtle gradient glow */}
              <div className="absolute top-0 right-0 w-32 h-32 bg-[#00B8F0]/5 blur-3xl rounded-full" />
-            <div className="w-12 h-12 bg-[#050B14] rounded-lg flex items-center justify-center mb-6 border border-[#1E293B] relative z-10">
+            <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center mb-6 border border-slate-200 relative z-10">
               <div className="w-6 h-6 bg-[#FF3366]/20 rounded-full" />
             </div>
-            <h3 className="text-[20px] font-semibold mb-3 relative z-10 text-white">AI Agents</h3>
-            <p className="text-[14px] text-[#8A9EB0] mb-6 relative z-10">Build intelligent agents that automate complex tasks and workflows.</p>
+            <h3 className="text-[20px] font-semibold mb-3 relative z-10 text-slate-900">AI Agents</h3>
+            <p className="text-[14px] text-slate-600 mb-6 relative z-10">Build intelligent agents that automate complex tasks and workflows.</p>
             <ul className="space-y-2.5 mb-8 relative z-10">
               {['Customer Support Agents', 'Research & Analysis Agents', 'Sales & SDR Agents', 'Workflow Automation', 'Internal AI Assistants'].map(i => (
-                <li key={i} className="flex items-center gap-2 text-[13.5px] text-[#8A9EB0]">
+                <li key={i} className="flex items-center gap-2 text-[13.5px] text-slate-600">
                   <span className="text-[#00B8F0]">✓</span> {i}
                 </li>
               ))}
@@ -151,11 +138,11 @@ export default async function ServicesIndexPage() {
       </section>
 
       {/* WHY CHOOSE BOTMARTZ */}
-      <section className="section-pad bg-[#050B14]">
+      <section className="section-pad bg-slate-50 border-y border-slate-200">
         <div className="wrap text-center mb-12">
           <div className="font-mono text-[11px] text-[#00B8F0] uppercase tracking-[0.1em] mb-4 flex justify-center items-center gap-3">Why Choose Botmartz</div>
-          <h2 className="text-[30px] font-semibold mb-4 text-white">Engineering Excellence. Built for the Real World.</h2>
-          <p className="text-[15px] text-[#8A9EB0] max-w-[600px] mx-auto">
+          <h2 className="text-[30px] font-semibold mb-4 text-slate-900">Engineering Excellence. Built for the Real World.</h2>
+          <p className="text-[15px] text-slate-600 max-w-[600px] mx-auto">
             We combine deep engineering expertise with a production-first mindset to deliver AI systems that scale.
           </p>
         </div>
@@ -169,21 +156,21 @@ export default async function ServicesIndexPage() {
             { t: 'End-to-End Delivery', d: 'From strategy and design to deployment and support.' }
           ].map((item, i) => (
             <div key={i} className="flex flex-col items-center">
-              <div className="w-10 h-10 bg-[#0A111F] border border-[#1E293B] rounded-full flex items-center justify-center mb-4 text-[#00B8F0] font-mono text-[14px]">0{i+1}</div>
-              <h3 className="text-[15px] font-semibold mb-2 text-white">{item.t}</h3>
-              <p className="text-[13px] text-[#8A9EB0] leading-relaxed">{item.d}</p>
+              <div className="w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center mb-4 text-[#00B8F0] font-mono text-[14px]">0{i+1}</div>
+              <h3 className="text-[15px] font-semibold mb-2 text-slate-900">{item.t}</h3>
+              <p className="text-[13px] text-slate-600 leading-relaxed">{item.d}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* STACK */}
-      <section className="border-b border-t border-[#1E293B] bg-[#0A111F]">
+      <section className="border-y border-slate-200 bg-white">
         <div className="wrap flex flex-col md:flex-row items-center">
-          <div className="font-mono text-[11px] text-[#00B8F0] uppercase tracking-[0.08em] py-4 pr-8 border-b md:border-b-0 md:border-r border-[#1E293B] w-full md:w-auto text-center md:text-left">Powered By Modern AI Engineering Stack</div>
+          <div className="font-mono text-[11px] text-[#00B8F0] uppercase tracking-[0.08em] py-4 pr-8 border-b md:border-b-0 md:border-r border-slate-200 w-full md:w-auto text-center md:text-left">Powered By Modern AI Engineering Stack</div>
           <div className="flex flex-wrap flex-1">
             {['PyTorch', 'LangGraph', 'LangChain', 'FastAPI', 'Google ADK', 'TensorFlow'].map((tech, i) => (
-              <div key={tech} className="flex-1 min-w-[120px] p-[16px_10px] font-mono text-[12px] text-[#8A9EB0] text-center border-r border-[#1E293B] last:border-r-0">
+              <div key={tech} className="flex-1 min-w-[120px] p-[16px_10px] font-mono text-[12px] text-slate-500 text-center border-r border-slate-200 last:border-r-0">
                 {tech}
               </div>
             ))}
@@ -192,48 +179,48 @@ export default async function ServicesIndexPage() {
       </section>
 
       {/* SOLUTIONS IN ACTION */}
-      <section className="section-pad bg-[#050B14]">
+      <section className="section-pad bg-white">
         <div className="wrap">
           <div className="flex flex-wrap justify-between items-end gap-6 mb-10">
             <div>
               <div className="font-mono text-[11px] text-[#00B8F0] uppercase tracking-[0.1em] mb-4 flex items-center gap-3">Solutions in Action</div>
-              <h2 className="text-[34px] font-semibold text-white">Real Problems. Real Impact.</h2>
-              <p className="text-[15.5px] text-[#8A9EB0] mt-2">Explore how we've helped organizations unlock the power of AI.</p>
+              <h2 className="text-[34px] font-semibold text-slate-900">Real Problems. Real Impact.</h2>
+              <p className="text-[15.5px] text-slate-600 mt-2">Explore how we've helped organizations unlock the power of AI.</p>
             </div>
-            <Link href="/work/case-studies" className="btn btn-ghost border border-[#1E293B] text-white hover:border-[#00B8F0] px-6 py-2 rounded text-[14px] transition-colors">View All Case Studies →</Link>
+            <Link href="/work/case-studies" className="btn btn-ghost border border-slate-200 text-slate-600 hover:border-[#00B8F0] hover:text-[#00B8F0] px-6 py-2 rounded text-[14px] transition-colors">View All Case Studies →</Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="border border-[#1E293B] rounded-sm overflow-hidden group cursor-pointer hover:border-[#00B8F0] transition-colors">
-              <div className="h-[180px] bg-[#0A111F] border-b border-[#1E293B] p-6 relative">
-                 <div className="absolute inset-x-6 bottom-0 h-32 bg-[#050B14] rounded-t-lg border border-b-0 border-[#1E293B]"></div>
+            <div className="border border-slate-200 rounded-sm overflow-hidden group cursor-pointer hover:border-[#00B8F0] transition-colors">
+              <div className="h-[180px] bg-slate-100 border-b border-slate-200 p-6 relative">
+                 <div className="absolute inset-x-6 bottom-0 h-32 bg-slate-200 rounded-t-lg border border-b-0 border-slate-300"></div>
               </div>
-              <div className="p-6 bg-[#0A111F]">
+              <div className="p-6 bg-slate-50">
                 <div className="font-mono text-[10px] text-[#00B8F0] uppercase bg-[#00B8F0]/10 inline-block px-2 py-1 rounded mb-3">Enterprise RAG</div>
-                <h3 className="text-[18px] font-semibold mb-2 text-white">Enterprise Knowledge Search</h3>
-                <p className="text-[13.5px] text-[#8A9EB0] mb-4">Built a secure RAG system to unify search across 50K+ internal documents.</p>
+                <h3 className="text-[18px] font-semibold mb-2 text-slate-900">Enterprise Knowledge Search</h3>
+                <p className="text-[13.5px] text-slate-600 mb-4">Built a secure RAG system to unify search across 50K+ internal documents.</p>
                 <div className="font-mono text-[12px] text-[#00B8F0] flex items-center gap-2 group-hover:gap-3 transition-all">Read Case Study <ArrowRight className="w-3 h-3" /></div>
               </div>
             </div>
-            <div className="border border-[#1E293B] rounded-sm overflow-hidden group cursor-pointer hover:border-[#00B8F0] transition-colors">
-              <div className="h-[180px] bg-[#0A111F] border-b border-[#1E293B] p-6 relative">
-                 <div className="absolute right-6 top-6 bottom-0 w-32 bg-[#050B14] rounded-t-lg border border-b-0 border-[#1E293B]"></div>
+            <div className="border border-slate-200 rounded-sm overflow-hidden group cursor-pointer hover:border-[#00B8F0] transition-colors">
+              <div className="h-[180px] bg-slate-100 border-b border-slate-200 p-6 relative">
+                 <div className="absolute right-6 top-6 bottom-0 w-32 bg-slate-200 rounded-t-lg border border-b-0 border-slate-300"></div>
               </div>
-              <div className="p-6 bg-[#0A111F]">
+              <div className="p-6 bg-slate-50">
                 <div className="font-mono text-[10px] text-[#00B8F0] uppercase bg-[#00B8F0]/10 inline-block px-2 py-1 rounded mb-3">AI Agents</div>
-                <h3 className="text-[18px] font-semibold mb-2 text-white">AI Support Agent</h3>
-                <p className="text-[13.5px] text-[#8A9EB0] mb-4">Developed an AI support agent that resolved 70% of queries automatically.</p>
+                <h3 className="text-[18px] font-semibold mb-2 text-slate-900">AI Support Agent</h3>
+                <p className="text-[13.5px] text-slate-600 mb-4">Developed an AI support agent that resolved 70% of queries automatically.</p>
                 <div className="font-mono text-[12px] text-[#00B8F0] flex items-center gap-2 group-hover:gap-3 transition-all">Read Case Study <ArrowRight className="w-3 h-3" /></div>
               </div>
             </div>
-            <div className="border border-[#1E293B] rounded-sm overflow-hidden group cursor-pointer hover:border-[#00B8F0] transition-colors">
-              <div className="h-[180px] bg-[#0A111F] border-b border-[#1E293B] p-6 relative">
-                 <div className="absolute inset-6 bg-[#050B14] rounded-lg border border-[#1E293B]"></div>
+            <div className="border border-slate-200 rounded-sm overflow-hidden group cursor-pointer hover:border-[#00B8F0] transition-colors">
+              <div className="h-[180px] bg-slate-100 border-b border-slate-200 p-6 relative">
+                 <div className="absolute inset-6 bg-slate-200 rounded-lg border border-slate-300"></div>
               </div>
-              <div className="p-6 bg-[#0A111F]">
+              <div className="p-6 bg-slate-50">
                 <div className="font-mono text-[10px] text-[#00B8F0] uppercase bg-[#00B8F0]/10 inline-block px-2 py-1 rounded mb-3">AI Automation</div>
-                <h3 className="text-[18px] font-semibold mb-2 text-white">AI SDR for Outreach</h3>
-                <p className="text-[13.5px] text-[#8A9EB0] mb-4">Built an autonomous SDR agent that personalizes outreach and books 3X more meetings.</p>
+                <h3 className="text-[18px] font-semibold mb-2 text-slate-900">AI SDR for Outreach</h3>
+                <p className="text-[13.5px] text-slate-600 mb-4">Built an autonomous SDR agent that personalizes outreach and books 3X more meetings.</p>
                 <div className="font-mono text-[12px] text-[#00B8F0] flex items-center gap-2 group-hover:gap-3 transition-all">Read Case Study <ArrowRight className="w-3 h-3" /></div>
               </div>
             </div>
@@ -244,33 +231,33 @@ export default async function ServicesIndexPage() {
       {/* CTA BANNER */}
       <section className="py-[80px]">
         <div className="wrap">
-          <div className="bg-[#0A111F] border border-[#1E293B] rounded-[24px] p-[40px] md:p-[60px] text-white flex flex-col lg:flex-row items-center justify-between gap-10 relative overflow-hidden">
+          <div className="bg-slate-50 border border-slate-200 rounded-[24px] p-[40px] md:p-[60px] flex flex-col lg:flex-row items-center justify-between gap-10 relative overflow-hidden">
             <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(rgba(0,184,240,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,.05) 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
             
             <div className="relative z-10 max-w-[480px]">
               <div className="font-mono text-[11px] text-[#00B8F0] uppercase tracking-[0.12em] mb-3">Ready to build together?</div>
-              <h2 className="text-[36px] font-semibold leading-[1.1] mb-4">Let's Engineer AI Solutions That <span className="text-[#FF3366]">Drive Real Results.</span></h2>
-              <p className="text-[15px] text-[#8A9EB0] mb-8">Book a free discovery call and let's discuss how we can solve your most critical challenges with AI.</p>
-              <Link href="/contact" className="btn btn-primary bg-[#00B8F0] hover:bg-[#0096C7] px-6 py-3 rounded text-[14px]">Book a Discovery Call →</Link>
+              <h2 className="text-[36px] font-semibold leading-[1.1] mb-4 text-slate-900">Let's Engineer AI Solutions That <span className="text-[#FF3366]">Drive Real Results.</span></h2>
+              <p className="text-[15px] text-slate-600 mb-8">Book a free discovery call and let's discuss how we can solve your most critical challenges with AI.</p>
+              <Link href="/contact" className="btn btn-primary bg-[#00B8F0] hover:bg-[#0096C7] text-white px-6 py-3 rounded text-[14px]">Book a Discovery Call →</Link>
             </div>
 
             <div className="relative z-10 flex flex-col gap-4 w-full max-w-[340px]">
-              <div className="bg-[#050B14] border border-[#1E293B] rounded-xl p-5 flex gap-4 items-start">
+              <div className="bg-white border border-slate-200 rounded-xl p-5 flex gap-4 items-start">
                 <div className="bg-[#00B8F0]/10 border border-[#00B8F0]/20 p-2.5 rounded-lg text-[#00B8F0]">
                   <Calendar className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[15px] mb-1 text-white">Free Discovery Call</h3>
-                  <p className="text-[13px] text-[#8A9EB0]">60-minute strategy session with our AI engineering experts.</p>
+                  <h3 className="font-semibold text-[15px] mb-1 text-slate-900">Free Discovery Call</h3>
+                  <p className="text-[13px] text-slate-600">30-minute introductory call to explore your use case.</p>
                 </div>
               </div>
-              <div className="bg-[#050B14] border border-[#1E293B] rounded-xl p-5 flex gap-4 items-start">
-                <div className="bg-[#00B8F0]/10 border border-[#00B8F0]/20 p-2.5 rounded-lg text-[#00B8F0]">
+              <div className="bg-white border border-slate-200 rounded-xl p-5 flex gap-4 items-start">
+                <div className="bg-[#FF3366]/10 border border-[#FF3366]/20 p-2.5 rounded-lg text-[#FF3366]">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[15px] mb-1 text-white">Custom AI Roadmap</h3>
-                  <p className="text-[13px] text-[#8A9EB0]">Get a tailored roadmap and project estimation.</p>
+                  <h3 className="font-semibold text-[15px] mb-1 text-slate-900">Proof of Concept</h3>
+                  <p className="text-[13px] text-slate-600">We can build a rapid prototype in 2-4 weeks.</p>
                 </div>
               </div>
             </div>

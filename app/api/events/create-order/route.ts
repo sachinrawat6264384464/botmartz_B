@@ -27,11 +27,17 @@ export async function POST(req: NextRequest) {
     const quantity = regData?.quantity || 1;
     
     let basePrice = attendeeType === 'student' ? 399 : 699;
+    
+    const isEarlyBird = new Date() <= new Date("2026-07-30T23:59:59Z");
+    if (isEarlyBird) {
+      basePrice = Math.round(basePrice * 0.85);
+    }
+
     let discount = 0;
     if (quantity >= 10) discount = 100;
     else if (quantity >= 5) discount = 50;
     
-    const expectedFee = (basePrice - discount) * quantity;
+    const expectedFee = Math.max(0, (basePrice - discount) * quantity);
 
     // Prevent amount tampering
     if (cleanAmount !== expectedFee) {
@@ -39,7 +45,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 3. Call Razorpay API to create an Order
-    const keyId = process.env.RAZORPAY_KEY_ID;
+    const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || process.env.RAZORPAY_KEY_ID;
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
     if (!keyId || !keySecret) {

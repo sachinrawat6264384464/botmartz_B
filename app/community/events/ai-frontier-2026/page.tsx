@@ -154,7 +154,7 @@ const faqJsonLd = {
       name: 'Are there group discounts for AI Frontier?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes. Group and corporate rates are available for teams of 5 or more. Enterprise roundtable seats for CTOs, founders, and engineering managers are also available. Contact us at botmartz.com/contact for group pricing.',
+        text: 'Yes. Group and corporate rates are available for teams of 5 or more (up to ₹100 off per person).',
       },
     },
     {
