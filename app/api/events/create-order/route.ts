@@ -22,25 +22,20 @@ export async function POST(req: NextRequest) {
     const regData = regDoc.data();
     const eventId = regData?.eventId;
 
-    // 2. Fetch the event details to verify the fee
-    if (!eventId) {
-      return NextResponse.json({ error: 'Event ID missing from registration details' }, { status: 400 });
-    }
-
-    const eventDoc = await adminDb.collection('events').doc(eventId).get();
-    if (!eventDoc.exists) {
-      return NextResponse.json({ error: 'Associated event not found' }, { status: 404 });
-    }
-
-    const eventData = eventDoc.data();
-    // Default to 100 if entryFee is undefined/null in DB
-    const expectedFee = (eventData?.entryFee !== undefined && eventData?.entryFee !== null) 
-      ? Number(eventData.entryFee) 
-      : 100;
+    // 2. Calculate dynamic fee based on registration data
+    const attendeeType = regData?.attendeeType || 'student';
+    const quantity = regData?.quantity || 1;
+    
+    let basePrice = attendeeType === 'student' ? 399 : 699;
+    let discount = 0;
+    if (quantity >= 10) discount = 100;
+    else if (quantity >= 5) discount = 50;
+    
+    const expectedFee = (basePrice - discount) * quantity;
 
     // Prevent amount tampering
     if (cleanAmount !== expectedFee) {
-      return NextResponse.json({ error: 'Payment amount mismatch detected.' }, { status: 400 });
+      return NextResponse.json({ error: `Payment amount mismatch detected. Expected ${expectedFee}, got ${cleanAmount}` }, { status: 400 });
     }
 
     // 3. Call Razorpay API to create an Order
