@@ -11,7 +11,9 @@ import {
   Loader2,
   CreditCard,
   Smartphone,
-  ShieldCheck
+  ShieldCheck,
+  Download,
+  Share2
 } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, addDoc, doc, onSnapshot } from "firebase/firestore";
@@ -98,6 +100,28 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
       if (unsubscribeRef.current) unsubscribeRef.current();
     };
   }, []);
+
+  const downloadQR = async () => {
+    try {
+      const response = await fetch(`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${successCode}`);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `Event-Pass-${successCode}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('QR Download failed', err);
+    }
+  };
+
+  const shareToWhatsApp = () => {
+    const text = `I'm attending ${event.title}! Here is my Check-in Pass Code: ${successCode}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+  };
 
   if (!isOpen) return null;
 
@@ -536,6 +560,23 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                   <span className="text-[10px] text-white/50 font-mono block">CHECK-IN CODE</span>
                   <span className="text-xs font-mono font-bold tracking-widest text-[#00B8F0]">{successCode}</span>
                 </div>
+              </div>
+
+              <div className="flex items-center justify-center gap-3 pt-4 pb-2">
+                <button 
+                  onClick={downloadQR}
+                  className="flex items-center gap-2 bg-[#050C18] border border-[#1E293B] hover:border-[#00B8F0] text-[#8A9EB0] hover:text-white px-4 py-2 rounded-lg text-xs font-semibold transition-colors"
+                >
+                  <Download size={14} />
+                  Save QR
+                </button>
+                <button 
+                  onClick={shareToWhatsApp}
+                  className="flex items-center gap-2 bg-[#25D366]/10 border border-[#25D366]/30 hover:border-[#25D366] text-[#25D366] px-4 py-2 rounded-lg text-xs font-semibold transition-colors"
+                >
+                  <Share2 size={14} />
+                  WhatsApp
+                </button>
               </div>
 
               <div className="space-y-3 pt-2">
