@@ -214,10 +214,10 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
   };
 
   return (
-    <div className="bg-[#050B14] text-[#E2E8F0] min-h-screen">
+    <div className="bg-white text-[#E2E8F0] min-h-screen">
       {/* FEATURED HERO CARD AT TOP OF LISTING */}
       {featuredArticle && (
-        <section id="articles" className="py-12 bg-[#050B14] border-b border-[#1E293B]">
+        <section id="articles" className="py-12 bg-white border-b border-slate-200">
           <div className="wrap max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="font-mono text-[11px] tracking-[0.14em] text-[#00B8F0] uppercase mb-4 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#00B8F0] animate-pulse"></span>
@@ -225,7 +225,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
             </div>
             <Link
               href={`/insights/${featuredArticle.slug || featuredArticle.id}`}
-              className="group block bg-[#0A111F] border border-[#1E293B] hover:border-[#00B8F0] rounded-2xl overflow-hidden transition-all duration-300 shadow-xl"
+              className="group block bg-white border border-slate-200 hover:border-[#00B8F0] rounded-2xl overflow-hidden transition-all duration-300 shadow-xl"
             >
               <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-8 p-6 sm:p-10 items-center">
                 <div className="flex flex-col justify-between h-full">
@@ -234,22 +234,22 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                       <span className="bg-[#00B8F0]/10 border border-[#00B8F0]/30 text-[#00B8F0] font-mono text-[11px] font-semibold px-3 py-1 rounded-full uppercase">
                         {featuredArticle.category}
                       </span>
-                      <span className="text-xs text-[#8A9EB0] font-mono">{featuredArticle.date}</span>
-                      <span className="text-xs text-[#8A9EB0] font-mono">· {featuredArticle.readTime}</span>
+                      <span className="text-xs text-slate-600 font-mono">{featuredArticle.date}</span>
+                      <span className="text-xs text-slate-600 font-mono">· {featuredArticle.readTime}</span>
                     </div>
-                    <h2 className="text-[24px] sm:text-[32px] font-semibold leading-[1.25] text-white group-hover:text-[#00B8F0] transition-colors tracking-tight mb-4">
+                    <h2 className="text-[24px] sm:text-[32px] font-semibold leading-[1.25] text-slate-900 group-hover:text-[#00B8F0] transition-colors tracking-tight mb-4">
                       {featuredArticle.title}
                     </h2>
-                    <p className="text-[15px] sm:text-[16px] leading-[1.65] text-[#8A9EB0] mb-6">
+                    <p className="text-[15px] sm:text-[16px] leading-[1.65] text-slate-600 mb-6">
                       {featuredArticle.description}
                     </p>
                   </div>
-                  <div className="flex items-center justify-between pt-6 border-t border-[#1E293B]">
+                  <div className="flex items-center justify-between pt-6 border-t border-slate-200">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-[#1E293B] flex items-center justify-center font-mono text-xs font-bold text-[#00B8F0]">
+                      <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center font-mono text-xs font-bold text-[#00B8F0]">
                         {featuredArticle.author?.charAt(0) || "B"}
                       </div>
-                      <span className="text-sm font-medium text-white">{featuredArticle.author}</span>
+                      <span className="text-sm font-medium text-slate-900">{featuredArticle.author}</span>
                     </div>
                     <span className="inline-flex items-center gap-2 text-sm font-semibold text-[#00B8F0] group-hover:gap-3 transition-all">
                       Read Full Blueprint <ArrowRight className="w-4 h-4" />
@@ -258,12 +258,12 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                 </div>
                 
                 {/* Visual Preview Banner */}
-                <div className="bg-[#050B14] border border-[#1E293B] rounded-xl p-6 h-full min-h-[280px] flex items-center justify-center relative overflow-hidden group-hover:border-[#00B8F0]/40 transition-colors">
+                <div className="bg-white border border-slate-200 rounded-xl p-6 h-full min-h-[280px] flex items-center justify-center relative overflow-hidden group-hover:border-[#00B8F0]/40 transition-colors">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,184,240,0.1),transparent_70%)] pointer-events-none" />
                   <div className="text-center relative z-10 p-4">
                     <Database className="w-12 h-12 text-[#00B8F0] mx-auto mb-3 opacity-80" />
-                    <div className="font-mono text-xs text-[#8A9EB0] uppercase tracking-wider mb-1">Architecture Diagram</div>
-                    <div className="font-semibold text-sm text-white max-w-[260px] mx-auto">{featuredArticle.title}</div>
+                    <div className="font-mono text-xs text-slate-600 uppercase tracking-wider mb-1">Architecture Diagram</div>
+                    <div className="font-semibold text-sm text-slate-900 max-w-[260px] mx-auto">{featuredArticle.title}</div>
                   </div>
                 </div>
               </div>
@@ -341,29 +341,29 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                 <article className="bg-white border border-[#E2E8F0] rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
                   
                   {/* Left Graphic Block: RAG Schematic */}
-                  <div className="md:col-span-6 h-[240px] sm:h-[280px] bg-[#060D1A] rounded-xl relative overflow-hidden border border-[#1E293B] flex items-center justify-center p-4 sm:p-6 shadow-inner select-none">
+                  <div className="md:col-span-6 h-[240px] sm:h-[280px] bg-slate-50 rounded-xl relative overflow-hidden border border-slate-200 flex items-center justify-center p-4 sm:p-6 shadow-inner select-none">
                     <div className="absolute top-4 left-4 bg-[#0066FF] text-white font-mono text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded shadow-md z-20">
                       FEATURED
                     </div>
                     
                     {/* Pipeline Mockup */}
-                    <div className="w-full max-w-[360px] flex flex-col gap-6 relative z-10 text-white font-mono text-[10px]">
+                    <div className="w-full max-w-[360px] flex flex-col gap-6 relative z-10 text-slate-900 font-mono text-[10px]">
                       {/* Top Row */}
                       <div className="grid grid-cols-3 gap-3 items-center">
-                        <div className="bg-[#0A111F] border border-[#1E293B] rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1.5 shadow">
+                        <div className="bg-white border border-slate-200 rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1.5 shadow">
                           <FileText className="w-5 h-5 text-[#00B8F0]" />
                           <span>Document<br/>Ingestion</span>
                         </div>
                         <div className="flex items-center justify-center relative">
                           <ArrowRight className="w-4 h-4 text-[#00B8F0] absolute -left-1" />
-                          <div className="bg-[#0A111F] border border-[#1E293B] rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1.5 shadow w-full">
+                          <div className="bg-white border border-slate-200 rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1.5 shadow w-full">
                             <Network className="w-5 h-5 text-[#0066FF]" />
                             <span>Chunking &<br/>Embedding</span>
                           </div>
                         </div>
                         <div className="flex items-center justify-center relative">
                           <ArrowRight className="w-4 h-4 text-[#00B8F0] absolute -left-1" />
-                          <div className="bg-[#0A111F] border border-[#00B8F0]/40 rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1.5 shadow w-full bg-[#00B8F0]/10">
+                          <div className="bg-white border border-[#00B8F0]/40 rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1.5 shadow w-full bg-[#00B8F0]/10">
                             <Database className="w-5 h-5 text-[#00B8F0]" />
                             <span>Vector DB</span>
                           </div>
@@ -371,24 +371,24 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                       </div>
 
                       {/* Bottom Row */}
-                      <div className="grid grid-cols-4 gap-2 items-center pt-2 border-t border-[#1E293B]/60">
-                        <div className="bg-[#0A111F] border border-[#1E293B] rounded-md p-2 flex flex-col items-center text-center gap-1">
-                          <Search className="w-4 h-4 text-[#8A9EB0]" />
+                      <div className="grid grid-cols-4 gap-2 items-center pt-2 border-t border-slate-200/60">
+                        <div className="bg-white border border-slate-200 rounded-md p-2 flex flex-col items-center text-center gap-1">
+                          <Search className="w-4 h-4 text-slate-600" />
                           <span className="text-[9px]">Retrieval</span>
                         </div>
-                        <div className="bg-[#0A111F] border border-[#1E293B] rounded-md p-2 flex flex-col items-center text-center gap-1 relative">
+                        <div className="bg-white border border-slate-200 rounded-md p-2 flex flex-col items-center text-center gap-1 relative">
                           <ArrowRight className="w-3 h-3 text-[#64748B] absolute -left-1.5 top-1/2 -translate-y-1/2" />
                           <SlidersHorizontal className="w-4 h-4 text-[#00B8F0]" />
                           <span className="text-[9px]">Reranker</span>
                         </div>
-                        <div className="bg-[#0A111F] border border-[#1E293B] rounded-md p-2 flex flex-col items-center text-center gap-1 relative">
+                        <div className="bg-white border border-slate-200 rounded-md p-2 flex flex-col items-center text-center gap-1 relative">
                           <ArrowRight className="w-3 h-3 text-[#64748B] absolute -left-1.5 top-1/2 -translate-y-1/2" />
                           <Bot className="w-4 h-4 text-[#0066FF]" />
                           <span className="text-[9px]">LLM</span>
                         </div>
                         <div className="bg-[#0066FF] text-white rounded-md p-2 flex flex-col items-center text-center gap-1 relative shadow-md">
                           <ArrowRight className="w-3 h-3 text-[#64748B] absolute -left-1.5 top-1/2 -translate-y-1/2" />
-                          <CheckCircle2 className="w-4 h-4 text-white" />
+                          <CheckCircle2 className="w-4 h-4 text-slate-900" />
                           <span className="text-[9px]">Answer</span>
                         </div>
                       </div>
@@ -410,7 +410,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                     </div>
 
                     <div className="flex items-center gap-3 pt-4 border-t border-[#F1F5F9] mt-auto">
-                      <div className="w-9 h-9 rounded-full bg-[#0F172A] text-white flex items-center justify-center font-bold text-[13px] shadow-sm">
+                      <div className="w-9 h-9 rounded-full bg-[#0F172A] text-slate-900 flex items-center justify-center font-bold text-[13px] shadow-sm">
                         B
                       </div>
                       <div>
@@ -440,27 +440,27 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                     <article className="bg-white border border-[#E2E8F0] rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all flex flex-col h-full">
                       
                       {/* Top Dark Graphic Box */}
-                      <div className="h-[200px] bg-[#060D1A] rounded-xl border border-[#1E293B] relative overflow-hidden p-4 flex items-center justify-center shadow-inner select-none">
+                      <div className="h-[200px] bg-slate-50 rounded-xl border border-slate-200 relative overflow-hidden p-4 flex items-center justify-center shadow-inner select-none">
                         
                         {/* Custom Visual Schematics based on visualType */}
                         {art.visualType === "agents-circle" && (
                           <div className="relative w-40 h-40 flex items-center justify-center">
                             <div className="absolute inset-0 rounded-full border border-dashed border-[#00B8F0]/40 animate-spin-slow" />
-                            <div className="w-14 h-14 rounded-full bg-[#0066FF] border-2 border-white/20 flex items-center justify-center text-white shadow-lg z-10">
+                            <div className="w-14 h-14 rounded-full bg-[#0066FF] border-2 border-white/20 flex items-center justify-center text-slate-900 shadow-lg z-10">
                               <Bot className="w-7 h-7" />
                             </div>
                             {/* Surrounding Nodes */}
-                            <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-[#0A111F] border border-[#1E293B] flex items-center justify-center text-[#00B8F0]"><Users className="w-4 h-4"/></div>
-                            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-[#0A111F] border border-[#1E293B] flex items-center justify-center text-[#00B8F0]"><Terminal className="w-4 h-4"/></div>
-                            <div className="absolute top-1/2 -left-1 -translate-y-1/2 w-8 h-8 rounded-full bg-[#0A111F] border border-[#1E293B] flex items-center justify-center text-[#00B8F0]"><Database className="w-4 h-4"/></div>
-                            <div className="absolute top-1/2 -right-1 -translate-y-1/2 w-8 h-8 rounded-full bg-[#0A111F] border border-[#1E293B] flex items-center justify-center text-[#00B8F0]"><CheckCircle2 className="w-4 h-4"/></div>
+                            <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[#00B8F0]"><Users className="w-4 h-4"/></div>
+                            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[#00B8F0]"><Terminal className="w-4 h-4"/></div>
+                            <div className="absolute top-1/2 -left-1 -translate-y-1/2 w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[#00B8F0]"><Database className="w-4 h-4"/></div>
+                            <div className="absolute top-1/2 -right-1 -translate-y-1/2 w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[#00B8F0]"><CheckCircle2 className="w-4 h-4"/></div>
                           </div>
                         )}
 
                         {art.visualType === "microservices-blocks" && (
                           <div className="grid grid-cols-3 gap-2.5 w-full max-w-[220px]">
                             {[1, 2, 3, 4, 5, 6].map((i) => (
-                              <div key={i} className={`h-12 rounded-lg border flex items-center justify-center ${i % 2 === 0 ? "bg-[#0066FF]/20 border-[#0066FF] text-[#00B8F0]" : "bg-[#0A111F] border-[#1E293B] text-[#8A9EB0]"}`}>
+                              <div key={i} className={`h-12 rounded-lg border flex items-center justify-center ${i % 2 === 0 ? "bg-[#0066FF]/20 border-[#0066FF] text-[#00B8F0]" : "bg-white border-slate-200 text-slate-600"}`}>
                                 <Layers className="w-5 h-5" />
                               </div>
                             ))}
@@ -468,23 +468,23 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                         )}
 
                         {art.visualType === "mlops-dashboard" && (
-                          <div className="w-full h-full bg-[#0A111F] border border-[#1E293B] rounded-lg p-3.5 flex flex-col justify-between text-white font-mono text-[9px]">
-                            <div className="flex items-center justify-between border-b border-[#1E293B] pb-2">
+                          <div className="w-full h-full bg-white border border-slate-200 rounded-lg p-3.5 flex flex-col justify-between text-slate-900 font-mono text-[9px]">
+                            <div className="flex items-center justify-between border-b border-slate-200 pb-2">
                               <span className="text-[#00B8F0] font-bold">LLM OBSERVABILITY</span>
                               <span className="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400">ONLINE</span>
                             </div>
                             <div className="grid grid-cols-2 gap-2 my-2">
-                              <div className="bg-[#060D1A] p-2 rounded border border-[#1E293B]">
+                              <div className="bg-slate-50 p-2 rounded border border-slate-200">
                                 <div className="text-[#64748B]">LATENCY</div>
-                                <div className="text-[14px] font-bold text-white mt-0.5">142ms</div>
+                                <div className="text-[14px] font-bold text-slate-900 mt-0.5">142ms</div>
                               </div>
-                              <div className="bg-[#060D1A] p-2 rounded border border-[#1E293B]">
+                              <div className="bg-slate-50 p-2 rounded border border-slate-200">
                                 <div className="text-[#64748B]">ACCURACY</div>
                                 <div className="text-[14px] font-bold text-[#00B8F0] mt-0.5">98.4%</div>
                               </div>
                             </div>
                             {/* Bar mini chart */}
-                            <div className="flex items-end gap-1.5 h-10 px-1 pt-1 border-t border-[#1E293B]">
+                            <div className="flex items-end gap-1.5 h-10 px-1 pt-1 border-t border-slate-200">
                               <div className="w-full bg-[#0066FF] h-[60%] rounded-t-sm" />
                               <div className="w-full bg-[#00B8F0] h-[90%] rounded-t-sm" />
                               <div className="w-full bg-[#0066FF] h-[40%] rounded-t-sm" />
@@ -495,10 +495,10 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                         )}
 
                         {art.visualType === "rag-hybrid" && (
-                          <div className="flex flex-col gap-3 w-full max-w-[240px] text-white font-mono text-[10px]">
+                          <div className="flex flex-col gap-3 w-full max-w-[240px] text-slate-900 font-mono text-[10px]">
                             <div className="flex items-center justify-between gap-2">
-                              <div className="bg-[#0A111F] border border-[#1E293B] px-3 py-2 rounded text-center flex-1">Dense Vector</div>
-                              <div className="bg-[#0A111F] border border-[#1E293B] px-3 py-2 rounded text-center flex-1">Sparse BM25</div>
+                              <div className="bg-white border border-slate-200 px-3 py-2 rounded text-center flex-1">Dense Vector</div>
+                              <div className="bg-white border border-slate-200 px-3 py-2 rounded text-center flex-1">Sparse BM25</div>
                             </div>
                             <div className="flex items-center justify-center">
                               <ArrowDownIcon className="w-4 h-4 text-[#00B8F0]" />
@@ -510,17 +510,17 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                         )}
 
                         {art.visualType === "langgraph-flow" && (
-                          <div className="flex items-center gap-2.5 text-white font-mono text-[10px]">
-                            <div className="bg-[#0A111F] border border-[#1E293B] p-3 rounded-lg flex flex-col items-center gap-1 shadow">
+                          <div className="flex items-center gap-2.5 text-slate-900 font-mono text-[10px]">
+                            <div className="bg-white border border-slate-200 p-3 rounded-lg flex flex-col items-center gap-1 shadow">
                               <Bot className="w-5 h-5 text-[#00B8F0]" />
                               <span>LangGraph</span>
                             </div>
-                            <ArrowRight className="w-4 h-4 text-[#8A9EB0]" />
-                            <div className="bg-[#0A111F] border border-[#00B8F0]/40 p-3 rounded-lg flex flex-col items-center gap-1 shadow bg-[#00B8F0]/10">
+                            <ArrowRight className="w-4 h-4 text-slate-600" />
+                            <div className="bg-white border border-[#00B8F0]/40 p-3 rounded-lg flex flex-col items-center gap-1 shadow bg-[#00B8F0]/10">
                               <Code2 className="w-5 h-5 text-[#00B8F0]" />
                               <span>Tool Node</span>
                             </div>
-                            <ArrowRight className="w-4 h-4 text-[#8A9EB0]" />
+                            <ArrowRight className="w-4 h-4 text-slate-600" />
                             <div className="bg-[#0066FF] text-white p-3 rounded-lg flex flex-col items-center gap-1 shadow">
                               <CheckCircle2 className="w-5 h-5" />
                               <span>Output</span>
@@ -530,23 +530,23 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
 
                         {art.visualType === "open-source-hub" && (
                           <div className="relative flex items-center justify-center w-full h-full">
-                            <div className="w-20 h-20 rounded-full bg-[#0A111F] border border-[#00B8F0]/50 flex items-center justify-center text-[#00B8F0] shadow-[0_0_25px_rgba(0,184,240,0.25)] z-10">
+                            <div className="w-20 h-20 rounded-full bg-white border border-[#00B8F0]/50 flex items-center justify-center text-[#00B8F0] shadow-[0_0_25px_rgba(0,184,240,0.25)] z-10">
                               <GitBranch className="w-9 h-9" />
                             </div>
-                            <div className="absolute inset-4 border border-dashed border-[#1E293B] rounded-full" />
-                            <span className="absolute top-3 left-6 text-white font-mono text-[10px] bg-[#0A111F] px-2 py-0.5 rounded border border-[#1E293B]">botmartz/rag</span>
-                            <span className="absolute bottom-3 right-6 text-[#00B8F0] font-mono text-[10px] bg-[#0A111F] px-2 py-0.5 rounded border border-[#1E293B]">botmartz/agent</span>
+                            <div className="absolute inset-4 border border-dashed border-slate-200 rounded-full" />
+                            <span className="absolute top-3 left-6 text-slate-900 font-mono text-[10px] bg-white px-2 py-0.5 rounded border border-slate-200">botmartz/rag</span>
+                            <span className="absolute bottom-3 right-6 text-[#00B8F0] font-mono text-[10px] bg-white px-2 py-0.5 rounded border border-slate-200">botmartz/agent</span>
                           </div>
                         )}
 
                         {art.visualType === "prompt-blueprint" && (
-                          <div className="w-full max-w-[220px] bg-[#0A111F] border border-[#1E293B] rounded-lg p-3 text-white font-mono text-[9.5px] space-y-1.5">
-                            <div className="border-b border-[#1E293B] pb-1 text-[#00B8F0] font-bold">SYSTEM PROMPT</div>
-                            <div className="bg-[#060D1A] p-1.5 rounded text-[#8A9EB0] flex items-center justify-between">
+                          <div className="w-full max-w-[220px] bg-white border border-slate-200 rounded-lg p-3 text-slate-900 font-mono text-[9.5px] space-y-1.5">
+                            <div className="border-b border-slate-200 pb-1 text-[#00B8F0] font-bold">SYSTEM PROMPT</div>
+                            <div className="bg-slate-50 p-1.5 rounded text-slate-600 flex items-center justify-between">
                               <span>User Role Setup</span>
                               <CheckCircle2 className="w-3 h-3 text-emerald-400" />
                             </div>
-                            <div className="bg-[#060D1A] p-1.5 rounded text-[#8A9EB0] flex items-center justify-between">
+                            <div className="bg-slate-50 p-1.5 rounded text-slate-600 flex items-center justify-between">
                               <span>Structured Guardrails</span>
                               <CheckCircle2 className="w-3 h-3 text-emerald-400" />
                             </div>
@@ -558,18 +558,18 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                         )}
 
                         {art.visualType === "legal-doc-flow" && (
-                          <div className="flex items-center gap-2 text-white font-mono text-[10px]">
-                            <div className="bg-[#0A111F] border border-[#1E293B] p-2.5 rounded flex flex-col items-center gap-1 text-center">
-                              <FileText className="w-5 h-5 text-[#8A9EB0]" />
+                          <div className="flex items-center gap-2 text-slate-900 font-mono text-[10px]">
+                            <div className="bg-white border border-slate-200 p-2.5 rounded flex flex-col items-center gap-1 text-center">
+                              <FileText className="w-5 h-5 text-slate-600" />
                               <span className="text-[8.5px]">100K+ PDFs</span>
                             </div>
                             <ArrowRight className="w-4 h-4 text-[#00B8F0]" />
-                            <div className="bg-[#0A111F] border border-[#00B8F0]/40 p-2.5 rounded flex flex-col items-center gap-1 text-center bg-[#00B8F0]/10">
+                            <div className="bg-white border border-[#00B8F0]/40 p-2.5 rounded flex flex-col items-center gap-1 text-center bg-[#00B8F0]/10">
                               <Cpu className="w-5 h-5 text-[#00B8F0]" />
                               <span className="text-[8.5px]">Clause AI</span>
                             </div>
                             <ArrowRight className="w-4 h-4 text-[#00B8F0]" />
-                            <div className="bg-[#0066FF] p-2.5 rounded flex flex-col items-center gap-1 text-center text-white shadow">
+                            <div className="bg-[#0066FF] p-2.5 rounded flex flex-col items-center gap-1 text-center text-slate-900 shadow">
                               <BarChart3 className="w-5 h-5" />
                               <span className="text-[8.5px]">Risk Report</span>
                             </div>
@@ -592,7 +592,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
 
                         {/* Author Footer */}
                         <div className="flex items-center gap-3 mt-auto pt-4 border-t border-[#F1F5F9]">
-                          <div className="w-8 h-8 rounded-full bg-[#0F172A] text-white flex items-center justify-center font-bold text-[12px] shrink-0">
+                          <div className="w-8 h-8 rounded-full bg-[#0F172A] text-slate-900 flex items-center justify-center font-bold text-[12px] shrink-0">
                             {art.author.charAt(0)}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -683,11 +683,11 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                   const href = matchingArt ? `/insights/${matchingArt.slug}` : "/contact";
                   return (
                     <Link key={art.id} href={href} className="flex items-center gap-4 group block">
-                      <div className="w-14 h-12 rounded-lg bg-[#060D1A] border border-[#1E293B] relative flex items-center justify-center shrink-0 overflow-hidden shadow-inner">
+                      <div className="w-14 h-12 rounded-lg bg-slate-50 border border-slate-200 relative flex items-center justify-center shrink-0 overflow-hidden shadow-inner">
                         <div className="absolute top-1 left-1 w-4.5 h-4.5 rounded-full bg-[#0066FF] text-white text-[10px] font-bold flex items-center justify-center shadow z-10">
                           {idx + 1}
                         </div>
-                        <Network className="w-5 h-5 text-[#8A9EB0] group-hover:text-[#00B8F0] transition-colors" />
+                        <Network className="w-5 h-5 text-slate-600 group-hover:text-[#00B8F0] transition-colors" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <h4 className="font-semibold text-[13.5px] text-[#0F172A] group-hover:text-[#0066FF] transition-colors leading-snug line-clamp-2">

@@ -325,7 +325,7 @@ html[data-stop-animations="true"] *::after {
 }
 
 .cta a {
-  @apply inline-flex items-center justify-center gap-2 font-bold px-7 py-3.5 rounded-xl transition-all duration-300 hover:-translate-y-1 bg-brand text-white no-underline !important;
+  @apply inline-flex items-center justify-center gap-2 font-bold px-7 py-3.5 rounded-xl transition-all duration-300 hover:-translate-y-1 bg-brand text-white !no-underline;
 }
 
 .cta-final {
@@ -333,5 +333,5 @@ html[data-stop-animations="true"] *::after {
 }
 
 .cta-final a {
-  @apply inline-flex items-center justify-center gap-2 font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,184,240,0.3)] bg-ink text-white no-underline border border-white/10 !important;
+  @apply inline-flex items-center justify-center gap-2 font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,184,240,0.3)] bg-ink text-white !no-underline border border-white/10;
 }

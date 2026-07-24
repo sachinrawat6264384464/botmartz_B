@@ -409,8 +409,8 @@ export default function EditJobPage({ params }: { params: { id: string } }) {
               <div className="space-y-3">
                 {team.map((t, idx) => (
                   <div key={idx} className="flex gap-3 bg-admin-bg p-3 rounded-lg border border-admin-border items-start">
-                    <input className="w-16 bg-admin-card border border-admin-border rounded-lg px-3 py-1.5 text-xs text-admin-text focus:outline-none focus:border-admin-accent shrink-0 text-center" placeholder="Initials (KG)" value={t.initials} onChange={e => handleTeamChange(idx, 'initials', e.target.value)} />
-                    <input className="w-1/3 bg-admin-card border border-admin-border rounded-lg px-3 py-1.5 text-xs text-admin-text focus:outline-none focus:border-admin-accent shrink-0" placeholder="Full Name (Karan Goel)" value={t.name} onChange={e => handleTeamChange(idx, 'name', e.target.value)} />
+                    <input className="w-16 bg-admin-card border border-admin-border rounded-lg px-3 py-1.5 text-xs text-admin-text focus:outline-none focus:border-admin-accent shrink-0 text-center" placeholder="Initials (HS)" value={t.initials} onChange={e => handleTeamChange(idx, 'initials', e.target.value)} />
+                    <input className="w-1/3 bg-admin-card border border-admin-border rounded-lg px-3 py-1.5 text-xs text-admin-text focus:outline-none focus:border-admin-accent shrink-0" placeholder="Full Name (Harsh Sahu)" value={t.name} onChange={e => handleTeamChange(idx, 'name', e.target.value)} />
                     <input className="flex-1 bg-admin-card border border-admin-border rounded-lg px-3 py-1.5 text-xs text-admin-text focus:outline-none focus:border-admin-accent" placeholder="Role Description (AI Engineer)" value={t.role} onChange={e => handleTeamChange(idx, 'role', e.target.value)} />
                     <button onClick={() => removeTeamMember(idx)} className="p-1.5 text-red-500 hover:text-red-400 transition-colors bg-admin-card border border-admin-border rounded-lg"><Trash2 size={14} /></button>
                   </div>
