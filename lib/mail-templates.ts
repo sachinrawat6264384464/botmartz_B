@@ -127,10 +127,49 @@ export function buildPaymentSuccessEmail(name: string, eventTitle: string, amoun
 </html>`;
 }
 
-export function buildEventTicketEmail(name: string, eventTitle: string, date: string, location: string, checkInCode: string): string {
-  // We can embed a dynamic SVG mockup of a ticket in the email!
-  const qrImageSrc = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${checkInCode}`;
+export function buildEventTicketEmail(name: string, eventTitle: string, date: string, location: string, checkInCodes: string[]): string {
   
+  const ticketBlocks = checkInCodes.map((code, idx) => {
+    const qrImageSrc = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${code}`;
+    const guestLabel = checkInCodes.length > 1 ? (idx === 0 ? '' : ` (GUEST ${idx})`) : '';
+    
+    return `
+              <!-- DIGITAL PASS CARD -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="background:#0E172A;border:2px dashed #00B8F0;border-radius:16px;overflow:hidden;max-width:440px;box-shadow:0 10px 30px rgba(0,0,0,0.5);margin:0 auto 24px auto;">
+                <tr>
+                  <td style="padding:28px 24px;background:#060D1A;" align="center">
+                    <span style="font-size:10px;font-weight:bold;color:#00B8F0;letter-spacing:0.2em;text-transform:uppercase;font-family:monospace;display:block;margin-bottom:8px;">ENTRY PASS</span>
+                    <h3 style="margin:0;font-size:20px;font-weight:700;color:#ffffff;margin-bottom:4px;">${eventTitle}</h3>
+                    <p style="margin:0;font-size:12px;color:#64748B;font-family:monospace;letter-spacing:0.05em;">HOLDER: ${name.toUpperCase()}${guestLabel}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:24px 24px 8px 24px;" align="center">
+                    <!-- QR Code wrapper -->
+                    <div style="background:#ffffff;padding:12px;border-radius:12px;display:inline-block;">
+                      <img src="${qrImageSrc}" alt="Scan check-in" width="130" height="130" style="display:block;" />
+                    </div>
+                    <p style="margin-top:12px;margin-bottom:0;font-size:11px;color:#64748B;font-family:monospace;letter-spacing:0.1em;">CHECK-IN CODE: ${code}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:20px 24px 28px 24px;" align="center">
+                    <table width="100%" cellpadding="0" cellspacing="0" style="font-size:12px;color:#8A9EB0;border-top:1px solid #1E293B;padding-top:16px;">
+                      <tr>
+                        <td align="left" style="font-weight:bold;color:#ffffff;">DATE</td>
+                        <td align="right" style="font-weight:bold;color:#ffffff;">LOCATION</td>
+                      </tr>
+                      <tr>
+                        <td align="left" style="padding-top:4px;">${date}</td>
+                        <td align="right" style="padding-top:4px;">${location}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+    `;
+  }).join('');
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -159,39 +198,7 @@ export function buildEventTicketEmail(name: string, eventTitle: string, date: st
                 Hi ${name}, here is your official digital entry pass for <strong>${eventTitle}</strong>.
               </p>
               
-              <!-- DIGITAL PASS PASS CARD -->
-              <table width="100%" cellpadding="0" cellspacing="0" style="background:#0E172A;border:2px dashed #00B8F0;border-radius:16px;overflow:hidden;max-width:440px;box-shadow:0 10px 30px rgba(0,0,0,0.5);">
-                <tr>
-                  <td style="padding:28px 24px;background:#060D1A;" align="center">
-                    <span style="font-size:10px;font-weight:bold;color:#00B8F0;letter-spacing:0.2em;text-transform:uppercase;font-family:monospace;display:block;margin-bottom:8px;">ENTRY PASS</span>
-                    <h3 style="margin:0;font-size:20px;font-weight:700;color:#ffffff;margin-bottom:4px;">${eventTitle}</h3>
-                    <p style="margin:0;font-size:12px;color:#64748B;font-family:monospace;letter-spacing:0.05em;">HOLDER: ${name.toUpperCase()}</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:24px 24px 8px 24px;" align="center">
-                    <!-- QR Code wrapper -->
-                    <div style="background:#ffffff;padding:12px;border-radius:12px;display:inline-block;">
-                      <img src="${qrImageSrc}" alt="Scan check-in" width="130" height="130" style="display:block;" />
-                    </div>
-                    <p style="margin-top:12px;margin-bottom:0;font-size:11px;color:#64748B;font-family:monospace;letter-spacing:0.1em;">CHECK-IN CODE: ${checkInCode}</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:20px 24px 28px 24px;" align="center">
-                    <table width="100%" cellpadding="0" cellspacing="0" style="font-size:12px;color:#8A9EB0;border-top:1px solid #1E293B;padding-top:16px;">
-                      <tr>
-                        <td align="left" style="font-weight:bold;color:#ffffff;">DATE</td>
-                        <td align="right" style="font-weight:bold;color:#ffffff;">LOCATION</td>
-                      </tr>
-                      <tr>
-                        <td align="left" style="padding-top:4px;">${date}</td>
-                        <td align="right" style="padding-top:4px;">${location}</td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
+              ${ticketBlocks}
               
               <p style="margin:32px 0 0 0;font-size:13.5px;color:#8A9EB0;text-align:center;line-height:1.6;max-width:480px;">
                 Please present this email at the registration desk upon your arrival. Our team will scan the QR code to verify your seat assignment. We look forward to building with you!

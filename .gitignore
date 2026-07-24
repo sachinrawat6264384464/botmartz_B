@@ -62,3 +62,6 @@ node_modules/
 
 # Test/utility scripts with sensitive keys
 test-key.js
+
+# Temporary proposals
+InnovAI-Growth-Proposal-US-v2.md

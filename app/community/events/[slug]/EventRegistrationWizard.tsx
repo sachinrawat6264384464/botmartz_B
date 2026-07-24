@@ -13,7 +13,8 @@ import {
   Smartphone,
   ShieldCheck,
   Download,
-  Share2
+  Share2,
+  CalendarPlus
 } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, addDoc, doc, onSnapshot } from "firebase/firestore";
@@ -121,6 +122,39 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
   const shareToWhatsApp = () => {
     const text = `I'm attending ${event.title}! Here is my Check-in Pass Code: ${successCode}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+  };
+
+  const addToCalendar = () => {
+    const eventDateStr = event.date || new Date().toISOString();
+    const startDate = new Date(eventDateStr);
+    if (isNaN(startDate.getTime())) {
+      startDate.setTime(Date.now());
+    }
+    
+    const formatDate = (date: Date) => date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    const endDate = new Date(startDate.getTime() + 4 * 60 * 60 * 1000);
+
+    const icsContent = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "BEGIN:VEVENT",
+      `SUMMARY:${event.title}`,
+      `DTSTART:${formatDate(startDate)}`,
+      `DTEND:${formatDate(endDate)}`,
+      `LOCATION:${event.location || 'TBA'}`,
+      `DESCRIPTION:Your Check-in Code is: ${successCode}\\nKeep this pass ready at the entrance.`,
+      "END:VEVENT",
+      "END:VCALENDAR"
+    ].join("\\n");
+
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `Event-${event.slug}.ics`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   if (!isOpen) return null;
@@ -562,7 +596,7 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                 </div>
               </div>
 
-              <div className="flex items-center justify-center gap-3 pt-4 pb-2">
+              <div className="flex flex-wrap items-center justify-center gap-3 pt-4 pb-2">
                 <button 
                   onClick={downloadQR}
                   className="flex items-center gap-2 bg-[#050C18] border border-[#1E293B] hover:border-[#00B8F0] text-[#8A9EB0] hover:text-white px-4 py-2 rounded-lg text-xs font-semibold transition-colors"
@@ -576,6 +610,13 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                 >
                   <Share2 size={14} />
                   WhatsApp
+                </button>
+                <button 
+                  onClick={addToCalendar}
+                  className="flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 hover:border-purple-500 text-purple-400 px-4 py-2 rounded-lg text-xs font-semibold transition-colors"
+                >
+                  <CalendarPlus size={14} />
+                  Calendar
                 </button>
               </div>
 

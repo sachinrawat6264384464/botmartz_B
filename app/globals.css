@@ -301,3 +301,37 @@ html[data-stop-animations="true"] *::after {
   transition: none !important;
   animation: none !important;
 }
+
+/* AI Frontier Custom Markdown Classes */
+.hero-meta {
+  @apply flex flex-wrap gap-4 items-center justify-center font-mono text-sm tracking-wide bg-brand/10 text-brand px-6 py-4 rounded-xl border border-brand/20 my-8;
+}
+
+.callout {
+  @apply bg-[#050C18] border border-[#1E293B] rounded-xl p-6 my-10 relative overflow-hidden;
+}
+
+.callout::before {
+  content: "";
+  @apply absolute top-0 left-0 w-1 h-full bg-[#00B8F0];
+}
+
+.sponsor-grid {
+  @apply grid grid-cols-2 sm:grid-cols-4 gap-6 items-center justify-center my-12 opacity-80;
+}
+
+.cta {
+  @apply flex flex-col sm:flex-row gap-4 items-center justify-center my-12;
+}
+
+.cta a {
+  @apply inline-flex items-center justify-center gap-2 font-bold px-7 py-3.5 rounded-xl transition-all duration-300 hover:-translate-y-1 bg-brand text-white no-underline !important;
+}
+
+.cta-final {
+  @apply flex justify-center my-16;
+}
+
+.cta-final a {
+  @apply inline-flex items-center justify-center gap-2 font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,184,240,0.3)] bg-ink text-white no-underline border border-white/10 !important;
+}
