@@ -31,17 +31,18 @@ function getLocalEvent(slug: string) {
   return null;
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
   let title = 'Event';
   let description = 'Botmartz Community Event';
 
-  const localEvent = getLocalEvent(params.slug);
+  const localEvent = getLocalEvent(resolvedParams.slug);
   if (localEvent) {
     title = localEvent.title;
     description = localEvent.shortDescription;
   } else {
     try {
-      const q = adminDb.collection('events').where('slug', '==', params.slug).limit(1);
+      const q = adminDb.collection('events').where('slug', '==', resolvedParams.slug).limit(1);
       const snap = await q.get();
       if (!snap.empty) {
         const data = snap.docs[0].data();
@@ -58,21 +59,22 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     openGraph: {
       title: `${title} | Botmartz Events`,
       description,
-      url: `https://www.botmartz.com/community/events/${params.slug}`,
+      url: `https://www.botmartz.com/community/events/${resolvedParams.slug}`,
       type: 'website',
     },
     alternates: {
-      canonical: `https://www.botmartz.com/community/events/${params.slug}`,
+      canonical: `https://www.botmartz.com/community/events/${resolvedParams.slug}`,
     },
   };
 }
 
-export default async function EventPage({ params }: { params: { slug: string } }) {
-  let event: any = getLocalEvent(params.slug);
+export default async function EventPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  let event: any = getLocalEvent(resolvedParams.slug);
 
   if (!event) {
     try {
-      const q = adminDb.collection('events').where('slug', '==', params.slug).limit(1);
+      const q = adminDb.collection('events').where('slug', '==', resolvedParams.slug).limit(1);
       const snap = await q.get();
       if (!snap.empty) {
         event = { id: snap.docs[0].id, ...snap.docs[0].data() };

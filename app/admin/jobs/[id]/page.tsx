@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { Inter_Tight } from 'next/font/google';
 import { Save, ArrowLeft, Plus, Trash2 } from 'lucide-react';
 import Link from 'next/link';
@@ -33,8 +33,9 @@ interface JobFAQ {
   a: string;
 }
 
-export default function EditJobPage({ params }: { params: { id: string } }) {
-  const isNew = params.id === 'new';
+export default function EditJobPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = use(params);
+  const isNew = resolvedParams.id === 'new';
   const router = useRouter();
   
   const [loading, setLoading] = useState(!isNew);
@@ -67,7 +68,7 @@ export default function EditJobPage({ params }: { params: { id: string } }) {
     if (!isNew) {
       const fetchJob = async () => {
         try {
-          const docSnap = await getDoc(doc(db, "jobs", params.id));
+          const docSnap = await getDoc(doc(db, "jobs", resolvedParams.id));
           if (docSnap.exists()) {
             const data = docSnap.data() as any;
             setFormData({
@@ -104,7 +105,7 @@ export default function EditJobPage({ params }: { params: { id: string } }) {
       };
       fetchJob();
     }
-  }, [params.id, isNew]);
+  }, [resolvedParams.id, isNew]);
 
   const handleChange = (field: string, value: string) => {
     setFormData(prev => {
@@ -177,7 +178,7 @@ export default function EditJobPage({ params }: { params: { id: string } }) {
           createdAt: serverTimestamp()
         });
       } else {
-        await setDoc(doc(db, "jobs", params.id), payload, { merge: true });
+        await setDoc(doc(db, "jobs", resolvedParams.id), payload, { merge: true });
       }
       router.push('/admin/jobs');
     } catch (e: any) {
