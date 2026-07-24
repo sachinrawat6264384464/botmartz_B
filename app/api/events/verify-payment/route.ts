@@ -78,6 +78,27 @@ export async function POST(req: NextRequest) {
       updatedAt: new Date().toISOString(),
     });
 
+    // Increment coupon uses if a coupon was applied
+    if (regData?.appliedCoupon) {
+      try {
+        const { FieldValue } = require('firebase-admin/firestore');
+        const couponQuery = await adminDb
+          .collection('coupons')
+          .where('code', '==', regData.appliedCoupon)
+          .limit(1)
+          .get();
+
+        if (!couponQuery.empty) {
+          const couponDoc = couponQuery.docs[0];
+          await couponDoc.ref.update({
+            currentUses: FieldValue.increment(1)
+          });
+        }
+      } catch (couponErr) {
+        console.error('[Coupon Increment Failed]', couponErr);
+      }
+    }
+
     // Create sibling documents for guests
     for (let i = 1; i < quantity; i++) {
       await adminDb.collection('event-registrations').add({
