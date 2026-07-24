@@ -32,10 +32,10 @@ const DEFAULT_ITEMS: NavItem[] = [
   },
 ];
 
-export default async function NavbarWrapper() {
+export default async function NavbarWrapper({ settings }: { settings?: any }) {
   let navItems: NavItem[] = [];
-  // Logo is hardcoded — same as footer and live site (not changeable from admin)
-  const logoUrl = "/Logo-removebg-preview.png";
+  // Logo uses settings or falls back
+  const logoUrl = settings?.branding?.primaryLogo || "/Logo-removebg-preview.png";
 
   try {
     const cachedItems = await getCachedNavbarConfig();

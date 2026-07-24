@@ -1,24 +1,31 @@
 // app/client-layout.tsx
 "use client";
-
+import React, { createContext, useContext } from "react";
 import { usePathname } from "next/navigation";
 import { ThemeProvider } from "next-themes";
 import { Footer } from "./_components/footer";
+
+export const SettingsContext = createContext<any>({});
+export const useSettings = () => useContext(SettingsContext);
+
 import { AccessibilityProvider } from "./_context/AccessibilityContext";
 import { AccessibilityToolbox } from "./_components/AccessibilityToolbox";
 
 export default function ClientLayout({
   children,
   navbar,
+  settings,
 }: {
   children: React.ReactNode;
   navbar: React.ReactNode;
+  settings?: any;
 }) {
   const pathname = usePathname();
   const isAdminRoute = pathname?.startsWith('/admin');
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <SettingsContext.Provider value={settings || {}}>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <AccessibilityProvider>
         <div className="min-h-screen flex flex-col">
           {/* WCAG Skip to Main Content Link */}
@@ -32,10 +39,11 @@ export default function ClientLayout({
           <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
             {children}
           </main>
-          {!isAdminRoute && <Footer />}
+          {!isAdminRoute && <Footer settings={settings} />}
           {!isAdminRoute && <AccessibilityToolbox />}
         </div>
       </AccessibilityProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </SettingsContext.Provider>
   );
 }

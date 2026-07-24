@@ -4,11 +4,16 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Inter_Tight, JetBrains_Mono } from "next/font/google";
 import { Shield, Scale, HelpCircle, FileText } from "lucide-react";
+import { useSettings } from "@/app/client-layout";
 
 const inter = Inter_Tight({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"] });
 
 export default function TermsOfServicePage() {
+  const settings = useSettings();
+  const email = settings?.general?.email || "soham@botmartz.com";
+  const companyName = settings?.general?.companyName || "Botmartz AI Solutions";
+
   return (
     <main className={`${inter.className} min-h-screen bg-[#080808] text-white pt-36 pb-20 px-6 md:px-10 lg:px-16`}>
       {/* Background Effects */}
@@ -45,7 +50,7 @@ export default function TermsOfServicePage() {
               <h2 className="text-xl md:text-2xl font-bold text-white uppercase tracking-wide">1. Acceptance of Terms</h2>
             </div>
             <p>
-              By accessing and using the Botmartz AI Solutions website, products, training programs, and consulting services, you agree to comply with and be bound by these Terms of Service. If you do not agree to these terms, please do not use our site or enroll in our programs.
+              By accessing and using the {companyName} website, products, training programs, and consulting services, you agree to comply with and be bound by these Terms of Service. If you do not agree to these terms, please do not use our site or enroll in our programs.
             </p>
           </motion.section>
 
@@ -75,7 +80,7 @@ export default function TermsOfServicePage() {
               <h2 className="text-xl md:text-2xl font-bold text-white uppercase tracking-wide">3. Intellectual Property</h2>
             </div>
             <p>
-              All code, designs, graphics, course curricula, slides, and codebase assets created by Botmartz AI Solutions are the exclusive property of Botmartz and Soham Sharma. Any unauthorized copying or replication of our systems (including our proprietary training blueprints) is strictly prohibited.
+              All code, designs, graphics, course curricula, slides, and codebase assets created by {companyName} are the exclusive property of Botmartz and Soham Sharma. Any unauthorized copying or replication of our systems (including our proprietary training blueprints) is strictly prohibited.
             </p>
           </motion.section>
 
@@ -90,7 +95,7 @@ export default function TermsOfServicePage() {
               <h2 className="text-xl md:text-2xl font-bold text-white uppercase tracking-wide">4. Limitation of Liability</h2>
             </div>
             <p>
-              Our services and products are provided &quot;as is&quot; without warranties of any kind. Botmartz AI Solutions will not be held liable for any direct or indirect damages resulting from the use or inability to use our software, tools, or educational courses. For inquiries regarding our terms, please email <a href="mailto:soham@botmartz.com" className="text-[#D4AF37] hover:underline">soham@botmartz.com</a>.
+              Our services and products are provided &quot;as is&quot; without warranties of any kind. {companyName} will not be held liable for any direct or indirect damages resulting from the use or inability to use our software, tools, or educational courses. For inquiries regarding our terms, please email <a href={`mailto:${email}`} className="text-[#D4AF37] hover:underline">{email}</a>.
             </p>
           </motion.section>
         </div>

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/firebase'; // Adjust path to your Firebase config
+import { adminDb } from '@/lib/firebase-admin';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import nodemailer from 'nodemailer';
 
@@ -51,11 +52,23 @@ export async function POST(request: Request) {
     });
 
     // ── Email Notification Logic (SMTP / Hostinger / Gmail) ──
-    const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
-    const smtpPort = parseInt(process.env.SMTP_PORT || '465', 10);
-    const smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER;
-    const smtpPass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASS;
-    const adminEmail = process.env.ADMIN_EMAIL || 'soham@botmartz.com';
+    let settings: any = {};
+    try {
+      const settingsSnap = await adminDb.collection("settings").doc("global").get();
+      if (settingsSnap.exists) {
+        settings = settingsSnap.data();
+      }
+    } catch (e) {
+      console.warn("Could not fetch global settings for contact form", e);
+    }
+
+    const smtpHost = settings?.email?.smtpHost || process.env.SMTP_HOST || 'smtp.gmail.com';
+    const smtpPort = settings?.email?.smtpPort || parseInt(process.env.SMTP_PORT || '465', 10);
+    const smtpUser = settings?.email?.smtpUser || process.env.SMTP_USER || process.env.GMAIL_USER;
+    const smtpPass = settings?.email?.smtpPass || process.env.SMTP_PASS || process.env.GMAIL_APP_PASS;
+    const adminEmail = settings?.email?.supportEmail || process.env.ADMIN_EMAIL || 'soham@botmartz.com';
+    const companyName = settings?.general?.companyName || 'Botmartz';
+    const fromName = settings?.email?.fromName || 'Botmartz Notifications';
 
     if (smtpUser && smtpPass) {
       try {
@@ -71,7 +84,7 @@ export async function POST(request: Request) {
 
         // Beautiful HTML Template matching Botmartz theme
         const mailOptions = {
-          from: `"Botmartz Notifications" <${smtpUser}>`,
+          from: `"${fromName}" <${smtpUser}>`,
           to: adminEmail,
           subject: `✨ New Inquiry from ${finalName} (${company || 'No Company'})`,
           html: `
@@ -177,7 +190,7 @@ export async function POST(request: Request) {
             <body>
               <div class="container">
                 <div class="header">
-                  <h1>BOTMARTZ AI</h1>
+                  <h1>${companyName.toUpperCase()}</h1>
                   <p>Inquiry Received</p>
                 </div>
                 <div class="content">
@@ -199,7 +212,7 @@ export async function POST(request: Request) {
                   </div>
                 </div>
                 <div class="footer">
-                  <p style="font-size: 12px; color: #57606a; margin: 0 0 10px 0;">This inquiry has been logged in the Botmartz CRM database.</p>
+                  <p style="font-size: 12px; color: #57606a; margin: 0 0 10px 0;">This inquiry has been logged in the ${companyName} CRM database.</p>
                   <a href="${request.headers.get('origin') || 'https://botmartz.com'}/admin/contacts" class="btn">View CRM Contacts</a>
                 </div>
               </div>

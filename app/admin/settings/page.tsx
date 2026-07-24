@@ -139,6 +139,18 @@ export default function SettingsPage() {
     setSaving(true);
     try {
       await setDoc(doc(db, 'settings', 'global'), settingsData, { merge: true });
+      
+      // Revalidate cache so changes reflect instantly across the site
+      try {
+        await fetch('/api/revalidate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tag: 'settings' })
+        });
+      } catch(e) {
+        console.error('Cache invalidation failed', e);
+      }
+
       showToast("Global settings saved successfully to Firestore!", 'success');
     } catch (err: any) {
       console.error("Failed to save settings", err);

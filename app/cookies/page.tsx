@@ -4,11 +4,16 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Inter_Tight, JetBrains_Mono } from "next/font/google";
 import { Shield, Eye, Settings, ShieldAlert } from "lucide-react";
+import { useSettings } from "@/app/client-layout";
 
 const inter = Inter_Tight({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"] });
 
 export default function CookiePolicyPage() {
+  const settings = useSettings();
+  const email = settings?.general?.email || "soham@botmartz.com";
+  const companyName = settings?.general?.companyName || "Botmartz AI Solutions";
+
   return (
     <main className={`${inter.className} min-h-screen bg-[#080808] text-white pt-36 pb-20 px-6 md:px-10 lg:px-16`}>
       {/* Background Effects */}
@@ -45,7 +50,7 @@ export default function CookiePolicyPage() {
               <h2 className="text-xl md:text-2xl font-bold text-white uppercase tracking-wide">1. What Are Cookies?</h2>
             </div>
             <p>
-              Cookies are small text files stored on your device when you visit our website. They help us remember your preferences, keep our admin dashboard secure, and analyze site traffic patterns to improve your browsing experience.
+              {companyName} uses cookies and similar tracking technologies to track the activity on our Service and hold certain information. Cookies are files with a small amount of data which may include an anonymous unique identifier. They help us remember your preferences, keep our admin dashboard secure, and analyze site traffic patterns to improve your browsing experience.
             </p>
           </motion.section>
 
@@ -80,7 +85,7 @@ export default function CookiePolicyPage() {
               <h2 className="text-xl md:text-2xl font-bold text-white uppercase tracking-wide">3. Managing and Deactivating Cookies</h2>
             </div>
             <p>
-              You can block or delete cookies through your web browser settings. However, disabling strictly necessary cookies will prevent you from logging in and accessing the protected admin CMS features. For any cookie policy questions, contact <a href="mailto:soham@botmartz.com" className="text-[#D4AF37] hover:underline">soham@botmartz.com</a>.
+              You can block or delete cookies through your web browser settings. However, disabling strictly necessary cookies will prevent you from logging in and accessing the protected admin CMS features. For any cookie policy questions, contact <a href={`mailto:${email}`} className="text-[#D4AF37] hover:underline">{email}</a>.
             </p>
           </motion.section>
         </div>

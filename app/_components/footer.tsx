@@ -71,7 +71,9 @@ const TRUST = [
 ];
 
 /* ─── COMPONENT ──────────────────────────────────────────────────────────────── */
-export function Footer() {
+export function Footer({ settings }: { settings?: any }) {
+  const companyName = settings?.general?.companyName || "Botmartz AI Solutions Pvt. Ltd.";
+  const logoUrl = settings?.branding?.primaryLogo || "/Logo-removebg-preview.png";
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
@@ -112,8 +114,8 @@ export function Footer() {
           <div className="flex flex-col">
             <Link href="/" className="inline-block mb-6">
               <Image
-                src="/Logo-removebg-preview.png"
-                alt="Botmartz AI Solutions"
+                src={logoUrl}
+                alt={companyName}
                 width={280}
                 height={78}
                 className="h-[68px] sm:h-[78px] w-auto object-contain"
@@ -227,7 +229,7 @@ export function Footer() {
           {/* Copyright + trust badges */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             <p className="text-[12px] text-[#8A9EB0]">
-              © {new Date().getFullYear()} Botmartz AI Solutions Pvt. Ltd.<br className="sm:hidden" />
+              © {new Date().getFullYear()} {companyName}<br className="sm:hidden" />
               <span className="hidden sm:inline"> </span>All rights reserved.
             </p>
             <div className="flex flex-wrap items-center gap-5">

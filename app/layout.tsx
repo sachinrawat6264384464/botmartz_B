@@ -101,11 +101,11 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     icons: {
       icon: [
-        { url: '/botmartz_favicon.png', type: 'image/png' },
+        { url: settings?.branding?.faviconUrl || '/botmartz_favicon.png', type: 'image/png' },
       ],
-      shortcut: ['/botmartz_favicon.png'],
+      shortcut: [settings?.branding?.faviconUrl || '/botmartz_favicon.png'],
       apple: [
-        { url: '/botmartz_favicon.png', sizes: '180x180', type: 'image/png' },
+        { url: settings?.branding?.faviconUrl || '/botmartz_favicon.png', sizes: '180x180', type: 'image/png' },
       ],
     },
     alternates: {
@@ -129,9 +129,9 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" type="image/png" href="/botmartz_favicon.png" />
-        <link rel="shortcut icon" href="/botmartz_favicon.png" />
-        <link rel="apple-touch-icon" href="/botmartz_favicon.png" />
+        <link rel="icon" type="image/png" href={settings?.branding?.faviconUrl || "/botmartz_favicon.png"} />
+        <link rel="shortcut icon" href={settings?.branding?.faviconUrl || "/botmartz_favicon.png"} />
+        <link rel="apple-touch-icon" href={settings?.branding?.faviconUrl || "/botmartz_favicon.png"} />
         {/* DNS prefetch for Unsplash images */}
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         {/* Preconnect to Firestore API */}
@@ -170,7 +170,7 @@ export default async function RootLayout({
         
         <WebVitals />
         <EventCountdownBanner />
-        <ClientLayout navbar={<NavbarWrapper />}>{children}</ClientLayout>
+        <ClientLayout navbar={<NavbarWrapper settings={settings} />} settings={settings}>{children}</ClientLayout>
       </body>
     </html>
   );
