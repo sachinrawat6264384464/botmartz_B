@@ -4,9 +4,10 @@ import { adminDb } from '@/lib/firebase-admin';
 export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
-    const pin = url.searchParams.get('pin');
+    const email = url.searchParams.get('email');
+    const password = url.searchParams.get('password');
 
-    if (pin !== '2026') {
+    if (email !== 'botmartz@gmail.com' || password !== 'Admin@2026##') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -17,6 +18,8 @@ export async function GET(req: NextRequest) {
 
     const attendees = snapshot.docs.map(doc => {
       const data = doc.data();
+      const createdAt = data.createdAt ? (typeof data.createdAt.toMillis === 'function' ? data.createdAt.toMillis() : new Date(data.createdAt).getTime()) : 0;
+      
       return {
         id: doc.id,
         name: data.name || 'Unknown',
@@ -25,7 +28,7 @@ export async function GET(req: NextRequest) {
         quantity: data.quantity || 1,
         attended: data.attended || false,
         checkInCode: data.checkInCode || '',
-        createdAt: data.createdAt ? data.createdAt.toMillis() : 0,
+        createdAt,
       };
     }).sort((a, b) => b.createdAt - a.createdAt);
 

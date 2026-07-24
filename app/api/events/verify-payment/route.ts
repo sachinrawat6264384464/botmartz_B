@@ -64,16 +64,39 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const checkInCode = `REG-${Math.random().toString(36).substring(2, 11).toUpperCase()}`;
+    const quantity = regData?.quantity || 1;
+    const checkInCodes = Array.from({ length: quantity }, () => `REG-${Math.random().toString(36).substring(2, 11).toUpperCase()}`);
 
-    // Update registration document
+    // Update primary registration document
     await regRef.update({
       paymentStatus: 'paid',
       razorpayPaymentId: razorpay_payment_id,
       razorpaySignature: razorpay_signature,
-      checkInCode,
+      checkInCode: checkInCodes[0],
+      purchasedQuantity: quantity,
+      quantity: 1, // Set to 1 for individual scanning
       updatedAt: new Date().toISOString(),
     });
+
+    // Create sibling documents for guests
+    for (let i = 1; i < quantity; i++) {
+      await adminDb.collection('event-registrations').add({
+        eventId: regData?.eventId || '',
+        eventTitle: regData?.eventTitle || '',
+        name: `${regData?.name} (Guest ${i})`,
+        email: regData?.email,
+        phone: regData?.phone || '',
+        attendeeType: regData?.attendeeType || 'student',
+        paymentStatus: 'paid',
+        razorpayPaymentId: razorpay_payment_id,
+        checkInCode: checkInCodes[i],
+        quantity: 1,
+        isGuest: true,
+        primaryRegistrationId: registrationId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      });
+    }
 
     const eventTitle = regData?.eventTitle || 'Community Event';
     const email = regData?.email;
@@ -119,7 +142,7 @@ export async function POST(req: NextRequest) {
           from: `"Botmartz Events" <${smtpUser}>`,
           to: email,
           subject: `Your Digital Entry Pass - ${eventTitle}`,
-          html: buildEventTicketEmail(name, eventTitle, dateVal, locVal, checkInCode),
+          html: buildEventTicketEmail(name, eventTitle, dateVal, locVal, checkInCodes),
         });
 
       } catch (mailErr) {
@@ -129,7 +152,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      checkInCode,
+      checkInCode: checkInCodes[0],
     });
 
   } catch (err: any) {
