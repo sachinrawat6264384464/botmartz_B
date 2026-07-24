@@ -7,6 +7,7 @@ import { adminDb } from "@/lib/firebase-admin";
 import { getCachedGlobalSettings } from "@/lib/fetch-helpers";
 import StructuredData from "./_components/StructuredData";
 import NavbarWrapper from "./_components/NavbarWrapper";
+import EventCountdownBanner from "./_components/EventCountdownBanner";
 import Script from "next/script";
 import { WebVitals } from "./web-vitals";
 
@@ -168,6 +169,7 @@ export default async function RootLayout({
         </noscript>
         
         <WebVitals />
+        <EventCountdownBanner />
         <ClientLayout navbar={<NavbarWrapper />}>{children}</ClientLayout>
       </body>
     </html>

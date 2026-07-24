@@ -68,7 +68,7 @@ async function seed() {
     excerpt: "Retrieval looks easy in a demo. In production, it's where most enterprise AI projects quietly die — here's the anatomy of the failure and the fixes that actually hold up.",
     content: articleContent,
     category: "Enterprise RAG",
-    author: "Karan Goel",
+    author: "Harsh Sahu",
     readTime: 12,
     failureModes: 5,
     codeSnippets: 3,
@@ -124,7 +124,7 @@ async function seed() {
       role: "VP of Operations, Global Logistics Leader"
     },
     team: [
-      { initials: "KG", name: "Karan Goel", role: "AI Engineer" },
+      { initials: "HS", name: "Harsh Sahu", role: "AI Engineer" },
       { initials: "PB", name: "Promit Basu", role: "AI/ML Engineer" }
     ],
     createdAt: admin.firestore.FieldValue.serverTimestamp(),

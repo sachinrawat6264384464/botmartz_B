@@ -974,8 +974,8 @@ export default function CaseStudyEditorModal({
                   <div className="space-y-2">
                     {team.map((t, idx) => (
                       <div key={idx} className="flex gap-3 bg-ink/50 p-2.5 rounded-lg border border-line items-center">
-                        <input className="w-16 bg-paper border border-line rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-white text-center shrink-0" placeholder="KG" value={t.initials} onChange={e => handleTeamChange(idx, 'initials', e.target.value)} />
-                        <input className="w-1/3 bg-paper border border-line rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white shrink-0" placeholder="Karan Goel" value={t.name} onChange={e => handleTeamChange(idx, 'name', e.target.value)} />
+                        <input className="w-16 bg-paper border border-line rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-white text-center shrink-0" placeholder="HS" value={t.initials} onChange={e => handleTeamChange(idx, 'initials', e.target.value)} />
+                        <input className="w-1/3 bg-paper border border-line rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white shrink-0" placeholder="Harsh Sahu" value={t.name} onChange={e => handleTeamChange(idx, 'name', e.target.value)} />
                         <input className="flex-1 bg-paper border border-line rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white" placeholder="AI Engineer" value={t.role} onChange={e => handleTeamChange(idx, 'role', e.target.value)} />
                         <button onClick={() => removeTeamMember(idx)} className="p-1.5 text-red-500 hover:text-red-400 bg-paper border border-line rounded"><Trash2 size={13} /></button>
                       </div>

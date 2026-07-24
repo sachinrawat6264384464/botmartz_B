@@ -339,13 +339,30 @@ export default function EventsClient({
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-[#FCE7F3]/50 border border-[#FBCFE8] rounded-xl p-4.5 flex flex-col justify-between">
+              <div>
+                <span className="font-mono font-bold text-[11px] text-[#EC4899] bg-[#FCE7F3] px-2.5 py-1 rounded">
+                  09:45 AM · 15 mins
+                </span>
+                <div className="font-bold text-[15px] text-[#0B1220] mt-2.5">
+                  Anchoring &amp; Kickoff
+                </div>
+                <p className="font-medium text-[12.5px] text-[#5B6B85] mt-1 leading-[1.5]">
+                  Setting the stage, energy, and crowd coordination for the entire event.
+                </p>
+              </div>
+              <div className="font-bold text-[12px] text-[#BE185D] mt-3 pt-3 border-t border-[#FBCFE8]/60">
+                Vaidehi &amp; Yash
+              </div>
+            </div>
+
             <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-4.5 flex flex-col justify-between">
               <div>
                 <span className="font-mono font-bold text-[11px] text-[#007BFF] bg-[#E8F2FF] px-2.5 py-1 rounded">
-                  10:00 AM · 15 mins
+                  10:15 AM · 15 mins
                 </span>
                 <div className="font-bold text-[15px] text-[#0B1220] mt-2.5">
-                  Opening: Set the Frame
+                  Welcome: Set the Frame
                 </div>
                 <p className="font-medium text-[12.5px] text-[#5B6B85] mt-1 leading-[1.5]">
                   Why does AI engineering matter? Framing the journey from raw LLM calls to production systems.
@@ -359,7 +376,7 @@ export default function EventsClient({
             <div className="bg-[#F3E8FF]/50 border border-[#E9D5FF] rounded-xl p-4.5 flex flex-col justify-between">
               <div>
                 <span className="font-mono font-bold text-[11px] text-[#7C3AED] bg-[#F1EBFE] px-2.5 py-1 rounded">
-                  10:15 AM · 130 mins
+                  10:30 AM · 75 mins
                 </span>
                 <div className="font-bold text-[15px] text-[#0B1220] mt-2.5">
                   Keynote &amp; Flagship Deep Dive
@@ -375,50 +392,50 @@ export default function EventsClient({
 
             <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-4.5 flex flex-col justify-between">
               <div>
-                <span className="font-mono font-bold text-[11px] text-[#0E9F6E] bg-[#E4F8EF] px-2.5 py-1 rounded">
-                  01:25 PM · 40 mins
+                <span className="font-mono font-bold text-[11px] text-[#D97706] bg-[#FEF3E2] px-2.5 py-1 rounded">
+                  12:00 PM · 60 mins
                 </span>
                 <div className="font-bold text-[15px] text-[#0B1220] mt-2.5">
-                  Session 1: Modern AI Systems
+                  Workshop Part 1
                 </div>
                 <p className="font-medium text-[12.5px] text-[#5B6B85] mt-1 leading-[1.5]">
-                  How do systems actually work? RAG, MCP, memory, and orchestration layers from GTWY to LangGraph.
+                  Build Your First AI Agent: EdTech RAG Case Study. Hand-on orchestrating pipelines.
                 </p>
               </div>
               <div className="font-bold text-[12px] text-[#3A4459] mt-3 pt-3 border-t border-[#EEF1F6]">
-                Soham Sharma
+                Harsh Sahu
               </div>
             </div>
 
             <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-4.5 flex flex-col justify-between">
               <div>
-                <span className="font-mono font-bold text-[11px] text-[#0092D7] bg-[#E0F2FE] px-2.5 py-1 rounded">
-                  02:05 PM · 60 mins
+                <span className="font-mono font-bold text-[11px] text-[#D97706] bg-[#FEF3E2] px-2.5 py-1 rounded">
+                  02:00 PM · 60 mins
                 </span>
                 <div className="font-bold text-[15px] text-[#0B1220] mt-2.5">
-                  Session 2: Production at Scale
+                  Workshop Part 2
                 </div>
                 <p className="font-medium text-[12.5px] text-[#5B6B85] mt-1 leading-[1.5]">
-                  How do you run it at scale? Observability, latency, retries, security, and cost governance.
+                  Evaluation, memory &amp; deployment. Rig up testing harnesses for our tutor agent.
                 </p>
               </div>
               <div className="font-bold text-[12px] text-[#3A4459] mt-3 pt-3 border-t border-[#EEF1F6]">
-                Karan
+                Harsh Sahu
               </div>
             </div>
           </div>
 
           <div className="mt-5 pt-5 border-t border-[#EEF1F6] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[13px]">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="font-bold text-[#D97706] bg-[#FEF3E2] px-2.5 py-1 rounded">
-                03:20 PM · Workshop &amp; Evaluation
+              <span className="font-bold text-[#0E9F6E] bg-[#E4F8EF] px-2.5 py-1 rounded">
+                03:00 PM · AI Engineering Journey
               </span>
               <span className="font-medium text-[#5B6B85]">
-                Write code &amp; run DeepEval / RAGAS harnesses before closing panel
+                Roadmap to production mindset &amp; community launch (Soham Sharma)
               </span>
             </div>
             <div className="font-mono font-bold text-[#007BFF] bg-[#E8F2FF] px-3 py-1 rounded-full shrink-0">
-              Wrap up &amp; Networking: 04:30 – 05:00 PM
+              Open AMA &amp; Networking: 03:25 – 04:00 PM
             </div>
           </div>
         </div>

@@ -124,7 +124,7 @@ export default function CaseStudyDetailClient({ study }: { study: CaseStudy }) {
   };
 
   const team = study.team && study.team.length ? study.team : [
-    { initials: "KG", name: "Karan Goel", role: "AI Engineer" },
+    { initials: "HS", name: "Harsh Sahu", role: "AI Engineer" },
     { initials: "PB", name: "Promit Basu", role: "AI/ML Engineer" },
     { initials: "SS", name: "Sanjay Singh", role: "Lead Architect" }
   ];

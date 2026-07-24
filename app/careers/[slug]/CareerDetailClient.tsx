@@ -130,7 +130,7 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
 
   const team = job.team && job.team.length ? job.team : [
     { initials: 'SS', name: 'Sanjay Singh', role: 'Co-founder' },
-    { initials: 'KG', name: 'Karan Goel', role: 'AI Engineer' },
+    { initials: 'HS', name: 'Harsh Sahu', role: 'AI Engineer' },
     { initials: 'PB', name: 'Promit Basu', role: 'AI/ML Engineer' }
   ];
 
