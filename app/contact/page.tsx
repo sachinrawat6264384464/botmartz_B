@@ -50,23 +50,35 @@ export default async function ContactPage() {
     }
   } catch (e) {}
 
+  let settings: any = {};
+  try {
+    const settingsSnap = await adminDb.collection("settings").doc("global").get();
+    if (settingsSnap.exists) {
+      settings = settingsSnap.data();
+    }
+  } catch (e) {}
+
+  const email = settings?.general?.email || "soham@botmartz.com";
+  const phone = settings?.general?.phone || "+91 94073 28842";
+  const companyName = settings?.general?.companyName || "Botmartz AI Solutions";
+  const address = settings?.general?.address || "Indore, IN";
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "ContactPage",
-    "name": "Contact Botmartz AI Solutions",
+    "name": `Contact ${companyName}`,
     "description": metaDesc,
     "mainEntity": {
       "@type": "Organization",
-      "name": "Botmartz AI Solutions",
-      "email": "soham@botmartz.com",
-      "telephone": "+91 94073 28842",
+      "name": companyName,
+      "email": email,
+      "telephone": phone,
       "address": {
         "@type": "PostalAddress",
-        "addressLocality": "Indore",
-        "addressCountry": "IN"
+        "name": address
       }
     }
   };
 
-  return <ContactClient heroData={heroData} structuredData={structuredData} />;
+  return <ContactClient heroData={heroData} structuredData={structuredData} settings={settings} />;
 }

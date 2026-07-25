@@ -75,6 +75,17 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
   const [isVerifying, setIsVerifying] = useState(false);
   const [successCode, setSuccessCode] = useState<string | null>(null);
 
+  // Coupon states
+  const [couponCodeInput, setCouponCodeInput] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{
+    code: string;
+    type: string;
+    discountType: string;
+    discountValue: number;
+  } | null>(null);
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [couponMessage, setCouponMessage] = useState({ text: "", type: "" });
+
   const unsubscribeRef = useRef<(() => void) | null>(null);
 
   // Calculate dynamic entry fee
@@ -83,7 +94,13 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
   const calculateFee = () => {
     let basePrice = formData.attendeeType === "student" ? 399 : 699;
     
-    if (isEarlyBird) {
+    if (appliedCoupon) {
+      if (appliedCoupon.discountType === 'percentage') {
+        basePrice = Math.max(0, Math.round(basePrice * (1 - appliedCoupon.discountValue / 100)));
+      } else if (appliedCoupon.discountType === 'fixed') {
+        basePrice = Math.max(0, basePrice - appliedCoupon.discountValue);
+      }
+    } else if (isEarlyBird) {
       basePrice = Math.round(basePrice * 0.85);
     }
 
@@ -101,6 +118,30 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
       if (unsubscribeRef.current) unsubscribeRef.current();
     };
   }, []);
+
+  const handleApplyCoupon = async () => {
+    if (!couponCodeInput.trim()) return;
+    setCouponLoading(true);
+    setCouponMessage({ text: "", type: "" });
+    try {
+      const res = await fetch("/api/events/verify-coupon", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: couponCodeInput.trim() })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setAppliedCoupon(data);
+        setCouponMessage({ text: "Coupon applied successfully!", type: "success" });
+      } else {
+        setAppliedCoupon(null);
+        setCouponMessage({ text: data.error || "Invalid coupon", type: "error" });
+      }
+    } catch (e) {
+      setCouponMessage({ text: "Failed to verify coupon", type: "error" });
+    }
+    setCouponLoading(false);
+  };
 
   const downloadQR = async () => {
     try {
@@ -179,7 +220,8 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           registrationId: regId,
-          amount: entryFee
+          amount: entryFee,
+          couponCode: appliedCoupon?.code
         })
       });
 
@@ -299,7 +341,8 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
         checkInCode: entryFee === 0 ? `REG-${Math.random().toString(36).substring(2, 11).toUpperCase()}` : "",
         attended: false,
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
+        appliedCoupon: appliedCoupon ? appliedCoupon.code : null
       };
 
       const docRef = await addDoc(collection(db, "event-registrations"), newReg);
@@ -466,6 +509,44 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                     placeholder="Enter any custom information or API specifications requested for this event..."
                     className="w-full bg-[#050C18] border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#00B8F0] transition-colors resize-none"
                   />
+                </div>
+                <div className="border border-white/10 p-4 rounded-xl bg-[#040A15] space-y-3">
+                  <label className="block text-xs font-semibold text-[#8A9EB0] uppercase tracking-wider mb-1">Have a Coupon / Promo Code?</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={couponCodeInput}
+                      onChange={(e) => setCouponCodeInput(e.target.value)}
+                      placeholder="Enter code"
+                      className="flex-1 bg-[#050C18] border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#00B8F0] transition-colors uppercase"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleApplyCoupon}
+                      disabled={couponLoading || !couponCodeInput.trim()}
+                      className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50"
+                    >
+                      {couponLoading ? "..." : "Apply"}
+                    </button>
+                  </div>
+                  {couponMessage.text && (
+                    <p className={`text-xs ${couponMessage.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>
+                      {couponMessage.text}
+                    </p>
+                  )}
+                  {appliedCoupon && (
+                    <div className="flex items-center gap-2 bg-green-500/10 border border-green-500/20 text-green-400 text-xs px-3 py-1.5 rounded-lg w-fit">
+                      <CheckCircle size={12} />
+                      Applied: {appliedCoupon.code} (-{appliedCoupon.discountType === 'percentage' ? `${appliedCoupon.discountValue}%` : `₹${appliedCoupon.discountValue}`})
+                      <button 
+                        type="button" 
+                        onClick={() => { setAppliedCoupon(null); setCouponMessage({text: "", type: ""}); setCouponCodeInput(""); }}
+                        className="ml-2 hover:text-white"
+                      >
+                        <X size={12} />
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
 

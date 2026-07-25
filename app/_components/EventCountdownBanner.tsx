@@ -2,15 +2,23 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Ticket, Clock } from "lucide-react";
 
 export default function EventCountdownBanner() {
+  const pathname = usePathname();
+  
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
   });
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     // Event Date: August 15, 2026
@@ -34,6 +42,10 @@ export default function EventCountdownBanner() {
 
     return () => clearInterval(interval);
   }, []);
+
+  if (!mounted || pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <div className="bg-[#00B8F0]/10 border-b border-[#00B8F0]/20 py-2 sm:py-3">

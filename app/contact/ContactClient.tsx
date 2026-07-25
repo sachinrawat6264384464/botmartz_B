@@ -10,9 +10,14 @@ interface ContactClientProps {
     subtitle: string;
   };
   structuredData: any;
+  settings?: any;
 }
 
-export default function ContactClient({ heroData, structuredData }: ContactClientProps) {
+export default function ContactClient({ heroData, structuredData, settings }: ContactClientProps) {
+  const email = settings?.general?.email || "soham@botmartz.com";
+  const phone = settings?.general?.phone || "+91 94073 28842";
+  const address = settings?.general?.address || "Indore, IN";
+
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -217,7 +222,7 @@ export default function ContactClient({ heroData, structuredData }: ContactClien
                   </div>
                   <h3 className="font-semibold text-[16px] mb-2 text-slate-900">Email Us</h3>
                   <p className="text-[14px] text-slate-600 mb-4">For general inquiries and project requests.</p>
-                  <a href="mailto:soham@botmartz.com" className="font-mono text-[13px] text-[#00B8F0] hover:underline font-semibold">soham@botmartz.com</a>
+                  <a href={`mailto:${email}`} className="font-mono text-[13px] text-[#00B8F0] hover:underline font-semibold">{email}</a>
                </div>
                
                <div className="bg-slate-50 border border-slate-200 rounded-xl p-8 transition-colors hover:border-slate-300">
@@ -226,7 +231,7 @@ export default function ContactClient({ heroData, structuredData }: ContactClien
                   </div>
                   <h3 className="font-semibold text-[16px] mb-2 text-slate-900">Call Us</h3>
                   <p className="text-[14px] text-slate-600 mb-4">Available during business hours (IST).</p>
-                  <a href="tel:+919407328842" className="font-mono text-[13px] text-[#00B8F0] hover:underline font-semibold">+91 94073 28842</a>
+                  <a href={`tel:${phone.replace(/[^+\d]/g, '')}`} className="font-mono text-[13px] text-[#00B8F0] hover:underline font-semibold">{phone}</a>
                </div>
 
                <div className="bg-slate-50 border border-slate-200 rounded-xl p-8 transition-colors hover:border-slate-300">
@@ -235,7 +240,7 @@ export default function ContactClient({ heroData, structuredData }: ContactClien
                   </div>
                   <h3 className="font-semibold text-[16px] mb-2 text-slate-900">Headquarters</h3>
                   <p className="text-[14px] text-slate-600 mb-4">We are a globally distributed team headquartered in India.</p>
-                  <span className="font-mono text-[13px] text-slate-800 font-semibold uppercase tracking-wide">Indore, IN</span>
+                  <span className="font-mono text-[13px] text-slate-800 font-semibold uppercase tracking-wide">{address}</span>
                </div>
 
             </div>

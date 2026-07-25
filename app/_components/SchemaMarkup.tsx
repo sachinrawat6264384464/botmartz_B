@@ -3,27 +3,34 @@ import React from 'react';
 interface SchemaMarkupProps {
   type: 'Organization' | 'LocalBusiness' | 'FAQPage' | 'Article';
   data: Record<string, any>;
+  settings?: any;
 }
 
-export default function SchemaMarkup({ type, data }: SchemaMarkupProps) {
+export default function SchemaMarkup({ type, data, settings }: SchemaMarkupProps) {
   let schemaData: Record<string, any> = {};
+
+  const companyName = settings?.general?.companyName || 'Botmartz';
+  const logoUrl = settings?.branding?.primaryLogo || 'https://www.botmartz.com/BotmartzNewLogo.png';
+  const phone = settings?.general?.phone || '+91 94073 28842';
+  const email = settings?.general?.email || 'soham@botmartz.com';
+  const websiteUrl = settings?.general?.websiteUrl || 'https://www.botmartz.com';
 
   if (type === 'Organization') {
     schemaData = {
       '@context': 'https://schema.org',
       '@type': 'Organization',
-      name: 'Botmartz',
-      url: 'https://www.botmartz.com',
-      logo: 'https://www.botmartz.com/BotmartzNewLogo.png',
+      name: companyName,
+      url: websiteUrl,
+      logo: logoUrl,
       sameAs: [
         'https://www.linkedin.com/in/soham-sharma/',
         'https://www.instagram.com/botmartzai_solutions/',
       ],
       contactPoint: {
         '@type': 'ContactPoint',
-        telephone: '+91 94073 28842',
+        telephone: phone,
         contactType: 'customer service',
-        email: 'soham@botmartz.com',
+        email: email,
       },
       ...data,
     };
@@ -31,11 +38,11 @@ export default function SchemaMarkup({ type, data }: SchemaMarkupProps) {
     schemaData = {
       '@context': 'https://schema.org',
       '@type': 'ProfessionalService',
-      name: 'Botmartz AI Solutions',
-      image: 'https://www.botmartz.com/BotmartzNewLogo.png',
-      '@id': 'https://www.botmartz.com/#localbusiness',
-      url: 'https://www.botmartz.com',
-      telephone: '+91 94073 28842',
+      name: companyName,
+      image: logoUrl,
+      '@id': `${websiteUrl}/#localbusiness`,
+      url: websiteUrl,
+      telephone: phone,
       priceRange: '$$$',
       address: {
         '@type': 'PostalAddress',
@@ -88,7 +95,7 @@ export default function SchemaMarkup({ type, data }: SchemaMarkupProps) {
       },
       headline: data.title,
       description: data.excerpt,
-      image: data.featuredImage || 'https://www.botmartz.com/BotmartzNewLogo.png',
+      image: data.featuredImage || logoUrl,
       datePublished: data.createdAt,
       dateModified: data.updatedAt || data.createdAt,
       author: {
@@ -98,10 +105,10 @@ export default function SchemaMarkup({ type, data }: SchemaMarkupProps) {
       },
       publisher: {
         '@type': 'Organization',
-        name: 'Botmartz',
+        name: companyName,
         logo: {
           '@type': 'ImageObject',
-          url: 'https://www.botmartz.com/BotmartzNewLogo.png',
+          url: logoUrl,
         },
       },
       ...data.extra,

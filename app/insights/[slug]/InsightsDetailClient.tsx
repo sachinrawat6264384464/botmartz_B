@@ -254,7 +254,7 @@ export default function InsightsDetailClient({
   ];
 
   return (
-    <main className="bg-[#050B14] min-h-screen text-[#C7D6EE] font-sans pb-24 overflow-x-hidden">
+    <main className="bg-white min-h-screen text-slate-700 font-sans pb-24 overflow-x-hidden">
       <SchemaMarkup
         type="Article"
         data={{
@@ -278,7 +278,7 @@ export default function InsightsDetailClient({
         .blog-content p {
           margin-bottom: 1.75rem;
           line-height: 1.9;
-          color: #A3B3CC;
+          color: #475569;
           font-weight: 400;
           font-size: 15.5px;
         }
@@ -287,7 +287,7 @@ export default function InsightsDetailClient({
           font-weight: 800;
           margin-top: 2.75rem;
           margin-bottom: 1.25rem;
-          color: #FFFFFF;
+          color: #0F172A;
           line-height: 1.4;
           letter-spacing: -0.01em;
         }
@@ -296,20 +296,20 @@ export default function InsightsDetailClient({
           font-weight: 700;
           margin-top: 2rem;
           margin-bottom: 1rem;
-          color: #00C6FF;
+          color: #0066FF;
         }
         .blog-content ul {
           list-style-type: square;
           padding-left: 1.5rem;
           margin-bottom: 1.75rem;
-          color: #A3B3CC;
+          color: #475569;
           font-weight: 400;
         }
         .blog-content ol {
           list-style-type: decimal;
           padding-left: 1.5rem;
           margin-bottom: 1.75rem;
-          color: #A3B3CC;
+          color: #475569;
           font-weight: 400;
         }
         .blog-content li {
@@ -318,24 +318,24 @@ export default function InsightsDetailClient({
           font-size: 14.5px;
         }
         .blog-content pre {
-          background-color: #060C1F;
+          background-color: #F8FAFC;
           padding: 1.5rem;
           border-radius: 12px;
-          border: 1px solid rgba(255, 255, 255, 0.08);
+          border: 1px solid #E2E8F0;
           overflow-x: auto;
           margin: 28px 0;
           font-family: monospace;
-          color: #C7D6EE;
+          color: #334155;
           font-size: 12.5px;
           line-height: 1.7;
         }
         .blog-content code {
-          background-color: rgba(0, 198, 255, 0.08);
+          background-color: rgba(0, 102, 255, 0.08);
           padding: 0.2rem 0.4rem;
           border-radius: 0.25rem;
           font-family: monospace;
           font-size: 0.9em;
-          color: #00C6FF;
+          color: #0066FF;
         }
         .blog-content img {
           border-radius: 12px;
@@ -343,7 +343,7 @@ export default function InsightsDetailClient({
           max-width: 100%;
           height: auto;
           display: block;
-          border: 1px solid rgba(255, 255, 255, 0.08);
+          border: 1px solid #E2E8F0;
         }
       `}</style>
 
@@ -597,11 +597,11 @@ export default function InsightsDetailClient({
                 pointerEvents: 'none'
               }} />
               
-              <AlertCircle className="w-10 h-10 text-[#00C6FF]/40 mb-3 relative z-10" />
-              <div className="font-extrabold text-[15px] tracking-widest text-[#00C6FF]/60 uppercase relative z-10">
+              <AlertCircle className="w-10 h-10 text-[#0066FF]/40 mb-3 relative z-10" />
+              <div className="font-extrabold text-[15px] tracking-widest text-[#0066FF]/60 uppercase relative z-10">
                 Botmartz AI Insight
               </div>
-              <div className="font-medium text-[11px] text-[#8FA3C4]/50 mt-1 relative z-10">
+              <div className="font-medium text-[11px] text-slate-600/50 mt-1 relative z-10">
                 Evaluating Retrieval, Chunking, and Generation in Production
               </div>
             </div>
@@ -621,15 +621,15 @@ export default function InsightsDetailClient({
                 fontFamily: 'Montserrat, sans-serif',
                 fontWeight: '700',
                 fontSize: '12px',
-                color: '#8FA3C4',
-                backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.06)',
+                color: '#475569',
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #E2E8F0',
                 padding: '8px 14px',
                 borderRadius: '7px',
                 transition: 'all 0.2s',
                 cursor: 'pointer'
               }}
-              className="hover:text-[#00C6FF] hover:bg-[#00C6FF]/10 hover:border-[#00C6FF]/20"
+              className="hover:text-[#0066FF] hover:bg-[#00C6FF]/10 hover:border-[#00C6FF]/20"
             >
               {t}
             </a>
@@ -645,12 +645,12 @@ export default function InsightsDetailClient({
         {/* Key Takeaways */}
         {closingPoints.length > 0 && (
           <div className="mt-11" style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.02)',
-            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backgroundColor: '#F8FAFC',
+            border: '1px solid #E2E8F0',
             borderRadius: '14px',
             padding: '24px'
           }}>
-            <h2 className="font-extrabold text-[22px] text-white mb-5 mt-0">Closing Takeaways</h2>
+            <h2 className="font-extrabold text-[22px] text-slate-900 mb-5 mt-0">Closing Takeaways</h2>
             <div className="flex flex-col gap-4">
               {closingPoints.map((pt, idx) => (
                 <div key={idx} className="flex gap-3.5 items-start">
@@ -683,16 +683,16 @@ export default function InsightsDetailClient({
         {/* Try it yourself callout */}
         <div 
           style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.02)',
-            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backgroundColor: '#F8FAFC',
+            border: '1px solid #E2E8F0',
             borderRadius: '14px',
             padding: '26px'
           }}
           className="mt-9 flex flex-col sm:flex-row items-center gap-5 justify-between shadow-lg"
         >
           <div className="flex-1">
-            <div className="font-bold text-[15px] text-white">Try It Yourself</div>
-            <div className="font-medium text-[12.5px] leading-[1.6] text-[#8FA3C4] mt-1.5">A runnable Google Colab notebook with the eval harness and hybrid search code from this post.</div>
+            <div className="font-bold text-[15px] text-slate-900">Try It Yourself</div>
+            <div className="font-medium text-[12.5px] leading-[1.6] text-slate-600 mt-1.5">A runnable Google Colab notebook with the eval harness and hybrid search code from this post.</div>
           </div>
           <div className="flex gap-2 shrink-0">
             <a 
@@ -723,8 +723,8 @@ export default function InsightsDetailClient({
               target="_blank" 
               rel="noopener noreferrer" 
               style={{
-                backgroundColor: '#0B1220',
-                color: '#FFFFFF',
+                backgroundColor: '#F1F5F9',
+                color: '#0F172A',
                 fontWeight: '700',
                 fontSize: '12.5px',
                 padding: '11px 18px',
@@ -733,10 +733,10 @@ export default function InsightsDetailClient({
                 alignItems: 'center',
                 gap: '6px',
                 transition: 'all 0.2s',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
+                border: '1px solid #CBD5E1',
                 cursor: 'pointer'
               }}
-              className="hover:bg-[#1A2333]"
+              className="hover:bg-[#E2E8F0]"
             >
               ⌥ GitHub Repo
             </a>
@@ -751,9 +751,9 @@ export default function InsightsDetailClient({
               style={{
                 fontWeight: '600',
                 fontSize: '11.5px',
-                color: '#8FA3C4',
-                backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.06)',
+                color: '#475569',
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #E2E8F0',
                 padding: '6px 12px',
                 borderRadius: '6px'
               }}
@@ -764,10 +764,10 @@ export default function InsightsDetailClient({
         </div>
 
         {/* Likes / Views count */}
-        <div className="flex items-center gap-4 mt-8 border-t border-white/10 pt-6 justify-between">
-          <div className="flex items-center gap-4 text-xs font-semibold text-[#8FA3C4]">
+        <div className="flex items-center gap-4 mt-8 border-t border-slate-200 pt-6 justify-between">
+          <div className="flex items-center gap-4 text-xs font-semibold text-slate-600">
             <span className="flex items-center gap-1.5">
-              <Eye className="w-4 h-4 text-[#00C6FF]" />
+              <Eye className="w-4 h-4 text-[#0066FF]" />
               {viewCount.toLocaleString()} views
             </span>
           </div>
@@ -786,7 +786,7 @@ export default function InsightsDetailClient({
             }}
             className={liked 
               ? 'bg-pink-500/10 border border-pink-500/30 text-pink-500' 
-              : 'bg-white/5 border border-white/10 text-[#8FA3C4] hover:text-pink-500 hover:border-pink-500/30 hover:bg-pink-500/5'
+              : 'bg-white border border-slate-200 text-slate-600 hover:text-pink-500 hover:border-pink-500/30 hover:bg-pink-500/5'
             }
           >
             <Heart className={`w-3.5 h-3.5 ${liked ? 'fill-pink-500 text-pink-500' : ''}`} />
@@ -797,8 +797,8 @@ export default function InsightsDetailClient({
         {/* Author Bio Box */}
         <div 
           style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.02)',
-            border: '1px solid rgba(255, 255, 255, 0.06)',
+            backgroundColor: '#F8FAFC',
+            border: '1px solid #E2E8F0',
             borderRadius: '14px',
             padding: '24px'
           }}
@@ -808,16 +808,16 @@ export default function InsightsDetailClient({
             {authorInitials}
           </div>
           <div>
-            <div className="font-bold text-[15px] text-white">{post.author}</div>
-            <div className="font-medium text-[13px] leading-[1.6] text-[#8FA3C4] mt-1">AI Engineer at Botmartz, building enterprise RAG and agent systems in production. Contributing to open-source libraries.</div>
+            <div className="font-bold text-[15px] text-slate-900">{post.author}</div>
+            <div className="font-medium text-[13px] leading-[1.6] text-slate-600 mt-1">AI Engineer at Botmartz, building enterprise RAG and agent systems in production. Contributing to open-source libraries.</div>
           </div>
         </div>
 
         {/* Discussion / Comments Section */}
-        <div className="mt-12 pt-12 border-t border-white/10">
+        <div className="mt-12 pt-12 border-t border-slate-200">
           <div className="flex items-center gap-2.5 mb-7">
-            <MessageSquare className="w-5 h-5 text-[#00C6FF]" />
-            <h2 className="text-xl font-bold tracking-tight text-white m-0">
+            <MessageSquare className="w-5 h-5 text-[#0066FF]" />
+            <h2 className="text-xl font-bold tracking-tight text-slate-900 m-0">
               Discussion ({comments.length})
             </h2>
           </div>
@@ -825,7 +825,7 @@ export default function InsightsDetailClient({
           {/* Comments List */}
           <div className="space-y-4 mb-9">
             {comments.length === 0 ? (
-              <p className="text-[#8FA3C4] font-medium text-xs italic">
+              <p className="text-slate-600 font-medium text-xs italic">
                 No approved comments yet. Be the first to share your thoughts!
               </p>
             ) : (
@@ -853,15 +853,15 @@ export default function InsightsDetailClient({
                     }}
                     className="flex gap-3.5 p-4 rounded-xl shadow-sm"
                   >
-                    <div className="w-9 h-9 rounded-full bg-[#00C6FF]/10 border border-[#00C6FF]/20 flex items-center justify-center text-xs font-bold text-[#00C6FF] flex-shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-[#00C6FF]/10 border border-[#00C6FF]/20 flex items-center justify-center text-xs font-bold text-[#0066FF] flex-shrink-0">
                       {initials}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-4 mb-1.5">
-                        <span className="text-sm font-bold text-white truncate">{c.name}</span>
-                        <span className="text-[10px] font-semibold text-[#8FA3C4]/60">{dateStr}</span>
+                        <span className="text-sm font-bold text-slate-900 truncate">{c.name}</span>
+                        <span className="text-[10px] font-semibold text-slate-600/60">{dateStr}</span>
                       </div>
-                      <p className="text-xs text-[#8FA3C4] font-medium leading-relaxed whitespace-pre-wrap">
+                      <p className="text-xs text-slate-600 font-medium leading-relaxed whitespace-pre-wrap">
                         {c.content}
                       </p>
                     </div>
@@ -874,15 +874,15 @@ export default function InsightsDetailClient({
           {/* Comment Form */}
           <div 
             style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.02)',
-              border: '1px solid rgba(255, 255, 255, 0.06)',
+              backgroundColor: '#F8FAFC',
+              border: '1px solid #E2E8F0',
               borderRadius: '16px',
               padding: '24px'
             }}
             className="shadow-sm"
           >
-            <h3 className="text-[15px] font-bold text-white mb-1.5 uppercase tracking-wider mt-0">Leave a Comment</h3>
-            <p className="text-xs text-[#8FA3C4]/70 mb-5 font-semibold">
+            <h3 className="text-[15px] font-bold text-slate-900 mb-1.5 uppercase tracking-wider mt-0">Leave a Comment</h3>
+            <p className="text-xs text-slate-600/70 mb-5 font-semibold">
               Your email address will not be published. Required fields are marked *
             </p>
 
@@ -896,14 +896,14 @@ export default function InsightsDetailClient({
                   <CheckCircle className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-white uppercase mb-1">Comment Submitted</h4>
-                  <p className="text-xs text-[#8FA3C4] font-semibold max-w-xs">
+                  <h4 className="text-sm font-bold text-slate-900 uppercase mb-1">Comment Submitted</h4>
+                  <p className="text-xs text-slate-600 font-semibold max-w-xs">
                     Thank you! Your comment is pending moderator approval and will be visible shortly.
                   </p>
                 </div>
                 <button 
                   onClick={() => setCommentStatus("idle")}
-                  className="px-5 py-2 border border-[#00C6FF] text-[#00C6FF] text-xs font-bold uppercase rounded-lg hover:bg-[#00C6FF]/10 transition-all cursor-pointer bg-transparent"
+                  className="px-5 py-2 border border-[#00C6FF] text-[#0066FF] text-xs font-bold uppercase rounded-lg hover:bg-[#00C6FF]/10 transition-all cursor-pointer bg-transparent"
                 >
                   Write Another
                 </button>
@@ -912,7 +912,7 @@ export default function InsightsDetailClient({
               <form onSubmit={handleCommentSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] font-bold text-[#8FA3C4] uppercase tracking-wider mb-1">
+                    <label className="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">
                       Name *
                     </label>
                     <input
@@ -924,13 +924,13 @@ export default function InsightsDetailClient({
                       style={{
                         backgroundColor: '#060C1F',
                         border: '1px solid rgba(255, 255, 255, 0.1)',
-                        color: '#FFFFFF'
+                        color: '#0F172A'
                       }}
                       className="w-full rounded-lg px-3.5 py-2 text-xs focus:outline-none focus:border-[#00C6FF] transition-all"
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold text-[#8FA3C4] uppercase tracking-wider mb-1">
+                    <label className="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">
                       Email *
                     </label>
                     <input
@@ -942,7 +942,7 @@ export default function InsightsDetailClient({
                       style={{
                         backgroundColor: '#060C1F',
                         border: '1px solid rgba(255, 255, 255, 0.1)',
-                        color: '#FFFFFF'
+                        color: '#0F172A'
                       }}
                       className="w-full rounded-lg px-3.5 py-2 text-xs focus:outline-none focus:border-[#00C6FF] transition-all"
                     />
@@ -950,7 +950,7 @@ export default function InsightsDetailClient({
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-bold text-[#8FA3C4] uppercase tracking-wider mb-1">
+                  <label className="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">
                     Comment *
                   </label>
                   <textarea
@@ -962,7 +962,7 @@ export default function InsightsDetailClient({
                     style={{
                       backgroundColor: '#060C1F',
                       border: '1px solid rgba(255, 255, 255, 0.1)',
-                      color: '#FFFFFF'
+                      color: '#0F172A'
                     }}
                     className="w-full rounded-lg px-3.5 py-2 text-xs focus:outline-none focus:border-[#00C6FF] transition-all resize-none"
                   />
@@ -1008,25 +1008,25 @@ export default function InsightsDetailClient({
         </div>
 
         {/* Related Insights Grid */}
-        <div className="border-t border-white/10 mt-14 pt-11">
-          <div className="font-bold text-[12px] tracking-[0.1em] text-[#00C6FF] uppercase mb-4.5">More Engineering Insights</div>
+        <div className="border-t border-slate-200 mt-14 pt-11">
+          <div className="font-bold text-[12px] tracking-[0.1em] text-[#0066FF] uppercase mb-4.5">More Engineering Insights</div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {initialRelated.map((r, idx) => (
               <div 
                 key={idx} 
                 style={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.02)',
+                  backgroundColor: '#F8FAFC',
                   border: '1px solid rgba(255, 255, 255, 0.05)'
                 }}
                 className="rounded-xl overflow-hidden flex flex-col hover:border-[#00C6FF]/30 transition-all"
               >
                 <div className="h-[100px] bg-gradient-to-br from-[#060C1F] to-[#0A1630]" />
                 <div className="p-4.5 flex-1 flex flex-col gap-2">
-                  <span className="font-bold text-[9px] tracking-wide text-[#00C6FF] uppercase">{r.category}</span>
-                  <Link href={`/insights/${r.slug}`} className="font-bold text-[13px] leading-snug text-white hover:text-[#00C6FF] transition-colors block flex-1">
+                  <span className="font-bold text-[9px] tracking-wide text-[#0066FF] uppercase">{r.category}</span>
+                  <Link href={`/insights/${r.slug}`} className="font-bold text-[13px] leading-snug text-slate-900 hover:text-[#0066FF] transition-colors block flex-1">
                     {r.title}
                   </Link>
-                  <div className="font-medium text-[11px] text-[#8FA3C4]/60 mt-1.5">{r.author} · {r.readTime} min read</div>
+                  <div className="font-medium text-[11px] text-slate-600/60 mt-1.5">{r.author} · {r.readTime} min read</div>
                 </div>
               </div>
             ))}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { Inter_Tight } from 'next/font/google';
 import { Save, ArrowLeft, Image as ImageIcon, Loader2 } from 'lucide-react';
 import Link from 'next/link';
@@ -11,8 +11,9 @@ import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
 const interTight = Inter_Tight({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
-export default function EditEventPage({ params }: { params: { id: string } }) {
-  const isNew = params.id === 'new';
+export default function EditEventPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = use(params);
+  const isNew = resolvedParams.id === 'new';
   const router = useRouter();
   
   const [loading, setLoading] = useState(!isNew);
@@ -39,7 +40,7 @@ export default function EditEventPage({ params }: { params: { id: string } }) {
     if (!isNew) {
       const fetchEvent = async () => {
         try {
-          const docSnap = await getDoc(doc(db, "events", params.id));
+          const docSnap = await getDoc(doc(db, "events", resolvedParams.id));
           if (docSnap.exists()) {
             setFormData(docSnap.data() as any);
           } else {
@@ -52,7 +53,7 @@ export default function EditEventPage({ params }: { params: { id: string } }) {
       };
       fetchEvent();
     }
-  }, [params.id, isNew]);
+  }, [resolvedParams.id, isNew]);
 
   const handleChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -109,7 +110,7 @@ export default function EditEventPage({ params }: { params: { id: string } }) {
           updatedAt: serverTimestamp()
         });
       } else {
-        await setDoc(doc(db, "events", params.id), {
+        await setDoc(doc(db, "events", resolvedParams.id), {
           ...formData,
           entryFee: Number(formData.entryFee || 0),
           updatedAt: serverTimestamp()

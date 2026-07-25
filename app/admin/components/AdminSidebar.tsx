@@ -25,7 +25,7 @@ export default function AdminSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
   const [liveCounts, setLiveCounts] = useState<Partial<Record<ModuleId, number>>>({});
-  const [logoUrl, setLogoUrl] = useState('/BotmartznewBot.png');
+  const [logoUrl, setLogoUrl] = useState('/Logo-removebg-preview.png');
 
   useEffect(() => {
     const fetchLogo = async () => {
@@ -317,6 +317,7 @@ export default function AdminSidebar() {
               {renderFlatItem('projects', FolderKanban, 'Projects', '/admin/projects')}
               {renderFlatItem('events', CalendarDays, 'Events', '/admin/events')}
               {renderFlatItem('events', ScanFace, 'Ticket Scanner', '/admin/scanner')}
+              {renderFlatItem('coupons', CreditCard, 'Coupons', '/admin/coupons')}
               {renderFlatItem('payments', CreditCard, 'Payments', '/admin/payments')}
               {renderFlatItem('jobs', Users, 'Careers / Jobs', '/admin/jobs', true)}
               {renderFlatItem('partnerships', Handshake, 'Partnerships', '/admin/partnerships', true)}

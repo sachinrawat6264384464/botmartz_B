@@ -4,11 +4,16 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Inter_Tight, JetBrains_Mono } from "next/font/google";
 import { Shield, Lock, Eye, FileText } from "lucide-react";
+import { useSettings } from "@/app/client-layout";
 
 const inter = Inter_Tight({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"] });
 
 export default function PrivacyPolicyPage() {
+  const settings = useSettings();
+  const email = settings?.general?.email || "soham@botmartz.com";
+  const companyName = settings?.general?.companyName || "Botmartz AI Solutions";
+
   return (
     <main className={`${inter.className} min-h-screen bg-[#080808] text-white pt-36 pb-20 px-6 md:px-10 lg:px-16`}>
       {/* Background Effects */}
@@ -45,7 +50,7 @@ export default function PrivacyPolicyPage() {
               <h2 className="text-xl md:text-2xl font-bold text-white uppercase tracking-wide">1. Information We Collect</h2>
             </div>
             <p>
-              At Botmartz AI Solutions, we are committed to protecting your privacy. We collect information you provide directly to us when filling out our contact forms, subscribing to our newsletter, or enrolling in our GenAI Bootcamps. This may include your name, email address, phone number, company name, and any other details you share.
+              At {companyName}, we are committed to protecting your privacy. We collect information you provide directly to us when filling out our contact forms, subscribing to our newsletter, or enrolling in our GenAI Bootcamps. This may include your name, email address, phone number, company name, and any other details you share.
             </p>
           </motion.section>
 
@@ -96,7 +101,7 @@ export default function PrivacyPolicyPage() {
               <h2 className="text-xl md:text-2xl font-bold text-white uppercase tracking-wide">4. Your Rights and Choices</h2>
             </div>
             <p>
-              You have the right to request access to the personal data we hold about you, request corrections, or request deletion. You can unsubscribe from our newsletter at any time by clicking the &quot;Unsubscribe&quot; link in our emails, or contact us directly at <a href="mailto:soham@botmartz.com" className="text-[#D4AF37] hover:underline">soham@botmartz.com</a> to request data removal.
+              You have the right to request access to the personal data we hold about you, request corrections, or request deletion. You can unsubscribe from our newsletter at any time by clicking the &quot;Unsubscribe&quot; link in our emails, or contact us directly at <a href={`mailto:${email}`} className="text-[#D4AF37] hover:underline">{email}</a> to request data removal.
             </p>
           </motion.section>
         </div>
