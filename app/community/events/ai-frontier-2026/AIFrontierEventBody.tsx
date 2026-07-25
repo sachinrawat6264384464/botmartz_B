@@ -258,7 +258,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
             <div className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 shadow-sm hover:border-[#EC4899]/40 transition-all">
               <div className="flex justify-between items-start flex-wrap gap-2">
                 <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#8A97AC] uppercase">Anchoring &amp; Kickoff</span>
-                <span className="font-bold text-[11px] text-[#EC4899] bg-[#FCE7F3] px-2.5 py-1 rounded-full">Vaidehi &amp; Yash · Event Anchors</span>
+                <span className="font-bold text-[11px] text-[#EC4899] bg-[#FCE7F3] px-2.5 py-1 rounded-full">Vaidehi &amp; Ritik · Event Anchors</span>
               </div>
               <h3 className="font-extrabold text-[20px] sm:text-[22px] text-[#0B1220] mt-2">Setting the Stage</h3>
               <p className="font-medium text-[14px] text-[#3A4459] mt-2 leading-[1.6]">
