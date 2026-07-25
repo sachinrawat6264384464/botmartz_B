@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { 
   Settings, Image as ImageIcon, Mail, Search, Link as LinkIcon, 
   Save, Loader2, CheckCircle2,
-  AlertCircle, Eye, EyeOff
+  AlertCircle, Eye, EyeOff, Zap, Key
 } from 'lucide-react';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
