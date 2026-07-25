@@ -83,7 +83,8 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
 
   return (
     <div className={`${montserrat.className} bg-[#F5F8FC] text-[#0B1220] antialiased overflow-x-hidden`}>
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         @keyframes ef-pulse {
           0%, 100% { opacity: 0.35; }
           50% { opacity: 0.85; }
@@ -97,8 +98,8 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
 
       {/* ─── 1. HERO BANNER ─── */}
       <div className="bg-[#060C1F] relative overflow-hidden pt-[120px] pb-16 px-6 sm:px-10">
-        <div 
-          className="absolute inset-0 pointer-events-none" 
+        <div
+          className="absolute inset-0 pointer-events-none"
           style={{
             backgroundImage: "linear-gradient(rgba(0,198,255,0.06) 1px,transparent 1px), linear-gradient(90deg,rgba(0,198,255,0.06) 1px,transparent 1px)",
             backgroundSize: "44px 44px",
@@ -129,7 +130,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
                   22
                 </div>
                 <div>
-                  <div className="font-bold text-[13.5px] text-white">Aug 22, 2026</div>
+                  <div className="font-bold text-[13.5px] text-white">Aug 23, 2026</div>
                   <div className="font-medium text-xs text-[#7C8CAD]">10:00 AM – 5:00 PM</div>
                 </div>
               </div>
@@ -146,8 +147,8 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
 
             <div className="flex gap-3.5 mt-9 flex-wrap items-center">
               <RegisterButton event={activeEvent} />
-              <a 
-                href="#agenda" 
+              <a
+                href="#agenda"
                 className="inline-flex items-center gap-2 bg-[rgba(255,255,255,0.06)] hover:bg-[rgba(255,255,255,0.1)] border border-[rgba(255,255,255,0.18)] text-white font-bold text-sm px-[26px] py-[15px] rounded-[9px] transition-colors"
               >
                 Download Brochure ↓
@@ -202,7 +203,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
 
       {/* ─── 2. FOUR PILLARS & GOLDEN THREAD AGENDA ─── */}
       <div id="agenda" className="max-w-[1120px] mx-auto pt-20 pb-10 px-6 sm:px-10">
-        
+
         {/* Four Pillars */}
         <div className="bg-white border border-[#E7ECF3] rounded-[18px] p-6 sm:p-8 mb-14 shadow-sm">
           <div className="font-bold text-xs tracking-[0.12em] text-[#007BFF] uppercase mb-2">Four Pillars, One Lifecycle</div>
@@ -238,7 +239,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
 
         {/* The Golden Thread Journey Timeline */}
         <div className="relative pl-6 sm:pl-12 border-l-3 border-gradient-to-b from-[#00C6FF] via-[#007BFF] to-[#D97706] space-y-7 my-6" style={{ borderColor: '#007BFF' }}>
-          
+
           {/* Registration Interlude */}
           <div className="relative flex items-center gap-3.5 p-4 sm:px-5 border border-dashed border-[#C7CED6] rounded-xl bg-white/60 text-[#5B6B85] text-[13px] sm:text-[13.5px]">
             <div className="absolute -left-[31px] sm:-left-[55px] top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-white border-2 border-[#8A97AC]" />
@@ -565,15 +566,15 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
           <div className="mt-5.5 pt-5 border-t border-[#EEF1F6]">
             <div className="font-bold text-[11px] text-[#0B1220]">Stay in the Loop</div>
             <form onSubmit={handleSubscribe} className="flex gap-2 mt-2.5">
-              <input 
-                type="email" 
-                placeholder="Enter your email" 
+              <input
+                type="email"
+                placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="flex-1 min-w-0 border border-[#E2E8F0] focus:border-[#007BFF] rounded-lg px-3 py-2.5 font-medium text-[12.5px] text-[#0B1220] outline-none placeholder:text-[#8B97AC] transition-colors"
               />
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="bg-[#007BFF] hover:bg-[#0069DB] text-white border-none rounded-lg px-4 py-2.5 font-bold text-[12.5px] cursor-pointer shrink-0 transition-colors"
               >
                 {subscribed ? "Subscribed ✓" : "Subscribe"}
@@ -673,15 +674,15 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
           <div className="bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.1)] rounded-2xl p-6 sm:p-6.5 shadow-lg">
             <div className="font-bold text-[13px] text-white">Get early access to the community</div>
             <form onSubmit={handleNotify} className="flex flex-col sm:flex-row gap-2 mt-3.5">
-              <input 
-                type="email" 
-                placeholder="Enter your email" 
+              <input
+                type="email"
+                placeholder="Enter your email"
                 value={notifyEmail}
                 onChange={(e) => setNotifyEmail(e.target.value)}
                 className="flex-1 min-w-0 border border-[rgba(255,255,255,0.15)] bg-[rgba(255,255,255,0.03)] focus:border-[#00C6FF] rounded-lg px-3.5 py-3 font-medium text-[13px] text-white outline-none placeholder:text-[#8B97AC] transition-colors"
               />
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="bg-[#007BFF] hover:bg-[#0069DB] text-white border-none rounded-lg px-4.5 py-3 font-bold text-[13px] cursor-pointer shrink-0 transition-colors"
               >
                 {notified ? "Notified ✓" : "Notify Me"}
