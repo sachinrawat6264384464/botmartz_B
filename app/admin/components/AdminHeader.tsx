@@ -176,8 +176,8 @@ export default function AdminHeader() {
   }, {});
 
   return (
-    <header className={`font-sans bg-admin-card border-b border-admin-border px-8 py-4`}>
-      <div className="flex items-center justify-between h-8">
+    <header className="font-sans bg-admin-card border-b border-admin-border px-4 sm:px-8 py-3.5 pl-14 lg:pl-8">
+      <div className="flex items-center justify-between gap-3">
         {/* Search Bar */}
         <div className="flex-1 max-w-2xl relative">
           <div className="relative">

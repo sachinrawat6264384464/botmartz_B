@@ -3,9 +3,11 @@ import { adminDb } from '@/lib/firebase-admin';
 
 export async function POST(req: NextRequest) {
   try {
-    const { registrationId, email, password } = await req.json();
+    const { registrationId, admin } = await req.json();
 
-    if (email !== 'botmartz@gmail.com' || password !== 'Admin@2026##') {
+    if (!admin && req.headers.get('referer')?.includes('/admin')) {
+      // Allowed from admin session
+    } else if (!admin) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

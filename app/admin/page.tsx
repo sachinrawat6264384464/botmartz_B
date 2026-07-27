@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Inter_Tight } from 'next/font/google';
 import { useAuth } from '@/lib/context/AuthContext';
+import Link from 'next/link';
 import { 
   DollarSign, PhoneCall, FolderKanban, Users, Globe, 
   ArrowUpRight, ArrowDownRight, MoreVertical, Calendar, 
@@ -215,12 +216,12 @@ export default function AdminDashboard() {
         <div className="lg:col-span-1 bg-admin-card border border-admin-border rounded-xl p-5 shadow-sm">
           <h2 className="text-sm font-semibold text-admin-text mb-4">Quick Actions</h2>
           <div className="grid grid-cols-2 gap-3">
-            <QuickAction icon={FileText} label="Create Article" />
-            <QuickAction icon={FolderKanban} label="Add Case Study" />
-            <QuickAction icon={Calendar} label="Create Event" />
-            <QuickAction icon={UserPlus} label="Invite Member" />
-            <QuickAction icon={Activity} label="Create AI Agent" />
-            <QuickAction icon={Settings} label="Upload Document" />
+            <QuickAction icon={FileText} label="Create Article" href="/admin/Blogs" />
+            <QuickAction icon={FolderKanban} label="Add Case Study" href="/admin/case-studies" />
+            <QuickAction icon={Calendar} label="Create Event" href="/admin/events" />
+            <QuickAction icon={UserPlus} label="Invite Member" href="/admin/crm" />
+            <QuickAction icon={Activity} label="Create AI Agent" href="/admin/projects" />
+            <QuickAction icon={Settings} label="Upload Document" href="/admin/settings" />
           </div>
         </div>
       </div>
@@ -273,11 +274,14 @@ function UsageStat({ title, value, trend, isPositive }: { title: string, value: 
   );
 }
 
-function QuickAction({ icon: Icon, label }: { icon: any, label: string }) {
+function QuickAction({ icon: Icon, label, href }: { icon: any, label: string, href: string }) {
   return (
-    <button className="flex flex-col items-center justify-center gap-2 p-3 rounded-xl border border-admin-border bg-admin-bg hover:bg-admin-card hover:border-admin-accent/50 transition-all group">
+    <Link 
+      href={href} 
+      className="flex flex-col items-center justify-center gap-2 p-3 rounded-xl border border-admin-border bg-admin-bg hover:bg-admin-card hover:border-admin-accent/50 transition-all group"
+    >
       <Icon size={18} className="text-admin-text-muted group-hover:text-admin-accent transition-colors" />
       <span className="text-[10px] font-medium text-admin-text-muted group-hover:text-admin-text text-center leading-tight">{label}</span>
-    </button>
+    </Link>
   );
 }

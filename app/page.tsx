@@ -327,8 +327,8 @@ export default async function Home() {
                 href: "/services/integrations"
               },
             ].map((card, i) => (
-              <div key={i} className="bg-white border border-[#E2E8F0] p-8 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all duration-300 hover:shadow-[0_12px_32px_rgba(0,102,255,0.08)] hover:border-[#0066FF]/30 group relative overflow-hidden flex flex-col h-full min-h-[460px]">
-                <div className="absolute top-0 right-0 p-4 opacity-[0.03] transition-opacity group-hover:opacity-[0.06] text-[#0066FF]">
+              <div key={i} suppressHydrationWarning className="bg-white border border-[#E2E8F0] p-8 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all duration-300 hover:shadow-[0_12px_32px_rgba(0,102,255,0.08)] hover:border-[#0066FF]/30 group relative overflow-hidden flex flex-col h-full min-h-[460px]">
+                <div suppressHydrationWarning className="absolute top-0 right-0 p-4 opacity-[0.03] transition-opacity group-hover:opacity-[0.06] text-[#0066FF]">
                   <DynamicIcon name={card.iconName} size={100} />
                 </div>
                 <div className="w-14 h-14 bg-[#EFF8FF] rounded-xl flex items-center justify-center text-[#0066FF] mb-6 border border-[#D0EBFB] shadow-sm">
