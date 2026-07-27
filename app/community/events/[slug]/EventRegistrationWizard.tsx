@@ -674,11 +674,11 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                 </div>
 
                 <div className="flex justify-center py-2">
-                  <div className="bg-white p-3 rounded-xl shadow-md">
+                  <div className="bg-white p-4 shadow-md">
                     <img 
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=350x350&margin=4&ecc=M&data=${encodeURIComponent(successCode || '')}`} 
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=350x350&margin=2&ecc=M&data=${encodeURIComponent(`https://botmartz.com/admin/scanner?code=${successCode || ''}`)}`} 
                       alt="Pass Check-in QR" 
-                      className="w-[120px] h-[120px] block" 
+                      className="w-[130px] h-[130px] block" 
                     />
                   </div>
                 </div>

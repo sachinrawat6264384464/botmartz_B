@@ -11,6 +11,14 @@ export default function ScannerPage() {
   const [attendeeDetails, setAttendeeDetails] = useState<{name: string, type: string, qty: number} | null>(null);
 
   useEffect(() => {
+    // Check URL query params for auto-verification when scanned via camera
+    const searchParams = new URLSearchParams(window.location.search);
+    const codeParam = searchParams.get('code');
+    if (codeParam) {
+      setScanResult(codeParam);
+      verifyTicket(codeParam);
+    }
+
     // Initialize Scanner
     const scanner = new Html5QrcodeScanner(
       "reader",
@@ -36,7 +44,16 @@ export default function ScannerPage() {
     };
   }, []);
 
-  const verifyTicket = async (code: string) => {
+  const verifyTicket = async (rawCode: string) => {
+    let code = rawCode.trim();
+    // Extract code from full HTTPS URL if scanned with web link
+    if (code.includes('code=')) {
+      try {
+        const match = code.match(/code=([^&]+)/);
+        if (match) code = match[1];
+      } catch (e) {}
+    }
+
     setVerifyStatus("loading");
     setAttendeeDetails(null);
     setMessage("");
@@ -76,7 +93,7 @@ export default function ScannerPage() {
       setMessage("Network error verifying ticket");
     }
 
-    // Auto-reset after 3 seconds
+    // Auto-reset after 4 seconds
     setTimeout(() => {
       setVerifyStatus("idle");
       setScanResult(null);
