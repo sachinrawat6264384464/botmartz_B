@@ -147,12 +147,6 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
 
             <div className="flex gap-3.5 mt-9 flex-wrap items-center">
               <RegisterButton event={activeEvent} />
-              <a
-                href="#agenda"
-                className="inline-flex items-center gap-2 bg-[rgba(255,255,255,0.06)] hover:bg-[rgba(255,255,255,0.1)] border border-[rgba(255,255,255,0.18)] text-white font-bold text-sm px-[26px] py-[15px] rounded-[9px] transition-colors"
-              >
-                Download Brochure ↓
-              </a>
             </div>
           </div>
 
@@ -205,23 +199,110 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
       <div id="agenda" className="max-w-[1120px] mx-auto pt-20 pb-10 px-6 sm:px-10">
 
         {/* Four Pillars */}
-        <div className="bg-white border border-[#E7ECF3] rounded-[18px] p-6 sm:p-8 mb-14 shadow-sm">
-          <div className="font-bold text-xs tracking-[0.12em] text-[#007BFF] uppercase mb-2">Four Pillars, One Lifecycle</div>
-          <div className="flex flex-wrap gap-2.5 my-4">
-            <span className="font-bold text-[13.5px] px-4 py-2 rounded-full border-2 border-[#0B1220] text-[#0B1220] bg-transparent">
-              Agents
-            </span>
-            <span className="font-bold text-[13.5px] px-4 py-2 rounded-full border-2 border-[#007BFF] text-white bg-[#007BFF] shadow-sm">
-              Enterprise AI
-            </span>
-            <span className="font-bold text-[13.5px] px-4 py-2 rounded-full border-2 border-[#0B1220] text-[#0B1220] bg-transparent">
-              AI-assisted development
-            </span>
-            <span className="font-bold text-[13.5px] px-4 py-2 rounded-full border-2 border-[#0B1220] text-[#0B1220] bg-transparent">
-              Responsible AI
-            </span>
+        <div className="bg-white border border-[#E7ECF3] rounded-[18px] p-6 sm:p-10 mb-14 shadow-sm">
+          <div className="font-bold text-xs tracking-[0.12em] text-[#007BFF] uppercase mb-1">Four Pillars, One Lifecycle</div>
+          <h3 className="font-extrabold text-2xl sm:text-3xl text-[#0B1220] mb-8">Continuous AI Engineering Cycle</h3>
+          
+          <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-2xl p-6 sm:p-10 flex flex-col items-center">
+            
+            {/* BIG SVG Circular Wheel Diagram */}
+            <div className="relative w-full max-w-[460px] sm:max-w-[520px] aspect-square mx-auto flex items-center justify-center my-2">
+              <svg viewBox="0 0 360 360" className="w-full h-full drop-shadow-lg select-none">
+                {/* Quadrant 1: Top Right - Agents */}
+                <path
+                  d="M 180 20 A 160 160 0 0 1 340 180 L 235 180 A 55 55 0 0 0 180 125 Z"
+                  fill="#00C6FF"
+                  className="transition-opacity hover:opacity-90 cursor-pointer"
+                />
+
+                {/* Quadrant 2: Bottom Right - Enterprise AI */}
+                <path
+                  d="M 340 180 A 160 160 0 0 1 180 340 L 180 235 A 55 55 0 0 0 235 180 Z"
+                  fill="#007BFF"
+                  className="transition-opacity hover:opacity-90 cursor-pointer"
+                />
+
+                {/* Quadrant 3: Bottom Left - AI-Assisted Dev */}
+                <path
+                  d="M 180 340 A 160 160 0 0 1 20 180 L 125 180 A 55 55 0 0 0 180 235 Z"
+                  fill="#0092D7"
+                  className="transition-opacity hover:opacity-90 cursor-pointer"
+                />
+
+                {/* Quadrant 4: Top Left - Responsible AI */}
+                <path
+                  d="M 20 180 A 160 160 0 0 1 180 20 L 180 125 A 55 55 0 0 0 125 180 Z"
+                  fill="#D97706"
+                  className="transition-opacity hover:opacity-90 cursor-pointer"
+                />
+
+                {/* Divider Gaps */}
+                <line x1="180" y1="20" x2="180" y2="125" stroke="#FFFFFF" strokeWidth="4" />
+                <line x1="235" y1="180" x2="340" y2="180" stroke="#FFFFFF" strokeWidth="4" />
+                <line x1="180" y1="235" x2="180" y2="340" stroke="#FFFFFF" strokeWidth="4" />
+                <line x1="20" y1="180" x2="125" y2="180" stroke="#FFFFFF" strokeWidth="4" />
+
+                {/* Quadrant Labels & Numbers */}
+                <text x="260" y="85" fill="#FFFFFF" fontWeight="900" fontSize="13" textAnchor="middle">01</text>
+                <text x="260" y="100" fill="#FFFFFF" fontWeight="800" fontSize="8.5" letterSpacing="0.5" textAnchor="middle">AGENTS</text>
+
+                <text x="260" y="248" fill="#FFFFFF" fontWeight="900" fontSize="13" textAnchor="middle">02</text>
+                <text x="260" y="263" fill="#FFFFFF" fontWeight="800" fontSize="8.5" letterSpacing="0.5" textAnchor="middle">ENTERPRISE</text>
+                <text x="260" y="275" fill="#FFFFFF" fontWeight="800" fontSize="8.5" letterSpacing="0.5" textAnchor="middle">AI</text>
+
+                <text x="100" y="248" fill="#FFFFFF" fontWeight="900" fontSize="13" textAnchor="middle">03</text>
+                <text x="100" y="263" fill="#FFFFFF" fontWeight="800" fontSize="8.5" letterSpacing="0.5" textAnchor="middle">AI-ASSISTED</text>
+                <text x="100" y="275" fill="#FFFFFF" fontWeight="800" fontSize="8.5" letterSpacing="0.5" textAnchor="middle">DEV</text>
+
+                <text x="100" y="85" fill="#FFFFFF" fontWeight="900" fontSize="13" textAnchor="middle">04</text>
+                <text x="100" y="100" fill="#FFFFFF" fontWeight="800" fontSize="8.5" letterSpacing="0.5" textAnchor="middle">RESPONSIBLE</text>
+                <text x="100" y="112" fill="#FFFFFF" fontWeight="800" fontSize="8.5" letterSpacing="0.5" textAnchor="middle">AI</text>
+
+                {/* Center Hub Circle */}
+                <circle cx="180" cy="180" r="50" fill="#FFFFFF" stroke="#E2E8F0" strokeWidth="3.5" className="drop-shadow-sm" />
+                <text x="180" y="173" textAnchor="middle" fill="#007BFF" fontWeight="800" fontSize="9" letterSpacing="0.5">FOUR PILLARS</text>
+                <text x="180" y="189" textAnchor="middle" fill="#0B1220" fontWeight="900" fontSize="10.5">ONE LIFECYCLE</text>
+              </svg>
+            </div>
+
+            {/* Pillar Details 4-Card Grid Below */}
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+              <div className="bg-white border border-[#E2E8F0] p-4.5 rounded-xl shadow-2xs hover:border-[#00C6FF] transition-all">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <div className="w-6 h-6 rounded-md bg-[#00C6FF] text-white font-extrabold text-xs flex items-center justify-center">1</div>
+                  <h4 className="font-extrabold text-sm text-[#0B1220]">Agents</h4>
+                </div>
+                <p className="font-medium text-xs text-[#5B6B85] leading-relaxed">Autonomous reasoners, tool orchestration &amp; multi-agent systems.</p>
+              </div>
+
+              <div className="bg-white border border-[#E2E8F0] p-4.5 rounded-xl shadow-2xs hover:border-[#007BFF] transition-all">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <div className="w-6 h-6 rounded-md bg-[#007BFF] text-white font-extrabold text-xs flex items-center justify-center">2</div>
+                  <h4 className="font-extrabold text-sm text-[#0B1220]">Enterprise AI</h4>
+                </div>
+                <p className="font-medium text-xs text-[#5B6B85] leading-relaxed">Production scale RAG, security, infrastructure &amp; latency optimizations.</p>
+              </div>
+
+              <div className="bg-white border border-[#E2E8F0] p-4.5 rounded-xl shadow-2xs hover:border-[#0092D7] transition-all">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <div className="w-6 h-6 rounded-md bg-[#0092D7] text-white font-extrabold text-xs flex items-center justify-center">3</div>
+                  <h4 className="font-extrabold text-sm text-[#0B1220]">AI-Assisted Dev</h4>
+                </div>
+                <p className="font-medium text-xs text-[#5B6B85] leading-relaxed">Developer velocity tools, automated coding agents &amp; IDE workflows.</p>
+              </div>
+
+              <div className="bg-white border border-[#E2E8F0] p-4.5 rounded-xl shadow-2xs hover:border-[#D97706] transition-all">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <div className="w-6 h-6 rounded-md bg-[#D97706] text-white font-extrabold text-xs flex items-center justify-center">4</div>
+                  <h4 className="font-extrabold text-sm text-[#0B1220]">Responsible AI</h4>
+                </div>
+                <p className="font-medium text-xs text-[#5B6B85] leading-relaxed">Evals, guardrails, alignment, compliance &amp; safety frameworks.</p>
+              </div>
+            </div>
+
           </div>
-          <p className="font-medium text-[14px] leading-[1.6] text-[#5B6B85] mt-3">
+
+          <p className="font-medium text-[14px] leading-[1.6] text-[#5B6B85] mt-6 text-center">
             These aren&apos;t four separate tracks. They surface at the moments in the lifecycle where they matter — <b className="text-[#0B1220]">and the golden thread below runs through all of them.</b>
           </p>
         </div>
