@@ -176,27 +176,27 @@ export default function AdminHeader() {
   }, {});
 
   return (
-    <header className="font-sans bg-admin-card border-b border-admin-border px-4 sm:px-8 py-3.5 pl-14 lg:pl-8">
-      <div className="flex items-center justify-between gap-3">
+    <header className="font-sans bg-admin-card border-b border-admin-border px-3 sm:px-8 py-2.5 sm:py-3.5 pl-14 lg:pl-8 min-w-0 w-full overflow-hidden">
+      <div className="flex items-center justify-between gap-2 sm:gap-3 min-w-0">
         {/* Search Bar */}
-        <div className="flex-1 max-w-2xl relative">
+        <div className="flex-1 min-w-0 max-w-2xl relative">
           <div className="relative">
-            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-admin-text-muted" />
+            <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-admin-text-muted shrink-0" />
             <input
               ref={inputRef}
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => { if (results.length > 0) setOpen(true); }}
-              placeholder="Search messages, blogs, subscribers..."
-              className="w-full bg-admin-bg border border-admin-border rounded-xl pl-11 pr-10 py-2.5 text-sm text-admin-text placeholder:text-admin-text-muted focus:outline-none focus:border-admin-accent focus:ring-1 focus:ring-admin-accent transition-all"
+              placeholder="Search..."
+              className="w-full bg-admin-bg border border-admin-border rounded-xl pl-9 sm:pl-11 pr-8 sm:pr-10 py-1.5 sm:py-2.5 text-xs sm:text-sm text-admin-text placeholder:text-admin-text-muted focus:outline-none focus:border-admin-accent focus:ring-1 focus:ring-admin-accent transition-all truncate"
             />
             {query && (
               <button
                 onClick={clearSearch}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
               >
-                <X size={16} />
+                <X size={15} />
               </button>
             )}
           </div>
@@ -258,20 +258,20 @@ export default function AdminHeader() {
         </div>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-3 ml-6">
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           <button
             onClick={() => setTheme(currentTheme === 'dark' ? 'light' : 'dark')}
-            className="p-2 text-admin-text-muted hover:text-admin-text hover:bg-admin-bg rounded-xl transition-colors"
+            className="p-1.5 sm:p-2 text-admin-text-muted hover:text-admin-text hover:bg-admin-bg rounded-xl transition-colors shrink-0"
             title="Toggle theme"
           >
-            {currentTheme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            {currentTheme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
           </button>
 
-          <div className="w-px h-8 bg-admin-border" />
+          <div className="w-px h-6 sm:h-8 bg-admin-border shrink-0" />
 
           {/* Profile */}
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-linear-to-br from-admin-accent to-cyan-500 rounded-full flex items-center justify-center text-white">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 bg-linear-to-br from-admin-accent to-cyan-500 rounded-full flex items-center justify-center text-white shrink-0">
               <span className="text-xs font-semibold">{initials || 'AD'}</span>
             </div>
             <div className="hidden sm:block">

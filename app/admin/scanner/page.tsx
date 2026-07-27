@@ -209,7 +209,7 @@ export default function ScannerPage() {
   });
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto space-y-6">
+    <div className="p-3 sm:p-6 lg:p-8 max-w-6xl mx-auto space-y-6 min-w-0 max-w-full overflow-x-hidden">
       
       {/* HEADER BAR */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-admin-border pb-5">
@@ -291,31 +291,31 @@ export default function ScannerPage() {
             </span>
           </div>
 
-          <div className="bg-[#050B14] border border-admin-border rounded-xl overflow-hidden p-3 min-h-[260px] flex flex-col justify-center items-center">
-            <div id="reader" className="w-full text-white [&>div]:!border-none [&_button]:!bg-[#00B8F0] [&_button]:!text-white [&_button]:!rounded-lg [&_button]:!px-4 [&_button]:!py-2 [&_a]:hidden [&_select]:!bg-slate-800 [&_select]:!text-white [&_select]:!p-2 [&_select]:!rounded-lg [&_select]:!border-none" />
+          <div className="bg-[#050B14] border border-admin-border rounded-xl overflow-hidden p-2 sm:p-3 min-h-[260px] flex flex-col justify-center items-center w-full max-w-full">
+            <div id="reader" className="w-full max-w-full text-white [&>div]:!border-none [&_button]:!bg-[#00B8F0] [&_button]:!text-white [&_button]:!rounded-lg [&_button]:!px-4 [&_button]:!py-2 [&_button]:!w-full [&_button]:!max-w-full [&_button]:!mt-2 [&_a]:hidden [&_select]:!bg-slate-800 [&_select]:!text-white [&_select]:!p-2 [&_select]:!rounded-lg [&_select]:!border-none [&_select]:!w-full [&_select]:!max-w-full [&_select]:!text-xs [&_video]:!max-w-full [&_video]:!w-full [&_video]:!rounded-lg" />
           </div>
         </div>
 
         {/* Manual Code Input & Scan Status Feedback */}
-        <div className="bg-admin-card border border-admin-border rounded-2xl p-5 shadow-sm flex flex-col justify-between space-y-4">
-          <div className="space-y-3">
+        <div className="bg-admin-card border border-admin-border rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col justify-between space-y-4 min-w-0 max-w-full overflow-hidden">
+          <div className="space-y-3 min-w-0">
             <h2 className="text-sm font-semibold text-admin-text">Manual Code Entry</h2>
             <p className="text-xs text-admin-text-muted">
               Type or paste check-in code directly if QR scanner is unavailable.
             </p>
 
-            <form onSubmit={handleManualSubmit} className="flex gap-2">
+            <form onSubmit={handleManualSubmit} className="flex flex-col sm:flex-row gap-2.5 w-full min-w-0">
               <input
                 type="text"
                 value={manualCodeInput}
                 onChange={(e) => setManualCodeInput(e.target.value)}
                 placeholder="e.g. REG-3EDOM4M79"
-                className="flex-1 bg-admin-bg border border-admin-border rounded-xl px-4 py-2.5 text-sm text-admin-text placeholder:text-admin-text-muted focus:outline-none focus:border-[#00B8F0] font-mono uppercase tracking-wider"
+                className="w-full sm:flex-1 bg-admin-bg border border-admin-border rounded-xl px-4 py-2.5 text-sm text-admin-text placeholder:text-admin-text-muted focus:outline-none focus:border-[#00B8F0] font-mono uppercase tracking-wider min-w-0"
               />
               <button
                 type="submit"
                 disabled={!manualCodeInput.trim() || verifyStatus === "loading"}
-                className="px-5 py-2.5 rounded-xl bg-[#00B8F0] text-white hover:bg-[#0096C7] font-semibold text-xs transition-colors disabled:opacity-50 shrink-0"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#00B8F0] text-white hover:bg-[#0096C7] font-semibold text-xs transition-colors disabled:opacity-50 shrink-0"
               >
                 {verifyStatus === "loading" ? "Verifying..." : "Mark Check-In"}
               </button>
