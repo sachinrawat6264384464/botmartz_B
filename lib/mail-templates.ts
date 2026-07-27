@@ -130,7 +130,7 @@ export function buildPaymentSuccessEmail(name: string, eventTitle: string, amoun
 export function buildEventTicketEmail(name: string, eventTitle: string, date: string, location: string, checkInCodes: string[]): string {
   
   const ticketBlocks = checkInCodes.map((code, idx) => {
-    const qrImageSrc = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${code}`;
+    const qrImageSrc = `https://api.qrserver.com/v1/create-qr-code/?size=350x350&margin=4&ecc=M&data=${encodeURIComponent(code)}`;
     const guestLabel = checkInCodes.length > 1 ? (idx === 0 ? '' : ` (GUEST ${idx})`) : '';
     
     return `
@@ -146,8 +146,8 @@ export function buildEventTicketEmail(name: string, eventTitle: string, date: st
                 <tr>
                   <td style="padding:24px 24px 8px 24px;" align="center">
                     <!-- QR Code wrapper -->
-                    <div style="background:#ffffff;padding:12px;border-radius:12px;display:inline-block;">
-                      <img src="${qrImageSrc}" alt="Scan check-in" width="130" height="130" style="display:block;" />
+                    <div style="background:#ffffff;padding:16px;border-radius:14px;display:inline-block;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
+                      <img src="${qrImageSrc}" alt="Scan check-in" width="160" height="160" style="display:block;border:0;outline:none;" />
                     </div>
                     <p style="margin-top:12px;margin-bottom:0;font-size:11px;color:#64748B;font-family:monospace;letter-spacing:0.1em;">CHECK-IN CODE: ${code}</p>
                   </td>

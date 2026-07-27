@@ -23,7 +23,7 @@ export default function SchemaMarkup({ type, data, settings }: SchemaMarkupProps
       url: websiteUrl,
       logo: logoUrl,
       sameAs: [
-        'https://www.linkedin.com/in/soham-sharma/',
+        'https://www.linkedin.com/company/botmartz-ai-solutions',
         'https://www.instagram.com/botmartzai_solutions/',
       ],
       contactPoint: {

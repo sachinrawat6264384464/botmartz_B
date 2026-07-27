@@ -80,14 +80,31 @@ export async function POST(req: NextRequest) {
     }
 
     // 3. Call Razorpay API to create an Order
-    const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || process.env.RAZORPAY_KEY_ID;
-    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+    let keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || process.env.RAZORPAY_KEY_ID;
+    let keySecret = process.env.RAZORPAY_KEY_SECRET;
 
-    if (!keyId || !keySecret) {
-      return NextResponse.json({ error: 'Razorpay credentials are not configured in system environment.' }, { status: 500 });
+    // Check Firestore global settings for live/test key overrides
+    try {
+      const settingsSnap = await adminDb.collection('settings').doc('global').get();
+      if (settingsSnap.exists) {
+        const integrations = settingsSnap.data()?.integrations || {};
+        if (integrations.razorpayKeyId) keyId = integrations.razorpayKeyId;
+        if (integrations.razorpayKeySecret) keySecret = integrations.razorpayKeySecret;
+        else if (integrations.razorpayKey && integrations.razorpayKey.includes(':')) {
+          const parts = integrations.razorpayKey.split(':');
+          keyId = parts[0].trim();
+          keySecret = parts[1].trim();
+        }
+      }
+    } catch (e) {
+      console.warn('[create-order] Could not fetch Razorpay keys from Firestore settings:', e);
     }
 
-    const authString = Buffer.from(`${keyId}:${keySecret}`).toString('base64');
+    if (!keyId || !keySecret) {
+      return NextResponse.json({ error: 'Razorpay credentials are not configured in system environment or admin settings.' }, { status: 500 });
+    }
+
+    const authString = Buffer.from(`${keyId.trim()}:${keySecret.trim()}`).toString('base64');
     const expectedAmountPaisa = Math.round(cleanAmount * 100);
 
     const razorpayResponse = await fetch('https://api.razorpay.com/v1/orders', {
@@ -109,10 +126,13 @@ export async function POST(req: NextRequest) {
 
     if (!razorpayResponse.ok) {
       const errorText = await razorpayResponse.text();
-      console.error('[Razorpay Order Creation Error]', errorText);
+      console.error(`[Razorpay Order Creation Error] (KeyId used: ${keyId ? keyId.substring(0, 10) + '...' : 'none'})`, errorText);
       try {
         const parsed = JSON.parse(errorText);
-        return NextResponse.json({ error: parsed.error?.description || parsed.error?.code || 'Failed to create payment order with gateway.' }, { status: 500 });
+        return NextResponse.json({ 
+          error: parsed.error?.description || parsed.error?.code || 'Failed to create payment order with gateway.',
+          details: 'Please verify Razorpay Key ID & Key Secret in your Admin Settings > Integrations or .env file.'
+        }, { status: 500 });
       } catch {
         return NextResponse.json({ error: `Failed to create payment order with gateway: ${errorText}` }, { status: 500 });
       }

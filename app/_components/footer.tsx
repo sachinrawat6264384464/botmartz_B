@@ -60,7 +60,7 @@ const FOOTER_COLS = [
 ];
 
 const SOCIALS = [
-  { label: "LinkedIn", icon: LinkedInIcon, href: "https://www.linkedin.com/in/soham-sharma/" },
+  { label: "LinkedIn", icon: LinkedInIcon, href: "https://www.linkedin.com/company/botmartz-ai-solutions" },
   { label: "X", icon: XIcon, href: "https://x.com/botmartz" },
   { label: "YouTube", icon: YouTubeIcon, href: "https://youtube.com/@botmartz" },
   { label: "GitHub", icon: GitHubIcon, href: "https://github.com/botmartz" },
@@ -135,6 +135,7 @@ export function Footer({ settings }: { settings?: any }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
+                  suppressHydrationWarning
                   className="w-9 h-9 rounded-lg border border-white/15 flex items-center justify-center text-[#8A9EB0] hover:text-white hover:border-white/40 hover:bg-white/5 transition-all duration-200"
                 >
                   <Icon />

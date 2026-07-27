@@ -9,7 +9,7 @@ export default function StructuredData({ data }: { data: any }) {
     "logo": data?.branding?.primaryLogo || "https://www.botmartz.com/BotmartznewBot.png",
     "description": seoData.geoEntityDescription || seoData.aeoBrandPersona || "Botmartz helps organizations design, build, and deploy Enterprise RAG systems and AI Agents.",
     "sameAs": seoData.geoCitations ? seoData.geoCitations.split('\n').map((url: string) => url.trim()).filter(Boolean) : [
-      "https://www.linkedin.com/in/soham-sharma/"
+      "https://www.linkedin.com/company/botmartz-ai-solutions"
     ],
     "knowsAbout": seoData.aeoKnowledgeContext ? seoData.aeoKnowledgeContext.split('\n').map((k: string) => k.trim()).filter(Boolean) : [
       "AI Engineering",

@@ -21,7 +21,7 @@ const DEFAULT_SETTINGS = {
   general: {
     companyName: "Botmartz AI Solutions",
     email: "hello@botmartz.com",
-    phone: "+91 (731) 498-8921",
+    phone: "+91 94073 28842",
     websiteUrl: "https://botmartz.com",
     timezone: "GMT+05:30 (Asia/Kolkata)",
     language: "English (US)",
@@ -724,12 +724,24 @@ function IntegrationsSettings({ data, onChange, showToast }: { data: any; onChan
             placeholder="sk-ant-..."
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full min-w-0">
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-admin-text-muted mb-1.5 truncate">Razorpay Key ID</label>
+              <input
+                type="text"
+                value={data.razorpayKeyId || ""}
+                onChange={(e) => onChange('razorpayKeyId', e.target.value)}
+                placeholder="rzp_live_... or rzp_test_..."
+                className="w-full bg-admin-bg border border-admin-border rounded-xl px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent transition-colors font-mono font-medium"
+              />
+            </div>
             <PasswordInput 
-              label="Razorpay Key ID / Secret"
-              value={data.razorpayKey || ""}
-              onChange={(val) => onChange('razorpayKey', val)}
-              placeholder="rzp_live_..."
+              label="Razorpay Key Secret"
+              value={data.razorpayKeySecret || ""}
+              onChange={(val) => onChange('razorpayKeySecret', val)}
+              placeholder="Your Razorpay Secret Key"
             />
+          </div>
+          <div className="w-full min-w-0">
             <PasswordInput 
               label="Stripe Secret Key"
               value={data.stripeKey || ""}

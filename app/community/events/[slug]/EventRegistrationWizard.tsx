@@ -145,7 +145,7 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
 
   const downloadQR = async () => {
     try {
-      const response = await fetch(`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${successCode}`);
+      const response = await fetch(`https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=4&ecc=M&data=${encodeURIComponent(successCode)}`);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -674,11 +674,11 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                 </div>
 
                 <div className="flex justify-center py-2">
-                  <div className="bg-white p-2 rounded-lg">
+                  <div className="bg-white p-3 rounded-xl shadow-md">
                     <img 
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${successCode}`} 
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=350x350&margin=4&ecc=M&data=${encodeURIComponent(successCode)}`} 
                       alt="Pass Check-in QR" 
-                      className="w-[110px] h-[110px] block" 
+                      className="w-[120px] h-[120px] block" 
                     />
                   </div>
                 </div>
