@@ -5,7 +5,7 @@ import { Html5QrcodeScanner } from "html5-qrcode";
 import { 
   AlertCircle, CheckCircle2, ScanFace, Loader2, Search, 
   RefreshCw, UserCheck, Users, Clock, ShieldCheck, Check, RotateCcw,
-  Sparkles
+  Sparkles, Download, Trash2, AlertTriangle, X
 } from "lucide-react";
 
 interface Attendee {
@@ -35,6 +35,14 @@ export default function ScannerPage() {
   const [filterStatus, setFilterStatus] = useState<"all" | "checked_in" | "pending">("all");
   const [manualCodeInput, setManualCodeInput] = useState<string>("");
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
+  const [deletingAll, setDeletingAll] = useState<boolean>(false);
+
+  // Custom Modal State
+  const [deleteModal, setDeleteModal] = useState<{
+    open: boolean;
+    type: "single" | "all";
+    attendee?: Attendee;
+  }>({ open: false, type: "single" });
 
   // Fetch live attendees list
   const fetchAttendees = useCallback(async () => {
@@ -188,6 +196,86 @@ export default function ScannerPage() {
     }
   };
 
+  // Open custom modal for single delete
+  const openSingleDeleteModal = (attendee: Attendee) => {
+    setDeleteModal({ open: true, type: "single", attendee });
+  };
+
+  // Open custom modal for delete all
+  const openDeleteAllModal = () => {
+    if (attendees.length === 0) return;
+    setDeleteModal({ open: true, type: "all" });
+  };
+
+  // Execute deletion when confirmed inside modal
+  const confirmDeleteAction = async () => {
+    if (deleteModal.type === "all") {
+      setDeletingAll(true);
+      try {
+        const res = await fetch("/api/scanner/delete-attendee", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ deleteAll: true, admin: true })
+        });
+        if (res.ok) {
+          fetchAttendees();
+        }
+      } catch (e) {
+        console.error("Delete all error:", e);
+      } finally {
+        setDeletingAll(false);
+        setDeleteModal({ open: false, type: "single" });
+      }
+    } else if (deleteModal.type === "single" && deleteModal.attendee) {
+      const id = deleteModal.attendee.id;
+      setActionLoadingId(id);
+      try {
+        const res = await fetch("/api/scanner/delete-attendee", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id, admin: true })
+        });
+        if (res.ok) {
+          fetchAttendees();
+        }
+      } catch (e) {
+        console.error("Delete single error:", e);
+      } finally {
+        setActionLoadingId(null);
+        setDeleteModal({ open: false, type: "single" });
+      }
+    }
+  };
+
+  // Export Attendees to CSV
+  const exportToCSV = () => {
+    if (filteredAttendees.length === 0) return;
+
+    const headers = ["Name", "Email", "Phone", "CheckInCode", "PassType", "Quantity", "PaymentStatus", "AttendanceStatus", "CheckInTime", "RegisteredDate"];
+    const rows = filteredAttendees.map(a => [
+      `"${a.name.replace(/"/g, '""')}"`,
+      `"${a.email.replace(/"/g, '""')}"`,
+      `"${(a.phone || '').replace(/"/g, '""')}"`,
+      `"${a.checkInCode || 'N/A'}"`,
+      `"${a.attendeeType}"`,
+      a.quantity,
+      `"${a.paymentStatus}"`,
+      a.attended ? "Checked In" : "Pending Entry",
+      `"${a.checkInTime || ''}"`,
+      `"${a.createdAt ? new Date(a.createdAt).toISOString() : ''}"`
+    ]);
+
+    const csvString = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `event-attendance-report-${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   // Stats
   const totalCount = attendees.length;
   const checkedInCount = attendees.filter(a => a.attended).length;
@@ -212,9 +300,9 @@ export default function ScannerPage() {
     <div className="p-3 sm:p-6 lg:p-8 max-w-6xl mx-auto space-y-6 min-w-0 max-w-full overflow-x-hidden">
       
       {/* HEADER BAR */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-admin-border pb-5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-admin-border pb-5">
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl bg-linear-to-br from-[#00B8F0] to-[#0066FF] flex items-center justify-center text-white shadow-lg shadow-[#00B8F0]/20">
+          <div className="w-11 h-11 rounded-xl bg-linear-to-br from-[#00B8F0] to-[#0066FF] flex items-center justify-center text-white shadow-lg shadow-[#00B8F0]/20 shrink-0">
             <ScanFace size={22} />
           </div>
           <div>
@@ -227,14 +315,37 @@ export default function ScannerPage() {
           </div>
         </div>
 
-        <button
-          onClick={fetchAttendees}
-          disabled={loadingList}
-          className="self-start sm:self-auto flex items-center gap-2 px-3.5 py-2 rounded-xl bg-admin-card border border-admin-border text-admin-text-muted hover:text-admin-text hover:bg-admin-bg transition-colors text-xs font-semibold"
-        >
-          <RefreshCw size={14} className={loadingList ? "animate-spin text-[#00B8F0]" : ""} />
-          <span>Refresh List</span>
-        </button>
+        {/* Global Toolbar Buttons */}
+        <div className="flex flex-wrap items-center gap-2 self-start md:self-auto">
+          <button
+            onClick={exportToCSV}
+            disabled={filteredAttendees.length === 0}
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500 hover:text-white transition-all text-xs font-semibold disabled:opacity-40 shadow-xs"
+            title="Export filtered records to CSV"
+          >
+            <Download size={14} />
+            <span>Download CSV</span>
+          </button>
+
+          <button
+            onClick={fetchAttendees}
+            disabled={loadingList}
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-admin-card border border-admin-border text-admin-text-muted hover:text-admin-text hover:bg-admin-bg transition-colors text-xs font-semibold"
+          >
+            <RefreshCw size={14} className={loadingList ? "animate-spin text-[#00B8F0]" : ""} />
+            <span>Refresh</span>
+          </button>
+
+          <button
+            onClick={openDeleteAllModal}
+            disabled={deletingAll || attendees.length === 0}
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-400 hover:bg-rose-500 hover:text-white transition-all text-xs font-semibold disabled:opacity-40 shadow-xs"
+            title="Delete ALL registration records"
+          >
+            {deletingAll ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
+            <span>Delete All</span>
+          </button>
+        </div>
       </div>
 
       {/* STATS OVERVIEW CARDS */}
@@ -502,27 +613,38 @@ export default function ScannerPage() {
 
                     {/* Actions */}
                     <td className="px-4 py-3 text-right">
-                      <button
-                        onClick={() => handleToggleCheckin(attendee)}
-                        disabled={actionLoadingId === attendee.id}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all inline-flex items-center gap-1.5 ${
-                          attendee.attended
-                            ? "bg-admin-bg border border-admin-border text-admin-text-muted hover:text-rose-400 hover:border-rose-500/40"
-                            : "bg-emerald-500 text-white hover:bg-emerald-600 shadow-sm"
-                        }`}
-                      >
-                        {actionLoadingId === attendee.id ? (
-                          <Loader2 size={12} className="animate-spin" />
-                        ) : attendee.attended ? (
-                          <>
-                            <RotateCcw size={12} /> Undo
-                          </>
-                        ) : (
-                          <>
-                            <UserCheck size={12} /> Mark Check-In
-                          </>
-                        )}
-                      </button>
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => handleToggleCheckin(attendee)}
+                          disabled={actionLoadingId === attendee.id}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all inline-flex items-center gap-1.5 ${
+                            attendee.attended
+                              ? "bg-admin-bg border border-admin-border text-admin-text-muted hover:text-rose-400 hover:border-rose-500/40"
+                              : "bg-emerald-500 text-white hover:bg-emerald-600 shadow-sm"
+                          }`}
+                        >
+                          {actionLoadingId === attendee.id ? (
+                            <Loader2 size={12} className="animate-spin" />
+                          ) : attendee.attended ? (
+                            <>
+                              <RotateCcw size={12} /> Undo
+                            </>
+                          ) : (
+                            <>
+                              <UserCheck size={12} /> Mark Check-In
+                            </>
+                          )}
+                        </button>
+
+                        <button
+                          onClick={() => openSingleDeleteModal(attendee)}
+                          disabled={actionLoadingId === attendee.id}
+                          className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 hover:bg-rose-500 hover:text-white transition-all border border-rose-500/20"
+                          title="Delete attendee registration"
+                        >
+                          <Trash2 size={13} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -531,6 +653,69 @@ export default function ScannerPage() {
           </table>
         </div>
       </div>
+
+      {/* IN-PAGE CUSTOM DELETE CONFIRMATION MODAL */}
+      {deleteModal.open && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-150">
+          <div className="bg-admin-card border border-admin-border rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4 text-admin-text relative">
+            <button
+              onClick={() => setDeleteModal({ open: false, type: "single" })}
+              className="absolute top-4 right-4 text-admin-text-muted hover:text-admin-text p-1 rounded-lg hover:bg-admin-bg transition-colors"
+            >
+              <X size={16} />
+            </button>
+
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center shrink-0 border border-rose-500/20">
+                <AlertTriangle size={20} />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-admin-text">
+                  {deleteModal.type === "all" ? "Delete All Registrations?" : "Delete Registration Record?"}
+                </h3>
+                <p className="text-xs text-admin-text-muted">This action cannot be undone.</p>
+              </div>
+            </div>
+
+            <div className="p-3.5 bg-admin-bg border border-admin-border rounded-xl text-xs text-admin-text-muted leading-relaxed">
+              {deleteModal.type === "all" ? (
+                <>
+                  Are you sure you want to delete <strong className="text-rose-500 font-bold">{attendees.length}</strong> registration records from the database?
+                </>
+              ) : (
+                <>
+                  Are you sure you want to delete registration for <strong className="text-admin-text font-bold">{deleteModal.attendee?.name}</strong> (<span className="font-mono text-[#00B8F0]">{deleteModal.attendee?.checkInCode || deleteModal.attendee?.email}</span>)?
+                </>
+              )}
+            </div>
+
+            <div className="flex items-center justify-end gap-2.5 pt-2">
+              <button
+                onClick={() => setDeleteModal({ open: false, type: "single" })}
+                className="px-4 py-2 rounded-xl bg-admin-bg border border-admin-border text-admin-text hover:bg-admin-card text-xs font-semibold transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDeleteAction}
+                disabled={deletingAll || !!actionLoadingId}
+                style={{ backgroundColor: '#EF4444', color: '#FFFFFF' }}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all disabled:opacity-50 shadow-sm border border-red-600"
+              >
+                {(deletingAll || !!actionLoadingId) ? (
+                  <>
+                    <Loader2 size={13} className="animate-spin text-white" /> Deleting...
+                  </>
+                ) : (
+                  <>
+                    <Trash2 size={13} className="text-white" /> Confirm Delete
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
