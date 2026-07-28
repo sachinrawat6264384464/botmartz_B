@@ -43,7 +43,7 @@ export default function EventCountdownBanner() {
     return () => clearInterval(interval);
   }, []);
 
-  if (!mounted || pathname?.startsWith("/admin")) {
+  if (!mounted || pathname?.startsWith("/admin") || pathname?.includes("/feedback")) {
     return null;
   }
 

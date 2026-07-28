@@ -27,7 +27,7 @@ export default function ClientLayout({
     setMounted(true);
   }, []);
 
-  const isAdminRoute = pathname?.startsWith('/admin') || false;
+  const isStandaloneRoute = pathname?.startsWith('/admin') || pathname?.includes('/feedback') || false;
 
   return (
     <SettingsContext.Provider value={settings || {}}>
@@ -42,12 +42,12 @@ export default function ClientLayout({
             >
               Skip to main content
             </a>
-            {!isAdminRoute && navbar}
+            {!isStandaloneRoute && navbar}
             <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none" suppressHydrationWarning>
               {children}
             </main>
-            {!isAdminRoute && <Footer settings={settings} />}
-            {!isAdminRoute && <AccessibilityToolbox />}
+            {!isStandaloneRoute && <Footer settings={settings} />}
+            {!isStandaloneRoute && <AccessibilityToolbox />}
           </div>
         </AccessibilityProvider>
       </ThemeProvider>

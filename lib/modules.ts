@@ -11,6 +11,7 @@ export type ModuleId =
   | 'case-studies'
   | 'labs'
   | 'events'
+  | 'feedback'
   | 'jobs'
   | 'partnerships'
   | 'ai-agents'
@@ -37,6 +38,7 @@ export const MODULES: AppModule[] = [
   { id: 'crm',       label: 'CRM',       href: '/admin/crm',       icon: Users },
   { id: 'projects',  label: 'Projects',  href: '/admin/projects',  icon: FolderKanban },
   { id: 'events',    label: 'Events',    href: '/admin/events',    icon: CalendarDays },
+  { id: 'feedback',  label: 'Event Feedbacks', href: '/admin/feedback', icon: MessageSquare },
   { id: 'coupons',   label: 'Coupons',   href: '/admin/coupons',   icon: CreditCard },
   { id: 'payments',  label: 'Payments',  href: '/admin/payments',  icon: CreditCard },
   { id: 'jobs',      label: 'Careers / Jobs', href: '/admin/jobs', icon: Users, badge: true },
@@ -59,6 +61,7 @@ export const ROUTE_MODULE_MAP: Partial<Record<string, ModuleId>> = {
   '/admin/crm':                 'crm',
   '/admin/projects':            'projects',
   '/admin/events':              'events',
+  '/admin/feedback':            'feedback',
   '/admin/coupons':             'coupons',
   '/admin/payments':            'payments',
   '/admin/jobs':                'jobs',
