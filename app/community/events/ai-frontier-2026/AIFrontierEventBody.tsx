@@ -21,7 +21,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
     id: event?.id || "ai-frontier-2026",
     title: event?.title || "AI Frontier 2026 — The Future of AI Engineering",
     slug: event?.slug || "ai-frontier-2026",
-    entryFee: (event?.entryFee !== undefined && event?.entryFee !== null) ? Number(event.entryFee) : 399,
+    entryFee: (event?.entryFee !== undefined && event?.entryFee !== null) ? Number(event.entryFee) : 449,
     date: event?.date || "May 24–25, 2026",
     location: event?.location || "The Leela Palace, Bangalore"
   };

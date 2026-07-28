@@ -64,7 +64,10 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
     phone: "",
     company: "",
     role: "",
-    apiInfo: "",
+    collegeName: "",
+    degree: "",
+    companyName: "",
+    designation: "",
     attendeeType: "student",
     quantity: 1
   });
@@ -92,7 +95,10 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
   const isEarlyBird = new Date() <= new Date("2026-07-30T23:59:59Z");
   
   const calculateFee = () => {
-    let basePrice = formData.attendeeType === "student" ? 399 : 699;
+    let basePrice = 449;
+    if (formData.attendeeType === "student") basePrice = 449;
+    else if (formData.attendeeType === "professional") basePrice = 699;
+    else if (formData.attendeeType === "testing") basePrice = 2;
     
     if (appliedCoupon) {
       if (appliedCoupon.discountType === 'percentage') {
@@ -100,8 +106,6 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
       } else if (appliedCoupon.discountType === 'fixed') {
         basePrice = Math.max(0, basePrice - appliedCoupon.discountValue);
       }
-    } else if (isEarlyBird) {
-      basePrice = Math.round(basePrice * 0.85);
     }
 
     let discount = 0;
@@ -324,17 +328,21 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
 
     try {
       const newReg = {
-        eventId: event.id,
-        eventTitle: event.title,
-        eventSlug: event.slug,
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        company: formData.company,
-        role: formData.role,
-        apiInfo: formData.apiInfo,
-        attendeeType: formData.attendeeType,
-        quantity: formData.quantity,
+        eventId: event.id || "",
+        eventTitle: event.title || "",
+        eventSlug: event.slug || "",
+        name: formData.name || "",
+        email: formData.email || "",
+        phone: formData.phone || "",
+        company: formData.company || "",
+        role: formData.role || "",
+        collegeName: formData.collegeName || "",
+        degree: formData.degree || "",
+        companyName: formData.companyName || "",
+        designation: formData.designation || "",
+        apiInfo: formData.apiInfo || "",
+        attendeeType: formData.attendeeType || "student",
+        quantity: formData.quantity || 1,
         amountPaid: entryFee,
         utr: "Razorpay Checkout",
         paymentStatus: entryFee === 0 ? "paid" : "pending",
@@ -397,14 +405,14 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
             <form onSubmit={handleStep1Submit} className="space-y-4">
               <div>
                 <div className="flex items-center gap-3">
-                  <h3 className="text-xl font-bold font-space-grotesk tracking-tight">Register for Event</h3>
+                  <h3 className="text-xl sm:text-2xl font-bold font-space-grotesk tracking-tight text-white drop-shadow-sm">Register for Event</h3>
                   {isEarlyBird && (
-                    <span className="bg-green-500/20 text-green-400 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-green-500/30">
+                    <span className="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-emerald-500/30">
                       Early Bird -15%
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-[#8A9EB0] mt-1">{event.title}</p>
+                <p className="text-xs sm:text-sm text-slate-300 mt-1 font-medium">{event.title}</p>
               </div>
 
               {error && (
@@ -415,56 +423,57 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
 
               <div className="space-y-3.5">
                 <div>
-                  <label className="block text-xs font-semibold text-[#8A9EB0] uppercase tracking-wider mb-1">Full Name *</label>
+                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Full Name *</label>
                   <input
                     type="text"
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
                     placeholder="e.g. Rahul Sharma"
-                    className="w-full bg-[#050C18] border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#00B8F0] transition-colors"
+                    className="w-full bg-[#050C18] border border-white/40 hover:border-white/70 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all placeholder:text-slate-400"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-[#8A9EB0] uppercase tracking-wider mb-1">Email *</label>
+                    <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Email *</label>
                     <input
                       type="email"
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
                       placeholder="e.g. rahul@domain.com"
-                      className="w-full bg-[#050C18] border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#00B8F0] transition-colors"
+                      className="w-full bg-[#050C18] border border-white/40 hover:border-white/70 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all placeholder:text-slate-400"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-[#8A9EB0] uppercase tracking-wider mb-1">Phone Number *</label>
+                    <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Phone Number *</label>
                     <input
                       type="tel"
                       required
                       value={formData.phone}
                       onChange={(e) => setFormData({...formData, phone: e.target.value})}
                       placeholder="e.g. +91 98765 43210"
-                      className="w-full bg-[#050C18] border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#00B8F0] transition-colors"
+                      className="w-full bg-[#050C18] border border-white/40 hover:border-white/70 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all placeholder:text-slate-400"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-[#8A9EB0] uppercase tracking-wider mb-1">Attendee Type *</label>
+                    <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Attendee Type *</label>
                     <select
                       value={formData.attendeeType}
                       onChange={(e) => setFormData({...formData, attendeeType: e.target.value})}
-                      className="w-full bg-[#050C18] border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#00B8F0] transition-colors"
+                      className="w-full bg-[#050C18] border border-white/40 hover:border-white/70 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
                     >
-                      <option value="student">Student (₹{isEarlyBird ? Math.round(399 * 0.85) : 399})</option>
-                      <option value="professional">Professional (₹{isEarlyBird ? Math.round(699 * 0.85) : 699})</option>
+                      <option value="student">Student (₹449)</option>
+                      <option value="professional">Professional (₹699)</option>
+                      <option value="testing">Testing Pass (₹2)</option>
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-[#8A9EB0] uppercase tracking-wider mb-1">Quantity * (Group Discount)</label>
+                    <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Quantity * (Group Discount)</label>
                     <input
                       type="number"
                       required
@@ -472,80 +481,130 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                       max={100}
                       value={formData.quantity}
                       onChange={(e) => setFormData({...formData, quantity: parseInt(e.target.value) || 1})}
-                      className="w-full bg-[#050C18] border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#00B8F0] transition-colors"
+                      className="w-full bg-[#050C18] border border-white/40 hover:border-white/70 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-semibold text-[#8A9EB0] uppercase tracking-wider mb-1">Company / Institution</label>
-                    <input
-                      type="text"
-                      value={formData.company}
-                      onChange={(e) => setFormData({...formData, company: e.target.value})}
-                      placeholder="e.g. IIT Indore"
-                      className="w-full bg-[#050C18] border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#00B8F0] transition-colors"
-                    />
+                {/* CONDITIONAL FIELDS BASED ON ATTENDEE TYPE */}
+                {formData.attendeeType === "student" ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in duration-200">
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">College / University Name *</label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.collegeName || ""}
+                        onChange={(e) => setFormData({...formData, collegeName: e.target.value, company: e.target.value})}
+                        placeholder="e.g. IIT Indore / DAVV"
+                        className="w-full bg-[#050C18] border border-white/40 hover:border-white/70 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all placeholder:text-slate-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Degree / Branch / Year *</label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.degree || ""}
+                        onChange={(e) => setFormData({...formData, degree: e.target.value, role: e.target.value})}
+                        placeholder="e.g. B.Tech Computer Science (3rd Year)"
+                        className="w-full bg-[#050C18] border border-white/40 hover:border-white/70 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all placeholder:text-slate-400"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-[#8A9EB0] uppercase tracking-wider mb-1">Role / Designation</label>
-                    <input
-                      type="text"
-                      value={formData.role}
-                      onChange={(e) => setFormData({...formData, role: e.target.value})}
-                      placeholder="e.g. AI Engineer"
-                      className="w-full bg-[#050C18] border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#00B8F0] transition-colors"
-                    />
+                ) : formData.attendeeType === "testing" ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in duration-200">
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Testing Organization *</label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.companyName || ""}
+                        onChange={(e) => setFormData({...formData, companyName: e.target.value, company: e.target.value})}
+                        placeholder="e.g. Botmartz Test Lab"
+                        className="w-full bg-[#050C18] border border-white/40 hover:border-white/70 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all placeholder:text-slate-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Tester Role / Note *</label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.designation || ""}
+                        onChange={(e) => setFormData({...formData, designation: e.target.value, role: e.target.value})}
+                        placeholder="e.g. Razorpay Payment Tester"
+                        className="w-full bg-[#050C18] border border-white/40 hover:border-white/70 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all placeholder:text-slate-400"
+                      />
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in duration-200">
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Company / Organization *</label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.companyName || ""}
+                        onChange={(e) => setFormData({...formData, companyName: e.target.value, company: e.target.value})}
+                        placeholder="e.g. Botmartz / TCS / Google"
+                        className="w-full bg-[#050C18] border border-white/40 hover:border-white/70 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all placeholder:text-slate-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Role / Designation *</label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.designation || ""}
+                        onChange={(e) => setFormData({...formData, designation: e.target.value, role: e.target.value})}
+                        placeholder="e.g. Senior AI Engineer / Tech Lead"
+                        className="w-full bg-[#050C18] border border-white/40 hover:border-white/70 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all placeholder:text-slate-400"
+                      />
+                    </div>
+                  </div>
+                )}
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#8A9EB0] uppercase tracking-wider mb-1">Custom API / Project Details</label>
-                  <textarea
-                    rows={3}
-                    value={formData.apiInfo}
-                    onChange={(e) => setFormData({...formData, apiInfo: e.target.value})}
-                    placeholder="Enter any custom information or API specifications requested for this event..."
-                    className="w-full bg-[#050C18] border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#00B8F0] transition-colors resize-none"
-                  />
-                </div>
-                <div className="border border-white/10 p-4 rounded-xl bg-[#040A15] space-y-3">
-                  <label className="block text-xs font-semibold text-[#8A9EB0] uppercase tracking-wider mb-1">Have a Coupon / Promo Code?</label>
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={couponCodeInput}
-                      onChange={(e) => setCouponCodeInput(e.target.value)}
-                      placeholder="Enter code"
-                      className="flex-1 bg-[#050C18] border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#00B8F0] transition-colors uppercase"
-                    />
-                    <button
-                      type="button"
-                      onClick={handleApplyCoupon}
-                      disabled={couponLoading || !couponCodeInput.trim()}
-                      className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50"
-                    >
-                      {couponLoading ? "..." : "Apply"}
-                    </button>
-                  </div>
-                  {couponMessage.text && (
-                    <p className={`text-xs ${couponMessage.type === 'success' ? 'text-green-400' : 'text-red-400'}`}>
-                      {couponMessage.text}
-                    </p>
-                  )}
-                  {appliedCoupon && (
-                    <div className="flex items-center gap-2 bg-green-500/10 border border-green-500/20 text-green-400 text-xs px-3 py-1.5 rounded-lg w-fit">
-                      <CheckCircle size={12} />
-                      Applied: {appliedCoupon.code} (-{appliedCoupon.discountType === 'percentage' ? `${appliedCoupon.discountValue}%` : `₹${appliedCoupon.discountValue}`})
+                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Have a Coupon / Promo Code?</label>
+                  {!appliedCoupon ? (
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={couponCodeInput}
+                        onChange={(e) => setCouponCodeInput(e.target.value)}
+                        placeholder="ENTER PROMO CODE"
+                        className="flex-1 bg-[#050C18] border border-white/40 hover:border-white/70 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all uppercase placeholder:text-slate-400"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleApplyCoupon}
+                        disabled={couponLoading || !couponCodeInput.trim()}
+                        className="bg-white/15 hover:bg-white/25 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-colors disabled:opacity-40 shrink-0 border border-white/30"
+                      >
+                        {couponLoading ? "..." : "Apply"}
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs px-4 py-2.5 rounded-xl">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle size={14} />
+                        <span className="font-bold font-mono text-sm">{appliedCoupon.code}</span>
+                        <span>(-{appliedCoupon.discountType === 'percentage' ? `${appliedCoupon.discountValue}%` : `₹${appliedCoupon.discountValue}`} Discount Applied)</span>
+                      </div>
                       <button 
                         type="button" 
                         onClick={() => { setAppliedCoupon(null); setCouponMessage({text: "", type: ""}); setCouponCodeInput(""); }}
-                        className="ml-2 hover:text-white"
+                        className="p-1 hover:bg-emerald-500/20 rounded-lg text-emerald-300 hover:text-white transition-colors"
+                        title="Remove coupon"
                       >
-                        <X size={12} />
+                        <X size={14} />
                       </button>
                     </div>
+                  )}
+                  {couponMessage.text && !appliedCoupon && (
+                    <p className={`text-xs mt-1.5 font-medium ${couponMessage.type === 'success' ? 'text-emerald-400' : 'text-rose-400'}`}>
+                      {couponMessage.text}
+                    </p>
                   )}
                 </div>
               </div>

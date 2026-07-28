@@ -21,28 +21,35 @@ export default function ClientLayout({
   settings?: any;
 }) {
   const pathname = usePathname();
-  const isAdminRoute = pathname?.startsWith('/admin');
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isAdminRoute = mounted ? pathname?.startsWith('/admin') : false;
 
   return (
     <SettingsContext.Provider value={settings || {}}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <AccessibilityProvider>
-        <div className="min-h-screen flex flex-col">
-          {/* WCAG Skip to Main Content Link */}
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-4 focus:left-4 focus:px-4 focus:py-2.5 focus:bg-[#0052FF] focus:text-white focus:font-bold focus:rounded-lg shadow-2xl focus:outline-none focus:ring-2 focus:ring-white"
-          >
-            Skip to main content
-          </a>
-          {!isAdminRoute && navbar}
-          <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
-            {children}
-          </main>
-          {!isAdminRoute && <Footer settings={settings} />}
-          {!isAdminRoute && <AccessibilityToolbox />}
-        </div>
-      </AccessibilityProvider>
+        <AccessibilityProvider>
+          <div className="min-h-screen flex flex-col" suppressHydrationWarning>
+            {/* WCAG Skip to Main Content Link */}
+            <a
+              href="#main-content"
+              suppressHydrationWarning
+              className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-4 focus:left-4 focus:px-4 focus:py-2.5 focus:bg-[#0052FF] focus:text-white focus:font-bold focus:rounded-lg shadow-2xl focus:outline-none focus:ring-2 focus:ring-white"
+            >
+              Skip to main content
+            </a>
+            {!isAdminRoute && navbar}
+            <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none" suppressHydrationWarning>
+              {children}
+            </main>
+            {!isAdminRoute && <Footer settings={settings} />}
+            {!isAdminRoute && <AccessibilityToolbox />}
+          </div>
+        </AccessibilityProvider>
       </ThemeProvider>
     </SettingsContext.Provider>
   );

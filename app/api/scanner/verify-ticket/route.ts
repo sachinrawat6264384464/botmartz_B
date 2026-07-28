@@ -39,12 +39,17 @@ export async function POST(req: NextRequest) {
       checkInTime: checkInTime
     });
 
+    const orgDetails = regData.attendeeType === 'professional'
+      ? `${regData.company || regData.companyName || 'N/A'}${regData.role || regData.designation ? ' • ' + (regData.role || regData.designation) : ''}`
+      : `${regData.collegeName || regData.company || 'N/A'}${regData.degree || regData.role ? ' • ' + (regData.degree || regData.role) : ''}`;
+
     return NextResponse.json({
       success: true,
       message: 'Successfully checked in!',
       attendeeName: regData.name,
       attendeeType: regData.attendeeType || 'student',
       quantity: regData.quantity || 1,
+      orgDetails,
       checkInTime
     });
 

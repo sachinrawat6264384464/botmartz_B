@@ -26,52 +26,71 @@ export async function POST(req: NextRequest) {
     const attendeeType = regData?.attendeeType || 'student';
     const quantity = regData?.quantity || 1;
     
-    let basePrice = attendeeType === 'student' ? 399 : 699;
+    let basePrice = 449;
+    if (attendeeType === 'student') basePrice = 449;
+    else if (attendeeType === 'professional') basePrice = 699;
+    else if (attendeeType === 'testing') basePrice = 2;
     
     let discount = 0;
     if (quantity >= 10) discount = 100;
     else if (quantity >= 5) discount = 50;
 
+    const SYSTEM_COUPONS: Record<string, { discountType: 'percentage' | 'fixed'; discountValue: number; maxUses: number }> = {
+      EARLY15: { discountType: 'percentage', discountValue: 15, maxUses: 50 },
+      INFLUENCER20: { discountType: 'percentage', discountValue: 20, maxUses: 50 },
+    };
+
     let appliedCoupon = null;
     let couponAppliedSuccessfully = false;
-    let expectedFee = 0;
+    let expectedFee = Math.max(0, (basePrice - discount) * quantity);
 
-    // First attempt to fetch and validate coupon
     if (couponCode) {
       const uppercaseCode = couponCode.trim().toUpperCase();
-      const couponQuery = await adminDb
-        .collection('coupons')
-        .where('code', '==', uppercaseCode)
-        .limit(1)
-        .get();
+      let discType = '';
+      let discVal = 0;
+      let maxCap = 50;
 
-      if (!couponQuery.empty) {
-        const couponDoc = couponQuery.docs[0];
-        const couponData = couponDoc.data();
-        
-        if (couponData.isActive && couponData.currentUses < couponData.maxUses) {
-          appliedCoupon = uppercaseCode;
-          couponAppliedSuccessfully = true;
-          
-          // Base fee before coupon
-          expectedFee = Math.max(0, (basePrice - discount) * quantity);
-          
-          if (couponData.discountType === 'percentage') {
-            expectedFee = Math.max(0, Math.round(expectedFee * (1 - couponData.discountValue / 100)));
-          } else if (couponData.discountType === 'fixed') {
-            expectedFee = Math.max(0, expectedFee - couponData.discountValue);
+      if (SYSTEM_COUPONS[uppercaseCode]) {
+        discType = SYSTEM_COUPONS[uppercaseCode].discountType;
+        discVal = SYSTEM_COUPONS[uppercaseCode].discountValue;
+        maxCap = SYSTEM_COUPONS[uppercaseCode].maxUses;
+      } else {
+        const couponQuery = await adminDb
+          .collection('coupons')
+          .where('code', '==', uppercaseCode)
+          .limit(1)
+          .get();
+
+        if (!couponQuery.empty) {
+          const couponData = couponQuery.docs[0].data();
+          if (couponData.isActive !== false) {
+            discType = couponData.discountType;
+            discVal = couponData.discountValue;
+            maxCap = couponData.maxUses || 50;
           }
         }
       }
-    }
 
-    // If no coupon applied, apply early bird logic
-    if (!couponAppliedSuccessfully) {
-      const isEarlyBird = new Date() <= new Date("2026-07-30T23:59:59Z");
-      if (isEarlyBird) {
-        basePrice = Math.round(basePrice * 0.85);
+      if (discType && discVal > 0) {
+        // Check usage cap
+        const regSnap = await adminDb
+          .collection('event-registrations')
+          .where('appliedCoupon', '==', uppercaseCode)
+          .where('paymentStatus', '==', 'paid')
+          .get();
+
+        if (regSnap.size < maxCap) {
+          appliedCoupon = uppercaseCode;
+          couponAppliedSuccessfully = true;
+
+          const baseAmount = Math.max(0, (basePrice - discount) * quantity);
+          if (discType === 'percentage') {
+            expectedFee = Math.max(0, Math.round(baseAmount * (1 - discVal / 100)));
+          } else {
+            expectedFee = Math.max(0, baseAmount - discVal);
+          }
+        }
       }
-      expectedFee = Math.max(0, (basePrice - discount) * quantity);
     }
 
     // Prevent amount tampering

@@ -14,6 +14,10 @@ interface Attendee {
   email: string;
   phone?: string;
   attendeeType: string;
+  company?: string;
+  role?: string;
+  collegeName?: string;
+  degree?: string;
   quantity: number;
   paymentStatus: string;
   attended: boolean;
@@ -571,6 +575,19 @@ export default function ScannerPage() {
                         <p className="font-semibold text-admin-text">{attendee.name}</p>
                         <p className="text-[11px] text-admin-text-muted">{attendee.email}</p>
                         {attendee.phone && <p className="text-[10px] text-admin-text-muted">{attendee.phone}</p>}
+                        {attendee.attendeeType === "professional" ? (
+                          (attendee.company || attendee.role) && (
+                            <p className="text-[10px] text-cyan-600 dark:text-cyan-400 font-medium mt-0.5">
+                              🏢 {attendee.company || 'N/A'}{attendee.role ? ` • ${attendee.role}` : ''}
+                            </p>
+                          )
+                        ) : (
+                          (attendee.collegeName || attendee.degree || attendee.company || attendee.role) && (
+                            <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium mt-0.5">
+                              🎓 {attendee.collegeName || attendee.company || 'N/A'}{attendee.degree || attendee.role ? ` • ${attendee.degree || attendee.role}` : ''}
+                            </p>
+                          )
+                        )}
                       </div>
                     </td>
 
