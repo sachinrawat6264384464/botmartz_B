@@ -27,7 +27,7 @@ export default function ClientLayout({
     setMounted(true);
   }, []);
 
-  const isAdminRoute = mounted ? pathname?.startsWith('/admin') : false;
+  const isAdminRoute = pathname?.startsWith('/admin') || false;
 
   return (
     <SettingsContext.Provider value={settings || {}}>

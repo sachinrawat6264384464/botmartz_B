@@ -26,10 +26,7 @@ export async function POST(req: NextRequest) {
     const attendeeType = regData?.attendeeType || 'student';
     const quantity = regData?.quantity || 1;
     
-    let basePrice = 449;
-    if (attendeeType === 'student') basePrice = 449;
-    else if (attendeeType === 'professional') basePrice = 699;
-    else if (attendeeType === 'testing') basePrice = 2;
+    let basePrice = attendeeType === 'student' ? 449 : 699;
     
     let discount = 0;
     if (quantity >= 10) discount = 100;

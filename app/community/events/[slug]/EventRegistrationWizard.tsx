@@ -96,10 +96,7 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
   const isEarlyBird = new Date() <= new Date("2026-07-30T23:59:59Z");
   
   const calculateFee = () => {
-    let basePrice = 449;
-    if (formData.attendeeType === "student") basePrice = 449;
-    else if (formData.attendeeType === "professional") basePrice = 699;
-    else if (formData.attendeeType === "testing") basePrice = 2;
+    let basePrice = formData.attendeeType === "student" ? 449 : 699;
     
     if (appliedCoupon) {
       if (appliedCoupon.discountType === 'percentage') {
@@ -387,25 +384,25 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-      <div className="relative w-full max-w-lg bg-[#0A1120] border border-white/10 rounded-2xl shadow-2xl overflow-hidden text-white font-sans">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+      <div className="relative w-full max-w-lg bg-[#0A1120] border border-white/10 rounded-2xl shadow-2xl overflow-hidden text-white font-sans my-auto max-h-[95vh] flex flex-col">
         
         {step !== 3 && (
           <button 
             onClick={onClose} 
-            className="absolute top-4 right-4 p-2 text-white/50 hover:text-white hover:bg-white/5 rounded-full transition-colors z-20"
+            className="absolute top-3 right-3 p-2 text-white/50 hover:text-white hover:bg-white/5 rounded-full transition-colors z-20"
           >
             <X size={18} />
           </button>
         )}
 
-        <div className="p-6 md:p-8 space-y-6">
+        <div className="p-4 sm:p-6 md:p-8 space-y-5 overflow-y-auto max-h-[95vh]">
 
           {/* STEP 1: USER DETAILS */}
           {step === 1 && (
             <form onSubmit={handleStep1Submit} className="space-y-4">
               <div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                   <h3 className="text-xl sm:text-2xl font-bold font-space-grotesk tracking-tight text-white drop-shadow-sm">Register for Event</h3>
                   {isEarlyBird && (
                     <span className="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-emerald-500/30">
@@ -448,7 +445,7 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Phone Number *</label>
+                    <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Mobile Number *</label>
                     <input
                       type="tel"
                       required
@@ -470,7 +467,6 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                     >
                       <option value="student">Student (₹449)</option>
                       <option value="professional">Professional (₹699)</option>
-                      <option value="testing">Testing Pass (₹2)</option>
                     </select>
                   </div>
                   <div>
@@ -513,31 +509,6 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                       />
                     </div>
                   </div>
-                ) : formData.attendeeType === "testing" ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in duration-200">
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Testing Organization *</label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.companyName || ""}
-                        onChange={(e) => setFormData({...formData, companyName: e.target.value, company: e.target.value})}
-                        placeholder="e.g. Botmartz Test Lab"
-                        className="w-full bg-[#050C18] border border-white/40 hover:border-white/70 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all placeholder:text-slate-400"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Tester Role / Note *</label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.designation || ""}
-                        onChange={(e) => setFormData({...formData, designation: e.target.value, role: e.target.value})}
-                        placeholder="e.g. Razorpay Payment Tester"
-                        className="w-full bg-[#050C18] border border-white/40 hover:border-white/70 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all placeholder:text-slate-400"
-                      />
-                    </div>
-                  </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in duration-200">
                     <div>
@@ -565,43 +536,40 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                   </div>
                 )}
 
-                <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Have a Coupon / Promo Code?</label>
-                  {!appliedCoupon ? (
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        value={couponCodeInput}
-                        onChange={(e) => setCouponCodeInput(e.target.value)}
-                        placeholder="ENTER PROMO CODE"
-                        className="flex-1 bg-[#050C18] border border-white/40 hover:border-white/70 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all uppercase placeholder:text-slate-400"
-                      />
+                {/* PROMO COUPON CODE SECTION */}
+                <div className="pt-2">
+                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
+                    Have a Coupon / Promo Code?
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={couponCodeInput}
+                      onChange={(e) => setCouponCodeInput(e.target.value.toUpperCase())}
+                      placeholder="ENTER PROMO CODE"
+                      disabled={!!appliedCoupon}
+                      className="w-full bg-[#050C18] border border-white/40 hover:border-white/70 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-white uppercase tracking-wider font-mono placeholder:text-slate-400 disabled:opacity-60"
+                    />
+                    {!appliedCoupon ? (
                       <button
                         type="button"
                         onClick={handleApplyCoupon}
                         disabled={couponLoading || !couponCodeInput.trim()}
-                        className="bg-white/15 hover:bg-white/25 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-colors disabled:opacity-40 shrink-0 border border-white/30"
+                        className="bg-brand/20 border border-brand/40 text-[#00B8F0] hover:bg-brand/30 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-colors shrink-0 flex items-center gap-1.5 disabled:opacity-40"
                       >
-                        {couponLoading ? "..." : "Apply"}
+                        {couponLoading ? <Loader2 size={12} className="animate-spin" /> : "Apply"}
                       </button>
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-between bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs px-4 py-2.5 rounded-xl">
-                      <div className="flex items-center gap-2">
-                        <CheckCircle size={14} />
-                        <span className="font-bold font-mono text-sm">{appliedCoupon.code}</span>
-                        <span>(-{appliedCoupon.discountType === 'percentage' ? `${appliedCoupon.discountValue}%` : `₹${appliedCoupon.discountValue}`} Discount Applied)</span>
-                      </div>
-                      <button 
-                        type="button" 
+                    ) : (
+                      <button
+                        type="button"
                         onClick={() => { setAppliedCoupon(null); setCouponMessage({text: "", type: ""}); setCouponCodeInput(""); }}
-                        className="p-1 hover:bg-emerald-500/20 rounded-lg text-emerald-300 hover:text-white transition-colors"
-                        title="Remove coupon"
+                        className="bg-rose-500/10 border border-rose-500/30 text-rose-400 hover:bg-rose-500/20 px-3 py-2.5 rounded-xl text-xs font-semibold transition-colors shrink-0 flex items-center gap-1"
+                        title="Remove Coupon"
                       >
                         <X size={14} />
                       </button>
-                    </div>
-                  )}
+                    )}
+                  </div>
                   {couponMessage.text && !appliedCoupon && (
                     <p className={`text-xs mt-1.5 font-medium ${couponMessage.type === 'success' ? 'text-emerald-400' : 'text-rose-400'}`}>
                       {couponMessage.text}
@@ -629,7 +597,7 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                     ⚡ Gateway Secure
                   </span>
                 </div>
-                <h3 className="text-2xl font-black font-space-grotesk tracking-tight text-white flex items-center gap-2">
+                <h3 className="text-xl sm:text-2xl font-black font-space-grotesk tracking-tight text-white flex items-center gap-2">
                   Razorpay Checkout
                 </h3>
                 <p className="text-xs text-slate-300 mt-1 font-medium">Event: {event.title}</p>
@@ -661,13 +629,13 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="bg-[#050C18] border border-white/10 p-6 rounded-2xl text-center space-y-4 shadow-xl relative overflow-hidden">
-                    <div className="w-14 h-14 rounded-2xl bg-[#00B8F0]/15 border border-[#00B8F0]/30 text-[#00B8F0] flex items-center justify-center mx-auto shadow-inner">
-                      <ShieldCheck size={30} />
+                  <div className="bg-[#050C18] border border-white/10 p-5 sm:p-6 rounded-2xl text-center space-y-4 shadow-xl relative overflow-hidden">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#00B8F0]/15 border border-[#00B8F0]/30 text-[#00B8F0] flex items-center justify-center mx-auto shadow-inner">
+                      <ShieldCheck size={26} />
                     </div>
                     <div className="space-y-1">
                       <span className="text-[11px] uppercase tracking-widest font-mono font-bold text-slate-400 block">Total Payable</span>
-                      <h4 className="font-extrabold text-3xl text-white font-mono">₹{entryFee}</h4>
+                      <h4 className="font-extrabold text-2xl sm:text-3xl text-white font-mono">₹{entryFee}</h4>
                       <p className="text-xs text-slate-300 max-w-[280px] mx-auto pt-1 font-medium">
                         Complete checkout to secure your official registration pass.
                       </p>
@@ -689,18 +657,18 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                   </div>
 
                   {/* Payment methods description */}
-                  <div className="grid grid-cols-3 gap-3 border-t border-white/10 pt-4">
-                    <div className="flex flex-col items-center gap-2 p-3 rounded-xl bg-white/[0.03] text-center border border-white/10 hover:border-[#00B8F0]/30 transition-all">
-                      <CreditCard size={20} className="text-[#00B8F0]" />
-                      <span className="text-[11px] font-bold text-slate-200">Cards</span>
+                  <div className="grid grid-cols-3 gap-2 sm:gap-3 border-t border-white/10 pt-4">
+                    <div className="flex flex-col items-center gap-1.5 p-2.5 sm:p-3 rounded-xl bg-white/[0.03] text-center border border-white/10 hover:border-[#00B8F0]/30 transition-all">
+                      <CreditCard size={18} className="text-[#00B8F0]" />
+                      <span className="text-[10px] sm:text-[11px] font-bold text-slate-200">Cards</span>
                     </div>
-                    <div className="flex flex-col items-center gap-2 p-3 rounded-xl bg-white/[0.03] text-center border border-white/10 hover:border-[#00B8F0]/30 transition-all">
-                      <Smartphone size={20} className="text-[#00B8F0]" />
-                      <span className="text-[11px] font-bold text-slate-200">UPI Apps</span>
+                    <div className="flex flex-col items-center gap-1.5 p-2.5 sm:p-3 rounded-xl bg-white/[0.03] text-center border border-white/10 hover:border-[#00B8F0]/30 transition-all">
+                      <Smartphone size={18} className="text-[#00B8F0]" />
+                      <span className="text-[10px] sm:text-[11px] font-bold text-slate-200">UPI Apps</span>
                     </div>
-                    <div className="flex flex-col items-center gap-2 p-3 rounded-xl bg-white/[0.03] text-center border border-white/10 hover:border-[#00B8F0]/30 transition-all">
-                      <ShieldCheck size={20} className="text-[#00B8F0]" />
-                      <span className="text-[11px] font-bold text-slate-200">Net Banking</span>
+                    <div className="flex flex-col items-center gap-1.5 p-2.5 sm:p-3 rounded-xl bg-white/[0.03] text-center border border-white/10 hover:border-[#00B8F0]/30 transition-all">
+                      <ShieldCheck size={18} className="text-[#00B8F0]" />
+                      <span className="text-[10px] sm:text-[11px] font-bold text-slate-200">Net Banking</span>
                     </div>
                   </div>
                 </div>
@@ -710,79 +678,79 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
 
           {/* STEP 3: REGISTRATION SUCCESS */}
           {step === 3 && (
-            <div className="text-center py-6 space-y-6">
-              <div className="w-16 h-16 bg-green-500/15 border border-green-500/35 text-green-500 rounded-full flex items-center justify-center mx-auto shadow-[0_0_20px_rgba(16,185,129,0.2)]">
-                <CheckCircle size={32} />
+            <div className="text-center py-2 sm:py-4 space-y-4 sm:space-y-5">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-green-500/15 border border-green-500/35 text-green-500 rounded-full flex items-center justify-center mx-auto shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+                <CheckCircle size={28} />
               </div>
 
-              <div className="space-y-2">
-                <h3 className="text-2xl font-bold font-space-grotesk tracking-tight">Registration Secured!</h3>
-                <p className="text-sm text-[#8A9EB0] max-w-[320px] mx-auto">
-                  Congratulations! Your pass for <strong>{event.title}</strong> has been issued successfully.
+              <div className="space-y-1.5 px-2">
+                <h3 className="text-xl sm:text-2xl font-bold font-space-grotesk tracking-tight text-white drop-shadow">Registration Secured!</h3>
+                <p className="text-xs sm:text-sm text-slate-300 max-w-[320px] mx-auto leading-relaxed">
+                  Congratulations! Your pass for <strong className="text-white">{event.title}</strong> has been issued successfully.
                 </p>
               </div>
 
-              <div className="bg-[#050C18] border border-[#00B8F0] rounded-xl p-5 max-w-[340px] mx-auto text-left space-y-4 shadow-xl relative overflow-hidden">
+              <div className="bg-[#050C18] border border-[#00B8F0]/60 rounded-xl p-3.5 sm:p-5 w-full max-w-[310px] sm:max-w-[340px] mx-auto text-left space-y-3 shadow-2xl relative overflow-hidden">
                 <div className="absolute top-[-20%] right-[-20%] w-[100px] h-[100px] bg-[#00B8F0]/10 blur-[30px] rounded-full pointer-events-none" />
                 
-                <div className="border-b border-white/10 pb-3 flex justify-between items-start">
-                  <div>
-                    <span className="text-[9px] font-bold text-[#00B8F0] uppercase tracking-wider font-mono">OFFICIAL ENTRY PASS</span>
-                    <h4 className="text-sm font-bold text-white truncate max-w-[200px] mt-0.5">{event.title}</h4>
+                <div className="border-b border-white/10 pb-2.5 flex justify-between items-center gap-2">
+                  <div className="min-w-0 flex-1">
+                    <span className="text-[8px] sm:text-[9px] font-bold text-[#00B8F0] uppercase tracking-wider font-mono block">OFFICIAL ENTRY PASS</span>
+                    <h4 className="text-xs sm:text-sm font-bold text-white truncate max-w-[170px] sm:max-w-[200px] mt-0.5">{event.title}</h4>
                   </div>
-                  <span className="text-[10px] bg-green-500/20 text-green-400 font-bold px-2 py-0.5 rounded uppercase font-mono">PAID</span>
+                  <span className="text-[9px] sm:text-[10px] bg-green-500/20 text-green-400 font-bold px-2 py-0.5 rounded uppercase font-mono shrink-0 border border-green-500/30">PAID</span>
                 </div>
 
-                <div className="flex justify-center py-2">
-                  <div className="bg-white p-4 shadow-md">
+                <div className="flex justify-center py-1">
+                  <div className="bg-white p-2.5 sm:p-3.5 rounded-lg shadow-md">
                     <img 
                       src={`https://api.qrserver.com/v1/create-qr-code/?size=350x350&margin=2&ecc=M&data=${encodeURIComponent(`https://botmartz.com/admin/scanner?code=${successCode || ''}`)}`} 
                       alt="Pass Check-in QR" 
-                      className="w-[130px] h-[130px] block" 
+                      className="w-[110px] h-[110px] sm:w-[130px] sm:h-[130px] block" 
                     />
                   </div>
                 </div>
 
-                <div className="border-t border-white/10 pt-3 text-center space-y-1">
-                  <span className="text-[10px] text-white/50 font-mono block">CHECK-IN CODE</span>
-                  <span className="text-xs font-mono font-bold tracking-widest text-[#00B8F0]">{successCode}</span>
+                <div className="border-t border-white/10 pt-2.5 text-center space-y-0.5">
+                  <span className="text-[9px] text-slate-400 font-mono block uppercase tracking-wider">CHECK-IN CODE</span>
+                  <span className="text-xs sm:text-sm font-mono font-bold tracking-widest text-[#00B8F0]">{successCode}</span>
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center justify-center gap-3 pt-4 pb-2">
+              <div className="flex flex-wrap items-center justify-center gap-2 pt-2 px-1">
                 <button 
                   onClick={downloadQR}
-                  className="flex items-center gap-2 bg-[#050C18] border border-[#1E293B] hover:border-[#00B8F0] text-[#8A9EB0] hover:text-white px-4 py-2 rounded-lg text-xs font-semibold transition-colors"
+                  className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 bg-[#050C18] border border-white/20 hover:border-[#00B8F0] text-slate-200 hover:text-white px-3 py-2 rounded-lg text-xs font-semibold transition-colors"
                 >
-                  <Download size={14} />
+                  <Download size={13} />
                   Save QR
                 </button>
                 <button 
                   onClick={shareToWhatsApp}
-                  className="flex items-center gap-2 bg-[#25D366]/10 border border-[#25D366]/30 hover:border-[#25D366] text-[#25D366] px-4 py-2 rounded-lg text-xs font-semibold transition-colors"
+                  className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 bg-[#25D366]/10 border border-[#25D366]/30 hover:border-[#25D366] text-[#25D366] px-3 py-2 rounded-lg text-xs font-semibold transition-colors"
                 >
-                  <Share2 size={14} />
+                  <Share2 size={13} />
                   WhatsApp
                 </button>
                 <button 
                   onClick={addToCalendar}
-                  className="flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 hover:border-purple-500 text-purple-400 px-4 py-2 rounded-lg text-xs font-semibold transition-colors"
+                  className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 bg-purple-500/10 border border-purple-500/30 hover:border-purple-500 text-purple-300 px-3 py-2 rounded-lg text-xs font-semibold transition-colors"
                 >
-                  <CalendarPlus size={14} />
+                  <CalendarPlus size={13} />
                   Calendar
                 </button>
               </div>
 
-              <div className="space-y-3 pt-2">
-                <p className="text-xs text-[#8A9EB0] max-w-[360px] mx-auto leading-relaxed">
-                  We have dispatched three email notifications to <strong>{formData.email}</strong>, containing your receipt, details, and digital entry pass.
+              <div className="space-y-3 pt-1 pb-4">
+                <p className="text-[11px] sm:text-xs text-slate-300 max-w-[340px] mx-auto leading-relaxed px-2">
+                  We have dispatched email notifications to <strong className="text-white font-mono">{formData.email}</strong> with your entry pass details.
                 </p>
                 <button
                   onClick={() => {
                     onClose();
                     router.refresh();
                   }}
-                  className="bg-brand/20 border border-brand/40 text-[#00B8F0] hover:bg-brand/30 px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors"
+                  className="w-full sm:w-auto bg-[#00B8F0] hover:bg-[#00A0D0] text-white px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-colors shadow-lg shadow-[#00B8F0]/20"
                 >
                   Done & Back to Event
                 </button>
