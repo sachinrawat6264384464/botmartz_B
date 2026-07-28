@@ -68,6 +68,7 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
     degree: "",
     companyName: "",
     designation: "",
+    apiInfo: "",
     attendeeType: "student",
     quantity: 1
   });
@@ -340,7 +341,7 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
         degree: formData.degree || "",
         companyName: formData.companyName || "",
         designation: formData.designation || "",
-        apiInfo: formData.apiInfo || "",
+        apiInfo: (formData as any).apiInfo || "",
         attendeeType: formData.attendeeType || "student",
         quantity: formData.quantity || 1,
         amountPaid: entryFee,
