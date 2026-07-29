@@ -44,7 +44,7 @@ const DEFAULT_CONTENT = {
     "eventStatus": "https://schema.org/EventScheduled",
     "location": {
       "@type": "Place",
-      "name": "Walkover Co-working Space",
+      "name": "Walkover Venue",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Indore",

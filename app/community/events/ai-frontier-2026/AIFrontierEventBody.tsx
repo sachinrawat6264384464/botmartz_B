@@ -139,7 +139,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
                   ◎
                 </div>
                 <div>
-                  <div className="font-bold text-[13.5px] text-white">Walkover Co-working Space</div>
+                  <div className="font-bold text-[13.5px] text-white">Walkover Venue</div>
                   <div className="font-medium text-xs text-[#7C8CAD]">Indore, India</div>
                 </div>
               </div>
