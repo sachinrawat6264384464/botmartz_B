@@ -24,7 +24,7 @@ const DEFAULT_ITEMS: NavItem[] = [
     name: "Engineering Insights", path: "/insights",
   },
   {
-    name: "Workshops", path: "/community/ai-frontier-bootcamps",
+    name: "Workshops", path: "/community/ai-accelerator-workshop",
   },
   {
     name: "Community", path: "/community",

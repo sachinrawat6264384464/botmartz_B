@@ -18,7 +18,7 @@ interface EventItem {
 }
 
 const PROTOTYPE_EVENTS: EventItem[] = [
-  { type: 'Workshop', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Frontier Series 1: Build Your First AI Full-Stack App', desc: 'A hands-on workshop to build an end-to-end full stack AI application with Next.js and LLMs.', date: 'Aug 10, 2026', location: 'Indore, India', slug: '/community/ai-frontier-bootcamps/build-your-first-ai-full-stack-application' },
+  { type: 'Workshop', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Accelerator Workshop Series 1: Build Your First AI Full-Stack App', desc: 'A hands-on workshop to build an end-to-end full stack AI application with Next.js and LLMs.', date: 'Aug 10, 2026', location: 'Indore, India', slug: '/community/ai-accelerator-workshop/build-your-first-ai-full-stack-application' },
   { type: 'Meetup', status: 'Monthly', statusColor: '#0E9F6E', title: 'AI Engineering Meetup — Indore Chapter', desc: 'A monthly gathering for local AI engineers to share projects, talk shop, and swap production lessons.', date: 'Every 3rd Saturday', location: 'Indore, India' },
   { type: 'Meetup', status: 'Upcoming', statusColor: '#0E9F6E', title: 'Open Source Night: Contributing to LangGraph', desc: 'A hands-on evening picking up good-first-issues and pairing on real open-source contributions.', date: 'Sep 12, 2026 · 6:00 PM', location: 'Online' },
   { type: 'Hackathon', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Frontier Hackathon 2026', desc: 'A weekend build sprint following the conference — teams ship an AI agent or RAG system from scratch.', date: 'Sep 26–27, 2026', location: 'Indore, India' },
@@ -117,8 +117,8 @@ export default function EventsClient({
     "mainEntity": {
       "@type": "Event",
       "name": "AI Frontier 2026 — The Future of AI Engineering",
-      "startDate": "2026-08-22T10:00:00+05:30",
-      "endDate": "2026-08-22T17:00:00+05:30",
+      "startDate": "2026-08-23T10:00:00+05:30",
+      "endDate": "2026-08-23T17:00:00+05:30",
       "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
       "eventStatus": "https://schema.org/EventScheduled",
       "location": {

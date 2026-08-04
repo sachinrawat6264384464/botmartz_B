@@ -64,7 +64,7 @@ export default async function EventsIndexPage() {
         ...data,
         createdAt: formatTimestamp(data.createdAt),
         type: 'Workshops',
-        slug: `/community/ai-frontier-bootcamps/${data.slug}`, // Transform slug to match full URL expected by EventsClient, or adapt EventsClient
+        slug: `/community/ai-accelerator-workshop/${data.slug}`, // Transform slug to match full URL expected by EventsClient, or adapt EventsClient
       });
     });
 

@@ -32,7 +32,7 @@ export async function POST(req: Request) {
             <p>However, your journey doesn't stop here! We'd love to see you at the next one.</p>
             
             <div style="margin: 30px 0;">
-              <a href="https://www.botmartz.com/community/ai-frontier-bootcamps/build-smarter-ai-agents" style="background-color: #0066FF; color: white; padding: 15px 25px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
+              <a href="https://www.botmartz.com/community/ai-accelerator-workshop/build-smarter-ai-agents" style="background-color: #0066FF; color: white; padding: 15px 25px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">
                 Register for Bootcamp 02
               </a>
             </div>

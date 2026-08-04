@@ -39,7 +39,7 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
   },
   {
     name: "Workshops",
-    path: "/community/ai-frontier-bootcamps",
+    path: "/community/ai-accelerator-workshop",
   },
   {
     name: "Community",

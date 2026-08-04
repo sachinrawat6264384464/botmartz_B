@@ -48,8 +48,8 @@ export default function Hero() {
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
             className="text-[clamp(40px,7vw,80px)] font-bold tracking-tighter leading-[1.05] text-transparent bg-clip-text bg-gradient-to-br from-[#0B1C2C] via-[#1E293B] to-[#0066FF] mb-6"
           >
-            AI FRONTIER <br />
-            <span className="text-[#0B1C2C]">ENGINEERING BOOTCAMPS</span>
+            AI ACCELERATOR <br />
+            <span className="text-[#0B1C2C]">WORKSHOP SERIES</span>
           </motion.h1>
 
           <motion.p
