@@ -38,14 +38,11 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
     path: "/community/events/ai-frontier-2026",
   },
   {
-    name: "Workshops",
-    path: "/community/ai-accelerator-workshop",
-  },
-  {
     name: "Community",
     path: "/community",
     dropdown: [
       { name: "Events", path: "/community/events" },
+      { name: "Workshops", path: "/community/ai-accelerator-workshop" },
       { name: "Discord & Forum", path: "/community" },
     ],
   },

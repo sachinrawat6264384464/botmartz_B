@@ -145,6 +145,7 @@ export default function EventsClient({
     <div className="bg-[#F5F8FC] min-h-screen font-sans text-[#0B1220]">
       <script
         type="application/ld+json"
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{
           __html: structuredData ? structuredData : JSON.stringify(defaultSchema)
         }}
