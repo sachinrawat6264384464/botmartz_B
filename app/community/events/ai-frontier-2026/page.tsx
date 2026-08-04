@@ -4,7 +4,7 @@ import AIFrontierEventBody from './AIFrontierEventBody';
 // ─── SEO METADATA ────────────────────────────────────────────────────────────
 export const metadata: Metadata = {
   title: 'AI Frontier 2026 — The Future of AI Engineering | Botmartz',
-  description: 'Join AI Frontier 2026 — Botmartz\'s flagship AI Engineering Summit on May 24–25, 2026 at Bangalore, India. Learn from AI engineers, researchers, and founders. Sessions on AI Agents, Enterprise RAG, LLMs, Responsible AI & more.',
+  description: 'Join AI Frontier 2026 — Botmartz\'s flagship AI Engineering Summit on August 22, 2026 at Indore, India. Learn from AI engineers, researchers, and founders. Sessions on AI Agents, Enterprise RAG, LLMs, Responsible AI & more.',
   keywords: [
     'AI Frontier 2026',
     'AI Engineering Summit Bangalore',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     title: 'AI Frontier 2026 — The Future of AI Engineering',
-    description: 'The flagship AI Engineering Summit by Botmartz. May 24–25, 2026 · Bangalore, India. AI Agents, Enterprise RAG, LLMs, Responsible AI.',
+    description: 'The flagship AI Engineering Summit by Botmartz. August 22, 2026 · Indore, India. AI Agents, Enterprise RAG, LLMs, Responsible AI.',
     url: 'https://www.botmartz.com/community/events/ai-frontier-2026',
     siteName: 'Botmartz',
     images: [{ url: '/BotmartznewBot.png', width: 1200, height: 630, alt: 'AI Frontier 2026 Event Banner' }],
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'AI Frontier 2026 — The Future of AI Engineering',
-    description: 'Botmartz\'s flagship AI Engineering Summit. May 24–25, 2026 · Bangalore, India.',
+    description: 'Botmartz\'s flagship AI Engineering Summit. August 22, 2026 · Indore, India.',
     images: ['/BotmartznewBot.png'],
   },
   alternates: {
@@ -44,19 +44,17 @@ const eventJsonLd = {
   url: 'https://www.botmartz.com/community/events/ai-frontier-2026',
   description:
     'AI Frontier 2026 is Botmartz\'s flagship AI Engineering Summit bringing together engineers, researchers, founders, and tech leaders to explore the frontiers of AI: Agents, Enterprise RAG, LLMs, Responsible AI, and AI-Assisted Development.',
-  startDate: '2026-05-24T09:00:00+05:30',
-  endDate: '2026-05-25T18:00:00+05:30',
+  startDate: '2026-08-22T10:00:00+05:30',
+  endDate: '2026-08-22T17:00:00+05:30',
   eventStatus: 'https://schema.org/EventScheduled',
   eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
   location: {
     '@type': 'Place',
-    name: 'The Leela Palace Bangalore',
+    name: 'Walkover Co-working Space',
     address: {
       '@type': 'PostalAddress',
-      streetAddress: '23 Kodihalli, Old Airport Road',
-      addressLocality: 'Bangalore',
-      addressRegion: 'Karnataka',
-      postalCode: '560008',
+      addressLocality: 'Indore',
+      addressRegion: 'Madhya Pradesh',
       addressCountry: 'IN',
     },
   },
@@ -138,7 +136,7 @@ const faqJsonLd = {
       name: 'When and where is AI Frontier 2026?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'AI Frontier 2026 takes place on May 24–25, 2026 at The Leela Palace, Bangalore, India.',
+        text: 'AI Frontier 2026 takes place on August 22, 2026 at Walkover Co-working Space, Indore, India.',
       },
     },
     {
