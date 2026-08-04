@@ -167,7 +167,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
                 </div>
                 <div>
                   <div className="font-bold text-[13.5px] text-white flex items-center gap-2">
-                    <img src="/Walkoversvg (1)(1).png" alt="Walkover" className="h-[14px] object-contain brightness-0 invert opacity-90" />
+                    <img src="/walkover-logo.png" alt="Walkover" className="h-[14px] object-contain brightness-0 invert opacity-90" />
                   </div>
                   <div className="font-medium text-xs text-[#7C8CAD]">Venue Partner · Indore, India</div>
                 </div>

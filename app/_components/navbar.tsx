@@ -36,10 +36,10 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
   {
     name: "AI Frontier",
     path: "/community/events/ai-frontier-2026",
-    dropdown: [
-      { name: "Main Event 2026", path: "/community/events/ai-frontier-2026" },
-      { name: "Engineering Bootcamps", path: "/community/ai-frontier-bootcamps" },
-    ],
+  },
+  {
+    name: "Workshops",
+    path: "/community/ai-frontier-bootcamps",
   },
   {
     name: "Community",

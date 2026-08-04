@@ -18,6 +18,7 @@ interface EventItem {
 }
 
 const PROTOTYPE_EVENTS: EventItem[] = [
+  { type: 'Workshop', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Frontier Series 1: Build Your First AI Full-Stack App', desc: 'A hands-on workshop to build an end-to-end full stack AI application with Next.js and LLMs.', date: 'Aug 10, 2026', location: 'Indore, India', slug: '/community/ai-frontier-bootcamps/build-your-first-ai-full-stack-application' },
   { type: 'Meetup', status: 'Monthly', statusColor: '#0E9F6E', title: 'AI Engineering Meetup — Indore Chapter', desc: 'A monthly gathering for local AI engineers to share projects, talk shop, and swap production lessons.', date: 'Every 3rd Saturday', location: 'Indore, India' },
   { type: 'Meetup', status: 'Upcoming', statusColor: '#0E9F6E', title: 'Open Source Night: Contributing to LangGraph', desc: 'A hands-on evening picking up good-first-issues and pairing on real open-source contributions.', date: 'Sep 12, 2026 · 6:00 PM', location: 'Online' },
   { type: 'Hackathon', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Frontier Hackathon 2026', desc: 'A weekend build sprint following the conference — teams ship an AI agent or RAG system from scratch.', date: 'Sep 26–27, 2026', location: 'Indore, India' },
@@ -56,7 +57,7 @@ export default function EventsClient({
   const [subscribed, setSubscribed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const categoryList = ['All Events', 'Conferences', 'Meetups', 'Hackathons', 'Webinars'];
+  const categoryList = ['All Events', 'Conferences', 'Workshops', 'Meetups', 'Hackathons', 'Webinars'];
 
   const heroStats = [
     { value: '6+', label: 'Events per Year' },
@@ -84,7 +85,7 @@ export default function EventsClient({
 
   const visibleEvents: EventItem[] = useMemo(() => {
     if (filter === 'All Events') return events;
-    const filterMap: Record<string, string> = { 'Conferences': 'Conferences', 'Meetups': 'Meetup', 'Hackathons': 'Hackathon', 'Webinars': 'Webinar' };
+    const filterMap: Record<string, string> = { 'Conferences': 'Conferences', 'Workshops': 'Workshop', 'Meetups': 'Meetup', 'Hackathons': 'Hackathon', 'Webinars': 'Webinar' };
     const target = filterMap[filter] || filter;
     return events.filter(e => e.type.toLowerCase().includes(target.toLowerCase()) || target.toLowerCase().includes(e.type.toLowerCase()));
   }, [filter, events]);
@@ -479,8 +480,8 @@ export default function EventsClient({
                 {ev.location}
               </div>
               {ev.slug ? (
-                <Link
-                  href={`/community/events/${ev.slug}`}
+                <Link 
+                  href={ev.slug.startsWith('/') ? ev.slug : `/community/events/${ev.slug}`}
                   className="mt-1 text-center bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[12.5px] py-2 rounded-lg transition-all"
                 >
                   Register / View Details
