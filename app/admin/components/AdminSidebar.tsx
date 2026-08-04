@@ -317,6 +317,7 @@ export default function AdminSidebar() {
               {renderFlatItem('projects', FolderKanban, 'Projects', '/admin/projects')}
               {renderFlatItem('events', CalendarDays, 'Events', '/admin/events')}
               {renderFlatItem('events', ScanFace, 'Ticket Scanner', '/admin/scanner')}
+              {renderFlatItem('events', BookOpen, 'Bootcamps', '/admin/bootcamps')}
 
               {renderFlatItem('jobs', Users, 'Careers / Jobs', '/admin/jobs', true)}
               {renderFlatItem('partnerships', Handshake, 'Partnerships', '/admin/partnerships', true)}
