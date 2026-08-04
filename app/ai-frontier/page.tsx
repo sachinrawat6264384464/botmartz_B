@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { adminDb } from '@/lib/firebase-admin';
-import AIFrontierEventBody from '../events/ai-frontier-2026/AIFrontierEventBody';
+import AIFrontierEventBody from '../community/events/ai-frontier-2026/AIFrontierEventBody';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {

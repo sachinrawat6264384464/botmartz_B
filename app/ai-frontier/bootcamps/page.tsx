@@ -7,7 +7,6 @@ import WhatsIncluded from "./_components/WhatsIncluded";
 import Instructor from "./_components/Instructor";
 import FAQ from "./_components/FAQ";
 import FinalCTA from "./_components/FinalCTA";
-import NavbarWrapper from "@/app/_components/NavbarWrapper";
 
 export const metadata: Metadata = {
   title: "AI Frontier Engineering Bootcamp Series | Botmartz",
@@ -49,7 +48,6 @@ export default function AIFrontierPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <NavbarWrapper />
       <main>
         <Hero />
         <JourneyTimeline />

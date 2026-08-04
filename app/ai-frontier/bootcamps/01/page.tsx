@@ -3,12 +3,10 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Calendar, Clock, MonitorPlay, Code2, MessageSquare, Bot, Database, Rocket, BookOpen, FolderArchive, Map, Award, Users } from "lucide-react";
-import NavbarWrapper from "@/app/_components/NavbarWrapper";
 
 export default function Bootcamp01Page() {
   return (
     <div className="min-h-screen bg-white">
-      <NavbarWrapper />
       
       <main>
         {/* HERO SECTION */}
