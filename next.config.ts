@@ -63,6 +63,11 @@ const nextConfig = {
         destination: '/ai-frontier',
         permanent: true,
       },
+      {
+        source: '/community/events/ai-frontier-2026',
+        destination: '/ai-frontier',
+        permanent: true,
+      },
     ];
   },
 };
