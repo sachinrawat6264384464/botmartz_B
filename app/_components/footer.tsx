@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Loader2, Shield } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 /* ─── SOCIAL ICONS ───────────────────────────────────────────────────────────── */
 const LinkedInIcon = () => (
@@ -81,7 +82,11 @@ export function Footer({ settings }: { settings?: any }) {
     e.preventDefault();
     if (!email) return;
     setStatus("loading");
-    setTimeout(() => { setStatus("success"); setEmail(""); }, 1000);
+    setTimeout(() => { 
+      setStatus("success"); 
+      trackEvent("newsletter_signup", { source: "footer" });
+      setEmail(""); 
+    }, 1000);
   };
 
   return (

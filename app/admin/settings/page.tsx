@@ -59,8 +59,6 @@ const DEFAULT_SETTINGS = {
   integrations: {
     openaiKey: "sk-proj-8912739812739812739812",
     anthropicKey: "sk-ant-api03-98127398127398127",
-    stripeKey: "sk_live_9812739812739812739812",
-    razorpayKey: "rzp_live_981273981273981273",
     slackWebhook: "https://hooks.slack.com/services/T00/B00/XXXXXX"
   }
 };
@@ -723,20 +721,7 @@ function IntegrationsSettings({ data, onChange, showToast }: { data: any; onChan
             onChange={(val) => onChange('anthropicKey', val)}
             placeholder="sk-ant-..."
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full min-w-0">
-            <PasswordInput 
-              label="Razorpay Key ID / Secret"
-              value={data.razorpayKey || ""}
-              onChange={(val) => onChange('razorpayKey', val)}
-              placeholder="rzp_live_..."
-            />
-            <PasswordInput 
-              label="Stripe Secret Key"
-              value={data.stripeKey || ""}
-              onChange={(val) => onChange('stripeKey', val)}
-              placeholder="sk_live_..."
-            />
-          </div>
+
           <div className="w-full min-w-0">
             <label className="block text-xs font-semibold uppercase tracking-wider text-admin-text-muted mb-1.5 truncate">Slack Notification Webhook</label>
             <input type="text" value={data.slackWebhook || ""} onChange={(e) => onChange('slackWebhook', e.target.value)} placeholder="https://hooks.slack.com/services/..." className="w-full min-w-0 bg-admin-bg border border-admin-border rounded-xl px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent transition-colors font-mono font-medium" />

@@ -8,7 +8,7 @@ event_time: "10:00 AM – 4:00 PM IST"
 location: "Indore, Madhya Pradesh, India"
 format: "In-person, single track, laptop required"
 capacity: "150 seats"
-ticketing: "Razorpay (primary) · Unstop (cross-listed)"
+ticketing: "Direct Registration"
 organiser: "Botmartz"
 og_image: "/ai-frontier/og.png"
 keywords:
@@ -850,22 +850,17 @@ The venue is wheelchair accessible with accessible restrooms. If you have any ac
 
 ---
 
-## Tickets & Pricing
+## Tickets & Registration
 
 <a id="tickets"></a>
 
-| Tier | Price | Availability |
-|---|---|---|
-| **Early Bird** | `₹[XXX]` | First `[X]` seats or until `[DATE]` |
-| **Standard** | `₹[XXX]` | Until `[DATE]` |
-| **Student** | `₹[XXX]` | Valid student ID required at entry |
-| **Team (3+)** | `[X]%` off | Contact us |
+**Entry is free for all attendees.**
 
 **Every ticket includes:** full-day access · lunch and refreshments · the printed AI Engineering Playbook · the complete workshop codebase · session recordings and slides · lifetime access to the Botmartz AI Engineering Community.
 
 <div class="cta">
 
-[**Book on Razorpay →**](#) · [**Register on Unstop →**](#)
+[**Register Now →**](#)
 
 </div>
 

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ArrowRight, Menu, X, PhoneCall } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { trackEvent } from "@/lib/analytics";
 
 export type NavDropdownItem = { name: string; path: string };
 export type NavItem = { name: string; path: string; dropdown?: NavDropdownItem[] };
@@ -139,6 +140,7 @@ export default function Navbar({
           <div className="flex items-center gap-3">
             <Link
               href="/contact"
+              onClick={() => trackEvent("button_click", { button_name: "navbar_book_discovery_desktop" })}
               className="hidden sm:inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white text-[13px] font-bold px-5 py-2.5 rounded-lg shadow-[0_4px_14px_rgba(0,102,255,0.35)] transition-all hover:shadow-[0_4px_20px_rgba(0,102,255,0.5)] hover:-translate-y-px whitespace-nowrap"
             >
               <PhoneCall size={13} className="shrink-0" />
@@ -213,7 +215,7 @@ export default function Navbar({
               <div className="mt-6">
                 <Link
                   href="/contact"
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={() => { setMobileMenuOpen(false); trackEvent("button_click", { button_name: "navbar_book_discovery_mobile" }); }}
                   className="flex items-center justify-center gap-2 bg-[#0066FF] text-white font-bold py-4 rounded-xl text-base whitespace-nowrap"
                 >
                   <PhoneCall size={15} />

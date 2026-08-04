@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import TrackedLink from "@/app/_components/TrackedLink";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, query, where, orderBy, limit, doc, getDoc } from "firebase/firestore";
 import DynamicIcon from "@/app/_components/DynamicIcon";
@@ -227,12 +228,12 @@ export default async function Home() {
                 </p>
               )}
               <div className="flex flex-col sm:flex-row gap-4 mb-[60px] w-full sm:w-auto">
-                <Link href={hero.ctaLink || "/contact"} className="btn bg-[#0066FF] text-white hover:bg-[#0052CC] border-none font-semibold px-8 rounded-lg shadow-[0_0_15px_rgba(0,102,255,0.4)] w-full sm:w-auto text-center justify-center">
+                <TrackedLink href={hero.ctaLink || "/contact"} eventName="button_click" eventData={{ button_name: "home_hero_primary" }} className="btn bg-[#0066FF] text-white hover:bg-[#0052CC] border-none font-semibold px-8 rounded-lg shadow-[0_0_15px_rgba(0,102,255,0.4)] w-full sm:w-auto text-center justify-center">
                   {hero.ctaText || "Book a Discovery Call →"}
-                </Link>
-                <Link href="/work" className="inline-flex items-center justify-center font-mono text-[13px] uppercase tracking-wider px-8 py-3.5 rounded-lg border border-white/30 text-white hover:border-white hover:bg-white/10 transition-all w-full sm:w-auto text-center">
+                </TrackedLink>
+                <TrackedLink href="/work" eventName="button_click" eventData={{ button_name: "home_hero_secondary" }} className="inline-flex items-center justify-center font-mono text-[13px] uppercase tracking-wider px-8 py-3.5 rounded-lg border border-white/30 text-white hover:border-white hover:bg-white/10 transition-all w-full sm:w-auto text-center">
                   Explore Our Work
-                </Link>
+                </TrackedLink>
               </div>
 
               {/* Trust Bar — dynamic */}
@@ -536,9 +537,9 @@ export default async function Home() {
           <p className="text-[#8A9EB0] max-w-[500px] mx-auto mb-10 text-lg">
             Have a project in mind? Let's discuss how we can help you build it.
           </p>
-          <Link href="/contact" className="btn bg-[#0066FF] hover:bg-[#0052CC] border-none text-white shadow-[0_0_15px_rgba(0,102,255,0.4)] font-semibold px-8 py-4 rounded-xl">
+          <TrackedLink href="/contact" eventName="button_click" eventData={{ button_name: "home_footer_cta" }} className="btn bg-[#0066FF] hover:bg-[#0052CC] border-none text-white shadow-[0_0_15px_rgba(0,102,255,0.4)] font-semibold px-8 py-4 rounded-xl">
             Book a Discovery Call →
-          </Link>
+          </TrackedLink>
         </div>
       </section>
     </>

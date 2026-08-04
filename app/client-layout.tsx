@@ -10,6 +10,7 @@ export const useSettings = () => useContext(SettingsContext);
 
 import { AccessibilityProvider } from "./_context/AccessibilityContext";
 import { AccessibilityToolbox } from "./_components/AccessibilityToolbox";
+import AnalyticsProvider from "./_components/AnalyticsProvider";
 
 export default function ClientLayout({
   children,
@@ -25,6 +26,7 @@ export default function ClientLayout({
 
   return (
     <SettingsContext.Provider value={settings || {}}>
+      <AnalyticsProvider />
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <AccessibilityProvider>
         <div className="min-h-screen flex flex-col">
