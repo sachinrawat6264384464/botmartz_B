@@ -60,7 +60,13 @@ function CheckoutContent() {
           const verifyRes = await fetch("/api/ai-frontier/verify-payment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(response),
+            body: JSON.stringify({
+              ...response,
+              name: formData.name,
+              email: formData.email,
+              phone: formData.phone,
+              plan: plan || "bootcamp-01"
+            }),
           });
 
           const verifyData = await verifyRes.json();
