@@ -67,6 +67,33 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
     { tag: "FF", title: "Future Focused", desc: "Shaping the future of AI, responsibly." },
   ];
 
+  const speakers = [
+    {
+      name: "Soham Sharma",
+      role: "Principal AI Architect & Host",
+      company: "Botmartz",
+      image: "/Sohamsharma.jpeg",
+      linkedin: "https://www.linkedin.com/in/soham-sharma/",
+      bio: "Soham is an AI Engineer and Architect specializing in Enterprise RAG, agentic workflows, and deploying LLMs into production. He has trained hundreds of developers and works daily on the frontier of applied AI."
+    },
+    {
+      name: "Dr. Promit Ray",
+      role: "Chief AI Scientist",
+      company: "Industry Leader",
+      image: "/promit.png",
+      linkedin: "https://www.linkedin.com/in/promit-ray/",
+      bio: "Dr. Promit Ray is a leading researcher focused on foundation models, reasoning architectures, and inference economics. He guides enterprise AI strategies and advanced research at a global scale."
+    },
+    {
+      name: "Harsh Sahu",
+      role: "AI Engineer",
+      company: "GTWY AI",
+      image: "/harsh_sahu.jpeg",
+      linkedin: "https://www.linkedin.com/in/harshhsahu/",
+      bio: "Harsh specializes in building autonomous agents and custom LLM solutions. His expertise lies in practical orchestration pipelines, evaluation harnesses, and moving experimental models reliably into production."
+    }
+  ];
+
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
     if (email.trim()) {
@@ -299,7 +326,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
               <div className="absolute top-0 right-0 bg-gradient-to-l from-[#7C3AED]/15 to-transparent w-40 h-full pointer-events-none" />
               <div className="flex justify-between items-start flex-wrap gap-2">
                 <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#7C3AED] uppercase">Keynote · Flagship Deep Dive</span>
-                <span className="font-bold text-[11px] text-[#7C3AED] bg-[#F1EBFE] px-3 py-1 rounded-full">Dr. Promit Ray · Chief AI Scientist</span>
+                <span className="font-bold text-[11px] text-[#7C3AED] bg-[#F1EBFE] px-3 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/promit.png" alt="Dr. Promit Ray" className="w-4 h-4 rounded-full object-cover" /> Dr. Promit Ray · Chief AI Scientist</span>
               </div>
               <h3 className="font-extrabold text-[22px] sm:text-[24px] text-[#0B1220] mt-2.5">Think Like an AI Engineer</h3>
               <p className="font-medium text-[14.5px] text-[#3A4459] mt-2.5 leading-[1.65]">
@@ -503,7 +530,49 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
         </p>
       </div>
 
-      {/* ─── 3. TAKEAWAYS & ATTENDEES ─── */}
+      {/* ─── 3. MEET THE SPEAKERS ─── */}
+      <div className="bg-white border-y border-[#E7ECF3] py-16 px-6 sm:px-10">
+        <div className="max-w-[1120px] mx-auto">
+          <div className="text-center max-w-[640px] mx-auto mb-14">
+            <div className="font-bold text-xs tracking-[0.1em] text-[#007BFF] uppercase">World-Class Engineers</div>
+            <h2 className="font-extrabold text-[28px] sm:text-[32px] leading-[1.25] text-[#0B1220] mt-3">
+              Meet the Instructors
+            </h2>
+            <p className="font-medium text-sm sm:text-[15px] leading-[1.6] text-[#5B6B85] mt-3.5">
+              Learn directly from practitioners who design, build, and deploy AI systems in production every single day.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {speakers.map((speaker, i) => (
+              <div key={i} className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-2xl p-6 flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow relative group">
+                <a 
+                  href={speaker.linkedin} 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="absolute top-6 right-6 w-8 h-8 rounded-full bg-[#0077B5]/10 flex items-center justify-center text-[#0077B5] hover:bg-[#0077B5] hover:text-white transition-colors"
+                >
+                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                  </svg>
+                </a>
+                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-white shadow-sm shrink-0 bg-[#E2E8F0]">
+                  <img src={speaker.image} alt={speaker.name} className="w-full h-full object-cover" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg text-[#0B1220]">{speaker.name}</h3>
+                  <div className="font-semibold text-xs text-[#007BFF] mt-1">{speaker.role}</div>
+                  <p className="font-medium text-[13px] leading-[1.6] text-[#5B6B85] mt-3">
+                    {speaker.bio}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ─── 4. TAKEAWAYS & ATTENDEES ─── */}
       <div className="max-w-[1120px] mx-auto py-14 px-6 sm:px-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Exclusive Takeaway Card */}
         <div className="bg-[#0A1327] rounded-2xl p-7 flex flex-col justify-between gap-6 shadow-sm">
@@ -586,7 +655,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
         </div>
       </div>
 
-      {/* ─── 4. OPEN FORUM (Q & A) ─── */}
+      {/* ─── 5. OPEN FORUM (Q & A) ─── */}
       <div className="max-w-[1120px] mx-auto py-6 px-6 sm:px-10 pb-14">
         <div className="bg-gradient-to-r from-[#0A1327] to-[#060C1F] rounded-[18px] p-8 sm:p-10 grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-8 items-center relative overflow-hidden shadow-md">
           <div className="absolute w-[280px] h-[280px] rounded-full bg-[radial-gradient(circle,rgba(0,198,255,0.18),transparent_70%)] -right-[60px] -top-[80px] pointer-events-none" />
@@ -616,7 +685,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
         </div>
       </div>
 
-      {/* ─── 5. CONTENT MULTIPLICATION ─── */}
+      {/* ─── 6. CONTENT MULTIPLICATION ─── */}
       <div className="max-w-[1120px] mx-auto py-6 px-6 sm:px-10 pb-16">
         <div className="text-center max-w-[640px] mx-auto mb-10">
           <div className="font-bold text-xs tracking-[0.1em] text-[#007BFF] uppercase">One Day, Months of Reach</div>
@@ -639,7 +708,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
         </div>
       </div>
 
-      {/* ─── 6. WHAT'S NEXT (COMMUNITY LAUNCH) ─── */}
+      {/* ─── 7. WHAT'S NEXT (COMMUNITY LAUNCH) ─── */}
       <div className="bg-[#060C1F] py-18 px-6 sm:px-10 relative overflow-hidden">
         <div className="absolute w-[360px] h-[360px] rounded-full bg-[radial-gradient(circle,rgba(0,123,255,0.2),transparent_70%)] -left-[100px] -bottom-[140px] pointer-events-none" />
         <div className="max-w-[1120px] mx-auto relative grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
@@ -694,7 +763,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
         </div>
       </div>
 
-      {/* ─── 7. WHY FRONTIER PILLARS ─── */}
+      {/* ─── 8. WHY FRONTIER PILLARS ─── */}
       <div className="max-w-[1120px] mx-auto py-12 px-6 sm:px-10 pb-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
           {whyFrontier.map((f, i) => (
