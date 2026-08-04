@@ -21,9 +21,9 @@ export default function Pricing() {
           
           {/* Individual Bootcamps */}
           {[
-            { id: 1, title: "Bootcamp 01", desc: "Build Your First AI Full-Stack App" },
-            { id: 2, title: "Bootcamp 02", desc: "Build Smarter AI Agents" },
-            { id: 3, title: "Bootcamp 03", desc: "Build Production Ready AI Apps" },
+            { id: 1, title: "Series 1", desc: "Build Your First AI Full-Stack App" },
+            { id: 2, title: "Series 2", desc: "Build Smarter AI Agents" },
+            { id: 3, title: "Series 3", desc: "Build Production Ready AI Apps" },
           ].map((item, idx) => (
             <motion.div
               key={item.id}
@@ -39,7 +39,7 @@ export default function Pricing() {
                 <span className="text-3xl font-bold text-[#0B1C2C]">₹199</span>
               </div>
               <Link
-                href={`/ai-frontier/bootcamps/checkout?plan=bootcamp-${item.id}`}
+                href={`/community/ai-frontier-bootcamps/checkout?plan=bootcamp-${item.id}`}
                 className="w-full py-3 px-4 rounded-xl border-2 border-[#E2E8F0] text-[#0B1C2C] font-semibold hover:border-[#0B1C2C] hover:bg-[#F8FAFC] transition-all text-center"
               >
                 Register
@@ -81,7 +81,7 @@ export default function Pricing() {
             </div>
 
             <Link
-              href={`/ai-frontier/bootcamps/checkout?plan=bundle`}
+              href={`/community/ai-frontier-bootcamps/checkout?plan=bundle`}
               className="w-full py-4 px-4 rounded-xl bg-[#0066FF] text-white font-bold hover:bg-[#0052CC] transition-all text-center shadow-[0_4px_14px_rgba(0,102,255,0.35)] hover:shadow-[0_4px_20px_rgba(0,102,255,0.5)]"
             >
               Get The Full Pass

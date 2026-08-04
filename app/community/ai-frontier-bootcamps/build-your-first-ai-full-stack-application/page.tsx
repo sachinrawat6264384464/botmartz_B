@@ -3,12 +3,10 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Calendar, Clock, MonitorPlay, Code2, MessageSquare, Bot, Database, Rocket, BookOpen, FolderArchive, Map, Award, Users } from "lucide-react";
-import NavbarWrapper from "@/app/_components/NavbarWrapper";
 
 export default function Bootcamp01Page() {
   return (
     <div className="min-h-screen bg-white">
-      <NavbarWrapper />
       
       <main>
         {/* HERO SECTION */}
@@ -82,8 +80,8 @@ export default function Bootcamp01Page() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
               >
-                <Link
-                  href="/ai-frontier/bootcamps/checkout?plan=bootcamp-01"
+                <Link 
+                  href="/community/ai-frontier-bootcamps/checkout?plan=bootcamp-01"
                   className="group inline-flex items-center justify-center gap-2 bg-[#0066FF] text-white px-10 py-5 rounded-2xl font-bold text-xl hover:bg-[#0052CC] transition-all shadow-[0_4px_20px_rgba(0,102,255,0.3)] hover:shadow-[0_4px_25px_rgba(0,102,255,0.5)] hover:-translate-y-1 w-full sm:w-auto"
                 >
                   Register Now - ₹199
