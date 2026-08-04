@@ -75,7 +75,7 @@ export default function SuccessPage() {
                 Return Home
               </Link>
               <Link
-                href="https://discord.gg/botmartz"
+                href="https://discord.gg/d7PmsQFx9"
                 target="_blank"
                 className="px-8 py-4 rounded-xl bg-[#0066FF] text-white font-bold hover:bg-[#0052CC] transition-all text-center flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(0,102,255,0.35)]"
               >
