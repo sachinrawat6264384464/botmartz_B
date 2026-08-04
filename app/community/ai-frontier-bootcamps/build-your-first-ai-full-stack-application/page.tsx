@@ -80,8 +80,8 @@ export default function Bootcamp01Page() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
               >
-                <Link
-                  href="/ai-frontier/bootcamps/checkout?plan=bootcamp-01"
+                <Link 
+                  href="/community/ai-frontier-bootcamps/checkout?plan=bootcamp-01"
                   className="group inline-flex items-center justify-center gap-2 bg-[#0066FF] text-white px-10 py-5 rounded-2xl font-bold text-xl hover:bg-[#0052CC] transition-all shadow-[0_4px_20px_rgba(0,102,255,0.3)] hover:shadow-[0_4px_25px_rgba(0,102,255,0.5)] hover:-translate-y-1 w-full sm:w-auto"
                 >
                   Register Now - ₹199
@@ -103,7 +103,7 @@ export default function Bootcamp01Page() {
               <div className="bg-[#0B1C2C] rounded-3xl p-1 shadow-2xl relative overflow-hidden border border-[#1E293B]">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#0066FF]/20 to-transparent pointer-events-none" />
                 <div className="bg-[#0F172A] rounded-[22px] p-8 relative z-10 text-center">
-                  <img src="https://avatars.githubusercontent.com/u/108393527" alt="Soham Sharma" className="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-[#1E293B] shadow-xl object-cover" />
+                  <img src="/Sohamsharma.jpeg" alt="Soham Sharma" className="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-[#1E293B] shadow-xl object-cover" />
                   <div className="text-xs font-bold tracking-widest uppercase text-[#0066FF] mb-2">Lead Instructor</div>
                   <h3 className="text-2xl font-bold text-white mb-1">Soham Sharma</h3>
                   <p className="text-[#8A9EB0] text-sm mb-6">Founder, Botmartz AI Solutions<br/>AI Engineer • Trainer • Speaker</p>

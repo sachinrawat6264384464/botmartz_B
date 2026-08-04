@@ -12,13 +12,13 @@ export const metadata: Metadata = {
   title: "AI Frontier Engineering Bootcamp Series | Botmartz",
   description: "The official runway to AI Frontier 2026. Build production-ready AI applications through three live, hands-on engineering bootcamps.",
   openGraph: {
-    title: "AI Frontier Engineering Bootcamp Series | Botmartz",
-    description: "The official runway to AI Frontier 2026. Build production-ready AI applications through three live, hands-on engineering bootcamps.",
-    url: "https://www.botmartz.com/ai-frontier/bootcamps",
+    title: "AI Frontier Bootcamps | Botmartz",
+    description: "Join the live engineering bootcamps leading up to AI Frontier 2026. Build production-ready AI applications.",
+    url: "https://www.botmartz.com/community/ai-frontier-bootcamps",
     type: "website",
   },
   alternates: {
-    canonical: "https://www.botmartz.com/ai-frontier/bootcamps",
+    canonical: "https://www.botmartz.com/community/ai-frontier-bootcamps",
   },
 };
 

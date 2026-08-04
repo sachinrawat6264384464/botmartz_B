@@ -139,8 +139,10 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
                   ◎
                 </div>
                 <div>
-                  <div className="font-bold text-[13.5px] text-white">Walkover Venue</div>
-                  <div className="font-medium text-xs text-[#7C8CAD]">Indore, India</div>
+                  <div className="font-bold text-[13.5px] text-white flex items-center gap-2">
+                    <img src="/Walkoversvg (1)(1).png" alt="Walkover" className="h-[14px] object-contain brightness-0 invert opacity-90" />
+                  </div>
+                  <div className="font-medium text-xs text-[#7C8CAD]">Venue Partner · Indore, India</div>
                 </div>
               </div>
             </div>
@@ -359,7 +361,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
             <div className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 shadow-sm hover:border-[#007BFF]/40 transition-all">
               <div className="flex justify-between items-start flex-wrap gap-2">
                 <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#8A97AC] uppercase">Welcome</span>
-                <span className="font-bold text-[11px] text-[#007BFF] bg-[#E8F2FF] px-2.5 py-1 rounded-full">Soham Sharma · Principal AI Architect</span>
+                <span className="font-bold text-[11px] text-[#007BFF] bg-[#E8F2FF] px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/Sohamsharma.jpeg" alt="Soham Sharma" className="w-4 h-4 rounded-full object-cover" /> Soham Sharma · Principal AI Architect</span>
               </div>
               <h3 className="font-extrabold text-[20px] sm:text-[22px] text-[#0B1220] mt-2">Set the Frame</h3>
               <p className="font-medium text-[14px] text-[#3A4459] mt-2 leading-[1.6]">
@@ -414,7 +416,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
             <div className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 shadow-sm hover:border-[#D97706]/40 transition-all">
               <div className="flex justify-between items-start flex-wrap gap-2">
                 <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#8A97AC] uppercase">Hands-on Workshop · Part 1</span>
-                <span className="font-bold text-[11px] text-[#D97706] bg-[#FEF3E2] px-2.5 py-1 rounded-full">Harsh Sahu (GTWY AI)</span>
+                <span className="font-bold text-[11px] text-[#D97706] bg-[#FEF3E2] px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/harsh_sahu.jpeg" alt="Harsh Sahu" className="w-4 h-4 rounded-full object-cover" /> Harsh Sahu (GTWY AI)</span>
               </div>
               <h3 className="font-extrabold text-[20px] sm:text-[22px] text-[#0B1220] mt-2">Build Your First AI Agent: EdTech Case Study</h3>
               <p className="font-medium text-[14px] text-[#3A4459] mt-2 leading-[1.6]">
@@ -449,7 +451,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
             <div className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 shadow-sm hover:border-[#D97706]/40 transition-all">
               <div className="flex justify-between items-start flex-wrap gap-2">
                 <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#8A97AC] uppercase">Hands-on Workshop · Part 2</span>
-                <span className="font-bold text-[11px] text-[#D97706] bg-[#FEF3E2] px-2.5 py-1 rounded-full">Harsh Sahu (GTWY AI)</span>
+                <span className="font-bold text-[11px] text-[#D97706] bg-[#FEF3E2] px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/harsh_sahu.jpeg" alt="Harsh Sahu" className="w-4 h-4 rounded-full object-cover" /> Harsh Sahu (GTWY AI)</span>
               </div>
               <h3 className="font-extrabold text-[20px] sm:text-[22px] text-[#0B1220] mt-2">Evaluation, Memory &amp; Production deployment</h3>
               <p className="font-medium text-[14px] text-[#3A4459] mt-2 leading-[1.6]">
@@ -475,7 +477,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
             <div className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 shadow-sm hover:border-[#0E9F6E]/40 transition-all">
               <div className="flex justify-between items-start flex-wrap gap-2">
                 <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#8A97AC] uppercase">Talk &amp; Community Launch</span>
-                <span className="font-bold text-[11px] text-[#0E9F6E] bg-[#E4F8EF] px-2.5 py-1 rounded-full">Soham Sharma</span>
+                <span className="font-bold text-[11px] text-[#0E9F6E] bg-[#E4F8EF] px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/Sohamsharma.jpeg" alt="Soham Sharma" className="w-4 h-4 rounded-full object-cover" /> Soham Sharma</span>
               </div>
               <h3 className="font-extrabold text-[20px] sm:text-[22px] text-[#0B1220] mt-2">Building Your AI Engineering Journey</h3>
               <p className="font-medium text-[14px] text-[#3A4459] mt-2 leading-[1.6]">

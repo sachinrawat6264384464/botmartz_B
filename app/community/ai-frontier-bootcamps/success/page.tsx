@@ -38,7 +38,7 @@ export default function SuccessPage() {
               {[
                 { icon: Mail, title: "Check your email", desc: "We've sent your receipt and confirmation details." },
                 { icon: Calendar, title: "Add to Calendar", desc: "Download the .ics file to block your calendar." },
-                { icon: Download, title: "Download Setup Guide", desc: "Prepare your local environment before Bootcamp 01." },
+                { icon: Download, title: "Download Setup Guide", desc: "Prepare your local environment before Series 1." },
                 { icon: Users, title: "Join the Community", desc: "Introduce yourself in our exclusive Discord." },
               ].map((item, idx) => {
                 const Icon = item.icon;

@@ -5,19 +5,19 @@ import { motion } from "framer-motion";
 const milestones = [
   {
     id: "01",
-    title: "Bootcamp 01",
+    title: "Series 1",
     subtitle: "Build Your First AI Full-Stack Application",
     description: "Build an AI-powered application from scratch using the latest AI tools.",
   },
   {
     id: "02",
-    title: "Bootcamp 02",
+    title: "Series 2",
     subtitle: "Build Smarter AI Agents",
     description: "Learn how modern AI Agents think, plan and act.",
   },
   {
     id: "03",
-    title: "Bootcamp 03",
+    title: "Series 3",
     subtitle: "Build Production Ready AI Applications",
     description: "Understand how modern production AI systems are engineered.",
   },
