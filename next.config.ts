@@ -55,6 +55,16 @@ const nextConfig = {
       },
     ];
   },
+
+  async redirects() {
+    return [
+      {
+        source: '/community/ai-frontier',
+        destination: '/ai-frontier',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
