@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, password, subject, htmlBody } = await req.json();
+    const { email, password, subject, htmlBody, targetAudience } = await req.json();
 
     // Verify admin credentials
     if (email !== 'botmartz@gmail.com' || password !== 'Admin@2026##') {
@@ -25,10 +25,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Subject and HTML Body are required' }, { status: 400 });
     }
 
+    const collectionName = targetAudience === 'bootcamps' ? 'bootcamp_registrations' : 'event-registrations';
+
     // Fetch all paid registrations
-    const snapshot = await adminDb.collection('event-registrations')
-      .where('paymentStatus', '==', 'paid')
-      .get();
+    let snapshot;
+    if (collectionName === 'bootcamp_registrations') {
+      snapshot = await adminDb.collection(collectionName)
+        .where('status', '==', 'paid')
+        .get();
+    } else {
+      snapshot = await adminDb.collection(collectionName)
+        .where('paymentStatus', '==', 'paid')
+        .get();
+    }
 
     // Extract unique emails
     const uniqueEmails = new Set<string>();

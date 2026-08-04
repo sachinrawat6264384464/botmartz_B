@@ -6,13 +6,14 @@ import { Mail, Loader2, X, Send } from "lucide-react";
 interface EmailBlastModalProps {
   isOpen: boolean;
   onClose: () => void;
-  email: string; // Admin email
-  password: string; // Admin password
+  email: string; 
+  password: string; 
 }
 
 export default function EmailBlastModal({ isOpen, onClose, email, password }: EmailBlastModalProps) {
   const [subject, setSubject] = useState("");
   const [htmlBody, setHtmlBody] = useState("");
+  const [targetAudience, setTargetAudience] = useState<"events" | "bootcamps">("events");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
 
@@ -24,7 +25,7 @@ export default function EmailBlastModal({ isOpen, onClose, email, password }: Em
       return;
     }
 
-    const confirm = window.confirm("Are you sure you want to send this email to all paid attendees? This cannot be undone.");
+    const confirm = window.confirm(`Are you sure you want to send this email to all paid ${targetAudience} attendees? This cannot be undone.`);
     if (!confirm) return;
 
     setStatus("loading");
@@ -34,7 +35,7 @@ export default function EmailBlastModal({ isOpen, onClose, email, password }: Em
       const res = await fetch("/api/scanner/email-blast", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, subject, htmlBody })
+        body: JSON.stringify({ email, password, subject, htmlBody, targetAudience })
       });
       
       const data = await res.json();
@@ -77,6 +78,19 @@ export default function EmailBlastModal({ isOpen, onClose, email, password }: Em
           </p>
 
           <form onSubmit={handleSend} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-white mb-1">Target Audience</label>
+              <select
+                value={targetAudience}
+                onChange={(e) => setTargetAudience(e.target.value as any)}
+                className="w-full bg-[#050C18] border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#00B8F0] transition-colors"
+                disabled={status === "loading"}
+              >
+                <option value="events">Event Attendees (Flagship AI Frontier Event)</option>
+                <option value="bootcamps">Bootcamp Attendees (Workshops)</option>
+              </select>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-white mb-1">Subject Line</label>
               <input

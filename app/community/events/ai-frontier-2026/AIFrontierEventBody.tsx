@@ -21,7 +21,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
     id: event?.id || "ai-frontier-2026",
     title: event?.title || "AI Frontier 2026 — The Future of AI Engineering",
     slug: event?.slug || "ai-frontier-2026",
-    entryFee: (event?.entryFee !== undefined && event?.entryFee !== null) ? Number(event.entryFee) : 449,
+    entryFee: (event?.entryFee !== undefined && event?.entryFee !== null) ? Number(event.entryFee) : 0,
     date: event?.date || "May 24–25, 2026",
     location: event?.location || "The Leela Palace, Bangalore"
   };
@@ -154,7 +154,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
             <div className="flex gap-7 mt-7 flex-wrap">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-[9px] bg-[rgba(0,198,255,0.12)] border border-[rgba(0,198,255,0.3)] flex items-center justify-center font-bold text-xs text-[#00C6FF] shrink-0">
-                  22
+                  23
                 </div>
                 <div>
                   <div className="font-bold text-[13.5px] text-white">Aug 23, 2026</div>

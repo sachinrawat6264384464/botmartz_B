@@ -3,6 +3,8 @@
 import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { db } from "@/lib/firebase";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 function CheckoutContent() {
   const router = useRouter();
@@ -12,15 +14,40 @@ function CheckoutContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   
+  const [bootcampAmount, setBootcampAmount] = useState<number | null>(null);
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
   });
 
+  useEffect(() => {
+    const fetchBootcamp = async () => {
+      if (plan === "bundle") {
+        setBootcampAmount(399);
+        return;
+      }
+      if (plan) {
+        try {
+          const q = query(collection(db, "bootcamps"), where("slug", "==", plan));
+          const snapshot = await getDocs(q);
+          if (!snapshot.empty) {
+            setBootcampAmount(snapshot.docs[0].data().price || 199);
+          } else {
+            setBootcampAmount(199); // fallback
+          }
+        } catch (e) {
+          console.error("Error fetching bootcamp price:", e);
+          setBootcampAmount(199);
+        }
+      }
+    };
+    fetchBootcamp();
+  }, [plan]);
+
   const getAmount = () => {
-    if (plan === "bundle") return 399;
-    return 199;
+    return bootcampAmount || 199;
   };
 
   useEffect(() => {
