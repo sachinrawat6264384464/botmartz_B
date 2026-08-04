@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Mail, MapPin, Phone, CheckCircle, AlertCircle, RefreshCw, HelpCircle, ShieldCheck, Clock, Layers } from 'lucide-react';
+import { trackEvent } from '@/lib/analytics';
 
 interface ContactClientProps {
   heroData: {
@@ -56,10 +57,12 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
 
       if (res.ok) {
         setSuccess(true);
+        trackEvent("form_submission", { form_name: "contact_us", company: form.company });
         setForm({ firstName: '', lastName: '', email: '', company: '', message: '' });
       } else {
         const data = await res.json();
         setError(data.error || 'Something went wrong. Please try again.');
+        trackEvent("form_submission", { form_name: "contact_us", error: data.error });
       }
     } catch (err) {
       setError('Network error. Please try again later.');

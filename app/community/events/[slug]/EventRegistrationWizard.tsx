@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, addDoc, doc, onSnapshot } from "firebase/firestore";
+import { trackEvent } from "@/lib/analytics";
 
 interface EventRegistrationWizardProps {
   isOpen: boolean;
@@ -32,24 +33,7 @@ interface EventRegistrationWizardProps {
   };
 }
 
-const loadRazorpayScript = () => {
-  return new Promise((resolve) => {
-    if (typeof window === "undefined") {
-      resolve(false);
-      return;
-    }
-    if ((window as any).Razorpay) {
-      resolve(true);
-      return;
-    }
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.async = true;
-    script.onload = () => resolve(true);
-    script.onerror = () => resolve(false);
-    document.body.appendChild(script);
-  });
-};
+
 
 export default function EventRegistrationWizard({ isOpen, onClose, event }: EventRegistrationWizardProps) {
   const router = useRouter();
@@ -79,71 +63,23 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
   const [isVerifying, setIsVerifying] = useState(false);
   const [successCode, setSuccessCode] = useState<string | null>(null);
 
-  // Coupon states
-  const [couponCodeInput, setCouponCodeInput] = useState("");
-  const [appliedCoupon, setAppliedCoupon] = useState<{
-    code: string;
-    type: string;
-    discountType: string;
-    discountValue: number;
-  } | null>(null);
-  const [couponLoading, setCouponLoading] = useState(false);
-  const [couponMessage, setCouponMessage] = useState({ text: "", type: "" });
+
 
   const unsubscribeRef = useRef<(() => void) | null>(null);
 
-  // Calculate dynamic entry fee
-  const isEarlyBird = new Date() <= new Date("2026-07-30T23:59:59Z");
-  
-  const calculateFee = () => {
-    let basePrice = formData.attendeeType === "student" ? 449 : 699;
-    
-    if (appliedCoupon) {
-      if (appliedCoupon.discountType === 'percentage') {
-        basePrice = Math.max(0, Math.round(basePrice * (1 - appliedCoupon.discountValue / 100)));
-      } else if (appliedCoupon.discountType === 'fixed') {
-        basePrice = Math.max(0, basePrice - appliedCoupon.discountValue);
-      }
-    }
-
-    let discount = 0;
-    if (formData.quantity >= 10) discount = 100;
-    else if (formData.quantity >= 5) discount = 50;
-    
-    return Math.max(0, (basePrice - discount) * formData.quantity);
-  };
-  const entryFee = calculateFee();
+  const entryFee = 0;
 
   // Cleanup listeners
   useEffect(() => {
+    if (isOpen) {
+      trackEvent("event_registration_started", { event_title: event.title, event_slug: event.slug });
+    }
     return () => {
       if (unsubscribeRef.current) unsubscribeRef.current();
     };
-  }, []);
+  }, [isOpen, event.title, event.slug]);
 
-  const handleApplyCoupon = async () => {
-    if (!couponCodeInput.trim()) return;
-    setCouponLoading(true);
-    setCouponMessage({ text: "", type: "" });
-    try {
-      const res = await fetch("/api/events/verify-coupon", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: couponCodeInput.trim() })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setAppliedCoupon(data);
-        setCouponMessage({ text: "Coupon applied successfully!", type: "success" });
-      } else {
-        setAppliedCoupon(null);
-        setCouponMessage({ text: data.error || "Invalid coupon", type: "error" });
-      }
-    } catch (e) {
-      setCouponMessage({ text: "Failed to verify coupon", type: "error" });
-    }
-    setCouponLoading(false);
-  };
+
 
   const downloadQR = async () => {
     try {
@@ -202,116 +138,7 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
 
   if (!isOpen) return null;
 
-  // Trigger standard Razorpay Checkout
-  const initiatePayment = async (regId: string) => {
-    setError("");
-    setLoading(true);
-    setIsVerifying(false);
-    setVerificationLogs([]);
 
-    try {
-      const isLoaded = await loadRazorpayScript();
-      if (!isLoaded) {
-        setError("Failed to load Razorpay payment SDK. Check your internet connection.");
-        setLoading(false);
-        return;
-      }
-
-      const res = await fetch("/api/events/create-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          registrationId: regId,
-          amount: entryFee,
-          couponCode: appliedCoupon?.code
-        })
-      });
-
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        setError(data.error || "Failed to create checkout order.");
-        setLoading(false);
-        return;
-      }
-
-      const options = {
-        key: data.keyId,
-        amount: data.amount,
-        currency: "INR",
-        name: "Botmartz",
-        description: event.title,
-        order_id: data.orderId,
-        prefill: {
-          name: formData.name,
-          email: formData.email,
-          contact: formData.phone,
-        },
-        theme: {
-          color: "#00B8F0"
-        },
-        modal: {
-          ondismiss: () => {
-            setLoading(false);
-            setError("Payment checkout window was closed. You can retry the payment below.");
-          }
-        },
-        handler: async (response: any) => {
-          setStep(2);
-          setLoading(false);
-          setIsVerifying(true);
-          setVerificationLogs([]);
-
-          const logSteps = [
-            `[⚡] Connection established with verification nodes...`,
-            `[⚡] Authenticating cryptographic payment signature...`,
-            `[⚡] Syncing transaction record with Razorpay registry...`,
-          ];
-
-          for (let i = 0; i < logSteps.length; i++) {
-            setVerificationLogs((prev) => [...prev, logSteps[i]]);
-            await new Promise((resolve) => setTimeout(resolve, 800));
-          }
-
-          try {
-             const verifyRes = await fetch("/api/events/verify-payment", {
-               method: "POST",
-               headers: { "Content-Type": "application/json" },
-               body: JSON.stringify({
-                 registrationId: regId,
-                 razorpay_payment_id: response.razorpay_payment_id,
-                 razorpay_order_id: response.razorpay_order_id,
-                 razorpay_signature: response.razorpay_signature,
-               })
-             });
-
-             const verifyData = await verifyRes.json();
-             if (verifyRes.ok && verifyData.success) {
-               setVerificationLogs((prev) => [...prev, `[✓] Signature match verified! Seat secured.`]);
-               await new Promise((resolve) => setTimeout(resolve, 600));
-               setSuccessCode(verifyData.checkInCode);
-               setStep(3);
-             } else {
-               setVerificationLogs((prev) => [...prev, `[✖] Verification failed: ${verifyData.error}`]);
-               setError(verifyData.error || "Payment verification failed.");
-               setIsVerifying(false);
-             }
-          } catch (verifyErr) {
-             console.error(verifyErr);
-             setError("Signature verification failed due to a network error.");
-             setIsVerifying(false);
-          }
-        }
-      };
-
-      const rzp = new (window as any).Razorpay(options);
-      rzp.open();
-
-    } catch (err: any) {
-      console.error(err);
-      setError("An unexpected error occurred during payment initialization.");
-      setLoading(false);
-    }
-  };
 
   // Handle Form details submit (Step 1)
   const handleStep1Submit = async (e: React.FormEvent) => {
@@ -347,35 +174,15 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
         checkInCode: entryFee === 0 ? `REG-${Math.random().toString(36).substring(2, 11).toUpperCase()}` : "",
         attended: false,
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        appliedCoupon: appliedCoupon ? appliedCoupon.code : null
+        updatedAt: new Date().toISOString()
       };
 
       const docRef = await addDoc(collection(db, "event-registrations"), newReg);
       setPendingRegId(docRef.id);
+      trackEvent("event_registration_completed", { event_title: event.title, attendee_type: formData.attendeeType, quantity: formData.quantity });
 
-      if (entryFee === 0) {
-        setSuccessCode(newReg.checkInCode);
-        setStep(3);
-      } else {
-        setStep(2);
-        
-        // Setup real-time listener for the registration document
-        // If webhook catches payment, we auto-advance!
-        unsubscribeRef.current = onSnapshot(doc(db, "event-registrations", docRef.id), (docSnap) => {
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            if (data?.paymentStatus === "paid") {
-              setSuccessCode(data.checkInCode);
-              setStep(3);
-              if (unsubscribeRef.current) unsubscribeRef.current();
-            }
-          }
-        });
-
-        // Trigger payment immediately
-        await initiatePayment(docRef.id);
-      }
+      setSuccessCode(newReg.checkInCode);
+      setStep(3);
     } catch (err: any) {
       console.error(err);
       setError("Failed to initialize registration. Please try again.");
@@ -402,13 +209,8 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
           {step === 1 && (
             <form onSubmit={handleStep1Submit} className="space-y-4">
               <div>
-                <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-                  <h3 className="text-xl sm:text-2xl font-bold font-space-grotesk tracking-tight text-white drop-shadow-sm">Register for Event</h3>
-                  {isEarlyBird && (
-                    <span className="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-emerald-500/30">
-                      Early Bird -15%
-                    </span>
-                  )}
+                <div className="flex items-center gap-3">
+                  <h3 className="text-xl font-bold font-space-grotesk tracking-tight">Register for Event</h3>
                 </div>
                 <p className="text-xs sm:text-sm text-slate-300 mt-1 font-medium">{event.title}</p>
               </div>
@@ -465,8 +267,8 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                       onChange={(e) => setFormData({...formData, attendeeType: e.target.value})}
                       className="w-full bg-[#050C18] border border-white/40 hover:border-white/70 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white transition-all"
                     >
-                      <option value="student">Student (₹449)</option>
-                      <option value="professional">Professional (₹699)</option>
+                      <option value="student">Student (Free)</option>
+                      <option value="professional">Professional (Free)</option>
                     </select>
                   </div>
                   <div>
@@ -536,45 +338,15 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                   </div>
                 )}
 
-                {/* PROMO COUPON CODE SECTION */}
-                <div className="pt-2">
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
-                    Have a Coupon / Promo Code?
-                  </label>
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={couponCodeInput}
-                      onChange={(e) => setCouponCodeInput(e.target.value.toUpperCase())}
-                      placeholder="ENTER PROMO CODE"
-                      disabled={!!appliedCoupon}
-                      className="w-full bg-[#050C18] border border-white/40 hover:border-white/70 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-white uppercase tracking-wider font-mono placeholder:text-slate-400 disabled:opacity-60"
-                    />
-                    {!appliedCoupon ? (
-                      <button
-                        type="button"
-                        onClick={handleApplyCoupon}
-                        disabled={couponLoading || !couponCodeInput.trim()}
-                        className="bg-brand/20 border border-brand/40 text-[#00B8F0] hover:bg-brand/30 px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-colors shrink-0 flex items-center gap-1.5 disabled:opacity-40"
-                      >
-                        {couponLoading ? <Loader2 size={12} className="animate-spin" /> : "Apply"}
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => { setAppliedCoupon(null); setCouponMessage({text: "", type: ""}); setCouponCodeInput(""); }}
-                        className="bg-rose-500/10 border border-rose-500/30 text-rose-400 hover:bg-rose-500/20 px-3 py-2.5 rounded-xl text-xs font-semibold transition-colors shrink-0 flex items-center gap-1"
-                        title="Remove Coupon"
-                      >
-                        <X size={14} />
-                      </button>
-                    )}
-                  </div>
-                  {couponMessage.text && !appliedCoupon && (
-                    <p className={`text-xs mt-1.5 font-medium ${couponMessage.type === 'success' ? 'text-emerald-400' : 'text-rose-400'}`}>
-                      {couponMessage.text}
-                    </p>
-                  )}
+                <div>
+                  <label className="block text-xs font-semibold text-[#8A9EB0] uppercase tracking-wider mb-1">Custom API / Project Details</label>
+                  <textarea
+                    rows={3}
+                    value={formData.apiInfo}
+                    onChange={(e) => setFormData({...formData, apiInfo: e.target.value})}
+                    placeholder="Enter any custom information or API specifications requested for this event..."
+                    className="w-full bg-[#050C18] border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#00B8F0] transition-colors resize-none"
+                  />
                 </div>
               </div>
 
@@ -583,98 +355,12 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                 disabled={loading}
                 className="w-full bg-brand hover:bg-[#00B8F0] text-white py-3.5 rounded-xl font-semibold text-[14px] transition-colors flex items-center justify-center gap-2 mt-2 shadow-lg disabled:opacity-50"
               >
-                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Proceed to Pay ₹{entryFee} <ArrowRight size={16} /></>}
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Complete Registration (Free) <ArrowRight size={16} /></>}
               </button>
             </form>
           )}
 
-          {/* STEP 2: PAYMENT OVERLAY PORTAL */}
-          {step === 2 && (
-            <div className="space-y-5">
-              <div>
-                <div className="flex items-center gap-2 mb-1.5">
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#00B8F0]/15 text-[#00B8F0] text-[10px] font-bold font-mono uppercase tracking-wider border border-[#00B8F0]/30">
-                    ⚡ Gateway Secure
-                  </span>
-                </div>
-                <h3 className="text-xl sm:text-2xl font-black font-space-grotesk tracking-tight text-white flex items-center gap-2">
-                  Razorpay Checkout
-                </h3>
-                <p className="text-xs text-slate-300 mt-1 font-medium">Event: {event.title}</p>
-              </div>
 
-              {error && !isVerifying && (
-                <div className="p-3.5 bg-rose-500/15 border border-rose-500/30 rounded-xl text-rose-300 text-xs flex items-start gap-2.5 shadow-sm">
-                  <AlertCircle size={16} className="text-rose-400 shrink-0 mt-0.5" />
-                  <div className="space-y-0.5">
-                    <span className="font-bold text-rose-200 block">Payment Error</span>
-                    <span>{error}</span>
-                  </div>
-                </div>
-              )}
-
-              {isVerifying ? (
-                <div className="bg-[#040A15] border border-white/10 p-5 rounded-xl font-mono text-xs text-[#00B8F0] space-y-2 h-[180px] flex flex-col justify-end shadow-inner">
-                  <div className="flex items-center gap-2 mb-2 text-white border-b border-white/10 pb-2">
-                    <Terminal size={14} className="text-[#00B8F0]" /> SECURE LEDGER VERIFIER
-                  </div>
-                  <div className="flex-1 space-y-1 overflow-y-auto">
-                    {verificationLogs.map((log, idx) => (
-                      <div key={idx} className="animate-fade-in">{log}</div>
-                    ))}
-                  </div>
-                  <div className="flex items-center gap-2 text-white/50 text-[10px] pt-1">
-                    <Loader2 size={10} className="animate-spin text-[#00B8F0]" /> WAITING FOR BANK CONFIRMATION...
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <div className="bg-[#050C18] border border-white/10 p-5 sm:p-6 rounded-2xl text-center space-y-4 shadow-xl relative overflow-hidden">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#00B8F0]/15 border border-[#00B8F0]/30 text-[#00B8F0] flex items-center justify-center mx-auto shadow-inner">
-                      <ShieldCheck size={26} />
-                    </div>
-                    <div className="space-y-1">
-                      <span className="text-[11px] uppercase tracking-widest font-mono font-bold text-slate-400 block">Total Payable</span>
-                      <h4 className="font-extrabold text-2xl sm:text-3xl text-white font-mono">₹{entryFee}</h4>
-                      <p className="text-xs text-slate-300 max-w-[280px] mx-auto pt-1 font-medium">
-                        Complete checkout to secure your official registration pass.
-                      </p>
-                    </div>
-
-                    <button
-                      onClick={() => initiatePayment(pendingRegId || "")}
-                      disabled={loading}
-                      className="w-full bg-[#00B8F0] hover:bg-[#00A0D0] text-white py-3.5 rounded-xl font-bold text-sm transition-all shrink-0 flex items-center justify-center gap-2 shadow-lg shadow-[#00B8F0]/25 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
-                    >
-                      {loading ? (
-                        <>
-                          <Loader2 className="w-4 h-4 animate-spin" /> Launching Checkout...
-                        </>
-                      ) : (
-                        `Pay Entry Fee (₹${entryFee})`
-                      )}
-                    </button>
-                  </div>
-
-                  {/* Payment methods description */}
-                  <div className="grid grid-cols-3 gap-2 sm:gap-3 border-t border-white/10 pt-4">
-                    <div className="flex flex-col items-center gap-1.5 p-2.5 sm:p-3 rounded-xl bg-white/[0.03] text-center border border-white/10 hover:border-[#00B8F0]/30 transition-all">
-                      <CreditCard size={18} className="text-[#00B8F0]" />
-                      <span className="text-[10px] sm:text-[11px] font-bold text-slate-200">Cards</span>
-                    </div>
-                    <div className="flex flex-col items-center gap-1.5 p-2.5 sm:p-3 rounded-xl bg-white/[0.03] text-center border border-white/10 hover:border-[#00B8F0]/30 transition-all">
-                      <Smartphone size={18} className="text-[#00B8F0]" />
-                      <span className="text-[10px] sm:text-[11px] font-bold text-slate-200">UPI Apps</span>
-                    </div>
-                    <div className="flex flex-col items-center gap-1.5 p-2.5 sm:p-3 rounded-xl bg-white/[0.03] text-center border border-white/10 hover:border-[#00B8F0]/30 transition-all">
-                      <ShieldCheck size={18} className="text-[#00B8F0]" />
-                      <span className="text-[10px] sm:text-[11px] font-bold text-slate-200">Net Banking</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
 
           {/* STEP 3: REGISTRATION SUCCESS */}
           {step === 3 && (
@@ -698,7 +384,7 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
                     <span className="text-[8px] sm:text-[9px] font-bold text-[#00B8F0] uppercase tracking-wider font-mono block">OFFICIAL ENTRY PASS</span>
                     <h4 className="text-xs sm:text-sm font-bold text-white truncate max-w-[170px] sm:max-w-[200px] mt-0.5">{event.title}</h4>
                   </div>
-                  <span className="text-[9px] sm:text-[10px] bg-green-500/20 text-green-400 font-bold px-2 py-0.5 rounded uppercase font-mono shrink-0 border border-green-500/30">PAID</span>
+                  <span className="text-[10px] bg-green-500/20 text-green-400 font-bold px-2 py-0.5 rounded uppercase font-mono">FREE PASS</span>
                 </div>
 
                 <div className="flex justify-center py-1">
