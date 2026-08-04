@@ -39,7 +39,7 @@ export default function Pricing() {
                 <span className="text-3xl font-bold text-[#0B1C2C]">₹199</span>
               </div>
               <Link
-                href={`/ai-frontier/checkout?plan=bootcamp-${item.id}`}
+                href={`/ai-frontier/bootcamps/checkout?plan=bootcamp-${item.id}`}
                 className="w-full py-3 px-4 rounded-xl border-2 border-[#E2E8F0] text-[#0B1C2C] font-semibold hover:border-[#0B1C2C] hover:bg-[#F8FAFC] transition-all text-center"
               >
                 Register
@@ -81,7 +81,7 @@ export default function Pricing() {
             </div>
 
             <Link
-              href={`/ai-frontier/checkout?plan=bundle`}
+              href={`/ai-frontier/bootcamps/checkout?plan=bundle`}
               className="w-full py-4 px-4 rounded-xl bg-[#0066FF] text-white font-bold hover:bg-[#0052CC] transition-all text-center shadow-[0_4px_14px_rgba(0,102,255,0.35)] hover:shadow-[0_4px_20px_rgba(0,102,255,0.5)]"
             >
               Get The Full Pass

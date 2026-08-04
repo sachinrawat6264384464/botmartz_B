@@ -22,6 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/community/events/ai-frontier-2026`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.95 },
     { url: `${baseUrl}/ai-frontier`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.95 },
     { url: `${baseUrl}/ai-frontier/bootcamps`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.90 },
+    { url: `${baseUrl}/ai-frontier/bootcamps/build-your-first-ai-full-stack-application`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.90 },
     { url: `${baseUrl}/privacy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
     { url: `${baseUrl}/terms`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
     { url: `${baseUrl}/cookies`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
