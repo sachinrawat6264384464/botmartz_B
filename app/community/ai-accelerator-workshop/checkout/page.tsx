@@ -64,60 +64,27 @@ function CheckoutContent() {
     setError("");
 
     try {
-      // 1. Create order
-      const res = await fetch("/api/ai-frontier/create-order", {
+      // 1. Verify Payment (as FREE)
+      const verifyRes = await fetch("/api/ai-frontier/verify-payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: getAmount() }),
-      });
-
-      const orderData = await res.json();
-      if (!res.ok) throw new Error(orderData.error);
-
-      // 2. Open Razorpay Checkout
-      const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_placeholder",
-        amount: orderData.amount,
-        currency: orderData.currency,
-        name: "Botmartz AI Solutions",
-        description: plan === "bundle" ? "AI Engineering Pass" : "Bootcamp Access",
-        order_id: orderData.id,
-        handler: async function (response: any) {
-          // 3. Verify Payment
-          const verifyRes = await fetch("/api/ai-frontier/verify-payment", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              ...response,
-              name: formData.name,
-              email: formData.email,
-              phone: formData.phone,
-              plan: plan || "bootcamp-01"
-            }),
-          });
-
-          const verifyData = await verifyRes.json();
-          if (verifyData.success) {
-            router.push(`/ai-frontier/success?plan=${plan}`);
-          } else {
-            setError("Payment verification failed. Please contact support.");
-          }
-        },
-        prefill: {
+        body: JSON.stringify({
+          razorpay_order_id: "FREE_REGISTRATION",
+          razorpay_payment_id: "FREE_REGISTRATION",
+          razorpay_signature: "FREE_REGISTRATION",
           name: formData.name,
           email: formData.email,
-          contact: formData.phone,
-        },
-        theme: {
-          color: "#0066FF",
-        },
-      };
-
-      const rzp1 = new (window as any).Razorpay(options);
-      rzp1.on("payment.failed", function (response: any) {
-        setError(response.error.description);
+          phone: formData.phone,
+          plan: plan || "bootcamp-01"
+        }),
       });
-      rzp1.open();
+
+      const verifyData = await verifyRes.json();
+      if (verifyData.success) {
+        router.push(`/ai-frontier/success?plan=${plan}`);
+      } else {
+        setError("Registration failed. Please contact support.");
+      }
     } catch (err: any) {
       setError(err.message || "An error occurred");
     } finally {
@@ -169,7 +136,7 @@ function CheckoutContent() {
 
           <div className="pt-4 border-t border-[#E2E8F0] mt-6 flex items-center justify-between">
             <span className="text-[#475569] font-medium">Total Amount</span>
-            <span className="text-2xl font-bold text-[#0B1C2C]">₹{getAmount()}</span>
+            <span className="text-2xl font-bold text-[#0B1C2C]">Free</span>
           </div>
 
           <button
@@ -177,7 +144,7 @@ function CheckoutContent() {
             disabled={loading}
             className="w-full mt-6 bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-[0_4px_14px_rgba(0,102,255,0.35)] disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Pay Securely"}
+            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Register for Free"}
           </button>
         </form>
       </div>

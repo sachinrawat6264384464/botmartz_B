@@ -108,7 +108,7 @@ export default async function BootcampDynamicPage({ params }: { params: Promise<
                   href={`/community/ai-frontier-bootcamps/checkout?plan=${bootcamp.slug}`}
                   className="group inline-flex items-center justify-center gap-2 bg-[#0066FF] text-white px-10 py-5 rounded-2xl font-bold text-xl hover:bg-[#0052CC] transition-all shadow-[0_4px_20px_rgba(0,102,255,0.3)] hover:shadow-[0_4px_25px_rgba(0,102,255,0.5)] hover:-translate-y-1 w-full sm:w-auto"
                 >
-                  Register Now - ₹{bootcamp.price}
+                  Register Now - Free
                   <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <p className="text-sm font-medium text-[#64748B] mt-4">

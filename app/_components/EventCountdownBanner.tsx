@@ -53,8 +53,6 @@ export default function EventCountdownBanner() {
         <div className="flex items-center gap-2 font-semibold text-[#00B8F0]">
           <Ticket size={16} className="animate-pulse" />
           <span>AI FRONTIER 2026</span>
-          <span className="hidden sm:inline text-white/50 px-1">•</span>
-          <span className="bg-green-500/20 text-green-400 text-[10px] px-1.5 py-0.5 rounded font-bold tracking-wider">EARLY BIRD LIVE</span>
         </div>
         
         <div className="flex items-center gap-3 font-mono">

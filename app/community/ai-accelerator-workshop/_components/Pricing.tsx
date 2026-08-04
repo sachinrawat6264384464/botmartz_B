@@ -36,7 +36,7 @@ export default function Pricing() {
               <h3 className="text-xl font-bold text-[#0B1C2C] mb-2">{item.title}</h3>
               <p className="text-[#475569] text-sm mb-6 flex-1">{item.desc}</p>
               <div className="mb-8">
-                <span className="text-3xl font-bold text-[#0B1C2C]">₹199</span>
+                <span className="text-3xl font-bold text-[#0B1C2C]">Free</span>
               </div>
               <Link
                 href={`/community/ai-accelerator-workshop/checkout?plan=bootcamp-${item.id}`}
@@ -75,9 +75,7 @@ export default function Pricing() {
             </ul>
 
             <div className="mb-8 flex items-end gap-3">
-              <span className="text-4xl font-bold text-white">₹399</span>
-              <span className="text-[#8A9EB0] text-sm line-through mb-1">₹597</span>
-              <span className="text-[#00B8F0] text-sm font-semibold mb-1">Save ₹198</span>
+              <span className="text-4xl font-bold text-white">Free</span>
             </div>
 
             <Link

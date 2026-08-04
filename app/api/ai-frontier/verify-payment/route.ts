@@ -25,9 +25,11 @@ export async function POST(req: Request) {
       .update(razorpay_order_id + "|" + razorpay_payment_id)
       .digest("hex");
 
-    if (generated_signature === razorpay_signature) {
+    const isFree = razorpay_payment_id === "FREE_REGISTRATION";
+
+    if (isFree || generated_signature === razorpay_signature) {
       // Payment is successful
-      const amount = plan === "bundle" ? 399 : 199;
+      const amount = 0;
       
       let eventTitle = "AI Frontier Bootcamp";
       let dateVal = "TBA";
