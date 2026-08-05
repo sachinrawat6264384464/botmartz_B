@@ -17,7 +17,7 @@ export default function FinalCTA() {
             Join the Botmartz AI Engineering community and start building production-grade AI systems today.
           </p>
           <Link
-            href="#pricing"
+            href="#bootcamps"
             className="inline-flex items-center justify-center gap-2 bg-[#0066FF] text-white px-8 py-5 rounded-xl font-bold text-lg hover:bg-[#0052CC] transition-all shadow-[0_4px_20px_rgba(0,102,255,0.3)] hover:shadow-[0_4px_25px_rgba(0,102,255,0.5)] hover:-translate-y-1 w-full sm:w-auto"
           >
             Register Now

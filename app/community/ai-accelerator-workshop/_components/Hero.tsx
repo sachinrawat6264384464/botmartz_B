@@ -68,7 +68,7 @@ export default function Hero() {
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <Link
-              href="#pricing"
+              href="#bootcamps"
               className="group flex items-center justify-center gap-2 bg-[#0066FF] text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-[#0052CC] transition-all w-full sm:w-auto shadow-[0_4px_20px_rgba(0,102,255,0.25)] hover:shadow-[0_4px_25px_rgba(0,102,255,0.4)] hover:-translate-y-0.5"
             >
               Register Now
