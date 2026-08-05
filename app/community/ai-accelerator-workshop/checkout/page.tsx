@@ -255,114 +255,115 @@ function CheckoutContent() {
   })();
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-4 md:p-8 pt-20">
-      <div className="bg-white max-w-5xl w-full rounded-2xl shadow-xl border border-[#E2E8F0] overflow-hidden flex flex-col md:flex-row">
+    <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-3 sm:p-6 md:p-8 pt-16 sm:pt-20">
+      <div className="bg-white max-w-4xl w-full rounded-2xl shadow-xl border border-[#E2E8F0] overflow-hidden flex flex-col md:flex-row">
         
         {/* Left Side: Order Summary */}
-        <div className="flex-1 bg-[#0B1C2C] p-8 md:p-12 text-white flex flex-col justify-between relative overflow-hidden">
+        <div className="md:w-5/12 bg-[#0B1C2C] p-6 sm:p-8 text-white flex flex-col justify-between relative overflow-hidden shrink-0">
           <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#0066FF]/20 to-transparent blur-3xl rounded-full pointer-events-none" />
           
           <div className="relative z-10">
-            <div className="inline-flex items-center gap-1.5 bg-white/10 text-white text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-6 border border-white/20">
+            <div className="inline-flex items-center gap-1.5 bg-white/10 text-white text-[10px] sm:text-xs font-bold tracking-widest uppercase px-2.5 py-0.5 sm:py-1 rounded-full mb-4 border border-white/20">
               Order Summary
             </div>
             
-            <h2 className="text-3xl md:text-4xl font-extrabold mb-2 leading-tight text-white">
+            <h2 className="text-xl sm:text-2xl font-extrabold mb-1.5 leading-tight text-white">
               {details.title}
             </h2>
             {details.subtitle && (
-              <p className="text-[#8A9EB0] text-lg font-medium mb-8">
+              <p className="text-[#8A9EB0] text-sm font-medium mb-5">
                 {details.subtitle}
               </p>
             )}
 
-            <div className="space-y-4 mb-8">
+            <div className="space-y-2.5 mb-6">
               {details.features.map((feature, idx) => (
-                <div key={idx} className="flex items-start gap-3">
-                  <svg className="w-5 h-5 text-[#00B8F0] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <div key={idx} className="flex items-start gap-2.5">
+                  <svg className="w-4 h-4 text-[#00B8F0] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
-                  <span className="text-[#CBD5E1] font-medium">{feature}</span>
+                  <span className="text-[#CBD5E1] text-xs sm:text-sm font-medium">{feature}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="relative z-10 mt-8 pt-8 border-t border-white/10">
-            <div className="flex items-end justify-between mb-2">
-              <span className="text-[#8A9EB0] font-medium">Total (Inclusive of GST)</span>
-              <span className="text-3xl md:text-4xl font-bold text-white">
+          <div className="relative z-10 pt-5 border-t border-white/10 mt-auto">
+            <div className="flex items-end justify-between mb-1">
+              <span className="text-[#8A9EB0] text-xs font-medium">Total (Inclusive of GST)</span>
+              <span className="text-2xl sm:text-3xl font-extrabold text-white">
                 {getAmount() === 0 ? <span className="text-emerald-400">FREE</span> : `₹${getAmount()}`}
               </span>
             </div>
-            <p className="text-sm text-white/50 text-right">
+            <p className="text-xs text-white/50 text-right">
               {getAmount() === 0 ? "100% Free Promo Access" : "Secure Encrypted Payment"}
             </p>
           </div>
         </div>
 
         {/* Right Side: Form */}
-        <div className="flex-1 p-8 md:p-12">
-          <h1 className="text-2xl font-bold text-[#0B1C2C] mb-2">Checkout Details</h1>
-          <p className="text-[#475569] text-sm mb-8">
-            Please fill in your details to complete the registration.
-          </p>
+        <div className="md:w-7/12 p-6 sm:p-8 flex flex-col justify-center">
+          <div className="mb-5">
+            <h1 className="text-xl sm:text-2xl font-bold text-[#0B1C2C]">Checkout Details</h1>
+            <p className="text-[#64748B] text-xs sm:text-sm mt-0.5">
+              Fill in your details to complete registration.
+            </p>
+          </div>
 
-          {error && <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 rounded-xl text-sm font-medium">{error}</div>}
+          {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-xl text-xs font-medium">{error}</div>}
 
-          <form onSubmit={handlePayment} className="space-y-5">
+          <form onSubmit={handlePayment} className="space-y-3.5">
             <div>
-              <label className="block text-sm font-semibold text-[#334155] mb-1.5">Full Name</label>
+              <label className="block text-xs font-semibold text-[#334155] mb-1">Full Name *</label>
               <input
                 type="text"
                 required
                 placeholder="John Doe"
-                className="w-full p-3.5 rounded-xl border border-[#CBD5E1] focus:ring-2 focus:ring-[#0066FF] outline-none transition-all text-[#0B1C2C] bg-[#F8FAFC]"
+                className="w-full py-2.5 px-3.5 rounded-xl border border-[#CBD5E1] focus:ring-2 focus:ring-[#0066FF]/40 focus:border-[#0066FF] outline-none transition-all text-sm text-[#0B1C2C] bg-[#F8FAFC]"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-[#334155] mb-1.5">Email Address</label>
+              <label className="block text-xs font-semibold text-[#334155] mb-1">Email Address *</label>
               <input
                 type="email"
                 required
                 placeholder="john@example.com"
-                className="w-full p-3.5 rounded-xl border border-[#CBD5E1] focus:ring-2 focus:ring-[#0066FF] outline-none transition-all text-[#0B1C2C] bg-[#F8FAFC]"
+                className="w-full py-2.5 px-3.5 rounded-xl border border-[#CBD5E1] focus:ring-2 focus:ring-[#0066FF]/40 focus:border-[#0066FF] outline-none transition-all text-sm text-[#0B1C2C] bg-[#F8FAFC]"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-[#334155] mb-1.5">Phone Number</label>
+              <label className="block text-xs font-semibold text-[#334155] mb-1">Phone Number *</label>
               <input
                 type="tel"
                 required
                 placeholder="+91 9876543210"
-                className="w-full p-3.5 rounded-xl border border-[#CBD5E1] focus:ring-2 focus:ring-[#0066FF] outline-none transition-all text-[#0B1C2C] bg-[#F8FAFC]"
+                className="w-full py-2.5 px-3.5 rounded-xl border border-[#CBD5E1] focus:ring-2 focus:ring-[#0066FF]/40 focus:border-[#0066FF] outline-none transition-all text-sm text-[#0B1C2C] bg-[#F8FAFC]"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-[#334155] mb-1.5">
+              <label className="block text-xs font-semibold text-[#334155] mb-1">
                 Organization / College
-                <span className="ml-2 text-xs font-normal text-[#94A3B8]">optional</span>
+                <span className="ml-1.5 text-[11px] font-normal text-[#94A3B8]">(optional)</span>
               </label>
               <input
                 type="text"
                 placeholder="e.g. IIT Delhi, Google, Freelancer..."
-                className="w-full p-3.5 rounded-xl border border-[#CBD5E1] focus:ring-2 focus:ring-[#0066FF] outline-none transition-all text-[#0B1C2C] bg-[#F8FAFC]"
+                className="w-full py-2.5 px-3.5 rounded-xl border border-[#CBD5E1] focus:ring-2 focus:ring-[#0066FF]/40 focus:border-[#0066FF] outline-none transition-all text-sm text-[#0B1C2C] bg-[#F8FAFC]"
                 value={formData.organization}
                 onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
               />
             </div>
 
-
-            {/* COUPON CODE INPUT FIELD (Permanently available) */}
+            {/* COUPON CODE INPUT FIELD */}
             <div className="pt-2 border-t border-[#E2E8F0]">
-              <label className="block text-xs font-bold text-[#64748B] uppercase tracking-wider mb-1.5">Have a Coupon Code?</label>
+              <label className="block text-[11px] font-bold text-[#64748B] uppercase tracking-wider mb-1">Have a Coupon Code?</label>
               <div className="flex flex-wrap gap-2">
                 <input
                   type="text"
@@ -370,36 +371,36 @@ function CheckoutContent() {
                   value={couponInput}
                   onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
                   disabled={Boolean(appliedCouponInfo)}
-                  className="flex-1 min-w-0 p-2.5 rounded-xl border border-[#CBD5E1] font-mono text-sm text-[#0B1C2C] bg-[#F8FAFC] uppercase tracking-wider focus:outline-none focus:border-[#0066FF] disabled:opacity-60"
+                  className="flex-1 min-w-0 py-2 px-3 rounded-xl border border-[#CBD5E1] font-mono text-xs text-[#0B1C2C] bg-[#F8FAFC] uppercase tracking-wider focus:outline-none focus:border-[#0066FF] disabled:opacity-60"
                 />
                 <button
                   type="button"
                   onClick={handleApplyCoupon}
                   disabled={couponLoading || !couponInput.trim() || Boolean(appliedCouponInfo)}
-                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#0B1C2C] hover:bg-[#1E293B] text-white font-semibold text-sm transition-colors disabled:opacity-50"
+                  className="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#0B1C2C] hover:bg-[#1E293B] text-white font-semibold text-xs transition-colors disabled:opacity-50"
                 >
                   {couponLoading ? "Applying..." : appliedCouponInfo ? "✓ Applied" : "Apply Code"}
                 </button>
               </div>
-              {couponError && <p className="text-xs text-rose-600 font-semibold mt-1.5">{couponError}</p>}
-              {couponSuccess && <p className="text-xs text-emerald-600 font-bold mt-1.5">{couponSuccess}</p>}
+              {couponError && <p className="text-xs text-rose-600 font-semibold mt-1">{couponError}</p>}
+              {couponSuccess && <p className="text-xs text-emerald-600 font-bold mt-1">{couponSuccess}</p>}
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-8 bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-[0_4px_14px_rgba(0,102,255,0.35)] disabled:opacity-70 disabled:cursor-not-allowed text-lg"
+              className="w-full mt-4 bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-[0_4px_14px_rgba(0,102,255,0.3)] disabled:opacity-70 disabled:cursor-not-allowed text-sm sm:text-base"
             >
               {loading ? (
-                <Loader2 className="w-6 h-6 animate-spin" />
+                <Loader2 className="w-5 h-5 animate-spin" />
               ) : getAmount() === 0 ? (
                 "Complete Free Registration →"
               ) : (
                 `Pay ₹${getAmount()}`
               )}
             </button>
-            <p className="text-center text-xs text-[#64748B] mt-4 flex items-center justify-center gap-1.5">
-              <svg className="w-4 h-4 text-[#00B8F0]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <p className="text-center text-[11px] text-[#64748B] mt-2 flex items-center justify-center gap-1.5">
+              <svg className="w-3.5 h-3.5 text-[#00B8F0]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
               {getAmount() === 0 ? "Direct Instant Confirmation" : "Payments processed securely by Razorpay"}
