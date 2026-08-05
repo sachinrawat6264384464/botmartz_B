@@ -268,8 +268,11 @@ export default function BootcampsAdmin() {
         </div>
       </div>
 
-      {/* Tabs Navigation Bar */}
-      <div className="flex items-center gap-1 sm:gap-2 border-b border-[#E2E8F0] dark:border-white/10 mb-6 sm:mb-8 overflow-x-auto pb-1 scrollbar-none">
+      {/* Tabs Navigation Bar — Horizontally Scrollable on Mobile */}
+      <div
+        className="flex items-center border-b border-[#E2E8F0] dark:border-white/10 mb-6 sm:mb-8"
+        style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
         {TABS.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -277,12 +280,12 @@ export default function BootcampsAdmin() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 sm:px-6 py-3.5 text-xs sm:text-sm font-semibold border-b-2 transition-colors whitespace-nowrap ${
+              className={`flex flex-col sm:flex-row items-center gap-0.5 sm:gap-1.5 px-3 sm:px-5 py-2.5 sm:py-3.5 text-[9px] sm:text-sm font-semibold border-b-2 transition-colors whitespace-nowrap shrink-0 ${
                 isActive ? "border-[#0066FF] text-[#0066FF] dark:text-[#00B8F0] dark:border-[#00B8F0]" : "border-transparent text-[#64748B] dark:text-slate-400 hover:text-[#0B1C2C] dark:hover:text-white"
               }`}
             >
-              <Icon className="w-4 h-4" />
-              {tab.label}
+              <Icon className="w-4 h-4 sm:w-4 sm:h-4 shrink-0" />
+              <span>{tab.label}</span>
             </button>
           );
         })}
@@ -795,19 +798,26 @@ export default function BootcampsAdmin() {
 
               {/* Plan Dropdown */}
               <div>
-                <label className="block text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider mb-1.5">Register For *</label>
+                <label className="block text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider mb-1.5">Register For — Select Plan *</label>
                 <select
                   required
                   value={adminRegForm.plan}
                   onChange={e => setAdminRegForm({ ...adminRegForm, plan: e.target.value })}
                   className="w-full px-4 py-3 rounded-xl border border-[#CBD5E1] dark:border-white/10 bg-[#F8FAFC] dark:bg-white/5 text-[#0B1C2C] dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#0066FF]/40 focus:border-[#0066FF] transition-all"
                 >
-                  <option value="bootcamp-01">🔹 Bootcamp Series 1 — Build Your First AI App (₹199 value)</option>
-                  <option value="bootcamp-02">🔹 Bootcamp Series 2 — Build Smarter AI Agents (₹199 value)</option>
-                  <option value="bootcamp-03">🔹 Bootcamp Series 3 — Build Production AI Apps (₹199 value)</option>
-                  <option value="bundle">🌟 AI Engineering Pass — Full Bundle All 3 Series (₹399 value)</option>
+                  <optgroup label="₹199 — Single Bootcamp">
+                    <option value="bootcamp-01">Bootcamp Series 1 — Build Your First AI App (₹199)</option>
+                    <option value="bootcamp-02">Bootcamp Series 2 — Build Smarter AI Agents (₹199)</option>
+                    <option value="bootcamp-03">Bootcamp Series 3 — Build Production AI Apps (₹199)</option>
+                  </optgroup>
+                  <optgroup label="₹399 — Full Bundle">
+                    <option value="bundle">🌟 AI Engineering Pass — All 3 Series (₹399)</option>
+                  </optgroup>
                 </select>
-                <p className="text-[10px] text-[#94A3B8] dark:text-slate-500 mt-1.5">This will be a FREE direct registration. Amount ₹0.</p>
+                <p className="text-[10px] text-[#94A3B8] dark:text-slate-500 mt-1.5 flex items-center gap-1">
+                  <span className="inline-flex items-center gap-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded-full font-bold text-[10px]">FREE</span>
+                  Admin bypass — amount ₹0. Emails will be sent to the address above.
+                </p>
               </div>
 
               {/* Result Message */}
