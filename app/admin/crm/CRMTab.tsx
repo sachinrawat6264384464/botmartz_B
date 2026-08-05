@@ -8,7 +8,7 @@ import {
 import { db } from "@/lib/firebase";
 import {
   Users, Search, RefreshCw, Plus, Mail, Trash2, Check,
-  UserCheck, Send, Calendar, CheckCircle, XCircle, FileText, Ban, X
+  UserCheck, Send, Calendar, CheckCircle, XCircle, FileText, Ban, X, Download
 } from "lucide-react";
 import { Inter_Tight } from "next/font/google";
 
@@ -179,6 +179,55 @@ export default function CRMTab() {
       (s.source && s.source.toLowerCase().includes(searchLower))
   );
 
+  // CSV Export — Leads / Inquiries
+  const exportLeadsCSV = () => {
+    if (filteredLeads.length === 0) return;
+    const headers = ["Date", "Name", "Email", "Company", "Message", "Status"];
+    const rows = filteredLeads.map((l) => [
+      `"${formatDate(l.createdAt)}"`,
+      `"${(l.name || "").replace(/"/g, '""')}"`,
+      `"${(l.email || "").replace(/"/g, '""')}"`,
+      `"${(l.company || "").replace(/"/g, '""')}"`,
+      `"${(l.message || "").replace(/"/g, '""').replace(/\n/g, " ")}"`,
+      `"${l.status || ""}"`
+    ]);
+    const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `crm-leads-${new Date().toISOString().split("T")[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    showToast("Leads exported to CSV!", "success");
+  };
+
+  // CSV Export — Newsletter Subscribers
+  const exportSubscribersCSV = () => {
+    if (filteredSubs.length === 0) return;
+    const headers = ["Joined Date", "Name", "Email", "Source", "Status"];
+    const rows = filteredSubs.map((s) => [
+      `"${formatDate(s.subscribedAt)}"`,
+      `"${(s.name || "").replace(/"/g, '""')}"`,
+      `"${(s.email || "").replace(/"/g, '""')}"`,
+      `"${(s.source || "Web").replace(/"/g, '""')}"`,
+      `"${s.status || ""}"`
+    ]);
+    const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `crm-subscribers-${new Date().toISOString().split("T")[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    showToast("Subscribers exported to CSV!", "success");
+  };
+
   return (
     <div className={`${interTight.className} p-6 max-w-[1400px] text-admin-text`}>
       {/* Toast */}
@@ -203,14 +252,27 @@ export default function CRMTab() {
             Manage inquiries, leads, and newsletter subscription logs dynamically
           </p>
         </div>
-        {activeTab === "subscribers" && (
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
+          {/* Export CSV Button */}
           <button
-            onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 px-5 py-2.5 bg-admin-accent hover:bg-admin-accent/80 text-white text-sm font-semibold rounded-xl transition-all shadow-sm shrink-0"
+            onClick={activeTab === "leads" ? exportLeadsCSV : exportSubscribersCSV}
+            disabled={activeTab === "leads" ? filteredLeads.length === 0 : filteredSubs.length === 0}
+            className="flex items-center gap-2 px-4 py-2.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500 hover:text-white text-sm font-semibold rounded-xl transition-all shadow-sm disabled:opacity-40"
           >
-            <Plus size={16} /> Add Subscriber
+            <Download size={15} />
+            Export CSV
           </button>
-        )}
+
+          {/* Add Subscriber Button */}
+          {activeTab === "subscribers" && (
+            <button
+              onClick={() => setShowAddModal(true)}
+              className="flex items-center gap-2 px-5 py-2.5 bg-admin-accent hover:bg-admin-accent/80 text-white text-sm font-semibold rounded-xl transition-all shadow-sm"
+            >
+              <Plus size={16} /> Add Subscriber
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Stats Cards */}
