@@ -314,9 +314,25 @@ export default function BootcampsAdmin() {
                           </span>
                         </td>
                         <td className="p-3 text-xs">
-                          <span className={`px-2 py-0.5 rounded-full font-semibold ${isAttended ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300" : "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300"}`}>
-                            {isAttended ? "Checked In" : "Pending Entry"}
-                          </span>
+                          <button
+                            onClick={() => toggleAttendance(reg.id, isAttended)}
+                            disabled={actionLoading === `att-${reg.id}`}
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-semibold text-xs transition-all cursor-pointer ${
+                              isAttended
+                                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 hover:bg-emerald-200"
+                                : "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 hover:bg-amber-200 border border-amber-300 dark:border-amber-700/50"
+                            }`}
+                            title="Click to toggle check-in status"
+                          >
+                            {actionLoading === `att-${reg.id}` ? (
+                              <Loader2 className="w-3 h-3 animate-spin" />
+                            ) : isAttended ? (
+                              <CheckCircle className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                            ) : (
+                              <XCircle className="w-3 h-3 text-amber-600 dark:text-amber-400" />
+                            )}
+                            <span>{isAttended ? "Checked In ✓" : "Mark Check-In"}</span>
+                          </button>
                         </td>
                       </tr>
                     );
