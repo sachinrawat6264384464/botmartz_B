@@ -6,7 +6,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { 
   Menu, X, LogOut, ChevronLeft, ChevronRight, Zap,
   ChevronDown, Globe, Briefcase, Layers, Bot,
-  Home, Mail, BookOpen, MessageSquare, Send, Users, FolderKanban, CalendarDays, Settings, ShieldAlert, FileText, Handshake, CreditCard, ScanFace
+  Home, Mail, BookOpen, MessageSquare, Send, Users, FolderKanban, CalendarDays, Settings, ShieldAlert, FileText, Handshake, CreditCard, ScanFace, Tag
 } from 'lucide-react';
 import Image from 'next/image';
 import { useAuth } from '@/lib/context/AuthContext';
@@ -319,6 +319,7 @@ export default function AdminSidebar() {
               {renderFlatItem('events', ScanFace, 'Ticket Scanner', '/admin/scanner')}
               {renderFlatItem('feedback', MessageSquare, 'Event Feedback', '/admin/feedback')}
               {renderFlatItem('events', BookOpen, 'Bootcamps', '/admin/bootcamps')}
+              {renderFlatItem('coupons', Tag, 'Coupon Manager', '/admin/coupons')}
               {renderFlatItem('jobs', Users, 'Careers / Jobs', '/admin/jobs', true)}
               {renderFlatItem('partnerships', Handshake, 'Partnerships', '/admin/partnerships', true)}
             </div>
