@@ -22,7 +22,7 @@ const bootcamps = [
     color: "from-[#0066FF] to-[#3B82F6]",
     date: "Aug 9, 2026",
     id: 1,
-    price: 1, // TESTING PRICE
+    price: 199,
   },
   {
     number: "02",
