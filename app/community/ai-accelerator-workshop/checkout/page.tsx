@@ -317,7 +317,7 @@ function CheckoutContent() {
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    placeholder="e.g. BMFREE100-1"
+                    placeholder="Enter promo code"
                     value={couponInput}
                     onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
                     disabled={Boolean(appliedCoupon)}
