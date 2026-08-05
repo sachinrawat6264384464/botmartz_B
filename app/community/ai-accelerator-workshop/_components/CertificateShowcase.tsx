@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 export default function CertificateShowcase() {
   return (
     <section id="certificate" className="py-16 sm:py-24 bg-gradient-to-b from-[#050B14] via-[#0A1628] to-[#050B14] text-white relative overflow-hidden">
-      {/* Background Glow */}
+      {/* kjhkhhjBackground Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[600px] h-[320px] sm:h-[400px] bg-gradient-to-r from-[#0066FF]/15 to-[#00B8F0]/15 blur-[100px] rounded-full pointer-events-none" />
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
