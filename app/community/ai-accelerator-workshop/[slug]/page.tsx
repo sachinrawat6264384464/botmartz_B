@@ -1,13 +1,61 @@
-"use client";
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { Calendar, Clock, MonitorPlay, Code2, MessageSquare, Bot, Database, Rocket, BookOpen, FolderArchive, Map, Award, Users, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+import { adminDb } from '@/lib/firebase-admin';
 
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { ArrowRight, Calendar, Clock, MonitorPlay, Code2, MessageSquare, Bot, Database, Rocket, BookOpen, FolderArchive, Map, Award, Users } from "lucide-react";
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  let title = 'Bootcamp';
+  let description = 'Join our premium AI Engineering Bootcamp.';
 
-export default function Bootcamp01Page() {
+  try {
+    const q = adminDb.collection('bootcamps').where('slug', '==', resolvedParams.slug).limit(1);
+    const snap = await q.get();
+    if (!snap.empty) {
+      const data = snap.docs[0].data();
+      title = data.title;
+      description = data.shortDescription || description;
+    }
+  } catch (e) {}
+
+  return {
+    title: `${title} | AI Accelerator Workshop`,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `https://www.botmartz.com/community/ai-accelerator-workshop/${resolvedParams.slug}`,
+      type: 'website',
+    },
+    alternates: {
+      canonical: `https://www.botmartz.com/community/ai-accelerator-workshop/${resolvedParams.slug}`,
+    },
+  };
+}
+
+export default async function BootcampDynamicPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  let bootcamp: any = null;
+
+  try {
+    const q = adminDb.collection('bootcamps').where('slug', '==', resolvedParams.slug).limit(1);
+    const snap = await q.get();
+    if (!snap.empty) {
+      bootcamp = { id: snap.docs[0].id, ...snap.docs[0].data() };
+    }
+  } catch (e) {
+    console.error("Failed to fetch bootcamp:", e);
+  }
+
+  if (!bootcamp) {
+    notFound();
+  }
+
+  const techStack = Array.isArray(bootcamp.techStack) ? bootcamp.techStack : ['ChatGPT', 'Claude', 'Cursor', 'LangChain'];
+
   return (
     <div className="min-h-screen bg-white">
-      
       <main>
         {/* HERO SECTION */}
         <section className="relative pt-32 pb-20 overflow-hidden bg-white text-[#0B1C2C]">
@@ -17,96 +65,67 @@ export default function Bootcamp01Page() {
 
           <div className="container mx-auto px-4 md:px-6 relative z-10 flex flex-col lg:flex-row items-center gap-12">
             <div className="flex-1 text-center lg:text-left">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-6 flex justify-center lg:justify-start"
-              >
+              <div className="mb-6 flex justify-center lg:justify-start animate-in slide-in-from-bottom-4 duration-500 fade-in">
                 <span className="inline-flex items-center rounded-full bg-[#0066FF] px-4 py-1.5 text-xs font-bold tracking-widest text-white uppercase shadow-sm">
-                  BOOTCAMP 01
+                  {bootcamp.status === 'Upcoming' ? 'UPCOMING BOOTCAMP' : 'BOOTCAMP'}
                 </span>
-              </motion.div>
+              </div>
 
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="text-[40px] md:text-[56px] font-bold tracking-tight leading-tight text-[#0B1C2C] mb-6"
-              >
-                Build Your First <br />
-                <span className="text-[#0066FF]">AI Full-Stack Application</span>
-              </motion.h1>
+              <h1 className="text-[40px] md:text-[56px] font-bold tracking-tight leading-tight text-[#0B1C2C] mb-6 animate-in slide-in-from-bottom-4 duration-500 delay-100 fade-in fill-mode-forwards opacity-0">
+                {bootcamp.title}
+              </h1>
 
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-lg md:text-xl text-[#475569] leading-relaxed max-w-2xl mx-auto lg:mx-0 font-medium mb-10"
-              >
-                Build an AI-powered application from scratch using today's leading AI tools. Live, hands-on, and production-focused.
-              </motion.p>
+              <p className="text-lg md:text-xl text-[#475569] leading-relaxed max-w-2xl mx-auto lg:mx-0 font-medium mb-10 animate-in slide-in-from-bottom-4 duration-500 delay-200 fade-in fill-mode-forwards opacity-0">
+                {bootcamp.shortDescription}
+              </p>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 mb-12"
-              >
-                <div className="flex items-center gap-3 bg-[#F8FAFC] border border-[#E2E8F0] px-5 py-3 rounded-xl">
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 mb-12 animate-in slide-in-from-bottom-4 duration-500 delay-300 fade-in fill-mode-forwards opacity-0">
+                <div className="flex items-center gap-3 bg-[#F8FAFC] border border-[#E2E8F0] px-5 py-3 rounded-xl w-full sm:w-auto">
                   <Calendar className="w-5 h-5 text-[#0066FF]" />
                   <div className="text-left">
                     <p className="text-xs font-bold text-[#64748B] uppercase">Date</p>
-                    <p className="text-sm font-bold text-[#0B1C2C]">9 August 2026 (Sat)</p>
+                    <p className="text-sm font-bold text-[#0B1C2C]">{bootcamp.date || 'TBA'}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 bg-[#F8FAFC] border border-[#E2E8F0] px-5 py-3 rounded-xl">
+                <div className="flex items-center gap-3 bg-[#F8FAFC] border border-[#E2E8F0] px-5 py-3 rounded-xl w-full sm:w-auto">
                   <Clock className="w-5 h-5 text-[#0066FF]" />
                   <div className="text-left">
                     <p className="text-xs font-bold text-[#64748B] uppercase">Time</p>
-                    <p className="text-sm font-bold text-[#0B1C2C]">10:00 AM - 1:00 PM (IST)</p>
+                    <p className="text-sm font-bold text-[#0B1C2C]">{bootcamp.time || 'TBA'}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 bg-[#F8FAFC] border border-[#E2E8F0] px-5 py-3 rounded-xl">
+                <div className="flex items-center gap-3 bg-[#F8FAFC] border border-[#E2E8F0] px-5 py-3 rounded-xl w-full sm:w-auto">
                   <MonitorPlay className="w-5 h-5 text-[#0066FF]" />
                   <div className="text-left">
                     <p className="text-xs font-bold text-[#64748B] uppercase">Format</p>
-                    <p className="text-sm font-bold text-[#0B1C2C]">Live Online</p>
+                    <p className="text-sm font-bold text-[#0B1C2C]">{bootcamp.format || 'Live Online'}</p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-              >
+              <div className="animate-in slide-in-from-bottom-4 duration-500 delay-500 fade-in fill-mode-forwards opacity-0">
                 <Link 
-                  href="/community/ai-frontier-bootcamps/checkout?plan=bootcamp-01"
+                  href={`/community/ai-accelerator-workshop/checkout?plan=${bootcamp.slug}`}
                   className="group inline-flex items-center justify-center gap-2 bg-[#0066FF] text-white px-10 py-5 rounded-2xl font-bold text-xl hover:bg-[#0052CC] transition-all shadow-[0_4px_20px_rgba(0,102,255,0.3)] hover:shadow-[0_4px_25px_rgba(0,102,255,0.5)] hover:-translate-y-1 w-full sm:w-auto"
                 >
-                  Register Now - ₹199
+                  Register Now - ₹{bootcamp.price}
                   <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <p className="text-sm font-medium text-[#64748B] mt-4">
-                  *Early bird pricing. Limited seats available.
+                  *Limited seats available. Secure your spot now.
                 </p>
-              </motion.div>
+              </div>
             </div>
 
             {/* Right side Visual/Instructor */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="flex-1 w-full max-w-md lg:max-w-none relative"
-            >
+            <div className="flex-1 w-full max-w-md lg:max-w-none relative animate-in zoom-in-95 duration-700 fade-in fill-mode-forwards opacity-0 delay-200">
               <div className="bg-[#0B1C2C] rounded-3xl p-1 shadow-2xl relative overflow-hidden border border-[#1E293B]">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#0066FF]/20 to-transparent pointer-events-none" />
                 <div className="bg-[#0F172A] rounded-[22px] p-8 relative z-10 text-center">
-                  <img src="/Sohamsharma.jpeg" alt="Soham Sharma" className="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-[#1E293B] shadow-xl object-cover" />
+                  <img src={bootcamp.instructorImage || "/Sohamsharma.jpeg"} alt={bootcamp.instructorName || "Soham Sharma"} className="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-[#1E293B] shadow-xl object-cover" />
                   <div className="text-xs font-bold tracking-widest uppercase text-[#0066FF] mb-2">Lead Instructor</div>
-                  <h3 className="text-2xl font-bold text-white mb-1">Soham Sharma</h3>
-                  <p className="text-[#8A9EB0] text-sm mb-6">Founder, Botmartz AI Solutions<br/>AI Engineer • Trainer • Speaker</p>
+                  <h3 className="text-2xl font-bold text-white mb-1">{bootcamp.instructorName || "Soham Sharma"}</h3>
+                  <p className="text-[#8A9EB0] text-sm mb-6 whitespace-pre-wrap">{bootcamp.instructorTitle || "Founder & AI Engineer"}</p>
                   
                   <div className="grid grid-cols-2 gap-4 border-t border-[#1E293B] pt-6">
                     <div className="text-left">
@@ -120,7 +139,7 @@ export default function Bootcamp01Page() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </section>
 
@@ -160,7 +179,7 @@ export default function Bootcamp01Page() {
               <h2 className="text-3xl font-bold text-[#0B1C2C] mb-4">Learn & Build With</h2>
             </div>
             <div className="flex flex-wrap justify-center gap-4 md:gap-8 max-w-4xl mx-auto">
-              {['ChatGPT', 'Claude', 'Gemini', 'Cursor', 'LangChain', 'LangGraph', 'RAG'].map((tech, i) => (
+              {techStack.map((tech: string, i: number) => (
                 <div key={i} className="px-6 py-3 rounded-full border border-[#E2E8F0] bg-[#F8FAFC] text-[#0B1C2C] font-bold shadow-sm">
                   {tech}
                 </div>
@@ -211,7 +230,6 @@ export default function Bootcamp01Page() {
             </div>
           </div>
         </section>
-
       </main>
     </div>
   );

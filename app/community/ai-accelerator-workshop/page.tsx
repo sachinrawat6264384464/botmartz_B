@@ -2,23 +2,22 @@ import { Metadata } from "next";
 import Hero from "./_components/Hero";
 import JourneyTimeline from "./_components/JourneyTimeline";
 import BootcampDetails from "./_components/BootcampDetails";
-import Pricing from "./_components/Pricing";
 import WhatsIncluded from "./_components/WhatsIncluded";
 import Instructor from "./_components/Instructor";
 import FAQ from "./_components/FAQ";
 import FinalCTA from "./_components/FinalCTA";
 
 export const metadata: Metadata = {
-  title: "AI Frontier Engineering Bootcamp Series | Botmartz",
-  description: "The official runway to AI Frontier 2026. Build production-ready AI applications through three live, hands-on engineering bootcamps.",
+  title: "AI Accelerator Workshop | Botmartz",
+  description: "The official runway to AI Frontier 2026. Build production-ready AI applications through live, hands-on engineering workshops.",
   openGraph: {
-    title: "AI Frontier Bootcamps | Botmartz",
-    description: "Join the live engineering bootcamps leading up to AI Frontier 2026. Build production-ready AI applications.",
-    url: "https://www.botmartz.com/community/ai-frontier-bootcamps",
+    title: "AI Accelerator Workshop | Botmartz",
+    description: "Join the live engineering workshops leading up to AI Frontier 2026. Build production-ready AI applications.",
+    url: "https://www.botmartz.com/community/ai-accelerator-workshop",
     type: "website",
   },
   alternates: {
-    canonical: "https://www.botmartz.com/community/ai-frontier-bootcamps",
+    canonical: "https://www.botmartz.com/community/ai-accelerator-workshop",
   },
 };
 
@@ -53,7 +52,6 @@ export default function AIFrontierPage() {
         <JourneyTimeline />
         <BootcampDetails />
         <WhatsIncluded />
-        <Pricing />
         <Instructor />
         <FAQ />
         <FinalCTA />

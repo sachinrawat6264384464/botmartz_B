@@ -65,3 +65,6 @@ test-key.js
 
 # Temporary proposals
 InnovAI-Growth-Proposal-US-v2.md
+
+# Agent specific files
+.agents/

@@ -48,8 +48,8 @@ export default function Hero() {
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
             className="text-[clamp(40px,7vw,80px)] font-bold tracking-tighter leading-[1.05] text-transparent bg-clip-text bg-gradient-to-br from-[#0B1C2C] via-[#1E293B] to-[#0066FF] mb-6"
           >
-            AI FRONTIER <br />
-            <span className="text-[#0B1C2C]">ENGINEERING BOOTCAMPS</span>
+            AI ACCELERATOR <br />
+            <span className="text-[#0B1C2C]">WORKSHOP SERIES</span>
           </motion.h1>
 
           <motion.p
@@ -58,7 +58,7 @@ export default function Hero() {
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
             className="text-[18px] md:text-[22px] text-[#475569] leading-relaxed max-w-3xl mx-auto font-medium mb-10"
           >
-            The official runway to <Link href="/ai-frontier" className="text-[#0066FF] font-bold hover:underline">AI Frontier 2026</Link>. Build production-ready AI applications through three live, hands-on engineering bootcamps leading up to our free, in-person main event.
+            The official runway to <Link href="/community/events/ai-frontier-2026" className="text-[#0066FF] font-bold hover:underline">AI Frontier 2026</Link>. Build production-ready AI applications through three live, hands-on engineering bootcamps leading up to our free, in-person main event.
           </motion.p>
 
           <motion.div

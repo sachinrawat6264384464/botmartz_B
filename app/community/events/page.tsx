@@ -44,11 +44,32 @@ export default async function EventsIndexPage() {
       initialEvents.push({ 
         id: doc.id, 
         ...data,
-        createdAt: formatTimestamp(data.createdAt)
+        createdAt: formatTimestamp(data.createdAt),
+        type: 'Conference' // default fallback
       });
     });
+
+    const bootcampsSnap = await adminDb.collection("bootcamps").orderBy("date", "desc").get();
+    bootcampsSnap.forEach(doc => {
+      const data = doc.data();
+      const formatTimestamp = (ts: any) => {
+        if (!ts) return null;
+        if (typeof ts.toDate === 'function') {
+          return new Date(ts.toDate()).toISOString();
+        }
+        return new Date(ts).toISOString();
+      };
+      initialEvents.push({
+        id: doc.id,
+        ...data,
+        createdAt: formatTimestamp(data.createdAt),
+        type: 'Workshops',
+        slug: `/community/ai-accelerator-workshop/${data.slug}`, // Transform slug to match full URL expected by EventsClient, or adapt EventsClient
+      });
+    });
+
   } catch (e) {
-    console.error("Failed to fetch events:", e);
+    console.error("Failed to fetch events or bootcamps:", e);
   }
 
   let heroContent = {

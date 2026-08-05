@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Users, FileText, Download, TrendingUp, Settings, Mail, Award, CreditCard, Loader2, CheckCircle, XCircle } from "lucide-react";
+import { Users, FileText, Download, TrendingUp, Settings, Mail, Award, CreditCard, Loader2, CheckCircle, XCircle, Plus, Edit2, Trash2, Calendar } from "lucide-react";
 import { db } from "@/lib/firebase";
-import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
+import { collection, query, orderBy, onSnapshot, deleteDoc, doc } from "firebase/firestore";
+import Link from "next/link";
 
 const TABS = [
   { id: "dashboard", label: "Dashboard", icon: TrendingUp },
+  { id: "manage_events", label: "Manage Bootcamps", icon: Calendar },
   { id: "registrations", label: "Registrations", icon: Users },
   { id: "payments", label: "Payments", icon: CreditCard },
   { id: "certificates", label: "Certificates", icon: Award },
@@ -16,17 +18,28 @@ const TABS = [
 export default function BootcampsAdmin() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [registrations, setRegistrations] = useState<any[]>([]);
+  const [bootcamps, setBootcamps] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   useEffect(() => {
-    const q = query(collection(db, 'bootcamp_registrations'), orderBy('createdAt', 'desc'));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
+    const qReg = query(collection(db, 'bootcamp_registrations'), orderBy('createdAt', 'desc'));
+    const unsubscribeReg = onSnapshot(qReg, (snapshot) => {
       const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setRegistrations(docs);
+    });
+
+    const qBootcamps = query(collection(db, 'bootcamps'), orderBy('createdAt', 'desc'));
+    const unsubscribeBootcamps = onSnapshot(qBootcamps, (snapshot) => {
+      const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setBootcamps(docs);
       setLoading(false);
     });
-    return () => unsubscribe();
+
+    return () => {
+      unsubscribeReg();
+      unsubscribeBootcamps();
+    };
   }, []);
 
   const totalRevenue = registrations.reduce((acc, curr) => acc + (curr.amount || 0), 0);
@@ -87,6 +100,16 @@ export default function BootcampsAdmin() {
     }
   };
 
+  const deleteBootcamp = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this bootcamp?")) return;
+    try {
+      await deleteDoc(doc(db, "bootcamps", id));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to delete bootcamp.");
+    }
+  };
+
   return (
     <div className="p-8">
       <div className="flex items-center justify-between mb-8">
@@ -101,7 +124,7 @@ export default function BootcampsAdmin() {
         </div>
       </div>
 
-      <div className="flex items-center gap-2 border-b border-[#E2E8F0] mb-8">
+      <div className="flex items-center gap-2 border-b border-[#E2E8F0] mb-8 overflow-x-auto">
         {TABS.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -109,7 +132,7 @@ export default function BootcampsAdmin() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-6 py-4 text-sm font-semibold border-b-2 transition-colors ${
+              className={`flex items-center gap-2 px-6 py-4 text-sm font-semibold border-b-2 transition-colors whitespace-nowrap ${
                 isActive ? "border-[#0066FF] text-[#0066FF]" : "border-transparent text-[#64748B] hover:text-[#0B1C2C]"
               }`}
             >
@@ -142,82 +165,136 @@ export default function BootcampsAdmin() {
               <h3 className="text-3xl font-bold text-[#0B1C2C] mb-2">{attendedCount}</h3>
             </div>
           </div>
-
+        </div>
+      ) : activeTab === "manage_events" ? (
+        <div className="space-y-6">
+          <div className="flex justify-end mb-4">
+            <Link 
+              href="/admin/bootcamps/new"
+              className="bg-[#0066FF] hover:bg-[#0052CC] text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2"
+            >
+              <Plus size={16} /> Create Bootcamp
+            </Link>
+          </div>
           <div className="bg-white rounded-xl border border-[#E2E8F0] shadow-sm overflow-hidden">
-            <div className="p-6 border-b border-[#E2E8F0]">
-              <h3 className="text-lg font-bold text-[#0B1C2C]">Registration & Attendance Table</h3>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead>
-                  <tr className="bg-[#F8FAFC] border-b border-[#E2E8F0] text-xs font-semibold text-[#64748B] uppercase tracking-wider">
-                    <th className="p-4">Attendee</th>
-                    <th className="p-4">Plan</th>
-                    <th className="p-4">Status</th>
-                    <th className="p-4">Attendance</th>
-                    <th className="p-4 text-right">Actions</th>
+            <table className="w-full text-left">
+              <thead>
+                <tr className="bg-[#F8FAFC] border-b border-[#E2E8F0] text-xs font-semibold text-[#64748B] uppercase tracking-wider">
+                  <th className="p-4">Title</th>
+                  <th className="p-4">Date</th>
+                  <th className="p-4">Price</th>
+                  <th className="p-4">Status</th>
+                  <th className="p-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#E2E8F0]">
+                {bootcamps.map((bc) => (
+                  <tr key={bc.id} className="hover:bg-[#F8FAFC]">
+                    <td className="p-4">
+                      <div className="font-semibold text-[#0B1C2C]">{bc.title}</div>
+                      <div className="text-sm text-[#64748B]">/{bc.slug}</div>
+                    </td>
+                    <td className="p-4 text-sm text-[#0B1C2C]">{bc.date}</td>
+                    <td className="p-4 text-sm font-medium text-[#0B1C2C]">₹{bc.price}</td>
+                    <td className="p-4">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        {bc.status}
+                      </span>
+                    </td>
+                    <td className="p-4 text-right space-x-2">
+                      <Link href={`/admin/bootcamps/${bc.id}`} className="inline-flex p-2 text-[#64748B] hover:text-[#0066FF] hover:bg-blue-50 rounded-lg transition-colors">
+                        <Edit2 size={16} />
+                      </Link>
+                      <button onClick={() => deleteBootcamp(bc.id)} className="inline-flex p-2 text-[#64748B] hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                        <Trash2 size={16} />
+                      </button>
+                    </td>
                   </tr>
-                </thead>
-                <tbody className="divide-y divide-[#E2E8F0]">
-                  {registrations.map((reg) => (
-                    <tr key={reg.id} className="hover:bg-[#F8FAFC]">
-                      <td className="p-4">
-                        <div className="font-semibold text-[#0B1C2C]">{reg.name}</div>
-                        <div className="text-sm text-[#64748B]">{reg.email}</div>
-                      </td>
-                      <td className="p-4">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                          {reg.plan}
-                        </span>
-                      </td>
-                      <td className="p-4">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          {reg.status}
-                        </span>
-                      </td>
-                      <td className="p-4">
+                ))}
+                {bootcamps.length === 0 && (
+                  <tr>
+                    <td colSpan={5} className="p-8 text-center text-[#64748B]">No bootcamps found.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ) : activeTab === "registrations" ? (
+        <div className="bg-white rounded-xl border border-[#E2E8F0] shadow-sm overflow-hidden">
+          <div className="p-6 border-b border-[#E2E8F0]">
+            <h3 className="text-lg font-bold text-[#0B1C2C]">Registration & Attendance Table</h3>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="bg-[#F8FAFC] border-b border-[#E2E8F0] text-xs font-semibold text-[#64748B] uppercase tracking-wider">
+                  <th className="p-4">Attendee</th>
+                  <th className="p-4">Plan</th>
+                  <th className="p-4">Status</th>
+                  <th className="p-4">Attendance</th>
+                  <th className="p-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#E2E8F0]">
+                {registrations.map((reg) => (
+                  <tr key={reg.id} className="hover:bg-[#F8FAFC]">
+                    <td className="p-4">
+                      <div className="font-semibold text-[#0B1C2C]">{reg.name}</div>
+                      <div className="text-sm text-[#64748B]">{reg.email}</div>
+                    </td>
+                    <td className="p-4">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        {reg.plan}
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        {reg.status}
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <button
+                        onClick={() => toggleAttendance(reg.id, reg.attendance)}
+                        disabled={actionLoading === `att-${reg.id}`}
+                        className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
+                          reg.attendance ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                        }`}
+                      >
+                        {actionLoading === `att-${reg.id}` ? <Loader2 className="w-4 h-4 animate-spin" /> : reg.attendance ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
+                        {reg.attendance ? "Attended" : "Mark Attended"}
+                      </button>
+                    </td>
+                    <td className="p-4 text-right space-x-2">
+                      {reg.attendance ? (
                         <button
-                          onClick={() => toggleAttendance(reg.id, reg.attendance)}
-                          disabled={actionLoading === `att-${reg.id}`}
-                          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
-                            reg.attendance ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                          }`}
+                          onClick={() => sendCertificate(reg)}
+                          disabled={actionLoading === `cert-${reg.id}`}
+                          className="inline-flex items-center gap-2 bg-[#0066FF] text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-[#0052CC] disabled:opacity-50"
                         >
-                          {actionLoading === `att-${reg.id}` ? <Loader2 className="w-4 h-4 animate-spin" /> : reg.attendance ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
-                          {reg.attendance ? "Attended" : "Mark Attended"}
+                          {actionLoading === `cert-${reg.id}` ? <Loader2 className="w-4 h-4 animate-spin" /> : <Award className="w-4 h-4" />}
+                          Send Certificate
                         </button>
-                      </td>
-                      <td className="p-4 text-right space-x-2">
-                        {reg.attendance ? (
-                          <button
-                            onClick={() => sendCertificate(reg)}
-                            disabled={actionLoading === `cert-${reg.id}`}
-                            className="inline-flex items-center gap-2 bg-[#0066FF] text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-[#0052CC] disabled:opacity-50"
-                          >
-                            {actionLoading === `cert-${reg.id}` ? <Loader2 className="w-4 h-4 animate-spin" /> : <Award className="w-4 h-4" />}
-                            Send Certificate
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => sendFollowUp(reg)}
-                            disabled={actionLoading === `follow-${reg.id}`}
-                            className="inline-flex items-center gap-2 bg-amber-500 text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-amber-600 disabled:opacity-50"
-                          >
-                            {actionLoading === `follow-${reg.id}` ? <Loader2 className="w-4 h-4 animate-spin" /> : <Mail className="w-4 h-4" />}
-                            Send Follow-up
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                  {registrations.length === 0 && (
-                    <tr>
-                      <td colSpan={5} className="p-8 text-center text-[#64748B]">No registrations found.</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
+                      ) : (
+                        <button
+                          onClick={() => sendFollowUp(reg)}
+                          disabled={actionLoading === `follow-${reg.id}`}
+                          className="inline-flex items-center gap-2 bg-amber-500 text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-amber-600 disabled:opacity-50"
+                        >
+                          {actionLoading === `follow-${reg.id}` ? <Loader2 className="w-4 h-4 animate-spin" /> : <Mail className="w-4 h-4" />}
+                          Send Follow-up
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+                {registrations.length === 0 && (
+                  <tr>
+                    <td colSpan={5} className="p-8 text-center text-[#64748B]">No registrations found.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       ) : (
@@ -232,3 +309,4 @@ export default function BootcampsAdmin() {
     </div>
   );
 }
+

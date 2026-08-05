@@ -22,7 +22,7 @@ export default function RegisterButton({ event }: RegisterButtonProps) {
     setMounted(true);
   }, []);
 
-  const entryFee = (event.entryFee !== undefined && event.entryFee !== null) ? Number(event.entryFee) : 449;
+  const entryFee = (event.entryFee !== undefined && event.entryFee !== null) ? Number(event.entryFee) : 0;
 
   return (
     <>

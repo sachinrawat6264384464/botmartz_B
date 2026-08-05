@@ -18,18 +18,10 @@ interface EventItem {
 }
 
 const PROTOTYPE_EVENTS: EventItem[] = [
+  { type: 'Workshop', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Accelerator Workshop Series 1: Build Your First AI Full-Stack App', desc: 'A hands-on workshop to build an end-to-end full stack AI application with Next.js and LLMs.', date: 'August 9, 2026', location: 'Indore, India', slug: '/community/ai-accelerator-workshop/build-your-first-ai-full-stack-application' },
+  { type: 'Workshop', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Accelerator Workshop Series 2: Build Smarter AI Agents', desc: 'Learn how modern AI Agents think, plan and act. Dive deep into LangGraph, Tool Calling, and MCP.', date: 'August 16, 2026', location: 'Indore, India', slug: '/community/ai-accelerator-workshop/build-smarter-ai-agents' },
+  { type: 'Workshop', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Accelerator Workshop Series 3: Build Production Ready AI Applications', desc: 'Scale and deploy robust systems to the real world. Learn Inference, Optimization, and AI Infrastructure.', date: 'August 22, 2026', location: 'Indore, India', slug: '/community/ai-accelerator-workshop/build-production-ready-ai-applications' },
   { type: 'Meetup', status: 'Monthly', statusColor: '#0E9F6E', title: 'AI Engineering Meetup — Indore Chapter', desc: 'A monthly gathering for local AI engineers to share projects, talk shop, and swap production lessons.', date: 'Every 3rd Saturday', location: 'Indore, India' },
-  { type: 'Meetup', status: 'Upcoming', statusColor: '#0E9F6E', title: 'Open Source Night: Contributing to LangGraph', desc: 'A hands-on evening picking up good-first-issues and pairing on real open-source contributions.', date: 'Sep 12, 2026 · 6:00 PM', location: 'Online' },
-  { type: 'Hackathon', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Frontier Hackathon 2026', desc: 'A weekend build sprint following the conference — teams ship an AI agent or RAG system from scratch.', date: 'Sep 26–27, 2026', location: 'Indore, India' },
-  { type: 'Webinar', status: 'Upcoming', statusColor: '#0E9F6E', title: 'Enterprise RAG in Production', desc: 'A deep dive on evaluation, reranking, and guardrails for RAG systems that actually ship.', date: 'Oct 8, 2026 · 5:00 PM', location: 'Online' },
-  { type: 'Meetup', status: 'Recurring', statusColor: '#0E9F6E', title: 'AI Engineering Reading Club', desc: 'A biweekly discussion group working through papers and technical blog posts shaping the field.', date: 'Every other Thursday', location: 'Discord' },
-  { type: 'Conferences', status: 'Planning', statusColor: '#D97706', title: 'AI Frontier 2027 — Save the Date', desc: 'Planning is already underway for next year’s flagship conference. Theme announced later this year.', date: 'TBA 2027', location: 'Indore, India' },
-];
-
-const PROTOTYPE_PAST_EVENTS = [
-  { type: 'Meetup', date: 'Jun 2026', title: 'AI Engineering Reading Club — Kickoff', desc: 'First session of the reading club, covering foundational agent architecture papers.' },
-  { type: 'Webinar', date: 'May 2026', title: 'From Notebook to Production', desc: 'A practical session on taking ML prototypes into real production systems.' },
-  { type: 'Meetup', date: 'Apr 2026', title: 'Botmartz Community Kickoff Mixer', desc: 'The very first informal meetup that planted the seed for this community.' },
 ];
 
 export default function EventsClient({
@@ -56,7 +48,7 @@ export default function EventsClient({
   const [subscribed, setSubscribed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const categoryList = ['All Events', 'Conferences', 'Meetups', 'Hackathons', 'Webinars'];
+  const categoryList = ['All Events', 'Workshops', 'Meetups'];
 
   const heroStats = [
     { value: '6+', label: 'Events per Year' },
@@ -84,7 +76,7 @@ export default function EventsClient({
 
   const visibleEvents: EventItem[] = useMemo(() => {
     if (filter === 'All Events') return events;
-    const filterMap: Record<string, string> = { 'Conferences': 'Conferences', 'Meetups': 'Meetup', 'Hackathons': 'Hackathon', 'Webinars': 'Webinar' };
+    const filterMap: Record<string, string> = { 'Conferences': 'Conferences', 'Workshops': 'Workshop', 'Meetups': 'Meetup', 'Hackathons': 'Hackathon', 'Webinars': 'Webinar' };
     const target = filterMap[filter] || filter;
     return events.filter(e => e.type.toLowerCase().includes(target.toLowerCase()) || target.toLowerCase().includes(e.type.toLowerCase()));
   }, [filter, events]);
@@ -116,8 +108,8 @@ export default function EventsClient({
     "mainEntity": {
       "@type": "Event",
       "name": "AI Frontier 2026 — The Future of AI Engineering",
-      "startDate": "2026-08-22T10:00:00+05:30",
-      "endDate": "2026-08-22T17:00:00+05:30",
+      "startDate": "2026-08-23T10:00:00+05:30",
+      "endDate": "2026-08-23T17:00:00+05:30",
       "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
       "eventStatus": "https://schema.org/EventScheduled",
       "location": {
@@ -142,6 +134,7 @@ export default function EventsClient({
     <div className="bg-[#F5F8FC] min-h-screen font-sans text-[#0B1220]">
       <script
         type="application/ld+json"
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{
           __html: structuredData ? structuredData : JSON.stringify(defaultSchema)
         }}
@@ -479,8 +472,8 @@ export default function EventsClient({
                 {ev.location}
               </div>
               {ev.slug ? (
-                <Link
-                  href={`/community/events/${ev.slug}`}
+                <Link 
+                  href={ev.slug.startsWith('/') ? ev.slug : `/community/events/${ev.slug}`}
                   className="mt-1 text-center bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[12.5px] py-2 rounded-lg transition-all"
                 >
                   Register / View Details
@@ -551,31 +544,6 @@ export default function EventsClient({
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* ── PAST EVENTS ── */}
-      <div className="max-w-[1240px] mx-auto my-14 pb-22 px-6 sm:px-10">
-        <div className="font-bold text-[12px] tracking-[0.1em] text-[#007BFF] uppercase mb-4">
-          Past Events
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {PROTOTYPE_PAST_EVENTS.map((p, idx) => (
-            <div
-              key={idx}
-              className="bg-white border border-[#E7ECF3] rounded-[12px] p-5 flex flex-col gap-1.5 opacity-85 shadow-sm"
-            >
-              <span className="font-bold text-[9.5px] tracking-[0.05em] text-[#8A97AC] uppercase">
-                {p.type} · {p.date}
-              </span>
-              <div className="font-bold text-[14px] text-[#0B1220] mt-0.5">
-                {p.title}
-              </div>
-              <div className="font-medium text-[12px] leading-[1.5] text-[#5B6B85]">
-                {p.desc}
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </div>

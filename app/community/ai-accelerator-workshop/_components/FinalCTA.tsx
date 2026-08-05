@@ -10,7 +10,7 @@ export default function FinalCTA() {
       
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-[36px] md:text-[52px] font-bold tracking-tight mb-6 leading-tight">
+          <h2 className="text-[40px] md:text-[56px] font-extrabold text-white tracking-tight leading-tight mb-6">
             Ready to Engineer the Future?
           </h2>
           <p className="text-xl text-[#8A9EB0] mb-10 font-medium">
