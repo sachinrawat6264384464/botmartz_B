@@ -47,31 +47,24 @@ function CheckoutContent() {
   }, [plan]);
 
   const [couponInput, setCouponInput] = useState("");
-  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
+  const [appliedCouponInfo, setAppliedCouponInfo] = useState<{
+    code: string;
+    discountType: string;
+    discountValue: number;
+  } | null>(null);
   const [couponError, setCouponError] = useState("");
   const [couponSuccess, setCouponSuccess] = useState("");
   const [couponLoading, setCouponLoading] = useState(false);
-  const [isCouponLimitReached, setIsCouponLimitReached] = useState(false);
-
-  useEffect(() => {
-    // Check total coupon redemptions limit (Max 7 allowed total)
-    const checkCouponLimit = async () => {
-      try {
-        const res = await fetch("/api/events/verify-coupon");
-        const data = await res.json();
-        if (data.isLimitReached) {
-          setIsCouponLimitReached(true);
-        }
-      } catch (err) {
-        console.error("Failed to check coupon limit:", err);
-      }
-    };
-    checkCouponLimit();
-  }, []);
 
   const getAmount = () => {
-    if (appliedCoupon) return 0;
-    return bootcampAmount || 199;
+    const basePrice = plan === "bundle" ? 399 : (bootcampAmount || 199);
+    if (!appliedCouponInfo) return basePrice;
+    if (appliedCouponInfo.discountValue === 100) return 0;
+    if (appliedCouponInfo.discountType === "percentage") {
+      const discount = Math.round((basePrice * appliedCouponInfo.discountValue) / 100);
+      return Math.max(0, basePrice - discount);
+    }
+    return basePrice;
   };
 
   const handleApplyCoupon = async () => {
@@ -89,8 +82,16 @@ function CheckoutContent() {
       const data = await res.json();
 
       if (res.ok && data.success) {
-        setAppliedCoupon(data.code);
-        setCouponSuccess(`Coupon "${data.code}" Applied! 100% FREE Registration.`);
+        setAppliedCouponInfo({
+          code: data.code,
+          discountType: data.discountType,
+          discountValue: data.discountValue,
+        });
+        if (data.discountValue === 100) {
+          setCouponSuccess(`Coupon "${data.code}" Applied! 100% FREE Access.`);
+        } else {
+          setCouponSuccess(`Coupon "${data.code}" Applied! ${data.discountValue}% Discount Saved.`);
+        }
       } else {
         setCouponError(data.error || "Invalid coupon code");
       }
@@ -106,8 +107,8 @@ function CheckoutContent() {
     setLoading(true);
     setError("");
 
-    // FREE REGISTRATION VIA COUPON
-    if (appliedCoupon && getAmount() === 0) {
+    // FREE REGISTRATION VIA 100% COUPON
+    if (appliedCouponInfo && getAmount() === 0) {
       try {
         const res = await fetch("/api/ai-frontier/coupon-register", {
           method: "POST",
@@ -117,7 +118,7 @@ function CheckoutContent() {
             email: formData.email,
             phone: formData.phone,
             plan: plan || "bootcamp-01",
-            couponCode: appliedCoupon,
+            couponCode: appliedCouponInfo.code,
           }),
         });
 
@@ -135,7 +136,7 @@ function CheckoutContent() {
       return;
     }
 
-    // REGULAR RAZORPAY PAYMENT
+    // REGULAR / DISCOUNTED RAZORPAY PAYMENT
     try {
       const res = await fetch("/api/ai-frontier/create-order", {
         method: "POST",
@@ -163,7 +164,8 @@ function CheckoutContent() {
               email: formData.email,
               phone: formData.phone,
               plan: plan || "bootcamp-01",
-              chargedAmount: getAmount()
+              chargedAmount: getAmount(),
+              appliedCoupon: appliedCouponInfo?.code || ""
             }),
           });
 
@@ -310,32 +312,30 @@ function CheckoutContent() {
               />
             </div>
 
-            {/* COUPON CODE INPUT FIELD (Automatically removed when 7 coupons limit is reached) */}
-            {!isCouponLimitReached && (
-              <div className="pt-2 border-t border-[#E2E8F0]">
-                <label className="block text-xs font-bold text-[#64748B] uppercase tracking-wider mb-1.5">Have a Coupon Code?</label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="Enter promo code"
-                    value={couponInput}
-                    onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
-                    disabled={Boolean(appliedCoupon)}
-                    className="flex-1 p-2.5 rounded-xl border border-[#CBD5E1] font-mono text-sm text-[#0B1C2C] bg-[#F8FAFC] uppercase tracking-wider focus:outline-none focus:border-[#0066FF] disabled:opacity-60"
-                  />
-                  <button
-                    type="button"
-                    onClick={handleApplyCoupon}
-                    disabled={couponLoading || !couponInput.trim() || Boolean(appliedCoupon)}
-                    className="px-4 py-2.5 rounded-xl bg-[#0B1C2C] hover:bg-[#1E293B] text-white font-semibold text-xs transition-colors disabled:opacity-50 shrink-0"
-                  >
-                    {couponLoading ? "Applying..." : appliedCoupon ? "Applied ✓" : "Apply"}
-                  </button>
-                </div>
-                {couponError && <p className="text-xs text-rose-600 font-semibold mt-1.5">{couponError}</p>}
-                {couponSuccess && <p className="text-xs text-emerald-600 font-bold mt-1.5">{couponSuccess}</p>}
+            {/* COUPON CODE INPUT FIELD (Permanently available) */}
+            <div className="pt-2 border-t border-[#E2E8F0]">
+              <label className="block text-xs font-bold text-[#64748B] uppercase tracking-wider mb-1.5">Have a Coupon Code?</label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Enter promo code"
+                  value={couponInput}
+                  onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                  disabled={Boolean(appliedCouponInfo)}
+                  className="flex-1 p-2.5 rounded-xl border border-[#CBD5E1] font-mono text-sm text-[#0B1C2C] bg-[#F8FAFC] uppercase tracking-wider focus:outline-none focus:border-[#0066FF] disabled:opacity-60"
+                />
+                <button
+                  type="button"
+                  onClick={handleApplyCoupon}
+                  disabled={couponLoading || !couponInput.trim() || Boolean(appliedCouponInfo)}
+                  className="px-4 py-2.5 rounded-xl bg-[#0B1C2C] hover:bg-[#1E293B] text-white font-semibold text-xs transition-colors disabled:opacity-50 shrink-0"
+                >
+                  {couponLoading ? "Applying..." : appliedCouponInfo ? "Applied ✓" : "Apply"}
+                </button>
               </div>
-            )}
+              {couponError && <p className="text-xs text-rose-600 font-semibold mt-1.5">{couponError}</p>}
+              {couponSuccess && <p className="text-xs text-emerald-600 font-bold mt-1.5">{couponSuccess}</p>}
+            </div>
 
             <button
               type="submit"
