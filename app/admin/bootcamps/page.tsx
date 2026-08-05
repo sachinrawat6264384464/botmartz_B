@@ -202,7 +202,7 @@ export default function BootcampsAdmin() {
       const data = await res.json();
       if (data.success) {
         setAdminRegResult({ success: true, message: `✅ Registered! Check-in Code: ${data.checkInCode}. ${data.emailSent ? 'Confirmation + Ticket email sent!' : 'Email sending failed (SMTP issue).'}`, checkInCode: data.checkInCode });
-        setAdminRegForm({ name: '', email: '', phone: '', plan: 'bootcamp-01' });
+        setAdminRegForm({ name: '', email: '', phone: '', organization: '', plan: 'bootcamp-01' });
       } else {
         setAdminRegResult({ success: false, message: `❌ Error: ${data.error}` });
       }
