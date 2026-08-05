@@ -3,6 +3,7 @@ import Hero from "./_components/Hero";
 import JourneyTimeline from "./_components/JourneyTimeline";
 import BootcampDetails from "./_components/BootcampDetails";
 import WhatsIncluded from "./_components/WhatsIncluded";
+import CertificateShowcase from "./_components/CertificateShowcase";
 import Instructor from "./_components/Instructor";
 import FAQ from "./_components/FAQ";
 import FinalCTA from "./_components/FinalCTA";
@@ -52,6 +53,7 @@ export default function AIFrontierPage() {
         <JourneyTimeline />
         <BootcampDetails />
         <WhatsIncluded />
+        <CertificateShowcase />
         <Instructor />
         <FAQ />
         <FinalCTA />
