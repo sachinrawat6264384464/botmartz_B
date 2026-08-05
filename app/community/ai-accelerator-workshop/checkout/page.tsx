@@ -44,6 +44,8 @@ function CheckoutContent() {
       }
     };
     fetchBootcamp();
+  }, [plan]);
+
   useEffect(() => {
     // Preload Razorpay SDK script
     if (typeof window !== "undefined" && !(window as any).Razorpay) {
