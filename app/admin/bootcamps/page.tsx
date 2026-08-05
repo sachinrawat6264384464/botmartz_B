@@ -24,7 +24,7 @@ export default function BootcampsAdmin() {
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   // Admin Direct Registration Form State
-  const [adminRegForm, setAdminRegForm] = useState({ name: '', email: '', phone: '', plan: 'bootcamp-01' });
+  const [adminRegForm, setAdminRegForm] = useState({ name: '', email: '', phone: '', organization: '', plan: 'bootcamp-01' });
   const [adminRegLoading, setAdminRegLoading] = useState(false);
   const [adminRegResult, setAdminRegResult] = useState<{ success: boolean; message: string; checkInCode?: string } | null>(null);
   
@@ -641,6 +641,7 @@ export default function BootcampsAdmin() {
               <thead>
                 <tr className="bg-[#F8FAFC] dark:bg-white/5 border-b border-[#E2E8F0] dark:border-white/10 text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider">
                   <th className="p-4">Attendee</th>
+                  <th className="p-4">Organization</th>
                   <th className="p-4">Plan / Event</th>
                   <th className="p-4">Payment & Coupon</th>
                   <th className="p-4">Check-in Code</th>
@@ -657,6 +658,15 @@ export default function BootcampsAdmin() {
                         <div className="font-semibold text-[#0B1C2C] dark:text-white text-sm">{reg.name}</div>
                         <div className="text-xs text-[#64748B] dark:text-slate-400 font-mono">{reg.email}</div>
                         {reg.phone && <div className="text-[11px] text-[#64748B] dark:text-slate-400">{reg.phone}</div>}
+                      </td>
+                      <td className="p-4">
+                        {reg.organization ? (
+                          <div>
+                            <div className="text-sm font-semibold text-[#0B1C2C] dark:text-white">{reg.organization}</div>
+                          </div>
+                        ) : (
+                          <span className="text-xs text-[#94A3B8] dark:text-slate-500 italic">—</span>
+                        )}
                       </td>
                       <td className="p-4">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-950 dark:text-blue-300 text-blue-800">
@@ -796,29 +806,69 @@ export default function BootcampsAdmin() {
                 />
               </div>
 
-              {/* Plan Dropdown */}
+              {/* Organization / College */}
               <div>
-                <label className="block text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider mb-1.5">Register For — Select Plan *</label>
-                <select
-                  required
-                  value={adminRegForm.plan}
-                  onChange={e => setAdminRegForm({ ...adminRegForm, plan: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-[#CBD5E1] dark:border-white/10 bg-[#F8FAFC] dark:bg-white/5 text-[#0B1C2C] dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#0066FF]/40 focus:border-[#0066FF] transition-all"
-                >
-                  <optgroup label="₹199 — Single Bootcamp">
-                    <option value="bootcamp-01">Bootcamp Series 1 — Build Your First AI App (₹199)</option>
-                    <option value="bootcamp-02">Bootcamp Series 2 — Build Smarter AI Agents (₹199)</option>
-                    <option value="bootcamp-03">Bootcamp Series 3 — Build Production AI Apps (₹199)</option>
-                  </optgroup>
-                  <optgroup label="₹399 — Full Bundle">
-                    <option value="bundle">🌟 AI Engineering Pass — All 3 Series (₹399)</option>
-                  </optgroup>
-                </select>
-                <p className="text-[10px] text-[#94A3B8] dark:text-slate-500 mt-1.5 flex items-center gap-1">
-                  <span className="inline-flex items-center gap-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded-full font-bold text-[10px]">FREE</span>
-                  Admin bypass — amount ₹0. Emails will be sent to the address above.
+                <label className="block text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider mb-1.5">
+                  Organization / College <span className="text-[#94A3B8] normal-case font-normal">(optional)</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. IIT Delhi, Google, Freelancer..."
+                  value={adminRegForm.organization}
+                  onChange={e => setAdminRegForm({ ...adminRegForm, organization: e.target.value })}
+                  className="w-full px-4 py-3 rounded-xl border border-[#CBD5E1] dark:border-white/10 bg-[#F8FAFC] dark:bg-white/5 text-[#0B1C2C] dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#0066FF]/40 focus:border-[#0066FF] transition-all placeholder:text-[#94A3B8]"
+                />
+              </div>
+
+              {/* Plan Selection — Inline Cards (no dropdown) */}
+              <div>
+                <label className="block text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider mb-2">Register For — Select Plan *</label>
+                <div className="space-y-2">
+                  {[
+                    { value: 'bootcamp-01', label: 'Bootcamp Series 1', sub: 'Build Your First AI Full-Stack Application', price: '₹199' },
+                    { value: 'bootcamp-02', label: 'Bootcamp Series 2', sub: 'Build Smarter AI Agents', price: '₹199' },
+                    { value: 'bootcamp-03', label: 'Bootcamp Series 3', sub: 'Build Production Ready AI Applications', price: '₹199' },
+                    { value: 'bundle',      label: '🌟 AI Engineering Pass', sub: 'Full Bundle — All 3 Series', price: '₹399' },
+                  ].map(opt => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => setAdminRegForm({ ...adminRegForm, plan: opt.value })}
+                      className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border-2 text-left transition-all ${
+                        adminRegForm.plan === opt.value
+                          ? 'border-[#0066FF] bg-[#0066FF]/5 dark:bg-[#0066FF]/10'
+                          : 'border-[#E2E8F0] dark:border-white/10 bg-[#F8FAFC] dark:bg-white/5 hover:border-[#CBD5E1]'
+                      }`}
+                    >
+                      <div>
+                        <p className={`text-sm font-bold leading-tight ${adminRegForm.plan === opt.value ? 'text-[#0066FF] dark:text-[#60A5FA]' : 'text-[#0B1C2C] dark:text-white'}`}>
+                          {opt.label}
+                        </p>
+                        <p className="text-[11px] text-[#64748B] dark:text-slate-400 mt-0.5">{opt.sub}</p>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0 ml-3">
+                        <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                          opt.value === 'bundle'
+                            ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300'
+                            : 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
+                        }`}>{opt.price}</span>
+                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                          adminRegForm.plan === opt.value
+                            ? 'border-[#0066FF] bg-[#0066FF]'
+                            : 'border-[#CBD5E1] dark:border-white/20'
+                        }`}>
+                          {adminRegForm.plan === opt.value && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+                <p className="text-[10px] text-[#94A3B8] dark:text-slate-500 mt-2 flex items-center gap-1">
+                  <span className="inline-flex items-center bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded-full font-bold text-[10px]">FREE</span>
+                  Admin bypass — amount ₹0. Emails sent to address above.
                 </p>
               </div>
+
 
               {/* Result Message */}
               {adminRegResult && (

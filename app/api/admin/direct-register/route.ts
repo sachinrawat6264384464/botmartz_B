@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 
 export async function POST(req: Request) {
   try {
-    const { name, email, phone, plan } = await req.json();
+    const { name, email, phone, plan, organization } = await req.json();
 
     if (!name || !email || !plan) {
       return NextResponse.json({ success: false, error: "Missing required fields: name, email, plan" }, { status: 400 });
@@ -40,6 +40,7 @@ export async function POST(req: Request) {
       name: name.trim(),
       email: email.trim().toLowerCase(),
       phone: phone?.trim() || "",
+      organization: organization?.trim() || "",
       plan,
       paymentId: `ADMIN-DIRECT-${Date.now()}`,
       orderId: `ADMIN-FREE-${Date.now()}`,

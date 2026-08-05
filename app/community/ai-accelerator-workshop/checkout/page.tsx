@@ -20,6 +20,7 @@ function CheckoutContent() {
     name: "",
     email: "",
     phone: "",
+    organization: "",
   });
 
   useEffect(() => {
@@ -142,6 +143,7 @@ function CheckoutContent() {
             name: formData.name,
             email: formData.email,
             phone: formData.phone,
+            organization: formData.organization,
             plan: plan || "bootcamp-01",
             couponCode: appliedCouponInfo.code,
           }),
@@ -193,6 +195,7 @@ function CheckoutContent() {
               name: formData.name,
               email: formData.email,
               phone: formData.phone,
+              organization: formData.organization,
               plan: plan || "bootcamp-01",
               chargedAmount: getAmount(),
               appliedCoupon: appliedCouponInfo?.code || ""
@@ -341,6 +344,21 @@ function CheckoutContent() {
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               />
             </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-[#334155] mb-1.5">
+                Organization / College
+                <span className="ml-2 text-xs font-normal text-[#94A3B8]">optional</span>
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. IIT Delhi, Google, Freelancer..."
+                className="w-full p-3.5 rounded-xl border border-[#CBD5E1] focus:ring-2 focus:ring-[#0066FF] outline-none transition-all text-[#0B1C2C] bg-[#F8FAFC]"
+                value={formData.organization}
+                onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
+              />
+            </div>
+
 
             {/* COUPON CODE INPUT FIELD (Permanently available) */}
             <div className="pt-2 border-t border-[#E2E8F0]">
