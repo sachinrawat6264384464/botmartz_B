@@ -345,22 +345,22 @@ function CheckoutContent() {
             {/* COUPON CODE INPUT FIELD (Permanently available) */}
             <div className="pt-2 border-t border-[#E2E8F0]">
               <label className="block text-xs font-bold text-[#64748B] uppercase tracking-wider mb-1.5">Have a Coupon Code?</label>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <input
                   type="text"
                   placeholder="Enter promo code"
                   value={couponInput}
                   onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
                   disabled={Boolean(appliedCouponInfo)}
-                  className="flex-1 p-2.5 rounded-xl border border-[#CBD5E1] font-mono text-sm text-[#0B1C2C] bg-[#F8FAFC] uppercase tracking-wider focus:outline-none focus:border-[#0066FF] disabled:opacity-60"
+                  className="flex-1 min-w-0 p-2.5 rounded-xl border border-[#CBD5E1] font-mono text-sm text-[#0B1C2C] bg-[#F8FAFC] uppercase tracking-wider focus:outline-none focus:border-[#0066FF] disabled:opacity-60"
                 />
                 <button
                   type="button"
                   onClick={handleApplyCoupon}
                   disabled={couponLoading || !couponInput.trim() || Boolean(appliedCouponInfo)}
-                  className="px-4 py-2.5 rounded-xl bg-[#0B1C2C] hover:bg-[#1E293B] text-white font-semibold text-xs transition-colors disabled:opacity-50 shrink-0"
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#0B1C2C] hover:bg-[#1E293B] text-white font-semibold text-sm transition-colors disabled:opacity-50"
                 >
-                  {couponLoading ? "Applying..." : appliedCouponInfo ? "Applied ✓" : "Apply"}
+                  {couponLoading ? "Applying..." : appliedCouponInfo ? "✓ Applied" : "Apply Code"}
                 </button>
               </div>
               {couponError && <p className="text-xs text-rose-600 font-semibold mt-1.5">{couponError}</p>}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Users, FileText, Download, TrendingUp, Mail, Award, CreditCard, Loader2, CheckCircle, XCircle, Plus, Edit2, Trash2, Calendar, Clock, Search, Filter } from "lucide-react";
+import { Users, FileText, Download, TrendingUp, Mail, Award, CreditCard, Loader2, CheckCircle, XCircle, Plus, Edit2, Trash2, Calendar, Clock, Search, Filter, UserPlus, CheckCheck } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, query, orderBy, onSnapshot, deleteDoc, doc } from "firebase/firestore";
 import Link from "next/link";
@@ -10,6 +10,7 @@ const TABS = [
   { id: "dashboard", label: "Dashboard", icon: TrendingUp },
   { id: "manage_events", label: "Manage Bootcamps", icon: Calendar },
   { id: "registrations", label: "Registrations", icon: Users },
+  { id: "direct_register", label: "Direct Register", icon: UserPlus },
   { id: "payments", label: "Payments", icon: CreditCard },
   { id: "certificates", label: "Certificates", icon: Award },
   { id: "emails", label: "Email Logs", icon: Mail },
@@ -21,6 +22,11 @@ export default function BootcampsAdmin() {
   const [bootcamps, setBootcamps] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+
+  // Admin Direct Registration Form State
+  const [adminRegForm, setAdminRegForm] = useState({ name: '', email: '', phone: '', plan: 'bootcamp-01' });
+  const [adminRegLoading, setAdminRegLoading] = useState(false);
+  const [adminRegResult, setAdminRegResult] = useState<{ success: boolean; message: string; checkInCode?: string } | null>(null);
   
   // Filter & Search states
   const [regFilter, setRegFilter] = useState<"all" | "attended" | "pending">("all");
@@ -180,6 +186,30 @@ export default function BootcampsAdmin() {
     } finally {
       setActionLoading(null);
     }
+  };
+
+  const handleAdminDirectRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!adminRegForm.name.trim() || !adminRegForm.email.trim()) return;
+    setAdminRegLoading(true);
+    setAdminRegResult(null);
+    try {
+      const res = await fetch('/api/admin/direct-register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(adminRegForm)
+      });
+      const data = await res.json();
+      if (data.success) {
+        setAdminRegResult({ success: true, message: `✅ Registered! Check-in Code: ${data.checkInCode}. ${data.emailSent ? 'Confirmation + Ticket email sent!' : 'Email sending failed (SMTP issue).'}`, checkInCode: data.checkInCode });
+        setAdminRegForm({ name: '', email: '', phone: '', plan: 'bootcamp-01' });
+      } else {
+        setAdminRegResult({ success: false, message: `❌ Error: ${data.error}` });
+      }
+    } catch (err: any) {
+      setAdminRegResult({ success: false, message: `❌ Network error: ${err.message}` });
+    }
+    setAdminRegLoading(false);
   };
 
   // Filtered registrations for table
@@ -705,6 +735,123 @@ export default function BootcampsAdmin() {
                 )}
               </tbody>
             </table>
+          </div>
+        </div>
+      ) : activeTab === "direct_register" ? (
+        <div className="max-w-xl mx-auto">
+          <div className="bg-white dark:bg-[#0E172A] rounded-2xl border border-[#E2E8F0] dark:border-white/10 shadow-sm overflow-hidden">
+            {/* Header */}
+            <div className="p-5 sm:p-6 border-b border-[#E2E8F0] dark:border-white/10 bg-gradient-to-r from-[#0066FF]/5 to-transparent">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#0066FF]/10 text-[#0066FF] flex items-center justify-center shrink-0">
+                  <UserPlus className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 className="text-base sm:text-lg font-bold text-[#0B1C2C] dark:text-white">Admin Direct Registration</h2>
+                  <p className="text-xs text-[#64748B] dark:text-slate-400 mt-0.5">Register someone for free — no payment required. Confirmation + ticket emails will be sent automatically.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleAdminDirectRegister} className="p-5 sm:p-6 space-y-4">
+              {/* Name */}
+              <div>
+                <label className="block text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider mb-1.5">Full Name *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Rahul Sharma"
+                  value={adminRegForm.name}
+                  onChange={e => setAdminRegForm({ ...adminRegForm, name: e.target.value })}
+                  className="w-full px-4 py-3 rounded-xl border border-[#CBD5E1] dark:border-white/10 bg-[#F8FAFC] dark:bg-white/5 text-[#0B1C2C] dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#0066FF]/40 focus:border-[#0066FF] transition-all placeholder:text-[#94A3B8]"
+                />
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="block text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider mb-1.5">Email Address *</label>
+                <input
+                  type="email"
+                  required
+                  placeholder="rahul@example.com"
+                  value={adminRegForm.email}
+                  onChange={e => setAdminRegForm({ ...adminRegForm, email: e.target.value })}
+                  className="w-full px-4 py-3 rounded-xl border border-[#CBD5E1] dark:border-white/10 bg-[#F8FAFC] dark:bg-white/5 text-[#0B1C2C] dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#0066FF]/40 focus:border-[#0066FF] transition-all placeholder:text-[#94A3B8]"
+                />
+              </div>
+
+              {/* Phone */}
+              <div>
+                <label className="block text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider mb-1.5">Phone Number <span className="text-[#94A3B8] normal-case font-normal">(optional)</span></label>
+                <input
+                  type="tel"
+                  placeholder="+91 9876543210"
+                  value={adminRegForm.phone}
+                  onChange={e => setAdminRegForm({ ...adminRegForm, phone: e.target.value })}
+                  className="w-full px-4 py-3 rounded-xl border border-[#CBD5E1] dark:border-white/10 bg-[#F8FAFC] dark:bg-white/5 text-[#0B1C2C] dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#0066FF]/40 focus:border-[#0066FF] transition-all placeholder:text-[#94A3B8]"
+                />
+              </div>
+
+              {/* Plan Dropdown */}
+              <div>
+                <label className="block text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider mb-1.5">Register For *</label>
+                <select
+                  required
+                  value={adminRegForm.plan}
+                  onChange={e => setAdminRegForm({ ...adminRegForm, plan: e.target.value })}
+                  className="w-full px-4 py-3 rounded-xl border border-[#CBD5E1] dark:border-white/10 bg-[#F8FAFC] dark:bg-white/5 text-[#0B1C2C] dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#0066FF]/40 focus:border-[#0066FF] transition-all"
+                >
+                  <option value="bootcamp-01">🔹 Bootcamp Series 1 — Build Your First AI App (₹199 value)</option>
+                  <option value="bootcamp-02">🔹 Bootcamp Series 2 — Build Smarter AI Agents (₹199 value)</option>
+                  <option value="bootcamp-03">🔹 Bootcamp Series 3 — Build Production AI Apps (₹199 value)</option>
+                  <option value="bundle">🌟 AI Engineering Pass — Full Bundle All 3 Series (₹399 value)</option>
+                </select>
+                <p className="text-[10px] text-[#94A3B8] dark:text-slate-500 mt-1.5">This will be a FREE direct registration. Amount ₹0.</p>
+              </div>
+
+              {/* Result Message */}
+              {adminRegResult && (
+                <div className={`p-4 rounded-xl border text-sm font-medium ${
+                  adminRegResult.success
+                    ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300'
+                    : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-700 dark:text-red-300'
+                }`}>
+                  {adminRegResult.message}
+                  {adminRegResult.success && adminRegResult.checkInCode && (
+                    <div className="mt-2 flex items-center gap-2">
+                      <span className="font-mono font-bold text-[#0066FF] dark:text-[#60A5FA] text-base tracking-widest bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-lg">
+                        {adminRegResult.checkInCode}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => navigator.clipboard.writeText(adminRegResult.checkInCode || '')}
+                        className="text-xs text-[#64748B] hover:text-[#0066FF] border border-[#E2E8F0] dark:border-white/10 px-2 py-1 rounded-lg transition-colors"
+                      >
+                        Copy Code
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={adminRegLoading}
+                className="w-full flex items-center justify-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] disabled:opacity-60 text-white font-bold py-3.5 rounded-xl transition-all shadow-[0_4px_14px_rgba(0,102,255,0.3)] text-sm"
+              >
+                {adminRegLoading ? (
+                  <><Loader2 className="w-4 h-4 animate-spin" /> Registering & Sending Emails...</>
+                ) : (
+                  <><UserPlus className="w-4 h-4" /> Register & Send Confirmation Emails</>
+                )}
+              </button>
+
+              <p className="text-center text-xs text-[#94A3B8] dark:text-slate-500">
+                ✉️ Confirmation email + QR ticket will be auto-sent to the email address above.
+              </p>
+            </form>
           </div>
         </div>
       ) : (
