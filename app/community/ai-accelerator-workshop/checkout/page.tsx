@@ -105,7 +105,7 @@ function CheckoutContent() {
 
           const verifyData = await verifyRes.json();
           if (verifyData.success) {
-            router.push(`/ai-frontier/success?plan=${plan}`);
+            router.push(`/community/ai-accelerator-workshop/success?plan=${plan}`);
           } else {
             setError("Payment verification failed. Please contact support.");
           }
