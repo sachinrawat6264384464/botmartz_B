@@ -1,12 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { Award, CheckCircle2, ShieldCheck, Download, Share2, Sparkles } from "lucide-react";
+import { Award, CheckCircle2, ShieldCheck, Download, Share2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function CertificateShowcase() {
-  const [testName, setTestName] = useState("");
-
   return (
     <section id="certificate" className="py-16 sm:py-24 bg-gradient-to-b from-[#050B14] via-[#0A1628] to-[#050B14] text-white relative overflow-hidden">
       {/* Background Glow */}
@@ -23,20 +20,6 @@ export default function CertificateShowcase() {
           <p className="text-sm sm:text-lg text-[#8A9EB0] max-w-2xl mx-auto font-medium">
             Every attendee who completes the AI Accelerator Workshop receives an official, shareable Botmartz Certificate of Completion.
           </p>
-        </div>
-
-        {/* Live Name Input Tester */}
-        <div className="max-w-md mx-auto mb-8 bg-[#0B1524] border border-[#0066FF]/30 p-3 sm:p-4 rounded-2xl shadow-lg flex flex-col sm:flex-row items-center gap-3">
-          <div className="flex items-center gap-2 text-[#00B8F0] text-xs font-bold shrink-0">
-            <Sparkles className="w-4 h-4 text-[#00B8F0]" /> Test Preview:
-          </div>
-          <input
-            type="text"
-            placeholder="Type your name (e.g. Sachin Rawat)..."
-            value={testName}
-            onChange={(e) => setTestName(e.target.value)}
-            className="w-full bg-[#050B14] border border-[#1E293B] focus:border-[#0066FF] rounded-xl px-3.5 py-2 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none transition-colors"
-          />
         </div>
 
         {/* Certificate Card Mockup */}
@@ -73,7 +56,7 @@ export default function CertificateShowcase() {
               <h4 className="text-base sm:text-3xl font-extrabold text-white mb-2">PROUDLY PRESENTED TO</h4>
               <div className="my-2 sm:my-4 inline-block border-b-2 border-[#0066FF] px-4 sm:px-8 py-1.5 sm:py-2 max-w-full overflow-hidden">
                 <span className="text-xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-[#00B8F0] to-[#0066FF] break-words">
-                  {testName.trim() ? testName.trim() : "[Your Full Name]"}
+                  [Your Full Name]
                 </span>
               </div>
               <p className="text-xs sm:text-sm text-[#8A9EB0] max-w-xl mx-auto mt-2 leading-relaxed px-2">
