@@ -179,18 +179,9 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
 
       const docRef = await addDoc(collection(db, "event-registrations"), newReg);
       
-      // Also save to bootcamp_registrations for admin/bootcamps compatibility
-      await addDoc(collection(db, "bootcamp_registrations"), {
-        name: formData.name || "",
-        email: formData.email || "",
-        phone: formData.phone || "",
-        plan: event.slug || event.title || "bootcamp-01",
-        amount: entryFee,
-        status: "paid",
-        attendance: false,
-        checkInCode: newReg.checkInCode,
-        createdAt: new Date(),
-      }).catch(err => console.warn("Failed to write to bootcamp_registrations:", err));
+      // NOTE: Event registrations (AI Frontier) go ONLY to event-registrations collection.
+      // Workshop registrations go to bootcamp_registrations via verify-payment API.
+
 
       // Dispatch ticket pass email via API
       fetch("/api/events/send-ticket-email", {

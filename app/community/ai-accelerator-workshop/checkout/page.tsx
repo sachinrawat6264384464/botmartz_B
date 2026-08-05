@@ -98,7 +98,8 @@ function CheckoutContent() {
               name: formData.name,
               email: formData.email,
               phone: formData.phone,
-              plan: plan || "bootcamp-01"
+              plan: plan || "bootcamp-01",
+              chargedAmount: getAmount()
             }),
           });
 

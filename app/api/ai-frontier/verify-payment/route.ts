@@ -12,11 +12,12 @@ const transporter = nodemailer.createTransport({
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
+  tls: { rejectUnauthorized: false }
 });
 
 export async function POST(req: Request) {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, name, email, phone, plan } = await req.json();
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, name, email, phone, plan, chargedAmount } = await req.json();
 
     const secret = process.env.RAZORPAY_KEY_SECRET || "rzp_secret_placeholder";
 
@@ -26,8 +27,8 @@ export async function POST(req: Request) {
       .digest("hex");
 
     if (generated_signature === razorpay_signature) {
-      // Payment is successful
-      const amount = plan === "bundle" ? 399 : 199;
+      // Use the actual amount that was charged via Razorpay
+      const amount = chargedAmount ?? (plan === "bundle" ? 399 : 199);
       
       let eventTitle = "AI Frontier Bootcamp";
       let dateVal = "TBA";
