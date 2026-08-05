@@ -46,7 +46,13 @@ function CheckoutContent() {
     fetchBootcamp();
   }, [plan]);
 
+  // TESTING: Override prices per plan (remove after testing)
+  const TESTING_PRICES: Record<string, number> = {
+    "bootcamp-1": 1, // ₹1 for testing
+  };
+
   const getAmount = () => {
+    if (plan && TESTING_PRICES[plan] !== undefined) return TESTING_PRICES[plan];
     return bootcampAmount || 199;
   };
 

@@ -22,6 +22,7 @@ const bootcamps = [
     color: "from-[#0066FF] to-[#3B82F6]",
     date: "Aug 9, 2026",
     id: 1,
+    price: 1, // TESTING PRICE
   },
   {
     number: "02",
@@ -40,6 +41,7 @@ const bootcamps = [
     color: "from-[#0F172A] to-[#1E293B]",
     date: "Aug 16, 2026",
     id: 2,
+    price: 199,
   },
   {
     number: "03",
@@ -57,6 +59,7 @@ const bootcamps = [
     color: "from-[#009688] to-[#14B8A6]",
     date: "Aug 22, 2026",
     id: 3,
+    price: 199,
   },
 ];
 
@@ -123,7 +126,7 @@ export default function BootcampDetails() {
                     href={`/community/ai-accelerator-workshop/checkout?plan=bootcamp-${bootcamp.id}`}
                     className="flex w-full justify-center items-center py-3 rounded-xl border-2 border-[#E2E8F0] text-[#0B1C2C] font-bold hover:border-[#0B1C2C] hover:bg-[#F8FAFC] transition-all"
                   >
-                    Register for ₹199
+                    Register for ₹{bootcamp.price}
                   </Link>
                   <Link
                     href="/community/ai-accelerator-workshop/checkout?plan=bundle"
