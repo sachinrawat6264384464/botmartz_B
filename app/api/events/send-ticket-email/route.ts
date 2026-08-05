@@ -44,6 +44,9 @@ export async function POST(req: Request) {
         user: smtpUser,
         pass: smtpPass,
       },
+      tls: {
+        rejectUnauthorized: false
+      }
     });
 
     const title = eventTitle || "AI Frontier 2026";

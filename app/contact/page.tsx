@@ -54,7 +54,7 @@ export default async function ContactPage() {
   try {
     const settingsSnap = await adminDb.collection("settings").doc("global").get();
     if (settingsSnap.exists) {
-      settings = settingsSnap.data();
+      settings = JSON.parse(JSON.stringify(settingsSnap.data()));
     }
   } catch (e) {}
 

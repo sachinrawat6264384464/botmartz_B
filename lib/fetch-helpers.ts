@@ -15,7 +15,8 @@ export const getCachedGlobalSettings = cache(async () => {
       try {
         const docSnap = await adminDb.collection("settings").doc("global").get();
         if (docSnap.exists) {
-          return docSnap.data();
+          const data = docSnap.data();
+          return JSON.parse(JSON.stringify(data));
         }
       } catch (err) {
         console.warn("Failed to fetch global settings from cache:", err);
@@ -56,7 +57,8 @@ export const getCachedDynamicPage = cache(async (slug: string) => {
       try {
         const docSnap = await adminDb.collection("dynamic_pages").doc(slug).get();
         if (docSnap.exists) {
-          return docSnap.data();
+          const data = docSnap.data();
+          return JSON.parse(JSON.stringify(data));
         }
       } catch (err) {
         console.warn(`Failed to fetch dynamic page (${slug}) from cache:`, err);
