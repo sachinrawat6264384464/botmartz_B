@@ -180,6 +180,25 @@ export default function BootcampsAdmin() {
     return true;
   });
 
+  // Coupon Usage Calculations
+  const freeCouponRegistrations = registrations.filter(r => 
+    r.appliedCoupon && (
+      r.appliedCoupon.toUpperCase().startsWith("BMFREE") || 
+      r.appliedCoupon.toUpperCase().startsWith("BMWORKSHOP") ||
+      Number(r.amount) === 0
+    )
+  );
+  const freeCouponsCount = freeCouponRegistrations.length;
+
+  const promo10CouponRegistrations = registrations.filter(r =>
+    r.appliedCoupon && (
+      r.appliedCoupon.toUpperCase() === "BOTMARTZ10" ||
+      r.appliedCoupon.toUpperCase() === "WORKSHOP10" ||
+      r.appliedCoupon.toUpperCase() === "EARLY10"
+    )
+  );
+  const promo10Count = promo10CouponRegistrations.length;
+
   return (
     <div className="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto w-full">
       {/* Top Header Responsiveness Fix */}
@@ -279,6 +298,100 @@ export default function BootcampsAdmin() {
 
           </div>
 
+          {/* 🎟️ COUPON USAGE TRACKER BOX */}
+          <div className="bg-white dark:bg-[#0E172A] rounded-xl border border-[#E2E8F0] dark:border-white/10 p-6 shadow-sm">
+            <div className="flex items-center justify-between mb-4 border-b border-[#E2E8F0] dark:border-white/10 pb-3">
+              <div>
+                <h3 className="text-lg font-bold text-[#0B1C2C] dark:text-white flex items-center gap-2">
+                  🏷️ Coupon Redemption Tracker
+                </h3>
+                <p className="text-xs text-[#64748B] dark:text-slate-400 mt-0.5">
+                  Live tracking of 100% Free Promo passes and 10% Discount codes.
+                </p>
+              </div>
+              <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 text-[#0066FF] dark:text-[#00B8F0]">
+                Total Coupons Used: {freeCouponsCount + promo10Count}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Tracker 1: 100% Free Promo Pass (Max 7) */}
+              <div className="bg-[#F8FAFC] dark:bg-white/5 p-4 rounded-xl border border-[#E2E8F0] dark:border-white/10">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="font-bold text-sm text-[#0B1C2C] dark:text-white">
+                    100% FREE Promo Pass Coupons
+                  </div>
+                  <span className="font-mono text-xs font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 rounded">
+                    {freeCouponsCount} / 7 Used
+                  </span>
+                </div>
+                <div className="w-full bg-[#E2E8F0] dark:bg-white/10 h-2 rounded-full overflow-hidden mb-3">
+                  <div 
+                    className="bg-emerald-500 h-full transition-all duration-500" 
+                    style={{ width: `${Math.min(100, Math.round((freeCouponsCount / 7) * 100))}%` }}
+                  />
+                </div>
+                <p className="text-xs text-[#64748B] dark:text-slate-400 mb-3">
+                  Remaining 100% Free Coupons: <span className="font-bold text-[#0B1C2C] dark:text-white">{Math.max(0, 7 - freeCouponsCount)} left</span>
+                </p>
+                
+                {freeCouponRegistrations.length > 0 ? (
+                  <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1 text-xs">
+                    {freeCouponRegistrations.map((r, i) => (
+                      <div key={i} className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5">
+                        <span className="font-semibold text-[#0B1C2C] dark:text-white truncate max-w-[140px]">{r.name}</span>
+                        <span className="font-mono text-[11px] text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-1.5 py-0.5 rounded">
+                          {r.appliedCoupon || "FREE"}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-xs text-[#94A3B8] italic">No 100% free coupons redeemed yet.</p>
+                )}
+              </div>
+
+              {/* Tracker 2: 10% Discount Code (BOTMARTZ10 - Max 30) */}
+              <div className="bg-[#F8FAFC] dark:bg-white/5 p-4 rounded-xl border border-[#E2E8F0] dark:border-white/10">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="font-bold text-sm text-[#0B1C2C] dark:text-white">
+                    10% Discount Coupon (<code className="text-[#0066FF] dark:text-[#00B8F0]">BOTMARTZ10</code>)
+                  </div>
+                  <span className="font-mono text-xs font-bold text-blue-700 dark:text-blue-400 bg-blue-100 dark:bg-blue-950 px-2 py-0.5 rounded">
+                    {promo10Count} / 30 Used
+                  </span>
+                </div>
+                <div className="w-full bg-[#E2E8F0] dark:bg-white/10 h-2 rounded-full overflow-hidden mb-3">
+                  <div 
+                    className="bg-[#0066FF] h-full transition-all duration-500" 
+                    style={{ width: `${Math.min(100, Math.round((promo10Count / 30) * 100))}%` }}
+                  />
+                </div>
+                <p className="text-xs text-[#64748B] dark:text-slate-400 mb-3">
+                  Remaining 10% Off Uses: <span className="font-bold text-[#0B1C2C] dark:text-white">{Math.max(0, 30 - promo10Count)} left</span>
+                </p>
+
+                {promo10CouponRegistrations.length > 0 ? (
+                  <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1 text-xs">
+                    {promo10CouponRegistrations.map((r, i) => (
+                      <div key={i} className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5">
+                        <span className="font-semibold text-[#0B1C2C] dark:text-white truncate max-w-[140px]">{r.name}</span>
+                        <div className="flex items-center gap-1">
+                          <span className="font-bold text-emerald-600">₹{r.amount}</span>
+                          <span className="font-mono text-[10px] text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 px-1 py-0.5 rounded">
+                            {r.appliedCoupon}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-xs text-[#94A3B8] italic">No BOTMARTZ10 coupons redeemed yet.</p>
+                )}
+              </div>
+            </div>
+          </div>
+
           {/* Quick Overview Table preview */}
           <div className="bg-white dark:bg-[#0E172A] rounded-xl border border-[#E2E8F0] dark:border-white/10 shadow-sm p-6">
             <div className="flex items-center justify-between mb-4">
@@ -286,11 +399,12 @@ export default function BootcampsAdmin() {
               <button onClick={() => setActiveTab("registrations")} className="text-xs font-semibold text-[#0066FF] hover:underline">View All →</button>
             </div>
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse min-w-[600px]">
+              <table className="w-full text-left border-collapse min-w-[700px]">
                 <thead>
                   <tr className="bg-[#F8FAFC] dark:bg-white/5 border-b border-[#E2E8F0] dark:border-white/10 text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider">
                     <th className="p-3">Attendee</th>
                     <th className="p-3">Plan</th>
+                    <th className="p-3">Payment / Coupon</th>
                     <th className="p-3">Status</th>
                     <th className="p-3">Check-in Status</th>
                   </tr>
@@ -308,6 +422,18 @@ export default function BootcampsAdmin() {
                           <span className="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 font-medium">
                             {reg.plan}
                           </span>
+                        </td>
+                        <td className="p-3 text-xs">
+                          {reg.appliedCoupon ? (
+                            <div className="flex flex-col gap-0.5">
+                              <span className="font-bold text-emerald-600 dark:text-emerald-400">₹{reg.amount || 0}</span>
+                              <span className="font-mono text-[10px] text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950 px-1.5 py-0.5 rounded w-max">
+                                🏷️ {reg.appliedCoupon}
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="font-bold text-[#0B1C2C] dark:text-white">₹{reg.amount || 0}</span>
+                          )}
                         </td>
                         <td className="p-3 text-xs">
                           <span className="px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300 font-medium">
@@ -339,7 +465,7 @@ export default function BootcampsAdmin() {
                     );
                   })}
                   {registrations.length === 0 && (
-                    <tr><td colSpan={4} className="p-6 text-center text-xs text-[#64748B]">No registrations yet.</td></tr>
+                    <tr><td colSpan={5} className="p-6 text-center text-xs text-[#64748B]">No registrations yet.</td></tr>
                   )}
                 </tbody>
               </table>
