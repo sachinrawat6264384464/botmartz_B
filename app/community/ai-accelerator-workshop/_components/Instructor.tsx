@@ -18,7 +18,7 @@ export default function Instructor() {
             className="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-[#F8FAFC] shadow-xl flex-shrink-0 bg-[#E2E8F0]"
           >
             {/* Placeholder for real image */}
-            <img src="/Sohamsharma.jpeg" alt="Soham Sharma" className="w-full h-full object-cover" />
+            <img src="/Sohamsharma.jpeg" alt="Soham Sharma" className="w-full h-full object-cover object-top" />
           </motion.div>
 
           <motion.div
