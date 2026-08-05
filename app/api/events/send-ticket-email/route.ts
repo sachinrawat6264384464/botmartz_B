@@ -1,11 +1,15 @@
 import { NextResponse } from "next/server";
 import { adminDb } from "@/lib/firebase-admin";
 import nodemailer from "nodemailer";
-import { buildEventTicketEmail } from "@/lib/mail-templates";
+import { 
+  buildRegistrationEmail, 
+  buildPaymentSuccessEmail, 
+  buildEventTicketEmail 
+} from "@/lib/mail-templates";
 
 export async function POST(req: Request) {
   try {
-    const { name, email, eventTitle, date, location, checkInCode } = await req.json();
+    const { name, email, eventTitle, date, location, checkInCode, amount } = await req.json();
 
     if (!name || !email) {
       return NextResponse.json({ error: "Name and email are required" }, { status: 400 });
@@ -46,18 +50,37 @@ export async function POST(req: Request) {
     const dateVal = date || "August 23, 2026";
     const locVal = location || "Walkover Co-working Space, Indore";
     const code = checkInCode || `REG-${Math.random().toString(36).substring(2, 11).toUpperCase()}`;
+    const paidAmount = amount || 0;
 
-    await transporter.sendMail({
-      from: `"Botmartz Events" <${smtpUser}>`,
-      to: email,
-      subject: `Your Ticket & Registration Pass - ${title}`,
-      html: buildEventTicketEmail(name, title, dateVal, locVal, [code]),
-    });
+    // Send all 3 emails (Registration Received + Confirmation Receipt + Ticket QR Pass)
+    const results = await Promise.allSettled([
+      // Mail 1: Registration Received
+      transporter.sendMail({
+        from: `"Botmartz Events" <${smtpUser}>`,
+        to: email,
+        subject: `Registration Confirmed - ${title}`,
+        html: buildRegistrationEmail(name, title),
+      }),
+      // Mail 2: Payment / Receipt Confirmation
+      transporter.sendMail({
+        from: `"Botmartz Accounts" <${smtpUser}>`,
+        to: email,
+        subject: `Payment & Seat Receipt - ${title}`,
+        html: buildPaymentSuccessEmail(name, title, paidAmount, code),
+      }),
+      // Mail 3: Digital Entry Pass with QR Code
+      transporter.sendMail({
+        from: `"Botmartz Entry Pass" <${smtpUser}>`,
+        to: email,
+        subject: `Your Official Entry Ticket & QR Pass - ${title}`,
+        html: buildEventTicketEmail(name, title, dateVal, locVal, [code]),
+      })
+    ]);
 
-    console.log(`✅ [Send Ticket Email] Dispatched ticket pass to ${email} for ${title}`);
-    return NextResponse.json({ success: true, message: "Ticket email sent successfully" });
+    console.log(`✅ [Send Ticket Email] Dispatched 3 emails to ${email} for ${title}`, results);
+    return NextResponse.json({ success: true, message: "All 3 emails dispatched successfully" });
   } catch (error: any) {
     console.error("[Send Ticket Email Error]", error);
-    return NextResponse.json({ error: error.message || "Failed to send email" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to send emails" }, { status: 500 });
   }
 }
