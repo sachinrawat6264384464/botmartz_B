@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { adminDb } from '@/lib/firebase-admin';
+import { getCachedGlobalSettings } from '@/lib/fetch-helpers';
 import ContactClient from './ContactClient';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -52,10 +53,7 @@ export default async function ContactPage() {
 
   let settings: any = {};
   try {
-    const settingsSnap = await adminDb.collection("settings").doc("global").get();
-    if (settingsSnap.exists) {
-      settings = settingsSnap.data();
-    }
+    settings = await getCachedGlobalSettings();
   } catch (e) {}
 
   const email = settings?.general?.email || "soham@botmartz.com";
