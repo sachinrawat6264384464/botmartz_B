@@ -864,8 +864,8 @@ export default function BootcampsAdmin() {
                   ))}
                 </div>
                 <p className="text-[10px] text-[#94A3B8] dark:text-slate-500 mt-2 flex items-center gap-1">
-                  <span className="inline-flex items-center bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded-full font-bold text-[10px]">FREE</span>
-                  Admin bypass — amount ₹0. Emails sent to address above.
+                  <span className="inline-flex items-center bg-blue-100 dark:bg-blue-900/30 text-[#0066FF] dark:text-blue-400 px-2 py-0.5 rounded-full font-bold text-[10px]">DIRECT PAYMENT</span>
+                  Direct Registration — Marks as Paid ({adminRegForm.plan === 'bundle' ? '₹399' : '₹199'}). Receipt & ticket emails sent to user.
                 </p>
               </div>
 

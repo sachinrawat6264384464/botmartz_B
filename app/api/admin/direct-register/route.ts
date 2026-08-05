@@ -22,15 +22,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: "Missing required fields: name, email, plan" }, { status: 400 });
     }
 
-    // Plan labels for email
-    const PLAN_LABELS: Record<string, { title: string; date: string; location: string }> = {
-      "bootcamp-01": { title: "Bootcamp Series 1: Build Your First AI Full-Stack Application", date: "August 2026", location: "Live Online" },
-      "bootcamp-02": { title: "Bootcamp Series 2: Build Smarter AI Agents", date: "August 2026", location: "Live Online" },
-      "bootcamp-03": { title: "Bootcamp Series 3: Build Production Ready AI Applications", date: "August 2026", location: "Live Online" },
-      "bundle": { title: "AI Engineering Pass (Full Bundle — All 3 Series)", date: "August 2026", location: "Live Online" },
+    // Plan labels & prices for email and ledger
+    const PLAN_INFO: Record<string, { title: string; date: string; location: string; price: number }> = {
+      "bootcamp-01": { title: "Bootcamp Series 1: Build Your First AI Full-Stack Application", date: "August 2026", location: "Live Online", price: 199 },
+      "bootcamp-02": { title: "Bootcamp Series 2: Build Smarter AI Agents", date: "August 2026", location: "Live Online", price: 199 },
+      "bootcamp-03": { title: "Bootcamp Series 3: Build Production Ready AI Applications", date: "August 2026", location: "Live Online", price: 199 },
+      "bundle": { title: "AI Engineering Pass (Full Bundle — All 3 Series)", date: "August 2026", location: "Live Online", price: 399 },
     };
 
-    const planInfo = PLAN_LABELS[plan] || PLAN_LABELS["bootcamp-01"];
+    const planInfo = PLAN_INFO[plan] || PLAN_INFO["bootcamp-01"];
+    const planPrice = planInfo.price;
 
     // Generate unique check-in code
     const checkInCode = `ADM-${Math.random().toString(36).substring(2, 11).toUpperCase()}`;
@@ -42,12 +43,12 @@ export async function POST(req: Request) {
       phone: phone?.trim() || "",
       organization: organization?.trim() || "",
       plan,
-      paymentId: `ADMIN-DIRECT-${Date.now()}`,
-      orderId: `ADMIN-FREE-${Date.now()}`,
-      amount: 0,
-      amountPaid: 0,
-      appliedCoupon: "ADMIN-DIRECT",
-      paymentMethod: "ADMIN_DIRECT_REGISTER",
+      paymentId: `DIRECT-PAYMENT-${Date.now()}`,
+      orderId: `DIRECT-ORDER-${Date.now()}`,
+      amount: planPrice,
+      amountPaid: planPrice,
+      appliedCoupon: "",
+      paymentMethod: "Direct Payment",
       status: 'paid',
       attendance: false,
       checkInCode,
@@ -64,8 +65,8 @@ export async function POST(req: Request) {
         await transporter.sendMail({
           from: `"Botmartz Accounts" <${smtpUser}>`,
           to: email.trim(),
-          subject: `Registration Confirmed (Admin) - ${planInfo.title}`,
-          html: buildPaymentSuccessEmail(name, planInfo.title, 0, `ADMIN-DIRECT`),
+          subject: `Registration Confirmed - ${planInfo.title}`,
+          html: buildPaymentSuccessEmail(name, planInfo.title, planPrice, `DIRECT-PAYMENT`),
         });
 
         await transporter.sendMail({
