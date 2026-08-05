@@ -23,10 +23,53 @@ export default function BootcampsAdmin() {
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   useEffect(() => {
+    let bcDocs: any[] = [];
+    let evDocs: any[] = [];
+
+    const mergeAll = () => {
+      const combined = [...bcDocs, ...evDocs];
+      // Deduplicate by checkInCode or id
+      const seen = new Set();
+      const unique = combined.filter(item => {
+        const key = item.checkInCode || item.id;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+      // Sort by createdAt descending
+      unique.sort((a, b) => {
+        const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return timeB - timeA;
+      });
+      setRegistrations(unique);
+    };
+
     const qReg = query(collection(db, 'bootcamp_registrations'), orderBy('createdAt', 'desc'));
     const unsubscribeReg = onSnapshot(qReg, (snapshot) => {
-      const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setRegistrations(docs);
+      bcDocs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      mergeAll();
+    });
+
+    const qEventReg = query(collection(db, 'event-registrations'), orderBy('createdAt', 'desc'));
+    const unsubscribeEventReg = onSnapshot(qEventReg, (snapshot) => {
+      evDocs = snapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          name: data.name || "Anonymous",
+          email: data.email || "",
+          phone: data.phone || "",
+          plan: data.eventSlug || data.eventTitle || data.plan || "Event Registration",
+          amount: data.amountPaid || data.amount || 0,
+          status: data.paymentStatus || data.status || "paid",
+          attendance: data.attended ?? data.attendance ?? false,
+          checkInCode: data.checkInCode || "",
+          createdAt: data.createdAt,
+          ...data
+        };
+      });
+      mergeAll();
     });
 
     const qBootcamps = query(collection(db, 'bootcamps'), orderBy('createdAt', 'desc'));
@@ -38,6 +81,7 @@ export default function BootcampsAdmin() {
 
     return () => {
       unsubscribeReg();
+      unsubscribeEventReg();
       unsubscribeBootcamps();
     };
   }, []);

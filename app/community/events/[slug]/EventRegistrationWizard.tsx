@@ -178,6 +178,34 @@ export default function EventRegistrationWizard({ isOpen, onClose, event }: Even
       };
 
       const docRef = await addDoc(collection(db, "event-registrations"), newReg);
+      
+      // Also save to bootcamp_registrations for admin/bootcamps compatibility
+      await addDoc(collection(db, "bootcamp_registrations"), {
+        name: formData.name || "",
+        email: formData.email || "",
+        phone: formData.phone || "",
+        plan: event.slug || event.title || "bootcamp-01",
+        amount: entryFee,
+        status: "paid",
+        attendance: false,
+        checkInCode: newReg.checkInCode,
+        createdAt: new Date(),
+      }).catch(err => console.warn("Failed to write to bootcamp_registrations:", err));
+
+      // Dispatch ticket pass email via API
+      fetch("/api/events/send-ticket-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          eventTitle: event.title,
+          date: event.date || "August 23, 2026",
+          location: event.location || "Indore, India",
+          checkInCode: newReg.checkInCode,
+        }),
+      }).catch(err => console.error("Ticket email dispatch error:", err));
+
       setPendingRegId(docRef.id);
       trackEvent("event_registration_completed", { event_title: event.title, attendee_type: formData.attendeeType, quantity: formData.quantity });
 
