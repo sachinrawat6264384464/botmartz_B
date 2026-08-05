@@ -44,7 +44,30 @@ function CheckoutContent() {
       }
     };
     fetchBootcamp();
-  }, [plan]);
+  useEffect(() => {
+    // Preload Razorpay SDK script
+    if (typeof window !== "undefined" && !(window as any).Razorpay) {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  }, []);
+
+  const loadRazorpayScript = () => {
+    return new Promise<boolean>((resolve) => {
+      if (typeof window !== "undefined" && (window as any).Razorpay) {
+        resolve(true);
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
 
   const [couponInput, setCouponInput] = useState("");
   const [appliedCouponInfo, setAppliedCouponInfo] = useState<{
@@ -138,6 +161,11 @@ function CheckoutContent() {
 
     // REGULAR / DISCOUNTED RAZORPAY PAYMENT
     try {
+      const isLoaded = await loadRazorpayScript();
+      if (!isLoaded || typeof (window as any).Razorpay === "undefined") {
+        throw new Error("Razorpay payment gateway failed to load. Please refresh and try again.");
+      }
+
       const res = await fetch("/api/ai-frontier/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
