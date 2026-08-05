@@ -351,24 +351,24 @@ export default function BootcampsAdmin() {
                 )}
               </div>
 
-              {/* Tracker 2: 10% Discount Code (BOTMARTZ10 - Max 30) */}
+              {/* Tracker 2: 10% Discount Code (BOTMARTZ10 - Max 50) */}
               <div className="bg-[#F8FAFC] dark:bg-white/5 p-4 rounded-xl border border-[#E2E8F0] dark:border-white/10">
                 <div className="flex items-center justify-between mb-2">
                   <div className="font-bold text-sm text-[#0B1C2C] dark:text-white">
                     10% Discount Coupon (<code className="text-[#0066FF] dark:text-[#00B8F0]">BOTMARTZ10</code>)
                   </div>
                   <span className="font-mono text-xs font-bold text-blue-700 dark:text-blue-400 bg-blue-100 dark:bg-blue-950 px-2 py-0.5 rounded">
-                    {promo10Count} / 30 Used
+                    {promo10Count} / 50 Used
                   </span>
                 </div>
                 <div className="w-full bg-[#E2E8F0] dark:bg-white/10 h-2 rounded-full overflow-hidden mb-3">
                   <div 
                     className="bg-[#0066FF] h-full transition-all duration-500" 
-                    style={{ width: `${Math.min(100, Math.round((promo10Count / 30) * 100))}%` }}
+                    style={{ width: `${Math.min(100, Math.round((promo10Count / 50) * 100))}%` }}
                   />
                 </div>
                 <p className="text-xs text-[#64748B] dark:text-slate-400 mb-3">
-                  Remaining 10% Off Uses: <span className="font-bold text-[#0B1C2C] dark:text-white">{Math.max(0, 30 - promo10Count)} left</span>
+                  Remaining 10% Off Uses: <span className="font-bold text-[#0B1C2C] dark:text-white">{Math.max(0, 50 - promo10Count)} left</span>
                 </p>
 
                 {promo10CouponRegistrations.length > 0 ? (

@@ -21,10 +21,10 @@ const SYSTEM_COUPONS: Record<string, { discountType: 'percentage' | 'fixed'; dis
   "BMWORKSHOP5": { discountType: 'percentage', discountValue: 100, maxUses: 1 },
   "BMWORKSHOP6": { discountType: 'percentage', discountValue: 100, maxUses: 1 },
   "BMWORKSHOP7": { discountType: 'percentage', discountValue: 100, maxUses: 1 },
-  // 10% Discount Coupons (30 Uses Each - Works on ₹199 and ₹399)
-  "BOTMARTZ10": { discountType: 'percentage', discountValue: 10, maxUses: 30 },
-  "WORKSHOP10": { discountType: 'percentage', discountValue: 10, maxUses: 30 },
-  "EARLY10": { discountType: 'percentage', discountValue: 10, maxUses: 30 },
+  // 10% Discount Coupons (50 Uses Each - Works on ₹199 and ₹399)
+  "BOTMARTZ10": { discountType: 'percentage', discountValue: 10, maxUses: 50 },
+  "WORKSHOP10": { discountType: 'percentage', discountValue: 10, maxUses: 50 },
+  "EARLY10": { discountType: 'percentage', discountValue: 10, maxUses: 50 },
 };
 
 // GET handler to check total workshop coupon usage (max 7 allowed total)
