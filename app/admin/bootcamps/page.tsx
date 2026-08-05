@@ -165,6 +165,23 @@ export default function BootcampsAdmin() {
     }
   };
 
+  const deleteRegistration = async (reg: any) => {
+    if (!confirm(`Delete registration for "${reg.name}"? This cannot be undone.`)) return;
+    setActionLoading(`del-${reg.id}`);
+    try {
+      const res = await fetch('/api/admin/delete-registration', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: reg.id })
+      });
+      if (!res.ok) alert('Failed to delete registration.');
+    } catch (err) {
+      alert('Failed to delete registration.');
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
   // Filtered registrations for table
   const filteredRegistrations = registrations.filter(reg => {
     const isAttended = Boolean(reg.attendance || reg.attended);
@@ -407,6 +424,7 @@ export default function BootcampsAdmin() {
                     <th className="p-3">Payment / Coupon</th>
                     <th className="p-3">Status</th>
                     <th className="p-3">Check-in Status</th>
+                    <th className="p-3 text-right">Delete</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#E2E8F0] dark:divide-white/10">
@@ -461,11 +479,21 @@ export default function BootcampsAdmin() {
                             <span>{isAttended ? "Checked In ✓" : "Mark Check-In"}</span>
                           </button>
                         </td>
+                        <td className="p-3 text-right">
+                          <button
+                            onClick={() => deleteRegistration(reg)}
+                            disabled={actionLoading === `del-${reg.id}`}
+                            className="inline-flex items-center justify-center w-7 h-7 rounded-lg text-[#64748B] hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors disabled:opacity-50"
+                            title="Delete registration"
+                          >
+                            {actionLoading === `del-${reg.id}` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
+                          </button>
+                        </td>
                       </tr>
                     );
                   })}
                   {registrations.length === 0 && (
-                    <tr><td colSpan={5} className="p-6 text-center text-xs text-[#64748B]">No registrations yet.</td></tr>
+                    <tr><td colSpan={6} className="p-6 text-center text-xs text-[#64748B]">No registrations yet.</td></tr>
                   )}
                 </tbody>
               </table>
@@ -634,26 +662,36 @@ export default function BootcampsAdmin() {
                           {isAttended ? "Attended (Checked In)" : "Mark Attended"}
                         </button>
                       </td>
-                      <td className="p-4 text-right space-x-2">
-                        {isAttended ? (
+                      <td className="p-4 text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          {isAttended ? (
+                            <button
+                              onClick={() => sendCertificate(reg)}
+                              disabled={actionLoading === `cert-${reg.id}`}
+                              className="inline-flex items-center gap-1.5 bg-[#0066FF] text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-[#0052CC] disabled:opacity-50"
+                            >
+                              {actionLoading === `cert-${reg.id}` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Award className="w-3.5 h-3.5" />}
+                              Certificate
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => sendFollowUp(reg)}
+                              disabled={actionLoading === `follow-${reg.id}`}
+                              className="inline-flex items-center gap-1.5 bg-amber-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-amber-600 disabled:opacity-50"
+                            >
+                              {actionLoading === `follow-${reg.id}` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Mail className="w-3.5 h-3.5" />}
+                              Follow-up
+                            </button>
+                          )}
                           <button
-                            onClick={() => sendCertificate(reg)}
-                            disabled={actionLoading === `cert-${reg.id}`}
-                            className="inline-flex items-center gap-1.5 bg-[#0066FF] text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-[#0052CC] disabled:opacity-50"
+                            onClick={() => deleteRegistration(reg)}
+                            disabled={actionLoading === `del-${reg.id}`}
+                            className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-[#64748B] hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors disabled:opacity-50 border border-[#E2E8F0] dark:border-white/10"
+                            title="Delete registration"
                           >
-                            {actionLoading === `cert-${reg.id}` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Award className="w-3.5 h-3.5" />}
-                            Certificate
+                            {actionLoading === `del-${reg.id}` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
                           </button>
-                        ) : (
-                          <button
-                            onClick={() => sendFollowUp(reg)}
-                            disabled={actionLoading === `follow-${reg.id}`}
-                            className="inline-flex items-center gap-1.5 bg-amber-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-amber-600 disabled:opacity-50"
-                          >
-                            {actionLoading === `follow-${reg.id}` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Mail className="w-3.5 h-3.5" />}
-                            Follow-up
-                          </button>
-                        )}
+                        </div>
                       </td>
                     </tr>
                   );
