@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 
 export async function POST(req: Request) {
   try {
-    const { name, email, phone, plan, couponCode } = await req.json();
+    const { name, email, phone, organization, plan, couponCode } = await req.json();
 
     if (!name || !email || !couponCode) {
       return NextResponse.json({ success: false, error: "Missing required fields" }, { status: 400 });
@@ -24,27 +24,16 @@ export async function POST(req: Request) {
 
     const uppercaseCoupon = couponCode.trim().toUpperCase();
 
-    // Check total workshop coupon usage limit (Max 7 allowed)
+    // Check coupon usage limit
     const bcSnap = await adminDb.collection('bootcamp_registrations').get();
-    let totalCouponsUsed = 0;
     let couponUsedCount = 0;
 
     bcSnap.forEach(doc => {
       const data = doc.data();
-      if (data.appliedCoupon && data.appliedCoupon.trim() !== '') {
-        totalCouponsUsed++;
-        if (data.appliedCoupon.trim().toUpperCase() === uppercaseCoupon) {
-          couponUsedCount++;
-        }
+      if (data.appliedCoupon && data.appliedCoupon.trim().toUpperCase() === uppercaseCoupon) {
+        couponUsedCount++;
       }
     });
-
-    if (totalCouponsUsed >= 7) {
-      return NextResponse.json({
-        success: false,
-        error: "All 7 promotional workshop coupons have already been claimed."
-      }, { status: 400 });
-    }
 
     if (couponUsedCount >= 1) {
       return NextResponse.json({
@@ -73,6 +62,7 @@ export async function POST(req: Request) {
       name,
       email,
       phone: phone || "",
+      organization: organization || "",
       plan: plan || "bootcamp-01",
       paymentId: `COUPON-${uppercaseCoupon}`,
       orderId: `FREE-${Date.now()}`,

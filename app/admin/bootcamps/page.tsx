@@ -468,6 +468,13 @@ export default function BootcampsAdmin() {
                         <td className="p-3">
                           <div className="font-semibold text-[#0B1C2C] dark:text-white text-sm">{reg.name}</div>
                           <div className="text-xs text-[#64748B] dark:text-slate-400 font-mono">{reg.email}</div>
+                          {reg.organization ? (
+                            <div className="text-[11px] font-semibold text-[#0066FF] dark:text-[#60A5FA] flex items-center gap-1 mt-0.5">
+                              🏢 {reg.organization}
+                            </div>
+                          ) : (
+                            <div className="text-[10px] text-[#94A3B8] italic mt-0.5">Org: N/A</div>
+                          )}
                         </td>
                         <td className="p-3 text-xs">
                           <span className="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 font-medium">

@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 
 export async function POST(req: Request) {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, name, email, phone, plan, chargedAmount, appliedCoupon } = await req.json();
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, name, email, phone, organization, plan, chargedAmount, appliedCoupon } = await req.json();
 
     const secret = process.env.RAZORPAY_KEY_SECRET || "rzp_secret_placeholder";
 
@@ -55,6 +55,7 @@ export async function POST(req: Request) {
           name,
           email,
           phone: phone || "",
+          organization: organization || "",
           plan: plan || "bootcamp-01",
           paymentId: razorpay_payment_id,
           orderId: razorpay_order_id,
