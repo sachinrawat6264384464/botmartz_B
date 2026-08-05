@@ -27,70 +27,27 @@ export default function BootcampsAdmin() {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    let bcDocs: any[] = [];
-    let evDocs: any[] = [];
-
-    const mergeAll = () => {
-      const combined = [...bcDocs, ...evDocs];
-      // Deduplicate by checkInCode or id
-      const seen = new Set();
-      const unique = combined.filter(item => {
-        const key = item.checkInCode || item.id;
-        if (seen.has(key)) return false;
-        seen.add(key);
-        return true;
-      });
-      // Sort by createdAt descending
-      unique.sort((a, b) => {
-        const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
-        const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-        return timeB - timeA;
-      });
-      setRegistrations(unique);
-    };
+    setLoading(true);
 
     const qReg = query(collection(db, 'bootcamp_registrations'), orderBy('createdAt', 'desc'));
     const unsubscribeReg = onSnapshot(qReg, (snapshot) => {
-      bcDocs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      mergeAll();
-    });
+      const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setRegistrations(docs);
+      setLoading(false);
+    }, () => setLoading(false));
 
-    const qEventReg = query(collection(db, 'event-registrations'), orderBy('createdAt', 'desc'));
-    const unsubscribeEventReg = onSnapshot(qEventReg, (snapshot) => {
-      evDocs = snapshot.docs.map(doc => {
-        const data = doc.data();
-        const isAttended = Boolean(data.attended ?? data.attendance ?? false);
-        return {
-          id: doc.id,
-          name: data.name || "Anonymous",
-          email: data.email || "",
-          phone: data.phone || "",
-          plan: data.eventSlug || data.eventTitle || data.plan || "Event Registration",
-          amount: Number(data.amountPaid || data.amount || 0),
-          status: data.paymentStatus || data.status || "paid",
-          attendance: isAttended,
-          attended: isAttended,
-          checkInCode: data.checkInCode || "",
-          createdAt: data.createdAt,
-          ...data
-        };
-      });
-      mergeAll();
-    });
-
+    // Also load bootcamp events list
     const qBootcamps = query(collection(db, 'bootcamps'), orderBy('createdAt', 'desc'));
     const unsubscribeBootcamps = onSnapshot(qBootcamps, (snapshot) => {
-      const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setBootcamps(docs);
-      setLoading(false);
+      setBootcamps(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     });
 
     return () => {
       unsubscribeReg();
-      unsubscribeEventReg();
       unsubscribeBootcamps();
     };
   }, []);
+
 
   // Dynamic calculations across all live registrations
   const totalRegistrations = registrations.length;

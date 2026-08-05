@@ -59,7 +59,7 @@ export default function EventsClient({
 
   const events: EventItem[] = useMemo(() => {
     if (initialEvents && initialEvents.length > 0) {
-      return initialEvents.map(e => ({
+      const mapped = initialEvents.map(e => ({
         id: e.id,
         type: e.type || e.badge || 'Meetup',
         status: e.status || 'Upcoming',
@@ -68,8 +68,16 @@ export default function EventsClient({
         desc: e.shortDescription || e.description || e.desc || 'Join our upcoming AI engineering session.',
         date: e.date || 'Upcoming',
         location: e.location || 'Indore / Online',
-        slug: e.slug || e.id
+        slug: e.slug || e.id,
+        _rawDate: e.date || ''
       }));
+      // Sort ascending by date so Series 1 → 2 → 3 appear in correct order
+      mapped.sort((a, b) => {
+        const da = new Date((a as any)._rawDate).getTime();
+        const db2 = new Date((b as any)._rawDate).getTime();
+        return (isNaN(da) ? 0 : da) - (isNaN(db2) ? 0 : db2);
+      });
+      return mapped;
     }
     return PROTOTYPE_EVENTS;
   }, [initialEvents]);
