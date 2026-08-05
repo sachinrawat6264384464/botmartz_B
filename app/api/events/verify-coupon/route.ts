@@ -5,7 +5,52 @@ import { adminDb } from '@/lib/firebase-admin';
 const SYSTEM_COUPONS: Record<string, { discountType: 'percentage' | 'fixed'; discountValue: number; maxUses: number }> = {
   EARLY15: { discountType: 'percentage', discountValue: 15, maxUses: 50 },
   INFLUENCER20: { discountType: 'percentage', discountValue: 20, maxUses: 50 },
+  // 7 Unique 100% FREE Workshop Coupons (Single Use Each)
+  "BMFREE100-1": { discountType: 'percentage', discountValue: 100, maxUses: 1 },
+  "BMFREE100-2": { discountType: 'percentage', discountValue: 100, maxUses: 1 },
+  "BMFREE100-3": { discountType: 'percentage', discountValue: 100, maxUses: 1 },
+  "BMFREE100-4": { discountType: 'percentage', discountValue: 100, maxUses: 1 },
+  "BMFREE100-5": { discountType: 'percentage', discountValue: 100, maxUses: 1 },
+  "BMFREE100-6": { discountType: 'percentage', discountValue: 100, maxUses: 1 },
+  "BMFREE100-7": { discountType: 'percentage', discountValue: 100, maxUses: 1 },
+  // Also readable alias codes
+  "BMWORKSHOP1": { discountType: 'percentage', discountValue: 100, maxUses: 1 },
+  "BMWORKSHOP2": { discountType: 'percentage', discountValue: 100, maxUses: 1 },
+  "BMWORKSHOP3": { discountType: 'percentage', discountValue: 100, maxUses: 1 },
+  "BMWORKSHOP4": { discountType: 'percentage', discountValue: 100, maxUses: 1 },
+  "BMWORKSHOP5": { discountType: 'percentage', discountValue: 100, maxUses: 1 },
+  "BMWORKSHOP6": { discountType: 'percentage', discountValue: 100, maxUses: 1 },
+  "BMWORKSHOP7": { discountType: 'percentage', discountValue: 100, maxUses: 1 },
 };
+
+// GET handler to check total workshop coupon usage (max 7 allowed total)
+export async function GET() {
+  try {
+    const bootcampRegSnap = await adminDb
+      .collection('bootcamp_registrations')
+      .get();
+    
+    let couponCount = 0;
+    bootcampRegSnap.forEach(doc => {
+      const data = doc.data();
+      if (data.appliedCoupon && data.appliedCoupon.trim() !== '') {
+        couponCount++;
+      }
+    });
+
+    const isLimitReached = couponCount >= 7;
+
+    return NextResponse.json({
+      success: true,
+      totalCouponRedemptions: couponCount,
+      maxAllowed: 7,
+      isLimitReached
+    });
+  } catch (err: any) {
+    console.error('[check-coupon-limit GET error]', err);
+    return NextResponse.json({ success: true, isLimitReached: false, totalCouponRedemptions: 0 });
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,22 +62,41 @@ export async function POST(req: NextRequest) {
 
     const uppercaseCode = code.trim().toUpperCase();
 
-    // 1. Check System Defined Coupons (EARLY15 & INFLUENCER20)
+    // Check overall global limit for workshop coupons (Max 7 allowed total)
+    const bootcampRegSnap = await adminDb.collection('bootcamp_registrations').get();
+    let totalWorkshopCouponsUsed = 0;
+    bootcampRegSnap.forEach(doc => {
+      const d = doc.data();
+      if (d.appliedCoupon && d.appliedCoupon.trim() !== '') totalWorkshopCouponsUsed++;
+    });
+
+    if (totalWorkshopCouponsUsed >= 7 && (uppercaseCode.startsWith("BMFREE") || uppercaseCode.startsWith("BMWORKSHOP"))) {
+      return NextResponse.json({
+        error: "All 7 promotional workshop coupons have already been claimed."
+      }, { status: 400 });
+    }
+
+    // 1. Check System Defined Coupons
     if (SYSTEM_COUPONS[uppercaseCode]) {
       const config = SYSTEM_COUPONS[uppercaseCode];
 
-      // Query actual completed registrations count for this coupon
+      // Query actual completed registrations count for this coupon across both collections
       const regSnap = await adminDb
         .collection('event-registrations')
         .where('appliedCoupon', '==', uppercaseCode)
         .where('paymentStatus', '==', 'paid')
         .get();
 
-      const currentUses = regSnap.size;
+      const bcSnap = await adminDb
+        .collection('bootcamp_registrations')
+        .where('appliedCoupon', '==', uppercaseCode)
+        .get();
+
+      const currentUses = regSnap.size + bcSnap.size;
 
       if (currentUses >= config.maxUses) {
         return NextResponse.json({ 
-          error: `Coupon "${uppercaseCode}" has reached its maximum limit of ${config.maxUses} uses.` 
+          error: `Coupon "${uppercaseCode}" has already been used (${config.maxUses}/${config.maxUses}).` 
         }, { status: 400 });
       }
 

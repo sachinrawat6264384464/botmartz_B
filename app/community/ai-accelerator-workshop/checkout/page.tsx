@@ -46,25 +46,97 @@ function CheckoutContent() {
     fetchBootcamp();
   }, [plan]);
 
+  const [couponInput, setCouponInput] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
+  const [couponError, setCouponError] = useState("");
+  const [couponSuccess, setCouponSuccess] = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [isCouponLimitReached, setIsCouponLimitReached] = useState(false);
+
+  useEffect(() => {
+    // Check total coupon redemptions limit (Max 7 allowed total)
+    const checkCouponLimit = async () => {
+      try {
+        const res = await fetch("/api/events/verify-coupon");
+        const data = await res.json();
+        if (data.isLimitReached) {
+          setIsCouponLimitReached(true);
+        }
+      } catch (err) {
+        console.error("Failed to check coupon limit:", err);
+      }
+    };
+    checkCouponLimit();
+  }, []);
+
   const getAmount = () => {
+    if (appliedCoupon) return 0;
     return bootcampAmount || 199;
   };
 
-  useEffect(() => {
-    // Load Razorpay Script
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.async = true;
-    document.body.appendChild(script);
-  }, []);
+  const handleApplyCoupon = async () => {
+    if (!couponInput.trim()) return;
+    setCouponLoading(true);
+    setCouponError("");
+    setCouponSuccess("");
+
+    try {
+      const res = await fetch("/api/events/verify-coupon", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: couponInput.trim() }),
+      });
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setAppliedCoupon(data.code);
+        setCouponSuccess(`Coupon "${data.code}" Applied! 100% FREE Registration.`);
+      } else {
+        setCouponError(data.error || "Invalid coupon code");
+      }
+    } catch (err) {
+      setCouponError("Network error validating coupon");
+    } finally {
+      setCouponLoading(false);
+    }
+  };
 
   const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
+    // FREE REGISTRATION VIA COUPON
+    if (appliedCoupon && getAmount() === 0) {
+      try {
+        const res = await fetch("/api/ai-frontier/coupon-register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            plan: plan || "bootcamp-01",
+            couponCode: appliedCoupon,
+          }),
+        });
+
+        const data = await res.json();
+        if (res.ok && data.success) {
+          router.push(`/community/ai-accelerator-workshop/success?plan=${plan}`);
+        } else {
+          setError(data.error || "Free registration failed.");
+        }
+      } catch (err: any) {
+        setError(err.message || "An error occurred");
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+
+    // REGULAR RAZORPAY PAYMENT
     try {
-      // 1. Create order
       const res = await fetch("/api/ai-frontier/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -74,7 +146,6 @@ function CheckoutContent() {
       const orderData = await res.json();
       if (!res.ok) throw new Error(orderData.error);
 
-      // 2. Open Razorpay Checkout
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_placeholder",
         amount: orderData.amount,
@@ -83,7 +154,6 @@ function CheckoutContent() {
         description: plan === "bundle" ? "AI Engineering Pass" : "Bootcamp Access",
         order_id: orderData.id,
         handler: async function (response: any) {
-          // 3. Verify Payment
           const verifyRes = await fetch("/api/ai-frontier/verify-payment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -186,9 +256,13 @@ function CheckoutContent() {
           <div className="relative z-10 mt-8 pt-8 border-t border-white/10">
             <div className="flex items-end justify-between mb-2">
               <span className="text-[#8A9EB0] font-medium">Total (Inclusive of GST)</span>
-              <span className="text-3xl md:text-4xl font-bold text-white">₹{getAmount()}</span>
+              <span className="text-3xl md:text-4xl font-bold text-white">
+                {getAmount() === 0 ? <span className="text-emerald-400">FREE</span> : `₹${getAmount()}`}
+              </span>
             </div>
-            <p className="text-sm text-white/50 text-right">Secure Encrypted Payment</p>
+            <p className="text-sm text-white/50 text-right">
+              {getAmount() === 0 ? "100% Free Promo Access" : "Secure Encrypted Payment"}
+            </p>
           </div>
         </div>
 
@@ -236,18 +310,51 @@ function CheckoutContent() {
               />
             </div>
 
+            {/* COUPON CODE INPUT FIELD (Automatically removed when 7 coupons limit is reached) */}
+            {!isCouponLimitReached && (
+              <div className="pt-2 border-t border-[#E2E8F0]">
+                <label className="block text-xs font-bold text-[#64748B] uppercase tracking-wider mb-1.5">Have a Coupon Code?</label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="e.g. BMFREE100-1"
+                    value={couponInput}
+                    onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                    disabled={Boolean(appliedCoupon)}
+                    className="flex-1 p-2.5 rounded-xl border border-[#CBD5E1] font-mono text-sm text-[#0B1C2C] bg-[#F8FAFC] uppercase tracking-wider focus:outline-none focus:border-[#0066FF] disabled:opacity-60"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleApplyCoupon}
+                    disabled={couponLoading || !couponInput.trim() || Boolean(appliedCoupon)}
+                    className="px-4 py-2.5 rounded-xl bg-[#0B1C2C] hover:bg-[#1E293B] text-white font-semibold text-xs transition-colors disabled:opacity-50 shrink-0"
+                  >
+                    {couponLoading ? "Applying..." : appliedCoupon ? "Applied ✓" : "Apply"}
+                  </button>
+                </div>
+                {couponError && <p className="text-xs text-rose-600 font-semibold mt-1.5">{couponError}</p>}
+                {couponSuccess && <p className="text-xs text-emerald-600 font-bold mt-1.5">{couponSuccess}</p>}
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={loading}
               className="w-full mt-8 bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-[0_4px_14px_rgba(0,102,255,0.35)] disabled:opacity-70 disabled:cursor-not-allowed text-lg"
             >
-              {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : `Pay ₹${getAmount()}`}
+              {loading ? (
+                <Loader2 className="w-6 h-6 animate-spin" />
+              ) : getAmount() === 0 ? (
+                "Complete Free Registration →"
+              ) : (
+                `Pay ₹${getAmount()}`
+              )}
             </button>
             <p className="text-center text-xs text-[#64748B] mt-4 flex items-center justify-center gap-1.5">
               <svg className="w-4 h-4 text-[#00B8F0]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
-              Payments processed securely by Razorpay
+              {getAmount() === 0 ? "Direct Instant Confirmation" : "Payments processed securely by Razorpay"}
             </p>
           </form>
         </div>

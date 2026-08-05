@@ -62,13 +62,14 @@ export default function BootcampsAdmin() {
       alert("No registrations available to export.");
       return;
     }
-    const headers = ["Name", "Email", "Phone", "Plan", "Amount", "Status", "Attended", "Check-in Code", "Date"];
+    const headers = ["Name", "Email", "Phone", "Plan", "Amount", "Applied Coupon", "Status", "Attended", "Check-in Code", "Date"];
     const rows = registrations.map(r => [
       `"${r.name || ''}"`,
       `"${r.email || ''}"`,
       `"${r.phone || ''}"`,
       `"${r.plan || ''}"`,
       r.amount || 0,
+      `"${r.appliedCoupon || 'None'}"`,
       `"${r.status || 'paid'}"`,
       Boolean(r.attendance || r.attended) ? "Yes" : "No",
       `"${r.checkInCode || ''}"`,
@@ -454,6 +455,7 @@ export default function BootcampsAdmin() {
                 <tr className="bg-[#F8FAFC] dark:bg-white/5 border-b border-[#E2E8F0] dark:border-white/10 text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider">
                   <th className="p-4">Attendee</th>
                   <th className="p-4">Plan / Event</th>
+                  <th className="p-4">Payment & Coupon</th>
                   <th className="p-4">Check-in Code</th>
                   <th className="p-4">Attendance</th>
                   <th className="p-4 text-right">Actions</th>
@@ -473,6 +475,21 @@ export default function BootcampsAdmin() {
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-950 dark:text-blue-300 text-blue-800">
                           {reg.plan}
                         </span>
+                      </td>
+                      <td className="p-4 text-xs">
+                        {reg.appliedCoupon ? (
+                          <div className="flex flex-col gap-1">
+                            <span className="inline-flex items-center gap-1 font-mono font-bold text-xs text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-800 w-max">
+                              🏷️ {reg.appliedCoupon}
+                            </span>
+                            <span className="text-[11px] text-emerald-600 font-bold">100% FREE (₹0)</span>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col gap-0.5">
+                            <span className="font-bold text-[#0B1C2C] dark:text-white">₹{reg.amount || 0}</span>
+                            <span className="text-[10px] text-[#64748B] dark:text-slate-400">Direct / Razorpay</span>
+                          </div>
+                        )}
                       </td>
                       <td className="p-4">
                         <span className="text-xs font-mono font-bold text-[#0066FF] dark:text-[#00B8F0] bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded">
