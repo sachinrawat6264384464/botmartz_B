@@ -94,6 +94,7 @@ export async function POST(req: NextRequest) {
       const bcSnap = await adminDb
         .collection('bootcamp_registrations')
         .where('appliedCoupon', '==', uppercaseCode)
+        .where('status', '==', 'paid')
         .get();
 
       const currentUses = regSnap.size + bcSnap.size;
