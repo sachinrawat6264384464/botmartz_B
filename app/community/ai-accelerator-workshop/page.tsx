@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import Hero from "./_components/Hero";
 import JourneyTimeline from "./_components/JourneyTimeline";
 import BootcampDetails from "./_components/BootcampDetails";
-import Pricing from "./_components/Pricing";
 import WhatsIncluded from "./_components/WhatsIncluded";
 import Instructor from "./_components/Instructor";
 import FAQ from "./_components/FAQ";
@@ -53,7 +52,6 @@ export default function AIFrontierPage() {
         <JourneyTimeline />
         <BootcampDetails />
         <WhatsIncluded />
-        <Pricing />
         <Instructor />
         <FAQ />
         <FinalCTA />

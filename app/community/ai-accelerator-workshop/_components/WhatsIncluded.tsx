@@ -27,7 +27,7 @@ const features = [
   {
     icon: Users,
     title: "Community Access",
-    description: "Access to the exclusive Botmartz AI Engineering Community after registration for continuous learning.",
+    description: "Access to the exclusive Botmartz AI Engineering Community after registration. We will be hosting sessions on Zoom for interactive continuous learning.",
   },
 ];
 
@@ -38,7 +38,7 @@ export default function WhatsIncluded() {
       
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="text-center mb-20">
-          <h2 className="text-[32px] md:text-[40px] font-bold tracking-tight mb-4">
+          <h2 className="text-[32px] md:text-[40px] font-bold tracking-tight mb-4 text-white">
             Every Registration Includes
           </h2>
           <p className="text-lg md:text-xl text-[#8A9EB0] max-w-2xl mx-auto font-medium">
@@ -61,7 +61,7 @@ export default function WhatsIncluded() {
                 <div className="w-14 h-14 rounded-xl bg-[#0066FF]/10 flex items-center justify-center text-[#0066FF] mb-6 border border-[#0066FF]/20 group-hover:scale-110 transition-transform">
                   <Icon className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
+                <h3 className="text-xl font-bold mb-3 text-white">{feature.title}</h3>
                 <p className="text-[#8A9EB0] leading-relaxed text-sm">
                   {feature.description}
                 </p>

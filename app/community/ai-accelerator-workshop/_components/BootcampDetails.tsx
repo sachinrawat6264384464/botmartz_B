@@ -1,7 +1,8 @@
 "use client";
 
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const bootcamps = [
   {
@@ -19,6 +20,8 @@ const bootcamps = [
     ],
     outcome: "Students leave with a working AI application.",
     color: "from-[#0066FF] to-[#3B82F6]",
+    date: "Aug 9, 2026",
+    id: 1,
   },
   {
     number: "02",
@@ -35,6 +38,8 @@ const bootcamps = [
     ],
     outcome: "Students build intelligent AI Agents.",
     color: "from-[#0F172A] to-[#1E293B]",
+    date: "Aug 16, 2026",
+    id: 2,
   },
   {
     number: "03",
@@ -48,8 +53,10 @@ const bootcamps = [
       "Scaling AI Infrastructure",
       "AI Engineering Best Practices",
     ],
-    outcome: "Students understand how modern production AI systems are engineered.",
+    outcome: "Students understand how modern production AI systems are engineered. Note: Expect local/nginx-based deployments via tunneling, rather than full AWS/cloud deployments.",
     color: "from-[#009688] to-[#14B8A6]",
+    date: "Aug 22, 2026",
+    id: 3,
   },
 ];
 
@@ -80,8 +87,9 @@ export default function BootcampDetails() {
               <div className={`absolute top-0 left-0 right-0 h-2 bg-gradient-to-r ${bootcamp.color}`} />
 
               <div className="mb-6">
-                <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-[#64748B] mb-2 block">
-                  Bootcamp {bootcamp.number}
+                <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-[#64748B] mb-2 flex items-center justify-between">
+                  <span>Bootcamp {bootcamp.number}</span>
+                  <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {bootcamp.date}</span>
                 </span>
                 <h3 className="text-2xl font-bold text-[#0B1C2C] leading-tight mb-3">
                   {bootcamp.title}
@@ -109,10 +117,65 @@ export default function BootcampDetails() {
                 <h4 className="text-sm font-bold tracking-widest uppercase text-[#94A3B8] mb-2">
                   Outcome
                 </h4>
-                <p className="text-[#0B1C2C] font-semibold">{bootcamp.outcome}</p>
+                <p className="text-[#0B1C2C] font-semibold mb-6">{bootcamp.outcome}</p>
+                <div className="space-y-3">
+                  <Link
+                    href={`/community/ai-accelerator-workshop/checkout?plan=bootcamp-${bootcamp.id}`}
+                    className="flex w-full justify-center items-center py-3 rounded-xl border-2 border-[#E2E8F0] text-[#0B1C2C] font-bold hover:border-[#0B1C2C] hover:bg-[#F8FAFC] transition-all"
+                  >
+                    Register for ₹199
+                  </Link>
+                  <Link
+                    href="/community/ai-accelerator-workshop/checkout?plan=bundle"
+                    className="flex w-full justify-center items-center py-3 rounded-xl bg-[#0066FF] text-white font-bold hover:bg-[#0052CC] transition-all shadow-sm"
+                  >
+                    Get Full Pass (₹399)
+                  </Link>
+                </div>
               </div>
             </motion.div>
           ))}
+          {/* Full Width Pass Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="lg:col-span-3 mt-4"
+          >
+            <div className="bg-[#0B1C2C] border border-[#1E293B] rounded-3xl p-8 lg:p-10 shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 group">
+              {/* Background accent */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#0066FF]/20 to-transparent blur-3xl rounded-full pointer-events-none group-hover:from-[#0066FF]/30 transition-all duration-700" />
+              
+              <div className="relative z-10 flex-1">
+                <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#0066FF] to-[#3B82F6] text-white text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-4 shadow-sm">
+                  Most Popular
+                </div>
+                <h3 className="text-[28px] md:text-[36px] font-extrabold text-white mb-2 leading-tight">
+                  AI Engineering Pass
+                </h3>
+                <p className="text-[#8A9EB0] font-medium text-base md:text-lg max-w-2xl">
+                  The complete journey from beginner to production. Get access to all 3 live engineering bootcamps, community access, and certificate of completion.
+                </p>
+              </div>
+
+              <div className="relative z-10 flex flex-col items-center md:items-end flex-shrink-0 w-full md:w-auto border-t md:border-t-0 md:border-l border-[#1E293B] pt-6 md:pt-0 md:pl-10">
+                <div className="flex items-end gap-3 mb-5">
+                  <span className="text-4xl md:text-5xl font-bold text-white tracking-tight">₹399</span>
+                  <div className="flex flex-col items-start pb-1">
+                    <span className="text-[#8A9EB0] text-sm line-through leading-none">₹597</span>
+                    <span className="text-[#00B8F0] text-[13px] font-bold leading-none mt-1">Save ₹198</span>
+                  </div>
+                </div>
+                <Link
+                  href="/community/ai-accelerator-workshop/checkout?plan=bundle"
+                  className="w-full md:w-auto px-10 py-4 rounded-xl bg-[#0066FF] text-white font-bold hover:bg-[#0052CC] transition-all text-center shadow-[0_4px_14px_rgba(0,102,255,0.35)] hover:shadow-[0_4px_20px_rgba(0,102,255,0.5)] text-[15px]"
+                >
+                  Get The Full Pass
+                </Link>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

@@ -6,24 +6,28 @@ const milestones = [
   {
     id: "01",
     title: "Series 1",
+    date: "Aug 9, 2026",
     subtitle: "Build Your First AI Full-Stack Application",
     description: "Build an AI-powered application from scratch using the latest AI tools.",
   },
   {
     id: "02",
     title: "Series 2",
+    date: "Aug 16, 2026",
     subtitle: "Build Smarter AI Agents",
     description: "Learn how modern AI Agents think, plan and act.",
   },
   {
     id: "03",
     title: "Series 3",
+    date: "Aug 22, 2026",
     subtitle: "Build Production Ready AI Applications",
     description: "Understand how modern production AI systems are engineered.",
   },
   {
     id: "04",
     title: "AI Frontier 2026",
+    date: "Aug 23, 2026",
     subtitle: "The Ultimate Gathering",
     description: "Join the top AI Engineers in Indore for our flagship event.",
     isHighlight: true,
@@ -67,8 +71,14 @@ export default function JourneyTimeline() {
                         milestone.isHighlight ? "border-[#0066FF]/30 bg-[#0066FF]/[0.02]" : ""
                       }`}
                     >
-                      <div className="text-xs font-bold tracking-widest uppercase text-[#0066FF] mb-2">
-                        {milestone.title}
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="text-xs font-bold tracking-widest uppercase text-[#0066FF]">
+                          {milestone.title}
+                        </div>
+                        <span className="text-[#CBD5E1]">•</span>
+                        <div className="text-xs font-bold text-[#64748B]">
+                          {milestone.date}
+                        </div>
                       </div>
                       <h3 className="text-xl font-bold text-[#0B1C2C] mb-2">{milestone.subtitle}</h3>
                       <p className="text-[#475569] font-medium leading-relaxed">{milestone.description}</p>

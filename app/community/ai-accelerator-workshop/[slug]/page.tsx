@@ -20,16 +20,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   } catch (e) {}
 
   return {
-    title: `${title} | AI Frontier Bootcamps`,
+    title: `${title} | AI Accelerator Workshop`,
     description,
     openGraph: {
       title,
       description,
-      url: `https://www.botmartz.com/community/ai-frontier-bootcamps/${resolvedParams.slug}`,
+      url: `https://www.botmartz.com/community/ai-accelerator-workshop/${resolvedParams.slug}`,
       type: 'website',
     },
     alternates: {
-      canonical: `https://www.botmartz.com/community/ai-frontier-bootcamps/${resolvedParams.slug}`,
+      canonical: `https://www.botmartz.com/community/ai-accelerator-workshop/${resolvedParams.slug}`,
     },
   };
 }
@@ -105,10 +105,10 @@ export default async function BootcampDynamicPage({ params }: { params: Promise<
 
               <div className="animate-in slide-in-from-bottom-4 duration-500 delay-500 fade-in fill-mode-forwards opacity-0">
                 <Link 
-                  href={`/community/ai-frontier-bootcamps/checkout?plan=${bootcamp.slug}`}
+                  href={`/community/ai-accelerator-workshop/checkout?plan=${bootcamp.slug}`}
                   className="group inline-flex items-center justify-center gap-2 bg-[#0066FF] text-white px-10 py-5 rounded-2xl font-bold text-xl hover:bg-[#0052CC] transition-all shadow-[0_4px_20px_rgba(0,102,255,0.3)] hover:shadow-[0_4px_25px_rgba(0,102,255,0.5)] hover:-translate-y-1 w-full sm:w-auto"
                 >
-                  Register Now - Free
+                  Register Now - ₹{bootcamp.price}
                   <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <p className="text-sm font-medium text-[#64748B] mt-4">

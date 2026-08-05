@@ -21,8 +21,8 @@ export default function EventCountdownBanner() {
   }, []);
 
   useEffect(() => {
-    // Event Date: August 15, 2026
-    const targetDate = new Date("2026-08-15T09:00:00Z").getTime();
+    // Event Date: August 23, 2026
+    const targetDate = new Date("2026-08-23T09:00:00Z").getTime();
 
     const interval = setInterval(() => {
       const now = new Date().getTime();
