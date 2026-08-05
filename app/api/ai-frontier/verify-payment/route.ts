@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 
 export async function POST(req: Request) {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, name, email, phone, plan, chargedAmount } = await req.json();
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, name, email, phone, plan, chargedAmount, appliedCoupon } = await req.json();
 
     const secret = process.env.RAZORPAY_KEY_SECRET || "rzp_secret_placeholder";
 
@@ -41,11 +41,6 @@ export async function POST(req: Request) {
           eventTitle = data?.title || eventTitle;
           dateVal = data?.date || dateVal;
           locVal = data?.format || locVal;
-          // Dynamically fetch price from backend for security (fallback to passed amount logic if needed, but here we just use the fetched price)
-          if (data?.price) {
-            // override amount if it exists in db
-            // But we already charged the user. It's better to log the charged amount.
-          }
         }
       } else if (plan === "bundle") {
         eventTitle = "AI Engineering Pass (Bundle)";
@@ -64,6 +59,7 @@ export async function POST(req: Request) {
           paymentId: razorpay_payment_id,
           orderId: razorpay_order_id,
           amount,
+          appliedCoupon: appliedCoupon || "",
           status: 'paid',
           attendance: false,
           checkInCode,
