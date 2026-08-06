@@ -112,28 +112,31 @@ export default function Navbar({
                   )}
                 </Link>
 
-                {/* DROPDOWN */}
+                {/* DROPDOWN MENU */}
                 <AnimatePresence>
                   {item.dropdown && activeDropdown === item.name && (
                     <motion.div
-                      initial={{ opacity: 0, y: 6 }}
+                      initial={{ opacity: 0, y: 4 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 6 }}
-                      transition={{ duration: 0.14 }}
-                      className="absolute top-[calc(100%+4px)] left-1/2 -translate-x-1/2 min-w-[240px] bg-white border border-slate-200 rounded-xl shadow-lg p-2 z-[100]"
+                      exit={{ opacity: 0, y: 4 }}
+                      transition={{ duration: 0.12 }}
+                      className="absolute top-full left-1/2 -translate-x-1/2 pt-1.5 z-[100] pointer-events-auto"
                     >
-                      {item.dropdown.map((sub) => (
-                        <Link
-                          key={sub.name}
-                          href={sub.path}
-                          className="flex items-center justify-between px-4 py-2.5 text-[13px] font-medium text-[#475569] hover:text-[#0066FF] hover:bg-[#0066FF]/5 rounded-lg transition-all group whitespace-nowrap"
-                        >
-                          <span>{sub.name}</span>
-                          <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-[#0066FF] text-xs">
-                            →
-                          </span>
-                        </Link>
-                      ))}
+                      <div className="min-w-[240px] bg-white border border-slate-200 rounded-xl shadow-xl p-1.5">
+                        {item.dropdown.map((sub) => (
+                          <Link
+                            key={sub.name}
+                            href={sub.path}
+                            onClick={() => setActiveDropdown(null)}
+                            className="flex items-center justify-between px-3.5 py-2.5 text-[13px] font-medium text-[#475569] hover:text-[#0066FF] hover:bg-[#0066FF]/5 rounded-lg transition-all group whitespace-nowrap"
+                          >
+                            <span>{sub.name}</span>
+                            <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-[#0066FF] text-xs">
+                              →
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
