@@ -28,9 +28,96 @@ export default function BootcampsAdmin() {
   const [adminRegLoading, setAdminRegLoading] = useState(false);
   const [adminRegResult, setAdminRegResult] = useState<{ success: boolean; message: string; checkInCode?: string } | null>(null);
   
+  // Multi-select & Bulk Delete state
+  const [selectedRegIds, setSelectedRegIds] = useState<string[]>([]);
+  
+  // Edit Registration Modal state
+  const [editingReg, setEditingReg] = useState<any | null>(null);
+  const [editForm, setEditForm] = useState({ id: '', name: '', email: '', phone: '', organization: '', plan: 'bootcamp-01', checkInCode: '', amount: 0 });
+  const [editLoading, setEditLoading] = useState(false);
+
   // Filter & Search states
   const [regFilter, setRegFilter] = useState<"all" | "attended" | "pending">("all");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const handleUpdateRegistration = async (id: string, updatedFields: Record<string, any>) => {
+    setActionLoading(`update-${id}`);
+    try {
+      const res = await fetch("/api/admin/update-registration", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, ...updatedFields }),
+      });
+      const data = await res.json();
+      if (!data.success) {
+        alert(`Error: ${data.error}`);
+      }
+    } catch (err: any) {
+      alert(`Update failed: ${err.message}`);
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const openEditModal = (reg: any) => {
+    setEditingReg(reg);
+    setEditForm({
+      id: reg.id,
+      name: reg.name || '',
+      email: reg.email || '',
+      phone: reg.phone || '',
+      organization: reg.organization || '',
+      plan: reg.plan || 'bootcamp-01',
+      checkInCode: reg.checkInCode || '',
+      amount: reg.amount || 0
+    });
+  };
+
+  const handleSaveEditModal = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setEditLoading(true);
+    try {
+      const res = await fetch("/api/admin/update-registration", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editForm),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setEditingReg(null);
+      } else {
+        alert(`Error: ${data.error}`);
+      }
+    } catch (err: any) {
+      alert(`Failed to save edits: ${err.message}`);
+    } finally {
+      setEditLoading(false);
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedRegIds.length === 0) return;
+    if (!confirm(`Are you sure you want to delete ${selectedRegIds.length} selected registration(s)?`)) return;
+
+    setActionLoading("bulk-del");
+    try {
+      const res = await fetch("/api/admin/delete-registration", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: selectedRegIds }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSelectedRegIds([]);
+      } else {
+        alert(`Error: ${data.error}`);
+      }
+    } catch (err: any) {
+      alert(`Bulk delete failed: ${err.message}`);
+    } finally {
+      setActionLoading(null);
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -643,10 +730,39 @@ export default function BootcampsAdmin() {
             </div>
           </div>
 
+          {/* Bulk Action Bar */}
+          {selectedRegIds.length > 0 && (
+            <div className="flex items-center justify-between bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 px-4 py-2.5 rounded-xl mb-4 text-xs font-semibold text-[#0066FF] dark:text-blue-300">
+              <span>Selected {selectedRegIds.length} registration(s)</span>
+              <button
+                onClick={handleBulkDelete}
+                disabled={actionLoading === "bulk-del"}
+                className="inline-flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg font-bold shadow-sm transition-all disabled:opacity-50 cursor-pointer"
+              >
+                {actionLoading === "bulk-del" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
+                Delete Selected ({selectedRegIds.length})
+              </button>
+            </div>
+          )}
+
           <div className="overflow-x-auto w-full">
             <table className="w-full text-left border-collapse min-w-[750px]">
               <thead>
                 <tr className="bg-[#F8FAFC] dark:bg-white/5 border-b border-[#E2E8F0] dark:border-white/10 text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider">
+                  <th className="p-4 w-10">
+                    <input
+                      type="checkbox"
+                      checked={filteredRegistrations.length > 0 && selectedRegIds.length === filteredRegistrations.length}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedRegIds(filteredRegistrations.map(r => r.id));
+                        } else {
+                          setSelectedRegIds([]);
+                        }
+                      }}
+                      className="rounded border-slate-300 text-[#0066FF] focus:ring-[#0066FF] cursor-pointer"
+                    />
+                  </th>
                   <th className="p-4">Attendee</th>
                   <th className="p-4">Organization</th>
                   <th className="p-4">Plan / Event</th>
@@ -659,8 +775,25 @@ export default function BootcampsAdmin() {
               <tbody className="divide-y divide-[#E2E8F0] dark:divide-white/10">
                 {filteredRegistrations.map((reg) => {
                   const isAttended = Boolean(reg.attendance || reg.attended);
+                  const couponUpper = (reg.appliedCoupon || '').toUpperCase();
+                  const isFreeCoupon = Number(reg.amount) === 0 || couponUpper.startsWith('BMFREE') || couponUpper.startsWith('FREE');
+
                   return (
                     <tr key={reg.id} className="hover:bg-[#F8FAFC] dark:hover:bg-white/5 transition-colors">
+                      <td className="p-4 w-10">
+                        <input
+                          type="checkbox"
+                          checked={selectedRegIds.includes(reg.id)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedRegIds(prev => [...prev, reg.id]);
+                            } else {
+                              setSelectedRegIds(prev => prev.filter(id => id !== reg.id));
+                            }
+                          }}
+                          className="rounded border-slate-300 text-[#0066FF] focus:ring-[#0066FF] cursor-pointer"
+                        />
+                      </td>
                       <td className="p-4">
                         <div className="font-semibold text-[#0B1C2C] dark:text-white text-sm">{reg.name}</div>
                         <div className="text-xs text-[#64748B] dark:text-slate-400 font-mono">{reg.email}</div>
@@ -676,9 +809,17 @@ export default function BootcampsAdmin() {
                         )}
                       </td>
                       <td className="p-4">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-950 dark:text-blue-300 text-blue-800">
-                          {reg.plan}
-                        </span>
+                        <select
+                          value={reg.plan || "bootcamp-01"}
+                          onChange={(e) => handleUpdateRegistration(reg.id, { plan: e.target.value })}
+                          disabled={actionLoading === `update-${reg.id}`}
+                          className="bg-blue-50 dark:bg-blue-950/80 border border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-300 text-xs font-semibold rounded-lg px-2.5 py-1 outline-none focus:ring-2 focus:ring-[#0066FF] cursor-pointer"
+                        >
+                          <option value="bootcamp-01">bootcamp-1</option>
+                          <option value="bootcamp-02">bootcamp-2</option>
+                          <option value="bootcamp-03">bootcamp-3</option>
+                          <option value="bundle">bundle</option>
+                        </select>
                       </td>
                       <td className="p-4 text-xs">
                         {reg.appliedCoupon ? (
@@ -686,7 +827,11 @@ export default function BootcampsAdmin() {
                             <span className="inline-flex items-center gap-1 font-mono font-bold text-xs text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-800 w-max">
                               🏷️ {reg.appliedCoupon}
                             </span>
-                            <span className="text-[11px] text-emerald-600 font-bold">100% FREE (₹0)</span>
+                            {isFreeCoupon ? (
+                              <span className="text-[11px] text-emerald-600 font-bold">100% FREE (₹0)</span>
+                            ) : (
+                              <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">₹{reg.amount} Paid</span>
+                            )}
                           </div>
                         ) : (
                           <div className="flex flex-col gap-0.5">
@@ -704,7 +849,7 @@ export default function BootcampsAdmin() {
                         <button
                           onClick={() => toggleAttendance(reg.id, isAttended)}
                           disabled={actionLoading === `att-${reg.id}`}
-                          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                             isAttended ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300" : "bg-gray-100 text-gray-600 dark:bg-white/10 dark:text-slate-300 hover:bg-gray-200"
                           }`}
                         >
@@ -714,11 +859,18 @@ export default function BootcampsAdmin() {
                       </td>
                       <td className="p-4 text-right">
                         <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            onClick={() => openEditModal(reg)}
+                            className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-[#64748B] hover:text-[#0066FF] hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors border border-[#E2E8F0] dark:border-white/10"
+                            title="Edit attendee details"
+                          >
+                            <Edit2 className="w-3.5 h-3.5" />
+                          </button>
                           {isAttended ? (
                             <button
                               onClick={() => sendCertificate(reg)}
                               disabled={actionLoading === `cert-${reg.id}`}
-                              className="inline-flex items-center gap-1.5 bg-[#0066FF] text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-[#0052CC] disabled:opacity-50"
+                              className="inline-flex items-center gap-1.5 bg-[#0066FF] text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-[#0052CC] disabled:opacity-50 cursor-pointer"
                             >
                               {actionLoading === `cert-${reg.id}` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Award className="w-3.5 h-3.5" />}
                               Certificate
@@ -727,7 +879,7 @@ export default function BootcampsAdmin() {
                             <button
                               onClick={() => sendFollowUp(reg)}
                               disabled={actionLoading === `follow-${reg.id}`}
-                              className="inline-flex items-center gap-1.5 bg-amber-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-amber-600 disabled:opacity-50"
+                              className="inline-flex items-center gap-1.5 bg-amber-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-amber-600 disabled:opacity-50 cursor-pointer"
                             >
                               {actionLoading === `follow-${reg.id}` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Mail className="w-3.5 h-3.5" />}
                               Follow-up
@@ -736,7 +888,7 @@ export default function BootcampsAdmin() {
                           <button
                             onClick={() => deleteRegistration(reg)}
                             disabled={actionLoading === `del-${reg.id}`}
-                            className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-[#64748B] hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors disabled:opacity-50 border border-[#E2E8F0] dark:border-white/10"
+                            className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-[#64748B] hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors disabled:opacity-50 border border-[#E2E8F0] dark:border-white/10 cursor-pointer"
                             title="Delete registration"
                           >
                             {actionLoading === `del-${reg.id}` ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
@@ -748,7 +900,7 @@ export default function BootcampsAdmin() {
                 })}
                 {filteredRegistrations.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="p-8 text-center text-[#64748B] dark:text-slate-400 text-sm">
+                    <td colSpan={8} className="p-8 text-center text-[#64748B] dark:text-slate-400 text-sm">
                       {searchQuery || regFilter !== "all" ? "No matching registrations found for your search/filter criteria." : "No registrations found."}
                     </td>
                   </tr>
@@ -928,6 +1080,106 @@ export default function BootcampsAdmin() {
           <p className="text-[#64748B] dark:text-slate-400 max-w-md mx-auto text-sm">
             This module is connected to your Firebase backend. Detailed views for {activeTab} will appear here.
           </p>
+        </div>
+      )}
+
+      {/* Edit Registration Modal */}
+      {editingReg && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-[#0E172A] border border-[#E2E8F0] dark:border-white/10 rounded-2xl p-6 max-w-lg w-full shadow-2xl relative">
+            <div className="flex items-center justify-between mb-4 border-b border-[#E2E8F0] dark:border-white/10 pb-3">
+              <h3 className="text-lg font-bold text-[#0B1C2C] dark:text-white flex items-center gap-2">
+                <Edit2 className="w-5 h-5 text-[#0066FF]" /> Edit Attendee Info
+              </h3>
+              <button onClick={() => setEditingReg(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-sm font-bold">✕</button>
+            </div>
+
+            <form onSubmit={handleSaveEditModal} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider mb-1">Full Name *</label>
+                <input
+                  type="text"
+                  required
+                  value={editForm.name}
+                  onChange={e => setEditForm({ ...editForm, name: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] dark:border-white/10 bg-[#F8FAFC] dark:bg-white/5 text-[#0B1C2C] dark:text-white text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider mb-1">Email Address *</label>
+                <input
+                  type="email"
+                  required
+                  value={editForm.email}
+                  onChange={e => setEditForm({ ...editForm, email: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] dark:border-white/10 bg-[#F8FAFC] dark:bg-white/5 text-[#0B1C2C] dark:text-white text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider mb-1">Phone Number</label>
+                <input
+                  type="tel"
+                  value={editForm.phone}
+                  onChange={e => setEditForm({ ...editForm, phone: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] dark:border-white/10 bg-[#F8FAFC] dark:bg-white/5 text-[#0B1C2C] dark:text-white text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider mb-1">Organization / College</label>
+                <input
+                  type="text"
+                  value={editForm.organization}
+                  onChange={e => setEditForm({ ...editForm, organization: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] dark:border-white/10 bg-[#F8FAFC] dark:bg-white/5 text-[#0B1C2C] dark:text-white text-sm"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider mb-1">Plan</label>
+                  <select
+                    value={editForm.plan}
+                    onChange={e => setEditForm({ ...editForm, plan: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] dark:border-white/10 bg-[#F8FAFC] dark:bg-white/5 text-[#0B1C2C] dark:text-white text-sm"
+                  >
+                    <option value="bootcamp-01">bootcamp-1</option>
+                    <option value="bootcamp-02">bootcamp-2</option>
+                    <option value="bootcamp-03">bootcamp-3</option>
+                    <option value="bundle">bundle</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider mb-1">Check-in Code</label>
+                  <input
+                    type="text"
+                    value={editForm.checkInCode}
+                    onChange={e => setEditForm({ ...editForm, checkInCode: e.target.value })}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#CBD5E1] dark:border-white/10 bg-[#F8FAFC] dark:bg-white/5 text-[#0B1C2C] dark:text-white text-sm font-mono"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#E2E8F0] dark:border-white/10">
+                <button
+                  type="button"
+                  onClick={() => setEditingReg(null)}
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/5"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={editLoading}
+                  className="px-5 py-2 rounded-xl text-xs font-bold bg-[#0066FF] hover:bg-[#0052CC] text-white flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
+                >
+                  {editLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Save Changes"}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>

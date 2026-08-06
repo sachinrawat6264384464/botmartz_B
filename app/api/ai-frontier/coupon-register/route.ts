@@ -75,6 +75,24 @@ export async function POST(req: Request) {
       createdAt: new Date(),
     });
 
+    // Update coupon usage count & status in 'coupons' collection
+    try {
+      const couponQuery = await adminDb.collection('coupons').where('code', '==', uppercaseCoupon).limit(1).get();
+      if (!couponQuery.empty) {
+        const cDoc = couponQuery.docs[0];
+        const cData = cDoc.data();
+        const newUses = (cData.currentUses || 0) + 1;
+        const maxUses = cData.maxUses || 1;
+        await cDoc.ref.update({
+          currentUses: newUses,
+          status: newUses >= maxUses ? 'redeemed' : 'active',
+          updatedAt: new Date().toISOString()
+        });
+      }
+    } catch (cErr) {
+      console.error('[Coupon usage update error]', cErr);
+    }
+
     // Send emails
     const smtpUser = process.env.SMTP_USER;
     if (smtpUser) {

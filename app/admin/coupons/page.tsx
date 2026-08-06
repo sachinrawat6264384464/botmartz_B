@@ -89,12 +89,30 @@ export default function CouponsDashboard() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Fetch coupons WITHOUT orderBy to avoid index errors
+  // Fetch coupons WITH actual redemptions from bootcamp_registrations
   const fetchCoupons = async () => {
     setLoading(true);
     try {
-      const snap = await getDocs(collection(db, 'coupons'));
+      const [snap, regSnap] = await Promise.all([
+        getDocs(collection(db, 'coupons')),
+        getDocs(collection(db, 'bootcamp_registrations'))
+      ]);
+
+      const usageMap: Record<string, number> = {};
+      regSnap.docs.forEach(d => {
+        const code = (d.data().appliedCoupon || '').trim().toUpperCase();
+        if (code) {
+          usageMap[code] = (usageMap[code] || 0) + 1;
+        }
+      });
+
       const docs: Coupon[] = snap.docs.map(d => {
         const data = d.data();
+        const codeUpper = (data.code || '').trim().toUpperCase();
+        const regUses = usageMap[codeUpper] || 0;
+        const dbUses = Number(data.currentUses) || 0;
+        const currentUses = Math.max(dbUses, regUses);
+
         return {
           id: d.id,
           code: data.code || '',
@@ -103,7 +121,7 @@ export default function CouponsDashboard() {
           discountValue: Number(data.discountValue) || 0,
           isActive: data.isActive !== false,
           maxUses: Number(data.maxUses) || 1,
-          currentUses: Number(data.currentUses) || 0,
+          currentUses,
           createdAt: data.createdAt || ''
         };
       });
@@ -121,32 +139,6 @@ export default function CouponsDashboard() {
   };
 
   useEffect(() => { fetchCoupons(); }, [refreshKey]);
-
-  // Also real-time snapshot (no orderBy)
-  useEffect(() => {
-    const unsub = onSnapshot(collection(db, 'coupons'), (snap) => {
-      const docs: Coupon[] = snap.docs.map(d => {
-        const data = d.data();
-        return {
-          id: d.id,
-          code: data.code || '',
-          type: data.type || 'custom',
-          discountType: data.discountType || 'percentage',
-          discountValue: Number(data.discountValue) || 0,
-          isActive: data.isActive !== false,
-          maxUses: Number(data.maxUses) || 1,
-          currentUses: Number(data.currentUses) || 0,
-          createdAt: data.createdAt || ''
-        };
-      });
-      docs.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
-      setCoupons(docs);
-      const bm10 = docs.find(c => c.code === 'BOTMARTZ10');
-      if (bm10) setBm10Input(bm10.maxUses);
-      setLoading(false);
-    }, () => setLoading(false));
-    return () => unsub();
-  }, []);
 
   // Generate unique random free coupon codes
   const handleGenerateFreeCoupons = async () => {
