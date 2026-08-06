@@ -129,9 +129,8 @@ export default function BootcampsAdmin() {
       setLoading(false);
     }, () => setLoading(false));
 
-    // Also load bootcamp events list
-    const qBootcamps = query(collection(db, 'bootcamps'), orderBy('createdAt', 'desc'));
-    const unsubscribeBootcamps = onSnapshot(qBootcamps, (snapshot) => {
+    // Also load bootcamp events list (without index filtering)
+    const unsubscribeBootcamps = onSnapshot(collection(db, 'bootcamps'), (snapshot) => {
       setBootcamps(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     });
 
