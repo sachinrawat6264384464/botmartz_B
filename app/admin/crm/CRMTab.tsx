@@ -8,7 +8,7 @@ import {
 import { db } from "@/lib/firebase";
 import {
   Users, Search, RefreshCw, Plus, Mail, Trash2, Check,
-  UserCheck, Send, Calendar, CheckCircle, XCircle, FileText, Ban, X, Download
+  UserCheck, Send, Calendar, CheckCircle, XCircle, FileText, Ban, X, Download, Eye, Edit2, Save
 } from "lucide-react";
 import { Inter_Tight } from "next/font/google";
 
@@ -45,6 +45,45 @@ export default function CRMTab() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [newSub, setNewSub] = useState({ name: "", email: "", source: "manual" });
   const [saving, setSaving] = useState(false);
+
+  // View & Edit Lead Modal State
+  const [viewLead, setViewLead] = useState<Lead | null>(null);
+  const [editLead, setEditLead] = useState<Lead | null>(null);
+  const [editLeadForm, setEditLeadForm] = useState({ name: "", email: "", company: "", message: "" });
+  const [editLeadLoading, setEditLeadLoading] = useState(false);
+
+  const handleOpenEditLead = (lead: Lead) => {
+    setEditLead(lead);
+    setEditLeadForm({
+      name: lead.name || "",
+      email: lead.email || "",
+      company: lead.company || "",
+      message: lead.message || "",
+    });
+  };
+
+  const handleSaveEditLead = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editLead || !editLeadForm.name.trim() || !editLeadForm.email.trim()) return;
+    setEditLeadLoading(true);
+    try {
+      await updateDoc(doc(db, "contacts", editLead.id), {
+        name: editLeadForm.name.trim(),
+        email: editLeadForm.email.toLowerCase().trim(),
+        company: editLeadForm.company.trim(),
+        message: editLeadForm.message.trim(),
+      });
+      setLeads((prev) =>
+        prev.map((l) => (l.id === editLead.id ? { ...l, ...editLeadForm } : l))
+      );
+      showToast("Inquiry lead updated successfully", "success");
+      setEditLead(null);
+    } catch (err) {
+      showToast("Failed to update lead", "error");
+    } finally {
+      setEditLeadLoading(false);
+    }
+  };
 
   const showToast = (message: string, type: "success" | "error") => {
     setToast({ message, type });
@@ -378,12 +417,29 @@ export default function CRMTab() {
                         {lead.message}
                       </td>
                       <td className="px-5 py-4 text-right">
-                        <button
-                          onClick={() => handleDeleteLead(lead.id)}
-                          className="p-1.5 rounded-lg text-admin-text-muted hover:text-red-400 hover:bg-red-500/10 transition-colors"
-                        >
-                          <Trash2 size={15} />
-                        </button>
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            onClick={() => setViewLead(lead)}
+                            className="p-1.5 rounded-lg text-admin-text-muted hover:text-admin-accent hover:bg-admin-accent/10 transition-colors"
+                            title="View Full Inquiry"
+                          >
+                            <Eye size={15} />
+                          </button>
+                          <button
+                            onClick={() => handleOpenEditLead(lead)}
+                            className="p-1.5 rounded-lg text-admin-text-muted hover:text-blue-400 hover:bg-blue-500/10 transition-colors"
+                            title="Edit Inquiry"
+                          >
+                            <Edit2 size={15} />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteLead(lead.id)}
+                            className="p-1.5 rounded-lg text-admin-text-muted hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                            title="Delete Inquiry"
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))
@@ -546,6 +602,156 @@ export default function CRMTab() {
                 {saving ? "Saving..." : "Add"}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+      {/* View Lead Modal */}
+      {viewLead && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/75 backdrop-blur-sm px-4 py-6 overflow-y-auto">
+          <div className="w-full max-w-lg bg-admin-card border border-admin-border rounded-2xl shadow-2xl p-6 relative text-admin-text my-auto space-y-4">
+            <button
+              onClick={() => setViewLead(null)}
+              className="absolute top-4 right-4 text-admin-text-muted hover:text-admin-text transition-colors p-1"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-admin-accent/10 text-admin-accent flex items-center justify-center shrink-0">
+                <FileText size={20} />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-admin-text">Inquiry Lead Details</h3>
+                <p className="text-xs text-admin-text-muted">Received on {formatDate(viewLead.createdAt)}</p>
+              </div>
+            </div>
+
+            <div className="space-y-3 pt-2">
+              <div className="bg-admin-bg p-3.5 rounded-xl border border-admin-border space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs text-admin-text-muted font-medium uppercase">Full Name</span>
+                  <span className="text-sm font-bold text-admin-text">{viewLead.name}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-xs text-admin-text-muted font-medium uppercase">Email Address</span>
+                  <a href={`mailto:${viewLead.email}`} className="text-sm font-bold text-admin-accent hover:underline">{viewLead.email}</a>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-xs text-admin-text-muted font-medium uppercase">Company / Org</span>
+                  <span className="text-sm font-semibold text-admin-text">{viewLead.company || "N/A"}</span>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-admin-text-muted uppercase tracking-wider mb-1.5">Inquiry Message</label>
+                <div className="bg-admin-bg p-4 rounded-xl border border-admin-border text-sm text-admin-text whitespace-pre-wrap leading-relaxed max-h-60 overflow-y-auto">
+                  {viewLead.message}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 flex justify-end gap-2">
+              <button
+                onClick={() => {
+                  const leadToEdit = viewLead;
+                  setViewLead(null);
+                  handleOpenEditLead(leadToEdit);
+                }}
+                className="flex items-center gap-2 px-4 py-2.5 bg-blue-500/10 border border-blue-500/30 text-blue-400 hover:bg-blue-500 hover:text-white rounded-xl text-sm font-semibold transition-all"
+              >
+                <Edit2 size={14} /> Edit Lead
+              </button>
+              <button
+                onClick={() => setViewLead(null)}
+                className="px-5 py-2.5 bg-admin-accent hover:bg-admin-accent/80 text-white rounded-xl text-sm font-semibold transition-all"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Lead Modal */}
+      {editLead && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/75 backdrop-blur-sm px-4 py-6 overflow-y-auto">
+          <div className="w-full max-w-lg bg-admin-card border border-admin-border rounded-2xl shadow-2xl p-6 relative text-admin-text my-auto space-y-4">
+            <button
+              onClick={() => setEditLead(null)}
+              className="absolute top-4 right-4 text-admin-text-muted hover:text-admin-text transition-colors p-1"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center shrink-0">
+                <Edit2 size={20} />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-admin-text">Edit Inquiry Lead</h3>
+                <p className="text-xs text-admin-text-muted">Update contact and inquiry message</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleSaveEditLead} className="space-y-4 pt-2">
+              <div>
+                <label className="block text-xs font-bold text-admin-text-muted uppercase tracking-wider mb-1.5">Full Name *</label>
+                <input
+                  required
+                  value={editLeadForm.name}
+                  onChange={(e) => setEditLeadForm({ ...editLeadForm, name: e.target.value })}
+                  className="w-full bg-admin-bg border border-admin-border rounded-xl px-4 py-3 text-sm text-admin-text focus:outline-none focus:border-admin-accent"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-admin-text-muted uppercase tracking-wider mb-1.5">Email Address *</label>
+                <input
+                  type="email"
+                  required
+                  value={editLeadForm.email}
+                  onChange={(e) => setEditLeadForm({ ...editLeadForm, email: e.target.value })}
+                  className="w-full bg-admin-bg border border-admin-border rounded-xl px-4 py-3 text-sm text-admin-text focus:outline-none focus:border-admin-accent"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-admin-text-muted uppercase tracking-wider mb-1.5">Company / Organization</label>
+                <input
+                  value={editLeadForm.company}
+                  onChange={(e) => setEditLeadForm({ ...editLeadForm, company: e.target.value })}
+                  className="w-full bg-admin-bg border border-admin-border rounded-xl px-4 py-3 text-sm text-admin-text focus:outline-none focus:border-admin-accent"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-admin-text-muted uppercase tracking-wider mb-1.5">Inquiry Message</label>
+                <textarea
+                  rows={4}
+                  value={editLeadForm.message}
+                  onChange={(e) => setEditLeadForm({ ...editLeadForm, message: e.target.value })}
+                  className="w-full bg-admin-bg border border-admin-border rounded-xl px-4 py-3 text-sm text-admin-text focus:outline-none focus:border-admin-accent"
+                />
+              </div>
+
+              <div className="mt-6 flex justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setEditLead(null)}
+                  className="px-4 py-2.5 border border-admin-border text-admin-text-muted rounded-xl hover:bg-admin-bg text-sm font-semibold transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={editLeadLoading}
+                  className="flex items-center gap-2 px-5 py-2.5 bg-admin-accent hover:bg-admin-accent/80 disabled:opacity-50 text-white rounded-xl text-sm font-semibold transition-all shadow-sm"
+                >
+                  {editLeadLoading ? <RefreshCw size={14} className="animate-spin" /> : <Save size={14} />}
+                  {editLeadLoading ? "Saving..." : "Save Changes"}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

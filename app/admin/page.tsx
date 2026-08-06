@@ -42,9 +42,10 @@ const RECENT_ACTIVITIES = [
 ];
 
 const UPCOMING_EVENTS = [
-  { id: 1, title: 'AI Frontier 2025', date: 'May 24 - May 25, 2025', location: 'Bangalore, India', registered: 248 },
-  { id: 2, title: 'AI Agents Workshop', date: 'Jun 12, 2025', location: 'Online', registered: 89 },
-  { id: 3, title: 'RAG Deep-Dive Session', date: 'Jul 15, 2025', location: 'Online', registered: 120 },
+  { id: 1, title: 'AI Frontier 2026', date: 'Aug 23, 2026', location: 'Walkover Co-working, Indore, India', registered: 500 },
+  { id: 2, title: 'AI Accelerator Workshop Series 1', date: 'Aug 9, 2026', location: 'Indore, India', registered: 120 },
+  { id: 3, title: 'AI Accelerator Workshop Series 2', date: 'Aug 16, 2026', location: 'Indore, India', registered: 145 },
+  { id: 4, title: 'AI Accelerator Workshop Series 3', date: 'Aug 23, 2026', location: 'Indore, India', registered: 180 },
 ];
 
 export default function AdminDashboard() {
@@ -237,18 +238,23 @@ export default function AdminDashboard() {
             <Link href="/admin/bootcamps" className="text-xs text-admin-text-muted hover:text-admin-text">View all</Link>
           </div>
           <div className="flex-1 overflow-y-auto space-y-4">
-            {UPCOMING_EVENTS.map(event => (
-              <div key={event.id} className="flex gap-3 items-start">
-                <div className="w-10 h-10 rounded-lg bg-admin-accent-muted flex flex-col items-center justify-center shrink-0">
-                  <span className="text-[9px] text-admin-accent font-bold uppercase">{event.date.split(' ')[0]}</span>
-                  <span className="text-sm font-bold text-admin-accent leading-none">{event.date.split(' ')[1]}</span>
+            {UPCOMING_EVENTS.map(event => {
+              const parts = event.date.split(' ');
+              const month = parts[0];
+              const day = parts[1] ? parts[1].replace(',', '') : '';
+              return (
+                <div key={event.id} className="flex gap-3 items-start">
+                  <div className="w-10 h-10 rounded-lg bg-admin-accent/10 border border-admin-accent/20 flex flex-col items-center justify-center shrink-0">
+                    <span className="text-[9px] text-admin-accent font-bold uppercase">{month}</span>
+                    <span className="text-sm font-bold text-admin-accent leading-none">{day}</span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-admin-text">{event.title}</p>
+                    <p className="text-[11px] text-admin-text-muted mt-0.5">{event.date} • {event.location}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-semibold text-admin-text">{event.title}</p>
-                  <p className="text-[11px] text-admin-text-muted mt-0.5">{event.date} • {event.location}</p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 

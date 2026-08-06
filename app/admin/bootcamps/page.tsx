@@ -974,7 +974,7 @@ export default function BootcampsAdmin() {
 
           {/* Responsive Table Wrapper */}
           <div className="overflow-x-auto w-full">
-            <table className="w-full text-left border-collapse min-w-[950px]">
+            <table className="w-full text-left border-collapse min-w-[1100px]">
               <thead>
                 <tr className="bg-[#F8FAFC] dark:bg-white/5 border-b border-[#E2E8F0] dark:border-white/10 text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider">
                   <th className="p-4 w-10">
@@ -991,14 +991,14 @@ export default function BootcampsAdmin() {
                       className="rounded border-slate-300 text-[#0066FF] focus:ring-[#0066FF] cursor-pointer"
                     />
                   </th>
-                  <th className="p-4">Attendee</th>
-                  <th className="p-4">Organization</th>
-                  <th className="p-4">Reg Date &amp; Time</th>
-                  <th className="p-4">Plan / Event</th>
-                  <th className="p-4">Payment &amp; Coupon</th>
-                  <th className="p-4">Check-in Code</th>
-                  <th className="p-4">Attendance</th>
-                  <th className="p-4 text-right">Actions</th>
+                  <th className="p-4 min-w-[180px]">Attendee</th>
+                  <th className="p-4 min-w-[160px]">Organization</th>
+                  <th className="p-4 min-w-[180px] whitespace-nowrap">Reg Date &amp; Time</th>
+                  <th className="p-4 min-w-[130px]">Plan / Event</th>
+                  <th className="p-4 min-w-[160px]">Payment &amp; Coupon</th>
+                  <th className="p-4 min-w-[120px]">Check-in Code</th>
+                  <th className="p-4 min-w-[160px]">Attendance</th>
+                  <th className="p-4 text-right min-w-[140px]">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#E2E8F0] dark:divide-white/10">
@@ -1024,12 +1024,12 @@ export default function BootcampsAdmin() {
                           className="rounded border-slate-300 text-[#0066FF] focus:ring-[#0066FF] cursor-pointer"
                         />
                       </td>
-                      <td className="p-4">
+                      <td className="p-4 min-w-[180px]">
                         <div className="font-semibold text-[#0B1C2C] dark:text-white text-sm">{reg.name}</div>
                         <div className="text-xs text-[#64748B] dark:text-slate-400 font-mono">{reg.email}</div>
                         {reg.phone && <div className="text-[11px] text-[#64748B] dark:text-slate-400">{reg.phone}</div>}
                       </td>
-                      <td className="p-4">
+                      <td className="p-4 min-w-[160px]">
                         {reg.organization ? (
                           <div>
                             <div className="text-sm font-semibold text-[#0B1C2C] dark:text-white">{reg.organization}</div>
@@ -1038,10 +1038,10 @@ export default function BootcampsAdmin() {
                           <span className="text-xs text-[#94A3B8] dark:text-slate-500 italic">—</span>
                         )}
                       </td>
-                      <td className="p-4">
-                        <div className="flex items-center gap-1.5 text-xs font-semibold text-[#0B1C2C] dark:text-slate-200">
+                      <td className="p-4 min-w-[180px] whitespace-nowrap">
+                        <div className="flex items-center gap-1.5 text-xs font-semibold text-[#0B1C2C] dark:text-slate-200 whitespace-nowrap">
                           <Clock className="w-3.5 h-3.5 text-[#0066FF] dark:text-[#00B8F0] shrink-0" />
-                          <span>{regDateTime}</span>
+                          <span className="whitespace-nowrap">{regDateTime}</span>
                         </div>
                       </td>
                       <td className="p-4">
