@@ -639,7 +639,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
                   </svg>
                 </a>
                 <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-white shadow-sm shrink-0 bg-[#E2E8F0]">
-                  <img src={speaker.image} alt={speaker.name} className="w-full h-full object-cover" />
+                  <img src={speaker.image} alt={speaker.name} className="w-full h-full object-cover object-[center_top]" />
                 </div>
                 <div>
                   <h3 className="font-bold text-lg text-[#0B1220]">{speaker.name}</h3>

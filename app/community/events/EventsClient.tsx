@@ -18,10 +18,9 @@ interface EventItem {
 }
 
 const PROTOTYPE_EVENTS: EventItem[] = [
-  { type: 'Workshop', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Accelerator Workshop Series 1: Build Your First AI Full-Stack App', desc: 'A hands-on workshop to build an end-to-end full stack AI application with Next.js and LLMs.', date: 'August 9, 2026', location: 'Indore, India', slug: '/community/ai-accelerator-workshop/build-your-first-ai-full-stack-application' },
-  { type: 'Workshop', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Accelerator Workshop Series 2: Build Smarter AI Agents', desc: 'Learn how modern AI Agents think, plan and act. Dive deep into LangGraph, Tool Calling, and MCP.', date: 'August 16, 2026', location: 'Indore, India', slug: '/community/ai-accelerator-workshop/build-smarter-ai-agents' },
-  { type: 'Workshop', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Accelerator Workshop Series 3: Build Production Ready AI Applications', desc: 'Scale and deploy robust systems to the real world. Learn Inference, Optimization, and AI Infrastructure.', date: 'August 23, 2026', location: 'Indore, India', slug: '/community/ai-accelerator-workshop/build-production-ready-ai-applications' },
-  { type: 'Meetup', status: 'Monthly', statusColor: '#0E9F6E', title: 'AI Engineering Meetup — Indore Chapter', desc: 'A monthly gathering for local AI engineers to share projects, talk shop, and swap production lessons.', date: 'Every 3rd Saturday', location: 'Indore, India' },
+  { type: 'Workshop', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Accelerator Workshop Series 1: Build Your First AI Full-Stack App', desc: 'A hands-on workshop to build an end-to-end full stack AI application with Next.js and LLMs.', date: 'August 9, 2026', location: 'Indore, India', slug: '/community/ai-accelerator-workshop' },
+  { type: 'Workshop', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Accelerator Workshop Series 2: Build Smarter AI Agents', desc: 'Learn how modern AI Agents think, plan and act. Dive deep into LangGraph, Tool Calling, and MCP.', date: 'August 16, 2026', location: 'Indore, India', slug: '/community/ai-accelerator-workshop' },
+  { type: 'Workshop', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Accelerator Workshop Series 3: Build Production Ready AI Applications', desc: 'Scale and deploy robust systems to the real world. Learn Inference, Optimization, and AI Infrastructure.', date: 'August 22, 2026', location: 'Indore, India', slug: '/community/ai-accelerator-workshop' },
 ];
 
 export default function EventsClient({
@@ -48,7 +47,7 @@ export default function EventsClient({
   const [subscribed, setSubscribed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const categoryList = ['All Events', 'Workshops', 'Meetups'];
+  const categoryList = ['All Events', 'Workshops'];
 
   const heroStats = [
     { value: '6+', label: 'Events per Year' },
@@ -206,12 +205,6 @@ export default function EventsClient({
                 >
                   {heroContent.ctaText || "See What's Coming Up →"}
                 </a>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/20 text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] transition-all"
-                >
-                  Host an Event With Us
-                </Link>
               </div>
             </div>
 
@@ -502,28 +495,19 @@ export default function EventsClient({
               <div className="font-medium text-[11.5px] text-[#8A97AC] mb-3">
                 {ev.location}
               </div>
-              {ev.slug ? (
                 <Link 
-                  href={ev.slug.startsWith('/') ? ev.slug : `/community/events/${ev.slug}`}
-                  className="mt-1 text-center bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[12.5px] py-2 rounded-lg transition-all"
+                  href="/community/ai-accelerator-workshop"
+                  className="mt-1 text-center bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[12.5px] py-2.5 rounded-lg transition-all shadow-sm"
                 >
                   Register / View Details
                 </Link>
-              ) : (
-                <button
-                  disabled
-                  className="mt-1 text-center bg-gray-200 text-gray-400 font-bold text-[12.5px] py-2 rounded-lg cursor-not-allowed"
-                >
-                  Details Coming Soon
-                </button>
-              )}
             </div>
           </div>
         ))}
       </div>
 
       {/* ── THIS IS JUST THE BEGINNING & NEWSLETTER BOX ── */}
-      <div className="max-w-[1240px] mx-auto mt-16 px-6 sm:px-10">
+      <div className="max-w-[1240px] mx-auto mt-16 mb-24 pb-12 px-6 sm:px-10">
         <div className="bg-[#060C1F] rounded-[18px] p-8 sm:p-11 relative overflow-hidden shadow-xl">
           <div
             className="absolute w-[300px] h-[300px] rounded-full left-[-80px] bottom-[-120px] pointer-events-none"
