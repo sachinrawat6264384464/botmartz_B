@@ -19,20 +19,12 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://www.botmartz.com/ai-engineering-pass-og.jpg?v=2",
-        secureUrl: "https://www.botmartz.com/ai-engineering-pass-og.jpg?v=2",
+        url: "https://www.botmartz.com/ai-engineering-pass-og.jpg?v=3",
+        secureUrl: "https://www.botmartz.com/ai-engineering-pass-og.jpg?v=3",
         width: 1200,
         height: 630,
         type: "image/jpeg",
         alt: "AI Engineering Pass Poster | Botmartz",
-      },
-      {
-        url: "https://www.botmartz.com/ai-engineering-pass-banner.jpg?v=2",
-        secureUrl: "https://www.botmartz.com/ai-engineering-pass-banner.jpg?v=2",
-        width: 800,
-        height: 1200,
-        type: "image/jpeg",
-        alt: "AI Engineering Pass Full Poster | Botmartz",
       },
     ],
   },
@@ -40,7 +32,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "AI Accelerator Workshop | Botmartz",
     description: "Join the live engineering workshops leading up to AI Frontier 2026. Build production-ready AI applications.",
-    images: ["https://www.botmartz.com/ai-engineering-pass-og.jpg?v=2"],
+    images: ["https://www.botmartz.com/ai-engineering-pass-og.jpg?v=3"],
   },
   alternates: {
     canonical: "https://www.botmartz.com/community/ai-accelerator-workshop",
