@@ -26,12 +26,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title,
       description,
       url: `https://www.botmartz.com/community/ai-accelerator-workshop/${resolvedParams.slug}`,
+      siteName: 'Botmartz AI Solutions',
       type: 'website',
       images: [
         {
-          url: 'https://www.botmartz.com/ai-engineering-pass-banner.jpg',
+          url: 'https://www.botmartz.com/ai-engineering-pass-og.jpg?v=2',
+          secureUrl: 'https://www.botmartz.com/ai-engineering-pass-og.jpg?v=2',
           width: 1200,
           height: 630,
+          type: 'image/jpeg',
           alt: title,
         },
       ],
@@ -40,7 +43,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       card: 'summary_large_image',
       title,
       description,
-      images: ['https://www.botmartz.com/ai-engineering-pass-banner.jpg'],
+      images: ['https://www.botmartz.com/ai-engineering-pass-og.jpg?v=2'],
     },
     alternates: {
       canonical: `https://www.botmartz.com/community/ai-accelerator-workshop/${resolvedParams.slug}`,
