@@ -50,6 +50,7 @@ async function run() {
       path: "/community",
       dropdown: [
         { name: "Events", path: "/community/events" },
+        { name: "Workshops", path: "/community/ai-accelerator-workshop" },
         { name: "Discord & Forum", path: "/community" },
       ],
     },

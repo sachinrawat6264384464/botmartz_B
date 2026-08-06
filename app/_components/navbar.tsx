@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ArrowRight, Menu, X, PhoneCall } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 
 export type NavDropdownItem = { name: string; path: string };
@@ -61,6 +61,14 @@ export default function Navbar({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleDropdownNavigate = (e: React.MouseEvent, path: string) => {
+    e.preventDefault();
+    setActiveDropdown(null);
+    setMobileMenuOpen(false);
+    router.push(path);
+  };
 
   const isActive = (item: (typeof NAV_ITEMS)[number]) =>
     pathname === item.path ||
@@ -127,8 +135,8 @@ export default function Navbar({
                           <Link
                             key={sub.name}
                             href={sub.path}
-                            onClick={() => setActiveDropdown(null)}
-                            className="flex items-center justify-between px-3.5 py-2.5 text-[13px] font-medium text-[#475569] hover:text-[#0066FF] hover:bg-[#0066FF]/5 rounded-lg transition-all group whitespace-nowrap"
+                            onClick={(e) => handleDropdownNavigate(e, sub.path)}
+                            className="flex items-center justify-between px-3.5 py-2.5 text-[13px] font-medium text-[#475569] hover:text-[#0066FF] hover:bg-[#0066FF]/5 rounded-lg transition-all group whitespace-nowrap cursor-pointer"
                           >
                             <span>{sub.name}</span>
                             <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-[#0066FF] text-xs">
@@ -210,8 +218,8 @@ export default function Navbar({
                         <Link
                           key={sub.name}
                           href={sub.path}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="py-2 text-sm text-[#475569] hover:text-[#0066FF] transition-colors"
+                          onClick={(e) => handleDropdownNavigate(e, sub.path)}
+                          className="py-2 text-sm text-[#475569] hover:text-[#0066FF] transition-colors cursor-pointer"
                         >
                           {sub.name}
                         </Link>
