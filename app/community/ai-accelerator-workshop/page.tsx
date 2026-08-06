@@ -53,7 +53,7 @@ export default function AIFrontierPage() {
         <JourneyTimeline />
         <BootcampDetails />
         <WhatsIncluded />
-        <CertificateShowcase />
+        {/* <CertificateShowcase /> */}
         <Instructor />
         <FAQ />
         <FinalCTA />
