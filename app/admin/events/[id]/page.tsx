@@ -214,7 +214,7 @@ export default function EditEventPage({ params }: { params: Promise<{ id: string
                 value={formData.date} 
                 onChange={e => handleChange('date', e.target.value)}
                 className="w-full bg-admin-bg border border-admin-border rounded-lg px-4 py-2.5 text-sm text-admin-text focus:outline-none focus:border-admin-accent" 
-                placeholder="e.g. August 22, 2026"
+                placeholder="e.g. August 23, 2026"
               />
             </div>
 

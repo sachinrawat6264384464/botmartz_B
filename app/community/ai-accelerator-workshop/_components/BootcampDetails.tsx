@@ -57,7 +57,7 @@ const bootcamps = [
     ],
     outcome: "Students understand how modern production AI systems are engineered. Note: Expect local/nginx-based deployments via tunneling, rather than full AWS/cloud deployments.",
     color: "from-[#009688] to-[#14B8A6]",
-    date: "Aug 22, 2026",
+    date: "Aug 23, 2026",
     id: 3,
     price: 199,
   },

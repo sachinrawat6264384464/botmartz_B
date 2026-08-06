@@ -27,7 +27,7 @@ const bootcamps = [
     title: "AI Accelerator Workshop Series 3: Build Production Ready AI Applications",
     shortDescription: "Scale and deploy robust AI applications securely. Learn best practices for enterprise AI.",
     desc: "Scale and deploy robust AI applications securely. Learn best practices for enterprise AI.",
-    date: "August 22, 2026",
+    date: "August 23, 2026",
     location: "Indore, India",
     slug: "build-production-ready-ai-applications",
     type: "Workshop",

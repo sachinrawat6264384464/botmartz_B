@@ -43,7 +43,69 @@ export default function BootcampsAdmin() {
 
   // Filter & Search states
   const [regFilter, setRegFilter] = useState<"all" | "attended" | "pending">("all");
+  const [planFilter, setPlanFilter] = useState<string>("all");
+  const [priceFilter, setPriceFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const formatDateTime = (ts: any) => {
+    if (!ts) return "N/A";
+    let dateObj: Date | null = null;
+    if (typeof ts?.toDate === 'function') {
+      dateObj = ts.toDate();
+    } else if (typeof ts === 'object' && (ts._seconds !== undefined || ts.seconds !== undefined)) {
+      const sec = ts._seconds ?? ts.seconds;
+      dateObj = new Date(sec * 1000);
+    } else if (ts) {
+      dateObj = new Date(ts);
+    }
+    if (!dateObj || isNaN(dateObj.getTime())) return "N/A";
+
+    const dateStr = dateObj.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+    const timeStr = dateObj.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+    return `${dateStr} · ${timeStr}`;
+  };
+
+  const getPlanCategory = (plan: string) => {
+    if (!plan) return 'bootcamp-01';
+    const p = String(plan).toLowerCase();
+    if (p.includes('bundle') || p.includes('pass')) return 'bundle';
+    if (p.includes('03') || p.includes('3')) return 'bootcamp-03';
+    if (p.includes('02') || p.includes('2')) return 'bootcamp-02';
+    return 'bootcamp-01';
+  };
+
+  const getPriceCategory = (reg: any) => {
+    const amt = Number(reg.amount ?? reg.amountPaid ?? 0);
+    const coupon = String(reg.appliedCoupon || '').toUpperCase();
+    if (amt === 0 || coupon.startsWith('BMFREE') || coupon.startsWith('FREE')) {
+      return 'free';
+    }
+    if (amt === 399 || amt > 200) return '399';
+    return '199';
+  };
+
+  const planCounts = {
+    all: registrations.length,
+    'bootcamp-01': registrations.filter(r => getPlanCategory(r.plan) === 'bootcamp-01').length,
+    'bootcamp-02': registrations.filter(r => getPlanCategory(r.plan) === 'bootcamp-02').length,
+    'bootcamp-03': registrations.filter(r => getPlanCategory(r.plan) === 'bootcamp-03').length,
+    'bundle': registrations.filter(r => getPlanCategory(r.plan) === 'bundle').length,
+  };
+
+  const priceCounts = {
+    all: registrations.length,
+    '199': registrations.filter(r => getPriceCategory(r) === '199').length,
+    '399': registrations.filter(r => getPriceCategory(r) === '399').length,
+    'free': registrations.filter(r => getPriceCategory(r) === 'free').length,
+  };
 
   const handleIssueSingleCertificate = async (reg: any) => {
     setActionLoading(`cert-${reg.id}`);
@@ -234,18 +296,19 @@ export default function BootcampsAdmin() {
       alert("No registrations available to export.");
       return;
     }
-    const headers = ["Name", "Email", "Phone", "Plan", "Amount", "Applied Coupon", "Status", "Attended", "Check-in Code", "Date"];
+    const headers = ["Name", "Email", "Phone", "Organization", "Plan", "Amount", "Applied Coupon", "Status", "Attended", "Check-in Code", "Registration Date & Time"];
     const rows = registrations.map(r => [
       `"${r.name || ''}"`,
       `"${r.email || ''}"`,
       `"${r.phone || ''}"`,
+      `"${r.organization || ''}"`,
       `"${r.plan || ''}"`,
       r.amount || 0,
       `"${r.appliedCoupon || 'None'}"`,
       `"${r.status || 'paid'}"`,
       Boolean(r.attendance || r.attended) ? "Yes" : "No",
       `"${r.checkInCode || ''}"`,
-      `"${r.createdAt ? new Date(r.createdAt).toLocaleDateString() : ''}"`
+      `"${formatDateTime(r.createdAt)}"`
     ]);
     const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
     const encodedUri = encodeURI(csvContent);
@@ -383,12 +446,20 @@ export default function BootcampsAdmin() {
     const isAttended = Boolean(reg.attendance || reg.attended);
     if (regFilter === "attended" && !isAttended) return false;
     if (regFilter === "pending" && isAttended) return false;
+
+    if (planFilter !== "all" && getPlanCategory(reg.plan) !== planFilter) return false;
+
+    if (priceFilter !== "all" && getPriceCategory(reg) !== priceFilter) return false;
+
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       const nameMatch = reg.name && reg.name.toLowerCase().includes(q);
       const emailMatch = reg.email && reg.email.toLowerCase().includes(q);
+      const phoneMatch = reg.phone && reg.phone.toLowerCase().includes(q);
+      const orgMatch = reg.organization && reg.organization.toLowerCase().includes(q);
       const codeMatch = reg.checkInCode && reg.checkInCode.toLowerCase().includes(q);
-      return nameMatch || emailMatch || codeMatch;
+      const couponMatch = reg.appliedCoupon && reg.appliedCoupon.toLowerCase().includes(q);
+      return nameMatch || emailMatch || phoneMatch || orgMatch || codeMatch || couponMatch;
     }
     return true;
   });
@@ -765,47 +836,124 @@ export default function BootcampsAdmin() {
       ) : activeTab === "registrations" ? (
         <div className="bg-white dark:bg-[#0E172A] rounded-xl border border-[#E2E8F0] dark:border-white/10 shadow-sm overflow-hidden space-y-4">
           
-          {/* Table Header Controls: Search & Filter Tabs */}
-          <div className="p-4 sm:p-6 border-b border-[#E2E8F0] dark:border-white/10 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-            <div>
-              <h3 className="text-base sm:text-lg font-bold text-[#0B1C2C] dark:text-white">Registration & Attendance Ledger</h3>
-              <p className="text-xs text-[#64748B] dark:text-slate-400 mt-0.5">Total: {totalRegistrations} | Checked In: {attendedCount} | Pending: {pendingCount}</p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center gap-3">
-              {/* Search Box */}
-              <div className="relative w-full sm:w-64">
-                <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
-                <input
-                  type="text"
-                  placeholder="Search name, email, code..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-[#F8FAFC] dark:bg-white/5 border border-[#CBD5E1] dark:border-white/10 rounded-xl pl-9 pr-3 py-2 text-xs text-[#0B1C2C] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#0066FF]"
-                />
+          {/* Table Header & Multi-Filter Controls */}
+          <div className="p-4 sm:p-6 border-b border-[#E2E8F0] dark:border-white/10 space-y-4">
+            
+            {/* Top row: Title + Summary + Search */}
+            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+              <div>
+                <h3 className="text-base sm:text-lg font-bold text-[#0B1C2C] dark:text-white">Registration & Attendance Ledger</h3>
+                <p className="text-xs text-[#64748B] dark:text-slate-400 mt-0.5">
+                  Showing {filteredRegistrations.length} of {totalRegistrations} Registrations | Checked In: {attendedCount} | Pending: {pendingCount}
+                </p>
               </div>
 
-              {/* Status Filter Buttons */}
-              <div className="flex items-center bg-[#F8FAFC] dark:bg-white/5 p-1 rounded-xl border border-[#E2E8F0] dark:border-white/10 w-full sm:w-auto">
+              <div className="flex items-center gap-3">
+                {/* Search Box */}
+                <div className="relative w-full sm:w-72">
+                  <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
+                  <input
+                    type="text"
+                    placeholder="Search name, email, phone, org, coupon..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full bg-[#F8FAFC] dark:bg-white/5 border border-[#CBD5E1] dark:border-white/10 rounded-xl pl-9 pr-3 py-2 text-xs text-[#0B1C2C] dark:text-white focus:outline-none focus:ring-1 focus:ring-[#0066FF]"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-white"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Filter Bar: Attendance Status + Price Filter + Bootcamp Plan Filter */}
+            <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-slate-100 dark:border-white/5">
+              
+              {/* Attendance Filter */}
+              <div className="flex items-center bg-[#F8FAFC] dark:bg-white/5 p-1 rounded-xl border border-[#E2E8F0] dark:border-white/10">
                 <button
                   onClick={() => setRegFilter("all")}
-                  className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${regFilter === "all" ? "bg-white dark:bg-white/15 text-[#0066FF] dark:text-white shadow-sm" : "text-[#64748B] dark:text-slate-400"}`}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${regFilter === "all" ? "bg-white dark:bg-white/15 text-[#0066FF] dark:text-white shadow-sm" : "text-[#64748B] dark:text-slate-400 hover:text-[#0B1C2C] dark:hover:text-white"}`}
                 >
-                  All ({totalRegistrations})
+                  All Status ({totalRegistrations})
                 </button>
                 <button
                   onClick={() => setRegFilter("attended")}
-                  className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${regFilter === "attended" ? "bg-emerald-500 text-white shadow-sm" : "text-[#64748B] dark:text-slate-400"}`}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${regFilter === "attended" ? "bg-emerald-500 text-white shadow-sm" : "text-[#64748B] dark:text-slate-400 hover:text-[#0B1C2C] dark:hover:text-white"}`}
                 >
                   Attended ({attendedCount})
                 </button>
                 <button
                   onClick={() => setRegFilter("pending")}
-                  className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${regFilter === "pending" ? "bg-amber-500 text-white shadow-sm" : "text-[#64748B] dark:text-slate-400"}`}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${regFilter === "pending" ? "bg-amber-500 text-white shadow-sm" : "text-[#64748B] dark:text-slate-400 hover:text-[#0B1C2C] dark:hover:text-white"}`}
                 >
                   Pending ({pendingCount})
                 </button>
               </div>
+
+              {/* Price Filter */}
+              <div className="flex items-center bg-[#F8FAFC] dark:bg-white/5 p-1 rounded-xl border border-[#E2E8F0] dark:border-white/10">
+                <span className="text-[11px] font-bold text-[#64748B] dark:text-slate-400 px-2 flex items-center gap-1">
+                  💰 Price:
+                </span>
+                {[
+                  { key: 'all', label: 'All Prices', count: priceCounts.all },
+                  { key: '199', label: '₹199', count: priceCounts['199'] },
+                  { key: '399', label: '₹399', count: priceCounts['399'] },
+                  { key: 'free', label: '₹0 Free', count: priceCounts['free'] },
+                ].map(p => (
+                  <button
+                    key={p.key}
+                    onClick={() => setPriceFilter(p.key)}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${priceFilter === p.key ? "bg-[#0066FF] text-white shadow-sm" : "text-[#64748B] dark:text-slate-400 hover:text-[#0B1C2C] dark:hover:text-white"}`}
+                  >
+                    {p.label} <span className="text-[10px] opacity-80">({p.count})</span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Plan Filter */}
+              <div className="flex items-center bg-[#F8FAFC] dark:bg-white/5 p-1 rounded-xl border border-[#E2E8F0] dark:border-white/10">
+                <span className="text-[11px] font-bold text-[#64748B] dark:text-slate-400 px-2 flex items-center gap-1">
+                  🎓 Plan:
+                </span>
+                {[
+                  { key: 'all', label: 'All Plans', count: planCounts.all },
+                  { key: 'bootcamp-01', label: 'Bootcamp 1', count: planCounts['bootcamp-01'] },
+                  { key: 'bootcamp-02', label: 'Bootcamp 2', count: planCounts['bootcamp-02'] },
+                  { key: 'bootcamp-03', label: 'Bootcamp 3', count: planCounts['bootcamp-03'] },
+                  { key: 'bundle', label: 'Pass Bundle', count: planCounts['bundle'] },
+                ].map(p => (
+                  <button
+                    key={p.key}
+                    onClick={() => setPlanFilter(p.key)}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${planFilter === p.key ? "bg-purple-600 text-white shadow-sm" : "text-[#64748B] dark:text-slate-400 hover:text-[#0B1C2C] dark:hover:text-white"}`}
+                  >
+                    {p.label} <span className="text-[10px] opacity-80">({p.count})</span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Reset Filters button */}
+              {(regFilter !== "all" || priceFilter !== "all" || planFilter !== "all" || searchQuery !== "") && (
+                <button
+                  onClick={() => {
+                    setRegFilter("all");
+                    setPriceFilter("all");
+                    setPlanFilter("all");
+                    setSearchQuery("");
+                  }}
+                  className="px-3 py-1.5 rounded-xl border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 text-xs font-bold hover:bg-red-100 transition-colors"
+                >
+                  Reset All Filters ↺
+                </button>
+              )}
+
             </div>
           </div>
 
@@ -824,8 +972,9 @@ export default function BootcampsAdmin() {
             </div>
           )}
 
+          {/* Responsive Table Wrapper */}
           <div className="overflow-x-auto w-full">
-            <table className="w-full text-left border-collapse min-w-[750px]">
+            <table className="w-full text-left border-collapse min-w-[950px]">
               <thead>
                 <tr className="bg-[#F8FAFC] dark:bg-white/5 border-b border-[#E2E8F0] dark:border-white/10 text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider">
                   <th className="p-4 w-10">
@@ -844,8 +993,9 @@ export default function BootcampsAdmin() {
                   </th>
                   <th className="p-4">Attendee</th>
                   <th className="p-4">Organization</th>
+                  <th className="p-4">Reg Date &amp; Time</th>
                   <th className="p-4">Plan / Event</th>
-                  <th className="p-4">Payment & Coupon</th>
+                  <th className="p-4">Payment &amp; Coupon</th>
                   <th className="p-4">Check-in Code</th>
                   <th className="p-4">Attendance</th>
                   <th className="p-4 text-right">Actions</th>
@@ -856,6 +1006,7 @@ export default function BootcampsAdmin() {
                   const isAttended = Boolean(reg.attendance || reg.attended);
                   const couponUpper = (reg.appliedCoupon || '').toUpperCase();
                   const isFreeCoupon = Number(reg.amount) === 0 || couponUpper.startsWith('BMFREE') || couponUpper.startsWith('FREE');
+                  const regDateTime = formatDateTime(reg.createdAt);
 
                   return (
                     <tr key={reg.id} className="hover:bg-[#F8FAFC] dark:hover:bg-white/5 transition-colors">
@@ -886,6 +1037,12 @@ export default function BootcampsAdmin() {
                         ) : (
                           <span className="text-xs text-[#94A3B8] dark:text-slate-500 italic">—</span>
                         )}
+                      </td>
+                      <td className="p-4">
+                        <div className="flex items-center gap-1.5 text-xs font-semibold text-[#0B1C2C] dark:text-slate-200">
+                          <Clock className="w-3.5 h-3.5 text-[#0066FF] dark:text-[#00B8F0] shrink-0" />
+                          <span>{regDateTime}</span>
+                        </div>
                       </td>
                       <td className="p-4">
                         <select
@@ -979,8 +1136,8 @@ export default function BootcampsAdmin() {
                 })}
                 {filteredRegistrations.length === 0 && (
                   <tr>
-                    <td colSpan={8} className="p-8 text-center text-[#64748B] dark:text-slate-400 text-sm">
-                      {searchQuery || regFilter !== "all" ? "No matching registrations found for your search/filter criteria." : "No registrations found."}
+                    <td colSpan={9} className="p-8 text-center text-[#64748B] dark:text-slate-400 text-sm">
+                      {searchQuery || regFilter !== "all" || priceFilter !== "all" || planFilter !== "all" ? "No matching registrations found for your search/filter criteria." : "No registrations found."}
                     </td>
                   </tr>
                 )}

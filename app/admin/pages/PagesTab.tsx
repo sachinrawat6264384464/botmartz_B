@@ -217,7 +217,7 @@ const DEFAULT_PAGE_CONTENTS: Record<string, Partial<PageConfig>> = {
       ctaLink: "#featured",
     },
     aeoQuestion: "When is AI Frontier 2026 and where are Botmartz meetups held?",
-    aeoAnswer: "AI Frontier 2026 takes place on August 22, 2026, at Walkover Co-working in Indore, India. Botmartz also hosts monthly local meetups in Indore and biweekly virtual open-source and reading club sessions.",
+    aeoAnswer: "AI Frontier 2026 takes place on August 23, 2026, at Walkover Co-working in Indore, India. Botmartz also hosts monthly local meetups in Indore and biweekly virtual open-source and reading club sessions.",
     useCases: [
       { title: "Flagship Conference", description: "AI Frontier 2026 — full day of sessions on agents, enterprise AI, and RAG.", iconName: "Award" },
       { title: "Monthly Meetups", description: "Every 3rd Saturday at Walkover Co-working in Indore.", iconName: "Calendar" },

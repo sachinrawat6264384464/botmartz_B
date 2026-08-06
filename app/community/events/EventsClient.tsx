@@ -20,7 +20,7 @@ interface EventItem {
 const PROTOTYPE_EVENTS: EventItem[] = [
   { type: 'Workshop', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Accelerator Workshop Series 1: Build Your First AI Full-Stack App', desc: 'A hands-on workshop to build an end-to-end full stack AI application with Next.js and LLMs.', date: 'August 9, 2026', location: 'Indore, India', slug: '/community/ai-accelerator-workshop/build-your-first-ai-full-stack-application' },
   { type: 'Workshop', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Accelerator Workshop Series 2: Build Smarter AI Agents', desc: 'Learn how modern AI Agents think, plan and act. Dive deep into LangGraph, Tool Calling, and MCP.', date: 'August 16, 2026', location: 'Indore, India', slug: '/community/ai-accelerator-workshop/build-smarter-ai-agents' },
-  { type: 'Workshop', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Accelerator Workshop Series 3: Build Production Ready AI Applications', desc: 'Scale and deploy robust systems to the real world. Learn Inference, Optimization, and AI Infrastructure.', date: 'August 22, 2026', location: 'Indore, India', slug: '/community/ai-accelerator-workshop/build-production-ready-ai-applications' },
+  { type: 'Workshop', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Accelerator Workshop Series 3: Build Production Ready AI Applications', desc: 'Scale and deploy robust systems to the real world. Learn Inference, Optimization, and AI Infrastructure.', date: 'August 23, 2026', location: 'Indore, India', slug: '/community/ai-accelerator-workshop/build-production-ready-ai-applications' },
   { type: 'Meetup', status: 'Monthly', statusColor: '#0E9F6E', title: 'AI Engineering Meetup — Indore Chapter', desc: 'A monthly gathering for local AI engineers to share projects, talk shop, and swap production lessons.', date: 'Every 3rd Saturday', location: 'Indore, India' },
 ];
 
@@ -58,8 +58,9 @@ export default function EventsClient({
   ];
 
   const events: EventItem[] = useMemo(() => {
+    let sourceList: EventItem[] = [];
     if (initialEvents && initialEvents.length > 0) {
-      const mapped = initialEvents.map(e => ({
+      sourceList = initialEvents.map(e => ({
         id: e.id,
         type: e.type || e.badge || 'Meetup',
         status: e.status || 'Upcoming',
@@ -67,19 +68,38 @@ export default function EventsClient({
         title: e.title || 'Community Event',
         desc: e.shortDescription || e.description || e.desc || 'Join our upcoming AI engineering session.',
         date: e.date || 'Upcoming',
-        location: e.location || 'Indore / Online',
+        location: e.location || 'Indore, India',
         slug: e.slug || e.id,
         _rawDate: e.date || ''
       }));
-      // Sort ascending by date so Series 1 → 2 → 3 appear in correct order
-      mapped.sort((a, b) => {
-        const da = new Date((a as any)._rawDate).getTime();
-        const db2 = new Date((b as any)._rawDate).getTime();
-        return (isNaN(da) ? 0 : da) - (isNaN(db2) ? 0 : db2);
-      });
-      return mapped;
+    } else {
+      sourceList = PROTOTYPE_EVENTS;
     }
-    return PROTOTYPE_EVENTS;
+
+    // Deduplicate events by title so each workshop / event appears only ONCE (single unique card)
+    const uniqueMap = new Map<string, EventItem>();
+    sourceList.forEach(item => {
+      const cleanKey = item.title.trim().toLowerCase();
+      if (!uniqueMap.has(cleanKey)) {
+        uniqueMap.set(cleanKey, item);
+      } else {
+        const existing = uniqueMap.get(cleanKey)!;
+        if ((existing.type === 'Conference' || existing.type === 'Meetup') && item.type === 'Workshop') {
+          uniqueMap.set(cleanKey, item);
+        }
+      }
+    });
+
+    const uniqueEvents = Array.from(uniqueMap.values());
+
+    // Sort ascending by date so Series 1 → 2 → 3 appear in correct order
+    uniqueEvents.sort((a, b) => {
+      const da = new Date((a as any)._rawDate).getTime();
+      const db2 = new Date((b as any)._rawDate).getTime();
+      return (isNaN(da) ? 0 : da) - (isNaN(db2) ? 0 : db2);
+    });
+
+    return uniqueEvents;
   }, [initialEvents]);
 
   const visibleEvents: EventItem[] = useMemo(() => {
@@ -264,21 +284,24 @@ export default function EventsClient({
 
               <div className="flex flex-wrap gap-6 mt-6">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-[8px] bg-[#00C6FF]/10 flex items-center justify-center font-bold text-[11px] text-[#00C6FF]">
-                    22
+                  <div className="w-9 h-9 rounded-[9px] bg-[rgba(0,198,255,0.12)] border border-[rgba(0,198,255,0.3)] flex items-center justify-center font-bold text-xs text-[#00C6FF] shrink-0">
+                    23
                   </div>
                   <div>
-                    <div className="font-bold text-[12.5px] text-white">Aug 22, 2026</div>
-                    <div className="font-medium text-[11px] text-[#7C8CAD]">10:00 AM – 5:00 PM</div>
+                    <div className="font-bold text-[13.5px] text-white">Aug 23, 2026</div>
+                    <div className="font-medium text-xs text-[#7C8CAD]">10:00 AM – 5:00 PM</div>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-[8px] bg-[#00C6FF]/10 flex items-center justify-center font-bold text-[11px] text-[#00C6FF]">
-                    ◎
+                  <div className="w-9 h-9 rounded-[9px] bg-[rgba(0,198,255,0.12)] border border-[rgba(0,198,255,0.3)] flex items-center justify-center text-[#00C6FF] shrink-0">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                   </div>
                   <div>
-                    <div className="font-bold text-[12.5px] text-white">Indore, India</div>
+                    <div className="font-bold text-[13.5px] text-white flex items-center gap-2">
+                      <img src="/walkover-logo.png" alt="Walkover" className="h-[22px] object-contain brightness-0 invert opacity-95" />
+                    </div>
+                    <div className="font-medium text-xs text-[#7C8CAD]">Venue Partner · Indore, India</div>
                   </div>
                 </div>
               </div>

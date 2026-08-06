@@ -56,7 +56,7 @@ async function seed() {
     shortDescription: 'Agents · Enterprise AI · AI-Assisted Development · Responsible AI. A full day of sessions, a fireside Q&A and a closing panel on building an AI engineering career — plus the launch of the Botmartz AI Engineering Community.',
     badge: 'Flagship Event',
     status: 'upcoming',
-    date: 'Aug 22, 2026',
+    date: 'Aug 23, 2026',
     location: 'Walkover Co-working, Indore, India',
     coverImage: '/eng-i-removebg-preview.png',
     content: mdToHtml(content),

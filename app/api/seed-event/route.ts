@@ -14,7 +14,7 @@ export async function GET() {
       shortDescription: 'Our annual flagship summit on Enterprise AI, Agents, and RAG. Join 500+ builders and industry leaders for two days of deep technical sessions.',
       badge: 'Flagship',
       status: 'upcoming',
-      date: 'August 22, 2026',
+      date: 'August 23, 2026',
       location: 'Indore, India',
       coverImage: '/eng-i-removebg-preview.png',
       content: content,

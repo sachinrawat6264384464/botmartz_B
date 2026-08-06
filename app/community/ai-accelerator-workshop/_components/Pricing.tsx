@@ -39,7 +39,7 @@ export default function Pricing() {
               id: 3, 
               title: "Series 3", 
               desc: "Build Production Ready AI Apps",
-              date: "Aug 22, 2026",
+              date: "Aug 23, 2026",
               features: ["Modern LLM Arch", "Scaling Infrastructure", "Enterprise Practices"] 
             },
           ].map((item, idx) => (
