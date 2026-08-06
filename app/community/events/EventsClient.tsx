@@ -75,9 +75,16 @@ export default function EventsClient({
       sourceList = PROTOTYPE_EVENTS;
     }
 
+    // Filter out any Meetup events (e.g. AI Engineering Meetup - Indore Chapter)
+    const filteredSource = sourceList.filter(item => {
+      const titleLower = (item.title || '').toLowerCase();
+      const typeLower = (item.type || '').toLowerCase();
+      return !titleLower.includes('meetup') && !typeLower.includes('meetup');
+    });
+
     // Deduplicate events by title so each workshop / event appears only ONCE (single unique card)
     const uniqueMap = new Map<string, EventItem>();
-    sourceList.forEach(item => {
+    filteredSource.forEach(item => {
       const cleanKey = item.title.trim().toLowerCase();
       if (!uniqueMap.has(cleanKey)) {
         uniqueMap.set(cleanKey, item);
