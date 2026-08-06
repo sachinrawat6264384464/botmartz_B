@@ -282,26 +282,26 @@ export default function EventsClient({
                 Agents · Enterprise AI · AI-Assisted Development · Responsible AI. A full day of sessions, a fireside Q&amp;A and a closing panel on building an AI engineering career — plus the launch of the Botmartz AI Engineering Community.
               </p>
 
-              <div className="flex flex-wrap gap-6 mt-6">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-[9px] bg-[rgba(0,198,255,0.12)] border border-[rgba(0,198,255,0.3)] flex items-center justify-center font-bold text-xs text-[#00C6FF] shrink-0">
+              <div className="flex flex-wrap gap-8 mt-7 items-center">
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-[11px] bg-[rgba(0,198,255,0.12)] border border-[rgba(0,198,255,0.35)] flex items-center justify-center font-extrabold text-sm text-[#00C6FF] shrink-0 shadow-sm">
                     23
                   </div>
                   <div>
-                    <div className="font-bold text-[13.5px] text-white">Aug 23, 2026</div>
-                    <div className="font-medium text-xs text-[#7C8CAD]">10:00 AM – 5:00 PM</div>
+                    <div className="font-bold text-[15px] text-white">Aug 23, 2026</div>
+                    <div className="font-medium text-xs text-[#8FA3C4] mt-0.5">10:00 AM – 5:00 PM</div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-[9px] bg-[rgba(0,198,255,0.12)] border border-[rgba(0,198,255,0.3)] flex items-center justify-center text-[#00C6FF] shrink-0">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-[11px] bg-[rgba(0,198,255,0.12)] border border-[rgba(0,198,255,0.35)] flex items-center justify-center text-[#00C6FF] shrink-0 shadow-sm">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                   </div>
                   <div>
-                    <div className="font-bold text-[13.5px] text-white flex items-center gap-2">
-                      <img src="/walkover-logo.png" alt="Walkover" className="h-[22px] object-contain brightness-0 invert opacity-95" />
+                    <div className="font-bold text-base text-white flex items-center gap-2">
+                      <img src="/walkover-logo.png" alt="Walkover" className="h-[36px] sm:h-[40px] max-w-[170px] object-contain brightness-0 invert opacity-100" />
                     </div>
-                    <div className="font-medium text-xs text-[#7C8CAD]">Venue Partner · Indore, India</div>
+                    <div className="font-semibold text-xs sm:text-[13px] text-[#00C6FF] tracking-wide mt-0.5">Venue Partner · Indore, India</div>
                   </div>
                 </div>
               </div>
