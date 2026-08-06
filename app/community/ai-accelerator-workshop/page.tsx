@@ -16,6 +16,20 @@ export const metadata: Metadata = {
     description: "Join the live engineering workshops leading up to AI Frontier 2026. Build production-ready AI applications.",
     url: "https://www.botmartz.com/community/ai-accelerator-workshop",
     type: "website",
+    images: [
+      {
+        url: "https://www.botmartz.com/ai-engineering-pass-banner.jpg",
+        width: 1200,
+        height: 630,
+        alt: "AI Engineering Pass Poster | Botmartz",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI Accelerator Workshop | Botmartz",
+    description: "Join the live engineering workshops leading up to AI Frontier 2026. Build production-ready AI applications.",
+    images: ["https://www.botmartz.com/ai-engineering-pass-banner.jpg"],
   },
   alternates: {
     canonical: "https://www.botmartz.com/community/ai-accelerator-workshop",
