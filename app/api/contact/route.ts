@@ -7,7 +7,7 @@ import nodemailer from 'nodemailer';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, firstName, lastName, email, company, message } = body;
+    const { name, firstName, lastName, email, phone, company, website, message } = body;
 
     // Determine final name
     const finalName = name || `${firstName || ''} ${lastName || ''}`.trim();
@@ -45,7 +45,9 @@ export async function POST(request: Request) {
     const docRef = await addDoc(collection(db, 'contacts'), {
       name: finalName,
       email: email.toLowerCase().trim(),
+      phone: (phone || '').trim(),
       company: (company || '').trim(),
+      website: (website || '').trim(),
       message: message.trim(),
       createdAt: serverTimestamp(),
       status: 'unread'
@@ -203,8 +205,16 @@ export async function POST(request: Request) {
                     <div class="value"><a href="mailto:${email}">${email}</a></div>
                   </div>
                   <div class="detail-row">
+                    <div class="label">Phone Number</div>
+                    <div class="value"><a href="tel:${phone}">${phone || 'Not Specified'}</a></div>
+                  </div>
+                  <div class="detail-row">
                     <div class="label">Company Name</div>
                     <div class="value">${company || 'Not Specified'}</div>
+                  </div>
+                  <div class="detail-row">
+                    <div class="label">Company Website</div>
+                    <div class="value">${website ? `<a href="${website}" target="_blank">${website}</a>` : 'Not Specified'}</div>
                   </div>
                   <div class="detail-row">
                     <div class="label">Message / Requirement</div>

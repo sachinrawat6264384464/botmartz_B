@@ -23,10 +23,12 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
     firstName: '',
     lastName: '',
     email: '',
+    phone: '',
     company: '',
+    website: '',
     message: ''
   });
-  
+
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
@@ -58,7 +60,7 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
       if (res.ok) {
         setSuccess(true);
         trackEvent("form_submission", { form_name: "contact_us", company: form.company });
-        setForm({ firstName: '', lastName: '', email: '', company: '', message: '' });
+        setForm({ firstName: '', lastName: '', email: '', phone: '', company: '', website: '', message: '' });
       } else {
         const data = await res.json();
         setError(data.error || 'Something went wrong. Please try again.');
@@ -174,6 +176,20 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
                        />
                     </div>
                     <div className="flex flex-col gap-2">
+                       <label className="font-mono text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Phone Number</label>
+                       <input 
+                         type="tel" 
+                         name="phone"
+                         value={form.phone}
+                         onChange={handleInputChange}
+                         className="bg-slate-50 border border-slate-200 text-slate-900 rounded-lg px-4 py-3 text-[14px] focus:outline-none focus:border-[#00B8F0] focus:ring-1 focus:ring-[#00B8F0]" 
+                         placeholder="+1 (555) 000-0000" 
+                       />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="flex flex-col gap-2">
                        <label className="font-mono text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Company</label>
                        <input 
                          type="text" 
@@ -182,6 +198,17 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
                          onChange={handleInputChange}
                          className="bg-slate-50 border border-slate-200 text-slate-900 rounded-lg px-4 py-3 text-[14px] focus:outline-none focus:border-[#00B8F0] focus:ring-1 focus:ring-[#00B8F0]" 
                          placeholder="Acme Corp" 
+                       />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                       <label className="font-mono text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Website</label>
+                       <input 
+                         type="url" 
+                         name="website"
+                         value={form.website}
+                         onChange={handleInputChange}
+                         className="bg-slate-50 border border-slate-200 text-slate-900 rounded-lg px-4 py-3 text-[14px] focus:outline-none focus:border-[#00B8F0] focus:ring-1 focus:ring-[#00B8F0]" 
+                         placeholder="https://acme.com" 
                        />
                     </div>
                   </div>

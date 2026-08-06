@@ -8,6 +8,35 @@ import { adminDb } from "@/lib/firebase-admin";
  * with Next.js `unstable_cache` (persists data across requests with revalidation).
  */
 
+// Helper to sanitize Firestore data (e.g. converting Timestamps) so it can be passed to Client Components
+function sanitizeData(data: any): any {
+  if (data === null || data === undefined) return data;
+  
+  if (data && typeof data === 'object') {
+    if (typeof data.toDate === 'function') {
+      return data.toDate().toISOString();
+    }
+    // Handle raw Timestamp objects that lost their prototype
+    if (typeof data._seconds === 'number' && typeof data._nanoseconds === 'number') {
+      return new Date(data._seconds * 1000).toISOString();
+    }
+  }
+  
+  if (Array.isArray(data)) {
+    return data.map(sanitizeData);
+  }
+  
+  if (typeof data === 'object') {
+    const sanitized: any = {};
+    for (const [key, value] of Object.entries(data)) {
+      sanitized[key] = sanitizeData(value);
+    }
+    return sanitized;
+  }
+  
+  return data;
+}
+
 // 1. Global Settings Cache (Used in RootLayout and Metadata)
 export const getCachedGlobalSettings = cache(async () => {
   return unstable_cache(
@@ -15,8 +44,7 @@ export const getCachedGlobalSettings = cache(async () => {
       try {
         const docSnap = await adminDb.collection("settings").doc("global").get();
         if (docSnap.exists) {
-          const data = docSnap.data();
-          return JSON.parse(JSON.stringify(data));
+          return sanitizeData(docSnap.data());
         }
       } catch (err) {
         console.warn("Failed to fetch global settings from cache:", err);
@@ -37,7 +65,7 @@ export const getCachedNavbarConfig = cache(async () => {
         if (docSnap.exists) {
           const data = docSnap.data();
           if (Array.isArray(data?.items) && data.items.length > 0) {
-            return data.items;
+            return sanitizeData(data.items);
           }
         }
       } catch (err) {
@@ -57,8 +85,7 @@ export const getCachedDynamicPage = cache(async (slug: string) => {
       try {
         const docSnap = await adminDb.collection("dynamic_pages").doc(slug).get();
         if (docSnap.exists) {
-          const data = docSnap.data();
-          return JSON.parse(JSON.stringify(data));
+          return sanitizeData(docSnap.data());
         }
       } catch (err) {
         console.warn(`Failed to fetch dynamic page (${slug}) from cache:`, err);
