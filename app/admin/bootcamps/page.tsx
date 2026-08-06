@@ -36,9 +36,73 @@ export default function BootcampsAdmin() {
   const [editForm, setEditForm] = useState({ id: '', name: '', email: '', phone: '', organization: '', plan: 'bootcamp-01', checkInCode: '', amount: 0 });
   const [editLoading, setEditLoading] = useState(false);
 
+  // Certificate Tab state
+  const [certSearch, setCertSearch] = useState("");
+  const [certFilter, setCertFilter] = useState<"all" | "sent" | "pending">("all");
+  const [selectedCertIds, setSelectedCertIds] = useState<string[]>([]);
+
   // Filter & Search states
   const [regFilter, setRegFilter] = useState<"all" | "attended" | "pending">("all");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const handleIssueSingleCertificate = async (reg: any) => {
+    setActionLoading(`cert-${reg.id}`);
+    try {
+      const title = reg.plan === 'bundle' 
+        ? 'AI Engineering Pass (Full Bundle)' 
+        : 'AI Accelerator Workshop: Build Full-Stack AI Apps';
+
+      const res = await fetch("/api/admin/issue-certificate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          registrationId: reg.id,
+          name: reg.name,
+          email: reg.email,
+          bootcampName: title,
+          issueDate: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setRegistrations(prev => prev.map(r => r.id === reg.id ? { ...r, certificateSent: true, certificateSentAt: new Date().toISOString() } : r));
+        alert(`Certificate issued and emailed to ${reg.name} (${reg.email})!`);
+      } else {
+        alert(`Error: ${data.error}`);
+      }
+    } catch (err: any) {
+      alert(`Failed to issue certificate: ${err.message}`);
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const handleBulkIssueCertificates = async () => {
+    if (selectedCertIds.length === 0) return;
+    if (!confirm(`Are you sure you want to issue and email certificates to ${selectedCertIds.length} selected attendee(s)?`)) return;
+
+    setActionLoading("bulk-cert");
+    try {
+      const res = await fetch("/api/admin/issue-certificate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: selectedCertIds }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        const nowIso = new Date().toISOString();
+        setRegistrations(prev => prev.map(r => selectedCertIds.includes(r.id) ? { ...r, certificateSent: true, certificateSentAt: nowIso } : r));
+        setSelectedCertIds([]);
+        alert(data.message || `Certificates issued successfully!`);
+      } else {
+        alert(`Error: ${data.error}`);
+      }
+    } catch (err: any) {
+      alert(`Bulk certificate issuance failed: ${err.message}`);
+    } finally {
+      setActionLoading(null);
+    }
+  };
 
   const handleUpdateRegistration = async (id: string, updatedFields: Record<string, any>) => {
     setActionLoading(`update-${id}`);
@@ -148,6 +212,22 @@ export default function BootcampsAdmin() {
   const attendedCount = registrations.filter(r => Boolean(r.attendance || r.attended)).length;
   const pendingCount = Math.max(0, totalRegistrations - attendedCount);
   const turnoutPercent = totalRegistrations > 0 ? Math.round((attendedCount / totalRegistrations) * 100) : 0;
+
+  const certFiltered = registrations.filter(r => {
+    const isSent = Boolean(r.certificateSent);
+    if (certFilter === "sent" && !isSent) return false;
+    if (certFilter === "pending" && isSent) return false;
+
+    if (!certSearch) return true;
+    const q = certSearch.toLowerCase();
+    return (
+      (r.name || "").toLowerCase().includes(q) ||
+      (r.email || "").toLowerCase().includes(q) ||
+      (r.checkInCode || "").toLowerCase().includes(q) ||
+      (r.organization || "").toLowerCase().includes(q) ||
+      (r.plan || "").toLowerCase().includes(q)
+    );
+  });
 
   const exportCSV = () => {
     if (registrations.length === 0) {
@@ -1070,6 +1150,212 @@ export default function BootcampsAdmin() {
                 ✉️ Confirmation email + QR ticket will be auto-sent to the email address above.
               </p>
             </form>
+          </div>
+        </div>
+      ) : activeTab === "certificates" ? (
+        <div className="space-y-6">
+          {/* Certificate Stats Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="bg-white dark:bg-[#0E172A] p-5 rounded-2xl border border-[#E2E8F0] dark:border-white/10 shadow-sm flex items-center justify-between">
+              <div>
+                <p className="text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider">Total Registered</p>
+                <h3 className="text-2xl font-bold text-[#0B1C2C] dark:text-white mt-1">{totalRegistrations}</h3>
+              </div>
+              <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-[#0066FF] flex items-center justify-center font-bold">
+                <Users className="w-5 h-5" />
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-[#0E172A] p-5 rounded-2xl border border-[#E2E8F0] dark:border-white/10 shadow-sm flex items-center justify-between">
+              <div>
+                <p className="text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider">Certificates Issued</p>
+                <h3 className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">
+                  {registrations.filter(r => Boolean(r.certificateSent)).length}
+                </h3>
+              </div>
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center font-bold">
+                <Award className="w-5 h-5" />
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-[#0E172A] p-5 rounded-2xl border border-[#E2E8F0] dark:border-white/10 shadow-sm flex items-center justify-between">
+              <div>
+                <p className="text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider">Pending Issuance</p>
+                <h3 className="text-2xl font-bold text-amber-500 dark:text-amber-400 mt-1">
+                  {registrations.filter(r => !Boolean(r.certificateSent)).length}
+                </h3>
+              </div>
+              <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center font-bold">
+                <Clock className="w-5 h-5" />
+              </div>
+            </div>
+          </div>
+
+          {/* Search & Filter Header */}
+          <div className="bg-white dark:bg-[#0E172A] p-6 rounded-2xl border border-[#E2E8F0] dark:border-white/10 shadow-sm space-y-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+              <div className="relative flex-1">
+                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
+                <input
+                  type="text"
+                  placeholder="Search attendee by name, email, or check-in code..."
+                  value={certSearch}
+                  onChange={(e) => setCertSearch(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#CBD5E1] dark:border-white/10 bg-[#F8FAFC] dark:bg-white/5 text-[#0B1C2C] dark:text-white text-xs outline-none focus:border-[#0066FF]"
+                />
+              </div>
+
+              <div className="flex items-center bg-[#F8FAFC] dark:bg-white/5 p-1 rounded-xl border border-[#E2E8F0] dark:border-white/10 shrink-0">
+                <button
+                  onClick={() => setCertFilter("all")}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${certFilter === "all" ? "bg-[#0066FF] text-white shadow-sm" : "text-[#64748B] dark:text-slate-400"}`}
+                >
+                  All ({registrations.length})
+                </button>
+                <button
+                  onClick={() => setCertFilter("sent")}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${certFilter === "sent" ? "bg-emerald-500 text-white shadow-sm" : "text-[#64748B] dark:text-slate-400"}`}
+                >
+                  Sent ({registrations.filter(r => Boolean(r.certificateSent)).length})
+                </button>
+                <button
+                  onClick={() => setCertFilter("pending")}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${certFilter === "pending" ? "bg-amber-500 text-white shadow-sm" : "text-[#64748B] dark:text-slate-400"}`}
+                >
+                  Pending ({registrations.filter(r => !Boolean(r.certificateSent)).length})
+                </button>
+              </div>
+            </div>
+
+            {/* Bulk Issue Bar */}
+            {selectedCertIds.length > 0 && (
+              <div className="flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 px-4 py-2.5 rounded-xl text-xs font-semibold text-emerald-800 dark:text-emerald-300">
+                <span>Selected {selectedCertIds.length} attendee(s)</span>
+                <button
+                  onClick={handleBulkIssueCertificates}
+                  disabled={actionLoading === "bulk-cert"}
+                  className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-1.5 rounded-lg font-bold shadow-sm transition-all disabled:opacity-50 cursor-pointer"
+                >
+                  {actionLoading === "bulk-cert" ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Award className="w-3.5 h-3.5" />}
+                  Issue & Send Certificates ({selectedCertIds.length})
+                </button>
+              </div>
+            )}
+
+            {/* Certificates Table */}
+            <div className="overflow-x-auto w-full">
+              <table className="w-full text-left border-collapse min-w-[750px]">
+                <thead>
+                  <tr className="bg-[#F8FAFC] dark:bg-white/5 border-b border-[#E2E8F0] dark:border-white/10 text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider">
+                    <th className="p-4 w-10">
+                      <input
+                        type="checkbox"
+                        checked={certFiltered.length > 0 && selectedCertIds.length === certFiltered.length}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedCertIds(certFiltered.map(r => r.id));
+                          } else {
+                            setSelectedCertIds([]);
+                          }
+                        }}
+                        className="rounded border-slate-300 text-[#0066FF] focus:ring-[#0066FF] cursor-pointer"
+                      />
+                    </th>
+                    <th className="p-4">Attendee</th>
+                    <th className="p-4">Plan / Event</th>
+                    <th className="p-4">Attendance</th>
+                    <th className="p-4">Certificate Status</th>
+                    <th className="p-4 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#E2E8F0] dark:divide-white/10">
+                  {certFiltered.map((reg) => {
+                    const isSent = Boolean(reg.certificateSent);
+                    const isAttended = Boolean(reg.attendance || reg.attended);
+
+                    return (
+                      <tr key={reg.id} className="hover:bg-[#F8FAFC] dark:hover:bg-white/5 transition-colors">
+                        <td className="p-4 w-10">
+                          <input
+                            type="checkbox"
+                            checked={selectedCertIds.includes(reg.id)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectedCertIds(prev => [...prev, reg.id]);
+                              } else {
+                                setSelectedCertIds(prev => prev.filter(id => id !== reg.id));
+                              }
+                            }}
+                            className="rounded border-slate-300 text-[#0066FF] focus:ring-[#0066FF] cursor-pointer"
+                          />
+                        </td>
+                        <td className="p-4">
+                          <div className="font-semibold text-[#0B1C2C] dark:text-white text-sm">{reg.name}</div>
+                          <div className="text-xs text-[#64748B] dark:text-slate-400 font-mono">{reg.email}</div>
+                          {reg.organization && <div className="text-[11px] text-[#0066FF] dark:text-[#60A5FA] font-medium">{reg.organization}</div>}
+                        </td>
+                        <td className="p-4">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 dark:bg-blue-950 dark:text-blue-300 text-blue-800">
+                            {reg.plan || "bootcamp-01"}
+                          </span>
+                        </td>
+                        <td className="p-4">
+                          <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+                            isAttended ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300" : "bg-gray-100 text-gray-700 dark:bg-white/10 dark:text-slate-400"
+                          }`}>
+                            {isAttended ? <CheckCircle className="w-3 h-3 text-emerald-600" /> : <Clock className="w-3 h-3 text-gray-400" />}
+                            {isAttended ? "Attended" : "Pending Check-in"}
+                          </span>
+                        </td>
+                        <td className="p-4">
+                          {isSent ? (
+                            <div className="flex flex-col gap-0.5">
+                              <span className="inline-flex items-center gap-1 font-semibold text-xs text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/80 px-2.5 py-0.5 rounded-full w-max border border-emerald-200 dark:border-emerald-800">
+                                <CheckCircle className="w-3 h-3 text-emerald-600" /> Sent ✓
+                              </span>
+                              {reg.certificateSentAt && (
+                                <span className="text-[10px] text-[#64748B] dark:text-slate-400">
+                                  {new Date(reg.certificateSentAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                                </span>
+                              )}
+                            </div>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 font-semibold text-xs text-amber-700 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/80 px-2.5 py-0.5 rounded-full w-max">
+                              <Clock className="w-3 h-3" /> Not Issued
+                            </span>
+                          )}
+                        </td>
+                        <td className="p-4 text-right">
+                          <button
+                            onClick={() => handleIssueSingleCertificate(reg)}
+                            disabled={actionLoading === `cert-${reg.id}`}
+                            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all shadow-sm cursor-pointer ${
+                              isSent
+                                ? "bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300 hover:bg-slate-200"
+                                : "bg-[#0066FF] hover:bg-[#0052CC] text-white"
+                            }`}
+                          >
+                            {actionLoading === `cert-${reg.id}` ? (
+                              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                            ) : (
+                              <Award className="w-3.5 h-3.5" />
+                            )}
+                            {isSent ? "Re-send Certificate" : "Issue Certificate"}
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                  {certFiltered.length === 0 && (
+                    <tr>
+                      <td colSpan={6} className="p-8 text-center text-[#64748B] dark:text-slate-400 text-sm">
+                        No registrations match your search or filter criteria.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       ) : (
