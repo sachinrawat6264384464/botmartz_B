@@ -1,69 +1,50 @@
 import nodemailer from 'nodemailer';
 
-async function testAllSMTPPermutations() {
-  const credentials = [
-    {
-      user: "soham@botmartz.com",
-      pass: "Mummy@271093"
-    },
-    {
-      user: "info@botmartz.com",
-      pass: "Mummy@180767"
-    }
+async function testTeamBotmartz() {
+  const passes = [
+    "yr6c-maob-rq6u-crkj",
+    "yr6cmaobrq6ucrkj"
   ];
 
-  const hosts = [
-    "smtp.hostinger.com",
-    "smtp.titan.email"
+  const configs = [
+    { host: "smtp.gmail.com", port: 465 },
+    { host: "smtp.gmail.com", port: 587 },
+    { host: "smtp.hostinger.com", port: 465 },
+    { host: "smtp.titan.email", port: 465 }
   ];
 
-  console.log("🚀 Testing SMTP Hosts & Accounts Permutations…\n");
+  const user = "team@botmartz.com";
+  console.log(`🚀 Testing permutations for ${user}…\n`);
 
-  for (const host of hosts) {
-    for (const cred of credentials) {
-      console.log(`📡 Trying Host: ${host} | Account: ${cred.user}…`);
+  for (const cfg of configs) {
+    for (const pass of passes) {
+      console.log(`📡 Host: ${cfg.host}:${cfg.port} | Pass: ${pass}`);
       try {
         const transporter = nodemailer.createTransport({
-          host,
-          port: 465,
-          secure: true,
-          auth: {
-            user: cred.user,
-            pass: cred.pass,
-          },
-          // Shorten timeout to fail fast
+          host: cfg.host,
+          port: cfg.port,
+          secure: cfg.port === 465,
+          auth: { user, pass },
           connectionTimeout: 5000,
           greetingTimeout: 5000,
         });
 
-        // Verify connection configuration
         await transporter.verify();
-        console.log(`✅ Success! Verified configuration on Host: ${host} | User: ${cred.user}`);
+        console.log(`\n🎉 SUCCESS! Verified on ${cfg.host}:${cfg.port} with pass "${pass}"!`);
 
-        // Try sending a test email
         const info = await transporter.sendMail({
-          from: `"Botmartz SMTP Test" <${cred.user}>`,
-          to: "soham@botmartz.com",
-          subject: `✨ SMTP Working Test: ${cred.user} on ${host}`,
-          text: `Success! SMTP mail sent from ${cred.user} using ${host}.`,
-          html: `<p>Success! SMTP mail sent from <b>${cred.user}</b> using <b>${host}</b>.</p>`
+          from: `"Botmartz Test" <${user}>`,
+          to: user,
+          subject: "✨ SMTP Test Success",
+          text: "Test email working successfully!"
         });
-
-        console.log(`✅ Mail Sent successfully! Message ID: ${info.messageId}\n`);
-        
-        console.log("------------------------------------------------------------------");
-        console.log(`🔥 USE THIS IN .env:`);
-        console.log(`SMTP_HOST=${host}`);
-        console.log(`SMTP_PORT=465`);
-        console.log(`SMTP_USER=${cred.user}`);
-        console.log(`SMTP_PASS=${cred.pass}`);
-        console.log("------------------------------------------------------------------\n");
-      } catch (error: any) {
-        console.error(`❌ Failed: ${error.message || error}`);
-        console.log();
+        console.log(`✅ Mail Sent! Message ID: ${info.messageId}\n`);
+        return;
+      } catch (err: any) {
+        console.error(`❌ Failed on ${cfg.host}:${cfg.port} (${pass}):`, err.message || err);
       }
     }
   }
 }
 
-testAllSMTPPermutations().catch(console.error);
+testTeamBotmartz().catch(console.error);

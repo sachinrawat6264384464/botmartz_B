@@ -15,6 +15,7 @@ function getAdminApp(): App {
     const fs = require('fs');
     const path = require('path');
     const possiblePaths = [
+      path.resolve(process.cwd(), 'botmartz-main-firebase-adminsdk-fbsvc-60e42d287e.json'),
       path.resolve(process.cwd(), 'botmartz-main-firebase-adminsdk-fbsvc-d220cfe485.json'),
       '/home/soham/Downloads/botmartz-main-firebase-adminsdk-fbsvc-d220cfe485.json',
     ];
@@ -51,7 +52,7 @@ function getAdminApp(): App {
   try {
     adminApp = initializeApp({
       credential: cert({
-        projectId: process.env.FIREBASE_ADMIN_PROJECT_ID!,
+        projectId: process.env.FIREBASE_ADMIN_PROJECT_ID || process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'botmartz-main',
         clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL!,
         privateKey: privateKey!,
       }),
