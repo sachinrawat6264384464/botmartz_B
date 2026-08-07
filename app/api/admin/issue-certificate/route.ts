@@ -44,93 +44,142 @@ function buildCertificateEmail(name: string, bootcampTitle: string, checkInCode?
   `;
 }
 
-async function generatePdfCertificate(name: string, bootcampTitle: string, issueDate?: string) {
+async function generatePdfCertificate(name: string, bootcampTitle: string, issueDate?: string, checkInCode?: string) {
   const pdfDoc = await PDFDocument.create();
   const page = pdfDoc.addPage([842, 595]); // A4 Landscape
   const { width, height } = page.getSize();
 
-  // Dark background for certificate border
+  // 1. Cream Ivory Canvas Background (#FAF8F5)
   page.drawRectangle({
     x: 0,
     y: 0,
     width,
     height,
-    color: rgb(0.97, 0.98, 0.99),
+    color: rgb(0.984, 0.976, 0.961),
   });
 
-  // Border frame
-  page.drawRectangle({
-    x: 20,
-    y: 20,
-    width: width - 40,
-    height: height - 40,
-    borderColor: rgb(0.0, 0.4, 1.0),
-    borderWidth: 3,
+  // 2. Top-Left Dark Bronze Corner Triangle & Metallic Gold Accent Lines
+  page.drawSvgPath('M 0 0 L 230 0 L 0 220 Z', { x: 0, y: 595, color: rgb(0.12, 0.10, 0.08) });
+  page.drawLine({ start: { x: 0, y: 367 }, end: { x: 238, y: 595 }, color: rgb(0.77, 0.63, 0.35), thickness: 3 });
+  page.drawLine({ start: { x: 0, y: 358 }, end: { x: 247, y: 595 }, color: rgb(0.83, 0.69, 0.22), thickness: 1.5 });
+
+  // 3. Bottom-Right Dark Bronze Corner Triangle & Metallic Gold Accent Lines
+  page.drawSvgPath('M 0 0 L -230 0 L 0 220 Z', { x: 842, y: 0, color: rgb(0.12, 0.10, 0.08) });
+  page.drawLine({ start: { x: 604, y: 0 }, end: { x: 842, y: 228 }, color: rgb(0.77, 0.63, 0.35), thickness: 3 });
+  page.drawLine({ start: { x: 595, y: 0 }, end: { x: 842, y: 237 }, color: rgb(0.83, 0.69, 0.22), thickness: 1.5 });
+
+  // 4. Top-Right & Bottom-Left Nested L-Shaped Corner Lines
+  const goldColor = rgb(0.77, 0.63, 0.35);
+  page.drawLine({ start: { x: 806, y: 565 }, end: { x: 806, y: 520 }, color: goldColor, thickness: 1.2 });
+  page.drawLine({ start: { x: 806, y: 565 }, end: { x: 761, y: 565 }, color: goldColor, thickness: 1.2 });
+  page.drawLine({ start: { x: 812, y: 571 }, end: { x: 812, y: 514 }, color: goldColor, thickness: 1.2 });
+  page.drawLine({ start: { x: 812, y: 571 }, end: { x: 755, y: 571 }, color: goldColor, thickness: 1.2 });
+
+  page.drawLine({ start: { x: 36, y: 30 }, end: { x: 36, y: 75 }, color: goldColor, thickness: 1.2 });
+  page.drawLine({ start: { x: 36, y: 30 }, end: { x: 81, y: 30 }, color: goldColor, thickness: 1.2 });
+  page.drawLine({ start: { x: 30, y: 24 }, end: { x: 30, y: 81 }, color: goldColor, thickness: 1.2 });
+  page.drawLine({ start: { x: 30, y: 24 }, end: { x: 87, y: 24 }, color: goldColor, thickness: 1.2 });
+
+  // 5. Double Border Frames
+  page.drawRectangle({ x: 20, y: 20, width: 802, height: 555, borderColor: rgb(0.20, 0.16, 0.12), borderWidth: 2 });
+  page.drawRectangle({ x: 26, y: 26, width: 790, height: 543, borderColor: rgb(0.77, 0.63, 0.35), borderWidth: 1 });
+
+  // Embed Fonts
+  const fontBold = await pdfDoc.embedFont(StandardFonts.TimesRomanBold);
+  const fontItalic = await pdfDoc.embedFont(StandardFonts.TimesRomanBoldItalic);
+  const fontRegular = await pdfDoc.embedFont(StandardFonts.TimesRoman);
+
+  // 6. Header Text
+  const titleText = "CERTIFICATE";
+  const titleWidth = fontBold.widthOfTextAtSize(titleText, 44);
+  page.drawText(titleText, {
+    x: width / 2 - titleWidth / 2,
+    y: 490,
+    size: 44,
+    font: fontBold,
+    color: rgb(0.12, 0.14, 0.16),
   });
 
-  const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-  const regularFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
-
-  // Header
-  page.drawText("CERTIFICATE OF COMPLETION", {
-    x: width / 2 - 220,
-    y: height - 110,
-    size: 28,
-    font: font,
-    color: rgb(0.04, 0.11, 0.17),
+  const subText = "OF COMPLETION";
+  const subWidth = fontBold.widthOfTextAtSize(subText, 18);
+  page.drawText(subText, {
+    x: width / 2 - subWidth / 2,
+    y: 456,
+    size: 18,
+    font: fontBold,
+    color: rgb(0.77, 0.63, 0.35),
   });
 
-  // Subheader
-  page.drawText("This is proudly presented to", {
-    x: width / 2 - 95,
-    y: height - 170,
-    size: 16,
-    font: regularFont,
-    color: rgb(0.39, 0.45, 0.54),
+  // 7. Divider Line with Center Diamond Ornament
+  page.drawLine({ start: { x: 350, y: 438 }, end: { x: 410, y: 438 }, color: goldColor, thickness: 1 });
+  page.drawSvgPath('M 0 -4 L 4 0 L 0 4 L -4 0 Z', { x: 421, y: 438, color: goldColor });
+  page.drawLine({ start: { x: 432, y: 438 }, end: { x: 492, y: 438 }, color: goldColor, thickness: 1 });
+
+  // 8. Award Subheader
+  const awardText = "THIS CERTIFICATE IS PROUDLY PRESENTED TO";
+  const awardWidth = fontRegular.widthOfTextAtSize(awardText, 11.5);
+  page.drawText(awardText, {
+    x: width / 2 - awardWidth / 2,
+    y: 405,
+    size: 11.5,
+    font: fontRegular,
+    color: rgb(0.25, 0.28, 0.32),
   });
 
-  // Name
-  page.drawText(name.toUpperCase(), {
-    x: Math.max(50, width / 2 - (name.length * 10)),
-    y: height - 230,
-    size: 38,
-    font: font,
-    color: rgb(0.0, 0.4, 1.0),
+  // 9. Recipient Name
+  const formattedName = name;
+  const nameWidth = fontItalic.widthOfTextAtSize(formattedName, 34);
+  page.drawText(formattedName, {
+    x: width / 2 - nameWidth / 2,
+    y: 350,
+    size: 34,
+    font: fontItalic,
+    color: rgb(0.10, 0.12, 0.15),
   });
 
-  // Body
-  page.drawText(`for successfully completing ${bootcampTitle}`, {
-    x: Math.max(50, width / 2 - (bootcampTitle.length * 4.5)),
-    y: height - 310,
-    size: 16,
-    font: regularFont,
-    color: rgb(0.39, 0.45, 0.54),
-  });
+  // Gold Underline beneath name
+  page.drawLine({ start: { x: 220, y: 336 }, end: { x: 622, y: 336 }, color: goldColor, thickness: 1 });
 
-  // Date
-  page.drawText(`Issued: ${issueDate || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`, {
-    x: 80,
-    y: 90,
-    size: 13,
-    font: regularFont,
-    color: rgb(0.04, 0.11, 0.17),
-  });
+  // 10. Citation / Description
+  const line1 = `This certificate is awarded to ${formattedName}`;
+  const line2 = `for successfully completing the ${bootcampTitle}`;
+  const line3 = `conducted by Botmartz AI Solutions, demonstrating competence in modern AI Engineering.`;
 
-  // Signature
-  page.drawText("Botmartz AI Team", {
-    x: width - 230,
-    y: 105,
-    size: 16,
-    font: font,
-    color: rgb(0.04, 0.11, 0.17),
-  });
-  page.drawText("Authorized Signature", {
-    x: width - 230,
-    y: 88,
-    size: 11,
-    font: regularFont,
-    color: rgb(0.39, 0.45, 0.54),
-  });
+  const l1Width = fontRegular.widthOfTextAtSize(line1, 11.5);
+  const l2Width = fontRegular.widthOfTextAtSize(line2, 11.5);
+  const l3Width = fontRegular.widthOfTextAtSize(line3, 11.5);
+
+  page.drawText(line1, { x: width / 2 - l1Width / 2, y: 300, size: 11.5, font: fontRegular, color: rgb(0.22, 0.25, 0.28) });
+  page.drawText(line2, { x: width / 2 - l2Width / 2, y: 283, size: 11.5, font: fontRegular, color: rgb(0.22, 0.25, 0.28) });
+  page.drawText(line3, { x: width / 2 - l3Width / 2, y: 266, size: 11.5, font: fontRegular, color: rgb(0.22, 0.25, 0.28) });
+
+  // 11. Center Golden Laurel Crest / Emblem
+  page.drawSvgPath('M 0 0 C -12 8 -20 20 -16 32 C -12 40 -4 44 0 48 C -8 40 -8 24 0 0 Z', { x: 412, y: 190, color: goldColor });
+  page.drawSvgPath('M 0 0 C 12 8 20 20 16 32 C 12 40 4 44 0 48 C 8 40 8 24 0 0 Z', { x: 430, y: 190, color: goldColor });
+
+  // 12. Signatures at Bottom
+  // Left Signature - Soham Sharma (Founder)
+  page.drawLine({ start: { x: 140, y: 135 }, end: { x: 310, y: 135 }, color: goldColor, thickness: 1 });
+  page.drawText("Soham Sharma", { x: 145, y: 118, size: 13, font: fontBold, color: rgb(0.12, 0.14, 0.16) });
+  page.drawText("Founder & Principal AI Architect", { x: 145, y: 104, size: 9.5, font: fontRegular, color: rgb(0.38, 0.42, 0.48) });
+  page.drawText("Botmartz AI Solutions", { x: 145, y: 90, size: 9, font: fontRegular, color: rgb(0.70, 0.55, 0.28) });
+
+  // Right Signature - Harsh Sahu (Lead Mentor)
+  page.drawLine({ start: { x: 532, y: 135 }, end: { x: 702, y: 135 }, color: goldColor, thickness: 1 });
+  page.drawText("Harsh Sahu", { x: 537, y: 118, size: 13, font: fontBold, color: rgb(0.12, 0.14, 0.16) });
+  page.drawText("Lead AI Mentor & Instructor", { x: 537, y: 104, size: 9.5, font: fontRegular, color: rgb(0.38, 0.42, 0.48) });
+  page.drawText("GTWY AI & Botmartz", { x: 537, y: 90, size: 9, font: fontRegular, color: rgb(0.70, 0.55, 0.28) });
+
+  // Bottom Center Date & Credential Verification
+  const dateStr = `Issued: ${issueDate || new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+  const dateWidth = fontRegular.widthOfTextAtSize(dateStr, 9);
+  page.drawText(dateStr, { x: width / 2 - dateWidth / 2, y: 60, size: 9, font: fontRegular, color: rgb(0.45, 0.48, 0.52) });
+
+  if (checkInCode) {
+    const certIdStr = `Credential ID: BMZ-CERT-${checkInCode}`;
+    const certIdWidth = fontRegular.widthOfTextAtSize(certIdStr, 9);
+    page.drawText(certIdStr, { x: width / 2 - certIdWidth / 2, y: 46, size: 9, font: fontRegular, color: rgb(0.65, 0.52, 0.25) });
+  }
 
   return await pdfDoc.save();
 }
@@ -162,11 +211,14 @@ export async function POST(req: Request) {
           const regEmail = reg.email || email;
           if (!regEmail) continue;
 
-          const title = reg.plan === 'bundle' 
-            ? 'AI Engineering Pass (Full Bundle)' 
-            : 'AI Accelerator Workshop: Build Full-Stack AI Apps';
+          let title = bootcampName;
+          if (!title) {
+            title = reg.plan === 'bundle'
+              ? 'AI Engineering Pass (Full 3-Bootcamp Series)'
+              : 'AI Accelerator Workshop: Build Smarter AI Agents';
+          }
 
-          const pdfBytes = await generatePdfCertificate(regName, title, issueDate);
+          const pdfBytes = await generatePdfCertificate(regName, title, issueDate, reg.checkInCode);
 
           if (transporter && smtpUser) {
             await transporter.sendMail({
@@ -227,8 +279,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing recipient name or email" }, { status: 400 });
     }
 
-    const title = bootcampName || 'AI Accelerator Workshop';
-    const pdfBytes = await generatePdfCertificate(recipientName, title, issueDate);
+    const title = bootcampName || 'AI Accelerator Workshop: Build Smarter AI Agents';
+    const pdfBytes = await generatePdfCertificate(recipientName, title, issueDate, checkInCode);
 
     const smtpUser = process.env.SMTP_USER;
     const smtpPass = process.env.SMTP_PASS;
