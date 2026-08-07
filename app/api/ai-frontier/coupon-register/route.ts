@@ -24,21 +24,54 @@ export async function POST(req: Request) {
 
     const uppercaseCoupon = couponCode.trim().toUpperCase();
 
-    // Check coupon usage limit
-    const bcSnap = await adminDb.collection('bootcamp_registrations').get();
-    let couponUsedCount = 0;
+    // 1. Fetch coupon details from 'coupons' collection to get true maxUses
+    let maxUses = 1;
+    let isActive = true;
 
+    try {
+      const couponQuery = await adminDb.collection('coupons').where('code', '==', uppercaseCoupon).limit(1).get();
+      if (!couponQuery.empty) {
+        const cData = couponQuery.docs[0].data();
+        maxUses = Number(cData.maxUses) || 1;
+        if (cData.isActive === false) {
+          isActive = false;
+        }
+      }
+    } catch (cErr) {
+      console.warn('[Coupon lookup error]', cErr);
+    }
+
+    if (!isActive) {
+      return NextResponse.json({
+        success: false,
+        error: `Coupon "${uppercaseCoupon}" is currently inactive.`
+      }, { status: 400 });
+    }
+
+    // 2. Count actual redemptions from registrations
+    const [bcSnap, regSnap] = await Promise.all([
+      adminDb.collection('bootcamp_registrations').get(),
+      adminDb.collection('event-registrations').get()
+    ]);
+
+    let couponUsedCount = 0;
     bcSnap.forEach(doc => {
       const data = doc.data();
       if (data.appliedCoupon && data.appliedCoupon.trim().toUpperCase() === uppercaseCoupon) {
         couponUsedCount++;
       }
     });
+    regSnap.forEach(doc => {
+      const data = doc.data();
+      if (data.appliedCoupon && data.appliedCoupon.trim().toUpperCase() === uppercaseCoupon) {
+        couponUsedCount++;
+      }
+    });
 
-    if (couponUsedCount >= 1) {
+    if (couponUsedCount >= maxUses) {
       return NextResponse.json({
         success: false,
-        error: `Coupon "${uppercaseCoupon}" has already been redeemed.`
+        error: `Coupon "${uppercaseCoupon}" has already reached its maximum limit of ${maxUses} use(s).`
       }, { status: 400 });
     }
 
@@ -85,6 +118,7 @@ export async function POST(req: Request) {
         const maxUses = cData.maxUses || 1;
         await cDoc.ref.update({
           currentUses: newUses,
+          isActive: newUses < maxUses,
           status: newUses >= maxUses ? 'redeemed' : 'active',
           updatedAt: new Date().toISOString()
         });
@@ -107,7 +141,7 @@ export async function POST(req: Request) {
         await transporter.sendMail({
           from: `"Botmartz Events" <${smtpUser}>`,
           to: email,
-          subject: `Your Pass Ticket - ${eventTitle}`,
+          subject: `You're In! | AI Accelerator Workshop — Bootcamp 01`,
           html: buildEventTicketEmail(name, eventTitle, dateVal, locVal, [checkInCode]),
         });
       } catch (mailErr) {

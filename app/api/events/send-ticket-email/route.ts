@@ -75,7 +75,7 @@ export async function POST(req: Request) {
       transporter.sendMail({
         from: `"Botmartz Entry Pass" <${smtpUser}>`,
         to: email,
-        subject: `Your Official Entry Ticket & QR Pass - ${title}`,
+        subject: `You're In! | AI Accelerator Workshop — Bootcamp 01`,
         html: buildEventTicketEmail(name, title, dateVal, locVal, [code]),
       })
     ]);

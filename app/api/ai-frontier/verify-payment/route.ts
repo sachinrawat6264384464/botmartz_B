@@ -81,7 +81,7 @@ export async function POST(req: Request) {
             await transporter.sendMail({
               from: `"Botmartz Events" <${smtpUser}>`,
               to: email,
-              subject: `Your Registration Confirmed - ${eventTitle}`,
+              subject: `You're In! | AI Accelerator Workshop — Bootcamp 01`,
               html: buildEventTicketEmail(name, eventTitle, dateVal, locVal, [checkInCode]),
             });
           } catch (mailErr) {

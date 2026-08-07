@@ -72,7 +72,7 @@ export async function POST(req: Request) {
         await transporter.sendMail({
           from: `"Botmartz Events" <${smtpUser}>`,
           to: email.trim(),
-          subject: `Your Pass Ticket - ${planInfo.title}`,
+          subject: `You're In! | AI Accelerator Workshop — Bootcamp 01`,
           html: buildEventTicketEmail(name, planInfo.title, planInfo.date, planInfo.location, [checkInCode]),
         });
 

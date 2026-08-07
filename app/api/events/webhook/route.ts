@@ -154,7 +154,7 @@ export async function POST(req: NextRequest) {
         await transporter.sendMail({
           from: `"Botmartz Events" <${smtpUser}>`,
           to: regEmail,
-          subject: `Your Digital Entry Pass - ${eventTitle}`,
+          subject: `You're In! | AI Accelerator Workshop — Bootcamp 01`,
           html: buildEventTicketEmail(name, eventTitle, dateVal, locVal, checkInCode),
         });
 
