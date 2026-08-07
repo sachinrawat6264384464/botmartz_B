@@ -130,13 +130,13 @@ export function Footer({ settings }: { settings?: any }) {
 
           {/* LEFT: Brand */}
           <div className="flex flex-col">
-            <Link href="/" className="inline-block mb-6">
+            <Link href="/" className="inline-block mb-6 bg-white px-6 py-3.5 rounded-2xl shadow-[0_8px_30px_rgba(255,255,255,0.12)] hover:shadow-[0_8px_40px_rgba(255,255,255,0.2)] hover:-translate-y-1 transition-all duration-300">
               <Image
                 src={logoUrl}
                 alt={companyName}
                 width={280}
                 height={78}
-                className="h-[68px] sm:h-[78px] w-auto object-contain"
+                className="h-[54px] sm:h-[60px] w-auto object-contain"
               />
             </Link>
 

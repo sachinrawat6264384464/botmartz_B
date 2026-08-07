@@ -83,6 +83,8 @@ export default async function OpenSourcePage() {
   }));
 
   const sanitizedHero = JSON.parse(JSON.stringify(heroContent));
+  
+  console.log("Cache bust for OpenSourceClient");
 
   return (
     <OpenSourceClient 

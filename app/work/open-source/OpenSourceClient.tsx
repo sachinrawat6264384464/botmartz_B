@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
+import { FolderGit2, Star, Users, ShieldCheck, Github, GitPullRequest } from 'lucide-react';
 
 interface RepoItem {
   id?: string;
@@ -48,10 +49,10 @@ export default function OpenSourceClient({
   const categoryList = ['All Repos', 'Enterprise RAG', 'AI Agents', 'Developer Tools', 'Infrastructure'];
 
   const heroStats = [
-    { value: '15+', label: 'Public Repos' },
-    { value: '6.5k+', label: 'Combined Stars' },
-    { value: '40+', label: 'Contributors' },
-    { value: 'MIT/Apache', label: 'Licenses' },
+    { value: '15+', label: 'Public Repos', icon: FolderGit2, color: '#00C6FF' },
+    { value: '6.5k+', label: 'Combined Stars', icon: Star, color: '#F59E0B' },
+    { value: '40+', label: 'Contributors', icon: Users, color: '#0E9F6E' },
+    { value: 'MIT/Apache', label: 'Licenses', icon: ShieldCheck, color: '#8B5CF6' },
   ];
 
   const steps = [
@@ -160,20 +161,84 @@ export default function OpenSourceClient({
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3.5">
-              {heroStats.map((s, idx) => (
-                <div 
-                  key={idx}
-                  className="bg-white/[0.04] border border-white/10 rounded-[14px] p-5 backdrop-blur-sm"
-                >
-                  <div className="font-extrabold text-[26px] sm:text-[30px] text-[#00C6FF] leading-none">
-                    {s.value}
-                  </div>
-                  <div className="font-semibold text-[12px] sm:text-[13px] text-[#8FA3C4] mt-1.5">
-                    {s.label}
+            {/* Right Column: Open Source Floating Graphic */}
+            <div className="relative h-[400px] w-full max-w-[480px] mx-auto lg:ml-auto flex items-center justify-center mt-12 lg:mt-0 overflow-visible" suppressHydrationWarning>
+              {/* Scale wrapper for mobile */}
+              <div className="relative w-[360px] h-[360px] scale-[0.85] sm:scale-100 flex-shrink-0">
+                {/* Background ambient glow */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-[radial-gradient(circle_at_center,rgba(0,198,255,0.1)_0%,transparent_60%)] animate-pulse pointer-events-none"></div>
+
+                {/* Orbiting rings */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[360px] h-[360px] border border-[#00C6FF]/25 rounded-full animate-spin-slow pointer-events-none" style={{ animationDuration: '25s' }}></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] border border-[#00C6FF]/35 rounded-full animate-spin-slow pointer-events-none" style={{ animationDuration: '18s', animationDirection: 'reverse' }}></div>
+
+                {/* Central Core: Open Source Engine */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120px] h-[120px] rounded-full bg-[#060C1F]/90 border border-[#00C6FF]/60 backdrop-blur-xl shadow-[0_0_50px_rgba(0,198,255,0.4)] z-10 flex flex-col items-center justify-center">
+                  <div className="absolute inset-0 bg-[#00C6FF]/20 blur-xl rounded-full animate-pulse"></div>
+                  <Github className="w-9 h-9 text-[#00C6FF] mb-1 relative z-10 drop-shadow-md" />
+                  <span className="font-black text-[12px] tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white to-[#00C6FF] relative z-10 text-center leading-tight">OPEN<br/>SOURCE</span>
+                </div>
+
+                {/* Floating Element: Repositories (Outer Ring Top Left -135deg) */}
+                <div className="absolute z-20" style={{ top: '53px', left: '53px', transform: 'translate(-50%, -50%)' }}>
+                  <div className="animate-float" style={{ animationDelay: '0s' }}>
+                    <div className="flex items-center gap-3 bg-[#0A1630]/90 border border-[#00C6FF]/40 px-4 py-2.5 rounded-2xl shadow-xl backdrop-blur-md">
+                      <div className="w-8 h-8 rounded-full bg-[#00C6FF]/10 flex items-center justify-center shrink-0 border border-[#00C6FF]/20">
+                        <FolderGit2 className="w-4 h-4 text-[#00C6FF]" />
+                      </div>
+                      <div className="font-extrabold text-[12px] text-white tracking-widest uppercase whitespace-nowrap">Public Repos</div>
+                    </div>
                   </div>
                 </div>
-              ))}
+
+                {/* Floating Element: Community (Outer Ring Top Right -45deg) */}
+                <div className="absolute z-20" style={{ top: '53px', left: '307px', transform: 'translate(-50%, -50%)' }}>
+                  <div className="animate-float" style={{ animationDelay: '1s' }}>
+                    <div className="flex items-center gap-3 bg-[#0A1630]/90 border border-[#0E9F6E]/40 px-4 py-2.5 rounded-2xl shadow-xl backdrop-blur-md">
+                      <div className="w-8 h-8 rounded-full bg-[#0E9F6E]/10 flex items-center justify-center shrink-0 border border-[#0E9F6E]/20">
+                        <Users className="w-4 h-4 text-[#0E9F6E]" />
+                      </div>
+                      <div className="font-extrabold text-[12px] text-white tracking-widest uppercase whitespace-nowrap">Community</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Floating Element: Pull Requests (Inner Ring Top -90deg) */}
+                <div className="absolute z-20" style={{ top: '50px', left: '180px', transform: 'translate(-50%, -50%)' }}>
+                  <div className="animate-float" style={{ animationDelay: '2.5s' }}>
+                    <div className="flex items-center gap-3 bg-[#0A1630]/90 border border-[#EC4899]/40 px-4 py-2.5 rounded-2xl shadow-xl backdrop-blur-md">
+                      <div className="w-8 h-8 rounded-full bg-[#EC4899]/10 flex items-center justify-center shrink-0 border border-[#EC4899]/20">
+                        <GitPullRequest className="w-4 h-4 text-[#EC4899]" />
+                      </div>
+                      <div className="font-extrabold text-[12px] text-white tracking-widest uppercase whitespace-nowrap">Pull Requests</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Floating Element: Global Stars (Outer Ring Bottom Right 45deg) */}
+                <div className="absolute z-20" style={{ top: '307px', left: '307px', transform: 'translate(-50%, -50%)' }}>
+                  <div className="animate-float" style={{ animationDelay: '1.5s' }}>
+                    <div className="flex items-center gap-3 bg-[#0A1630]/90 border border-[#F59E0B]/40 px-4 py-2.5 rounded-2xl shadow-xl backdrop-blur-md">
+                      <div className="w-8 h-8 rounded-full bg-[#F59E0B]/10 flex items-center justify-center shrink-0 border border-[#F59E0B]/20">
+                        <Star className="w-4 h-4 text-[#F59E0B]" />
+                      </div>
+                      <div className="font-extrabold text-[12px] text-white tracking-widest uppercase whitespace-nowrap">Global Stars</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Floating Element: Licenses (Outer Ring Bottom Left 135deg) */}
+                <div className="absolute z-20" style={{ top: '307px', left: '53px', transform: 'translate(-50%, -50%)' }}>
+                  <div className="animate-float" style={{ animationDelay: '0.8s' }}>
+                    <div className="flex items-center gap-3 bg-[#0A1630]/90 border border-[#8B5CF6]/40 px-4 py-2.5 rounded-2xl shadow-xl backdrop-blur-md">
+                      <div className="w-8 h-8 rounded-full bg-[#8B5CF6]/10 flex items-center justify-center shrink-0 border border-[#8B5CF6]/20">
+                        <ShieldCheck className="w-4 h-4 text-[#8B5CF6]" />
+                      </div>
+                      <div className="font-extrabold text-[12px] text-white tracking-widest uppercase whitespace-nowrap">MIT/Apache</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

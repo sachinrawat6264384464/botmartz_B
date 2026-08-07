@@ -183,6 +183,18 @@
 }
 .animate-float { animation: float 6s infinite ease-in-out; }
 
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin-slow {
+  animation: spin-slow linear infinite;
+}
+
 /* ─── WCAG 2.2 AA/AAA & ACCESSIBILITY TOOLBOX OVERRIDES ──────────────────────── */
 
 /* Text Sizing Scales */

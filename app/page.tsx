@@ -384,7 +384,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* WORK / LABS */}
+      {/* WORK / LABS - CURRENTLY COMMENTED OUT
       <section id="work" className="section-pad bg-white">
         <div className="wrap">
           <div className="flex flex-wrap justify-between items-end gap-6 mb-12">
@@ -421,6 +421,25 @@ export default async function Home() {
                 </div>
               );
             })}
+          </div>
+        </div>
+      </section>
+      */}
+
+      {/* WORK / LABS - COMING SOON */}
+      <section id="work" className="section-pad bg-white">
+        <div className="wrap">
+          <div className="flex flex-col items-center text-center justify-center py-20 bg-slate-50 rounded-3xl border border-dashed border-slate-300">
+            <div className="w-16 h-16 bg-[#00B8F0]/10 rounded-full flex items-center justify-center mb-6">
+              <FlaskConical className="w-8 h-8 text-[#00B8F0]" />
+            </div>
+            <h2 className="text-[clamp(26px,3vw,34px)] font-semibold text-ink mb-4">Building In Public. Sharing Knowledge.</h2>
+            <p className="text-lg text-[#475569] max-w-[500px]">
+              Our labs and featured projects are currently undergoing a major update. Check back soon for new AI experiments and open-source builds.
+            </p>
+            <div className="mt-8 font-mono text-[12px] font-semibold text-[#0066FF] tracking-widest uppercase bg-[#0066FF]/10 px-4 py-2 rounded-full">
+              Coming Soon
+            </div>
           </div>
         </div>
       </section>

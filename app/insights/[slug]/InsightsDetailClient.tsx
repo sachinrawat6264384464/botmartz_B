@@ -13,7 +13,7 @@ import {
   where, 
   addDoc, 
   serverTimestamp, 
-  updateDoc, 
+  setDoc,
   increment, 
   doc 
 } from "firebase/firestore";
@@ -34,6 +34,8 @@ import {
   Terminal
 } from "lucide-react";
 import SchemaMarkup from "@/app/_components/SchemaMarkup";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface RelatedPost {
   id: string;
@@ -137,7 +139,7 @@ export default function InsightsDetailClient({
   useEffect(() => {
     if (!post.id) return;
     const postRef = doc(db, "blog-posts", post.id);
-    updateDoc(postRef, { views: increment(1) }).catch((err) =>
+    setDoc(postRef, { views: increment(1) }, { merge: true }).catch((err) =>
       console.error("Failed to increment view:", err)
     );
     setViewCount((prev) => prev + 1);
@@ -149,11 +151,11 @@ export default function InsightsDetailClient({
     const postRef = doc(db, "blog-posts", post.id);
     try {
       if (liked) {
-        await updateDoc(postRef, { likes: increment(-1) });
+        await setDoc(postRef, { likes: increment(-1) }, { merge: true });
         setLikeCount((prev) => Math.max(0, prev - 1));
         setLiked(false);
       } else {
-        await updateDoc(postRef, { likes: increment(1) });
+        await setDoc(postRef, { likes: increment(1) }, { merge: true });
         setLikeCount((prev) => prev + 1);
         setLiked(true);
       }
@@ -637,10 +639,31 @@ export default function InsightsDetailClient({
         </div>
 
         {/* Content Render */}
-        <article 
-          className="blog-content text-gray-300 font-light leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+        <ReactMarkdown 
+          className="text-slate-700 font-normal leading-relaxed"
+          remarkPlugins={[remarkGfm]}
+          components={{
+            h1: ({node, ...props}) => <h1 className="text-3xl font-extrabold text-slate-900 mt-12 mb-6" {...props} />,
+            h2: ({node, ...props}) => <h2 className="text-2xl font-bold text-slate-900 mt-10 mb-5" {...props} />,
+            h3: ({node, ...props}) => <h3 className="text-xl font-bold text-slate-900 mt-8 mb-4" {...props} />,
+            p: ({node, ...props}) => <p className="mb-6 text-[15.5px] leading-7" {...props} />,
+            ul: ({node, ...props}) => <ul className="list-disc pl-6 mb-6 space-y-2 text-[15px]" {...props} />,
+            ol: ({node, ...props}) => <ol className="list-decimal pl-6 mb-6 space-y-2 text-[15px]" {...props} />,
+            li: ({node, ...props}) => <li className="pl-1" {...props} />,
+            strong: ({node, ...props}) => <strong className="font-bold text-slate-900" {...props} />,
+            code: ({node, className, children, ...props}: any) => {
+              const match = /language-(\w+)/.exec(className || '');
+              const isInline = !match && !String(children).includes('\n');
+              return isInline ? (
+                <code className="bg-slate-100 text-pink-600 px-1.5 py-0.5 rounded text-[13px] font-mono" {...props}>{children}</code>
+              ) : (
+                <pre className="bg-slate-900 text-slate-50 p-4 rounded-xl overflow-x-auto mb-6 text-[13px] font-mono shadow-sm"><code className={className} {...props}>{children}</code></pre>
+              );
+            }
+          }}
+        >
+          {post.content}
+        </ReactMarkdown>
 
         {/* Key Takeaways */}
         {closingPoints.length > 0 && (
@@ -673,7 +696,7 @@ export default function InsightsDetailClient({
                   >
                     ✓
                   </div>
-                  <div className="font-medium text-[14.5px] leading-[1.7] text-[#A3B3CC]">{pt}</div>
+                  <div className="font-medium text-[14.5px] leading-[1.7] text-slate-700">{pt}</div>
                 </div>
               ))}
             </div>

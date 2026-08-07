@@ -355,6 +355,7 @@ export default async function InsightsDetailPage({ params }: Props) {
 
   const sanitizedPost = JSON.parse(JSON.stringify({
     id: postId,
+    slug: slug,
     ...post,
     createdAt: formatTimestamp(post.createdAt || new Date()),
     updatedAt: formatTimestamp(post.updatedAt || new Date()),

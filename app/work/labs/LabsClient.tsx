@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Github, ExternalLink, Code } from "lucide-react";
+import { Github, ExternalLink, Code, Cpu, FlaskConical, Activity, Zap, Network } from "lucide-react";
 import SpotlightCard from "@/app/_components/SpotlightCard";
 
 export interface LabItem {
@@ -190,23 +190,91 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
               </div>
             </div>
 
-            {/* Right Column: Orbiting Pill Graphic */}
-            <div className="relative h-[300px] flex items-center justify-center">
-              <div className="w-[150px] h-[150px] bg-gradient-to-br from-[#0F1E3D] to-[#0A1630] border border-[#00C6FF]/35 rounded-2xl flex items-center justify-center shadow-[0_0_60px_rgba(0,123,255,0.35)] relative z-10">
-                <span className="font-extrabold text-[13px] tracking-[0.08em] text-[#00C6FF]">LABS</span>
+            {/* Right Column: Premium Bento AI Graphic */}
+            <div className="relative w-full max-w-[460px] mx-auto lg:ml-auto flex flex-col gap-3.5 mt-8 lg:mt-0">
+              
+              {/* Background ambient glow */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[#00C6FF]/20 blur-[80px] rounded-full pointer-events-none"></div>
+
+              {/* Top Row */}
+              <div className="grid grid-cols-[1fr_1.2fr] gap-3.5 relative z-10">
+                {/* Engineer */}
+                <div className="bg-[#0A1630]/70 border border-[#00C6FF]/20 p-4 rounded-[16px] shadow-lg backdrop-blur-md hover:border-[#00C6FF]/50 transition-colors group">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-7 h-7 rounded-lg bg-[#00C6FF]/10 flex items-center justify-center">
+                      <Cpu className="w-3.5 h-3.5 text-[#00C6FF]" />
+                    </div>
+                    <span className="font-bold text-[10.5px] text-[#00C6FF] tracking-widest uppercase">System</span>
+                  </div>
+                  <div className="font-extrabold text-[15px] text-white group-hover:text-[#00C6FF] transition-colors">Engineer</div>
+                </div>
+
+                {/* Experiment */}
+                <div className="bg-[#0A1630]/70 border border-[#0E9F6E]/20 p-4 rounded-[16px] shadow-lg backdrop-blur-md hover:border-[#0E9F6E]/50 transition-colors group">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-7 h-7 rounded-lg bg-[#0E9F6E]/10 flex items-center justify-center">
+                      <FlaskConical className="w-3.5 h-3.5 text-[#0E9F6E]" />
+                    </div>
+                    <span className="font-bold text-[10.5px] text-[#0E9F6E] tracking-widest uppercase">Research</span>
+                  </div>
+                  <div className="font-extrabold text-[15px] text-white group-hover:text-[#0E9F6E] transition-colors">Experiment</div>
+                </div>
               </div>
-              <div className="absolute top-[18px] left-0 sm:left-[20px] font-bold text-[11.5px] text-[#C7D6EE] bg-white/[0.05] border border-white/[0.14] px-3 py-1.5 rounded-lg shadow-sm backdrop-blur-xs">Engineer</div>
-              <div className="absolute top-0 right-[30px] sm:right-[60px] font-bold text-[11.5px] text-[#C7D6EE] bg-white/[0.05] border border-white/[0.14] px-3 py-1.5 rounded-lg shadow-sm backdrop-blur-xs">Experiment</div>
-              <div className="absolute top-[60px] right-0 sm:right-[10px] font-bold text-[11.5px] text-[#C7D6EE] bg-white/[0.05] border border-white/[0.14] px-3 py-1.5 rounded-lg shadow-sm backdrop-blur-xs">Evaluate</div>
-              <div className="absolute bottom-[60px] right-0 sm:right-[0px] font-bold text-[11.5px] text-[#C7D6EE] bg-white/[0.05] border border-white/[0.14] px-3 py-1.5 rounded-lg shadow-sm backdrop-blur-xs">Open Source</div>
-              <div className="absolute bottom-[20px] right-[40px] sm:right-[60px] font-bold text-[11.5px] text-[#C7D6EE] bg-white/[0.05] border border-white/[0.14] px-3 py-1.5 rounded-lg shadow-sm backdrop-blur-xs">Impact</div>
+
+              {/* Middle Row */}
+              <div className="grid grid-cols-[1.2fr_1fr] gap-3.5 relative z-10">
+                {/* Central LABS Core */}
+                <div className="relative bg-gradient-to-br from-[#060C1F]/90 to-[#0A1630]/90 border border-[#00C6FF]/40 p-6 rounded-[16px] shadow-[0_0_30px_rgba(0,198,255,0.15)] backdrop-blur-xl flex flex-col items-center justify-center overflow-hidden">
+                  <div className="absolute inset-0 bg-[#00C6FF]/10 animate-pulse" style={{ animationDuration: '3s' }}></div>
+                  <Code className="w-8 h-8 text-[#00C6FF] mb-2 relative z-10" />
+                  <span className="font-black text-[18px] tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-white to-[#00C6FF] relative z-10">LABS</span>
+                </div>
+
+                <div className="flex flex-col gap-3.5">
+                  {/* Evaluate */}
+                  <div className="bg-[#0A1630]/70 border border-[#8B5CF6]/20 p-4 rounded-[16px] shadow-lg backdrop-blur-md hover:border-[#8B5CF6]/50 transition-colors flex-1 group">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-7 h-7 rounded-lg bg-[#8B5CF6]/10 flex items-center justify-center">
+                        <Activity className="w-3.5 h-3.5 text-[#8B5CF6]" />
+                      </div>
+                      <span className="font-bold text-[10px] text-[#8B5CF6] tracking-widest uppercase">Metrics</span>
+                    </div>
+                    <div className="font-extrabold text-[14px] text-white group-hover:text-[#8B5CF6] transition-colors">Evaluate</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Row */}
+              <div className="grid grid-cols-[1fr_1fr] gap-3.5 relative z-10">
+                {/* Open Source */}
+                <div className="bg-[#0A1630]/70 border border-[#F59E0B]/20 p-4 rounded-[16px] shadow-lg backdrop-blur-md hover:border-[#F59E0B]/50 transition-colors group">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-7 h-7 rounded-lg bg-[#F59E0B]/10 flex items-center justify-center">
+                      <Github className="w-3.5 h-3.5 text-[#F59E0B]" />
+                    </div>
+                    <span className="font-bold text-[10px] text-[#F59E0B] tracking-widest uppercase">Community</span>
+                  </div>
+                  <div className="font-extrabold text-[14px] text-white group-hover:text-[#F59E0B] transition-colors">Open Source</div>
+                </div>
+
+                {/* Impact */}
+                <div className="bg-[#0A1630]/70 border border-[#EC4899]/20 p-4 rounded-[16px] shadow-lg backdrop-blur-md hover:border-[#EC4899]/50 transition-colors group">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-7 h-7 rounded-lg bg-[#EC4899]/10 flex items-center justify-center">
+                      <Zap className="w-3.5 h-3.5 text-[#EC4899]" />
+                    </div>
+                    <span className="font-bold text-[10px] text-[#EC4899] tracking-widest uppercase">Outcome</span>
+                  </div>
+                  <div className="font-extrabold text-[14px] text-white group-hover:text-[#EC4899] transition-colors">Impact</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
 
-      {/* ══════════ FILTER BAR & SORT ══════════ */}
+      {/* ══════════ FILTER BAR & SORT (CURRENTLY COMMENTED OUT) ══════════ 
       <div className="max-w-[1240px] mx-auto px-6 sm:px-10 pt-9 pb-5 flex items-center justify-between flex-wrap gap-4" id="labs-grid">
         <div className="flex gap-2 flex-wrap">
           {CATEGORIES.map(label => {
@@ -231,7 +299,6 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
         </div>
       </div>
 
-      {/* ══════════ LABS GRID ══════════ */}
       <div className="max-w-[1240px] mx-auto px-6 sm:px-10 pt-2 pb-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {visibleLabs.map((lab, index) => (
           <SpotlightCard 
@@ -239,7 +306,6 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
             spotlightColor="rgba(0, 123, 255, 0.14)"
             className="!bg-white border border-[#E7ECF3] rounded-[14px] overflow-hidden flex flex-col hover:shadow-xl hover:border-[#007BFF]/50 transition-all duration-300 group"
           >
-            {/* Top Graphic Header */}
             <div className="relative h-[120px] bg-gradient-to-br from-[#0A1630] to-[#060C1F] flex items-center justify-center p-4 overflow-hidden">
               <div className="w-[34px] h-[34px] rounded-[9px] bg-[#00C6FF]/14 border border-[#00C6FF]/25 flex items-center justify-center font-bold text-[11px] text-[#00C6FF] group-hover:scale-110 transition-transform duration-300">
                 {lab.glyph || getGlyph(lab)}
@@ -251,7 +317,6 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
               )}
             </div>
 
-            {/* Card Content */}
             <div className="p-4.5 flex flex-col gap-2 flex-1">
               <span className="font-bold text-[10px] tracking-[0.05em] text-[#007BFF] uppercase">
                 {lab.category}
@@ -263,7 +328,6 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
                 {lab.desc}
               </div>
 
-              {/* Tags */}
               <div className="flex gap-1.5 flex-wrap mt-1">
                 {(lab.tags || []).map(tag => (
                   <span key={tag} className="font-semibold text-[10.5px] text-[#5B6B85] bg-[#F1F4F9] px-2 py-[3px] rounded-[5px]">
@@ -272,7 +336,6 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
                 ))}
               </div>
 
-              {/* Card Footer */}
               <div className="flex items-center justify-between mt-2 pt-3 border-t border-[#EEF1F6]">
                 <a 
                   href={lab.githubUrl || lab.repoUrl || "https://github.com/botmartz"} 
@@ -290,6 +353,24 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
             </div>
           </SpotlightCard>
         ))}
+      </div>
+      */}
+
+      {/* ══════════ LABS GRID (COMING SOON) ══════════ */}
+      <div className="max-w-[1240px] mx-auto px-6 sm:px-10 pt-16 pb-16" id="labs-grid">
+        <div className="flex flex-col items-center text-center justify-center py-24 bg-white rounded-[24px] border border-dashed border-[#C7D6EE] shadow-sm">
+          <div className="w-20 h-20 bg-[#007BFF]/10 rounded-full flex items-center justify-center mb-6">
+            <Code className="w-10 h-10 text-[#007BFF]" />
+          </div>
+          <h2 className="font-extrabold text-[28px] sm:text-[32px] text-[#0B1220] mb-4 tracking-tight">Our Labs Are Evolving</h2>
+          <p className="font-medium text-[15px] text-[#5B6B85] max-w-[540px] leading-relaxed">
+            We are currently upgrading our lab infrastructure and adding new open-source projects. 
+            Check back shortly to explore our latest AI engineering experiments.
+          </p>
+          <div className="mt-8 font-bold text-[12.5px] text-[#007BFF] tracking-widest uppercase bg-[#007BFF]/10 px-5 py-2.5 rounded-full border border-[#007BFF]/20">
+            Coming Soon
+          </div>
+        </div>
       </div>
 
       {/* ══════════ WHY OUR LABS MATTER Box ══════════ */}
