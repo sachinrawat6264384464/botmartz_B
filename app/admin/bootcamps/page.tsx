@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Users, FileText, Download, TrendingUp, Mail, Award, CreditCard, Loader2, CheckCircle, XCircle, Plus, Edit2, Trash2, Calendar, Clock, Search, Filter, UserPlus, CheckCheck } from "lucide-react";
+import { Users, FileText, Download, TrendingUp, Mail, Award, CreditCard, Loader2, CheckCircle, XCircle, X, Plus, Edit2, Trash2, Calendar, Clock, Search, Filter, UserPlus, CheckCheck } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, query, orderBy, onSnapshot, deleteDoc, doc } from "firebase/firestore";
 import Link from "next/link";
@@ -107,12 +107,15 @@ export default function BootcampsAdmin() {
     'free': registrations.filter(r => getPriceCategory(r) === 'free').length,
   };
 
+  // On-Page Certificate Notification Modal State
+  const [certModal, setCertModal] = useState<{ type: 'success' | 'error'; title: string; message: string; name?: string; email?: string } | null>(null);
+
   const handleIssueSingleCertificate = async (reg: any) => {
     setActionLoading(`cert-${reg.id}`);
     try {
       const title = reg.plan === 'bundle' 
-        ? 'AI Engineering Pass (Full Bundle)' 
-        : 'AI Accelerator Workshop: Build Full-Stack AI Apps';
+        ? 'AI Engineering Pass (Full 3-Bootcamp Series)' 
+        : 'AI Accelerator Workshop: Build Smarter AI Agents';
 
       const res = await fetch("/api/admin/issue-certificate", {
         method: "POST",
@@ -128,12 +131,26 @@ export default function BootcampsAdmin() {
       const data = await res.json();
       if (data.success) {
         setRegistrations(prev => prev.map(r => r.id === reg.id ? { ...r, certificateSent: true, certificateSentAt: new Date().toISOString() } : r));
-        alert(`Certificate issued and emailed to ${reg.name} (${reg.email})!`);
+        setCertModal({
+          type: 'success',
+          title: 'Certificate Issued Successfully! 🎓',
+          message: `Official Certificate of Completion has been generated and emailed to ${reg.name} (${reg.email}).`,
+          name: reg.name,
+          email: reg.email
+        });
       } else {
-        alert(`Error: ${data.error}`);
+        setCertModal({
+          type: 'error',
+          title: 'Issuance Failed',
+          message: data.error || 'Failed to issue certificate. Please try again.'
+        });
       }
     } catch (err: any) {
-      alert(`Failed to issue certificate: ${err.message}`);
+      setCertModal({
+        type: 'error',
+        title: 'Error',
+        message: err.message || 'Failed to issue certificate.'
+      });
     } finally {
       setActionLoading(null);
     }
@@ -155,12 +172,24 @@ export default function BootcampsAdmin() {
         const nowIso = new Date().toISOString();
         setRegistrations(prev => prev.map(r => selectedCertIds.includes(r.id) ? { ...r, certificateSent: true, certificateSentAt: nowIso } : r));
         setSelectedCertIds([]);
-        alert(data.message || `Certificates issued successfully!`);
+        setCertModal({
+          type: 'success',
+          title: 'Bulk Certificates Issued! 🎓',
+          message: data.message || `Certificates issued and emailed to selected attendees successfully.`
+        });
       } else {
-        alert(`Error: ${data.error}`);
+        setCertModal({
+          type: 'error',
+          title: 'Bulk Issuance Failed',
+          message: data.error || 'Failed to issue bulk certificates.'
+        });
       }
     } catch (err: any) {
-      alert(`Bulk certificate issuance failed: ${err.message}`);
+      setCertModal({
+        type: 'error',
+        title: 'Error',
+        message: err.message || 'Bulk certificate issuance failed.'
+      });
     } finally {
       setActionLoading(null);
     }
@@ -1621,6 +1650,41 @@ export default function BootcampsAdmin() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* ON-PAGE CERTIFICATE ISSUANCE NOTIFICATION MODAL */}
+      {certModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className={`bg-[#0E172A] border ${certModal.type === 'success' ? 'border-emerald-500/30' : 'border-rose-500/30'} rounded-2xl p-6 max-w-md w-full shadow-2xl text-white space-y-4 relative`}>
+            <button
+              onClick={() => setCertModal(null)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
+            >
+              <X size={18} />
+            </button>
+
+            <div className={`w-12 h-12 rounded-2xl ${certModal.type === 'success' ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border border-rose-500/20 text-rose-400'} flex items-center justify-center mx-auto`}>
+              {certModal.type === 'success' ? <Award size={24} /> : <X size={24} />}
+            </div>
+
+            <div className="text-center space-y-2">
+              <h3 className="text-lg font-bold text-white">{certModal.title}</h3>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                {certModal.message}
+              </p>
+            </div>
+
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={() => setCertModal(null)}
+                className="w-full py-2.5 px-4 rounded-xl bg-[#00B8F0] hover:bg-[#0096C7] text-white text-xs font-bold transition-all shadow-md cursor-pointer"
+              >
+                OK, Great!
+              </button>
+            </div>
           </div>
         </div>
       )}

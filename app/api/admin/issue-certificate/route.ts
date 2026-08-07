@@ -62,6 +62,12 @@ async function generatePdfCertificate(name: string, bootcampTitle: string, issue
     color: rgb(0.965, 0.980, 0.990),
   });
 
+  // Delicate Guilloche Security Background Texture Lines
+  const waveColor = rgb(0.92, 0.95, 0.97);
+  for (let y = 35; y < 560; y += 8) {
+    page.drawLine({ start: { x: 35, y }, end: { x: 807, y }, color: waveColor, thickness: 0.5 });
+  }
+
   // 2. Double Outer & Inner Border Frames
   page.drawRectangle({ x: 20, y: 20, width: 802, height: 555, borderColor: blueColor, borderWidth: 2 });
   page.drawRectangle({ x: 28, y: 28, width: 786, height: 539, borderColor: blueColor, borderWidth: 1 });
@@ -152,9 +158,34 @@ async function generatePdfCertificate(name: string, bootcampTitle: string, issue
   page.drawText(line2, { x: width / 2 - l2Width / 2, y: 280, size: 10.5, font: fontRegular, color: rgb(0.20, 0.25, 0.30) });
   page.drawText(line3, { x: width / 2 - l3Width / 2, y: 264, size: 10.5, font: fontRegular, color: rgb(0.20, 0.25, 0.30) });
 
-  // 8. Center Ocean Blue Guilloche Rosette Seal
-  page.drawSvgPath('M 0 0 C -12 8 -20 20 -16 32 C -12 40 -4 44 0 48 C -8 40 -8 24 0 0 Z', { x: 412, y: 185, color: blueColor });
-  page.drawSvgPath('M 0 0 C 12 8 20 20 16 32 C 12 40 4 44 0 48 C 8 40 8 24 0 0 Z', { x: 430, y: 185, color: blueColor });
+  // 8. Center Ocean Blue Guilloche Rosette Seal Medallion
+  const sealX = 421;
+  const sealY = 190;
+
+  // Outer Scalloped Petals Ring (16 Petals around circumference)
+  for (let i = 0; i < 16; i++) {
+    const angle = (i * Math.PI) / 8;
+    const px = sealX + Math.cos(angle) * 25;
+    const py = sealY + Math.sin(angle) * 25;
+    page.drawCircle({ x: px, y: py, size: 6.5, color: blueColor });
+  }
+
+  // Solid Ocean Blue Inner Base Circle
+  page.drawCircle({ x: sealX, y: sealY, size: 23, color: blueColor });
+  // Concentric White Ring
+  page.drawCircle({ x: sealX, y: sealY, size: 19, borderColor: rgb(1, 1, 1), borderWidth: 1 });
+  // Inner Deep Navy Circle
+  page.drawCircle({ x: sealX, y: sealY, size: 16, color: darkNavy });
+
+  // Center Laurel Wreath & White Stars Emblem
+  page.drawSvgPath('M -6 -3 C -10 1 -10 7 -4 10 C -1 12 1 12 4 10 C 10 7 10 1 6 -3 Z', { x: sealX, y: sealY - 3, color: rgb(1, 1, 1) });
+  
+  for (let s = -2; s <= 2; s++) {
+    const starAngle = (s * 25 * Math.PI) / 180 - Math.PI / 2;
+    const stX = sealX + Math.cos(starAngle) * 9;
+    const stY = sealY + Math.sin(starAngle) * 9;
+    page.drawCircle({ x: stX, y: stY, size: 1.2, color: rgb(1, 1, 1) });
+  }
 
   // 9. Signatures at Bottom
   // Left Signature - Soham Sharma (Founder)
