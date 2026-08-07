@@ -126,7 +126,7 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
   };
 
   return (
-    <div className="bg-[#F5F8FC] min-h-screen text-[#0B1220] font-sans">
+    <div className="bg-[#F5F8FC] min-h-screen text-[#0B1220] font-sans pb-24">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

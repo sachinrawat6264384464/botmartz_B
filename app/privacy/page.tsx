@@ -33,7 +33,7 @@ export default function PrivacyPolicyPage() {
             <Shield className="w-3 h-3" />
             <span>Document ID: SEC-PRIV-01</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight uppercase">Privacy Policy</h1>
+          <h1 className="text-4xl md:text-6xl font-black tracking-tight uppercase text-white drop-shadow-md">Privacy Policy</h1>
           <p className="text-gray-400 mt-2 font-mono text-xs">Last Updated: July 8, 2026</p>
         </motion.div>
 

@@ -81,25 +81,35 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
       />
       
       {/* HERO SECTION */}
-      <section className="relative pt-[120px] pb-[80px] bg-white text-slate-900 overflow-hidden border-b border-slate-200">
+      <section className="relative pt-[120px] pb-[80px] bg-[#060C1F] text-white overflow-hidden">
+        {/* Background Grid & Mask */}
+        <div 
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(0,198,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,198,255,0.06) 1px, transparent 1px)',
+            backgroundSize: '44px 44px',
+            maskImage: 'radial-gradient(ellipse 80% 60% at 65% 30%, black, transparent)',
+            WebkitMaskImage: 'radial-gradient(ellipse 80% 60% at 65% 30%, black, transparent)'
+          }}
+        />
         {/* Background glow effects */}
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/5 blur-[120px] rounded-full pointer-events-none" />
-        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0066FF]/5 blur-[150px] rounded-full pointer-events-none" />
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00C6FF]/10 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0066FF]/15 blur-[150px] rounded-full pointer-events-none" />
 
         <div className="wrap relative z-10 flex flex-col items-center text-center max-w-[800px] mx-auto">
-          <div className="w-16 h-16 bg-[#00B8F0]/10 border border-[#00B8F0]/20 rounded-full flex items-center justify-center mb-6 shadow-sm">
-            <Mail className="w-8 h-8 text-[#00B8F0]" />
+          <div className="w-16 h-16 bg-[#00C6FF]/15 border border-[#00C6FF]/30 rounded-full flex items-center justify-center mb-6 shadow-sm">
+            <Mail className="w-8 h-8 text-[#00C6FF]" />
           </div>
-          <div className="font-mono text-[11px] tracking-[0.14em] text-[#007BFF] uppercase mb-4 flex items-center gap-3 font-semibold justify-center">
-            <span className="w-6 h-px bg-[#007BFF]/30"></span>
+          <div className="font-mono text-[11px] tracking-[0.14em] text-[#00C6FF] uppercase mb-4 flex items-center gap-3 font-bold justify-center">
+            <span className="w-6 h-px bg-[#00C6FF]/30"></span>
             {heroData.badge}
-            <span className="w-6 h-px bg-[#007BFF]/30"></span>
+            <span className="w-6 h-px bg-[#00C6FF]/30"></span>
           </div>
           <h1 
-            className="text-[clamp(36px,4.5vw,56px)] leading-[1.1] font-extrabold mb-6 tracking-tight text-slate-900"
+            className="text-[clamp(36px,4.5vw,56px)] leading-[1.1] font-extrabold mb-6 tracking-tight text-white"
             dangerouslySetInnerHTML={{ __html: heroData.title }}
           />
-          <p className="text-[17px] text-slate-600 max-w-[600px] mx-auto">
+          <p className="text-[17px] text-[#8FA3C4] max-w-[600px] mx-auto font-medium leading-relaxed">
             {heroData.subtitle}
           </p>
         </div>

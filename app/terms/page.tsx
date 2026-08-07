@@ -33,7 +33,7 @@ export default function TermsOfServicePage() {
             <Shield className="w-3 h-3" />
             <span>Document ID: SEC-TERMS-01</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight uppercase">Terms of Service</h1>
+          <h1 className="text-4xl md:text-6xl font-black tracking-tight uppercase text-white drop-shadow-md">Terms of Service</h1>
           <p className="text-gray-400 mt-2 font-mono text-xs">Last Updated: July 8, 2026</p>
         </motion.div>
 
