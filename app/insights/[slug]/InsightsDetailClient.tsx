@@ -639,31 +639,32 @@ export default function InsightsDetailClient({
         </div>
 
         {/* Content Render */}
-        <ReactMarkdown 
-          className="text-slate-700 font-normal leading-relaxed"
-          remarkPlugins={[remarkGfm]}
-          components={{
-            h1: ({node, ...props}) => <h1 className="text-3xl font-extrabold text-slate-900 mt-12 mb-6" {...props} />,
-            h2: ({node, ...props}) => <h2 className="text-2xl font-bold text-slate-900 mt-10 mb-5" {...props} />,
-            h3: ({node, ...props}) => <h3 className="text-xl font-bold text-slate-900 mt-8 mb-4" {...props} />,
-            p: ({node, ...props}) => <p className="mb-6 text-[15.5px] leading-7" {...props} />,
-            ul: ({node, ...props}) => <ul className="list-disc pl-6 mb-6 space-y-2 text-[15px]" {...props} />,
-            ol: ({node, ...props}) => <ol className="list-decimal pl-6 mb-6 space-y-2 text-[15px]" {...props} />,
-            li: ({node, ...props}) => <li className="pl-1" {...props} />,
-            strong: ({node, ...props}) => <strong className="font-bold text-slate-900" {...props} />,
-            code: ({node, className, children, ...props}: any) => {
-              const match = /language-(\w+)/.exec(className || '');
-              const isInline = !match && !String(children).includes('\n');
-              return isInline ? (
-                <code className="bg-slate-100 text-pink-600 px-1.5 py-0.5 rounded text-[13px] font-mono" {...props}>{children}</code>
-              ) : (
-                <pre className="bg-slate-900 text-slate-50 p-4 rounded-xl overflow-x-auto mb-6 text-[13px] font-mono shadow-sm"><code className={className} {...props}>{children}</code></pre>
-              );
-            }
-          }}
-        >
-          {post.content}
-        </ReactMarkdown>
+        <div className="text-slate-700 font-normal leading-relaxed">
+          <ReactMarkdown 
+            remarkPlugins={[remarkGfm]}
+            components={{
+              h1: ({node, ...props}) => <h1 className="text-3xl font-extrabold text-slate-900 mt-12 mb-6" {...props} />,
+              h2: ({node, ...props}) => <h2 className="text-2xl font-bold text-slate-900 mt-10 mb-5" {...props} />,
+              h3: ({node, ...props}) => <h3 className="text-xl font-bold text-slate-900 mt-8 mb-4" {...props} />,
+              p: ({node, ...props}) => <p className="mb-6 text-[15.5px] leading-7" {...props} />,
+              ul: ({node, ...props}) => <ul className="list-disc pl-6 mb-6 space-y-2 text-[15px]" {...props} />,
+              ol: ({node, ...props}) => <ol className="list-decimal pl-6 mb-6 space-y-2 text-[15px]" {...props} />,
+              li: ({node, ...props}) => <li className="pl-1" {...props} />,
+              strong: ({node, ...props}) => <strong className="font-bold text-slate-900" {...props} />,
+              code: ({node, className, children, ...props}: any) => {
+                const match = /language-(\w+)/.exec(className || '');
+                const isInline = !match && !String(children).includes('\n');
+                return isInline ? (
+                  <code className="bg-slate-100 text-pink-600 px-1.5 py-0.5 rounded text-[13px] font-mono" {...props}>{children}</code>
+                ) : (
+                  <pre className="bg-slate-900 text-slate-50 p-4 rounded-xl overflow-x-auto mb-6 text-[13px] font-mono shadow-sm"><code className={className} {...props}>{children}</code></pre>
+                );
+              }
+            }}
+          >
+            {post.content}
+          </ReactMarkdown>
+        </div>
 
         {/* Key Takeaways */}
         {closingPoints.length > 0 && (
