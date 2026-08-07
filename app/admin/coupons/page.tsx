@@ -88,6 +88,10 @@ export default function CouponsDashboard() {
   const [maxUses, setMaxUses] = useState(50);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Delete modal state
+  const [deleteModal, setDeleteModal] = useState<{ id: string; code: string } | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
   // Fetch coupons WITHOUT orderBy to avoid index errors
   // Fetch coupons WITH actual redemptions from bootcamp_registrations
   const fetchCoupons = async () => {
@@ -231,14 +235,42 @@ export default function CouponsDashboard() {
     setActionLoading(null);
   };
 
-  const handleDelete = async (id: string, codeName: string) => {
+  const handleDelete = (id: string, codeName: string) => {
     if (id.startsWith('sys-')) return;
-    if (!confirm(`Delete coupon "${codeName}"? This cannot be undone.`)) return;
+    setDeleteModal({ id, code: codeName });
+  };
+
+  const confirmDeleteCoupon = async () => {
+    if (!deleteModal) return;
+    const { id, code } = deleteModal;
+    setDeleting(true);
     setActionLoading(`del-${id}`);
+
     try {
-      await deleteDoc(doc(db, 'coupons', id));
-    } catch (e) { console.error(e); }
-    setActionLoading(null);
+      // 1. Server-side deletion via adminDb API (bulletproof)
+      await fetch('/api/admin/coupons', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, code })
+      });
+
+      // 2. Client-side delete attempt if doc ID exists
+      if (!id.startsWith('sys-')) {
+        try {
+          await deleteDoc(doc(db, 'coupons', id));
+        } catch (e) {}
+      }
+
+      // 3. Instantly remove from local state
+      setCoupons(prev => prev.filter(c => c.id !== id && c.code !== code));
+      setDeleteModal(null);
+    } catch (e) {
+      console.error('Error deleting coupon:', e);
+      alert('Failed to delete coupon. Please try again.');
+    } finally {
+      setDeleting(false);
+      setActionLoading(null);
+    }
   };
 
   // Separate into categories
@@ -660,6 +692,60 @@ export default function CouponsDashboard() {
           </div>
         )}
       </div>
+
+      {/* ON-PAGE DELETE CONFIRMATION MODAL */}
+      {deleteModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-[#0E172A] border border-rose-500/30 rounded-2xl p-6 max-w-md w-full shadow-2xl text-white space-y-4 relative">
+            <button
+              onClick={() => setDeleteModal(null)}
+              disabled={deleting}
+              className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 mx-auto">
+              <Trash2 size={24} />
+            </div>
+
+            <div className="text-center space-y-2">
+              <h3 className="text-lg font-bold text-white">Delete Coupon Code</h3>
+              <p className="text-xs text-slate-300">
+                Are you sure you want to delete coupon <code className="px-2 py-0.5 rounded bg-white/10 text-emerald-400 font-mono font-bold text-sm">{deleteModal.code}</code>?
+              </p>
+              <p className="text-[11px] text-rose-400/90 italic">
+                This coupon will be permanently removed from database and cannot be undone.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setDeleteModal(null)}
+                disabled={deleting}
+                className="flex-1 py-2.5 px-4 rounded-xl border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={confirmDeleteCoupon}
+                disabled={deleting}
+                className="flex-1 py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-md disabled:opacity-50"
+              >
+                {deleting ? (
+                  <>
+                    <Loader2 size={14} className="animate-spin" /> Deleting...
+                  </>
+                ) : (
+                  "OK, Delete Coupon"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

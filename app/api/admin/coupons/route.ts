@@ -83,3 +83,28 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: err.message || 'Failed to fetch coupon data' }, { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { id, code } = await req.json();
+    if (!id && !code) {
+      return NextResponse.json({ error: 'Coupon ID or Code is required' }, { status: 400 });
+    }
+
+    if (id && !id.startsWith('sys-')) {
+      await adminDb.collection('coupons').doc(id).delete();
+    }
+
+    if (code) {
+      const snap = await adminDb.collection('coupons').where('code', '==', String(code).trim().toUpperCase()).get();
+      const batch = adminDb.batch();
+      snap.docs.forEach(d => batch.delete(d.ref));
+      await batch.commit();
+    }
+
+    return NextResponse.json({ success: true, message: 'Coupon deleted successfully' });
+  } catch (err: any) {
+    console.error('[admin coupons delete error]', err);
+    return NextResponse.json({ error: err.message || 'Failed to delete coupon' }, { status: 500 });
+  }
+}
