@@ -1,7 +1,40 @@
-/**
- * lib/mail-templates.ts
- * Nodemailer templates for registration received, payment success, and digital ticket check-in passes.
- */
+import nodemailer from "nodemailer";
+import { adminDb } from "@/lib/firebase-admin";
+
+export async function getSmtpTransporter() {
+  let settings: any = {};
+  try {
+    const settingsSnap = await adminDb.collection("settings").doc("global").get();
+    if (settingsSnap.exists) {
+      settings = settingsSnap.data();
+    }
+  } catch (e) {
+    console.warn("Could not fetch global settings for SMTP:", e);
+  }
+
+  const smtpHost = settings?.email?.smtpHost || process.env.SMTP_HOST || process.env.GMAIL_HOST || 'smtp.hostinger.com';
+  const smtpPort = Number(settings?.email?.smtpPort || process.env.SMTP_PORT || '465');
+  const smtpUser = settings?.email?.smtpUser || process.env.SMTP_USER || process.env.GMAIL_USER;
+  const smtpPass = settings?.email?.smtpPass || process.env.SMTP_PASS || process.env.GMAIL_APP_PASS;
+
+  if (!smtpUser || !smtpPass) {
+    console.warn("⚠️ [SMTP Helper] Credentials not configured in settings/global or env variables!");
+    return null;
+  }
+
+  const transporter = nodemailer.createTransport({
+    host: smtpHost,
+    port: smtpPort,
+    secure: smtpPort === 465,
+    auth: {
+      user: smtpUser,
+      pass: smtpPass,
+    },
+    tls: { rejectUnauthorized: false }
+  });
+
+  return { transporter, smtpUser };
+}
 
 export function buildRegistrationEmail(name: string, eventTitle: string): string {
   return `<!DOCTYPE html>

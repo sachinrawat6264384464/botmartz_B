@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import { adminDb } from "@/lib/firebase-admin";
 import nodemailer from "nodemailer";
-import { buildPaymentSuccessEmail, buildEventTicketEmail } from "@/lib/mail-templates";
+import { buildPaymentSuccessEmail, buildEventTicketEmail, getSmtpTransporter } from "@/lib/mail-templates";
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || 'smtp.hostinger.com',
@@ -67,10 +67,11 @@ export async function POST(req: Request) {
           createdAt: new Date(),
         });
 
-        // Send Emails
-        const smtpUser = process.env.SMTP_USER;
-        if (smtpUser) {
-          try {
+        // Send Emails via getSmtpTransporter
+        try {
+          const smtpRes = await getSmtpTransporter();
+          if (smtpRes) {
+            const { transporter, smtpUser } = smtpRes;
             await transporter.sendMail({
               from: `"Botmartz Accounts" <${smtpUser}>`,
               to: email,
@@ -84,9 +85,12 @@ export async function POST(req: Request) {
               subject: `You're In! | AI Accelerator Workshop — Bootcamp 01`,
               html: buildEventTicketEmail(name, eventTitle, dateVal, locVal, [checkInCode]),
             });
-          } catch (mailErr) {
-            console.error('[Verify Payment Mail Delivery Failed]', mailErr);
+            console.log(`✅ [Verify Payment] Emails successfully sent to ${email}`);
+          } else {
+            console.warn(`⚠️ [Verify Payment] Skipped email sending: SMTP credentials not configured`);
           }
+        } catch (mailErr) {
+          console.error('[Verify Payment Mail Delivery Failed]', mailErr);
         }
       }
 

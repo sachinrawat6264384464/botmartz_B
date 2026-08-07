@@ -5,7 +5,8 @@ import { adminDb } from '@/lib/firebase-admin';
 import { 
   buildRegistrationEmail, 
   buildPaymentSuccessEmail, 
-  buildEventTicketEmail 
+  buildEventTicketEmail,
+  getSmtpTransporter
 } from '@/lib/mail-templates';
 
 // Setup Nodemailer Transporter
@@ -116,48 +117,53 @@ export async function POST(req: NextRequest) {
       updatedAt: new Date().toISOString(),
     });
 
-    // 4. Send Emails
-    const smtpUser = process.env.SMTP_USER;
-    if (smtpUser && regData) {
+    // 4. Send Emails via getSmtpTransporter
+    if (regData) {
       const { name, email: regEmail, eventTitle, eventId } = regData;
 
       try {
-        // Email 1: Registration Received (Immediate)
-        await transporter.sendMail({
-          from: `"Botmartz Events" <${smtpUser}>`,
-          to: regEmail,
-          subject: `Registration Details Received - ${eventTitle}`,
-          html: buildRegistrationEmail(name, eventTitle),
-        });
+        const smtpRes = await getSmtpTransporter();
+        if (smtpRes) {
+          const { transporter, smtpUser } = smtpRes;
 
-        // Sleep for 2 seconds
-        await new Promise(resolve => setTimeout(resolve, 2000));
+          // Email 1: Registration Received (Immediate)
+          await transporter.sendMail({
+            from: `"Botmartz Events" <${smtpUser}>`,
+            to: regEmail,
+            subject: `Registration Details Received - ${eventTitle}`,
+            html: buildRegistrationEmail(name, eventTitle),
+          });
 
-        // Email 2: Invoice Receipt
-        await transporter.sendMail({
-          from: `"Botmartz Accounts" <${smtpUser}>`,
-          to: regEmail,
-          subject: `Payment Confirmed Invoice - ${eventTitle}`,
-          html: buildPaymentSuccessEmail(name, eventTitle, amountInr, utr || 'Auto-Captured'),
-        });
+          // Sleep for 1 second
+          await new Promise(resolve => setTimeout(resolve, 1000));
 
-        // Email 3: Ticket Pass
-        let dateVal = 'Upcoming';
-        let locVal = 'Indore, India';
-        const eventDoc = await adminDb.collection('events').doc(eventId).get();
-        if (eventDoc.exists) {
-          const evtData = eventDoc.data();
-          dateVal = evtData?.date || dateVal;
-          locVal = evtData?.location || locVal;
+          // Email 2: Invoice Receipt
+          await transporter.sendMail({
+            from: `"Botmartz Accounts" <${smtpUser}>`,
+            to: regEmail,
+            subject: `Payment Confirmed Invoice - ${eventTitle}`,
+            html: buildPaymentSuccessEmail(name, eventTitle, amountInr, utr || 'Auto-Captured'),
+          });
+
+          // Email 3: Ticket Pass
+          let dateVal = 'Upcoming';
+          let locVal = 'Indore, India';
+          if (eventId) {
+            const eventDoc = await adminDb.collection('events').doc(eventId).get();
+            if (eventDoc.exists) {
+              const evtData = eventDoc.data();
+              dateVal = evtData?.date || dateVal;
+              locVal = evtData?.location || locVal;
+            }
+          }
+
+          await transporter.sendMail({
+            from: `"Botmartz Events" <${smtpUser}>`,
+            to: regEmail,
+            subject: `You're In! | AI Accelerator Workshop — Bootcamp 01`,
+            html: buildEventTicketEmail(name, eventTitle, dateVal, locVal, checkInCode),
+          });
         }
-
-        await transporter.sendMail({
-          from: `"Botmartz Events" <${smtpUser}>`,
-          to: regEmail,
-          subject: `You're In! | AI Accelerator Workshop — Bootcamp 01`,
-          html: buildEventTicketEmail(name, eventTitle, dateVal, locVal, checkInCode),
-        });
-
       } catch (mailErr) {
         console.error('[Webhook Mail Delivery Failed]', mailErr);
       }

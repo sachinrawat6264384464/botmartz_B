@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { adminDb } from "@/lib/firebase-admin";
 import nodemailer from "nodemailer";
-import { buildPaymentSuccessEmail, buildEventTicketEmail } from "@/lib/mail-templates";
+import { buildPaymentSuccessEmail, buildEventTicketEmail, getSmtpTransporter } from "@/lib/mail-templates";
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || 'smtp.hostinger.com',
@@ -57,11 +57,11 @@ export async function POST(req: Request) {
     });
 
     // Send confirmation + ticket emails
-    const smtpUser = process.env.SMTP_USER;
     let emailSent = false;
-
-    if (smtpUser) {
-      try {
+    try {
+      const smtpRes = await getSmtpTransporter();
+      if (smtpRes) {
+        const { transporter, smtpUser } = smtpRes;
         await transporter.sendMail({
           from: `"Botmartz Accounts" <${smtpUser}>`,
           to: email.trim(),
@@ -77,9 +77,9 @@ export async function POST(req: Request) {
         });
 
         emailSent = true;
-      } catch (mailErr) {
-        console.error('[Admin Direct Register - Email Error]', mailErr);
       }
+    } catch (mailErr) {
+      console.error('[Admin Direct Register - Email Error]', mailErr);
     }
 
     return NextResponse.json({

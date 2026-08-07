@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { adminDb } from "@/lib/firebase-admin";
 import nodemailer from "nodemailer";
-import { buildPaymentSuccessEmail, buildEventTicketEmail } from "@/lib/mail-templates";
+import { buildPaymentSuccessEmail, buildEventTicketEmail, getSmtpTransporter } from "@/lib/mail-templates";
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || 'smtp.hostinger.com',
@@ -127,10 +127,11 @@ export async function POST(req: Request) {
       console.error('[Coupon usage update error]', cErr);
     }
 
-    // Send emails
-    const smtpUser = process.env.SMTP_USER;
-    if (smtpUser) {
-      try {
+    // Send emails dynamically using getSmtpTransporter
+    try {
+      const smtpRes = await getSmtpTransporter();
+      if (smtpRes) {
+        const { transporter, smtpUser } = smtpRes;
         await transporter.sendMail({
           from: `"Botmartz Accounts" <${smtpUser}>`,
           to: email,
@@ -144,9 +145,12 @@ export async function POST(req: Request) {
           subject: `You're In! | AI Accelerator Workshop — Bootcamp 01`,
           html: buildEventTicketEmail(name, eventTitle, dateVal, locVal, [checkInCode]),
         });
-      } catch (mailErr) {
-        console.error('[Free Registration Email Dispatch Error]', mailErr);
+        console.log(`✅ [Coupon Registration] Emails successfully sent to ${email}`);
+      } else {
+        console.warn(`⚠️ [Coupon Registration] Skipped email sending: SMTP credentials not set`);
       }
+    } catch (mailErr) {
+      console.error('[Free Registration Email Dispatch Error]', mailErr);
     }
 
     return NextResponse.json({ success: true, checkInCode }, { status: 200 });
