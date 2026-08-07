@@ -161,22 +161,22 @@ export function buildPaymentSuccessEmail(name: string, eventTitle: string, amoun
 }
 
 export function buildEventTicketEmail(
-  name: string, 
-  eventTitle: string, 
-  date?: string, 
-  location?: string, 
+  name: string,
+  eventTitle: string,
+  date?: string,
+  location?: string,
   checkInCodes?: string | string[]
 ): string {
   const rawCodes = checkInCodes || "REG-CONFIRMED";
   const codes = Array.isArray(rawCodes) ? rawCodes : [rawCodes];
   const displayTitle = eventTitle || "AI Accelerator Workshop Series — Bootcamp 01";
   const displayDate = (date && date !== "TBA") ? date : "9 August 2026 | Sunday";
-  
+
   const ticketBlocks = codes.map((code, idx) => {
     const qrDataUrl = `https://botmartz.com/admin/scanner?code=${code}`;
     const qrImageSrc = `https://api.qrserver.com/v1/create-qr-code/?size=350x350&margin=2&ecc=M&data=${encodeURIComponent(qrDataUrl)}`;
     const guestLabel = codes.length > 1 ? (idx === 0 ? '' : ` (GUEST ${idx})`) : '';
-    
+
     return `
               <!-- DIGITAL PASS CARD -->
               <table width="100%" cellpadding="0" cellspacing="0" style="background:#0E172A;border:2px dashed #00B8F0;border-radius:16px;overflow:hidden;max-width:480px;box-shadow:0 10px 30px rgba(0,0,0,0.5);margin:0 auto 24px auto;">
@@ -325,7 +325,7 @@ export function buildEventTicketEmail(
               <!-- Before You Join -->
               <div style="background:#060D1A;border:1px solid #1E293B;border-radius:12px;padding:20px;margin-bottom:28px;">
                 <h3 style="margin:0;font-size:16px;font-weight:700;color:#F59E0B;margin-bottom:10px;">
-                  ⚡ Before You Join
+                  ⚡ Before You Join The Session
                 </h3>
                 <p style="margin:0;font-size:14px;color:#CBD5E1;line-height:1.6;">
                   Have your laptop/PC, stable internet, and development environment ready. We recommend joining a few minutes before the session begins.
