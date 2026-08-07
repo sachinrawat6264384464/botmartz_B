@@ -167,7 +167,7 @@ export default async function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           ></iframe>
         </noscript>
-        
+
         <WebVitals />
         <EventCountdownBanner />
         <ClientLayout navbar={<NavbarWrapper settings={settings} />} settings={settings}>{children}</ClientLayout>
