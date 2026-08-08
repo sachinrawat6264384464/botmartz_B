@@ -20,7 +20,7 @@ const milestones = [
   {
     id: "03",
     title: "Series 3",
-    date: "Aug 23, 2026",
+    date: "Aug 22, 2026",
     subtitle: "Build Production Ready AI Applications",
     description: "Understand how modern production AI systems are engineered.",
   },

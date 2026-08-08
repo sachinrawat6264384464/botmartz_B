@@ -6,7 +6,7 @@ export async function GET() {
     const updates = {
       'build-your-first-ai-full-stack-application': 'August 9, 2026',
       'build-smarter-ai-agents': 'August 16, 2026',
-      'build-production-ready-ai-applications': 'August 23, 2026'
+      'build-production-ready-ai-applications': 'August 22, 2026'
     };
     
     const snapshot = await adminDb.collection('bootcamps').get();

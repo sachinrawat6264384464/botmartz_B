@@ -45,7 +45,7 @@ const UPCOMING_EVENTS = [
   { id: 1, title: 'AI Frontier 2026', date: 'Aug 23, 2026', location: 'Walkover Co-working, Indore, India', registered: 500 },
   { id: 2, title: 'AI Accelerator Workshop Series 1', date: 'Aug 9, 2026', location: 'Indore, India', registered: 120 },
   { id: 3, title: 'AI Accelerator Workshop Series 2', date: 'Aug 16, 2026', location: 'Indore, India', registered: 145 },
-  { id: 4, title: 'AI Accelerator Workshop Series 3', date: 'Aug 23, 2026', location: 'Indore, India', registered: 180 },
+  { id: 4, title: 'AI Accelerator Workshop Series 3', date: 'Aug 22, 2026', location: 'Indore, India', registered: 180 },
 ];
 
 export default function AdminDashboard() {
