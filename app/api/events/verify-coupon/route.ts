@@ -37,10 +37,14 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const { code } = await req.json();
+    const { code, plan } = await req.json();
 
     if (!code) {
       return NextResponse.json({ error: 'Coupon code is required' }, { status: 400 });
+    }
+
+    if (plan && plan !== 'bundle') {
+      return NextResponse.json({ error: 'Coupon codes are only valid for the ₹399 AI Engineering Pass (Full Bundle).' }, { status: 400 });
     }
 
     const uppercaseCode = code.trim().toUpperCase();

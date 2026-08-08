@@ -22,6 +22,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: "Missing required fields" }, { status: 400 });
     }
 
+    if (plan && plan !== "bundle") {
+      return NextResponse.json({
+        success: false,
+        error: "Coupon codes can only be redeemed for the ₹399 AI Engineering Pass."
+      }, { status: 400 });
+    }
+
     const uppercaseCoupon = couponCode.trim().toUpperCase();
 
     // 1. Fetch coupon details from 'coupons' collection to get true maxUses

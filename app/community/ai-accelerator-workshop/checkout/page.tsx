@@ -93,8 +93,22 @@ function CheckoutContent() {
     return basePrice;
   };
 
+  useEffect(() => {
+    if (plan !== "bundle") {
+      setAppliedCouponInfo(null);
+      setCouponSuccess("");
+      setCouponError("");
+    }
+  }, [plan]);
+
   const handleApplyCoupon = async () => {
     if (!couponInput.trim()) return;
+
+    if (plan !== "bundle") {
+      setCouponError("Coupon codes are only valid for the ₹399 AI Engineering Pass (Full Bundle).");
+      return;
+    }
+
     setCouponLoading(true);
     setCouponError("");
     setCouponSuccess("");
@@ -103,7 +117,7 @@ function CheckoutContent() {
       const res = await fetch("/api/events/verify-coupon", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: couponInput.trim() }),
+        body: JSON.stringify({ code: couponInput.trim(), plan }),
       });
       const data = await res.json();
 
