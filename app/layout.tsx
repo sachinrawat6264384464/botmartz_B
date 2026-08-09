@@ -8,6 +8,7 @@ import { getCachedGlobalSettings } from "@/lib/fetch-helpers";
 import StructuredData from "./_components/StructuredData";
 import NavbarWrapper from "./_components/NavbarWrapper";
 import EventCountdownBanner from "./_components/EventCountdownBanner";
+import FlashSaleBanner from "./_components/FlashSaleBanner";
 import Script from "next/script";
 import { WebVitals } from "./web-vitals";
 
@@ -169,6 +170,7 @@ export default async function RootLayout({
         </noscript>
 
         <WebVitals />
+        <FlashSaleBanner />
         <EventCountdownBanner />
         <ClientLayout navbar={<NavbarWrapper settings={settings} />} settings={settings}>{children}</ClientLayout>
       </body>

@@ -1,8 +1,9 @@
 "use client";
 
-import { CheckCircle2, Calendar } from "lucide-react";
+import { CheckCircle2, Calendar, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 const bootcamps = [
   {
@@ -63,7 +64,35 @@ const bootcamps = [
   },
 ];
 
+// Sale window: 10:00 AM IST to 4:00 PM IST
+function isSaleActive(): boolean {
+  const now = new Date();
+  // IST offset = UTC+5:30
+  // 10:00 AM IST = 04:30 UTC, 4:00 PM IST = 10:30 UTC
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const date = now.getDate();
+  const saleStart = new Date(Date.UTC(year, month, date, 4, 30, 0));
+  const saleEnd = new Date(Date.UTC(year, month, date, 10, 30, 0));
+  return now >= saleStart && now < saleEnd;
+}
+
 export default function BootcampDetails() {
+  const [mounted, setMounted] = useState(false);
+  const [saleActive, setSaleActive] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    setSaleActive(isSaleActive());
+    const interval = setInterval(() => setSaleActive(isSaleActive()), 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Only evaluate sale logic after component mounts on client to prevent SSR hydration mismatch
+  const showSale = mounted && saleActive;
+  const fullPassPrice = showSale ? 299 : 399;
+  const fullPassOriginalPrice = showSale ? 399 : 597;
+
   return (
     <section id="bootcamps" className="py-24 bg-white">
       <div className="container mx-auto px-4 md:px-6">
@@ -74,6 +103,19 @@ export default function BootcampDetails() {
           <p className="text-lg md:text-xl text-[#475569] max-w-2xl mx-auto font-medium">
             A comprehensive, step-by-step engineering curriculum designed for real-world application.
           </p>
+
+          {/* Flash Sale Alert inside section */}
+          {showSale && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="mt-6 inline-flex items-center gap-2 bg-gradient-to-r from-[#FF6B00] to-[#E03200] text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg"
+            >
+              <Zap size={16} className="animate-pulse" />
+              Flash Sale LIVE! — Get Full Pass at ₹299 (was ₹399) till 4:00 PM today!
+              <Zap size={16} className="animate-pulse" />
+            </motion.div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -130,9 +172,15 @@ export default function BootcampDetails() {
                   </Link>
                   <Link
                     href="/community/ai-accelerator-workshop/checkout?plan=bundle"
-                    className="flex w-full justify-center items-center py-3 rounded-xl bg-[#0066FF] text-white font-bold hover:bg-[#0052CC] transition-all shadow-sm"
+                    className="flex w-full justify-center items-center gap-2 py-3 rounded-xl bg-[#0066FF] text-white font-bold hover:bg-[#0052CC] transition-all shadow-sm"
                   >
-                    Get Full Pass (₹399)
+                    {showSale ? (
+                      <>
+                        Get Full Pass <span className="line-through text-white/70 font-medium">₹399</span> <span className="text-amber-300 font-extrabold">₹299</span>
+                      </>
+                    ) : (
+                      `Get Full Pass (₹399)`
+                    )}
                   </Link>
                 </div>
               </div>
@@ -164,10 +212,12 @@ export default function BootcampDetails() {
 
               <div className="relative z-10 flex flex-col items-center md:items-end flex-shrink-0 w-full md:w-auto border-t md:border-t-0 md:border-l border-[#1E293B] pt-6 md:pt-0 md:pl-10">
                 <div className="flex items-end gap-3 mb-5">
-                  <span className="text-4xl md:text-5xl font-bold text-white tracking-tight">₹399</span>
+                  <span className="text-4xl md:text-5xl font-bold text-white tracking-tight">₹{fullPassPrice}</span>
                   <div className="flex flex-col items-start pb-1">
-                    <span className="text-[#8A9EB0] text-sm line-through leading-none">₹597</span>
-                    <span className="text-[#00B8F0] text-[13px] font-bold leading-none mt-1">Save ₹198</span>
+                    <span className="text-[#8A9EB0] text-sm line-through leading-none">₹{fullPassOriginalPrice}</span>
+                    <span className="text-[#00B8F0] text-[13px] font-bold leading-none mt-1">
+                      Save ₹{fullPassOriginalPrice - fullPassPrice}
+                    </span>
                   </div>
                 </div>
                 <Link
