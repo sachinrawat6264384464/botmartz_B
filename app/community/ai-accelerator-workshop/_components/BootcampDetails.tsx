@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle2, Calendar, Zap } from "lucide-react";
+import { CheckCircle2, Calendar, Zap, Lock, Radio } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -71,23 +71,46 @@ function isSaleActive(): boolean {
   const year = now.getFullYear();
   const month = now.getMonth();
   const date = now.getDate();
+  // IST offset = UTC+5:30 -> 10:00 AM IST = 04:30 UTC, 4:00 PM IST = 10:30 UTC
   const saleStart = new Date(Date.UTC(year, month, date, 4, 30, 0));
   const saleEnd = new Date(Date.UTC(year, month, date, 10, 30, 0));
   return now >= saleStart && now < saleEnd;
 }
 
+// Bootcamp 1 Status: LIVE till 1:00 PM IST (07:30 UTC), CLOSED after 1:00 PM IST
+function getBootcamp1Status(): "LIVE" | "CLOSED" {
+  if (typeof window === "undefined") return "LIVE";
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const date = now.getDate();
+  // 1:00 PM IST = 07:30 UTC
+  const bc1End = new Date(Date.UTC(year, month, date, 7, 30, 0));
+  return now < bc1End ? "LIVE" : "CLOSED";
+}
+
 export default function BootcampDetails() {
   const [mounted, setMounted] = useState(false);
   const [saleActive, setSaleActive] = useState(false);
+  const [bc1Status, setBc1Status] = useState<"LIVE" | "CLOSED">("LIVE");
 
   useEffect(() => {
     setMounted(true);
     setSaleActive(isSaleActive());
-    const interval = setInterval(() => setSaleActive(isSaleActive()), 10000);
+    setBc1Status(getBootcamp1Status());
+
+    const interval = setInterval(() => {
+      setSaleActive(isSaleActive());
+      setBc1Status(getBootcamp1Status());
+    }, 10000);
+
     return () => clearInterval(interval);
   }, []);
 
   const showSale = mounted && saleActive;
+  const isBc1Closed = mounted && bc1Status === "CLOSED";
+  const isBc1Live = mounted && bc1Status === "LIVE";
+
   const fullPassPrice = showSale ? 299 : 399;
   const fullPassOriginalPrice = showSale ? 399 : 597;
 
@@ -117,75 +140,108 @@ export default function BootcampDetails() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {bootcamps.map((bootcamp, idx) => (
-            <motion.div
-              key={bootcamp.number}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="bg-white border border-[#E2E8F0] rounded-3xl p-8 shadow-[0_4px_24px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] transition-all flex flex-col h-full relative overflow-hidden group"
-            >
-              {/* Top accent bar */}
-              <div className={`absolute top-0 left-0 right-0 h-2 bg-gradient-to-r ${bootcamp.color}`} />
+          {bootcamps.map((bootcamp, idx) => {
+            const isBc1 = bootcamp.id === 1;
+            const closed = isBc1 && isBc1Closed;
+            const live = isBc1 && isBc1Live;
 
-              <div className="mb-6">
-                <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-[#64748B] mb-2 flex items-center justify-between">
-                  <span>Bootcamp {bootcamp.number}</span>
-                  <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {bootcamp.date}</span>
-                </span>
-                <h3 className="text-2xl font-bold text-[#0B1C2C] leading-tight mb-3">
-                  {bootcamp.title}
-                </h3>
-                <p className="text-[#475569] font-medium leading-relaxed">
-                  {bootcamp.subtitle}
-                </p>
-              </div>
+            return (
+              <motion.div
+                key={bootcamp.number}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className={`bg-white border border-[#E2E8F0] rounded-3xl p-8 shadow-[0_4px_24px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] transition-all flex flex-col h-full relative overflow-hidden group ${
+                  closed ? "opacity-75 grayscale-[20%]" : ""
+                }`}
+              >
+                {/* Top accent bar */}
+                <div className={`absolute top-0 left-0 right-0 h-2 bg-gradient-to-r ${bootcamp.color}`} />
 
-              <div className="mb-8 flex-1">
-                <h4 className="text-sm font-bold tracking-widest uppercase text-[#94A3B8] mb-4">
-                  Core Topics
-                </h4>
-                <ul className="space-y-3">
-                  {bootcamp.topics.map((topic, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-[#0066FF] flex-shrink-0 mt-0.5" />
-                      <span className="text-[#334155] font-medium leading-snug">{topic}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="mt-auto pt-6 border-t border-[#E2E8F0]">
-                <h4 className="text-sm font-bold tracking-widest uppercase text-[#94A3B8] mb-2">
-                  Outcome
-                </h4>
-                <p className="text-[#0B1C2C] font-semibold mb-6">{bootcamp.outcome}</p>
-                <div className="space-y-3">
-                  <Link
-                    href={`/community/ai-accelerator-workshop/checkout?plan=bootcamp-${bootcamp.id}`}
-                    className="flex w-full justify-center items-center py-3 rounded-xl border-2 border-[#E2E8F0] text-[#0B1C2C] font-bold hover:border-[#0B1C2C] hover:bg-[#F8FAFC] transition-all"
-                  >
-                    <span>Register for ₹{bootcamp.price}</span>
-                  </Link>
-                  <Link
-                    href="/community/ai-accelerator-workshop/checkout?plan=bundle"
-                    className="flex w-full justify-center items-center gap-1.5 py-3 rounded-xl bg-[#0066FF] text-white font-bold hover:bg-[#0052CC] transition-all shadow-sm"
-                  >
-                    <span>Get Full Pass</span>
-                    {showSale ? (
-                      <span className="flex items-center gap-1">
-                        <span className="line-through text-white/70 font-medium">₹399</span>
-                        <span className="text-amber-300 font-extrabold">₹299</span>
-                      </span>
-                    ) : (
-                      <span>(₹399)</span>
-                    )}
-                  </Link>
+                <div className="mb-6">
+                  <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-[#64748B] mb-2 flex items-center justify-between">
+                    <span>Bootcamp {bootcamp.number}</span>
+                    <span className="flex items-center gap-1.5">
+                      {live && (
+                        <span className="inline-flex items-center gap-1 bg-emerald-500/10 text-emerald-600 border border-emerald-500/30 text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full">
+                          <Radio size={10} className="animate-pulse text-emerald-500" /> LIVE NOW (Till 1 PM)
+                        </span>
+                      )}
+                      {closed && (
+                        <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-500 border border-slate-300 text-[10px] font-bold uppercase px-2 py-0.5 rounded-full">
+                          <Lock size={10} /> Registration Closed
+                        </span>
+                      )}
+                      {!isBc1 && (
+                        <>
+                          <Calendar className="w-3 h-3" /> {bootcamp.date}
+                        </>
+                      )}
+                    </span>
+                  </span>
+                  <h3 className="text-2xl font-bold text-[#0B1C2C] leading-tight mb-3">
+                    {bootcamp.title}
+                  </h3>
+                  <p className="text-[#475569] font-medium leading-relaxed">
+                    {bootcamp.subtitle}
+                  </p>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+
+                <div className="mb-8 flex-1">
+                  <h4 className="text-sm font-bold tracking-widest uppercase text-[#94A3B8] mb-4">
+                    Core Topics
+                  </h4>
+                  <ul className="space-y-3">
+                    {bootcamp.topics.map((topic, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <CheckCircle2 className="w-5 h-5 text-[#0066FF] flex-shrink-0 mt-0.5" />
+                        <span className="text-[#334155] font-medium leading-snug">{topic}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="mt-auto pt-6 border-t border-[#E2E8F0]">
+                  <h4 className="text-sm font-bold tracking-widest uppercase text-[#94A3B8] mb-2">
+                    Outcome
+                  </h4>
+                  <p className="text-[#0B1C2C] font-semibold mb-6">{bootcamp.outcome}</p>
+                  <div className="space-y-3">
+                    {closed ? (
+                      <button
+                        disabled
+                        className="flex w-full justify-center items-center gap-2 py-3 rounded-xl bg-slate-100 border border-slate-300 text-slate-400 font-bold cursor-not-allowed opacity-80 pointer-events-none"
+                      >
+                        <Lock size={14} /> <span>Registration Closed (Session Ended at 1 PM)</span>
+                      </button>
+                    ) : (
+                      <Link
+                        href={`/community/ai-accelerator-workshop/checkout?plan=bootcamp-${bootcamp.id}`}
+                        className="flex w-full justify-center items-center py-3 rounded-xl border-2 border-[#E2E8F0] text-[#0B1C2C] font-bold hover:border-[#0B1C2C] hover:bg-[#F8FAFC] transition-all"
+                      >
+                        <span>Register for ₹{bootcamp.price}</span>
+                      </Link>
+                    )}
+                    <Link
+                      href="/community/ai-accelerator-workshop/checkout?plan=bundle"
+                      className="flex w-full justify-center items-center gap-1.5 py-3 rounded-xl bg-[#0066FF] text-white font-bold hover:bg-[#0052CC] transition-all shadow-sm"
+                    >
+                      <span>Get Full Pass</span>
+                      {showSale ? (
+                        <span className="flex items-center gap-1">
+                          <span className="line-through text-white/70 font-medium">₹399</span>
+                          <span className="text-amber-300 font-extrabold">₹299</span>
+                        </span>
+                      ) : (
+                        <span>(₹399)</span>
+                      )}
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
           {/* Full Width Pass Card */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
