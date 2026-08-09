@@ -66,9 +66,8 @@ const bootcamps = [
 
 // Sale window: 10:00 AM IST to 4:00 PM IST
 function isSaleActive(): boolean {
+  if (typeof window === "undefined") return false;
   const now = new Date();
-  // IST offset = UTC+5:30
-  // 10:00 AM IST = 04:30 UTC, 4:00 PM IST = 10:30 UTC
   const year = now.getFullYear();
   const month = now.getMonth();
   const date = now.getDate();
@@ -88,7 +87,6 @@ export default function BootcampDetails() {
     return () => clearInterval(interval);
   }, []);
 
-  // Only evaluate sale logic after component mounts on client to prevent SSR hydration mismatch
   const showSale = mounted && saleActive;
   const fullPassPrice = showSale ? 299 : 399;
   const fullPassOriginalPrice = showSale ? 399 : 597;
@@ -168,18 +166,20 @@ export default function BootcampDetails() {
                     href={`/community/ai-accelerator-workshop/checkout?plan=bootcamp-${bootcamp.id}`}
                     className="flex w-full justify-center items-center py-3 rounded-xl border-2 border-[#E2E8F0] text-[#0B1C2C] font-bold hover:border-[#0B1C2C] hover:bg-[#F8FAFC] transition-all"
                   >
-                    Register for ₹{bootcamp.price}
+                    <span>Register for ₹{bootcamp.price}</span>
                   </Link>
                   <Link
                     href="/community/ai-accelerator-workshop/checkout?plan=bundle"
-                    className="flex w-full justify-center items-center gap-2 py-3 rounded-xl bg-[#0066FF] text-white font-bold hover:bg-[#0052CC] transition-all shadow-sm"
+                    className="flex w-full justify-center items-center gap-1.5 py-3 rounded-xl bg-[#0066FF] text-white font-bold hover:bg-[#0052CC] transition-all shadow-sm"
                   >
+                    <span>Get Full Pass</span>
                     {showSale ? (
-                      <>
-                        Get Full Pass <span className="line-through text-white/70 font-medium">₹399</span> <span className="text-amber-300 font-extrabold">₹299</span>
-                      </>
+                      <span className="flex items-center gap-1">
+                        <span className="line-through text-white/70 font-medium">₹399</span>
+                        <span className="text-amber-300 font-extrabold">₹299</span>
+                      </span>
                     ) : (
-                      `Get Full Pass (₹399)`
+                      <span>(₹399)</span>
                     )}
                   </Link>
                 </div>
