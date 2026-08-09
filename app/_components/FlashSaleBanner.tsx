@@ -5,23 +5,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Zap, Clock, X, Tag } from "lucide-react";
 
-// Sale config: Today (Aug 9 2026) 10:00 AM IST to 4:00 PM IST
-// IST = UTC+5:30
-// Bootcamp 2 = Aug 16, Bootcamp 3 = Aug 22
-// Price: ₹399 during sale, ₹399 normally (both become 299 during sale)
-
+// Sale config: Today (Aug 9 2026) 10:00 AM IST to 11:59 PM IST
+// IST = UTC+5:30 → 11:59:59 PM IST = 18:29:59 UTC
 function getSaleTimes() {
   const today = new Date();
-  // Build today's 10:00 AM IST and 4:00 PM IST in UTC
   const year = today.getFullYear();
   const month = today.getMonth();
   const date = today.getDate();
 
-  // IST is UTC+5:30 → to get UTC, subtract 5h30m
-  // 10:00 AM IST = 04:30 UTC
-  // 4:00 PM IST = 10:30 UTC
-  const saleStart = new Date(Date.UTC(year, month, date, 4, 30, 0)); // 10:00 AM IST
-  const saleEnd = new Date(Date.UTC(year, month, date, 10, 30, 0));  // 4:00 PM IST
+  const saleStart = new Date(Date.UTC(year, month, date, 4, 30, 0));  // 10:00 AM IST
+  const saleEnd = new Date(Date.UTC(year, month, date, 18, 29, 59));  // 11:59 PM IST
 
   return { saleStart, saleEnd };
 }
@@ -37,13 +30,11 @@ export default function FlashSaleBanner() {
   const [mounted, setMounted] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [saleActive, setSaleActive] = useState(false);
-  const [saleStarted, setSaleStarted] = useState(false); // sale has started for the day
+  const [saleStarted, setSaleStarted] = useState(false);
   const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
     setMounted(true);
-    
-    // Check if user dismissed the banner this session
     const wasDismissed = sessionStorage.getItem("flashSaleDismissed");
     if (wasDismissed) setDismissed(true);
   }, []);
@@ -61,7 +52,7 @@ export default function FlashSaleBanner() {
       setSaleStarted(started);
 
       if (active) {
-        // Countdown to sale END
+        // Countdown to sale END (11:59 PM IST)
         const diff = saleEnd.getTime() - now.getTime();
         if (diff > 0) {
           setTimeLeft({
@@ -71,7 +62,6 @@ export default function FlashSaleBanner() {
           });
         }
       } else if (!started) {
-        // Countdown to sale START
         const diff = saleStart.getTime() - now.getTime();
         if (diff > 0) {
           setTimeLeft({
@@ -93,13 +83,10 @@ export default function FlashSaleBanner() {
     sessionStorage.setItem("flashSaleDismissed", "true");
   };
 
-  // Don't show on admin pages or feedback pages
   if (!mounted || dismissed) return null;
   if (pathname?.startsWith("/admin")) return null;
   if (pathname?.includes("/feedback")) return null;
 
-  // Only show if sale has started (active) OR if sale hasn't started yet today
-  // After 4 PM, don't show
   const { saleEnd } = getSaleTimes();
   if (new Date() >= saleEnd) return null;
 
@@ -119,7 +106,7 @@ export default function FlashSaleBanner() {
           {saleActive ? (
             <span className="flex items-center gap-1.5">
               <span className="bg-white/20 text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest">
-                LIVE
+                LIVE TILL 11:59 PM
               </span>
               Flash Sale — AI Engineering Full Pass
             </span>

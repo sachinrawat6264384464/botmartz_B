@@ -88,16 +88,15 @@ const studentReviews = [
   },
 ];
 
-// Sale window: 10:00 AM IST to 4:00 PM IST
+// Sale window: Today 10:00 AM IST to 11:59 PM IST (18:29:59 UTC)
 function isSaleActive(): boolean {
   if (typeof window === "undefined") return false;
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
   const date = now.getDate();
-  // IST offset = UTC+5:30 -> 10:00 AM IST = 04:30 UTC, 4:00 PM IST = 10:30 UTC
-  const saleStart = new Date(Date.UTC(year, month, date, 4, 30, 0));
-  const saleEnd = new Date(Date.UTC(year, month, date, 10, 30, 0));
+  const saleStart = new Date(Date.UTC(year, month, date, 4, 30, 0));  // 10:00 AM IST
+  const saleEnd = new Date(Date.UTC(year, month, date, 18, 29, 59));  // 11:59 PM IST
   return now >= saleStart && now < saleEnd;
 }
 
@@ -108,7 +107,6 @@ function getBootcamp1Status(): "LIVE" | "CLOSED" {
   const year = now.getFullYear();
   const month = now.getMonth();
   const date = now.getDate();
-  // 1:00 PM IST = 07:30 UTC
   const bc1End = new Date(Date.UTC(year, month, date, 7, 30, 0));
   return now < bc1End ? "LIVE" : "CLOSED";
 }
@@ -188,7 +186,7 @@ export default function BootcampDetails() {
               className="mt-6 inline-flex items-center gap-2 bg-gradient-to-r from-[#FF6B00] to-[#E03200] text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg"
             >
               <Zap size={16} className="animate-pulse" />
-              Flash Sale LIVE! — Get Full Pass at ₹299 (was ₹399) till 4:00 PM today!
+              Flash Sale LIVE! — Get Full Pass at ₹299 (was ₹399) till 11:59 PM today!
               <Zap size={16} className="animate-pulse" />
             </motion.div>
           )}
@@ -398,7 +396,7 @@ export default function BootcampDetails() {
             </div>
             <Link
               href="/community/ai-accelerator-workshop/feedback"
-              className="px-6 py-3 rounded-xl bg-[#0066FF] text-white font-bold hover:bg-[#0052CC] transition-all text-xs sm:text-sm whitespace-nowrap shadow-md"
+              className="px-6 py-3 rounded-xl bg-[#0066FF] text-[#0B1C2C] font-bold hover:bg-[#0052CC] hover:text-white transition-all text-xs sm:text-sm whitespace-nowrap shadow-md"
             >
               Submit Your Feedback →
             </Link>

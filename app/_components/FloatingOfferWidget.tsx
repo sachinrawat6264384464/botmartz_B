@@ -6,15 +6,15 @@ import { usePathname } from "next/navigation";
 import { Zap, Clock, X, ArrowRight, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Offer Window: Today 10:00 AM IST (04:30 UTC) to 4:00 PM IST (10:30 UTC)
+// Offer Window: Today 10:00 AM IST (04:30 UTC) to 11:59 PM IST (18:29:59 UTC)
 function getSaleTimes() {
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
   const date = now.getDate();
 
-  const saleStart = new Date(Date.UTC(year, month, date, 4, 30, 0)); // 10:00 AM IST
-  const saleEnd = new Date(Date.UTC(year, month, date, 10, 30, 0));  // 4:00 PM IST
+  const saleStart = new Date(Date.UTC(year, month, date, 4, 30, 0));  // 10:00 AM IST
+  const saleEnd = new Date(Date.UTC(year, month, date, 18, 29, 59));  // 11:59 PM IST
 
   return { saleStart, saleEnd };
 }
@@ -65,11 +65,10 @@ export default function FloatingOfferWidget() {
     sessionStorage.setItem("floatingOfferDismissed", "true");
   };
 
-  // Hidden conditions:
   if (!mounted || dismissed) return null;
   if (pathname?.startsWith("/admin") || pathname?.includes("/feedback")) return null;
   
-  // AUTO REMOVE AFTER 4:00 PM IST
+  // AUTO REMOVE AFTER 11:59 PM IST
   const { saleEnd } = getSaleTimes();
   if (new Date() >= saleEnd) return null;
 
@@ -80,7 +79,6 @@ export default function FloatingOfferWidget() {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 50, scale: 0.9 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        /* Positioned at left-[80px] on mobile to NEVER overlap accessibility icon (bottom-6 left-6) */
         className="fixed bottom-3 left-[80px] right-3 sm:left-auto sm:right-5 sm:bottom-5 z-[99990] sm:max-w-[360px] font-sans"
       >
         {isMinimized ? (
@@ -114,7 +112,7 @@ export default function FloatingOfferWidget() {
             {/* Header controls */}
             <div className="flex items-center justify-between gap-1.5 mb-2">
               <div className="inline-flex items-center gap-1 bg-[#FF4500]/15 border border-[#FF4500]/40 text-[#FF6B00] text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full truncate">
-                <Zap size={10} className="animate-pulse shrink-0" /> FLASH SALE — ENDS 4 PM
+                <Zap size={10} className="animate-pulse shrink-0" /> FLASH SALE — ENDS 11:59 PM
               </div>
 
               <div className="flex items-center gap-1 shrink-0">

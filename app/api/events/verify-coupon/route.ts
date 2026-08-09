@@ -7,16 +7,24 @@ const STATIC_SYSTEM_COUPONS: Record<string, { discountType: 'percentage' | 'fixe
   INFLUENCER20: { discountType: 'percentage', discountValue: 20, defaultMaxUses: 50 },
 };
 
+function isSaleActive(): boolean {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const date = now.getDate();
+  const saleStart = new Date(Date.UTC(year, month, date, 4, 30, 0));  // 10:00 AM IST
+  const saleEnd = new Date(Date.UTC(year, month, date, 18, 29, 59));  // 11:59 PM IST
+  return now >= saleStart && now < saleEnd;
+}
+
 // GET handler - used by checkout to check limit status
 export async function GET() {
   try {
-    // Count free coupon redemptions (coupons with 100% discount)
     const bootcampRegSnap = await adminDb.collection('bootcamp_registrations').get();
     let freeCouponCount = 0;
     bootcampRegSnap.forEach(doc => {
       const data = doc.data();
       if (data.appliedCoupon && data.appliedCoupon.trim() !== '') {
-        // Check if it's a free coupon
         const code = data.appliedCoupon.toUpperCase();
         if (code.startsWith('BMFREE') || code.startsWith('BMWORKSHOP') || code.startsWith('FREE')) {
           freeCouponCount++;
@@ -27,7 +35,7 @@ export async function GET() {
     return NextResponse.json({
       success: true,
       totalCouponRedemptions: freeCouponCount,
-      isLimitReached: false // No global limit anymore
+      isLimitReached: false
     });
   } catch (err: any) {
     console.error('[check-coupon-limit GET error]', err);
@@ -38,6 +46,14 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const { code, plan } = await req.json();
+
+    // 0. BLOCK COUPONS WHILE FLASH SALE IS ACTIVE (until 11:59 PM IST)
+    if (isSaleActive()) {
+      return NextResponse.json(
+        { error: 'Coupon codes cannot be applied during the Flash Sale (prices already discounted to ₹299!). Offer ends at 11:59 PM.' },
+        { status: 400 }
+      );
+    }
 
     if (!code) {
       return NextResponse.json({ error: 'Coupon code is required' }, { status: 400 });
@@ -53,7 +69,6 @@ export async function POST(req: NextRequest) {
     if (STATIC_SYSTEM_COUPONS[uppercaseCode]) {
       const config = STATIC_SYSTEM_COUPONS[uppercaseCode];
 
-      // Try to get dynamic maxUses from Firestore (admin can update it)
       let maxUses = config.defaultMaxUses;
       try {
         const couponDoc = await adminDb.collection('coupons').doc(uppercaseCode).get();
@@ -74,7 +89,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: `Coupon "${uppercaseCode}" has reached its maximum limit of ${maxUses} uses.` }, { status: 400 });
       }
 
-      // Sync to Firestore for admin tracking
       await adminDb.collection('coupons').doc(uppercaseCode).set({
         code: uppercaseCode,
         discountType: config.discountType,
@@ -95,7 +109,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // 2. Query Firestore for ALL other coupons (free coupons + custom coupons created by admin)
+    // 2. Query Firestore for ALL other coupons
     const couponQuery = await adminDb
       .collection('coupons')
       .where('code', '==', uppercaseCode)
@@ -113,7 +127,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'This coupon is inactive.' }, { status: 400 });
     }
 
-    // Count actual paid uses for this coupon
     const [regSnap, bcSnap] = await Promise.all([
       adminDb.collection('event-registrations').where('appliedCoupon', '==', uppercaseCode).where('paymentStatus', '==', 'paid').get(),
       adminDb.collection('bootcamp_registrations').where('appliedCoupon', '==', uppercaseCode).where('status', '==', 'paid').get()
