@@ -10,6 +10,7 @@ export const useSettings = () => useContext(SettingsContext);
 
 import { AccessibilityProvider } from "./_context/AccessibilityContext";
 import { AccessibilityToolbox } from "./_components/AccessibilityToolbox";
+import FloatingOfferWidget from "./_components/FloatingOfferWidget";
 import AnalyticsProvider from "./_components/AnalyticsProvider";
 
 export default function ClientLayout({
@@ -50,6 +51,7 @@ export default function ClientLayout({
             </main>
             {!isStandaloneRoute && <Footer settings={settings} />}
             {!isStandaloneRoute && <AccessibilityToolbox />}
+            {!isStandaloneRoute && <FloatingOfferWidget />}
           </div>
         </AccessibilityProvider>
       </ThemeProvider>
