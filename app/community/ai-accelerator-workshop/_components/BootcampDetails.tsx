@@ -88,7 +88,7 @@ const studentReviews = [
   },
 ];
 
-// Sale window: Today 10:00 AM IST to 11:59 PM IST (18:29:59 UTC)
+// Sale window: jhjhToday 10:00 AM IST to 11:59 PM IST (18:29:59 UTC)
 function isSaleActive(): boolean {
   if (typeof window === "undefined") return false;
   const now = new Date();
@@ -139,7 +139,7 @@ export default function BootcampDetails() {
   return (
     <section id="bootcamps" className="py-24 bg-white">
       <div className="container mx-auto px-4 md:px-6">
-        
+
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-[32px] md:text-[48px] font-bold text-[#0B1C2C] tracking-tight mb-4">
@@ -206,9 +206,8 @@ export default function BootcampDetails() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className={`bg-white border border-[#E2E8F0] rounded-3xl p-8 shadow-[0_4px_24px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] transition-all flex flex-col h-full relative overflow-hidden group ${
-                  closed ? "opacity-75 grayscale-[20%]" : ""
-                }`}
+                className={`bg-white border border-[#E2E8F0] rounded-3xl p-8 shadow-[0_4px_24px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] transition-all flex flex-col h-full relative overflow-hidden group ${closed ? "opacity-75 grayscale-[20%]" : ""
+                  }`}
               >
                 {/* Top accent bar */}
                 <div className={`absolute top-0 left-0 right-0 h-2 bg-gradient-to-r ${bootcamp.color}`} />
@@ -307,7 +306,7 @@ export default function BootcampDetails() {
             <div className="bg-[#0B1C2C] border border-[#1E293B] rounded-3xl p-8 lg:p-10 shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 group">
               {/* Background accent */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#0066FF]/20 to-transparent blur-3xl rounded-full pointer-events-none group-hover:from-[#0066FF]/30 transition-all duration-700" />
-              
+
               <div className="relative z-10 flex-1">
                 <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#0066FF] to-[#3B82F6] text-white text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-4 shadow-sm">
                   Most Popular
