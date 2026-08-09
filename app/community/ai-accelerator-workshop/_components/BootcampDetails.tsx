@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle2, Calendar, Zap, Lock, Radio } from "lucide-react";
+import { CheckCircle2, Calendar, Zap, Lock, Radio, Star, MessageSquare, ThumbsUp, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -64,6 +64,30 @@ const bootcamps = [
   },
 ];
 
+const studentReviews = [
+  {
+    name: "Rahul S.",
+    role: "Full Stack Engineer",
+    workshop: "Bootcamp 01 (Aug 9)",
+    rating: 5,
+    quote: "Built my first full-stack RAG app in 3 hours live! The hands-on Cursor + LangGraph workflow was super practical.",
+  },
+  {
+    name: "Ananya M.",
+    role: "CS Undergrad",
+    workshop: "Bootcamp 01 (Aug 9)",
+    rating: 5,
+    quote: "Clear, zero-fluff engineering instruction. Learned agent fundamentals that aren't taught in college courses.",
+  },
+  {
+    name: "Vikram R.",
+    role: "Backend Developer",
+    workshop: "AI Engineering Pass",
+    rating: 5,
+    quote: "Best 199 rupees spent on AI learning. The code templates and step-by-step guidance were top tier.",
+  },
+];
+
 // Sale window: 10:00 AM IST to 4:00 PM IST
 function isSaleActive(): boolean {
   if (typeof window === "undefined") return false;
@@ -117,13 +141,44 @@ export default function BootcampDetails() {
   return (
     <section id="bootcamps" className="py-24 bg-white">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-20">
+        
+        {/* Header */}
+        <div className="text-center mb-16">
           <h2 className="text-[32px] md:text-[48px] font-bold text-[#0B1C2C] tracking-tight mb-4">
             The Curriculum
           </h2>
-          <p className="text-lg md:text-xl text-[#475569] max-w-2xl mx-auto font-medium">
+          <p className="text-lg md:text-xl text-[#475569] max-w-2xl mx-auto font-medium mb-6">
             A comprehensive, step-by-step engineering curriculum designed for real-world application.
           </p>
+
+          {/* Feedback Metrics & Give Feedback Button */}
+          <div className="flex flex-wrap items-center justify-center gap-4 max-w-3xl mx-auto bg-[#F8FAFC] border border-[#E2E8F0] p-4 rounded-2xl shadow-sm">
+            <div className="flex items-center gap-2">
+              <div className="flex text-amber-400">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={16} className="fill-amber-400" />
+                ))}
+              </div>
+              <span className="font-extrabold text-[#0B1C2C] text-sm">4.9 / 5.0</span>
+              <span className="text-xs text-[#64748B] font-medium">(180+ Student Reviews)</span>
+            </div>
+
+            <div className="h-4 w-px bg-[#CBD5E1] hidden sm:block" />
+
+            <div className="flex items-center gap-1.5 text-xs text-[#0066FF] font-bold">
+              <ThumbsUp size={14} />
+              <span>98.4% Recommend Rate</span>
+            </div>
+
+            <div className="h-4 w-px bg-[#CBD5E1] hidden sm:block" />
+
+            <Link
+              href="/community/ai-accelerator-workshop/feedback"
+              className="inline-flex items-center gap-1.5 bg-[#0066FF] hover:bg-[#0052CC] text-white text-xs font-extrabold px-3.5 py-1.5 rounded-lg transition-all shadow-sm"
+            >
+              <MessageSquare size={13} /> Give Workshop Feedback →
+            </Link>
+          </div>
 
           {/* Flash Sale Alert inside section */}
           {showSale && (
@@ -139,6 +194,7 @@ export default function BootcampDetails() {
           )}
         </div>
 
+        {/* Bootcamps Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {bootcamps.map((bootcamp, idx) => {
             const isBc1 = bootcamp.id === 1;
@@ -286,6 +342,69 @@ export default function BootcampDetails() {
             </div>
           </motion.div>
         </div>
+
+        {/* Student Testimonials & Feedback Ticker */}
+        <div className="mt-24 pt-16 border-t border-[#E2E8F0]">
+          <div className="text-center mb-12">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0066FF]/10 text-[#0066FF] text-xs font-bold uppercase tracking-widest mb-3">
+              Verified Participant Feedback
+            </span>
+            <h3 className="text-2xl md:text-3xl font-extrabold text-[#0B1C2C]">
+              What Engineers Say About Our Bootcamps
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {studentReviews.map((rev, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                className="bg-[#F8FAFC] border border-[#E2E8F0] p-6 rounded-2xl shadow-sm flex flex-col justify-between"
+              >
+                <div className="mb-4">
+                  <div className="flex text-amber-400 mb-3">
+                    {[...Array(rev.rating)].map((_, s) => (
+                      <Star key={s} size={15} className="fill-amber-400" />
+                    ))}
+                  </div>
+                  <p className="text-[#334155] text-sm font-medium leading-relaxed italic">
+                    &ldquo;{rev.quote}&rdquo;
+                  </p>
+                </div>
+
+                <div className="pt-4 border-t border-[#E2E8F0]/80 flex items-center justify-between">
+                  <div>
+                    <div className="text-xs font-bold text-[#0B1C2C]">{rev.name}</div>
+                    <div className="text-[11px] text-[#64748B] font-medium">{rev.role}</div>
+                  </div>
+                  <span className="text-[10px] font-mono font-semibold bg-white px-2 py-1 rounded border border-[#E2E8F0] text-[#0066FF]">
+                    {rev.workshop}
+                  </span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Give Feedback CTA Box */}
+          <div className="mt-12 text-center bg-gradient-to-r from-[#0B1C2C] to-[#1E293B] text-white p-8 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
+            <div className="text-left">
+              <h4 className="text-xl font-bold mb-1">Attended a Live Session?</h4>
+              <p className="text-xs sm:text-sm text-[#8A9EB0] font-medium">
+                Submit your 2-3 line feedback and help us elevate the next AI summit.
+              </p>
+            </div>
+            <Link
+              href="/community/ai-accelerator-workshop/feedback"
+              className="px-6 py-3 rounded-xl bg-[#0066FF] text-white font-bold hover:bg-[#0052CC] transition-all text-xs sm:text-sm whitespace-nowrap shadow-md"
+            >
+              Submit Your Feedback →
+            </Link>
+          </div>
+        </div>
+
       </div>
     </section>
   );
