@@ -4,9 +4,9 @@ import { adminDb } from '@/lib/firebase-admin';
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const eventId = searchParams.get('eventId') || 'ai-frontier-2026';
+    const eventIdParam = searchParams.get('eventId') || 'all';
 
-    // 1. Fetch all feedbacks
+    // 1. Fetch all feedbacks from 'event-feedbacks' collection
     const feedbackSnap = await adminDb
       .collection('event-feedbacks')
       .get();
@@ -16,15 +16,25 @@ export async function GET(req: Request) {
       feedbacks.push({ id: doc.id, ...doc.data() });
     });
 
+    // Sort feedbacks descending by createdAt
+    feedbacks.sort((a, b) => {
+      const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return timeB - timeA;
+    });
+
     // Filter feedbacks for the requested event (or return all if eventId is 'all')
-    const filteredFeedbacks = eventId === 'all' 
+    const filteredFeedbacks = eventIdParam === 'all' 
       ? feedbacks 
-      : feedbacks.filter(f => f.eventId === eventId || f.eventSlug === eventId);
+      : feedbacks.filter(f => 
+          f.eventId === eventIdParam || 
+          f.eventSlug === eventIdParam || 
+          (eventIdParam === 'ai-accelerator-workshop' && (f.eventId?.includes('workshop') || f.workshopId))
+        );
 
     // 2. Fetch all paid registrations
     const regSnap = await adminDb
       .collection('event-registrations')
-      .where('paymentStatus', '==', 'paid')
       .get();
 
     const registrations: any[] = [];
@@ -49,7 +59,7 @@ export async function GET(req: Request) {
       sumOverall += Number(f.overallRating) || 0;
       sumContent += Number(f.contentRating) || 0;
       sumVenue += Number(f.venueRating) || 0;
-      if (f.recommend === 'yes') recommendYesCount++;
+      if (f.recommend === 'yes' || f.recommend === true) recommendYesCount++;
     });
 
     const avgOverall = totalFeedbacks > 0 ? (sumOverall / totalFeedbacks).toFixed(1) : '0.0';

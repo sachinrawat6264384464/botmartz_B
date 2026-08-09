@@ -10,15 +10,14 @@ import {
   Download,
   RefreshCw,
   Search,
-  Filter,
   Sparkles,
-  Award,
   ThumbsUp,
   MessageCircle,
   QrCode,
   ExternalLink,
-  ChevronRight,
-  Loader2
+  Loader2,
+  BookOpen,
+  Filter
 } from "lucide-react";
 import Link from "next/link";
 
@@ -27,16 +26,17 @@ export default function AdminFeedbackPage() {
   const [error, setError] = useState("");
   const [data, setData] = useState<any>(null);
 
+  const [selectedEvent, setSelectedEvent] = useState<string>("all");
   const [activeTab, setActiveTab] = useState<"submissions" | "participants">("submissions");
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<"all" | "student" | "professional">("all");
   const [statusFilter, setStatusFilter] = useState<"all" | "submitted" | "pending">("all");
 
-  const fetchData = async () => {
+  const fetchData = async (eventId = selectedEvent) => {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/admin/feedback?eventId=ai-frontier-2026");
+      const res = await fetch(`/api/admin/feedback?eventId=${eventId}`);
       const result = await res.json();
       if (!res.ok) throw new Error(result.error || "Failed to load feedback data.");
       setData(result);
@@ -48,21 +48,22 @@ export default function AdminFeedbackPage() {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(selectedEvent);
+  }, [selectedEvent]);
 
   const exportCSV = () => {
     if (!data || !data.feedbacks || data.feedbacks.length === 0) return;
 
     const headers = [
       "ID",
+      "Event/Workshop",
       "Participant Name",
-      "Email",
+      "Email/Identifier",
       "Ticket Code",
       "Attendee Type",
       "Overall Rating",
       "Content Rating",
-      "Venue Rating",
+      "Instructor/Venue Rating",
       "Would Recommend",
       "Takeaways",
       "Comments",
@@ -71,8 +72,9 @@ export default function AdminFeedbackPage() {
 
     const rows = data.feedbacks.map((f: any) => [
       `"${f.id}"`,
+      `"${f.workshopId || f.eventId || 'ai-accelerator-workshop'}"`,
       `"${f.participantName || ''}"`,
-      `"${f.participantEmail || ''}"`,
+      `"${f.participantEmail || f.identifierProvided || ''}"`,
       `"${f.registrationCode || f.identifierProvided || ''}"`,
       `"${f.attendeeType || ''}"`,
       `"${f.overallRating || 5}"`,
@@ -88,7 +90,7 @@ export default function AdminFeedbackPage() {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `event_feedbacks_ai_frontier_2026_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.setAttribute("download", `event_feedbacks_${selectedEvent}_${new Date().toISOString().slice(0, 10)}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -99,7 +101,10 @@ export default function AdminFeedbackPage() {
     const matchesSearch =
       (f.participantName || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
       (f.participantEmail || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (f.registrationCode || f.identifierProvided || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (f.identifierProvided || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (f.registrationCode || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (f.workshopId || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (f.takeaways || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
       (f.comments || "").toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchesType = typeFilter === "all" || (f.attendeeType || "student") === typeFilter;
@@ -130,30 +135,44 @@ export default function AdminFeedbackPage() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="px-2.5 py-0.5 rounded-full bg-[#00B8F0]/15 text-[#00B8F0] text-[10px] font-bold font-mono uppercase tracking-wider border border-[#00B8F0]/30">
-              🌟 Event Intelligence
+              🌟 Event Intelligence Ledger
             </span>
           </div>
           <h1 className="text-3xl font-extrabold font-space-grotesk tracking-tight text-white flex items-center gap-3">
-            Event Feedback Dashboard
+            Event &amp; Workshop Feedback Dashboard
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            AI Frontier 2026 — Feedback ledger, participant ratings & response rates.
+            Live feedback ledger, participant ratings, and survey submissions.
           </p>
         </div>
 
         <div className="flex items-center gap-3 flex-wrap">
-          <a
-            href="/community/events/ai-frontier-2026/feedback"
+          {/* Event Filter Dropdown */}
+          <div className="flex items-center gap-1.5 bg-[#050C18] border border-white/20 px-3 py-1.5 rounded-xl text-xs text-slate-300">
+            <Filter size={14} className="text-[#00B8F0]" />
+            <select
+              value={selectedEvent}
+              onChange={(e) => setSelectedEvent(e.target.value)}
+              className="bg-transparent text-white font-bold text-xs focus:outline-none cursor-pointer"
+            >
+              <option value="all" className="bg-[#050C18] text-white">⚡ All Events &amp; Workshops</option>
+              <option value="ai-accelerator-workshop" className="bg-[#050C18] text-white">🚀 AI Accelerator Workshop</option>
+              <option value="ai-frontier-2026" className="bg-[#050C18] text-white">🎪 AI Frontier 2026 Main Event</option>
+            </select>
+          </div>
+
+          <Link
+            href="/community/ai-accelerator-workshop/feedback"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 bg-[#050C18] border border-white/20 hover:border-[#00B8F0] text-slate-300 hover:text-white px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors"
           >
-            <QrCode size={14} className="text-[#00B8F0]" />
-            Live Feedback Form <ExternalLink size={12} />
-          </a>
+            <BookOpen size={14} className="text-[#00B8F0]" />
+            Live Workshop Form <ExternalLink size={12} />
+          </Link>
 
           <button
-            onClick={fetchData}
+            onClick={() => fetchData(selectedEvent)}
             disabled={loading}
             className="p-2.5 bg-[#050C18] border border-white/20 hover:border-white/40 text-slate-300 hover:text-white rounded-xl transition-all disabled:opacity-50"
             title="Refresh Data"
@@ -164,7 +183,7 @@ export default function AdminFeedbackPage() {
           <button
             onClick={exportCSV}
             disabled={!data?.feedbacks?.length}
-            className="flex items-center gap-2 bg-[#00B8F0] hover:bg-[#00A0D0] text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-lg shadow-[#00B8F0]/25 disabled:opacity-50"
+            className="flex items-center gap-2 bg-[#00B8F0] hover:bg-[#00A0D0] text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-lg shadow-[#00B8F0]/25 disabled:opacity-50 cursor-pointer"
           >
             <Download size={14} /> Export CSV
           </button>
@@ -196,7 +215,7 @@ export default function AdminFeedbackPage() {
                 <span className="text-xs text-amber-400 font-bold">/ 5.0 ⭐</span>
               </div>
               <p className="text-[11px] text-slate-400 pt-1">
-                Content: <strong className="text-white">{data.stats.avgContent}</strong> • Venue: <strong className="text-white">{data.stats.avgVenue}</strong>
+                Content: <strong className="text-white">{data.stats.avgContent}</strong> • Instructor/Venue: <strong className="text-white">{data.stats.avgVenue}</strong>
               </p>
             </div>
 
@@ -208,10 +227,10 @@ export default function AdminFeedbackPage() {
               </div>
               <div className="flex items-baseline gap-2">
                 <h3 className="text-3xl font-extrabold text-white font-mono">{data.stats.totalFeedbacks}</h3>
-                <span className="text-xs text-[#00B8F0] font-bold">Responses</span>
+                <span className="text-xs text-[#00B8F0] font-bold">Submissions</span>
               </div>
               <p className="text-[11px] text-slate-400 pt-1">
-                {data.stats.recommendRate}% Would recommend to friends 👍
+                {data.stats.recommendRate}% Would recommend to peers 👍
               </p>
             </div>
 
@@ -230,7 +249,7 @@ export default function AdminFeedbackPage() {
               <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden mt-1">
                 <div
                   className="bg-emerald-400 h-full transition-all duration-500"
-                  style={{ width: `${data.stats.coverageRate}%` }}
+                  style={{ width: `${Math.min(data.stats.coverageRate, 100)}%` }}
                 />
               </div>
             </div>
@@ -238,7 +257,7 @@ export default function AdminFeedbackPage() {
             {/* Card 4: Pending Feedback */}
             <div className="bg-[#0A1120] border border-white/10 p-5 rounded-2xl space-y-2 relative overflow-hidden shadow-xl">
               <div className="flex justify-between items-center text-slate-400">
-                <span className="text-xs font-semibold uppercase tracking-wider">Pending Feedback</span>
+                <span className="text-xs font-semibold uppercase tracking-wider">Pending Registrations</span>
                 <Clock size={18} className="text-purple-400" />
               </div>
               <div className="flex items-baseline gap-2">
@@ -246,7 +265,7 @@ export default function AdminFeedbackPage() {
                 <span className="text-xs text-purple-400 font-bold">Participants</span>
               </div>
               <p className="text-[11px] text-slate-400 pt-1">
-                Awaiting venue feedback submission
+                Awaiting feedback submission
               </p>
             </div>
 
@@ -289,7 +308,7 @@ export default function AdminFeedbackPage() {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search name, code, email..."
+                    placeholder="Search name, code, email, feedback..."
                     className="w-full bg-[#050C18] border border-white/20 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-[#00B8F0]"
                   />
                 </div>
@@ -300,8 +319,8 @@ export default function AdminFeedbackPage() {
                   className="bg-[#050C18] border border-white/20 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#00B8F0]"
                 >
                   <option value="all">All Pass Types</option>
-                  <option value="student">Student (₹449)</option>
-                  <option value="professional">Professional (₹699)</option>
+                  <option value="student">Student</option>
+                  <option value="professional">Professional</option>
                 </select>
 
                 {activeTab === "participants" && (
@@ -327,42 +346,36 @@ export default function AdminFeedbackPage() {
                     <thead>
                       <tr className="bg-[#050C18] border-b border-white/10 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
                         <th className="py-3.5 px-4">Participant</th>
-                        <th className="py-3.5 px-4">Pass Type</th>
+                        <th className="py-3.5 px-4">Session / Event</th>
                         <th className="py-3.5 px-4">Overall</th>
                         <th className="py-3.5 px-4">Content</th>
-                        <th className="py-3.5 px-4">Venue</th>
+                        <th className="py-3.5 px-4">Instructor</th>
                         <th className="py-3.5 px-4">Recommend</th>
-                        <th className="py-3.5 px-4">Takeaways / Comments</th>
-                        <th className="py-3.5 px-4">Timestamp</th>
+                        <th className="py-3.5 px-4">Takeaways &amp; Feedback Comments</th>
+                        <th className="py-3.5 px-4">Submitted At</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/5 text-xs text-slate-300 font-sans">
                       {filteredSubmissions.length === 0 ? (
                         <tr>
                           <td colSpan={8} className="py-12 text-center text-slate-500 font-mono">
-                            No feedback submissions found matching filter.
+                            No feedback submissions found for this filter.
                           </td>
                         </tr>
                       ) : (
                         filteredSubmissions.map((f: any) => (
                           <tr key={f.id} className="hover:bg-white/[0.02] transition-colors">
                             <td className="py-4 px-4">
-                              <div className="font-bold text-white">{f.participantName || "Anonymous"}</div>
+                              <div className="font-bold text-white">{f.participantName || "Anonymous Participant"}</div>
                               <div className="text-[10px] text-slate-400 font-mono">{f.participantEmail || f.identifierProvided}</div>
-                              {f.registrationCode && (
-                                <span className="inline-block mt-0.5 text-[9px] bg-[#00B8F0]/10 text-[#00B8F0] font-mono px-1.5 py-0.5 rounded border border-[#00B8F0]/20">
-                                  {f.registrationCode}
-                                </span>
+                              {f.participantPhone && (
+                                <div className="text-[10px] text-slate-500 font-mono">{f.participantPhone}</div>
                               )}
                             </td>
 
-                            <td className="py-4 px-4 uppercase text-[10px] font-bold font-mono">
-                              <span className={`px-2 py-0.5 rounded border ${
-                                f.attendeeType === "professional" 
-                                  ? "bg-purple-500/15 border-purple-500/30 text-purple-300"
-                                  : "bg-cyan-500/15 border-cyan-500/30 text-cyan-300"
-                              }`}>
-                                {f.attendeeType || "student"}
+                            <td className="py-4 px-4 font-mono text-[10px]">
+                              <span className="px-2 py-1 rounded bg-[#0066FF]/15 border border-[#0066FF]/30 text-[#00B8F0] font-bold uppercase inline-block">
+                                {f.workshopId || f.eventId || "ai-accelerator-workshop"}
                               </span>
                             </td>
 
@@ -382,25 +395,25 @@ export default function AdminFeedbackPage() {
                             </td>
 
                             <td className="py-4 px-4">
-                              {f.recommend === "yes" ? (
+                              {f.recommend === "yes" || f.recommend === true ? (
                                 <span className="inline-flex items-center gap-1 text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded text-[10px]">
-                                  <ThumbsUp size={12} /> Yes
+                                  <ThumbsUp size={12} /> Yes 👍
                                 </span>
                               ) : (
                                 <span className="inline-flex items-center gap-1 text-rose-400 font-bold bg-rose-500/10 border border-rose-500/30 px-2 py-0.5 rounded text-[10px]">
-                                  Needs Work
+                                  Needs Work ⚠️
                                 </span>
                               )}
                             </td>
 
-                            <td className="py-4 px-4 max-w-xs">
+                            <td className="py-4 px-4 max-w-sm">
                               {f.takeaways && (
                                 <p className="text-slate-200 text-xs italic mb-1">
-                                  "{f.takeaways}"
+                                  &ldquo;{f.takeaways}&rdquo;
                                 </p>
                               )}
                               {f.comments && (
-                                <p className="text-slate-400 text-[11px]">
+                                <p className="text-slate-300 text-[11px] whitespace-pre-line bg-white/5 p-2 rounded border border-white/10">
                                   💬 {f.comments}
                                 </p>
                               )}
