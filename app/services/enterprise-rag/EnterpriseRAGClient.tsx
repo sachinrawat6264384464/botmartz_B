@@ -205,7 +205,7 @@ export default function EnterpriseRAGClient({ content }: { content: any }) {
                   <div className="w-16 h-16 rounded-full bg-[#050B14] border-2 border-[#00B8F0] text-[#00B8F0] flex items-center justify-center text-xl font-bold font-mono mb-6 mx-auto relative z-10 shadow-[0_0_20px_rgba(0,184,240,0.3)]">
                     {step.step}
                   </div>
-                  <h3 className="text-2xl font-semibold text-center mb-2">{step.title}</h3>
+                  <h3 className="text-2xl font-semibold text-center mb-2 text-white">{step.title}</h3>
                   <div className="text-center mb-6 flex flex-col gap-1">
                     <span className="text-[#8A9EB0] text-sm">Duration: {step.duration}</span>
                     <span className="text-[#00B8F0] font-semibold">{step.cost}</span>
