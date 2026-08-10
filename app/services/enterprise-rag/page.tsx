@@ -98,14 +98,30 @@ export default async function EnterpriseRAGPage() {
     const data = await getCachedDynamicPage("enterprise-rag");
     if (data) {
       content = {
-        hero: data?.hero || DEFAULT_CONTENT.hero,
-        problemSolution: data?.problemSolution || DEFAULT_CONTENT.problemSolution,
-        features: data?.features || DEFAULT_CONTENT.features,
-        process: data?.process || DEFAULT_CONTENT.process,
-        pricingNotes: data?.pricingNotes || DEFAULT_CONTENT.pricingNotes,
-        useCases: data?.useCases || DEFAULT_CONTENT.useCases,
-        techStack: data?.techStack || DEFAULT_CONTENT.techStack,
-        cta: data?.cta || DEFAULT_CONTENT.cta,
+        hero: {
+          badge: data?.hero?.badge || DEFAULT_CONTENT.hero.badge,
+          title: data?.hero?.title || DEFAULT_CONTENT.hero.title,
+          subtitle: data?.hero?.subtitle || DEFAULT_CONTENT.hero.subtitle,
+          ctaText: data?.hero?.ctaText || DEFAULT_CONTENT.hero.ctaText,
+          ctaLink: data?.hero?.ctaLink || DEFAULT_CONTENT.hero.ctaLink,
+          secondaryCtaText: data?.hero?.secondaryCtaText || DEFAULT_CONTENT.hero.secondaryCtaText,
+          secondaryCtaLink: data?.hero?.secondaryCtaLink || DEFAULT_CONTENT.hero.secondaryCtaLink,
+        },
+        problemSolution: {
+          title: data?.problemSolution?.title || DEFAULT_CONTENT.problemSolution.title,
+          trap: data?.problemSolution?.trap || DEFAULT_CONTENT.problemSolution.trap,
+          approach: data?.problemSolution?.approach || DEFAULT_CONTENT.problemSolution.approach,
+        },
+        features: (Array.isArray(data?.features) && data.features.length > 0) ? data.features : DEFAULT_CONTENT.features,
+        process: (Array.isArray(data?.process) && data.process.length > 0) ? data.process : DEFAULT_CONTENT.process,
+        pricingNotes: (Array.isArray(data?.pricingNotes) && data.pricingNotes.length > 0) ? data.pricingNotes : DEFAULT_CONTENT.pricingNotes,
+        useCases: (Array.isArray(data?.useCases) && data.useCases.length > 0) ? data.useCases : DEFAULT_CONTENT.useCases,
+        techStack: (Array.isArray(data?.techStack) && data.techStack.length > 0) ? data.techStack : DEFAULT_CONTENT.techStack,
+        cta: {
+          title: data?.cta?.title || DEFAULT_CONTENT.cta.title,
+          subtitle: data?.cta?.subtitle || DEFAULT_CONTENT.cta.subtitle,
+          buttonText: data?.cta?.buttonText || DEFAULT_CONTENT.cta.buttonText,
+        },
         structuredData: data?.structuredData || DEFAULT_CONTENT.structuredData
       };
     }
