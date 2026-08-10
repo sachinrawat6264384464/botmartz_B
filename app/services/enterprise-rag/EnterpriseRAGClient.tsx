@@ -272,8 +272,8 @@ export default function EnterpriseRAGClient({ content }: { content: any }) {
 
       {/* 7. TECH STACK TICKER */}
       <section className="py-12 border-y border-slate-200 bg-slate-50 overflow-hidden relative">
-         <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#0A111F] to-transparent z-10"></div>
-         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#0A111F] to-transparent z-10"></div>
+         <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-slate-50 to-transparent z-10"></div>
+         <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-slate-50 to-transparent z-10"></div>
          <div className="wrap flex items-center gap-12 relative z-0">
             <div className="font-mono text-[12px] text-[#00B8F0] font-bold uppercase tracking-widest whitespace-nowrap shrink-0">Powered By Stack</div>
             <div className="flex-1 flex gap-12 md:gap-20 items-center overflow-hidden">
@@ -313,7 +313,7 @@ export default function EnterpriseRAGClient({ content }: { content: any }) {
               <p className="text-slate-600 text-[18px] md:text-[20px] max-w-[650px] mx-auto mb-10 leading-relaxed font-light">
                 {content.cta.subtitle}
               </p>
-              <Link href="/contact" className="btn bg-[#00B8F0] text-slate-900 hover:bg-[#0096C7] px-10 py-4 rounded-xl text-[16px] inline-flex items-center gap-3 font-semibold shadow-[0_0_20px_rgba(0,184,240,0.3)] transition-all hover:scale-105">
+              <Link href="/contact" className="btn bg-[#0066FF] text-white hover:bg-[#0052CC] px-10 py-4 rounded-xl text-[16px] inline-flex items-center gap-3 font-semibold shadow-[0_0_20px_rgba(0,102,255,0.3)] transition-all hover:scale-105">
                 {content.cta.buttonText}
               </Link>
             </div>

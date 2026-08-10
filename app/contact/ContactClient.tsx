@@ -239,7 +239,7 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
                   <button 
                     type="submit" 
                     disabled={submitting}
-                    className="btn btn-primary bg-[#00B8F0] text-white hover:bg-[#0096C7] mt-2 self-start px-8 py-3 rounded-lg text-[14px] font-semibold flex items-center gap-2 justify-center min-w-[160px] disabled:opacity-75 transition-all shadow-sm"
+                    className="w-full sm:w-auto btn bg-[#0066FF] text-white hover:bg-[#0052CC] mt-2 px-8 py-3 rounded-lg text-[14px] font-semibold flex items-center justify-center gap-2 min-w-[160px] disabled:opacity-75 transition-all shadow-[0_4px_14px_rgba(0,102,255,0.3)] hover:shadow-[0_4px_20px_rgba(0,102,255,0.45)] hover:scale-[1.02] active:scale-[0.98]"
                   >
                     {submitting ? (
                       <>
@@ -256,7 +256,7 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
             {/* Info Side */}
             <div className="lg:w-1/3 flex flex-col gap-6">
                
-               <div className="bg-slate-50 border border-slate-200 rounded-xl p-8 transition-colors hover:border-slate-300">
+               <div className="bg-slate-50 border border-slate-200 rounded-xl p-8 transition-all hover:border-[#00B8F0]/40 hover:shadow-md">
                   <div className="w-10 h-10 border border-[#00B8F0]/20 bg-[#00B8F0]/10 rounded-lg flex items-center justify-center text-[#00B8F0] mb-4">
                      <Mail className="w-5 h-5" />
                   </div>
@@ -265,7 +265,7 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
                   <a href={`mailto:${email}`} className="font-mono text-[13px] text-[#00B8F0] hover:underline font-semibold">{email}</a>
                </div>
                
-               <div className="bg-slate-50 border border-slate-200 rounded-xl p-8 transition-colors hover:border-slate-300">
+               <div className="bg-slate-50 border border-slate-200 rounded-xl p-8 transition-all hover:border-[#00B8F0]/40 hover:shadow-md">
                   <div className="w-10 h-10 border border-[#00B8F0]/20 bg-[#00B8F0]/10 rounded-lg flex items-center justify-center text-[#00B8F0] mb-4">
                      <Phone className="w-5 h-5" />
                   </div>
@@ -274,7 +274,7 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
                   <a href={`tel:${phone.replace(/[^+\d]/g, '')}`} className="font-mono text-[13px] text-[#00B8F0] hover:underline font-semibold">{phone}</a>
                </div>
 
-               <div className="bg-slate-50 border border-slate-200 rounded-xl p-8 transition-colors hover:border-slate-300">
+               <div className="bg-slate-50 border border-slate-200 rounded-xl p-8 transition-all hover:border-[#00B8F0]/40 hover:shadow-md">
                   <div className="w-10 h-10 border border-[#00B8F0]/20 bg-[#00B8F0]/10 rounded-lg flex items-center justify-center text-[#00B8F0] mb-4">
                      <MapPin className="w-5 h-5" />
                   </div>
