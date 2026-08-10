@@ -104,9 +104,9 @@ export default function Pricing() {
             </ul>
 
             <div className="mb-6 flex items-end gap-3">
-              <span className="text-4xl font-bold text-white">₹399</span>
+              <span className="text-4xl font-bold text-white">₹299</span>
               <span className="text-[#8A9EB0] text-sm line-through mb-1">₹597</span>
-              <span className="text-[#00B8F0] text-sm font-semibold mb-1">Save ₹198</span>
+              <span className="text-[#00B8F0] text-sm font-semibold mb-1">Save ₹298</span>
             </div>
 
             <Link

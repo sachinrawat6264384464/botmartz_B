@@ -88,41 +88,35 @@ const studentReviews = [
   },
 ];
 
-// Flash Sale: ENDED — Sale permanently disabled
 function isSaleActive(): boolean {
   return false;
 }
 
-// Bootcamp 1 Status: COMPLETED
 function getBootcamp1Status(): "COMPLETED" {
   return "COMPLETED";
 }
 
 export default function BootcampDetails() {
   const [mounted, setMounted] = useState(false);
-  const [saleActive, setSaleActive] = useState(false);
   const [bc1Status, setBc1Status] = useState<"LIVE" | "CLOSED" | "COMPLETED">("COMPLETED");
 
   useEffect(() => {
     setMounted(true);
-    setSaleActive(isSaleActive());
     setBc1Status(getBootcamp1Status());
 
     const interval = setInterval(() => {
-      setSaleActive(isSaleActive());
       setBc1Status(getBootcamp1Status());
     }, 10000);
 
     return () => clearInterval(interval);
   }, []);
 
-  const showSale = mounted && saleActive;
   const isBc1Closed = mounted && (bc1Status === "CLOSED" || bc1Status === "COMPLETED");
   const isBc1Live = mounted && bc1Status === "LIVE";
   const isBc1Completed = mounted && bc1Status === "COMPLETED";
 
-  const fullPassPrice = 399;
-  // No strikethrough price — show clean ₹399 only
+  const fullPassPrice = 299;
+  const fullPassOriginalPrice = 597;
 
   return (
     <section id="bootcamps" className="py-24 bg-white">
@@ -165,19 +159,6 @@ export default function BootcampDetails() {
               <MessageSquare size={13} /> Give Workshop Feedback →
             </Link>
           </div>
-
-          {/* Flash Sale Alert inside section */}
-          {showSale && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="mt-6 inline-flex items-center gap-2 bg-gradient-to-r from-[#FF6B00] to-[#E03200] text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg"
-            >
-              <Zap size={16} className="animate-pulse" />
-              Flash Sale LIVE! — Get Full Pass at ₹299 (was ₹399) till 11:59 PM today!
-              <Zap size={16} className="animate-pulse" />
-            </motion.div>
-          )}
         </div>
 
         {/* Bootcamps Grid */}
@@ -220,7 +201,6 @@ export default function BootcampDetails() {
                           <CheckCircle2 size={10} /> COMPLETED
                         </span>
                       )}
-                      {/* Bootcamp 02 — Upcoming Soon badge */}
                       {bootcamp.id === 2 && (
                         <span className="inline-flex items-center gap-1 bg-amber-50 text-amber-600 border border-amber-300 text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full animate-pulse">
                           ⏳ Upcoming Soon
@@ -280,15 +260,7 @@ export default function BootcampDetails() {
                       href="/community/ai-accelerator-workshop/checkout?plan=bundle"
                       className="flex w-full justify-center items-center gap-1.5 py-3 rounded-xl bg-[#0066FF] text-white font-bold hover:bg-[#0052CC] transition-all shadow-sm"
                     >
-                      <span>Get Full Pass</span>
-                      {showSale ? (
-                        <span className="flex items-center gap-1">
-                          <span className="line-through text-white/70 font-medium">₹399</span>
-                          <span className="text-amber-300 font-extrabold">₹299</span>
-                        </span>
-                      ) : (
-                        <span>(₹399)</span>
-                      )}
+                      <span>Get Full Pass (₹299)</span>
                     </Link>
                   </div>
                 </div>
@@ -321,7 +293,13 @@ export default function BootcampDetails() {
 
               <div className="relative z-10 flex flex-col items-center md:items-end flex-shrink-0 w-full md:w-auto border-t md:border-t-0 md:border-l border-[#1E293B] pt-6 md:pt-0 md:pl-10">
                 <div className="flex items-end gap-3 mb-5">
-                  <span className="text-4xl md:text-5xl font-bold text-white tracking-tight">₹{fullPassPrice}</span>
+                  <span className="text-4xl md:text-5xl font-bold text-white tracking-tight">₹299</span>
+                  <div className="flex flex-col items-start pb-1">
+                    <span className="text-[#8A9EB0] text-sm line-through leading-none">₹597</span>
+                    <span className="text-[#00B8F0] text-[13px] font-bold leading-none mt-1">
+                      Save ₹298
+                    </span>
+                  </div>
                 </div>
                 <Link
                   href="/community/ai-accelerator-workshop/checkout?plan=bundle"

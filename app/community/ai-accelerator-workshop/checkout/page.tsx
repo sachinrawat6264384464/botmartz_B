@@ -2,14 +2,9 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Loader2, Zap, AlertCircle } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
-
-// Flash Sale: ENDED — Sale permanently disabled
-function isSaleActive(): boolean {
-  return false;
-}
 
 function CheckoutContent() {
   const router = useRouter();
@@ -20,8 +15,6 @@ function CheckoutContent() {
   const [error, setError] = useState("");
   
   const [bootcampAmount, setBootcampAmount] = useState<number | null>(null);
-  const [mounted, setMounted] = useState(false);
-  const [saleOn, setSaleOn] = useState(false);
   
   const [formData, setFormData] = useState({
     name: "",
@@ -31,20 +24,9 @@ function CheckoutContent() {
   });
 
   useEffect(() => {
-    setMounted(true);
-    setSaleOn(isSaleActive());
-    const interval = setInterval(() => {
-      setSaleOn(isSaleActive());
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const isFlashActive = (mounted && saleOn) || (typeof window !== "undefined" && isSaleActive());
-
-  useEffect(() => {
     const fetchBootcamp = async () => {
       if (plan === "bundle") {
-        setBootcampAmount(isFlashActive ? 299 : 399);
+        setBootcampAmount(299);
         return;
       }
       if (plan) {
@@ -63,7 +45,7 @@ function CheckoutContent() {
       }
     };
     fetchBootcamp();
-  }, [plan, isFlashActive]);
+  }, [plan]);
 
   useEffect(() => {
     if (typeof window !== "undefined" && !(window as any).Razorpay) {
@@ -89,82 +71,9 @@ function CheckoutContent() {
     });
   };
 
-  const [couponInput, setCouponInput] = useState("");
-  const [appliedCouponInfo, setAppliedCouponInfo] = useState<{
-    code: string;
-    discountType: string;
-    discountValue: number;
-  } | null>(null);
-  const [couponError, setCouponError] = useState("");
-  const [couponSuccess, setCouponSuccess] = useState("");
-  const [couponLoading, setCouponLoading] = useState(false);
-
   const getAmount = () => {
-    const basePrice = plan === "bundle" ? (isFlashActive ? 299 : 399) : (bootcampAmount || 199);
-    if (!appliedCouponInfo) return basePrice;
-    if (appliedCouponInfo.discountValue === 100) return 0;
-    if (appliedCouponInfo.discountType === "fixed") {
-      return Math.max(1, basePrice - appliedCouponInfo.discountValue);
-    }
-    if (appliedCouponInfo.discountType === "percentage") {
-      const discount = Math.round((basePrice * appliedCouponInfo.discountValue) / 100);
-      return Math.max(0, basePrice - discount);
-    }
-    return basePrice;
-  };
-
-  useEffect(() => {
-    if (plan !== "bundle" || isFlashActive) {
-      setAppliedCouponInfo(null);
-      setCouponSuccess("");
-      setCouponError("");
-    }
-  }, [plan, isFlashActive]);
-
-  const handleApplyCoupon = async () => {
-    if (!couponInput.trim()) return;
-
-    if (isFlashActive) {
-      setCouponError("Coupon codes cannot be applied during the Flash Sale (prices already discounted to ₹299!). Offer ends at 11:59 PM.");
-      return;
-    }
-
-    if (plan !== "bundle") {
-      setCouponError("Coupon codes are only valid for the AI Engineering Pass (Full Bundle).");
-      return;
-    }
-
-    setCouponLoading(true);
-    setCouponError("");
-    setCouponSuccess("");
-
-    try {
-      const res = await fetch("/api/events/verify-coupon", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: couponInput.trim(), plan }),
-      });
-      const data = await res.json();
-
-      if (res.ok && data.success) {
-        setAppliedCouponInfo({
-          code: data.code,
-          discountType: data.discountType,
-          discountValue: data.discountValue,
-        });
-        if (data.discountValue === 100) {
-          setCouponSuccess(`Coupon "${data.code}" Applied! 100% FREE Access.`);
-        } else {
-          setCouponSuccess(`Coupon "${data.code}" Applied! ${data.discountValue}% Discount Saved.`);
-        }
-      } else {
-        setCouponError(data.error || "Invalid coupon code");
-      }
-    } catch (err) {
-      setCouponError("Network error validating coupon");
-    } finally {
-      setCouponLoading(false);
-    }
+    if (plan === "bundle") return 299;
+    return bootcampAmount || 199;
   };
 
   const handlePayment = async (e: React.FormEvent) => {
@@ -172,37 +81,6 @@ function CheckoutContent() {
     setLoading(true);
     setError("");
 
-    // FREE REGISTRATION VIA 100% COUPON
-    if (appliedCouponInfo && getAmount() === 0) {
-      try {
-        const res = await fetch("/api/ai-frontier/coupon-register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-            organization: formData.organization,
-            plan: plan || "bootcamp-01",
-            couponCode: appliedCouponInfo.code,
-          }),
-        });
-
-        const data = await res.json();
-        if (res.ok && data.success) {
-          router.push(`/community/ai-accelerator-workshop/success?plan=${plan}`);
-        } else {
-          setError(data.error || "Free registration failed.");
-        }
-      } catch (err: any) {
-        setError(err.message || "An error occurred");
-      } finally {
-        setLoading(false);
-      }
-      return;
-    }
-
-    // REGULAR / DISCOUNTED RAZORPAY PAYMENT
     try {
       const isLoaded = await loadRazorpayScript();
       if (!isLoaded || typeof (window as any).Razorpay === "undefined") {
@@ -237,7 +115,7 @@ function CheckoutContent() {
               organization: formData.organization,
               plan: plan || "bootcamp-01",
               chargedAmount: getAmount(),
-              appliedCoupon: appliedCouponInfo?.code || ""
+              appliedCoupon: ""
             }),
           });
 
@@ -305,12 +183,6 @@ function CheckoutContent() {
             <div className="inline-flex items-center gap-1.5 bg-white/10 text-white text-[10px] sm:text-xs font-bold tracking-widest uppercase px-2.5 py-0.5 sm:py-1 rounded-full mb-3 border border-white/20">
               Order Summary
             </div>
-
-            {plan === "bundle" && isFlashActive && (
-              <div className="mb-3 inline-flex items-center gap-1.5 bg-gradient-to-r from-[#FF6B00] to-[#E03200] text-white text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md animate-pulse">
-                <Zap size={13} /> Flash Sale: ₹299 (Save ₹100)
-              </div>
-            )}
             
             <h2 className="text-xl sm:text-2xl font-extrabold mb-1.5 leading-tight text-white">
               {details.title}
@@ -336,17 +208,12 @@ function CheckoutContent() {
           <div className="relative z-10 pt-5 border-t border-white/10 mt-auto">
             <div className="flex items-end justify-between mb-1">
               <span className="text-[#8A9EB0] text-xs font-medium">Total (Inclusive of GST)</span>
-              <div className="flex flex-col items-end">
-                {plan === "bundle" && isFlashActive && (
-                  <span className="text-xs text-[#8A9EB0] line-through font-mono">₹399</span>
-                )}
-                <span className="text-2xl sm:text-3xl font-extrabold text-white">
-                  {getAmount() === 0 ? <span className="text-emerald-400">FREE</span> : `₹${getAmount()}`}
-                </span>
-              </div>
+              <span className="text-2xl sm:text-3xl font-extrabold text-white">
+                ₹{getAmount()}
+              </span>
             </div>
             <p className="text-xs text-white/50 text-right">
-              {getAmount() === 0 ? "100% Free Promo Access" : "Secure Encrypted Payment"}
+              Secure Encrypted Payment
             </p>
           </div>
         </div>
@@ -411,44 +278,6 @@ function CheckoutContent() {
               />
             </div>
 
-            {/* COUPON CODE INPUT FIELD */}
-            <div className="pt-2 border-t border-[#E2E8F0]">
-              <label className="block text-[11px] font-bold text-[#64748B] uppercase tracking-wider mb-1">Have a Coupon Code?</label>
-
-              {isFlashActive ? (
-                /* FLASH SALE COUPON DISABLE WARNING */
-                <div className="p-3 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-xl text-amber-900 text-xs font-medium flex items-start gap-2">
-                  <Zap className="w-4 h-4 text-amber-600 shrink-0 mt-0.5 animate-pulse" />
-                  <span>
-                    <strong className="text-amber-900 font-bold">Flash Sale Active (₹299 Offer):</strong> Coupon codes are disabled while prices are already discounted to ₹299. Offer ends tonight at 11:59 PM.
-                  </span>
-                </div>
-              ) : (
-                <>
-                  <div className="flex flex-wrap gap-2">
-                    <input
-                      type="text"
-                      placeholder="Enter promo code"
-                      value={couponInput}
-                      onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
-                      disabled={Boolean(appliedCouponInfo)}
-                      className="flex-1 min-w-0 py-2 px-3 rounded-xl border border-[#CBD5E1] font-mono text-xs text-[#0B1C2C] bg-[#F8FAFC] uppercase tracking-wider focus:outline-none focus:border-[#0066FF] disabled:opacity-60"
-                    />
-                    <button
-                      type="button"
-                      onClick={handleApplyCoupon}
-                      disabled={couponLoading || !couponInput.trim() || Boolean(appliedCouponInfo)}
-                      className="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#0B1C2C] hover:bg-[#1E293B] text-white font-semibold text-xs transition-colors disabled:opacity-50"
-                    >
-                      {couponLoading ? "Applying..." : appliedCouponInfo ? "✓ Applied" : "Apply Code"}
-                    </button>
-                  </div>
-                  {couponError && <p className="text-xs text-rose-600 font-semibold mt-1">{couponError}</p>}
-                  {couponSuccess && <p className="text-xs text-emerald-600 font-bold mt-1">{couponSuccess}</p>}
-                </>
-              )}
-            </div>
-
             <button
               type="submit"
               disabled={loading}
@@ -456,8 +285,6 @@ function CheckoutContent() {
             >
               {loading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
-              ) : getAmount() === 0 ? (
-                "Complete Free Registration →"
               ) : (
                 `Pay ₹${getAmount()}`
               )}
@@ -466,7 +293,7 @@ function CheckoutContent() {
               <svg className="w-3.5 h-3.5 text-[#00B8F0]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
-              {getAmount() === 0 ? "Direct Instant Confirmation" : "Payments processed securely by Razorpay"}
+              Payments processed securely by Razorpay
             </p>
           </form>
         </div>

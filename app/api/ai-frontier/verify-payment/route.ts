@@ -28,7 +28,7 @@ export async function POST(req: Request) {
 
     if (generated_signature === razorpay_signature) {
       // Use the actual amount that was charged via Razorpay
-      const amount = chargedAmount ?? (plan === "bundle" ? 399 : 199);
+      const amount = chargedAmount ?? (plan === "bundle" ? 299 : 199);
       
       let eventTitle = "AI Frontier Bootcamp";
       let dateVal = "TBA";
