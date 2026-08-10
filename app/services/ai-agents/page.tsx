@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import DynamicIcon from "@/app/_components/DynamicIcon";
 import SchemaMarkup from "@/app/_components/SchemaMarkup";
-import { adminDb } from '@/lib/firebase-admin';
+import { getCachedDynamicPage } from '@/lib/fetch-helpers';
 import AIAgentsClient from "./AIAgentsClient";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -17,12 +17,9 @@ export async function generateMetadata(): Promise<Metadata> {
   };
   
   try {
-    const docSnap = await adminDb.collection("dynamic_pages").doc("ai-agents").get();
-    if (docSnap.exists) {
-      const data = docSnap.data();
-      if (data?.metadata) {
-        meta = { ...meta, ...data.metadata };
-      }
+    const data = await getCachedDynamicPage("ai-agents");
+    if (data?.metadata) {
+      meta = { ...meta, ...data.metadata };
     }
   } catch (e) {}
 
