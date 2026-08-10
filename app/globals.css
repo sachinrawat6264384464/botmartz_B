@@ -335,3 +335,16 @@ html[data-stop-animations="true"] *::after {
 .cta-final a {
   @apply inline-flex items-center justify-center gap-2 font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,184,240,0.3)] bg-ink text-white !no-underline border border-white/10;
 }
+
+/* ─── HIDE VERCEL TOOLBAR & LIVE FEEDBACK OVERLAY ─── */
+vercel-live-feedback,
+#vercel-live-feedback,
+[data-vercel-toolbar],
+[data-vercel-live-feedback],
+iframe[src*="vercel.com"],
+iframe[src*="vercel.live"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
