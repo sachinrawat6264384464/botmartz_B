@@ -173,6 +173,27 @@ export default function EnterpriseRAGClient({ content }: { content: any }) {
         </div>
       </section>
 
+      {/* 4. SEE IT ANSWER A REAL QUESTION */}
+      <section className="py-[120px] bg-white border-b border-slate-200">
+        <div className="wrap">
+          <motion.div 
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeUp}
+            className="text-center max-w-[800px] mx-auto"
+          >
+            <h2 className="text-[32px] md:text-[40px] font-semibold mb-6 tracking-tight text-slate-900">See It Answer a Real Question</h2>
+            <p className="text-slate-600 text-[18px] mb-8 leading-relaxed">
+              A working system indexed over public insurance policy documents. Ask it whether a policy covers a specific procedure, and it returns the answer, the source document, the page, and its confidence — or tells you the documents don't say.
+            </p>
+            <Link href="#demo" className="btn bg-slate-900 text-white hover:bg-slate-800 px-8 py-4 rounded-xl text-[15px] inline-flex items-center gap-2 font-medium transition-all">
+              Try the live demo →
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
       {/* 5. PROCESS AND PRICING (Replaces AEO) */}
       <section id="process" className="py-[120px] bg-[#050B14] text-white relative overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[1px] bg-gradient-to-r from-transparent via-[#00B8F0]/50 to-transparent"></div>
@@ -189,7 +210,7 @@ export default function EnterpriseRAGClient({ content }: { content: any }) {
             <h2 className="text-[32px] md:text-[40px] font-semibold mb-6 tracking-tight text-white">Transparent Delivery. Fixed Timelines.</h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
              {/* Connecting line for desktop */}
              <div className="hidden md:block absolute top-[40px] left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-transparent via-[#00B8F0]/30 to-transparent"></div>
              
@@ -234,7 +255,7 @@ export default function EnterpriseRAGClient({ content }: { content: any }) {
             variants={fadeUp}
             className="text-center mb-16 max-w-[700px] mx-auto"
           >
-             <h2 className="text-[32px] md:text-[40px] font-semibold tracking-tight text-slate-900 mb-4">Where We Deliver Instant ROI</h2>
+             <h2 className="text-[32px] md:text-[40px] font-semibold tracking-tight text-slate-900 mb-4">Where We Deliver Measurable ROI</h2>
              <p className="text-slate-600 text-[17px]">Ideal use cases for mid-market teams looking for measurable impact.</p>
           </motion.div>
 
