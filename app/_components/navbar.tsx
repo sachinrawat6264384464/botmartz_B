@@ -144,17 +144,16 @@ export default function Navbar({
                     >
                       <div className="min-w-[240px] bg-white border border-slate-200 rounded-xl shadow-xl p-1.5">
                         {item.dropdown.map((sub) => (
-                          <Link
+                          <a
                             key={sub.name}
                             href={sub.path}
-                            onClick={handleDropdownNavigate}
                             className="flex items-center justify-between px-3.5 py-2.5 text-[13px] font-medium text-[#475569] hover:text-[#0066FF] hover:bg-[#0066FF]/5 rounded-lg transition-all group whitespace-nowrap cursor-pointer"
                           >
                             <span>{sub.name}</span>
                             <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-[#0066FF] text-xs">
                               →
                             </span>
-                          </Link>
+                          </a>
                         ))}
                       </div>
                     </motion.div>
@@ -227,14 +226,14 @@ export default function Navbar({
                   {item.dropdown && (
                     <div className="flex flex-col gap-1 pl-4 border-l border-slate-200 mb-3">
                       {item.dropdown.map((sub) => (
-                        <Link
+                        <a
                           key={sub.name}
                           href={sub.path}
-                          onClick={handleDropdownNavigate}
+                          onClick={() => setMobileMenuOpen(false)}
                           className="py-2 text-sm text-[#475569] hover:text-[#0066FF] transition-colors cursor-pointer"
                         >
                           {sub.name}
-                        </Link>
+                        </a>
                       ))}
                     </div>
                   )}
