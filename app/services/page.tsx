@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Link from "next/link";
-import { ArrowRight, Calendar, FileText, Database, Bot, Zap, Shield, Code2, Layers, CheckCircle, TrendingUp, Users, Star } from "lucide-react";
+import { ArrowRight, Calendar, FileText } from "lucide-react";
 import { getCachedDynamicPage } from '@/lib/fetch-helpers';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -9,10 +9,14 @@ export async function generateMetadata(): Promise<Metadata> {
     description: 'We design, build, and deploy secure, scalable, and production-ready Enterprise RAG systems and AI Agents that deliver real business impact.',
     keywords: ['AI Engineering Services', 'Enterprise RAG', 'AI Agents', 'LLM Integration'],
   };
+  
   try {
     const data = await getCachedDynamicPage("services");
-    if (data?.metadata) meta = { ...meta, ...data.metadata };
+    if (data?.metadata) {
+      meta = { ...meta, ...data.metadata };
+    }
   } catch (e) {}
+
   return {
     ...meta,
     openGraph: {
@@ -21,399 +25,245 @@ export async function generateMetadata(): Promise<Metadata> {
       url: 'https://www.botmartz.com/services',
       type: 'website',
     },
-    alternates: { canonical: 'https://www.botmartz.com/services' },
+    alternates: {
+      canonical: 'https://www.botmartz.com/services',
+    },
   };
 }
-
-const stats = [
-  { value: "50+", label: "AI Systems Deployed" },
-  { value: "98%", label: "Client Satisfaction" },
-  { value: "6-8wk", label: "Avg. MVP Timeline" },
-  { value: "3x", label: "Avg. ROI Delivered" },
-];
-
-const whyUs = [
-  { icon: Shield, title: 'Production-First', desc: 'Secure, reliable, monitored, and ready for real-world enterprise usage from day one.' },
-  { icon: Layers, title: 'Modern Architecture', desc: 'Clean, modular, scalable architectures built for long-term maintainability.' },
-  { icon: Code2, title: 'Research-Driven', desc: 'We stay at the frontier of AI through continuous experiments and applied research.' },
-  { icon: Users, title: 'Collaborative Partner', desc: 'We work as an extension of your team for long-term, iterative success.' },
-  { icon: TrendingUp, title: 'End-to-End Delivery', desc: 'From strategy and design to deployment, monitoring, and ongoing support.' },
-  { icon: Zap, title: 'Secure & Compliant', desc: 'Security and data privacy built in at every layer of the AI lifecycle.' },
-];
-
-const caseStudies = [
-  {
-    tag: "Enterprise RAG",
-    tagColor: "from-[#0066FF] to-[#00B8F0]",
-    title: "Enterprise Knowledge Search",
-    desc: "Built a secure RAG system to unify search across 50K+ internal documents, cutting research time by 80%.",
-    metric: "80% faster",
-    metricLabel: "Document Retrieval",
-    gradient: "from-[#0066FF]/10 to-[#00B8F0]/5",
-    border: "border-[#0066FF]/20",
-  },
-  {
-    tag: "AI Agents",
-    tagColor: "from-[#7C3AED] to-[#A78BFA]",
-    title: "AI Customer Support Agent",
-    desc: "Developed an AI support agent that automatically resolved 70% of support queries, reducing human workload.",
-    metric: "70% resolved",
-    metricLabel: "Auto-handled queries",
-    gradient: "from-[#7C3AED]/10 to-[#A78BFA]/5",
-    border: "border-[#7C3AED]/20",
-  },
-  {
-    tag: "AI Automation",
-    tagColor: "from-[#0066FF] to-[#7C3AED]",
-    title: "AI SDR for Outreach",
-    desc: "Built an autonomous SDR agent that personalizes outreach at scale and books 3x more qualified meetings.",
-    metric: "3x meetings",
-    metricLabel: "Booked per month",
-    gradient: "from-[#0066FF]/10 to-[#7C3AED]/5",
-    border: "border-[#0066FF]/20",
-  },
-];
 
 export default async function ServicesIndexPage() {
   let heroData = {
     badge: "AI Engineering Services",
-    title: "We Engineer Production <span class=\"text-transparent bg-clip-text bg-gradient-to-r from-[#00B8F0] to-[#0066FF]\">AI Systems</span> That Deliver Real Business Impact.",
-    subtitle: "We design, build, and deploy secure, scalable, and production-ready Enterprise RAG systems and AI Agents that help organizations automate knowledge, streamline workflows, and drive growth.",
+    title: "We Engineer Production <span className=\"text-[#00B8F0]\">AI Systems</span> That Deliver Real Business Impact.",
+    subtitle: "We design, build, and deploy secure, scalable, and production-ready Enterprise RAG systems and AI Agents that help organizations automate knowledge, streamline workflows, and drive growth."
   };
+
   try {
     const data = await getCachedDynamicPage("services");
-    if (data?.hero) heroData = { ...heroData, ...data.hero };
+    if (data?.hero) {
+      heroData = { ...heroData, ...data.hero };
+    }
   } catch (e) {}
 
   return (
     <main className="bg-white min-h-screen">
+      {/* HERO SECTION */}
+      <section className="relative pt-[120px] pb-[80px] bg-[#050B14] text-white overflow-hidden">
+        {/* Background glow effects */}
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0066FF]/10 blur-[150px] rounded-full pointer-events-none" />
 
-      {/* ═══════════════════════════════════════
-          HERO SECTION
-      ═══════════════════════════════════════ */}
-      <section className="relative pt-[130px] pb-[100px] bg-[#050B14] text-white overflow-hidden">
-        {/* Grid background */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: 'linear-gradient(rgba(0,184,240,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,0.05) 1px, transparent 1px)',
-            backgroundSize: '48px 48px',
-            maskImage: 'radial-gradient(ellipse 80% 60% at 50% 40%, black, transparent)',
-            WebkitMaskImage: 'radial-gradient(ellipse 80% 60% at 50% 40%, black, transparent)',
-          }}
-        />
-        {/* Glow orbs */}
-        <div className="absolute top-[-20%] left-[-10%] w-[55%] h-[55%] bg-[#00B8F0]/10 blur-[140px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-[#0066FF]/12 blur-[160px] rounded-full pointer-events-none" />
-
-        <div className="wrap relative z-10">
-          {/* Badge */}
-          <div className="flex justify-center mb-8">
-            <div className="inline-flex items-center gap-2 bg-[#00B8F0]/10 border border-[#00B8F0]/30 text-[#00B8F0] text-[11px] font-mono font-bold uppercase tracking-widest px-4 py-2 rounded-full">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00B8F0] animate-pulse" />
+        <div className="wrap relative z-10 flex flex-col md:flex-row items-center gap-10">
+          <div className="flex-1">
+            <div className="font-mono text-[11px] tracking-[0.14em] text-[#00B8F0] uppercase mb-6 flex items-center gap-3 font-semibold">
+              <span className="w-6 h-px bg-[#00B8F0]"></span>
               {heroData.badge}
             </div>
+            <h1 
+              className="text-[clamp(36px,5vw,56px)] leading-[1.1] font-semibold mb-6 tracking-tight text-white"
+              dangerouslySetInnerHTML={{ __html: heroData.title }}
+            />
+            <p className="text-[17px] text-[#8A9EB0] max-w-[540px] mb-8">
+              {heroData.subtitle}
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link href="/contact" className="inline-flex items-center px-6 py-3 rounded bg-[#0066FF] text-white hover:bg-[#0052CC] text-[14px] font-semibold transition-all shadow-[0_0_20px_rgba(0,102,255,0.35)] hover:scale-[1.02]">Book a Discovery Call →</Link>
+              <Link href="/work/case-studies" className="inline-flex items-center px-6 py-3 rounded border border-white/30 text-white hover:border-[#00B8F0] hover:text-[#00B8F0] text-[14px] font-semibold transition-all">Explore Case Studies ↗</Link>
+            </div>
           </div>
+          <div className="flex-1 hidden lg:block">
+            {/* Abstract AI Graphic Placeholder */}
+            <div className="w-full aspect-square max-w-[500px] ml-auto relative">
+               <div className="absolute inset-0 flex items-center justify-center">
+                 {/* Decorative circles representing nodes */}
+                 <div className="w-64 h-64 border border-[#00B8F0]/30 rounded-full absolute animate-[spin_20s_linear_infinite]" />
+                 <div className="w-48 h-48 border border-[#FF3366]/40 rounded-full absolute animate-[spin_15s_linear_infinite_reverse]" />
+                 <div className="w-32 h-32 bg-gradient-to-br from-[#00B8F0] to-[#0A111F] rounded-2xl rotate-12 flex items-center justify-center shadow-[0_0_40px_rgba(0,184,240,0.4)]">
+                   <div className="w-16 h-16 bg-white/10 rounded-xl backdrop-blur-sm" />
+                 </div>
+               </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-          {/* Title */}
-          <h1
-            className="text-center text-[clamp(36px,5vw,68px)] leading-[1.08] font-bold mb-6 tracking-tight max-w-[900px] mx-auto"
-            dangerouslySetInnerHTML={{ __html: heroData.title }}
-          />
 
-          {/* Subtitle */}
-          <p className="text-center text-[17px] md:text-[19px] text-[#8A9EB0] max-w-[620px] mx-auto mb-10 leading-relaxed">
-            {heroData.subtitle}
+      {/* CORE SERVICES */}
+      <section className="section-pad bg-white">
+        <div className="wrap text-center mb-[50px]">
+          <div className="font-mono text-[11px] text-[#00B8F0] uppercase tracking-[0.1em] mb-4 flex justify-center items-center gap-3">Our Core Services</div>
+          <h2 className="text-[34px] font-semibold mb-4 text-slate-900">AI Solutions Built for Production.</h2>
+          <p className="text-[15.5px] text-slate-600 max-w-[500px] mx-auto">
+            We focus on solving real business problems with two core capabilities backed by robust engineering and seamless integrations.
           </p>
-
-          {/* CTAs */}
-          <div className="flex flex-wrap gap-4 justify-center mb-16">
-            <Link
-              href="/contact"
-              className="bg-gradient-to-r from-[#0066FF] to-[#00B8F0] text-white px-8 py-3.5 rounded-xl text-[15px] font-semibold flex items-center gap-2 shadow-[0_0_30px_rgba(0,102,255,0.4)] hover:shadow-[0_0_40px_rgba(0,102,255,0.6)] hover:scale-[1.03] transition-all"
-            >
-              Book a Discovery Call <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              href="/work/case-studies"
-              className="border border-white/20 text-white hover:border-[#00B8F0]/60 hover:text-[#00B8F0] px-8 py-3.5 rounded-xl text-[15px] font-semibold transition-all backdrop-blur-sm"
-            >
-              Explore Case Studies ↗
-            </Link>
+        </div>
+        
+        <div className="wrap grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[960px] mx-auto">
+          {/* Service 1 */}
+          <div className="bg-slate-50 border border-slate-200 p-8 transition-colors hover:border-[#00B8F0] hover:shadow-[0_0_30px_rgba(0,184,240,0.1)] rounded-sm">
+            <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center mb-6 border border-slate-200">
+              <div className="w-6 h-6 bg-[#00B8F0]/20 rounded" />
+            </div>
+            <h3 className="text-[20px] font-semibold mb-3 text-slate-900">Enterprise RAG</h3>
+            <p className="text-[14px] text-slate-600 mb-6">Transform enterprise knowledge into actionable intelligence.</p>
+            <ul className="space-y-2.5 mb-8">
+              {['Knowledge Search', 'Document Intelligence', 'PDF AI & Q&A', 'Enterprise Search', 'Support AI Copilots'].map(i => (
+                <li key={i} className="flex items-center gap-2 text-[13.5px] text-slate-600">
+                  <span className="text-[#00B8F0]">✓</span> {i}
+                </li>
+              ))}
+            </ul>
+            <Link href="/services/enterprise-rag" className="font-mono text-[12px] text-[#00B8F0] hover:underline">Learn more →</Link>
           </div>
+          
+          {/* Service 2 */}
+          <div className="bg-slate-50 border border-slate-200 p-8 transition-colors hover:border-[#00B8F0] hover:shadow-[0_0_30px_rgba(0,184,240,0.1)] relative overflow-hidden rounded-sm">
+             {/* Subtle gradient glow */}
+             <div className="absolute top-0 right-0 w-32 h-32 bg-[#00B8F0]/5 blur-3xl rounded-full" />
+            <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center mb-6 border border-slate-200 relative z-10">
+              <div className="w-6 h-6 bg-[#FF3366]/20 rounded-full" />
+            </div>
+            <h3 className="text-[20px] font-semibold mb-3 relative z-10 text-slate-900">AI Agents</h3>
+            <p className="text-[14px] text-slate-600 mb-6 relative z-10">Build intelligent agents that automate complex tasks and workflows.</p>
+            <ul className="space-y-2.5 mb-8 relative z-10">
+              {['Customer Support Agents', 'Research & Analysis Agents', 'Sales & SDR Agents', 'Workflow Automation', 'Internal AI Assistants'].map(i => (
+                <li key={i} className="flex items-center gap-2 text-[13.5px] text-slate-600">
+                  <span className="text-[#00B8F0]">✓</span> {i}
+                </li>
+              ))}
+            </ul>
+            <Link href="/services/ai-agents" className="font-mono text-[12px] text-[#00B8F0] relative z-10 hover:underline">Learn more →</Link>
+          </div>
+        </div>
+      </section>
 
-          {/* Stats Bar */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/10 rounded-2xl overflow-hidden border border-white/10 max-w-[800px] mx-auto">
-            {stats.map((s, i) => (
-              <div key={i} className="bg-white/5 backdrop-blur-sm px-6 py-5 text-center hover:bg-white/10 transition-colors">
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1">{s.value}</div>
-                <div className="text-[12px] text-[#8A9EB0] font-medium">{s.label}</div>
+      {/* WHY CHOOSE BOTMARTZ */}
+      <section className="section-pad bg-slate-50 border-y border-slate-200">
+        <div className="wrap text-center mb-12">
+          <div className="font-mono text-[11px] text-[#00B8F0] uppercase tracking-[0.1em] mb-4 flex justify-center items-center gap-3">Why Choose Botmartz</div>
+          <h2 className="text-[30px] font-semibold mb-4 text-slate-900">Engineering Excellence. Built for the Real World.</h2>
+          <p className="text-[15px] text-slate-600 max-w-[600px] mx-auto">
+            We combine deep engineering expertise with a production-first mindset to deliver AI systems that scale.
+          </p>
+        </div>
+        <div className="wrap grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 text-center">
+          {[
+            { t: 'Production-First', d: 'Secure, reliable, monitored, and ready for real-world usage.' },
+            { t: 'Modern Architecture', d: 'Clean, modular, and scalable architectures built for maintainability.' },
+            { t: 'Research-Driven', d: 'We stay at the frontier of AI through experiments and learning.' },
+            { t: 'Secure & Compliant', d: 'Security and privacy built in at every layer of the lifecycle.' },
+            { t: 'Collaborative Partner', d: 'We work as an extension of your team for long-term success.' },
+            { t: 'End-to-End Delivery', d: 'From strategy and design to deployment and support.' }
+          ].map((item, i) => (
+            <div key={i} className="flex flex-col items-center">
+              <div className="w-10 h-10 bg-white border border-slate-200 rounded-full flex items-center justify-center mb-4 text-[#00B8F0] font-mono text-[14px]">0{i+1}</div>
+              <h3 className="text-[15px] font-semibold mb-2 text-slate-900">{item.t}</h3>
+              <p className="text-[13px] text-slate-600 leading-relaxed">{item.d}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* STACK */}
+      <section className="border-y border-slate-200 bg-white">
+        <div className="wrap flex flex-col md:flex-row items-center">
+          <div className="font-mono text-[11px] text-[#00B8F0] uppercase tracking-[0.08em] py-4 pr-8 border-b md:border-b-0 md:border-r border-slate-200 w-full md:w-auto text-center md:text-left">Powered By Modern AI Engineering Stack</div>
+          <div className="flex flex-wrap flex-1">
+            {['PyTorch', 'LangGraph', 'LangChain', 'FastAPI', 'Google ADK', 'TensorFlow'].map((tech, i) => (
+              <div key={tech} className="flex-1 min-w-[120px] p-[16px_10px] font-mono text-[12px] text-slate-500 text-center border-r border-slate-200 last:border-r-0">
+                {tech}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════
-          CORE SERVICES
-      ═══════════════════════════════════════ */}
-      <section className="py-[100px] bg-white">
+      {/* SOLUTIONS IN ACTION */}
+      <section className="section-pad bg-white">
         <div className="wrap">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 text-[#0066FF] text-[11px] font-mono font-bold uppercase tracking-widest mb-4">
-              <span className="w-5 h-px bg-[#0066FF]" /> Our Core Services <span className="w-5 h-px bg-[#0066FF]" />
-            </div>
-            <h2 className="text-[34px] md:text-[44px] font-bold text-[#0B1C2C] tracking-tight mb-4">
-              Two Core Capabilities. Infinite Impact.
-            </h2>
-            <p className="text-[16px] text-slate-600 max-w-[520px] mx-auto leading-relaxed">
-              We focus on solving real business problems with two core AI engineering capabilities, backed by robust systems and seamless integrations.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-[980px] mx-auto">
-            {/* Enterprise RAG Card */}
-            <div className="group relative bg-gradient-to-br from-[#F0F7FF] to-white border border-[#0066FF]/20 rounded-3xl p-8 hover:border-[#0066FF]/50 hover:shadow-[0_20px_60px_rgba(0,102,255,0.12)] transition-all duration-300 overflow-hidden">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-[#0066FF]/10 to-transparent rounded-full blur-2xl pointer-events-none group-hover:from-[#0066FF]/20 transition-all duration-500" />
-              <div className="relative z-10">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#0066FF] to-[#00B8F0] rounded-2xl flex items-center justify-center mb-6 shadow-[0_8px_20px_rgba(0,102,255,0.3)] group-hover:scale-110 transition-transform">
-                  <Database className="w-7 h-7 text-white" />
-                </div>
-                <div className="inline-flex items-center gap-1.5 bg-[#0066FF]/10 text-[#0066FF] text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full mb-4">
-                  Enterprise Service
-                </div>
-                <h3 className="text-[24px] font-bold text-[#0B1C2C] mb-3">Enterprise RAG</h3>
-                <p className="text-[15px] text-slate-600 mb-6 leading-relaxed">
-                  Transform enterprise knowledge into actionable intelligence. Connect, retrieve, and reason over your entire knowledge base with production-grade accuracy.
-                </p>
-                <ul className="space-y-2.5 mb-8">
-                  {['Knowledge Search & Retrieval', 'Document Intelligence', 'PDF AI & Q&A Systems', 'Enterprise Search Copilots', 'Support AI Automation'].map(item => (
-                    <li key={item} className="flex items-center gap-2.5 text-[14px] text-slate-700">
-                      <CheckCircle className="w-4 h-4 text-[#0066FF] shrink-0" /> {item}
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/services/enterprise-rag"
-                  className="inline-flex items-center gap-2 text-[#0066FF] font-semibold text-[14px] hover:gap-3 transition-all group/link"
-                >
-                  Explore Enterprise RAG <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-            </div>
-
-            {/* AI Agents Card */}
-            <div className="group relative bg-gradient-to-br from-[#F5F0FF] to-white border border-[#7C3AED]/20 rounded-3xl p-8 hover:border-[#7C3AED]/50 hover:shadow-[0_20px_60px_rgba(124,58,237,0.12)] transition-all duration-300 overflow-hidden">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-[#7C3AED]/10 to-transparent rounded-full blur-2xl pointer-events-none group-hover:from-[#7C3AED]/20 transition-all duration-500" />
-              <div className="relative z-10">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#7C3AED] to-[#A78BFA] rounded-2xl flex items-center justify-center mb-6 shadow-[0_8px_20px_rgba(124,58,237,0.3)] group-hover:scale-110 transition-transform">
-                  <Bot className="w-7 h-7 text-white" />
-                </div>
-                <div className="inline-flex items-center gap-1.5 bg-[#7C3AED]/10 text-[#7C3AED] text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full mb-4">
-                  Enterprise Service
-                </div>
-                <h3 className="text-[24px] font-bold text-[#0B1C2C] mb-3">AI Agents</h3>
-                <p className="text-[15px] text-slate-600 mb-6 leading-relaxed">
-                  Build intelligent autonomous agents that plan, act, and deliver outcomes. Automate complex multi-step workflows with reliability and full observability.
-                </p>
-                <ul className="space-y-2.5 mb-8">
-                  {['Customer Support Agents', 'Research & Analysis Agents', 'Sales & SDR Agents', 'Workflow Automation', 'Internal AI Assistants'].map(item => (
-                    <li key={item} className="flex items-center gap-2.5 text-[14px] text-slate-700">
-                      <CheckCircle className="w-4 h-4 text-[#7C3AED] shrink-0" /> {item}
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/services/ai-agents"
-                  className="inline-flex items-center gap-2 text-[#7C3AED] font-semibold text-[14px] hover:gap-3 transition-all group/link"
-                >
-                  Explore AI Agents <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════
-          WHY CHOOSE BOTMARTZ
-      ═══════════════════════════════════════ */}
-      <section className="py-[100px] bg-[#050B14] relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: 'linear-gradient(rgba(0,184,240,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,0.04) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }} />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[70%] h-px bg-gradient-to-r from-transparent via-[#00B8F0]/40 to-transparent" />
-
-        <div className="wrap relative z-10">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 text-[#00B8F0] text-[11px] font-mono font-bold uppercase tracking-widest mb-4">
-              <span className="w-5 h-px bg-[#00B8F0]" /> Why Choose Botmartz <span className="w-5 h-px bg-[#00B8F0]" />
-            </div>
-            <h2 className="text-[34px] md:text-[44px] font-bold text-white tracking-tight mb-4">
-              Engineering Excellence.<br />Built for the Real World.
-            </h2>
-            <p className="text-[16px] text-[#8A9EB0] max-w-[520px] mx-auto leading-relaxed">
-              We combine deep engineering expertise with a production-first mindset to deliver AI systems that truly scale.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {whyUs.map((item, i) => (
-              <div
-                key={i}
-                className="group bg-white/5 border border-white/10 rounded-2xl p-7 hover:bg-white/10 hover:border-[#00B8F0]/30 transition-all duration-300 backdrop-blur-sm"
-              >
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00B8F0]/20 to-[#0066FF]/10 border border-[#00B8F0]/20 flex items-center justify-center text-[#00B8F0] mb-5 group-hover:scale-110 transition-transform">
-                  <item.icon className="w-6 h-6" />
-                </div>
-                <h3 className="text-[17px] font-bold text-white mb-2">{item.title}</h3>
-                <p className="text-[14px] text-[#8A9EB0] leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════
-          TECH STACK
-      ═══════════════════════════════════════ */}
-      <section className="py-10 bg-slate-50 border-y border-slate-200 overflow-hidden relative">
-        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-slate-50 to-transparent z-10" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-slate-50 to-transparent z-10" />
-        <div className="wrap flex items-center gap-8">
-          <div className="font-mono text-[11px] text-[#0066FF] font-bold uppercase tracking-widest whitespace-nowrap shrink-0">
-            Powered By
-          </div>
-          <div className="flex flex-wrap gap-x-8 gap-y-2 flex-1">
-            {['PyTorch', 'LangGraph', 'LangChain', 'FastAPI', 'Google ADK', 'TensorFlow', 'Milvus', 'Weaviate', 'OpenAI'].map(tech => (
-              <span key={tech} className="font-mono text-[13px] text-slate-500 font-semibold flex items-center gap-2 hover:text-[#0066FF] transition-colors">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#0066FF]/40" />{tech}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════
-          SOLUTIONS IN ACTION
-      ═══════════════════════════════════════ */}
-      <section className="py-[100px] bg-white">
-        <div className="wrap">
-          <div className="flex flex-wrap justify-between items-end gap-6 mb-12">
+          <div className="flex flex-wrap justify-between items-end gap-6 mb-10">
             <div>
-              <div className="inline-flex items-center gap-2 text-[#0066FF] text-[11px] font-mono font-bold uppercase tracking-widest mb-4">
-                <span className="w-5 h-px bg-[#0066FF]" /> Solutions in Action
-              </div>
-              <h2 className="text-[32px] md:text-[40px] font-bold text-[#0B1C2C] tracking-tight">Real Problems. Real Impact.</h2>
-              <p className="text-[16px] text-slate-600 mt-2">How we've helped organizations unlock the power of AI.</p>
+              <div className="font-mono text-[11px] text-[#00B8F0] uppercase tracking-[0.1em] mb-4 flex items-center gap-3">Solutions in Action</div>
+              <h2 className="text-[34px] font-semibold text-slate-900">Real Problems. Real Impact.</h2>
+              <p className="text-[15.5px] text-slate-600 mt-2">Explore how we've helped organizations unlock the power of AI.</p>
             </div>
-            <Link
-              href="/work/case-studies"
-              className="border border-slate-200 text-slate-700 hover:border-[#0066FF] hover:text-[#0066FF] px-6 py-2.5 rounded-xl text-[14px] font-semibold transition-all inline-flex items-center gap-2"
-            >
-              View All <ArrowRight className="w-4 h-4" />
-            </Link>
+            <Link href="/work/case-studies" className="btn btn-ghost border border-slate-200 text-slate-600 hover:border-[#00B8F0] hover:text-[#00B8F0] px-6 py-2 rounded text-[14px] transition-colors">View All Case Studies →</Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {caseStudies.map((cs, i) => (
-              <div
-                key={i}
-                className={`group relative bg-gradient-to-br ${cs.gradient} border ${cs.border} rounded-2xl p-7 hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden cursor-pointer`}
-              >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 blur-2xl rounded-full pointer-events-none" />
-                <div className="relative z-10">
-                  <div className={`inline-flex items-center gap-1.5 bg-gradient-to-r ${cs.tagColor} text-white text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full mb-5`}>
-                    {cs.tag}
-                  </div>
-                  <h3 className="text-[19px] font-bold text-[#0B1C2C] mb-3">{cs.title}</h3>
-                  <p className="text-[14px] text-slate-600 mb-6 leading-relaxed">{cs.desc}</p>
-                  <div className="flex items-end justify-between">
-                    <div>
-                      <div className="text-[26px] font-bold text-[#0B1C2C]">{cs.metric}</div>
-                      <div className="text-[12px] text-slate-500 font-medium">{cs.metricLabel}</div>
-                    </div>
-                    <div className="text-[13px] text-[#0066FF] font-semibold flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
-                      Read More <ArrowRight className="w-3.5 h-3.5" />
-                    </div>
-                  </div>
-                </div>
+            <div className="border border-slate-200 rounded-sm overflow-hidden group cursor-pointer hover:border-[#00B8F0] transition-colors">
+              <div className="h-[180px] bg-slate-100 border-b border-slate-200 p-6 relative">
+                 <div className="absolute inset-x-6 bottom-0 h-32 bg-slate-200 rounded-t-lg border border-b-0 border-slate-300"></div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════
-          CTA BANNER
-      ═══════════════════════════════════════ */}
-      <section className="py-[80px] bg-slate-50 border-t border-slate-200">
-        <div className="wrap">
-          <div className="relative bg-gradient-to-br from-[#050B14] to-[#0B1C2C] rounded-3xl p-[48px] md:p-[64px] overflow-hidden">
-            {/* Grid */}
-            <div className="absolute inset-0 pointer-events-none rounded-3xl" style={{
-              backgroundImage: 'linear-gradient(rgba(0,184,240,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,0.05) 1px, transparent 1px)',
-              backgroundSize: '32px 32px',
-            }} />
-            {/* Glows */}
-            <div className="absolute top-[-30%] left-[-10%] w-[50%] h-[200%] bg-[#0066FF]/15 blur-[100px] rounded-full pointer-events-none" />
-            <div className="absolute bottom-[-30%] right-[-10%] w-[40%] h-[200%] bg-[#00B8F0]/10 blur-[100px] rounded-full pointer-events-none" />
-
-            <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
-              <div className="max-w-[500px]">
-                <div className="inline-flex items-center gap-2 text-[#00B8F0] text-[11px] font-mono font-bold uppercase tracking-widest mb-4">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#00B8F0] animate-pulse" /> Ready to build together?
-                </div>
-                <h2 className="text-[32px] md:text-[44px] font-bold text-white leading-[1.15] mb-4 tracking-tight">
-                  Let's Engineer AI That<br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00B8F0] to-[#0066FF]">Drives Real Results.</span>
-                </h2>
-                <p className="text-[15px] text-[#8A9EB0] mb-8 leading-relaxed">
-                  Book a free discovery call and let's discuss how we can solve your most critical challenges with AI engineering.
-                </p>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-[#0066FF] to-[#00B8F0] text-white px-8 py-4 rounded-xl text-[15px] font-bold shadow-[0_0_30px_rgba(0,102,255,0.4)] hover:shadow-[0_0_40px_rgba(0,102,255,0.6)] hover:scale-[1.03] transition-all"
-                >
-                  Book a Discovery Call <ArrowRight className="w-5 h-5" />
-                </Link>
+              <div className="p-6 bg-slate-50">
+                <div className="font-mono text-[10px] text-[#00B8F0] uppercase bg-[#00B8F0]/10 inline-block px-2 py-1 rounded mb-3">Enterprise RAG</div>
+                <h3 className="text-[18px] font-semibold mb-2 text-slate-900">Enterprise Knowledge Search</h3>
+                <p className="text-[13.5px] text-slate-600 mb-4">Built a secure RAG system to unify search across 50K+ internal documents.</p>
+                <div className="font-mono text-[12px] text-[#00B8F0] flex items-center gap-2 group-hover:gap-3 transition-all">Read Case Study <ArrowRight className="w-3 h-3" /></div>
               </div>
-
-              <div className="flex flex-col gap-4 w-full max-w-[340px]">
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-5 flex gap-4 items-start backdrop-blur-sm hover:bg-white/10 transition-colors">
-                  <div className="w-10 h-10 rounded-xl bg-[#0066FF]/20 border border-[#0066FF]/30 flex items-center justify-center text-[#00B8F0] shrink-0">
-                    <Calendar className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-[15px] text-white mb-1">Free Discovery Call</h3>
-                    <p className="text-[13px] text-[#8A9EB0]">30-minute strategy session to explore your AI use case and feasibility.</p>
-                  </div>
-                </div>
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-5 flex gap-4 items-start backdrop-blur-sm hover:bg-white/10 transition-colors">
-                  <div className="w-10 h-10 rounded-xl bg-[#7C3AED]/20 border border-[#7C3AED]/30 flex items-center justify-center text-[#A78BFA] shrink-0">
-                    <FileText className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-[15px] text-white mb-1">Proof of Concept</h3>
-                    <p className="text-[13px] text-[#8A9EB0]">We can build a rapid, working prototype in just 2-4 weeks.</p>
-                  </div>
-                </div>
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-5 flex gap-4 items-start backdrop-blur-sm hover:bg-white/10 transition-colors">
-                  <div className="w-10 h-10 rounded-xl bg-[#00B8F0]/20 border border-[#00B8F0]/30 flex items-center justify-center text-[#00B8F0] shrink-0">
-                    <Star className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-[15px] text-white mb-1">No Lock-In</h3>
-                    <p className="text-[13px] text-[#8A9EB0]">Flexible engagement models. You own every line of code we write.</p>
-                  </div>
-                </div>
+            </div>
+            <div className="border border-slate-200 rounded-sm overflow-hidden group cursor-pointer hover:border-[#00B8F0] transition-colors">
+              <div className="h-[180px] bg-slate-100 border-b border-slate-200 p-6 relative">
+                 <div className="absolute right-6 top-6 bottom-0 w-32 bg-slate-200 rounded-t-lg border border-b-0 border-slate-300"></div>
+              </div>
+              <div className="p-6 bg-slate-50">
+                <div className="font-mono text-[10px] text-[#00B8F0] uppercase bg-[#00B8F0]/10 inline-block px-2 py-1 rounded mb-3">AI Agents</div>
+                <h3 className="text-[18px] font-semibold mb-2 text-slate-900">AI Support Agent</h3>
+                <p className="text-[13.5px] text-slate-600 mb-4">Developed an AI support agent that resolved 70% of queries automatically.</p>
+                <div className="font-mono text-[12px] text-[#00B8F0] flex items-center gap-2 group-hover:gap-3 transition-all">Read Case Study <ArrowRight className="w-3 h-3" /></div>
+              </div>
+            </div>
+            <div className="border border-slate-200 rounded-sm overflow-hidden group cursor-pointer hover:border-[#00B8F0] transition-colors">
+              <div className="h-[180px] bg-slate-100 border-b border-slate-200 p-6 relative">
+                 <div className="absolute inset-6 bg-slate-200 rounded-lg border border-slate-300"></div>
+              </div>
+              <div className="p-6 bg-slate-50">
+                <div className="font-mono text-[10px] text-[#00B8F0] uppercase bg-[#00B8F0]/10 inline-block px-2 py-1 rounded mb-3">AI Automation</div>
+                <h3 className="text-[18px] font-semibold mb-2 text-slate-900">AI SDR for Outreach</h3>
+                <p className="text-[13.5px] text-slate-600 mb-4">Built an autonomous SDR agent that personalizes outreach and books 3X more meetings.</p>
+                <div className="font-mono text-[12px] text-[#00B8F0] flex items-center gap-2 group-hover:gap-3 transition-all">Read Case Study <ArrowRight className="w-3 h-3" /></div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
+      {/* CTA BANNER */}
+      <section className="py-[80px]">
+        <div className="wrap">
+          <div className="bg-slate-50 border border-slate-200 rounded-[24px] p-[40px] md:p-[60px] flex flex-col lg:flex-row items-center justify-between gap-10 relative overflow-hidden">
+            <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(rgba(0,184,240,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,.05) 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
+            
+            <div className="relative z-10 max-w-[480px]">
+              <div className="font-mono text-[11px] text-[#00B8F0] uppercase tracking-[0.12em] mb-3">Ready to build together?</div>
+              <h2 className="text-[36px] font-semibold leading-[1.1] mb-4 text-slate-900">Let's Engineer AI Solutions That <span className="text-[#FF3366]">Drive Real Results.</span></h2>
+              <p className="text-[15px] text-slate-600 mb-8">Book a free discovery call and let's discuss how we can solve your most critical challenges with AI.</p>
+              <Link href="/contact" className="btn btn-primary bg-[#00B8F0] hover:bg-[#0096C7] text-white px-6 py-3 rounded text-[14px]">Book a Discovery Call →</Link>
+            </div>
+
+            <div className="relative z-10 flex flex-col gap-4 w-full max-w-[340px]">
+              <div className="bg-white border border-slate-200 rounded-xl p-5 flex gap-4 items-start">
+                <div className="bg-[#00B8F0]/10 border border-[#00B8F0]/20 p-2.5 rounded-lg text-[#00B8F0]">
+                  <Calendar className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-[15px] mb-1 text-slate-900">Free Discovery Call</h3>
+                  <p className="text-[13px] text-slate-600">30-minute introductory call to explore your use case.</p>
+                </div>
+              </div>
+              <div className="bg-white border border-slate-200 rounded-xl p-5 flex gap-4 items-start">
+                <div className="bg-[#FF3366]/10 border border-[#FF3366]/20 p-2.5 rounded-lg text-[#FF3366]">
+                  <FileText className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-[15px] mb-1 text-slate-900">Proof of Concept</h3>
+                  <p className="text-[13px] text-slate-600">We can build a rapid prototype in 2-4 weeks.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
