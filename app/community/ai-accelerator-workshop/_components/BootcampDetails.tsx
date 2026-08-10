@@ -88,16 +88,9 @@ const studentReviews = [
   },
 ];
 
-// Sale window: jhjhToday 10:00 AM IST to 11:59 PM IST (18:29:59 UTC)
+// Flash Sale: ENDED — Sale permanently disabled
 function isSaleActive(): boolean {
-  if (typeof window === "undefined") return false;
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth();
-  const date = now.getDate();
-  const saleStart = new Date(Date.UTC(year, month, date, 4, 30, 0));  // 10:00 AM IST
-  const saleEnd = new Date(Date.UTC(year, month, date, 18, 29, 59));  // 11:59 PM IST
-  return now >= saleStart && now < saleEnd;
+  return false;
 }
 
 // Bootcamp 1 Status: COMPLETED

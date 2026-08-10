@@ -7,14 +7,9 @@ const STATIC_SYSTEM_COUPONS: Record<string, { discountType: 'percentage' | 'fixe
   INFLUENCER20: { discountType: 'percentage', discountValue: 20, defaultMaxUses: 50 },
 };
 
+// Flash Sale: ENDED — Sale permanently disabled
 function isSaleActive(): boolean {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth();
-  const date = now.getDate();
-  const saleStart = new Date(Date.UTC(year, month, date, 4, 30, 0));  // 10:00 AM IST
-  const saleEnd = new Date(Date.UTC(year, month, date, 18, 29, 59));  // 11:59 PM IST
-  return now >= saleStart && now < saleEnd;
+  return false;
 }
 
 // GET handler - used by checkout to check limit status
