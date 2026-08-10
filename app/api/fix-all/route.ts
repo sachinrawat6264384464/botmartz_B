@@ -41,6 +41,7 @@ const DEFAULT_ITEMS = [
 export async function GET() {
   try {
     await adminDb.collection("settings").doc("navbar").set({ items: DEFAULT_ITEMS });
+    await adminDb.collection("site_config").doc("navbar").set({ items: DEFAULT_ITEMS });
     
     const snapshot = await adminDb.collection("events").get();
     const batch = adminDb.batch();
