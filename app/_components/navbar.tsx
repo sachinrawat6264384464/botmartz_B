@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ArrowRight, Menu, X, PhoneCall } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
@@ -88,9 +89,12 @@ export default function Navbar({
 
           {/* LOGO */}
           <Link href="/" aria-label="Botmartz home" className="flex-shrink-0 flex items-center">
-            <img
+            <Image
               src={logoUrl}
               alt="Botmartz AI Solutions"
+              width={200}
+              height={66}
+              priority
               className="h-[58px] sm:h-[66px] w-auto object-contain transition-transform duration-200 hover:scale-105"
             />
           </Link>

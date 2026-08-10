@@ -93,6 +93,6 @@ export const getCachedDynamicPage = cache(async (slug: string) => {
       return null;
     },
     [`dynamic-page-cache-${slug}`],
-    { revalidate: 600, tags: ["dynamic_pages", slug] }
+    { revalidate: 3600, tags: ["dynamic_pages", slug] }
   )();
 });

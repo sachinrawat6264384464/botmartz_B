@@ -18,6 +18,11 @@ const nextConfig = {
     ],
   },
 
+  // Optimize package imports for minimal JS bundle size
+  experimental: {
+    optimizePackageImports: ['lucide-react', 'framer-motion', 'firebase', 'lucide-react'],
+  },
+
   // Remove console logs in production
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error', 'warn'] } : false,
