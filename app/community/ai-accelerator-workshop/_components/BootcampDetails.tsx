@@ -121,8 +121,8 @@ export default function BootcampDetails() {
   const isBc1Live = mounted && bc1Status === "LIVE";
   const isBc1Completed = mounted && bc1Status === "COMPLETED";
 
-  const fullPassPrice = showSale ? 299 : 399;
-  const fullPassOriginalPrice = showSale ? 399 : 597;
+  const fullPassPrice = 399;
+  // No strikethrough price — show clean ₹399 only
 
   return (
     <section id="bootcamps" className="py-24 bg-white">
@@ -218,6 +218,12 @@ export default function BootcampDetails() {
                       {completed && (
                         <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-600 border border-blue-200 text-[10px] font-bold uppercase px-2 py-0.5 rounded-full">
                           <CheckCircle2 size={10} /> COMPLETED
+                        </span>
+                      )}
+                      {/* Bootcamp 02 — Upcoming Soon badge */}
+                      {bootcamp.id === 2 && (
+                        <span className="inline-flex items-center gap-1 bg-amber-50 text-amber-600 border border-amber-300 text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full animate-pulse">
+                          ⏳ Upcoming Soon
                         </span>
                       )}
                       {!isBc1 && (
@@ -316,12 +322,6 @@ export default function BootcampDetails() {
               <div className="relative z-10 flex flex-col items-center md:items-end flex-shrink-0 w-full md:w-auto border-t md:border-t-0 md:border-l border-[#1E293B] pt-6 md:pt-0 md:pl-10">
                 <div className="flex items-end gap-3 mb-5">
                   <span className="text-4xl md:text-5xl font-bold text-white tracking-tight">₹{fullPassPrice}</span>
-                  <div className="flex flex-col items-start pb-1">
-                    <span className="text-[#8A9EB0] text-sm line-through leading-none">₹{fullPassOriginalPrice}</span>
-                    <span className="text-[#00B8F0] text-[13px] font-bold leading-none mt-1">
-                      Save ₹{fullPassOriginalPrice - fullPassPrice}
-                    </span>
-                  </div>
                 </div>
                 <Link
                   href="/community/ai-accelerator-workshop/checkout?plan=bundle"

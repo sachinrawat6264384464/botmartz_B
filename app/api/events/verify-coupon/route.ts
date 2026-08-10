@@ -5,6 +5,8 @@ import { adminDb } from '@/lib/firebase-admin';
 const STATIC_SYSTEM_COUPONS: Record<string, { discountType: 'percentage' | 'fixed'; discountValue: number; defaultMaxUses: number }> = {
   EARLY15: { discountType: 'percentage', discountValue: 15, defaultMaxUses: 50 },
   INFLUENCER20: { discountType: 'percentage', discountValue: 20, defaultMaxUses: 50 },
+  // Owner test coupon: ₹399 → ₹1 (fixed ₹398 off, single use)
+  BMOWNER1: { discountType: 'fixed', discountValue: 398, defaultMaxUses: 1 },
 };
 
 // Flash Sale: ENDED — Sale permanently disabled

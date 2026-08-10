@@ -103,6 +103,9 @@ function CheckoutContent() {
     const basePrice = plan === "bundle" ? (isFlashActive ? 299 : 399) : (bootcampAmount || 199);
     if (!appliedCouponInfo) return basePrice;
     if (appliedCouponInfo.discountValue === 100) return 0;
+    if (appliedCouponInfo.discountType === "fixed") {
+      return Math.max(1, basePrice - appliedCouponInfo.discountValue);
+    }
     if (appliedCouponInfo.discountType === "percentage") {
       const discount = Math.round((basePrice * appliedCouponInfo.discountValue) / 100);
       return Math.max(0, basePrice - discount);
@@ -435,7 +438,7 @@ function CheckoutContent() {
                       type="button"
                       onClick={handleApplyCoupon}
                       disabled={couponLoading || !couponInput.trim() || Boolean(appliedCouponInfo)}
-                      className="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#0B1C2C] hover:bg-[#1E293B] text-[#0B1C2C] font-semibold text-xs transition-colors disabled:opacity-50"
+                      className="w-full sm:w-auto px-4 py-2 rounded-xl bg-[#0B1C2C] hover:bg-[#1E293B] text-white font-semibold text-xs transition-colors disabled:opacity-50"
                     >
                       {couponLoading ? "Applying..." : appliedCouponInfo ? "✓ Applied" : "Apply Code"}
                     </button>
