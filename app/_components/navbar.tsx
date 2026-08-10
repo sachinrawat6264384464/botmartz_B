@@ -73,8 +73,10 @@ export default function Navbar({
   const router = useRouter();
 
   const handleDropdownNavigate = () => {
-    setActiveDropdown(null);
-    setMobileMenuOpen(false);
+    setTimeout(() => {
+      setActiveDropdown(null);
+      setMobileMenuOpen(false);
+    }, 150);
   };
 
   const isActive = (item: (typeof NAV_ITEMS)[number]) =>
@@ -138,7 +140,7 @@ export default function Navbar({
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 4 }}
                       transition={{ duration: 0.12 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 pt-1.5 z-[100] pointer-events-auto"
+                      className="absolute top-full left-0 pt-2 z-[100] pointer-events-auto before:absolute before:-top-4 before:left-0 before:right-0 before:h-4 before:content-['']"
                     >
                       <div className="min-w-[240px] bg-white border border-slate-200 rounded-xl shadow-xl p-1.5">
                         {item.dropdown.map((sub) => (
