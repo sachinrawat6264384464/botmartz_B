@@ -1,50 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { 
   ArrowRight, Database, FileText, Search, ShieldCheck, Zap, 
   Layers, RefreshCw, BarChart, Server, LayoutTemplate, Briefcase, 
-  FileSearch, HelpCircle, Calendar, Network, Lock, Cpu, CheckCircle2, AlertTriangle, Play, Check, ExternalLink, Sparkles
+  FileSearch, HelpCircle, Calendar, Network, Lock, Cpu, CheckCircle2, AlertTriangle, Play
 } from "lucide-react";
 import DynamicIcon from "@/app/_components/DynamicIcon";
-
-const SAMPLE_QUESTIONS = [
-  {
-    id: "q1",
-    question: "Does our Health Policy cover robotic ACL reconstruction surgery?",
-    answer: "Yes. Robotic-assisted ACL reconstruction is covered up to ₹3,50,000 under Section 4.2 (Advanced Surgical Procedures), subject to a 24-hour hospitalization requirement and 48-hour prior pre-authorization.",
-    source: "HDFC_Ergo_Health_Policy_2025.pdf",
-    page: "Page 18, Clause 4.2.1",
-    faithfulness: "99.8%",
-    precision: "1.00",
-    status: "Grounded with Exact Citation"
-  },
-  {
-    id: "q2",
-    question: "What is the policy for remote access authentication under DPDP guidelines?",
-    answer: "Remote access requires Mandatory Multi-Factor Authentication (MFA) via Hardware Tokens or OAuth 2.0 PKCE, with session timeouts capped at 15 minutes of inactivity as specified in Section 8.4.",
-    source: "Enterprise_InfoSec_SOP_v3.pdf",
-    page: "Page 42, Section 8.4",
-    faithfulness: "99.4%",
-    precision: "0.98",
-    status: "Grounded with Exact Citation"
-  },
-  {
-    id: "q3",
-    question: "Are pre-existing conditions covered without a waiting period?",
-    answer: "The knowledge base documents specify a mandatory 24-month waiting period for pre-existing conditions. There is no evidence supporting immediate coverage without a waiting period.",
-    source: "Policy_Exclusions_Addendum.pdf",
-    page: "Page 7, Exclusions § 2.1",
-    faithfulness: "100.0%",
-    precision: "1.00",
-    status: "Abstained / Strict Evidence Enforced"
-  }
-];
+import InteractiveRAGSimulator from "@/app/_components/InteractiveRAGSimulator";
 
 export default function EnterpriseRAGClient({ content }: { content: any }) {
-  const [selectedQuestion, setSelectedQuestion] = useState(SAMPLE_QUESTIONS[0]);
-
   return (
     <div className="bg-white min-h-screen text-slate-900 selection:bg-[#00B8F0] selection:text-white font-sans">
 
@@ -168,110 +133,19 @@ export default function EnterpriseRAGClient({ content }: { content: any }) {
         </div>
       </section>
 
-      {/* 4. REAL QUESTION & CITED DEMO SHOWCASE (REPLACED SIMULATOR) */}
+      {/* 4. LIVE INTERACTIVE DEMO / PROOF SECTION */}
       <section className="py-[100px] bg-white border-b border-slate-200">
-        <div className="wrap max-w-[1150px] mx-auto">
-          
-          <div className="text-center mb-12 max-w-[750px] mx-auto">
-            <span className="font-mono text-[11px] tracking-[0.14em] text-[#0066FF] uppercase font-bold block mb-2">Live Proof & Citation Engine</span>
-            <h2 className="text-[32px] md:text-[40px] font-semibold tracking-tight text-slate-900 mb-4">See It Answer a Real Question</h2>
+        <div className="wrap max-w-[1100px] mx-auto">
+          <div className="text-center mb-10 max-w-[750px] mx-auto">
+            <span className="font-mono text-[11px] tracking-[0.14em] text-[#0066FF] uppercase font-bold block mb-2">Live Proof & Architecture</span>
+            <h2 className="text-[32px] md:text-[40px] font-semibold tracking-tight text-slate-900 mb-3">See It Answer a Real Question</h2>
             <p className="text-slate-600 text-[16px] leading-relaxed">
-              A working system indexed over real insurance policies and compliance documents. Ask a question, and it returns the precise answer, exact document clause, page number, and confidence score — or abstains if evidence isn't found.
+              A working system indexed over public insurance policy documents. Ask it whether a policy covers a specific procedure, and it returns the answer, the source document, the page, and its confidence — or tells you the documents don't say.
             </p>
           </div>
 
-          <div className="bg-[#050B14] rounded-3xl p-6 md:p-10 text-white shadow-2xl border border-slate-800 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-            
-            {/* Left Column: Interactive Questions Picker */}
-            <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
-              <div>
-                <span className="text-[11px] font-mono text-[#00B8F0] font-bold uppercase tracking-wider block mb-3">
-                  Sample Enterprise Queries
-                </span>
-                <div className="space-y-3">
-                  {SAMPLE_QUESTIONS.map((q) => (
-                    <button
-                      key={q.id}
-                      onClick={() => setSelectedQuestion(q)}
-                      className={`w-full text-left p-4 rounded-xl border text-xs sm:text-sm font-medium transition-all flex items-start gap-3 ${
-                        selectedQuestion.id === q.id
-                          ? "bg-[#0066FF]/20 border-[#0066FF] text-white shadow-lg"
-                          : "bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 hover:text-white"
-                      }`}
-                    >
-                      <Sparkles size={16} className={`shrink-0 mt-0.5 ${selectedQuestion.id === q.id ? "text-[#00B8F0]" : "text-slate-500"}`} />
-                      <span>{q.question}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="pt-4 border-t border-white/10 text-xs text-slate-400 flex items-center justify-between">
-                <span className="flex items-center gap-1.5 text-[#00B8F0] font-mono font-bold">
-                  <ShieldCheck size={14} /> Strict Abstention Rules Active
-                </span>
-                <span className="font-mono">RAGAS Verified</span>
-              </div>
-            </div>
-
-            {/* Right Column: Live Grounded Answer & Citation View */}
-            <div className="lg:col-span-7 bg-[#0A1220] border border-white/10 rounded-2xl p-6 flex flex-col justify-between space-y-6">
-              
-              {/* Question Header */}
-              <div>
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <span className="text-[10px] font-mono uppercase bg-[#00B8F0]/15 text-[#00B8F0] border border-[#00B8F0]/30 px-2.5 py-0.5 rounded-full font-bold">
-                    User Query
-                  </span>
-                  <span className="text-[11px] font-mono text-emerald-400 font-bold flex items-center gap-1">
-                    <CheckCircle2 size={12} /> {selectedQuestion.status}
-                  </span>
-                </div>
-                <h4 className="text-base sm:text-lg font-bold text-white leading-snug">
-                  &ldquo;{selectedQuestion.question}&rdquo;
-                </h4>
-              </div>
-
-              {/* Generated Answer with Citation Highlight */}
-              <div className="bg-white/5 border border-white/10 p-4.5 rounded-xl space-y-3">
-                <span className="text-[10px] font-mono uppercase text-slate-400 tracking-wider font-bold block">
-                  Synthesized Answer
-                </span>
-                <p className="text-sm text-slate-200 leading-relaxed">
-                  {selectedQuestion.answer}
-                </p>
-
-                {/* Citation Pill */}
-                <div className="pt-3 border-t border-white/10 flex flex-wrap items-center justify-between gap-2">
-                  <div className="inline-flex items-center gap-2 bg-[#0066FF]/20 border border-[#0066FF]/40 text-[#00B8F0] px-3 py-1 rounded-lg text-xs font-mono">
-                    <FileText size={13} />
-                    <span>{selectedQuestion.source}</span>
-                    <span className="text-white/60">·</span>
-                    <span className="text-white font-bold">{selectedQuestion.page}</span>
-                  </div>
-
-                  <div className="flex items-center gap-3 text-[11px] font-mono text-slate-400">
-                    <span>Faithfulness: <strong className="text-emerald-400">{selectedQuestion.faithfulness}</strong></span>
-                    <span>Precision: <strong className="text-white">{selectedQuestion.precision}</strong></span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Bottom CTA Button inside section */}
-              <div className="flex items-center justify-between gap-4 pt-2">
-                <p className="text-xs text-slate-400">
-                  Ready to test RAG on your company SOPs?
-                </p>
-                <Link
-                  href="/contact"
-                  className="bg-[#0066FF] hover:bg-[#0052CC] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all inline-flex items-center gap-1.5 shadow-md shrink-0"
-                >
-                  Book Architecture Review <ArrowRight size={13} />
-                </Link>
-              </div>
-
-            </div>
-
+          <div className="bg-[#050B14] p-4 sm:p-8 rounded-3xl shadow-2xl border border-slate-800">
+            <InteractiveRAGSimulator />
           </div>
         </div>
       </section>
