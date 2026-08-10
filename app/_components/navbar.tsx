@@ -63,11 +63,9 @@ export default function Navbar({
   const pathname = usePathname();
   const router = useRouter();
 
-  const handleDropdownNavigate = (e: React.MouseEvent, path: string) => {
-    e.preventDefault();
+  const handleDropdownNavigate = () => {
     setActiveDropdown(null);
     setMobileMenuOpen(false);
-    router.push(path);
   };
 
   const isActive = (item: (typeof NAV_ITEMS)[number]) =>
@@ -135,7 +133,7 @@ export default function Navbar({
                           <Link
                             key={sub.name}
                             href={sub.path}
-                            onClick={(e) => handleDropdownNavigate(e, sub.path)}
+                            onClick={handleDropdownNavigate}
                             className="flex items-center justify-between px-3.5 py-2.5 text-[13px] font-medium text-[#475569] hover:text-[#0066FF] hover:bg-[#0066FF]/5 rounded-lg transition-all group whitespace-nowrap cursor-pointer"
                           >
                             <span>{sub.name}</span>
@@ -218,7 +216,7 @@ export default function Navbar({
                         <Link
                           key={sub.name}
                           href={sub.path}
-                          onClick={(e) => handleDropdownNavigate(e, sub.path)}
+                          onClick={handleDropdownNavigate}
                           className="py-2 text-sm text-[#475569] hover:text-[#0066FF] transition-colors cursor-pointer"
                         >
                           {sub.name}
