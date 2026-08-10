@@ -57,7 +57,15 @@ export default function Navbar({
   logoUrl?: string;
 }) {
   const rawItems = (navItems && navItems.length > 0) ? navItems : DEFAULT_NAV_ITEMS;
-  const NAV_ITEMS = rawItems;
+  const cleanItems = rawItems.map(item => ({
+    ...item,
+    path: item.path ? item.path.trim().replace(/\s+/g, '-').replace(/%20/g, '-') : item.path,
+    dropdown: item.dropdown ? item.dropdown.map(d => ({
+      ...d,
+      path: d.path ? d.path.trim().replace(/\s+/g, '-').replace(/%20/g, '-') : d.path,
+    })) : undefined,
+  }));
+  const NAV_ITEMS = cleanItems;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();

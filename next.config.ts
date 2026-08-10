@@ -63,6 +63,26 @@ const nextConfig = {
         destination: '/ai-frontier',
         permanent: true,
       },
+      {
+        source: '/services/enterprise%20rag',
+        destination: '/services/enterprise-rag',
+        permanent: true,
+      },
+      {
+        source: '/services/enterprise rag',
+        destination: '/services/enterprise-rag',
+        permanent: true,
+      },
+      {
+        source: '/services/ai%20agents',
+        destination: '/services/ai-agents',
+        permanent: true,
+      },
+      {
+        source: '/services/ai agents',
+        destination: '/services/ai-agents',
+        permanent: true,
+      },
     ];
   },
 };
