@@ -1,8 +1,10 @@
 "use client";
 
-import React from "react";
-import * as LucideIcons from "lucide-react";
+import dynamic from 'next/dynamic';
 import { HelpCircle } from "lucide-react";
+
+// Using next/dynamic with dynamicIconImports prevents loading the entire icon library
+import dynamicIconImports from 'lucide-react/dynamicIconImports';
 
 interface DynamicIconProps {
   name: string;
@@ -10,20 +12,18 @@ interface DynamicIconProps {
   size?: number;
 }
 
-export default function DynamicIcon({ name, className, size = 24 }: DynamicIconProps) {
-  if (!name) return <HelpCircle className={className} size={size} />;
+export default function DynamicIcon({ name, className, size }: DynamicIconProps) {
+  // Convert PascalCase to kebab-case for dynamicIconImports (e.g. HelpCircle -> help-circle)
+  const kebabName = name
+    ? name.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase().replace(/^-/, '')
+    : '';
 
-  // Map common PascalCase or kebab-case icon names to Lucide icon components
-  const PascalName = name
-    .split(/[-_]/)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join("");
+  // Check if the icon exists in the dynamic imports map
+  if (kebabName && (dynamicIconImports as any)[kebabName]) {
+    const IconComponent = dynamic((dynamicIconImports as any)[kebabName]) as any;
+    return <IconComponent className={className} size={size} />;
+  }
 
-  const IconComponent =
-    (LucideIcons as any)[name] ||
-    (LucideIcons as any)[PascalName] ||
-    LucideIcons.HelpCircle;
-
-  const Component = typeof IconComponent === "function" ? IconComponent : HelpCircle;
-  return <Component className={className} size={size} />;
+  // Fallback icon
+  return <HelpCircle className={className} size={size} />;
 }
