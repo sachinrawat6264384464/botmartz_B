@@ -100,21 +100,15 @@ function isSaleActive(): boolean {
   return now >= saleStart && now < saleEnd;
 }
 
-// Bootcamp 1 Status: LIVE till 1:00 PM IST (07:30 UTC), CLOSED after 1:00 PM IST
-function getBootcamp1Status(): "LIVE" | "CLOSED" {
-  if (typeof window === "undefined") return "LIVE";
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth();
-  const date = now.getDate();
-  const bc1End = new Date(Date.UTC(year, month, date, 7, 30, 0));
-  return now < bc1End ? "LIVE" : "CLOSED";
+// Bootcamp 1 Status: COMPLETED
+function getBootcamp1Status(): "COMPLETED" {
+  return "COMPLETED";
 }
 
 export default function BootcampDetails() {
   const [mounted, setMounted] = useState(false);
   const [saleActive, setSaleActive] = useState(false);
-  const [bc1Status, setBc1Status] = useState<"LIVE" | "CLOSED">("LIVE");
+  const [bc1Status, setBc1Status] = useState<"LIVE" | "CLOSED" | "COMPLETED">("COMPLETED");
 
   useEffect(() => {
     setMounted(true);
@@ -130,8 +124,9 @@ export default function BootcampDetails() {
   }, []);
 
   const showSale = mounted && saleActive;
-  const isBc1Closed = mounted && bc1Status === "CLOSED";
+  const isBc1Closed = mounted && (bc1Status === "CLOSED" || bc1Status === "COMPLETED");
   const isBc1Live = mounted && bc1Status === "LIVE";
+  const isBc1Completed = mounted && bc1Status === "COMPLETED";
 
   const fullPassPrice = showSale ? 299 : 399;
   const fullPassOriginalPrice = showSale ? 399 : 597;
@@ -198,6 +193,7 @@ export default function BootcampDetails() {
             const isBc1 = bootcamp.id === 1;
             const closed = isBc1 && isBc1Closed;
             const live = isBc1 && isBc1Live;
+            const completed = isBc1 && isBc1Completed;
 
             return (
               <motion.div
@@ -206,7 +202,7 @@ export default function BootcampDetails() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className={`bg-white border border-[#E2E8F0] rounded-3xl p-8 shadow-[0_4px_24px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] transition-all flex flex-col h-full relative overflow-hidden group ${closed ? "opacity-75 grayscale-[20%]" : ""
+                className={`bg-white border border-[#E2E8F0] rounded-3xl p-8 shadow-[0_4px_24px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] transition-all flex flex-col h-full relative overflow-hidden group ${completed ? "opacity-60 grayscale-[60%] blur-[1px]" : closed ? "opacity-75 grayscale-[20%]" : ""
                   }`}
               >
                 {/* Top accent bar */}
@@ -221,9 +217,14 @@ export default function BootcampDetails() {
                           <Radio size={10} className="animate-pulse text-emerald-500" /> LIVE NOW (Till 1 PM)
                         </span>
                       )}
-                      {closed && (
+                      {closed && !completed && (
                         <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-500 border border-slate-300 text-[10px] font-bold uppercase px-2 py-0.5 rounded-full">
                           <Lock size={10} /> Registration Closed
+                        </span>
+                      )}
+                      {completed && (
+                        <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-600 border border-blue-200 text-[10px] font-bold uppercase px-2 py-0.5 rounded-full">
+                          <CheckCircle2 size={10} /> COMPLETED
                         </span>
                       )}
                       {!isBc1 && (
@@ -266,7 +267,7 @@ export default function BootcampDetails() {
                         disabled
                         className="flex w-full justify-center items-center gap-2 py-3 rounded-xl bg-slate-100 border border-slate-300 text-slate-400 font-bold cursor-not-allowed opacity-80 pointer-events-none"
                       >
-                        <Lock size={14} /> <span>Registration Closed (Session Ended at 1 PM)</span>
+                        {completed ? <CheckCircle2 size={14} /> : <Lock size={14} />} <span>{completed ? "Session Completed" : "Registration Closed (Session Ended at 1 PM)"}</span>
                       </button>
                     ) : (
                       <Link
