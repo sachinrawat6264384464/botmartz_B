@@ -211,7 +211,7 @@ export default function EnterpriseRAGClient({ content }: { content: any }) {
             <div className="font-mono text-[12px] text-[#00B8F0] font-bold uppercase tracking-widest whitespace-nowrap shrink-0">POWERED BY STACK</div>
             <div className="flex-1 flex gap-12 md:gap-20 items-center overflow-hidden">
                <div className="flex gap-12 md:gap-20 whitespace-nowrap text-slate-900/80 font-mono text-[15px] font-semibold animate-[marquee_25s_linear_infinite]">
-                 {[...content.techStack, ...content.techStack].map((tech: string, i: number) => (
+                 {[...content.techStack, ...content.techStack].filter(Boolean).map((tech: string, i: number) => (
                    <span key={i} className="flex items-center gap-3 hover:text-slate-900 transition-colors">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#0066FF]"></span>
                       {tech}
