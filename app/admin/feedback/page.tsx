@@ -31,6 +31,39 @@ export default function AdminFeedbackPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<"all" | "student" | "professional">("all");
   const [statusFilter, setStatusFilter] = useState<"all" | "submitted" | "pending">("all");
+  const [togglingId, setTogglingId] = useState<string | null>(null);
+
+  const handleToggleFeatured = async (feedbackId: string, targetFeaturedState: boolean) => {
+    setTogglingId(feedbackId);
+    // Optimistic local update
+    setData((prevData: any) => {
+      if (!prevData || !prevData.feedbacks) return prevData;
+      return {
+        ...prevData,
+        feedbacks: prevData.feedbacks.map((f: any) =>
+          f.id === feedbackId ? { ...f, isFeatured: targetFeaturedState } : f
+        ),
+      };
+    });
+
+    try {
+      const res = await fetch("/api/admin/feedback/toggle-featured", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ feedbackId, isFeatured: targetFeaturedState }),
+      });
+
+      const result = await res.json();
+      if (!res.ok) {
+        throw new Error(result.error || "Failed to update featured status");
+      }
+    } catch (err: any) {
+      alert("Error updating feedback status: " + (err.message || "Failed"));
+      fetchData(selectedEvent);
+    } finally {
+      setTogglingId(null);
+    }
+  };
 
   const fetchData = async (eventId = selectedEvent) => {
     setLoading(true);
@@ -345,6 +378,7 @@ export default function AdminFeedbackPage() {
                   <table className="w-full text-left border-collapse">
                     <thead>
                       <tr className="bg-[#050C18] border-b border-white/10 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                        <th className="py-3.5 px-4 text-center">Website Display</th>
                         <th className="py-3.5 px-4">Participant</th>
                         <th className="py-3.5 px-4">Session / Event</th>
                         <th className="py-3.5 px-4">Overall</th>
@@ -358,13 +392,32 @@ export default function AdminFeedbackPage() {
                     <tbody className="divide-y divide-white/5 text-xs text-slate-300 font-sans">
                       {filteredSubmissions.length === 0 ? (
                         <tr>
-                          <td colSpan={8} className="py-12 text-center text-slate-500 font-mono">
+                          <td colSpan={9} className="py-12 text-center text-slate-500 font-mono">
                             No feedback submissions found for this filter.
                           </td>
                         </tr>
                       ) : (
                         filteredSubmissions.map((f: any) => (
                           <tr key={f.id} className="hover:bg-white/[0.02] transition-colors">
+                            <td className="py-4 px-4 text-center">
+                              <label className="inline-flex items-center cursor-pointer gap-2 select-none group">
+                                <input
+                                  type="checkbox"
+                                  checked={!!f.isFeatured}
+                                  disabled={togglingId === f.id}
+                                  onChange={(e) => handleToggleFeatured(f.id, e.target.checked)}
+                                  className="w-4 h-4 rounded border-white/30 bg-[#050C18] text-[#00B8F0] focus:ring-[#00B8F0] focus:ring-offset-0 cursor-pointer accent-[#00B8F0] transition-all disabled:opacity-50"
+                                />
+                                <span className={`text-[10px] font-bold uppercase font-mono px-2 py-0.5 rounded transition-all ${
+                                  f.isFeatured 
+                                    ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow-sm" 
+                                    : "bg-slate-800/80 text-slate-400 border border-slate-700/60"
+                                }`}>
+                                  {f.isFeatured ? "Ticked (Public)" : "Hidden"}
+                                </span>
+                              </label>
+                            </td>
+
                             <td className="py-4 px-4">
                               <div className="font-bold text-white">{f.participantName || "Anonymous Participant"}</div>
                               <div className="text-[10px] text-slate-400 font-mono">{f.participantEmail || f.identifierProvided}</div>

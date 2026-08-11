@@ -38,7 +38,7 @@ export default function ClientLayout({
 
   return (
     <SettingsContext.Provider value={settings || {}}>
-      <AnalyticsProvider />
+      {mounted && <AnalyticsProvider />}
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <AccessibilityProvider>
           <div className="min-h-screen flex flex-col" suppressHydrationWarning>
@@ -55,8 +55,8 @@ export default function ClientLayout({
               {children}
             </main>
             {!isStandaloneRoute && <Footer settings={settings} />}
-            {!isStandaloneRoute && <AccessibilityToolbox />}
-            {!isStandaloneRoute && <FloatingOfferWidget />}
+            {mounted && !isStandaloneRoute && <AccessibilityToolbox />}
+            {mounted && !isStandaloneRoute && <FloatingOfferWidget />}
           </div>
         </AccessibilityProvider>
       </ThemeProvider>

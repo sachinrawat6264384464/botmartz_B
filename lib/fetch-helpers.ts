@@ -158,13 +158,21 @@ export const getCachedPublicFeedbacks = cache(async () => {
           return bTime - aTime;
         });
 
-        const reviews = list
-          .filter(f => (f.takeaways || f.comments) && ((f.takeaways && f.takeaways.length > 5) || (f.comments && f.comments.length > 5)))
-          .slice(0, 4)
+        // Filter for admin-ticked / featured feedbacks
+        const featuredList = list.filter(f => f.isFeatured === true);
+
+        // If admin has ticked items, show only those; otherwise fallback to recent submissions with text
+        const targetList = featuredList.length > 0
+          ? featuredList
+          : list.filter(f => (f.takeaways || f.comments) && ((f.takeaways && f.takeaways.length > 5) || (f.comments && f.comments.length > 5)));
+
+        const reviews = targetList
+          .slice(0, 8)
           .map(f => ({
-            name: f.participantName || "Verified Participant",
-            role: f.attendeeType || "AI Engineer",
-            workshop: f.eventSlug === 'ai-frontier-2026' ? 'AI Frontier 2026' : 'AI Accelerator Workshop',
+            id: f.id,
+            name: f.participantName || f.participantEmail || "Verified Participant",
+            role: f.attendeeType || "AI Engineering Student",
+            workshop: f.workshopId || (f.eventSlug === 'ai-frontier-2026' ? 'AI Frontier 2026' : 'AI Accelerator Workshop'),
             rating: Number(f.overallRating) || 5,
             quote: f.takeaways || f.comments || "Great hands-on engineering instruction and practical code templates.",
           }));

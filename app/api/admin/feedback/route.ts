@@ -13,7 +13,12 @@ export async function GET(req: Request) {
 
     const feedbacks: any[] = [];
     feedbackSnap.forEach((doc) => {
-      feedbacks.push({ id: doc.id, ...doc.data() });
+      const data = doc.data();
+      feedbacks.push({
+        id: doc.id,
+        isFeatured: !!data.isFeatured,
+        ...data,
+      });
     });
 
     // Sort feedbacks descending by createdAt
