@@ -15,6 +15,7 @@ export default function TrackedLink({
   eventName = "link_click",
   eventData,
   onClick,
+  prefetch = false,
   ...props
 }: TrackedLinkProps) {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
@@ -25,7 +26,7 @@ export default function TrackedLink({
   };
 
   return (
-    <Link {...props} onClick={handleClick}>
+    <Link prefetch={prefetch} {...props} onClick={handleClick}>
       {children}
     </Link>
   );

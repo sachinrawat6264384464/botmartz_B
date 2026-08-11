@@ -130,53 +130,70 @@ export function Footer({ settings }: { settings?: any }) {
 
           {/* LEFT: Brand */}
           <div className="flex flex-col">
-            <Link href="/" className="inline-block mb-6">
-              <Image
-                src={logoUrl}
-                alt={companyName}
-                width={280}
-                height={78}
-                className="h-[68px] sm:h-[78px] w-auto object-contain"
-              />
-            </Link>
+              <Link href="/" prefetch={false} className="inline-block mb-6">
+                <Image
+                  src={logoUrl}
+                  alt={companyName}
+                  width={280}
+                  height={78}
+                  className="h-[68px] sm:h-[78px] w-auto object-contain"
+                />
+              </Link>
 
-            <p className="text-[14px] text-[#8A9EB0] leading-relaxed max-w-[280px] mb-8">
-              We engineer production AI systems and advance AI engineering through education, community, and open-source innovation.
-            </p>
+              <p className="text-[14px] text-[#8A9EB0] leading-relaxed max-w-[280px] mb-8">
+                We engineer production AI systems and advance AI engineering through education, community, and open-source innovation.
+              </p>
 
-            {/* Social Icons */}
-            <div className="flex gap-3">
-              {SOCIALS.map(({ label, icon: Icon, href }) => (
+              {/* Social Icons */}
+              <div className="flex gap-3">
+                {SOCIALS.map(({ label, icon: Icon, href }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    suppressHydrationWarning
+                    className="w-9 h-9 rounded-lg border border-white/15 flex items-center justify-center text-[#8A9EB0] hover:text-white hover:border-white/40 hover:bg-white/5 transition-all duration-200"
+                  >
+                    <Icon />
+                  </a>
+                ))}
+              </div>
+
+              {/* Google Review Button */}
+              <div className="mt-5">
                 <a
-                  key={label}
-                  href={href}
+                  href="https://g.page/r/CbivsvhnvmjQEBM/review"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={label}
-                  suppressHydrationWarning
-                  className="w-9 h-9 rounded-lg border border-white/15 flex items-center justify-center text-[#8A9EB0] hover:text-white hover:border-white/40 hover:bg-white/5 transition-all duration-200"
+                  style={{ color: "#060C1F" }}
+                  className="inline-flex items-center gap-2.5 bg-white hover:bg-slate-100 text-[#060C1F] font-extrabold text-[13px] px-4 py-2.5 rounded-xl shadow-md transition-all transform hover:-translate-y-0.5"
                 >
-                  <Icon />
+                  <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="#EA4335">
+                    <path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.761H12.545z"/>
+                  </svg>
+                  <span style={{ color: "#060C1F" }} className="font-extrabold text-[#060C1F]">Review Us on Google</span>
                 </a>
-              ))}
+              </div>
             </div>
-          </div>
 
-          {/* RIGHT: 5 link columns */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8">
-            {FOOTER_COLS.map((col) => (
-              <div key={col.heading}>
-                <h5 className="font-bold text-[11px] tracking-[0.12em] text-white uppercase mb-5 relative">
-                  {col.heading}
-                  <span className="absolute -bottom-2 left-0 w-5 h-[2px] bg-[#0052FF] rounded-full" />
-                </h5>
-                <ul className="space-y-3 mt-4">
-                  {col.links.map((link) => (
-                    <li key={link.label}>
-                      <Link
-                        href={link.href}
-                        className="text-[13px] text-[#8A9EB0] hover:text-white transition-colors leading-snug"
-                      >
+            {/* RIGHT: 5 link columns */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8">
+              {FOOTER_COLS.map((col) => (
+                <div key={col.heading}>
+                  <h5 className="font-bold text-[11px] tracking-[0.12em] text-white uppercase mb-5 relative">
+                    {col.heading}
+                    <span className="absolute -bottom-2 left-0 w-5 h-[2px] bg-[#0052FF] rounded-full" />
+                  </h5>
+                  <ul className="space-y-3 mt-4">
+                    {col.links.map((link) => (
+                      <li key={link.label}>
+                        <Link
+                          href={link.href}
+                          prefetch={false}
+                          className="text-[13px] text-[#8A9EB0] hover:text-white transition-colors leading-snug"
+                        >
                         {link.label}
                       </Link>
                     </li>
@@ -263,11 +280,11 @@ export function Footer({ settings }: { settings?: any }) {
 
           {/* Legal links */}
           <div className="flex items-center gap-1 text-[12px] text-[#8A9EB0]">
-            <Link href="/privacy" className="hover:text-white transition-colors px-1">Privacy Policy</Link>
+            <Link href="/privacy" prefetch={false} className="hover:text-white transition-colors px-1">Privacy Policy</Link>
             <span className="text-white/20">•</span>
-            <Link href="/terms" className="hover:text-white transition-colors px-1">Terms of Service</Link>
+            <Link href="/terms" prefetch={false} className="hover:text-white transition-colors px-1">Terms of Service</Link>
             <span className="text-white/20">•</span>
-            <Link href="/cookies" className="hover:text-white transition-colors px-1">Cookie Policy</Link>
+            <Link href="/cookies" prefetch={false} className="hover:text-white transition-colors px-1">Cookie Policy</Link>
           </div>
         </div>
 

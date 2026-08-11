@@ -20,7 +20,7 @@ const nextConfig = {
 
   // Optimize package imports for minimal JS bundle size
   experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion', 'firebase', 'lucide-react'],
+    optimizePackageImports: ['lucide-react', 'framer-motion', 'firebase', 'react-icons', 'recharts', '@tiptap/react', 'tailwind-merge'],
   },
 
   // Remove console logs in production

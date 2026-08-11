@@ -179,7 +179,7 @@ const DEFAULT_PAGE_CONTENTS: Record<string, Partial<PageConfig>> = {
       title: "One Community. Many Ways to Build.",
       subtitle: "Launched at AI Frontier 2026 — meetups, a Discord, an open-source GitHub org, a reading club and hackathons, all in one place for engineers who want to build, not just watch.",
       ctaText: "Join the Discord →",
-      ctaLink: "https://discord.gg/botmartz",
+      ctaLink: "https://discord.gg/k75ZpEnzp",
     },
     aeoQuestion: "What is the Botmartz AI Engineering Community?",
     aeoAnswer: "The Botmartz AI Engineering Community brings together engineers who build production AI systems, offering monthly in-person meetups in Indore, an active Discord server, open-source GitHub repositories, a biweekly reading club, and annual hackathons.",

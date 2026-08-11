@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ArrowRight, Menu, X, PhoneCall } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 
 export type NavDropdownItem = { name: string; path: string };
@@ -70,14 +69,11 @@ export default function Navbar({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();
-  const router = useRouter();
 
-  const handleDropdownNavigate = () => {
-    setTimeout(() => {
-      setActiveDropdown(null);
-      setMobileMenuOpen(false);
-    }, 150);
-  };
+  const handleDropdownNavigate = useCallback(() => {
+    setActiveDropdown(null);
+    setMobileMenuOpen(false);
+  }, []);
 
   const isActive = (item: (typeof NAV_ITEMS)[number]) =>
     pathname === item.path ||
@@ -112,6 +108,7 @@ export default function Navbar({
               >
                 <Link
                   href={item.path}
+                  prefetch={false}
                   className={`relative inline-flex items-center gap-1 px-3 py-2 rounded-md text-[13px] font-semibold tracking-[-0.01em] transition-colors whitespace-nowrap ${
                     isActive(item)
                       ? "text-[#0066FF]"
@@ -132,33 +129,32 @@ export default function Navbar({
                   )}
                 </Link>
 
-                {/* DROPDOWN MENU */}
-                <AnimatePresence>
-                  {item.dropdown && activeDropdown === item.name && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 4 }}
-                      transition={{ duration: 0.12 }}
-                      className="absolute top-full left-0 pt-2 z-[100] pointer-events-auto before:absolute before:-top-4 before:left-0 before:right-0 before:h-4 before:content-['']"
-                    >
-                      <div className="min-w-[240px] bg-white border border-slate-200 rounded-xl shadow-xl p-1.5">
-                        {item.dropdown.map((sub) => (
-                          <a
-                            key={sub.name}
-                            href={sub.path}
-                            className="flex items-center justify-between px-3.5 py-2.5 text-[13px] font-medium text-[#475569] hover:text-[#0066FF] hover:bg-[#0066FF]/5 rounded-lg transition-all group whitespace-nowrap cursor-pointer"
-                          >
-                            <span>{sub.name}</span>
-                            <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-[#0066FF] text-xs">
-                              →
-                            </span>
-                          </a>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {/* DROPDOWN MENU — CSS only, no framer-motion */}
+                {item.dropdown && (
+                  <div
+                    className={`absolute top-full left-0 pt-2 z-[100] pointer-events-auto transition-all duration-150 before:absolute before:-top-4 before:left-0 before:right-0 before:h-4 before:content-[''] ${
+                      activeDropdown === item.name
+                        ? "opacity-100 translate-y-0 pointer-events-auto"
+                        : "opacity-0 translate-y-1 pointer-events-none"
+                    }`}
+                  >
+                    <div className="min-w-[240px] bg-white border border-slate-200 rounded-xl shadow-xl p-1.5">
+                      {item.dropdown.map((sub) => (
+                        <a
+                          key={sub.name}
+                          href={sub.path}
+                          onClick={handleDropdownNavigate}
+                          className="flex items-center justify-between px-3.5 py-2.5 text-[13px] font-medium text-[#475569] hover:text-[#0066FF] hover:bg-[#0066FF]/5 rounded-lg transition-all group whitespace-nowrap cursor-pointer"
+                        >
+                          <span>{sub.name}</span>
+                          <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-[#0066FF] text-xs">
+                            →
+                          </span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </nav>
@@ -167,6 +163,7 @@ export default function Navbar({
           <div className="flex items-center gap-3">
             <Link
               href="/contact"
+              prefetch={false}
               onClick={() => trackEvent("button_click", { button_name: "navbar_book_discovery_desktop" })}
               className="hidden sm:inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white text-[13px] font-bold px-5 py-2.5 rounded-lg shadow-[0_4px_14px_rgba(0,102,255,0.35)] transition-all hover:shadow-[0_4px_20px_rgba(0,102,255,0.5)] hover:-translate-y-px whitespace-nowrap"
             >
@@ -187,73 +184,70 @@ export default function Navbar({
         </div>
       </header>
 
-      {/* ── MOBILE OVERLAY ── */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-white/98 backdrop-blur-xl flex flex-col"
+      {/* ── MOBILE OVERLAY — CSS transition, no framer-motion ── */}
+      <div
+        className={`fixed inset-0 z-[60] bg-white/98 backdrop-blur-xl flex flex-col transition-all duration-200 ${
+          mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <div className="wrap flex items-center justify-between h-[76px] border-b border-slate-200">
+          <Link href="/" prefetch={false} onClick={() => setMobileMenuOpen(false)} className="flex items-center">
+            <img
+              src={logoUrl}
+              alt="Botmartz"
+              className="h-[50px] sm:h-[56px] w-auto object-contain"
+            />
+          </Link>
+          <button
+            className="text-[#334155] p-2 hover:bg-slate-100 rounded-lg flex items-center justify-center"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-label="Close menu"
           >
-            <div className="wrap flex items-center justify-between h-[76px] border-b border-slate-200">
-              <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center">
-                <img
-                  src={logoUrl}
-                  alt="Botmartz"
-                  className="h-[50px] sm:h-[56px] w-auto object-contain"
-                />
-              </Link>
-              <button
-                className="text-[#334155] p-2 hover:bg-slate-100 rounded-lg flex items-center justify-center"
-                onClick={() => setMobileMenuOpen(false)}
-                aria-label="Close menu"
-              >
-                <X size={24} />
-              </button>
-            </div>
+            <X size={24} />
+          </button>
+        </div>
 
-            <nav className="flex flex-col gap-1 p-6 flex-1 overflow-y-auto">
-              {NAV_ITEMS.map((item) => (
-                <div key={item.name}>
-                  <Link
-                    href={item.path}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-2 py-3 text-xl font-bold text-[#334155] hover:text-[#0066FF] transition-colors"
-                  >
-                    {item.name}
-                  </Link>
-                  {item.dropdown && (
-                    <div className="flex flex-col gap-1 pl-4 border-l border-slate-200 mb-3">
-                      {item.dropdown.map((sub) => (
-                        <a
-                          key={sub.name}
-                          href={sub.path}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="py-2 text-sm text-[#475569] hover:text-[#0066FF] transition-colors cursor-pointer"
-                        >
-                          {sub.name}
-                        </a>
-                      ))}
-                    </div>
-                  )}
+        <nav className="flex flex-col gap-1 p-6 flex-1 overflow-y-auto">
+          {NAV_ITEMS.map((item) => (
+            <div key={item.name}>
+              <Link
+                href={item.path}
+                prefetch={false}
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2 py-3 text-xl font-bold text-[#334155] hover:text-[#0066FF] transition-colors"
+              >
+                {item.name}
+              </Link>
+              {item.dropdown && (
+                <div className="flex flex-col gap-1 pl-4 border-l border-slate-200 mb-3">
+                  {item.dropdown.map((sub) => (
+                    <a
+                      key={sub.name}
+                      href={sub.path}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="py-2 text-sm text-[#475569] hover:text-[#0066FF] transition-colors cursor-pointer"
+                    >
+                      {sub.name}
+                    </a>
+                  ))}
                 </div>
-              ))}
-              <div className="mt-6">
-                <Link
-                  href="/contact"
-                  onClick={() => { setMobileMenuOpen(false); trackEvent("button_click", { button_name: "navbar_book_discovery_mobile" }); }}
-                  className="flex items-center justify-center gap-2 bg-[#0066FF] text-white font-bold py-4 rounded-xl text-base whitespace-nowrap"
-                >
-                  <PhoneCall size={15} />
-                  <span>Book a Discovery Call</span>
-                  <ArrowRight size={15} />
-                </Link>
-              </div>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              )}
+            </div>
+          ))}
+          <div className="mt-6">
+            <Link
+              href="/contact"
+              prefetch={false}
+              onClick={() => { setMobileMenuOpen(false); trackEvent("button_click", { button_name: "navbar_book_discovery_mobile" }); }}
+              className="flex items-center justify-center gap-2 bg-[#0066FF] text-white font-bold py-4 rounded-xl text-base whitespace-nowrap"
+            >
+              <PhoneCall size={15} />
+              <span>Book a Discovery Call</span>
+              <ArrowRight size={15} />
+            </Link>
+          </div>
+        </nav>
+      </div>
     </>
   );
 }

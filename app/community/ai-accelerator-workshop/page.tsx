@@ -7,6 +7,7 @@ import CertificateShowcase from "./_components/CertificateShowcase";
 import Instructor from "./_components/Instructor";
 import FAQ from "./_components/FAQ";
 import FinalCTA from "./_components/FinalCTA";
+import { getCachedPublicFeedbacks } from "@/lib/fetch-helpers";
 
 export const metadata: Metadata = {
   title: "AI Accelerator Workshop | Botmartz",
@@ -58,7 +59,14 @@ const structuredData = {
   }
 };
 
-export default function AIFrontierPage() {
+export default async function AIFrontierPage() {
+  let feedbackData: any = null;
+  try {
+    feedbackData = await getCachedPublicFeedbacks();
+  } catch (err) {
+    console.warn("Could not load feedback data:", err);
+  }
+
   return (
     <div className="min-h-screen bg-white">
       <script
@@ -68,7 +76,7 @@ export default function AIFrontierPage() {
       <main>
         <Hero />
         <JourneyTimeline />
-        <BootcampDetails />
+        <BootcampDetails feedbackData={feedbackData} />
         <WhatsIncluded />
         {/* <CertificateShowcase /> */}
         <Instructor />

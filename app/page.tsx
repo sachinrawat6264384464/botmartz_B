@@ -1,11 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import TrackedLink from "@/app/_components/TrackedLink";
-import { db } from "@/lib/firebase";
-import { collection, getDocs, query, where, orderBy, limit, doc, getDoc } from "firebase/firestore";
+import { adminDb } from "@/lib/firebase-admin";
+import { unstable_cache } from "next/cache";
 import DynamicIcon from "@/app/_components/DynamicIcon";
-import * as SiIcons from 'react-icons/si';
-import * as LucideIcons from 'lucide-react';
+import {
+  SiOpenai,
+  SiPostgresql,
+  SiGooglecloud,
+  SiPytorch,
+  SiFastapi,
+  SiTensorflow,
+  SiDocker,
+  SiAmazonwebservices,
+} from 'react-icons/si';
 import {
   Check,
   Layers,
@@ -17,8 +25,6 @@ import {
   Network,
   UsersRound,
   Briefcase,
-  Users,
-  Star,
   MapPin,
   Calendar,
   Ticket,
@@ -45,61 +51,38 @@ function getTechColor(name: string, iconName: string): string {
   return "text-white";
 }
 
-function DynamicTechIcon({ name, className }: { name: string; className?: string }) {
-  if (name === "LangGraph") {
-    return <span className="text-lg mr-1 shrink-0">🦜🕸️</span>;
-  }
-  if (name === "LangChain") {
-    return <span className="text-lg mr-1 shrink-0">🦜🔗</span>;
-  }
-  
-  if (name.startsWith("Si")) {
-    const IconComponent = (SiIcons as any)[name];
-    if (IconComponent) {
-      return <IconComponent className={className} size={24} />;
-    }
-  }
+const SI_ICON_MAP: Record<string, React.ComponentType<any>> = {
+  SiOpenai,
+  SiPostgresql,
+  SiGooglecloud,
+  SiPytorch,
+  SiFastapi,
+  SiTensorflow,
+  SiDocker,
+  SiAmazonwebservices,
+};
 
-  const IconComponent = (LucideIcons as any)[name];
-  if (IconComponent) {
-    return <IconComponent className={className} size={20} />;
-  }
+const LUCIDE_ICON_MAP: Record<string, React.ComponentType<any>> = {
+  Database,
+  Cloud,
+  Layers,
+  Bot,
+  Code2,
+  ShieldCheck,
+  Network,
+};
+
+function DynamicTechIcon({ name, className }: { name: string; className?: string }) {
+  if (name === "LangGraph") return <span className="text-lg mr-1 shrink-0">🦜🕸️</span>;
+  if (name === "LangChain") return <span className="text-lg mr-1 shrink-0">🦜🔗</span>;
+
+  const SiIcon = SI_ICON_MAP[name];
+  if (SiIcon) return <SiIcon className={className} size={24} />;
+
+  const LucideIcon = LUCIDE_ICON_MAP[name];
+  if (LucideIcon) return <LucideIcon className={className} size={20} />;
 
   return null;
-}
-
-async function getActiveLabs() {
-  try {
-    const q = query(
-      collection(db, "labs"),
-      where("status", "==", "active"),
-      orderBy("createdAt", "desc"),
-      limit(4)
-    );
-    const snap = await getDocs(q);
-    const list: any[] = [];
-    snap.forEach((d) => {
-      list.push({ id: d.id, ...d.data() });
-    });
-    if (list.length > 0) return list;
-  } catch (err) {
-    try {
-      const snap = await getDocs(collection(db, "labs"));
-      const list: any[] = [];
-      snap.forEach((d) => {
-        const data = d.data();
-        if (data.status === "active") list.push({ id: d.id, ...data });
-      });
-      if (list.length > 0) return list.slice(0, 4);
-    } catch (e) {
-      console.error("Error loading labs:", e);
-    }
-  }
-  return [
-    { title: "Virtual Try-On", description: "Computer vision pipeline for real-time garment fitting.", iconName: "PyTorch" },
-    { title: "AI Research Agent", description: "An internal agent that runs first-pass research and drafts outreach.", iconName: "LangGraph" },
-    { title: "Enterprise RAG Demo", description: "A reference implementation showing chunking, hybrid retrieval, and evaluation.", iconName: "FastAPI" },
-  ];
 }
 
 interface HomePageConfig {
@@ -117,16 +100,49 @@ interface HomePageConfig {
   techStackItems?: { name: string; iconName: string }[];
 }
 
-async function getHomePageConfig(): Promise<HomePageConfig | null> {
-  try {
-    const docRef = doc(db, "dynamic_pages", "home");
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) return docSnap.data() as HomePageConfig;
-  } catch (err) {
-    console.error("Error loading home page config:", err);
-  }
-  return null;
-}
+const getActiveLabs = unstable_cache(
+  async () => {
+    try {
+      const snap = await adminDb
+        .collection("labs")
+        .where("status", "==", "active")
+        .limit(4)
+        .get();
+      const list: any[] = [];
+      snap.forEach((d) => list.push({ id: d.id, ...d.data() }));
+      // Sort in memory by createdAt desc (no composite index needed)
+      list.sort((a, b) => {
+        const aTime = a.createdAt?._seconds ?? a.createdAt ?? 0;
+        const bTime = b.createdAt?._seconds ?? b.createdAt ?? 0;
+        return bTime - aTime;
+      });
+      if (list.length > 0) return list;
+    } catch (err) {
+      console.error("Error loading labs:", err);
+    }
+    return [
+      { title: "Virtual Try-On", description: "Computer vision pipeline for real-time garment fitting.", iconName: "PyTorch" },
+      { title: "AI Research Agent", description: "An internal agent that runs first-pass research and drafts outreach.", iconName: "LangGraph" },
+      { title: "Enterprise RAG Demo", description: "A reference implementation showing chunking, hybrid retrieval, and evaluation.", iconName: "FastAPI" },
+    ];
+  },
+  ["home-active-labs"],
+  { revalidate: 3600, tags: ["labs"] }
+);
+
+const getHomePageConfig = unstable_cache(
+  async (): Promise<HomePageConfig | null> => {
+    try {
+      const docSnap = await adminDb.collection("dynamic_pages").doc("home").get();
+      if (docSnap.exists) return docSnap.data() as HomePageConfig;
+    } catch (err) {
+      console.error("Error loading home page config:", err);
+    }
+    return null;
+  },
+  ["home-page-config"],
+  { revalidate: 3600, tags: ["dynamic_pages", "home"] }
+);
 
 export const revalidate = 3600;
 
@@ -254,7 +270,7 @@ export default async function Home() {
             <div className="flex-1 w-full relative min-h-[500px] hidden lg:block">
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] w-[500px] h-[500px] z-10 flex items-center justify-center pointer-events-none">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#050B14]/90 z-10 pointer-events-none" />
-                <Image src="/robot2.png" alt="Botmartz AI Core" width={500} height={500} sizes="(max-width: 1023px) 1px, 500px" className="w-full h-full object-contain animate-float" />
+                <Image src="/robot2.png" alt="Botmartz AI Core" width={500} height={500} priority sizes="(max-width: 1023px) 1px, 500px" className="w-full h-full object-contain animate-float" />
               </div>
               {heroUseCases.slice(0, 4).map((uc, index) => (
                 <div
@@ -345,7 +361,7 @@ export default async function Home() {
                     </li>
                   ))}
                 </ul>
-                <Link href={card.href} className="inline-flex items-center gap-2 font-mono text-[13px] text-[#0066FF] font-semibold group-hover:text-[#004CBE] transition-colors mt-auto">
+                <Link href={card.href} prefetch={false} className="inline-flex items-center gap-2 font-mono text-[13px] text-[#0066FF] font-semibold group-hover:text-[#004CBE] transition-colors mt-auto">
                   Learn more <span className="transform transition-transform group-hover:translate-x-1">→</span>
                 </Link>
               </div>
@@ -393,7 +409,7 @@ export default async function Home() {
               <h2 className="text-[clamp(26px,3vw,34px)] font-semibold text-ink">Building In Public. Sharing Knowledge.</h2>
               <p className="text-lg text-[#475569] max-w-[500px] mt-3">Explore some of our recent builds and experiments.</p>
             </div>
-            <Link href="/work" className="btn btn-ghost text-[#00B8F0] font-semibold border-[#00B8F0]/30 hover:bg-[#00B8F0]/10">
+            <Link href="/work" prefetch={false} className="btn btn-ghost text-[#00B8F0] font-semibold border-[#00B8F0]/30 hover:bg-[#00B8F0]/10">
               View All Labs →
             </Link>
           </div>
@@ -414,7 +430,7 @@ export default async function Home() {
                     <div className="font-mono text-[10px] uppercase text-[#00B8F0] tracking-wider bg-[#00B8F0]/10 px-2 py-1 rounded-sm inline-block mb-3 self-start">{techTag}</div>
                     <h3 className="text-xl font-semibold mb-2 text-ink">{lab.title}</h3>
                     <p className="text-base text-[#475569] mb-6 line-clamp-3 flex-grow">{lab.description}</p>
-                    <Link href={`/work/${lab.slug || 'lab'}`} className="font-mono text-[13px] text-[#00B8F0] font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">
+                    <Link href={`/work/${lab.slug || 'lab'}`} prefetch={false} className="font-mono text-[13px] text-[#00B8F0] font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">
                       View Project →
                     </Link>
                   </div>
@@ -456,7 +472,7 @@ export default async function Home() {
                   <h2 className="text-[26px] font-semibold text-ink">Latest Engineering Insights</h2>
                   <p className="text-base text-[#475569] mt-1">Deep dives, tutorials and technical articles from our engineers.</p>
                 </div>
-                <Link href="/insights" className="font-mono text-[13px] text-[#00B8F0] font-semibold hover:text-ink transition-colors">View All Insights →</Link>
+                <Link href="/insights" prefetch={false} className="font-mono text-[13px] text-[#00B8F0] font-semibold hover:text-ink transition-colors">View All Insights →</Link>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
                 {[
@@ -467,7 +483,7 @@ export default async function Home() {
                   { date: "April 28, 2026", read: "7 min read", title: "Deploying Vector Databases at Scale: A Kubernetes Guide", gradient: "from-[#9333EA] to-transparent" },
                   { date: "April 15, 2026", read: "12 min read", title: "Securing LLM Endpoints: Rate Limiting & Prompt Injection Defense", gradient: "from-[#B91C1C] to-transparent" },
                 ].map((article, i) => (
-                  <div key={i} className="group cursor-pointer flex flex-col">
+                  <Link key={i} href="/insights" prefetch={false} className="group cursor-pointer flex flex-col">
                     <div className="h-[140px] bg-[#050B14] border border-line rounded-xl mb-4 overflow-hidden relative">
                       <div className={`absolute inset-0 bg-gradient-to-tr ${article.gradient} opacity-80`} />
                     </div>
@@ -478,7 +494,7 @@ export default async function Home() {
                     </div>
                     <h3 className="text-[15px] font-semibold leading-snug mb-2 text-ink group-hover:text-[#00B8F0] transition-colors">{article.title}</h3>
                     <p className="font-mono text-xs text-[#00B8F0] font-semibold mt-auto pt-2">Read More →</p>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -507,13 +523,13 @@ export default async function Home() {
                   </div>
                 ))}
               </div>
-              <Link href="/community" className="font-mono text-[13px] text-[#00B8F0] font-semibold hover:text-ink inline-block mb-10 transition-colors">Explore Community →</Link>
+              <Link href="/community" prefetch={false} className="font-mono text-[13px] text-[#00B8F0] font-semibold hover:text-ink inline-block mb-10 transition-colors">Explore Community →</Link>
               <div className="bg-[#050B14] border border-[#00B8F0]/20 rounded-xl p-8 relative overflow-hidden text-white shadow-[0_0_30px_rgba(0,184,240,0.1)]">
                 <div className="absolute inset-0 blueprint opacity-10 pointer-events-none" />
                 <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-[#0066FF]/30 blur-3xl rounded-full" />
                 <h3 className="text-[22px] font-bold mb-2 relative z-10 tracking-tight">AI FRONTIER<br />2026</h3>
                 <p className="text-sm text-[#8A9EB0] mb-6 relative z-10 max-w-[200px]">The Future of<br />AI Engineering</p>
-                <Link href="/community" className="btn bg-[#0066FF] hover:bg-[#0052CC] border-none text-white shadow-[0_0_15px_rgba(0,102,255,0.4)] text-[12px] px-5 py-2.5 relative z-10 rounded-lg">
+                <Link href="/community" prefetch={false} className="btn bg-[#0066FF] hover:bg-[#0052CC] border-none text-white shadow-[0_0_15px_rgba(0,102,255,0.4)] text-[12px] px-5 py-2.5 relative z-10 rounded-lg">
                   Learn More →
                 </Link>
               </div>

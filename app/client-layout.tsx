@@ -9,9 +9,14 @@ export const SettingsContext = createContext<any>({});
 export const useSettings = () => useContext(SettingsContext);
 
 import { AccessibilityProvider } from "./_context/AccessibilityContext";
-import { AccessibilityToolbox } from "./_components/AccessibilityToolbox";
-import FloatingOfferWidget from "./_components/FloatingOfferWidget";
-import AnalyticsProvider from "./_components/AnalyticsProvider";
+import dynamic from "next/dynamic";
+
+const AccessibilityToolbox = dynamic(
+  () => import("./_components/AccessibilityToolbox").then((mod) => mod.AccessibilityToolbox),
+  { ssr: false }
+);
+const FloatingOfferWidget = dynamic(() => import("./_components/FloatingOfferWidget"), { ssr: false });
+const AnalyticsProvider = dynamic(() => import("./_components/AnalyticsProvider"), { ssr: false });
 
 export default function ClientLayout({
   children,

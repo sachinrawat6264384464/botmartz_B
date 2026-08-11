@@ -1,14 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { Montserrat } from "next/font/google";
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  display: "swap",
-});
-
 import RegisterButton from "../[slug]/RegisterButton";
 
 export default function AIFrontierEventBody({ event }: { event?: any }) {
@@ -17,12 +9,15 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
   const [notifyEmail, setNotifyEmail] = useState("");
   const [notified, setNotified] = useState(false);
 
+  const rawDate = event?.date || "Sunday, Aug 23, 2026";
+  const displayDate = rawDate.includes("Sunday") ? rawDate : `Sunday, ${rawDate}`;
+
   const activeEvent = {
     id: event?.id || "ai-frontier-2026",
     title: event?.title || "AI Frontier 2026 — The Future of AI Engineering",
     slug: event?.slug || "ai-frontier-2026",
     entryFee: (event?.entryFee !== undefined && event?.entryFee !== null) ? Number(event.entryFee) : 0,
-    date: event?.date || "May 24–25, 2026",
+    date: displayDate,
     location: event?.location || "The Leela Palace, Bangalore"
   };
 
@@ -109,7 +104,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
   };
 
   return (
-    <div className={`${montserrat.className} bg-[#F5F8FC] text-[#0B1220] antialiased overflow-x-hidden`}>
+    <div className="font-sans bg-[#F5F8FC] text-[#0B1220] antialiased overflow-x-hidden">
       <style dangerouslySetInnerHTML={{
         __html: `
         @keyframes ef-pulse {
@@ -157,7 +152,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
                   23
                 </div>
                 <div>
-                  <div className="font-bold text-[15px] text-white">Aug 23, 2026</div>
+                  <div className="font-bold text-[15px] text-white">{displayDate}</div>
                   <div className="font-medium text-xs text-[#8FA3C4] mt-0.5">10:00 AM – 5:00 PM</div>
                 </div>
               </div>
@@ -167,7 +162,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
                 </div>
                 <div>
                   <div className="font-bold text-base text-white flex items-center gap-2">
-                    <img src="/walkover-logo.png" alt="Walkover" className="h-[36px] sm:h-[40px] max-w-[170px] object-contain brightness-0 invert opacity-100" />
+                    <img src="/walkover-logo.png" alt="Walkover Logo" loading="lazy" decoding="async" className="h-[42px] sm:h-[50px] max-w-[220px] w-auto object-contain transition-all" />
                   </div>
                   <div className="font-semibold text-xs sm:text-[13px] text-[#00C6FF] tracking-wide mt-0.5">Venue Partner · Indore, India</div>
                 </div>
@@ -388,7 +383,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
             <div className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 shadow-sm hover:border-[#007BFF]/40 transition-all">
               <div className="flex justify-between items-start flex-wrap gap-2">
                 <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#8A97AC] uppercase">Welcome</span>
-                <span className="font-bold text-[11px] text-[#007BFF] bg-[#E8F2FF] px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/Sohamsharma.jpeg" alt="Soham Sharma" className="w-4 h-4 rounded-full object-cover" /> Soham Sharma · Principal AI Architect</span>
+                <span className="font-bold text-[11px] text-[#007BFF] bg-[#E8F2FF] px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/Sohamsharma.jpeg" alt="Soham Sharma" loading="lazy" decoding="async" className="w-4 h-4 rounded-full object-cover" /> Soham Sharma · Principal AI Architect</span>
               </div>
               <h3 className="font-extrabold text-[20px] sm:text-[22px] text-[#0B1220] mt-2">Set the Frame</h3>
               <p className="font-medium text-[14px] text-[#3A4459] mt-2 leading-[1.6]">
@@ -408,7 +403,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
               <div className="absolute top-0 right-0 bg-gradient-to-l from-[#7C3AED]/15 to-transparent w-40 h-full pointer-events-none" />
               <div className="flex justify-between items-start flex-wrap gap-2">
                 <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#7C3AED] uppercase">Keynote · Flagship Deep Dive</span>
-                <span className="font-bold text-[11px] text-[#7C3AED] bg-[#F1EBFE] px-3 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/promit.png" alt="Dr. Promit Ray" className="w-4 h-4 rounded-full object-cover" /> Dr. Promit Ray · Chief AI Scientist</span>
+                <span className="font-bold text-[11px] text-[#7C3AED] bg-[#F1EBFE] px-3 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/promit.png" alt="Dr. Promit Ray" loading="lazy" decoding="async" className="w-4 h-4 rounded-full object-cover" /> Dr. Promit Ray · Chief AI Scientist</span>
               </div>
               <h3 className="font-extrabold text-[22px] sm:text-[24px] text-[#0B1220] mt-2.5">Think Like an AI Engineer</h3>
               <p className="font-medium text-[14.5px] text-[#3A4459] mt-2.5 leading-[1.65]">
@@ -443,7 +438,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
             <div className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 shadow-sm hover:border-[#D97706]/40 transition-all">
               <div className="flex justify-between items-start flex-wrap gap-2">
                 <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#8A97AC] uppercase">Hands-on Workshop · Part 1</span>
-                <span className="font-bold text-[11px] text-[#D97706] bg-[#FEF3E2] px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/harsh_sahu.jpeg" alt="Harsh Sahu" className="w-4 h-4 rounded-full object-cover" /> Harsh Sahu (GTWY AI)</span>
+                <span className="font-bold text-[11px] text-[#D97706] bg-[#FEF3E2] px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/harsh_sahu.jpeg" alt="Harsh Sahu" loading="lazy" decoding="async" className="w-4 h-4 rounded-full object-cover" /> Harsh Sahu (GTWY AI)</span>
               </div>
               <h3 className="font-extrabold text-[20px] sm:text-[22px] text-[#0B1220] mt-2">Build Your First AI Agent: EdTech Case Study</h3>
               <p className="font-medium text-[14px] text-[#3A4459] mt-2 leading-[1.6]">
@@ -478,7 +473,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
             <div className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 shadow-sm hover:border-[#D97706]/40 transition-all">
               <div className="flex justify-between items-start flex-wrap gap-2">
                 <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#8A97AC] uppercase">Hands-on Workshop · Part 2</span>
-                <span className="font-bold text-[11px] text-[#D97706] bg-[#FEF3E2] px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/harsh_sahu.jpeg" alt="Harsh Sahu" className="w-4 h-4 rounded-full object-cover" /> Harsh Sahu (GTWY AI)</span>
+                <span className="font-bold text-[11px] text-[#D97706] bg-[#FEF3E2] px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/harsh_sahu.jpeg" alt="Harsh Sahu" loading="lazy" decoding="async" className="w-4 h-4 rounded-full object-cover" /> Harsh Sahu (GTWY AI)</span>
               </div>
               <h3 className="font-extrabold text-[20px] sm:text-[22px] text-[#0B1220] mt-2">Evaluation, Memory &amp; Production deployment</h3>
               <p className="font-medium text-[14px] text-[#3A4459] mt-2 leading-[1.6]">
@@ -504,7 +499,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
             <div className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 shadow-sm hover:border-[#0E9F6E]/40 transition-all">
               <div className="flex justify-between items-start flex-wrap gap-2">
                 <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#8A97AC] uppercase">Talk &amp; Community Launch</span>
-                <span className="font-bold text-[11px] text-[#0E9F6E] bg-[#E4F8EF] px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/Sohamsharma.jpeg" alt="Soham Sharma" className="w-4 h-4 rounded-full object-cover" /> Soham Sharma</span>
+                <span className="font-bold text-[11px] text-[#0E9F6E] bg-[#E4F8EF] px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/Sohamsharma.jpeg" alt="Soham Sharma" loading="lazy" decoding="async" className="w-4 h-4 rounded-full object-cover" /> Soham Sharma</span>
               </div>
               <h3 className="font-extrabold text-[20px] sm:text-[22px] text-[#0B1220] mt-2">Building Your AI Engineering Journey</h3>
               <p className="font-medium text-[14px] text-[#3A4459] mt-2 leading-[1.6]">
@@ -638,8 +633,8 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
                     <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                   </svg>
                 </a>
-                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-white shadow-sm shrink-0 bg-[#E2E8F0]">
-                  <img src={speaker.image} alt={speaker.name} className="w-full h-full object-cover object-[center_top]" />
+                <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-3 border-white shadow-md shrink-0 bg-[#E2E8F0] transition-transform duration-300 group-hover:scale-105">
+                  <img src={speaker.image} alt={speaker.name} loading="lazy" decoding="async" className="w-full h-full object-cover object-[center_top]" />
                 </div>
                 <div>
                   <h3 className="font-bold text-lg text-[#0B1220]">{speaker.name}</h3>
@@ -764,29 +759,6 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
               <div className="font-semibold text-[11px] text-[#8FA3C4]">Duration</div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* ─── 6. CONTENT MULTIPLICATION ─── */}
-      <div className="max-w-[1120px] mx-auto py-6 px-6 sm:px-10 pb-16">
-        <div className="text-center max-w-[640px] mx-auto mb-10">
-          <div className="font-bold text-xs tracking-[0.1em] text-[#007BFF] uppercase">One Day, Months of Reach</div>
-          <h2 className="font-extrabold text-[28px] sm:text-[30px] leading-[1.25] text-[#0B1220] mt-3">
-            Every Session Becomes Lasting Content
-          </h2>
-          <p className="font-medium text-sm leading-[1.6] text-[#5B6B85] mt-3.5">
-            Each session is cut into a multi-format content pipeline that keeps AI Frontier working long after the day ends.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3.5">
-          {contentMultiplication.map((c, i) => (
-            <div key={i} className="bg-white border border-[#E7ECF3] rounded-xl p-4.5 flex flex-col gap-2.5 shadow-sm">
-              <div className="w-8 h-8 rounded-lg bg-[#E8F2FF] flex items-center justify-center font-bold text-[10px] text-[#007BFF]">
-                {c.tag}
-              </div>
-              <div className="font-bold text-[12.5px] leading-[1.4] text-[#0B1220]">{c.label}</div>
-            </div>
-          ))}
         </div>
       </div>
 

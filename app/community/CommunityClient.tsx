@@ -9,7 +9,7 @@ export default function CommunityClient({
     title: "One Community.<br /><span class=\"text-[#00C6FF]\">Many Ways</span> to Build.",
     subtitle: "Launched at AI Frontier 2026 — meetups, a Discord, an open-source GitHub org, a reading club and hackathons, all in one place for engineers who want to build, not just watch.",
     ctaText: "Join the Discord →",
-    ctaLink: "https://discord.gg/botmartz",
+    ctaLink: "https://discord.gg/k75ZpEnzp",
   },
   structuredData,
   aeoQuestion,
@@ -29,7 +29,7 @@ export default function CommunityClient({
 
   const pillars = [
     { tag: 'MU', title: 'Monthly Meetups', desc: 'In-person sessions in Indore for engineers to share projects and production lessons.', cta: 'See meetups', href: '/community/events' },
-    { tag: 'DC', title: 'Discord', desc: 'The daily home for questions, job posts, and project feedback.', cta: 'Join server', href: 'https://discord.gg/botmartz' },
+    { tag: 'DC', title: 'Discord', desc: 'The daily home for questions, job posts, and project feedback.', cta: 'Join server', href: 'https://discord.gg/k75ZpEnzp' },
     { tag: 'GH', title: 'Open-Source GitHub Org', desc: 'Community-maintained tools and starter kits for AI engineers.', cta: 'View org', href: 'https://github.com/botmartz' },
     { tag: 'RC', title: 'Reading Club', desc: 'A biweekly deep dive into papers and posts shaping AI engineering.', cta: 'Read along', href: '/community/events' },
     { tag: 'HK', title: 'Hackathons', desc: 'Weekend build sprints turning ideas into shipped agents and RAG systems.', cta: 'See hackathons', href: '/community/events' },
@@ -103,7 +103,7 @@ export default function CommunityClient({
               </p>
               <div className="flex flex-wrap gap-3.5 mt-7">
                 <a 
-                  href={heroContent.ctaLink || "https://discord.gg/botmartz"} 
+                  href={heroContent.ctaLink || "https://discord.gg/k75ZpEnzp"} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] transition-all"
@@ -226,7 +226,7 @@ export default function CommunityClient({
             </div>
           </div>
           <a 
-            href="https://discord.gg/botmartz" 
+            href="https://discord.gg/k75ZpEnzp" 
             target="_blank" 
             rel="noopener noreferrer"
             className="font-bold text-[13.5px] text-white bg-[#007BFF] hover:bg-[#0069DB] px-6 py-3.5 rounded-[9px] shrink-0 transition-colors text-center shadow-md"

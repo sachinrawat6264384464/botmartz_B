@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle2, Calendar, Zap, Lock, Radio, Star, MessageSquare, ThumbsUp, ArrowRight } from "lucide-react";
+import { Calendar, Zap, Lock, Radio, Star, MessageSquare, ThumbsUp, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -96,7 +96,7 @@ function getBootcamp1Status(): "COMPLETED" {
   return "COMPLETED";
 }
 
-export default function BootcampDetails() {
+export default function BootcampDetails({ feedbackData }: { feedbackData?: any }) {
   const [mounted, setMounted] = useState(false);
   const [bc1Status, setBc1Status] = useState<"LIVE" | "CLOSED" | "COMPLETED">("COMPLETED");
 
@@ -117,6 +117,13 @@ export default function BootcampDetails() {
 
   const fullPassPrice = 299;
   const fullPassOriginalPrice = 597;
+
+  const avgRating = feedbackData?.avgRating || "4.9 / 5.0";
+  const totalReviewsLabel = feedbackData?.totalReviewsLabel || "(180+ Student Reviews)";
+  const recommendRate = feedbackData?.recommendRate || "98.4% Recommend Rate";
+  const activeReviews = (feedbackData?.reviews && feedbackData.reviews.length > 0)
+    ? feedbackData.reviews.slice(0, 4)
+    : studentReviews.slice(0, 4);
 
   return (
     <section id="bootcamps" className="py-24 bg-white">
@@ -139,15 +146,15 @@ export default function BootcampDetails() {
                   <Star key={i} size={16} className="fill-amber-400" />
                 ))}
               </div>
-              <span className="font-extrabold text-[#0B1C2C] text-sm">4.9 / 5.0</span>
-              <span className="text-xs text-[#64748B] font-medium">(180+ Student Reviews)</span>
+              <span className="font-extrabold text-[#0B1C2C] text-sm">{avgRating}</span>
+              <span className="text-xs text-[#64748B] font-medium">{totalReviewsLabel}</span>
             </div>
 
             <div className="h-4 w-px bg-[#CBD5E1] hidden sm:block" />
 
             <div className="flex items-center gap-1.5 text-xs text-[#0066FF] font-bold">
               <ThumbsUp size={14} />
-              <span>98.4% Recommend Rate</span>
+              <span>{recommendRate}</span>
             </div>
 
             <div className="h-4 w-px bg-[#CBD5E1] hidden sm:block" />
@@ -176,29 +183,48 @@ export default function BootcampDetails() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className={`bg-white border border-[#E2E8F0] rounded-3xl p-8 shadow-[0_4px_24px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] transition-all flex flex-col h-full relative overflow-hidden group ${completed ? "opacity-60 grayscale-[60%] blur-[1px]" : closed ? "opacity-75 grayscale-[20%]" : ""
-                  }`}
+                className={`bg-white border rounded-3xl p-8 shadow-[0_4px_24px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] transition-all flex flex-col h-full relative overflow-hidden group ${
+                  completed ? "border-emerald-300 bg-slate-50/70" : closed ? "border-slate-300 opacity-90" : "border-[#E2E8F0]"
+                }`}
               >
                 {/* Top accent bar */}
                 <div className={`absolute top-0 left-0 right-0 h-2 bg-gradient-to-r ${bootcamp.color}`} />
+
+                {/* CENTER COMPLETED STAMP MARK */}
+                {completed && (
+                  <div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center p-4">
+                    <div className="rotate-[-14deg] border-4 border-dashed border-emerald-600 bg-white/95 backdrop-blur-sm px-6 py-3.5 rounded-2xl shadow-[0_12px_32px_rgba(16,185,129,0.35)] flex flex-col items-center justify-center gap-1 transform scale-105">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-extrabold shadow-xs">
+                          ✓
+                        </div>
+                        <span className="font-black text-base sm:text-lg text-emerald-800 tracking-wider">SESSION COMPLETED</span>
+                      </div>
+                      <span className="text-[10px] font-black text-emerald-600 tracking-[0.2em] uppercase">WORKSHOP ENDED</span>
+                    </div>
+                  </div>
+                )}
 
                 <div className="mb-6">
                   <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-[#64748B] mb-2 flex items-center justify-between">
                     <span>Bootcamp {bootcamp.number}</span>
                     <span className="flex items-center gap-1.5">
                       {live && (
-                        <span className="inline-flex items-center gap-1 bg-emerald-500/10 text-emerald-600 border border-emerald-500/30 text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full">
+                        <span className="inline-flex items-center gap-1 bg-emerald-500/10 text-emerald-600 border border-emerald-500/30 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full">
                           <Radio size={10} className="animate-pulse text-emerald-500" /> LIVE NOW (Till 1 PM)
                         </span>
                       )}
                       {closed && !completed && (
-                        <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-500 border border-slate-300 text-[10px] font-bold uppercase px-2 py-0.5 rounded-full">
+                        <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-500 border border-slate-300 text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full">
                           <Lock size={10} /> Registration Closed
                         </span>
                       )}
                       {completed && (
-                        <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-600 border border-blue-200 text-[10px] font-bold uppercase px-2 py-0.5 rounded-full">
-                          <CheckCircle2 size={10} /> COMPLETED
+                        <span className="inline-flex items-center gap-1.5 bg-emerald-600 text-white text-[11px] font-extrabold uppercase px-3 py-1 rounded-full shadow-md tracking-wider">
+                          <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                          COMPLETED
                         </span>
                       )}
                       {bootcamp.id === 2 && (
@@ -228,7 +254,11 @@ export default function BootcampDetails() {
                   <ul className="space-y-3">
                     {bootcamp.topics.map((topic, i) => (
                       <li key={i} className="flex items-start gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-[#0066FF] flex-shrink-0 mt-0.5" />
+                        <div className="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-[0_2px_6px_rgba(16,185,129,0.35)]">
+                          <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
                         <span className="text-[#334155] font-medium leading-snug">{topic}</span>
                       </li>
                     ))}
@@ -244,24 +274,31 @@ export default function BootcampDetails() {
                     {closed ? (
                       <button
                         disabled
-                        className="flex w-full justify-center items-center gap-2 py-3 rounded-xl bg-slate-100 border border-slate-300 text-slate-400 font-bold cursor-not-allowed opacity-80 pointer-events-none"
+                        className="flex w-full justify-center items-center gap-2 py-3.5 rounded-xl bg-emerald-50 border-2 border-emerald-500/50 text-emerald-700 font-extrabold cursor-not-allowed opacity-90 pointer-events-none shadow-sm"
                       >
-                        {completed ? <CheckCircle2 size={14} /> : <Lock size={14} />} <span>{completed ? "Session Completed" : "Registration Closed (Session Ended at 1 PM)"}</span>
+                        <div className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-xs">
+                          <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                        <span>Session Completed</span>
                       </button>
                     ) : (
-                      <Link
-                        href={`/community/ai-accelerator-workshop/checkout?plan=bootcamp-${bootcamp.id}`}
-                        className="flex w-full justify-center items-center py-3 rounded-xl border-2 border-[#E2E8F0] text-[#0B1C2C] font-bold hover:border-[#0B1C2C] hover:bg-[#F8FAFC] transition-all"
-                      >
-                        <span>Register for ₹{bootcamp.price}</span>
-                      </Link>
+                      <>
+                        <Link
+                          href={`/community/ai-accelerator-workshop/checkout?plan=bootcamp-${bootcamp.id}`}
+                          className="flex w-full justify-center items-center py-3 rounded-xl border-2 border-[#E2E8F0] text-[#0B1C2C] font-bold hover:border-[#0B1C2C] hover:bg-[#F8FAFC] transition-all"
+                        >
+                          <span>Register for ₹{bootcamp.price}</span>
+                        </Link>
+                        <Link
+                          href="/community/ai-accelerator-workshop/checkout?plan=bundle"
+                          className="flex w-full justify-center items-center gap-1.5 py-3 rounded-xl bg-[#0066FF] text-white font-bold hover:bg-[#0052CC] transition-all shadow-sm"
+                        >
+                          <span>Get Full Pass (₹299)</span>
+                        </Link>
+                      </>
                     )}
-                    <Link
-                      href="/community/ai-accelerator-workshop/checkout?plan=bundle"
-                      className="flex w-full justify-center items-center gap-1.5 py-3 rounded-xl bg-[#0066FF] text-white font-bold hover:bg-[#0052CC] transition-all shadow-sm"
-                    >
-                      <span>Get Full Pass (₹299)</span>
-                    </Link>
                   </div>
                 </div>
               </motion.div>
@@ -323,8 +360,8 @@ export default function BootcampDetails() {
             </h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {studentReviews.map((rev, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {activeReviews.map((rev: any, i: number) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 15 }}
@@ -335,7 +372,7 @@ export default function BootcampDetails() {
               >
                 <div className="mb-4">
                   <div className="flex text-amber-400 mb-3">
-                    {[...Array(rev.rating)].map((_, s) => (
+                    {[...Array(Number(rev.rating) || 5)].map((_, s) => (
                       <Star key={s} size={15} className="fill-amber-400" />
                     ))}
                   </div>
@@ -357,17 +394,17 @@ export default function BootcampDetails() {
             ))}
           </div>
 
-          {/* Give Feedback CTA Box */}
-          <div className="mt-12 text-center bg-gradient-to-r from-[#0B1C2C] to-[#1E293B] text-white p-8 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
-            <div className="text-left">
-              <h4 className="text-xl font-bold mb-1">Attended a Live Session?</h4>
-              <p className="text-xs sm:text-sm text-[#8A9EB0] font-medium">
+          {/* Give Feedback CTA Box — HIGH CONTRAST FIX */}
+          <div className="mt-12 text-center bg-[#060C17] border border-[#0066FF]/30 text-white p-8 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden">
+            <div className="text-left relative z-10">
+              <h4 className="text-xl sm:text-2xl font-extrabold text-white mb-2 tracking-tight">Attended a Live Session?</h4>
+              <p className="text-xs sm:text-sm text-slate-300 font-medium max-w-xl">
                 Submit your 2-3 line feedback and help us elevate the next AI summit.
               </p>
             </div>
             <Link
               href="/community/ai-accelerator-workshop/feedback"
-              className="px-6 py-3 rounded-xl bg-[#0066FF] text-[#0B1C2C] font-bold hover:bg-[#0052CC] hover:text-white transition-all text-xs sm:text-sm whitespace-nowrap shadow-md"
+              className="px-6 py-3 rounded-xl bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold transition-all text-xs sm:text-sm whitespace-nowrap shadow-[0_4px_14px_rgba(0,102,255,0.4)] relative z-10"
             >
               Submit Your Feedback →
             </Link>

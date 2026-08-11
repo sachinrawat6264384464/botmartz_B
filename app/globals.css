@@ -92,6 +92,12 @@
     @apply overflow-x-hidden max-w-full;
   }
   
+  /* Defer rendering of below-fold sections for faster LCP */
+  section:not(:first-of-type) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 400px;
+  }
+  
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading text-ink;
   }

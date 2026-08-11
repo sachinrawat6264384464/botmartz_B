@@ -12,6 +12,8 @@ interface DynamicIconProps {
   size?: number;
 }
 
+const iconComponentCache = new Map<string, any>();
+
 export default function DynamicIcon({ name, className, size }: DynamicIconProps) {
   // Convert PascalCase to kebab-case for dynamicIconImports (e.g. HelpCircle -> help-circle)
   const kebabName = name
@@ -20,7 +22,13 @@ export default function DynamicIcon({ name, className, size }: DynamicIconProps)
 
   // Check if the icon exists in the dynamic imports map
   if (kebabName && (dynamicIconImports as any)[kebabName]) {
-    const IconComponent = dynamic((dynamicIconImports as any)[kebabName]) as any;
+    if (!iconComponentCache.has(kebabName)) {
+      iconComponentCache.set(
+        kebabName,
+        dynamic((dynamicIconImports as any)[kebabName])
+      );
+    }
+    const IconComponent = iconComponentCache.get(kebabName)!;
     return <IconComponent className={className} size={size} />;
   }
 

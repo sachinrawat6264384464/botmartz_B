@@ -1,9 +1,8 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import { Space_Grotesk, Inter } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "./client-layout";
-import { adminDb } from "@/lib/firebase-admin";
 import { getCachedGlobalSettings } from "@/lib/fetch-helpers";
 import StructuredData from "./_components/StructuredData";
 import NavbarWrapper from "./_components/NavbarWrapper";
@@ -16,18 +15,14 @@ const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
   display: "swap",
+  preload: true,
 });
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
-  subsets: ["latin"],
-  display: "swap",
+  preload: true,
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -128,14 +123,15 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" type="image/png" href={settings?.branding?.faviconUrl || "/botmartz_favicon.png"} />
         <link rel="shortcut icon" href={settings?.branding?.faviconUrl || "/botmartz_favicon.png"} />
         <link rel="apple-touch-icon" href={settings?.branding?.faviconUrl || "/botmartz_favicon.png"} />
-        {/* DNS prefetch for Unsplash images */}
+        {/* Preconnect for faster resource loading */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
-        {/* Preconnect to Firestore API */}
         <link rel="preconnect" href="https://firestore.googleapis.com" />
         {/* Structured Data for SEO/AEO/GEO */}
         <StructuredData data={settings} />
@@ -156,7 +152,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`}
+        className={`${inter.variable} ${spaceGrotesk.variable} antialiased`}
         suppressHydrationWarning
       >
         {/* Google Tag Manager (noscript) */}

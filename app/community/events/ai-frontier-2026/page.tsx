@@ -34,6 +34,13 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://www.botmartz.com/community/events/ai-frontier-2026',
   },
+  robots: {
+    index: true,
+    follow: true,
+    'max-snippet': -1,
+    'max-image-preview': 'large',
+    'max-video-preview': -1,
+  },
 };
 
 // ─── EVENT STRUCTURED DATA (JSON-LD) ─────────────────────────────────────────

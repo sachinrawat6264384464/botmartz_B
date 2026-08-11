@@ -1,49 +1,64 @@
-"use client";
-
-import React, { use, useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
-import { db } from "@/lib/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { getCachedDynamicPage } from "@/lib/fetch-helpers";
 import { 
   ArrowRight, Database, Layout, Mail, MessageSquare, Calendar, 
   Globe, Server, ShieldCheck, Zap, Activity, Code, Briefcase, 
   FileSearch, HelpCircle, Users, Speaker, PieChart, Workflow, Lock, Settings 
 } from "lucide-react";
 import DynamicIcon from "@/app/_components/DynamicIcon";
+import { Metadata } from "next";
 
-export default function DynamicServicePage({ params }: { params: any }) {
-  const resolvedParams = params instanceof Promise ? use(params) : params;
-  const slug = resolvedParams?.slug;
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const content = await getCachedDynamicPage(slug);
+  if (!content) return { title: "Service Not Found | Botmartz" };
 
-  const [content, setContent] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const rawTitle = content.seoTitle || content.hero?.badge || content.title || "Enterprise AI Solutions";
+  const title = rawTitle.includes("Botmartz") ? rawTitle : `${rawTitle} | Botmartz`;
+  
+  const rawDescription = content.seoDescription || content.hero?.subtitle || "Botmartz designs and deploys production-ready Enterprise RAG and autonomous AI agent systems.";
+  const description = rawDescription.length > 155 ? rawDescription.substring(0, 152) + "..." : rawDescription;
 
-  useEffect(() => {
-    if (!slug) return;
-    
-    async function fetchPageConfig() {
-      try {
-        const docRef = doc(db, "dynamic_pages", slug);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setContent(docSnap.data());
+  const url = `https://www.botmartz.com/services/${slug}`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: url,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: "Botmartz",
+      type: "website",
+      images: [
+        {
+          url: "/BotmartznewBot.png",
+          width: 1200,
+          height: 630,
+          alt: `${title} - Botmartz AI Solutions`
         }
-      } catch (err) {
-        console.error("Error loading dynamic service page:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchPageConfig();
-  }, [slug]);
+      ]
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/BotmartznewBot.png"],
+    },
+  };
+}
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-ink flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-zinc-700 border-t-brand rounded-full animate-spin" />
-      </div>
-    );
-  }
+export default async function DynamicServicePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const content = await getCachedDynamicPage(slug);
 
   if (!content) {
     return (
