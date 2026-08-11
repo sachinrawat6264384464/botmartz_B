@@ -634,7 +634,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
                   </svg>
                 </a>
                 <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-3 border-white shadow-md shrink-0 bg-[#E2E8F0] transition-transform duration-300 group-hover:scale-105">
-                  <img src={speaker.image} alt={speaker.name} loading="lazy" decoding="async" className="w-full h-full object-cover object-[center_top]" />
+                  <img src={speaker.image} alt={speaker.name} loading="lazy" decoding="async" className="w-full h-full object-contain object-center" />
                 </div>
                 <div>
                   <h3 className="font-bold text-lg text-[#0B1220]">{speaker.name}</h3>

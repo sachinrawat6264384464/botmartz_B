@@ -93,6 +93,7 @@ export default function Navbar({
               width={200}
               height={66}
               priority
+              suppressHydrationWarning
               className="h-[58px] sm:h-[66px] w-auto object-contain transition-transform duration-200 hover:scale-105"
             />
           </Link>
@@ -194,7 +195,8 @@ export default function Navbar({
           <Link href="/" prefetch={false} onClick={() => setMobileMenuOpen(false)} className="flex items-center">
             <img
               src={logoUrl}
-              alt="Botmartz"
+              alt="Botmartz AI Solution PVT LTD."
+              suppressHydrationWarning
               className="h-[50px] sm:h-[56px] w-auto object-contain"
             />
           </Link>

@@ -16,12 +16,20 @@ export const metadata: Metadata = {
     title: "AI Accelerator Workshop | Botmartz",
     description: "Join the live engineering workshops leading up to AI Frontier 2026. Build production-ready AI applications.",
     url: "https://www.botmartz.com/community/ai-accelerator-workshop",
-    siteName: "Botmartz AI Solutions",
+    siteName: "Botmartz AI Solution PVT LTD.",
     type: "website",
     images: [
       {
-        url: "https://www.botmartz.com/ai-engineering-pass-og.jpg?v=3",
-        secureUrl: "https://www.botmartz.com/ai-engineering-pass-og.jpg?v=3",
+        url: "https://www.botmartz.com/ai-engineering-pass-og.jpg?v=5",
+        secureUrl: "https://www.botmartz.com/ai-engineering-pass-og.jpg?v=5",
+        width: 1024,
+        height: 1536,
+        type: "image/jpeg",
+        alt: "AI Engineering Pass Poster | Botmartz",
+      },
+      {
+        url: "https://www.botmartz.com/ai-engineering-pass-og.jpg?v=5",
+        secureUrl: "https://www.botmartz.com/ai-engineering-pass-og.jpg?v=5",
         width: 1200,
         height: 630,
         type: "image/jpeg",
@@ -33,7 +41,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "AI Accelerator Workshop | Botmartz",
     description: "Join the live engineering workshops leading up to AI Frontier 2026. Build production-ready AI applications.",
-    images: ["https://www.botmartz.com/ai-engineering-pass-og.jpg?v=3"],
+    images: ["https://www.botmartz.com/ai-engineering-pass-og.jpg?v=5"],
   },
   alternates: {
     canonical: "https://www.botmartz.com/community/ai-accelerator-workshop",
