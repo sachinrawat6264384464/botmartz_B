@@ -19,7 +19,7 @@ const TABS = [
 
 const DEFAULT_SETTINGS = {
   general: {
-    companyName: "Botmartz AI Solutions",
+    companyName: "Botmartz AI Solution PVT LTD.",
     email: "hello@botmartz.com",
     phone: "+91 94073 28842",
     websiteUrl: "https://botmartz.com",

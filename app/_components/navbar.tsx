@@ -89,7 +89,7 @@ export default function Navbar({
           <Link href="/" aria-label="Botmartz home" className="flex-shrink-0 flex items-center">
             <Image
               src={logoUrl}
-              alt="Botmartz AI Solutions"
+              alt="Botmartz AI Solution PVT LTD."
               width={200}
               height={66}
               priority
