@@ -288,7 +288,7 @@ export default function EventsClient({
                     23
                   </div>
                   <div>
-                    <div className="font-bold text-[15px] text-white">Aug 23, 2026</div>
+                    <div className="font-bold text-[15px] text-white">Sunday, Aug 23, 2026</div>
                     <div className="font-medium text-xs text-[#8FA3C4] mt-0.5">10:00 AM – 5:00 PM</div>
                   </div>
                 </div>
@@ -299,7 +299,7 @@ export default function EventsClient({
                   </div>
                   <div>
                     <div className="font-bold text-base text-white flex items-center gap-2">
-                      <img src="/walkover-logo.png" alt="Walkover" className="h-[36px] sm:h-[40px] max-w-[170px] object-contain brightness-0 invert opacity-100" />
+                      <img src="/walkover-logo.png" alt="Walkover" suppressHydrationWarning className="h-[36px] sm:h-[40px] max-w-[170px] object-contain transition-all" />
                     </div>
                     <div className="font-semibold text-xs sm:text-[13px] text-[#00C6FF] tracking-wide mt-0.5">Venue Partner · Indore, India</div>
                   </div>
