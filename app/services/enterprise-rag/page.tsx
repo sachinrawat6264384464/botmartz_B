@@ -7,7 +7,6 @@ import {
 } from "lucide-react";
 import DynamicIcon from "@/app/_components/DynamicIcon";
 import { getCachedDynamicPage } from '@/lib/fetch-helpers';
-import InteractiveRAGSimulator from '@/app/_components/InteractiveRAGSimulator';
 import EnterpriseRAGClient from "./EnterpriseRAGClient";
 
 export async function generateMetadata(): Promise<Metadata> {

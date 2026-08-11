@@ -133,22 +133,7 @@ export default function EnterpriseRAGClient({ content }: { content: any }) {
         </div>
       </section>
 
-      {/* 4. LIVE INTERACTIVE DEMO / PROOF SECTION */}
-      <section className="py-[100px] bg-white border-b border-slate-200">
-        <div className="wrap max-w-[1100px] mx-auto">
-          <div className="text-center mb-10 max-w-[750px] mx-auto">
-            <span className="font-mono text-[11px] tracking-[0.14em] text-[#0066FF] uppercase font-bold block mb-2">Live Proof & Architecture</span>
-            <h2 className="text-[32px] md:text-[40px] font-semibold tracking-tight text-slate-900 mb-3">See It Answer a Real Question</h2>
-            <p className="text-slate-600 text-[16px] leading-relaxed">
-              A working system indexed over public insurance policy documents. Ask it whether a policy covers a specific procedure, and it returns the answer, the source document, the page, and its confidence — or tells you the documents don't say.
-            </p>
-          </div>
 
-          <div className="bg-[#050B14] p-4 sm:p-8 rounded-3xl shadow-2xl border border-slate-800">
-            <InteractiveRAGSimulator />
-          </div>
-        </div>
-      </section>
 
       {/* 5. PROCESS AND PRICING */}
       <section id="process" className="py-[120px] bg-[#050B14] text-white relative overflow-hidden">
