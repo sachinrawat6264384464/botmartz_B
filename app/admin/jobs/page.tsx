@@ -25,6 +25,23 @@ export default function JobsDashboard() {
   // Bulk Selection States
   const [selectedJobIds, setSelectedJobIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [seeding, setSeeding] = useState(false);
+
+  const handleSeedJobs = async () => {
+    setSeeding(true);
+    try {
+      const res = await fetch("/api/admin/seed-jobs", { method: "POST" });
+      const data = await res.json();
+      if (data.success) {
+        await fetchJobs();
+      } else {
+        alert("Seeding failed: " + data.error);
+      }
+    } catch (e) {
+      console.error("Error seeding jobs:", e);
+    }
+    setSeeding(false);
+  };
 
   const fetchJobs = async () => {
     setLoadingJobs(true);
@@ -32,6 +49,19 @@ export default function JobsDashboard() {
       const q = query(collection(db, "jobs"), orderBy("createdAt", "desc"));
       const querySnapshot = await getDocs(q);
       const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      
+      if (data.length === 0) {
+        // Auto-seed initial positions into Firestore database
+        const res = await fetch("/api/admin/seed-jobs", { method: "POST" });
+        const seedData = await res.json();
+        if (seedData.success && seedData.addedCount > 0) {
+          const freshSnap = await getDocs(q);
+          setJobs(freshSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+          setLoadingJobs(false);
+          return;
+        }
+      }
+
       setJobs(data);
     } catch (e) {
       console.error("Error fetching jobs:", e);
@@ -145,15 +175,24 @@ export default function JobsDashboard() {
         {loadingJobs ? (
           <div className="p-12 text-center text-admin-text-muted font-mono text-xs">Loading job openings...</div>
         ) : filteredJobs.length === 0 ? (
-          <div className="p-12 text-center text-admin-text-muted space-y-3">
+          <div className="p-12 text-center text-admin-text-muted space-y-4">
             <Briefcase className="mx-auto w-12 h-12 opacity-20 text-admin-accent" />
-            <p className="text-sm font-medium">No job positions found.</p>
-            <Link
-              href="/admin/jobs/new"
-              className="inline-flex items-center gap-2 text-xs font-bold text-admin-accent hover:underline"
-            >
-              + Create First Job Opening
-            </Link>
+            <p className="text-sm font-medium">No job positions found in database.</p>
+            <div className="flex items-center justify-center gap-4">
+              <button
+                onClick={handleSeedJobs}
+                disabled={seeding}
+                className="px-4 py-2 bg-admin-accent hover:bg-admin-accent/90 text-white rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer disabled:opacity-50"
+              >
+                {seeding ? "Seeding..." : "⚡ Seed Default Openings into Database"}
+              </button>
+              <Link
+                href="/admin/jobs/new"
+                className="text-xs font-bold text-admin-accent hover:underline"
+              >
+                + Create Custom Job Opening
+              </Link>
+            </div>
           </div>
         ) : (
           <div className="overflow-x-auto max-h-[550px] overflow-y-auto">
