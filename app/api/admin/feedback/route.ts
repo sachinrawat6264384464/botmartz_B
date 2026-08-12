@@ -133,3 +133,21 @@ export async function GET(req: Request) {
     );
   }
 }
+
+export async function DELETE(req: Request) {
+  try {
+    const { id } = await req.json();
+    if (!id) {
+      return NextResponse.json({ error: 'Feedback ID is required' }, { status: 400 });
+    }
+
+    await adminDb.collection('event-feedbacks').doc(id).delete();
+    return NextResponse.json({ success: true, message: 'Feedback deleted successfully' });
+  } catch (err: any) {
+    console.error('Failed to delete feedback:', err);
+    return NextResponse.json(
+      { error: err.message || 'Failed to delete feedback' },
+      { status: 500 }
+    );
+  }
+}

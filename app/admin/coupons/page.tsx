@@ -92,6 +92,76 @@ export default function CouponsDashboard() {
   const [deleteModal, setDeleteModal] = useState<{ id: string; code: string } | null>(null);
   const [deleting, setDeleting] = useState(false);
 
+  // Bulk Selection States
+  const [selectedFreeCouponIds, setSelectedFreeCouponIds] = useState<string[]>([]);
+  const [selectedDiscountCouponIds, setSelectedDiscountCouponIds] = useState<string[]>([]);
+
+  const toggleSelectAllFreeCoupons = () => {
+    if (selectedFreeCouponIds.length === freeCoupons.length && freeCoupons.length > 0) {
+      setSelectedFreeCouponIds([]);
+    } else {
+      setSelectedFreeCouponIds(freeCoupons.map(c => c.id));
+    }
+  };
+
+  const toggleSelectFreeCoupon = (id: string) => {
+    setSelectedFreeCouponIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
+  };
+
+  const handleBulkDeleteFreeCoupons = async () => {
+    if (selectedFreeCouponIds.length === 0) return;
+    if (!confirm(`Are you sure you want to delete ${selectedFreeCouponIds.length} selected free pass coupon(s)?`)) return;
+
+    try {
+      await Promise.all(selectedFreeCouponIds.map(id => 
+        fetch('/api/admin/coupons', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        }).catch(() => deleteDoc(doc(db, 'coupons', id)))
+      ));
+
+      setCoupons(prev => prev.filter(c => !selectedFreeCouponIds.includes(c.id)));
+      setSelectedFreeCouponIds([]);
+    } catch (e) {
+      alert("Failed to delete selected free coupons.");
+    }
+  };
+
+  const toggleSelectAllDiscountCoupons = () => {
+    const deletableDiscountCoupons = discountCoupons.filter(c => !c.id.startsWith('sys-'));
+    if (selectedDiscountCouponIds.length === deletableDiscountCoupons.length && deletableDiscountCoupons.length > 0) {
+      setSelectedDiscountCouponIds([]);
+    } else {
+      setSelectedDiscountCouponIds(deletableDiscountCoupons.map(c => c.id));
+    }
+  };
+
+  const toggleSelectDiscountCoupon = (id: string) => {
+    if (id.startsWith('sys-')) return;
+    setSelectedDiscountCouponIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
+  };
+
+  const handleBulkDeleteDiscountCoupons = async () => {
+    if (selectedDiscountCouponIds.length === 0) return;
+    if (!confirm(`Are you sure you want to delete ${selectedDiscountCouponIds.length} selected discount coupon(s)?`)) return;
+
+    try {
+      await Promise.all(selectedDiscountCouponIds.map(id => 
+        fetch('/api/admin/coupons', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        }).catch(() => deleteDoc(doc(db, 'coupons', id)))
+      ));
+
+      setCoupons(prev => prev.filter(c => !selectedDiscountCouponIds.includes(c.id)));
+      setSelectedDiscountCouponIds([]);
+    } catch (e) {
+      alert("Failed to delete selected discount coupons.");
+    }
+  };
+
   // Fetch coupons WITHOUT orderBy to avoid index errors
   // Fetch coupons WITH actual redemptions from bootcamp_registrations
   const fetchCoupons = async () => {
@@ -517,7 +587,7 @@ export default function CouponsDashboard() {
 
       {/* FREE PASS COUPONS TABLE */}
       <div className="bg-admin-card border border-admin-border rounded-2xl shadow-sm overflow-hidden">
-        <div className="p-4 border-b border-admin-border flex items-center justify-between">
+        <div className="p-4 border-b border-admin-border flex items-center justify-between flex-wrap gap-3">
           <div>
             <h2 className="text-sm font-bold text-admin-text flex items-center gap-2">
               <Gift size={15} className="text-emerald-400" />
@@ -527,6 +597,15 @@ export default function CouponsDashboard() {
               {freeCoupons.length} total &nbsp;·&nbsp; <span className="text-emerald-400 font-semibold">{freeAvail} available</span> &nbsp;·&nbsp; <span className="text-rose-400 font-semibold">{freeUsed} redeemed</span>
             </p>
           </div>
+
+          {selectedFreeCouponIds.length > 0 && (
+            <button
+              onClick={handleBulkDeleteFreeCoupons}
+              className="flex items-center gap-2 px-3.5 py-1.5 bg-rose-500/15 border border-rose-500/30 text-rose-400 hover:bg-rose-500 hover:text-white text-xs font-bold rounded-xl transition-all shadow-sm cursor-pointer"
+            >
+              <Trash2 size={13} /> Delete Selected ({selectedFreeCouponIds.length})
+            </button>
+          )}
         </div>
 
         {loading ? (
@@ -541,10 +620,18 @@ export default function CouponsDashboard() {
             <p className="text-xs mt-1">Click "Generate Free Coupons" above to create some.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-admin-bg border-b border-admin-border text-[10px] font-mono uppercase text-admin-text-muted tracking-wider">
+              <thead className="bg-admin-bg sticky top-0 z-10 border-b border-admin-border text-[10px] font-mono uppercase text-admin-text-muted tracking-wider">
                 <tr>
+                  <th className="px-4 py-3 w-10 text-center">
+                    <input
+                      type="checkbox"
+                      checked={selectedFreeCouponIds.length === freeCoupons.length && freeCoupons.length > 0}
+                      onChange={toggleSelectAllFreeCoupons}
+                      className="w-4 h-4 rounded border-slate-600 accent-emerald-500 cursor-pointer"
+                    />
+                  </th>
                   <th className="px-4 py-3">Code</th>
                   <th className="px-4 py-3">Status</th>
                   <th className="px-4 py-3">Used</th>
@@ -556,7 +643,15 @@ export default function CouponsDashboard() {
                 {freeCoupons.map((c) => {
                   const isRedeemed = c.currentUses >= c.maxUses;
                   return (
-                    <tr key={c.id} className={`transition-colors ${isRedeemed ? 'opacity-50 bg-rose-500/5' : 'hover:bg-admin-bg/50'}`}>
+                    <tr key={c.id} className={`transition-colors ${selectedFreeCouponIds.includes(c.id) ? 'bg-emerald-500/10' : isRedeemed ? 'opacity-50 bg-rose-500/5' : 'hover:bg-admin-bg/50'}`}>
+                      <td className="px-4 py-3 text-center">
+                        <input
+                          type="checkbox"
+                          checked={selectedFreeCouponIds.includes(c.id)}
+                          onChange={() => toggleSelectFreeCoupon(c.id)}
+                          className="w-4 h-4 rounded border-slate-600 accent-emerald-500 cursor-pointer"
+                        />
+                      </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center font-mono font-bold text-admin-text text-sm">
                           {c.code}
@@ -601,11 +696,22 @@ export default function CouponsDashboard() {
 
       {/* DISCOUNT & CUSTOM COUPONS TABLE */}
       <div className="bg-admin-card border border-admin-border rounded-2xl shadow-sm overflow-hidden">
-        <div className="p-4 border-b border-admin-border">
-          <h2 className="text-sm font-bold text-admin-text flex items-center gap-2">
-            <Tag size={15} className="text-[#00B8F0]" /> Discount & Custom Coupons
-          </h2>
-          <p className="text-[11px] text-admin-text-muted mt-0.5">BOTMARTZ10, WORKSHOP10, custom codes with live usage tracking.</p>
+        <div className="p-4 border-b border-admin-border flex items-center justify-between flex-wrap gap-3">
+          <div>
+            <h2 className="text-sm font-bold text-admin-text flex items-center gap-2">
+              <Tag size={15} className="text-[#00B8F0]" /> Discount & Custom Coupons
+            </h2>
+            <p className="text-[11px] text-admin-text-muted mt-0.5">BOTMARTZ10, WORKSHOP10, custom codes with live usage tracking.</p>
+          </div>
+
+          {selectedDiscountCouponIds.length > 0 && (
+            <button
+              onClick={handleBulkDeleteDiscountCoupons}
+              className="flex items-center gap-2 px-3.5 py-1.5 bg-rose-500/15 border border-rose-500/30 text-rose-400 hover:bg-rose-500 hover:text-white text-xs font-bold rounded-xl transition-all shadow-sm cursor-pointer"
+            >
+              <Trash2 size={13} /> Delete Selected ({selectedDiscountCouponIds.length})
+            </button>
+          )}
         </div>
         {discountCoupons.length === 0 ? (
           <div className="p-10 text-center text-admin-text-muted">
@@ -613,10 +719,18 @@ export default function CouponsDashboard() {
             <p className="text-sm">No discount coupons found.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-admin-bg border-b border-admin-border text-[10px] font-mono uppercase text-admin-text-muted tracking-wider">
+              <thead className="bg-admin-bg sticky top-0 z-10 border-b border-admin-border text-[10px] font-mono uppercase text-admin-text-muted tracking-wider">
                 <tr>
+                  <th className="px-4 py-3 w-10 text-center">
+                    <input
+                      type="checkbox"
+                      checked={selectedDiscountCouponIds.length === discountCoupons.filter(c => !c.id.startsWith('sys-')).length && discountCoupons.filter(c => !c.id.startsWith('sys-')).length > 0}
+                      onChange={toggleSelectAllDiscountCoupons}
+                      className="w-4 h-4 rounded border-slate-600 accent-blue-500 cursor-pointer"
+                    />
+                  </th>
                   <th className="px-4 py-3">Code</th>
                   <th className="px-4 py-3">Discount</th>
                   <th className="px-4 py-3 min-w-[160px]">Usage</th>
@@ -632,7 +746,16 @@ export default function CouponsDashboard() {
                   const isSys = c.id.startsWith('sys-');
                   const pct = c.maxUses > 0 ? Math.min(100, Math.round((c.currentUses / c.maxUses) * 100)) : 0;
                   return (
-                    <tr key={c.id} className="hover:bg-admin-bg/50 transition-colors">
+                    <tr key={c.id} className={`transition-colors ${selectedDiscountCouponIds.includes(c.id) ? 'bg-blue-500/10' : 'hover:bg-admin-bg/50'}`}>
+                      <td className="px-4 py-3 text-center">
+                        <input
+                          type="checkbox"
+                          disabled={isSys}
+                          checked={selectedDiscountCouponIds.includes(c.id)}
+                          onChange={() => toggleSelectDiscountCoupon(c.id)}
+                          className="w-4 h-4 rounded border-slate-600 accent-blue-500 cursor-pointer disabled:opacity-30"
+                        />
+                      </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center font-mono font-bold text-admin-text text-sm">
                           {c.code}

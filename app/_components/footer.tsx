@@ -54,6 +54,7 @@ const FOOTER_COLS = [
     links: [
       { label: "About Us", href: "/about" },
       { label: "Contact Us", href: "/contact" },
+      { label: "Careers / Jobs", href: "/careers" },
     ],
   },
   {
@@ -103,7 +104,7 @@ export function Footer({ settings }: { settings?: any }) {
   };
 
   return (
-    <footer className="bg-[#060C17] text-white relative overflow-hidden" aria-label="Site footer">
+    <footer className="bg-[#060C17] text-white relative overflow-hidden" aria-label="Site footer" suppressHydrationWarning>
 
       {/* Subtle background stars / glow effect */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -264,7 +265,7 @@ export function Footer({ settings }: { settings?: any }) {
 
           {/* Copyright + trust badges */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-            <p className="text-[12px] text-[#8A9EB0]">
+            <p className="text-[12px] text-[#8A9EB0]" suppressHydrationWarning>
               © {new Date().getFullYear()} {companyName}<br className="sm:hidden" />
               <span className="hidden sm:inline"> </span>All rights reserved.
             </p>

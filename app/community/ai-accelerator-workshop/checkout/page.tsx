@@ -227,6 +227,13 @@ function CheckoutContent() {
             </p>
           </div>
 
+          {(plan === "bootcamp-01" || plan === "bootcamp-1") && (
+            <div className="mb-4 p-3.5 bg-amber-50 border border-amber-300 text-amber-900 rounded-xl text-xs font-semibold flex items-center gap-2">
+              <span className="text-base">⚠️</span>
+              <span>Bootcamp 1 (Aug 9) has ended. Please register for Bootcamp 2 or 3!</span>
+            </div>
+          )}
+
           {error && <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-xl text-xs font-medium">{error}</div>}
 
           <form onSubmit={handlePayment} className="space-y-3.5">
@@ -280,11 +287,13 @@ function CheckoutContent() {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || plan === "bootcamp-01" || plan === "bootcamp-1"}
               className="w-full mt-4 bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-[0_4px_14px_rgba(0,102,255,0.3)] disabled:opacity-70 disabled:cursor-not-allowed text-sm sm:text-base"
             >
               {loading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (plan === "bootcamp-01" || plan === "bootcamp-1") ? (
+                "Session Completed (Registration Closed)"
               ) : (
                 `Pay ₹${getAmount()}`
               )}

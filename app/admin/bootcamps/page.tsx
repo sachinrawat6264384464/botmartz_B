@@ -82,13 +82,34 @@ export default function BootcampsAdmin() {
     return 'bootcamp-01';
   };
 
+  const handleUpdateBootcampStatus = async (bcId: string, newStatus: string) => {
+    setActionLoading(`status-${bcId}`);
+    try {
+      const res = await fetch("/api/admin/update-bootcamp-status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: bcId, status: newStatus }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setBootcamps(prev => prev.map(b => b.id === bcId ? { ...b, status: newStatus } : b));
+      } else {
+        alert(`Error updating status: ${data.error}`);
+      }
+    } catch (err: any) {
+      alert(`Failed to update status: ${err.message}`);
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
   const getPriceCategory = (reg: any) => {
     const amt = Number(reg.amount ?? reg.amountPaid ?? 0);
     const coupon = String(reg.appliedCoupon || '').toUpperCase();
     if (amt === 0 || coupon.startsWith('BMFREE') || coupon.startsWith('FREE')) {
       return 'free';
     }
-    if (amt === 399 || amt > 200) return '399';
+    if (amt === 299 || amt === 399 || amt > 200) return '299';
     return '199';
   };
 
@@ -103,7 +124,7 @@ export default function BootcampsAdmin() {
   const priceCounts = {
     all: registrations.length,
     '199': registrations.filter(r => getPriceCategory(r) === '199').length,
-    '399': registrations.filter(r => getPriceCategory(r) === '399').length,
+    '299': registrations.filter(r => getPriceCategory(r) === '299' || getPriceCategory(r) === '399').length,
     'free': registrations.filter(r => getPriceCategory(r) === 'free').length,
   };
 
@@ -838,9 +859,25 @@ export default function BootcampsAdmin() {
                       <td className="p-4 text-sm text-[#0B1C2C] dark:text-slate-200">{bc.date}</td>
                       <td className="p-4 text-sm font-semibold text-[#0B1C2C] dark:text-white">₹{bc.price}</td>
                       <td className="p-4">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300">
-                          {bc.status}
-                        </span>
+                        <select
+                          value={bc.status || "Upcoming"}
+                          onChange={(e) => handleUpdateBootcampStatus(bc.id, e.target.value)}
+                          disabled={actionLoading === `status-${bc.id}`}
+                          className={`text-xs font-bold px-3 py-1 rounded-lg border outline-none cursor-pointer transition-all ${
+                            bc.status === "Completed"
+                              ? "bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300"
+                              : bc.status === "Live"
+                              ? "bg-rose-100 text-rose-800 border-rose-300 dark:bg-rose-950 dark:text-rose-300 animate-pulse"
+                              : bc.status === "Closed"
+                              ? "bg-slate-100 text-slate-700 border-slate-300 dark:bg-slate-800 dark:text-slate-300"
+                              : "bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-950 dark:text-blue-300"
+                          }`}
+                        >
+                          <option value="Upcoming" className="bg-white dark:bg-[#0E172A] text-blue-700">Upcoming</option>
+                          <option value="Live" className="bg-white dark:bg-[#0E172A] text-rose-600">Live Now</option>
+                          <option value="Completed" className="bg-white dark:bg-[#0E172A] text-emerald-600">Completed</option>
+                          <option value="Closed" className="bg-white dark:bg-[#0E172A] text-slate-500">Closed</option>
+                        </select>
                       </td>
                       <td className="p-4 text-right space-x-2">
                         <Link href={`/admin/bootcamps/${bc.id}`} className="inline-flex p-2 text-[#64748B] hover:text-[#0066FF] hover:bg-blue-50 dark:hover:bg-white/10 rounded-lg transition-colors">
@@ -1001,11 +1038,11 @@ export default function BootcampsAdmin() {
             </div>
           )}
 
-          {/* Responsive Table Wrapper */}
-          <div className="overflow-x-auto w-full">
+          {/* Responsive Table Wrapper with Vertical Scroller */}
+          <div className="overflow-x-auto max-h-[550px] overflow-y-auto w-full">
             <table className="w-full text-left border-collapse min-w-[1100px]">
-              <thead>
-                <tr className="bg-[#F8FAFC] dark:bg-white/5 border-b border-[#E2E8F0] dark:border-white/10 text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider">
+              <thead className="sticky top-0 z-10 bg-[#F8FAFC] dark:bg-[#0E172A]">
+                <tr className="bg-[#F8FAFC] dark:bg-[#0E172A] border-b border-[#E2E8F0] dark:border-white/10 text-xs font-semibold text-[#64748B] dark:text-slate-400 uppercase tracking-wider">
                   <th className="p-4 w-10">
                     <input
                       type="checkbox"
@@ -1252,7 +1289,7 @@ export default function BootcampsAdmin() {
                     { value: 'bootcamp-01', label: 'Bootcamp Series 1', sub: 'Build Your First AI Full-Stack Application', price: '₹199' },
                     { value: 'bootcamp-02', label: 'Bootcamp Series 2', sub: 'Build Smarter AI Agents', price: '₹199' },
                     { value: 'bootcamp-03', label: 'Bootcamp Series 3', sub: 'Build Production Ready AI Applications', price: '₹199' },
-                    { value: 'bundle',      label: '🌟 AI Engineering Pass', sub: 'Full Bundle — All 3 Series', price: '₹399' },
+                    { value: 'bundle',      label: '🌟 AI Engineering Pass', sub: 'Full Bundle — All 3 Series', price: '₹299' },
                   ].map(opt => (
                     <button
                       key={opt.value}
@@ -1289,7 +1326,7 @@ export default function BootcampsAdmin() {
                 </div>
                 <p className="text-[10px] text-[#94A3B8] dark:text-slate-500 mt-2 flex items-center gap-1">
                   <span className="inline-flex items-center bg-blue-100 dark:bg-blue-900/30 text-[#0066FF] dark:text-blue-400 px-2 py-0.5 rounded-full font-bold text-[10px]">DIRECT PAYMENT</span>
-                  Direct Registration — Marks as Paid ({adminRegForm.plan === 'bundle' ? '₹399' : '₹199'}). Receipt & ticket emails sent to user.
+                  Direct Registration — Marks as Paid ({adminRegForm.plan === 'bundle' ? '₹299' : '₹199'}). Receipt & ticket emails sent to user.
                 </p>
               </div>
 

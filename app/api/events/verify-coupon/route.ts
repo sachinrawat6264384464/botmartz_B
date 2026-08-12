@@ -56,8 +56,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Coupon code is required' }, { status: 400 });
     }
 
-    if (plan && plan !== 'bundle') {
-      return NextResponse.json({ error: 'Coupon codes are only valid for the ₹399 AI Engineering Pass (Full Bundle).' }, { status: 400 });
+    if (plan === 'bundle' || plan === 'pass') {
+      return NextResponse.json({ error: 'Coupon codes are not applicable for the ₹299 AI Engineering Pass.' }, { status: 400 });
     }
 
     const uppercaseCode = code.trim().toUpperCase();

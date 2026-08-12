@@ -28,17 +28,12 @@ export default function ClientLayout({
   settings?: any;
 }) {
   const pathname = usePathname();
-  const [mounted, setMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const isStandaloneRoute = pathname?.startsWith('/admin') || pathname?.includes('/feedback') || false;
 
   return (
     <SettingsContext.Provider value={settings || {}}>
-      {mounted && <AnalyticsProvider />}
+      <AnalyticsProvider />
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <AccessibilityProvider>
           <div className="min-h-screen flex flex-col" suppressHydrationWarning>
@@ -55,8 +50,8 @@ export default function ClientLayout({
               {children}
             </main>
             {!isStandaloneRoute && <Footer settings={settings} />}
-            {mounted && !isStandaloneRoute && <AccessibilityToolbox />}
-            {mounted && !isStandaloneRoute && <FloatingOfferWidget />}
+            {!isStandaloneRoute && <AccessibilityToolbox />}
+            {!isStandaloneRoute && <FloatingOfferWidget />}
           </div>
         </AccessibilityProvider>
       </ThemeProvider>

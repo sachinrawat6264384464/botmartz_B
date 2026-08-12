@@ -27,7 +27,7 @@ export async function POST(req: Request) {
       "bootcamp-01": { title: "Bootcamp Series 1: Build Your First AI Full-Stack Application", date: "August 2026", location: "Live Online", price: 199 },
       "bootcamp-02": { title: "Bootcamp Series 2: Build Smarter AI Agents", date: "August 2026", location: "Live Online", price: 199 },
       "bootcamp-03": { title: "Bootcamp Series 3: Build Production Ready AI Applications", date: "August 2026", location: "Live Online", price: 199 },
-      "bundle": { title: "AI Engineering Pass (Full Bundle — All 3 Series)", date: "August 2026", location: "Live Online", price: 399 },
+      "bundle": { title: "AI Engineering Pass (Full Bundle — All 3 Series)", date: "August 2026", location: "Live Online", price: 299 },
     };
 
     const planInfo = PLAN_INFO[plan] || PLAN_INFO["bootcamp-01"];

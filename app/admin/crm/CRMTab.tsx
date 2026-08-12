@@ -46,6 +46,60 @@ export default function CRMTab() {
   const [newSub, setNewSub] = useState({ name: "", email: "", source: "manual" });
   const [saving, setSaving] = useState(false);
 
+  // Bulk Selection States
+  const [selectedLeadIds, setSelectedLeadIds] = useState<string[]>([]);
+  const [selectedSubIds, setSelectedSubIds] = useState<string[]>([]);
+
+  const toggleSelectAllLeads = () => {
+    if (selectedLeadIds.length === filteredLeads.length && filteredLeads.length > 0) {
+      setSelectedLeadIds([]);
+    } else {
+      setSelectedLeadIds(filteredLeads.map(l => l.id));
+    }
+  };
+
+  const toggleSelectLead = (id: string) => {
+    setSelectedLeadIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
+  };
+
+  const handleBulkDeleteLeads = async () => {
+    if (selectedLeadIds.length === 0) return;
+    if (!confirm(`Are you sure you want to delete ${selectedLeadIds.length} selected inquiry lead(s)?`)) return;
+    try {
+      await Promise.all(selectedLeadIds.map(id => deleteDoc(doc(db, "contacts", id))));
+      setLeads(prev => prev.filter(l => !selectedLeadIds.includes(l.id)));
+      showToast(`${selectedLeadIds.length} lead(s) deleted successfully`, "success");
+      setSelectedLeadIds([]);
+    } catch {
+      showToast("Failed to delete selected leads", "error");
+    }
+  };
+
+  const toggleSelectAllSubs = () => {
+    if (selectedSubIds.length === filteredSubs.length && filteredSubs.length > 0) {
+      setSelectedSubIds([]);
+    } else {
+      setSelectedSubIds(filteredSubs.map(s => s.id));
+    }
+  };
+
+  const toggleSelectSub = (id: string) => {
+    setSelectedSubIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
+  };
+
+  const handleBulkDeleteSubs = async () => {
+    if (selectedSubIds.length === 0) return;
+    if (!confirm(`Are you sure you want to delete ${selectedSubIds.length} selected subscriber(s)?`)) return;
+    try {
+      await Promise.all(selectedSubIds.map(id => deleteDoc(doc(db, "newsletter", id))));
+      setSubscribers(prev => prev.filter(s => !selectedSubIds.includes(s.id)));
+      showToast(`${selectedSubIds.length} subscriber(s) deleted successfully`, "success");
+      setSelectedSubIds([]);
+    } catch {
+      showToast("Failed to delete selected subscribers", "error");
+    }
+  };
+
   // View & Edit Lead Modal State
   const [viewLead, setViewLead] = useState<Lead | null>(null);
   const [editLead, setEditLead] = useState<Lead | null>(null);
@@ -292,6 +346,27 @@ export default function CRMTab() {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2 shrink-0">
+          {/* Bulk Delete Button */}
+          {activeTab === "leads" && selectedLeadIds.length > 0 && (
+            <button
+              onClick={handleBulkDeleteLeads}
+              className="flex items-center gap-2 px-4 py-2.5 bg-rose-500/15 border border-rose-500/30 text-rose-400 hover:bg-rose-500 hover:text-white text-sm font-semibold rounded-xl transition-all shadow-sm cursor-pointer animate-in fade-in"
+            >
+              <Trash2 size={15} />
+              Delete Selected ({selectedLeadIds.length})
+            </button>
+          )}
+
+          {activeTab === "subscribers" && selectedSubIds.length > 0 && (
+            <button
+              onClick={handleBulkDeleteSubs}
+              className="flex items-center gap-2 px-4 py-2.5 bg-rose-500/15 border border-rose-500/30 text-rose-400 hover:bg-rose-500 hover:text-white text-sm font-semibold rounded-xl transition-all shadow-sm cursor-pointer animate-in fade-in"
+            >
+              <Trash2 size={15} />
+              Delete Selected ({selectedSubIds.length})
+            </button>
+          )}
+
           {/* Export CSV Button */}
           <button
             onClick={activeTab === "leads" ? exportLeadsCSV : exportSubscribersCSV}
@@ -378,6 +453,14 @@ export default function CRMTab() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-admin-border bg-admin-bg/50">
+                  <th className="px-4 py-3.5 w-10 text-center">
+                    <input
+                      type="checkbox"
+                      checked={selectedLeadIds.length === filteredLeads.length && filteredLeads.length > 0}
+                      onChange={toggleSelectAllLeads}
+                      className="w-4 h-4 rounded border-slate-600 accent-admin-accent cursor-pointer"
+                    />
+                  </th>
                   <th className="text-left px-5 py-3.5 text-xs font-bold text-admin-text-muted uppercase tracking-wider">Date</th>
                   <th className="text-left px-5 py-3.5 text-xs font-bold text-admin-text-muted uppercase tracking-wider">Name</th>
                   <th className="text-left px-5 py-3.5 text-xs font-bold text-admin-text-muted uppercase tracking-wider">Email</th>
@@ -389,14 +472,14 @@ export default function CRMTab() {
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan={6} className="text-center py-16 text-admin-text-muted">
+                    <td colSpan={7} className="text-center py-16 text-admin-text-muted">
                       <RefreshCw size={20} className="animate-spin mx-auto mb-2 text-admin-accent" />
                       <p className="text-xs">Loading leads...</p>
                     </td>
                   </tr>
                 ) : filteredLeads.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="text-center py-16 text-admin-text-muted">
+                    <td colSpan={7} className="text-center py-16 text-admin-text-muted">
                       <FileText size={32} className="mx-auto mb-3 opacity-30" />
                       <p className="text-sm font-semibold">No inquiries logged</p>
                       <p className="text-xs mt-1">Inquiry submissions will automatically populate here.</p>
@@ -404,7 +487,15 @@ export default function CRMTab() {
                   </tr>
                 ) : (
                   filteredLeads.map((lead) => (
-                    <tr key={lead.id} className="border-b border-admin-border/50 hover:bg-admin-bg/40 transition-colors">
+                    <tr key={lead.id} className={`border-b border-admin-border/50 hover:bg-admin-bg/40 transition-colors ${selectedLeadIds.includes(lead.id) ? 'bg-admin-accent/5' : ''}`}>
+                      <td className="px-4 py-4 text-center">
+                        <input
+                          type="checkbox"
+                          checked={selectedLeadIds.includes(lead.id)}
+                          onChange={() => toggleSelectLead(lead.id)}
+                          className="w-4 h-4 rounded border-slate-600 accent-admin-accent cursor-pointer"
+                        />
+                      </td>
                       <td className="px-5 py-4 text-xs font-mono text-admin-text-muted whitespace-nowrap">
                         {formatDate(lead.createdAt)}
                       </td>
@@ -457,6 +548,14 @@ export default function CRMTab() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-admin-border bg-admin-bg/50">
+                  <th className="px-4 py-3.5 w-10 text-center">
+                    <input
+                      type="checkbox"
+                      checked={selectedSubIds.length === filteredSubs.length && filteredSubs.length > 0}
+                      onChange={toggleSelectAllSubs}
+                      className="w-4 h-4 rounded border-slate-600 accent-admin-accent cursor-pointer"
+                    />
+                  </th>
                   <th className="text-left px-5 py-3.5 text-xs font-bold text-admin-text-muted uppercase tracking-wider">Joined Date</th>
                   <th className="text-left px-5 py-3.5 text-xs font-bold text-admin-text-muted uppercase tracking-wider">Name</th>
                   <th className="text-left px-5 py-3.5 text-xs font-bold text-admin-text-muted uppercase tracking-wider">Email</th>
@@ -468,14 +567,14 @@ export default function CRMTab() {
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan={6} className="text-center py-16 text-admin-text-muted">
+                    <td colSpan={7} className="text-center py-16 text-admin-text-muted">
                       <RefreshCw size={20} className="animate-spin mx-auto mb-2 text-admin-accent" />
                       <p className="text-xs">Loading subscribers...</p>
                     </td>
                   </tr>
                 ) : filteredSubs.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="text-center py-16 text-admin-text-muted">
+                    <td colSpan={7} className="text-center py-16 text-admin-text-muted">
                       <Send size={32} className="mx-auto mb-3 opacity-30" />
                       <p className="text-sm font-semibold">No subscribers found</p>
                       <p className="text-xs mt-1">Manual subscribers will appear once added.</p>
@@ -483,7 +582,15 @@ export default function CRMTab() {
                   </tr>
                 ) : (
                   filteredSubs.map((sub) => (
-                    <tr key={sub.id} className="border-b border-admin-border/50 hover:bg-admin-bg/40 transition-colors">
+                    <tr key={sub.id} className={`border-b border-admin-border/50 hover:bg-admin-bg/40 transition-colors ${selectedSubIds.includes(sub.id) ? 'bg-admin-accent/5' : ''}`}>
+                      <td className="px-4 py-4 text-center">
+                        <input
+                          type="checkbox"
+                          checked={selectedSubIds.includes(sub.id)}
+                          onChange={() => toggleSelectSub(sub.id)}
+                          className="w-4 h-4 rounded border-slate-600 accent-admin-accent cursor-pointer"
+                        />
+                      </td>
                       <td className="px-5 py-4 text-xs font-mono text-admin-text-muted whitespace-nowrap">
                         {formatDate(sub.subscribedAt)}
                       </td>

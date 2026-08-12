@@ -2,8 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { db } from '@/lib/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { Mail } from 'lucide-react';
 
 interface JobRole {
   id?: string;
@@ -87,12 +86,41 @@ export default function CareersClient({
     if (!applyForm.name || !applyForm.email) return;
     setSubmitting(true);
     try {
-      await addDoc(collection(db, "job_applications"), {
-        jobTitle: selectedRoleForApply?.title || 'General Application',
+      const payload = {
+        name: applyForm.name,
+        email: applyForm.email,
+        phone: applyForm.phone,
+        linkedinOrResume: applyForm.linkedinOrResume,
+        coverNote: applyForm.note,
+        role: selectedRoleForApply?.title || 'General Application',
         department: selectedRoleForApply?.dept || 'General',
-        ...applyForm,
-        createdAt: serverTimestamp()
+      };
+
+      const res = await fetch('/api/jobs/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
+
+      if (!res.ok) {
+        // Fallback to client-side Firestore if API route fails
+        await addDoc(collection(db, "job_applications"), {
+          candidateName: applyForm.name,
+          name: applyForm.name,
+          email: applyForm.email.toLowerCase(),
+          phone: applyForm.phone || "",
+          role: selectedRoleForApply?.title || 'General Application',
+          jobTitle: selectedRoleForApply?.title || 'General Application',
+          department: selectedRoleForApply?.dept || 'General',
+          linkedinOrResume: applyForm.linkedinOrResume || "",
+          resumeUrl: applyForm.linkedinOrResume || "",
+          coverNote: applyForm.note || "",
+          note: applyForm.note || "",
+          status: "new",
+          createdAt: serverTimestamp()
+        });
+      }
+
       setSubmitted(true);
       setTimeout(() => {
         setSelectedRoleForApply(null);
@@ -295,12 +323,12 @@ export default function CareersClient({
                 </div>
               </div>
 
-              <button
-                onClick={() => setSelectedRoleForApply(role)}
-                className="font-bold text-[13px] text-white bg-[#0B1220] hover:bg-[#1A2333] px-5 py-3 rounded-[9px] shrink-0 transition-colors text-center"
+              <a
+                href={`mailto:sohamnsharma@gmail.com?subject=Application for ${encodeURIComponent(role.title)}`}
+                className="font-bold text-[13px] text-white bg-[#007BFF] hover:bg-[#0052CC] px-5 py-3 rounded-[9px] shrink-0 transition-all text-center inline-flex items-center gap-2 shadow-[0_4px_14px_rgba(0,102,255,0.3)] hover:scale-[1.02]"
               >
-                Apply Now →
-              </button>
+                <Mail size={15} /> Send CV: sohamnsharma@gmail.com
+              </a>
             </div>
           ))
         )}
@@ -319,105 +347,18 @@ export default function CareersClient({
                 Don't See Your <span className="text-[#00C6FF]">Role?</span>
               </div>
               <div className="font-medium text-[13.5px] sm:text-[14.5px] leading-[1.65] text-[#8FA3C4] mt-3">
-                We're always open to meeting strong AI engineers. Send us your work — we'll find a place for it.
+                We're always open to meeting strong AI engineers. Send your CV to <strong className="text-[#00C6FF]">sohamnsharma@gmail.com</strong> — we'll find a place for it.
               </div>
             </div>
-            <button
-              onClick={() => setSelectedRoleForApply({ dept: 'General', location: 'Remote / Indore', title: 'General Application', desc: 'Open application for talented AI engineers and builders.' })}
-              className="font-bold text-[13.5px] text-white bg-[#007BFF] hover:bg-[#0069DB] px-6 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] shrink-0 transition-all text-center"
+            <a
+              href="mailto:sohamnsharma@gmail.com?subject=General Career Application — Botmartz AI"
+              className="font-bold text-[13.5px] text-white bg-[#007BFF] hover:bg-[#0052CC] px-6 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] shrink-0 transition-all text-center inline-flex items-center gap-2 hover:scale-[1.02]"
             >
-              Get In Touch →
-            </button>
+              <Mail size={16} /> Send CV: sohamnsharma@gmail.com
+            </a>
           </div>
         </div>
       </div>
-
-      {/* ── APPLICATION MODAL ── */}
-      {selectedRoleForApply && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-[16px] border border-[#E7ECF3] p-6 sm:p-8 max-w-[500px] w-full relative shadow-2xl animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
-            <button
-              onClick={() => { setSelectedRoleForApply(null); setSubmitted(false); }}
-              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#F1F4F9] text-[#5B6B85] hover:bg-[#E2E8F0] font-bold text-sm flex items-center justify-center transition-colors"
-            >
-              ✕
-            </button>
-
-            {submitted ? (
-              <div className="py-8 text-center">
-                <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto text-xl font-bold mb-3">✓</div>
-                <h3 className="text-xl font-bold text-[#0B1220]">Application Received!</h3>
-                <p className="text-sm text-[#5B6B85] mt-1">We will review your submission for <span className="font-semibold text-[#0B1220]">{selectedRoleForApply.title}</span> and get back to you soon.</p>
-              </div>
-            ) : (
-              <>
-                <div className="font-bold text-[11px] tracking-[0.08em] text-[#007BFF] uppercase">
-                  Application
-                </div>
-                <h3 className="font-extrabold text-[20px] text-[#0B1220] mt-1">
-                  {selectedRoleForApply.title}
-                </h3>
-                <p className="font-medium text-xs text-[#8A97AC] mt-0.5">
-                  {selectedRoleForApply.dept} · {selectedRoleForApply.location}
-                </p>
-
-                <form onSubmit={handleApplySubmit} className="mt-6 flex flex-col gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-[#3A4459] mb-1">Full Name *</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Jane Doe"
-                      value={applyForm.name}
-                      onChange={(e) => setApplyForm({ ...applyForm, name: e.target.value })}
-                      className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[8px] px-3.5 py-2.5 text-sm font-medium text-[#0B1220] outline-none focus:border-[#007BFF] transition-colors"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-[#3A4459] mb-1">Email Address *</label>
-                    <input
-                      type="email"
-                      required
-                      placeholder="jane@example.com"
-                      value={applyForm.email}
-                      onChange={(e) => setApplyForm({ ...applyForm, email: e.target.value })}
-                      className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[8px] px-3.5 py-2.5 text-sm font-medium text-[#0B1220] outline-none focus:border-[#007BFF] transition-colors"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-[#3A4459] mb-1">LinkedIn Profile or GitHub URL</label>
-                    <input
-                      type="text"
-                      placeholder="https://linkedin.com/in/janedoe or github.com/janedoe"
-                      value={applyForm.linkedinOrResume}
-                      onChange={(e) => setApplyForm({ ...applyForm, linkedinOrResume: e.target.value })}
-                      className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[8px] px-3.5 py-2.5 text-sm font-medium text-[#0B1220] outline-none focus:border-[#007BFF] transition-colors"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-[#3A4459] mb-1">Brief Note / Why Botmartz?</label>
-                    <textarea
-                      rows={3}
-                      placeholder="Tell us what systems you've built and what you want to work on..."
-                      value={applyForm.note}
-                      onChange={(e) => setApplyForm({ ...applyForm, note: e.target.value })}
-                      className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[8px] px-3.5 py-2.5 text-sm font-medium text-[#0B1220] outline-none focus:border-[#007BFF] transition-colors resize-none"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="w-full mt-2 font-bold text-[13.5px] text-white bg-[#007BFF] hover:bg-[#0069DB] py-3 rounded-[8px] shadow-md transition-all flex items-center justify-center gap-2"
-                  >
-                    {submitting ? 'Submitting...' : 'Submit Application →'}
-                  </button>
-                </form>
-              </>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

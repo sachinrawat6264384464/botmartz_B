@@ -17,7 +17,8 @@ import {
   ExternalLink,
   Loader2,
   BookOpen,
-  Filter
+  Filter,
+  Trash2
 } from "lucide-react";
 import Link from "next/link";
 
@@ -32,6 +33,87 @@ export default function AdminFeedbackPage() {
   const [typeFilter, setTypeFilter] = useState<"all" | "student" | "professional">("all");
   const [statusFilter, setStatusFilter] = useState<"all" | "submitted" | "pending">("all");
   const [togglingId, setTogglingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  // Bulk Selection State
+  const [selectedFeedbackIds, setSelectedFeedbackIds] = useState<string[]>([]);
+
+  const toggleSelectAllFeedback = () => {
+    if (selectedFeedbackIds.length === filteredFeedbacks.length && filteredFeedbacks.length > 0) {
+      setSelectedFeedbackIds([]);
+    } else {
+      setSelectedFeedbackIds(filteredFeedbacks.map((f: any) => f.id));
+    }
+  };
+
+  const toggleSelectFeedback = (id: string) => {
+    setSelectedFeedbackIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
+  };
+
+  const handleBulkDeleteFeedback = async () => {
+    if (selectedFeedbackIds.length === 0) return;
+    if (!confirm(`Are you sure you want to delete ${selectedFeedbackIds.length} selected feedback submission(s)?`)) return;
+
+    try {
+      await Promise.all(selectedFeedbackIds.map(id => 
+        fetch("/api/admin/feedback", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id }),
+        })
+      ));
+
+      setData((prevData: any) => {
+        if (!prevData || !prevData.feedbacks) return prevData;
+        const updatedFeedbacks = prevData.feedbacks.filter((f: any) => !selectedFeedbackIds.includes(f.id));
+        return {
+          ...prevData,
+          feedbacks: updatedFeedbacks,
+          stats: {
+            ...prevData.stats,
+            totalFeedbacks: Math.max(0, (prevData.stats?.totalFeedbacks || 0) - selectedFeedbackIds.length),
+          },
+        };
+      });
+      setSelectedFeedbackIds([]);
+    } catch (err: any) {
+      alert("Error deleting feedback items: " + (err.message || "Failed"));
+    }
+  };
+
+  const handleDeleteFeedback = async (feedbackId: string) => {
+    if (!confirm("Are you sure you want to delete this feedback submission? This cannot be undone.")) return;
+
+    setDeletingId(feedbackId);
+    try {
+      const res = await fetch("/api/admin/feedback", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: feedbackId }),
+      });
+
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error || "Failed to delete feedback");
+
+      // Remove from local state
+      setData((prevData: any) => {
+        if (!prevData || !prevData.feedbacks) return prevData;
+        const updatedFeedbacks = prevData.feedbacks.filter((f: any) => f.id !== feedbackId);
+        return {
+          ...prevData,
+          feedbacks: updatedFeedbacks,
+          stats: {
+            ...prevData.stats,
+            totalFeedbacks: Math.max(0, (prevData.stats?.totalFeedbacks || 1) - 1),
+          },
+        };
+      });
+    } catch (err: any) {
+      alert("Error deleting feedback: " + (err.message || "Failed"));
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   const handleToggleFeatured = async (feedbackId: string, targetFeaturedState: boolean) => {
     setTogglingId(feedbackId);
@@ -180,6 +262,16 @@ export default function AdminFeedbackPage() {
         </div>
 
         <div className="flex items-center gap-3 flex-wrap">
+          {selectedFeedbackIds.length > 0 && (
+            <button
+              onClick={handleBulkDeleteFeedback}
+              className="flex items-center gap-2 px-4 py-2 bg-rose-500/15 border border-rose-500/30 text-rose-400 hover:bg-rose-500 hover:text-white text-xs font-bold rounded-xl transition-all shadow-sm cursor-pointer"
+            >
+              <Trash2 size={14} />
+              Delete Selected ({selectedFeedbackIds.length})
+            </button>
+          )}
+
           {/* Event Filter Dropdown */}
           <div className="flex items-center gap-1.5 bg-[#050C18] border border-white/20 px-3 py-1.5 rounded-xl text-xs text-slate-300">
             <Filter size={14} className="text-[#00B8F0]" />
@@ -374,10 +466,18 @@ export default function AdminFeedbackPage() {
             {/* TAB CONTENT 1: ALL SUBMISSIONS TABLE */}
             {activeTab === "submissions" && (
               <div className="bg-[#0A1120] border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto max-h-[550px] overflow-y-auto">
                   <table className="w-full text-left border-collapse">
-                    <thead>
+                    <thead className="sticky top-0 z-10 bg-[#050C18]">
                       <tr className="bg-[#050C18] border-b border-white/10 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                        <th className="py-3.5 px-4 w-10 text-center">
+                          <input
+                            type="checkbox"
+                            checked={selectedFeedbackIds.length === filteredSubmissions.length && filteredSubmissions.length > 0}
+                            onChange={toggleSelectAllFeedback}
+                            className="w-4 h-4 rounded border-slate-600 accent-[#00B8F0] cursor-pointer"
+                          />
+                        </th>
                         <th className="py-3.5 px-4 text-center">Website Display</th>
                         <th className="py-3.5 px-4">Participant</th>
                         <th className="py-3.5 px-4">Session / Event</th>
@@ -387,18 +487,27 @@ export default function AdminFeedbackPage() {
                         <th className="py-3.5 px-4">Recommend</th>
                         <th className="py-3.5 px-4">Takeaways &amp; Feedback Comments</th>
                         <th className="py-3.5 px-4">Submitted At</th>
+                        <th className="py-3.5 px-4 text-right">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/5 text-xs text-slate-300 font-sans">
                       {filteredSubmissions.length === 0 ? (
                         <tr>
-                          <td colSpan={9} className="py-12 text-center text-slate-500 font-mono">
+                          <td colSpan={11} className="py-12 text-center text-slate-500 font-mono">
                             No feedback submissions found for this filter.
                           </td>
                         </tr>
                       ) : (
                         filteredSubmissions.map((f: any) => (
-                          <tr key={f.id} className="hover:bg-white/[0.02] transition-colors">
+                          <tr key={f.id} className={`hover:bg-white/[0.02] transition-colors ${selectedFeedbackIds.includes(f.id) ? 'bg-[#00B8F0]/10' : ''}`}>
+                            <td className="py-4 px-4 text-center">
+                              <input
+                                type="checkbox"
+                                checked={selectedFeedbackIds.includes(f.id)}
+                                onChange={() => toggleSelectFeedback(f.id)}
+                                className="w-4 h-4 rounded border-slate-600 accent-[#00B8F0] cursor-pointer"
+                              />
+                            </td>
                             <td className="py-4 px-4 text-center">
                               <label className="inline-flex items-center cursor-pointer gap-2 select-none group">
                                 <input
@@ -478,6 +587,21 @@ export default function AdminFeedbackPage() {
                             <td className="py-4 px-4 text-[10px] text-slate-400 font-mono whitespace-nowrap">
                               {f.createdAt ? new Date(f.createdAt).toLocaleString() : "-"}
                             </td>
+
+                            <td className="py-4 px-4 text-right">
+                              <button
+                                onClick={() => handleDeleteFeedback(f.id)}
+                                disabled={deletingId === f.id}
+                                className="p-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 hover:text-rose-300 rounded-lg border border-rose-500/30 transition-all disabled:opacity-50 inline-flex items-center gap-1 text-xs font-bold cursor-pointer"
+                                title="Delete Feedback"
+                              >
+                                {deletingId === f.id ? (
+                                  <Loader2 size={14} className="animate-spin text-rose-400" />
+                                ) : (
+                                  <Trash2 size={14} />
+                                )}
+                              </button>
+                            </td>
                           </tr>
                         ))
                       )}
@@ -490,9 +614,9 @@ export default function AdminFeedbackPage() {
             {/* TAB CONTENT 2: PARTICIPANT FEEDBACK STATUS LEDGER */}
             {activeTab === "participants" && (
               <div className="bg-[#0A1120] border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto max-h-[550px] overflow-y-auto">
                   <table className="w-full text-left border-collapse">
-                    <thead>
+                    <thead className="sticky top-0 z-10 bg-[#050C18]">
                       <tr className="bg-[#050C18] border-b border-white/10 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
                         <th className="py-3.5 px-4">Participant Name</th>
                         <th className="py-3.5 px-4">Contact Info</th>
