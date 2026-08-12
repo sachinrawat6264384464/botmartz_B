@@ -26,5 +26,5 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
   const { slug } = await params;
   const job = await getJobBySlug(slug);
 
-  return <CareerDetailClient initialJob={job} slug={slug} />;
+  return <CareerDetailClient job={job || { id: 'default', title: slug, slug }} />;
 }

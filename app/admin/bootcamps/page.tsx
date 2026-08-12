@@ -970,7 +970,7 @@ export default function BootcampsAdmin() {
                 {[
                   { key: 'all', label: 'All Prices', count: priceCounts.all },
                   { key: '199', label: '₹199', count: priceCounts['199'] },
-                  { key: '399', label: '₹399', count: priceCounts['399'] },
+                  { key: '299', label: '₹299', count: priceCounts['299'] },
                   { key: 'free', label: '₹0 Free', count: priceCounts['free'] },
                 ].map(p => (
                   <button

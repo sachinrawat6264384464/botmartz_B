@@ -81,58 +81,6 @@ export default function CareersClient({
     return roles.filter(r => r.dept.toLowerCase().includes(filter.toLowerCase()) || filter.toLowerCase().includes(r.dept.toLowerCase()));
   }, [filter, roles]);
 
-  const handleApplySubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!applyForm.name || !applyForm.email) return;
-    setSubmitting(true);
-    try {
-      const payload = {
-        name: applyForm.name,
-        email: applyForm.email,
-        phone: applyForm.phone,
-        linkedinOrResume: applyForm.linkedinOrResume,
-        coverNote: applyForm.note,
-        role: selectedRoleForApply?.title || 'General Application',
-        department: selectedRoleForApply?.dept || 'General',
-      };
-
-      const res = await fetch('/api/jobs/apply', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        // Fallback to client-side Firestore if API route fails
-        await addDoc(collection(db, "job_applications"), {
-          candidateName: applyForm.name,
-          name: applyForm.name,
-          email: applyForm.email.toLowerCase(),
-          phone: applyForm.phone || "",
-          role: selectedRoleForApply?.title || 'General Application',
-          jobTitle: selectedRoleForApply?.title || 'General Application',
-          department: selectedRoleForApply?.dept || 'General',
-          linkedinOrResume: applyForm.linkedinOrResume || "",
-          resumeUrl: applyForm.linkedinOrResume || "",
-          coverNote: applyForm.note || "",
-          note: applyForm.note || "",
-          status: "new",
-          createdAt: serverTimestamp()
-        });
-      }
-
-      setSubmitted(true);
-      setTimeout(() => {
-        setSelectedRoleForApply(null);
-        setSubmitted(false);
-        setApplyForm({ name: '', email: '', phone: '', linkedinOrResume: '', note: '' });
-      }, 2000);
-    } catch (err) {
-      console.error("Application submission error:", err);
-    }
-    setSubmitting(false);
-  };
-
   const defaultSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",

@@ -39,10 +39,10 @@ export default function AdminFeedbackPage() {
   const [selectedFeedbackIds, setSelectedFeedbackIds] = useState<string[]>([]);
 
   const toggleSelectAllFeedback = () => {
-    if (selectedFeedbackIds.length === filteredFeedbacks.length && filteredFeedbacks.length > 0) {
+    if (selectedFeedbackIds.length === filteredSubmissions.length && filteredSubmissions.length > 0) {
       setSelectedFeedbackIds([]);
     } else {
-      setSelectedFeedbackIds(filteredFeedbacks.map((f: any) => f.id));
+      setSelectedFeedbackIds(filteredSubmissions.map((f: any) => f.id));
     }
   };
 
