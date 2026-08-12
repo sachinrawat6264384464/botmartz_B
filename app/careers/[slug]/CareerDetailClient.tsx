@@ -86,7 +86,15 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
     return [];
   };
 
-  const responsibilities = parseList(job.responsibilities).length ? parseList(job.responsibilities) : [
+  const isInternRole = (job.title || '').toLowerCase().includes('intern');
+
+  const responsibilities = parseList(job.responsibilities).length ? parseList(job.responsibilities) : isInternRole ? [
+    'Manage and grow our Discord community of AI engineers, developers, and students.',
+    'Engage actively with developers, students, and AI enthusiasts.',
+    'Coordinate workshops and community events.',
+    'Create content, announcements, and educational posts.',
+    'Support key initiatives like AI Accelerator and AI Frontier.'
+  ] : [
     'Design and build retrieval pipelines — chunking, embeddings, hybrid search, reranking.',
     'Own evaluation: build eval sets, track precision/recall, and catch regressions before ship.',
     'Deploy and monitor RAG systems in production, with guardrails and observability.',
@@ -95,7 +103,12 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
     'Contribute to open-source labs and occasionally speak at community events like AI Frontier.'
   ];
 
-  const requirements = parseList(job.requirements).length ? parseList(job.requirements) : [
+  const requirements = parseList(job.requirements).length ? parseList(job.requirements) : isInternRole ? [
+    'Experience with Discord or online tech communities (PREFERRED).',
+    'Strong communication and engagement skills.',
+    'Self-motivated, proactive, and eager to learn.',
+    'Passionate about AI, LLMs, AI Agents, and developer communities.'
+  ] : [
     '3+ years building production ML/AI systems (RAG experience strongly preferred).',
     'Strong Python fundamentals and comfort with FastAPI or similar backend frameworks.',
     'Hands-on experience with vector databases (Qdrant, Pinecone, pgvector, or similar).',
@@ -104,7 +117,11 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
     'Clear written communication — you’ll document decisions for both engineers and clients.'
   ];
 
-  const niceToHave = parseList(job.niceToHave).length ? parseList(job.niceToHave) : [
+  const niceToHave = parseList(job.niceToHave).length ? parseList(job.niceToHave) : isInternRole ? [
+    'Mentorship from AI Engineering team & hands-on exposure to AI, LLMs & Agents.',
+    'Certificate of Internship & Performance-based Letter of Recommendation.',
+    'Active participation in AI open-source projects or tech events.'
+  ] : [
     'Experience with LangGraph or another agent-orchestration framework.',
     'Prior public speaking or technical writing — blog posts, conference talks, OSS maintaining.',
     'Exposure to regulated industries (healthcare, legal, finance) and their compliance needs.'

@@ -15,6 +15,7 @@ interface JobRole {
 }
 
 const PROTOTYPE_ROLES: JobRole[] = [
+  { id: 'intern-1', dept: 'Community', location: 'Remote · Part-Time', title: 'Community Management Intern', desc: 'Help us build and grow the Botmartz AI Engineering Community of AI engineers, developers and students.' },
   { id: '1', dept: 'Engineering', location: 'Indore, India · On-site', title: 'AI Engineer — Enterprise RAG', desc: 'Design and ship production RAG systems for enterprise clients, from retrieval to evaluation.' },
   { id: '2', dept: 'Engineering', location: 'Remote', title: 'Agent Systems Engineer', desc: 'Build multi-agent workflows with LangGraph for real business processes, not demos.' },
   { id: '3', dept: 'Research', location: 'Remote', title: 'AI/ML Research Engineer', desc: 'Explore new techniques in evaluation, fine-tuning and responsible AI, and bring them to production.' },
