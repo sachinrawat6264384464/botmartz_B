@@ -124,7 +124,7 @@ export default function BootcampsAdmin() {
   const priceCounts = {
     all: registrations.length,
     '199': registrations.filter(r => getPriceCategory(r) === '199').length,
-    '299': registrations.filter(r => getPriceCategory(r) === '299' || getPriceCategory(r) === '399').length,
+    '299': registrations.filter(r => getPriceCategory(r) === '299').length,
     'free': registrations.filter(r => getPriceCategory(r) === 'free').length,
   };
 
