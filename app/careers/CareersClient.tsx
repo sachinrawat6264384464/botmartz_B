@@ -65,7 +65,7 @@ export default function CareersClient({
   ];
 
   const roles: JobRole[] = useMemo(() => {
-    if (initialJobs && initialJobs.length > 0) {
+    if (Array.isArray(initialJobs)) {
       return initialJobs.map(j => ({
         id: j.id,
         dept: j.department || j.dept || 'Engineering',

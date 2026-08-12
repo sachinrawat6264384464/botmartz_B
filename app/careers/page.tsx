@@ -1,7 +1,8 @@
 import CareersClient from "./CareersClient";
 import { adminDb } from "@/lib/firebase-admin";
 
-export const revalidate = 60; // Revalidate every minute
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 async function getPublishedJobs() {
   try {
