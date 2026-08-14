@@ -75,7 +75,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
       name: "Dr. Promit Ray",
       role: "Cofounder & Chief AI Officer, RAYOL AI Solutions | Technical Cofounder & Lead AI Consultant, Scivalon",
       company: "RAYOL AI Solutions / Scivalon",
-      image: "/promit.png",
+      image: "/promit-headshot.png",
       linkedin: "https://www.linkedin.com/in/promit-ray/",
       bio: "Dr. Promit Ray is a leading researcher focused on foundation models, reasoning architectures, and inference economics. He guides enterprise AI strategies and advanced research at a global scale."
     },
@@ -414,7 +414,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
               <div className="absolute top-0 right-0 bg-gradient-to-l from-[#7C3AED]/15 to-transparent w-40 h-full pointer-events-none" />
               <div className="flex justify-between items-start flex-wrap gap-2">
                 <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#7C3AED] uppercase">Keynote · Flagship Deep Dive</span>
-                <span className="font-bold text-[11px] text-[#7C3AED] bg-[#F1EBFE] px-3 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/promit.png" alt="Dr. Promit Ray" loading="lazy" decoding="async" className="w-4 h-4 rounded-full object-cover" /> Dr. Promit Ray · Chief AI Officer (RAYOL AI)</span>
+                <span className="font-bold text-[11px] text-[#7C3AED] bg-[#F1EBFE] px-3 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/promit-headshot.png" alt="Dr. Promit Ray" loading="lazy" decoding="async" className="w-4 h-4 rounded-full object-cover" /> Dr. Promit Ray · Chief AI Officer (RAYOL AI)</span>
               </div>
               <h3 className="font-extrabold text-[22px] sm:text-[24px] text-[#0B1220] mt-2.5">Think Like an AI Engineer</h3>
               <p className="font-medium text-[14.5px] text-[#3A4459] mt-2.5 leading-[1.65]">
