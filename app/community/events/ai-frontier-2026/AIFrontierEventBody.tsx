@@ -167,6 +167,17 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
                   <div className="font-semibold text-xs sm:text-[13px] text-[#00C6FF] tracking-wide mt-0.5">Venue Partner · Indore, India</div>
                 </div>
               </div>
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-[11px] bg-[rgba(0,198,255,0.12)] border border-[rgba(0,198,255,0.35)] flex items-center justify-center text-[#00C6FF] shrink-0 shadow-sm">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="7" y1="15" x2="7.01" y2="15"/></svg>
+                </div>
+                <div>
+                  <div className="font-bold text-base text-white flex items-center gap-2">
+                    <img src="/idfc-logo.png" alt="IDFC FIRST Bank Logo" loading="lazy" decoding="async" className="h-[42px] sm:h-[50px] max-w-[200px] w-auto object-contain transition-all" />
+                  </div>
+                  <div className="font-semibold text-xs sm:text-[13px] text-[#00C6FF] tracking-wide mt-0.5">Banking Partner</div>
+                </div>
+              </div>
             </div>
 
             <div className="flex gap-3.5 mt-9 flex-wrap items-center">
