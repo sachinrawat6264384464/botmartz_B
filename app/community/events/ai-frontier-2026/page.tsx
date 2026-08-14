@@ -96,7 +96,12 @@ const eventJsonLd = {
     {
       '@type': 'Person',
       name: 'Soham Sharma',
-      jobTitle: 'Principal AI Architect & Host',
+      jobTitle: 'Founder and Director at Botmartz AI solutions Pvt Ltd',
+    },
+    {
+      '@type': 'Person',
+      name: 'Harsh Sahu',
+      jobTitle: 'AI Engineer, Walkover',
     },
   ],
   about: [

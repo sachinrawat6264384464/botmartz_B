@@ -81,8 +81,8 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
     },
     {
       name: "Harsh Sahu",
-      role: "AI Engineer",
-      company: "GTWY AI",
+      role: "AI Engineer, Walkover",
+      company: "Walkover",
       image: "/harsh_sahu.jpeg",
       linkedin: "https://www.linkedin.com/in/harshhsahu/",
       bio: "Harsh specializes in building autonomous agents and custom LLM solutions. His expertise lies in practical orchestration pipelines, evaluation harnesses, and moving experimental models reliably into production."
@@ -449,7 +449,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
             <div className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 shadow-sm hover:border-[#D97706]/40 transition-all">
               <div className="flex justify-between items-start flex-wrap gap-2">
                 <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#8A97AC] uppercase">Hands-on Workshop · Part 1</span>
-                <span className="font-bold text-[11px] text-[#D97706] bg-[#FEF3E2] px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/harsh_sahu.jpeg" alt="Harsh Sahu" loading="lazy" decoding="async" className="w-4 h-4 rounded-full object-cover" /> Harsh Sahu (GTWY AI)</span>
+                <span className="font-bold text-[11px] text-[#D97706] bg-[#FEF3E2] px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/harsh_sahu.jpeg" alt="Harsh Sahu" loading="lazy" decoding="async" className="w-4 h-4 rounded-full object-cover" /> Harsh Sahu (Walkover)</span>
               </div>
               <h3 className="font-extrabold text-[20px] sm:text-[22px] text-[#0B1220] mt-2">Build Your First AI Agent: EdTech Case Study</h3>
               <p className="font-medium text-[14px] text-[#3A4459] mt-2 leading-[1.6]">
@@ -484,7 +484,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
             <div className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 shadow-sm hover:border-[#D97706]/40 transition-all">
               <div className="flex justify-between items-start flex-wrap gap-2">
                 <span className="font-mono font-bold text-[11px] tracking-[0.1em] text-[#8A97AC] uppercase">Hands-on Workshop · Part 2</span>
-                <span className="font-bold text-[11px] text-[#D97706] bg-[#FEF3E2] px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/harsh_sahu.jpeg" alt="Harsh Sahu" loading="lazy" decoding="async" className="w-4 h-4 rounded-full object-cover" /> Harsh Sahu (GTWY AI)</span>
+                <span className="font-bold text-[11px] text-[#D97706] bg-[#FEF3E2] px-2.5 py-1 rounded-full inline-flex items-center gap-1.5"><img src="/harsh_sahu.jpeg" alt="Harsh Sahu" loading="lazy" decoding="async" className="w-4 h-4 rounded-full object-cover" /> Harsh Sahu (Walkover)</span>
               </div>
               <h3 className="font-extrabold text-[20px] sm:text-[22px] text-[#0B1220] mt-2">Evaluation, Memory &amp; Production deployment</h3>
               <p className="font-medium text-[14px] text-[#3A4459] mt-2 leading-[1.6]">
