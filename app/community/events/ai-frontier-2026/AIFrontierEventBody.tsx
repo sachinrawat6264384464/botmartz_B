@@ -65,7 +65,7 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
   const speakers = [
     {
       name: "Soham Sharma",
-      role: "Principal AI Architect & Host",
+      role: "Founder & Director, Botmartz AI Solutions Pvt Ltd",
       company: "Botmartz",
       image: "/Sohamsharma.jpeg",
       linkedin: "https://www.linkedin.com/in/soham-sharma/",
