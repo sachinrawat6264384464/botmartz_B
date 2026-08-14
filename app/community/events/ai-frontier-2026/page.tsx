@@ -91,7 +91,7 @@ const eventJsonLd = {
     {
       '@type': 'Person',
       name: 'Dr. Promit Ray',
-      jobTitle: 'Chief AI Scientist',
+      jobTitle: 'Cofounder & Chief AI Officer, RAYOL AI Solutions | Technical Cofounder & Lead AI Consultant, Scivalon',
     },
     {
       '@type': 'Person',
