@@ -61,6 +61,22 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description,
       url: `https://www.botmartz.com/community/events/${resolvedParams.slug}`,
       type: 'website',
+      images: [
+        {
+          url: 'https://www.botmartz.com/ai-frontier-og.jpg',
+          secureUrl: 'https://www.botmartz.com/ai-frontier-og.jpg',
+          width: 1200,
+          height: 630,
+          type: 'image/jpeg',
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} | Botmartz Events`,
+      description,
+      images: ['https://www.botmartz.com/ai-frontier-og.jpg'],
     },
     alternates: {
       canonical: `https://www.botmartz.com/community/events/${resolvedParams.slug}`,

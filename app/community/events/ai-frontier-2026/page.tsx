@@ -23,13 +23,22 @@ export const metadata: Metadata = {
     description: 'The flagship AI Engineering Summit by Botmartz. August 23, 2026 · Indore, India. AI Agents, Enterprise RAG, LLMs, Responsible AI.',
     url: 'https://www.botmartz.com/community/events/ai-frontier-2026',
     siteName: 'Botmartz',
-    images: [{ url: '/ai-frontier-og.png', width: 1200, height: 630, alt: 'AI Frontier 2026 Event Banner' }],
+    images: [
+      {
+        url: 'https://www.botmartz.com/ai-frontier-og.jpg',
+        secureUrl: 'https://www.botmartz.com/ai-frontier-og.jpg',
+        width: 1200,
+        height: 630,
+        type: 'image/jpeg',
+        alt: 'AI Frontier 2026 — The Future of AI Engineering',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'AI Frontier 2026 — The Future of AI Engineering',
     description: 'Botmartz\'s flagship AI Engineering Summit. August 23, 2026 · Indore, India.',
-    images: ['/ai-frontier-og.png'],
+    images: ['https://www.botmartz.com/ai-frontier-og.jpg'],
   },
   alternates: {
     canonical: 'https://www.botmartz.com/community/events/ai-frontier-2026',
@@ -65,7 +74,7 @@ const eventJsonLd = {
       addressCountry: 'IN',
     },
   },
-  image: 'https://www.botmartz.com/ai-frontier-og.png',
+  image: 'https://www.botmartz.com/ai-frontier-og.jpg',
   organizer: {
     '@type': 'Organization',
     name: 'Botmartz',
