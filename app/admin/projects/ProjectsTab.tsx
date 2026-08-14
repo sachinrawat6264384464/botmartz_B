@@ -10,9 +10,8 @@ import {
   Plus, RefreshCw, Search, Edit2, Trash2, ExternalLink, X, Save,
   FolderKanban, Activity, BarChart2, Tag, CheckCircle, XCircle
 } from "lucide-react";
-import { Inter_Tight } from "next/font/google";
 
-const interTight = Inter_Tight({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
+const interTight = { className: "" };
 
 interface ProjectItem {
   id?: string;

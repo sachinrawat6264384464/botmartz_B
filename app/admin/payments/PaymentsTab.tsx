@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Inter_Tight } from 'next/font/google';
 import { 
   Search, 
   Eye, 
@@ -19,7 +18,7 @@ import {
 import { db } from '@/lib/firebase';
 import { collection, getDocs, query, orderBy, deleteDoc, doc } from 'firebase/firestore';
 
-const interTight = Inter_Tight({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
+const interTight = { className: "" };
 
 export default function PaymentsTab() {
   const [registrations, setRegistrations] = useState<any[]>([]);

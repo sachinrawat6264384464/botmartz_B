@@ -15,11 +15,10 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { Inter_Tight } from "next/font/google";
 import { CaseStudy } from "@/types/admin";
 import { formatViewCount } from "@/lib/formatters";
 
-const interTight = Inter_Tight({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
+const interTight = { className: "" };
 
 interface CaseStudiesTabProps {
   caseStudies: CaseStudy[];

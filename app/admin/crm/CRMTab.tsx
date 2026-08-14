@@ -10,9 +10,8 @@ import {
   Users, Search, RefreshCw, Plus, Mail, Trash2, Check,
   UserCheck, Send, Calendar, CheckCircle, XCircle, FileText, Ban, X, Download, Eye, Edit2, Save
 } from "lucide-react";
-import { Inter_Tight } from "next/font/google";
 
-const interTight = Inter_Tight({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
+const interTight = { className: "" };
 
 interface Lead {
   id: string;

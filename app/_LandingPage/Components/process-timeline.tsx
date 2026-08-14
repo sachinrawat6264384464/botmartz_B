@@ -2,15 +2,10 @@
 import { useRef, memo, useMemo } from "react";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import { Activity, GitMerge, TerminalSquare, CheckCircle2, LucideIcon } from "lucide-react";
-import { Inter_Tight, JetBrains_Mono } from 'next/font/google';
+import { JetBrains_Mono } from 'next/font/google';
 import { LocationMap } from "../ui/location-map";
 
-const inter = Inter_Tight({ 
-  subsets: ['latin'], 
-  weight: ['300', '400', '600'],
-  display: 'swap',
-  preload: true
-});
+const inter = { className: "" };
 
 const mono = JetBrains_Mono({ 
   subsets: ['latin'], 

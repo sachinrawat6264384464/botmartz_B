@@ -1,15 +1,9 @@
 "use client";
 import { motion } from "framer-motion";
 import { Fingerprint } from "lucide-react";
-import { Inter_Tight } from 'next/font/google';
 import { memo } from 'react';
 
-const interTight = Inter_Tight({ 
-  subsets: ['latin'], 
-  weight: ['300', '400', '500'],
-  display: 'swap', // Better font loading
-  preload: true
-});
+const interTight = { className: "" };
 
 // Memoized testimonial card to prevent re-renders
 const TestimonialCard = memo(({ testimonial, index }: { testimonial: any; index: number }) => (

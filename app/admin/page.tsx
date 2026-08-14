@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { Inter_Tight } from 'next/font/google';
 import { useAuth } from '@/lib/context/AuthContext';
 import Link from 'next/link';
 import { db } from '@/lib/firebase';
@@ -16,7 +15,7 @@ import {
   PieChart, Pie, Cell
 } from 'recharts';
 
-const interTight = Inter_Tight({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
+const interTight = { className: "" };
 
 // Mock Data for Charts
 const revenueData = [

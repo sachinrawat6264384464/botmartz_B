@@ -23,7 +23,6 @@ import Highlight from '@tiptap/extension-highlight';
 import { TextStyle } from '@tiptap/extension-text-style';
 import Image from '@tiptap/extension-image';
 import Heading from '@tiptap/extension-heading';
-import { Inter_Tight } from 'next/font/google';
 import {
   Users, Send, History, Plus, Trash2, Search, X,
   UserCheck, UserX, Download, Bold, Italic, UnderlineIcon,
@@ -35,7 +34,7 @@ import {
   TrendingUp, Activity, UserMinus, Megaphone,
 } from 'lucide-react';
 
-const interTight = Inter_Tight({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
+const interTight = { className: "" };
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 

@@ -11,9 +11,8 @@ import {
   Github, ExternalLink, X, Save, Tag, CheckCircle, XCircle,
   Layers, Activity, Zap, Code
 } from "lucide-react";
-import { Inter_Tight } from "next/font/google";
 
-const interTight = Inter_Tight({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
+const interTight = { className: "" };
 
 interface Lab {
   id?: string;

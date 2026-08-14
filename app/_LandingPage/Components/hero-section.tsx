@@ -3,9 +3,8 @@ import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Inter_Tight } from 'next/font/google';
 
-const interTight = Inter_Tight({ subsets: ['latin'], weight: ['300', '400'], display: 'swap' });
+const interTight = { className: "" };
 const MotionLink = motion(Link);
 
 // Accent Color Constant - The Yellow from your image

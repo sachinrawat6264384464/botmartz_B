@@ -5,9 +5,9 @@ import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Inter_Tight, Playfair_Display } from 'next/font/google';
+import { Playfair_Display } from 'next/font/google';
 
-const inter = Inter_Tight({ subsets: ['latin'], weight: ['300', '400', '500', '600'] });
+const inter = { className: "" };
 const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '700'] });
 
 // --- DATA ---

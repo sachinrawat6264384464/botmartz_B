@@ -5,15 +5,10 @@ import Link from "next/link";
 import {
   Zap, Cpu, Globe, Layers, Code2, Database, Shield, Terminal, ArrowUpRight,
 } from "lucide-react";
-import { Inter_Tight, JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 
 // ── Fonts (mirrors ProcessTimeline exactly) ───────────────────────────────
-const inter = Inter_Tight({
-  subsets: ["latin"],
-  weight: ["300", "400", "600"],
-  display: "swap",
-  preload: true,
-});
+const inter = { className: "" };
 
 const mono = JetBrains_Mono({
   subsets: ["latin"],

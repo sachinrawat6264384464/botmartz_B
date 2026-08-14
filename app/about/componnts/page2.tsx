@@ -14,7 +14,7 @@
 //   AnimatePresence,
 //   MotionValue
 // } from "framer-motion";
-// import { Inter_Tight, JetBrains_Mono, Oswald } from 'next/font/google';
+// import { JetBrains_Mono, Oswald } from 'next/font/google';
 // import { 
 //   ArrowRight, 
 //   Terminal, 
@@ -29,7 +29,7 @@
 // } from "lucide-react";
 
 // // --- TYPOGRAPHY ---
-// const inter = Inter_Tight({ subsets: ['latin'], weight: ['300', '400', '500', '600'] });
+// const inter = { className: "" };
 // const mono = JetBrains_Mono({ subsets: ['latin'], weight: ['400', '500'] });
 // const oswald = Oswald({ subsets: ['latin'], weight: ['700'] });
 

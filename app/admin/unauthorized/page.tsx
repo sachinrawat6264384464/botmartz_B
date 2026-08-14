@@ -2,10 +2,9 @@
 
 import { useRouter } from 'next/navigation';
 import { ShieldX, ArrowLeft, Home } from 'lucide-react';
-import { Inter_Tight } from 'next/font/google';
 import { useAuth } from '@/lib/context/AuthContext';
 
-const interTight = Inter_Tight({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
+const interTight = { className: "" };
 
 export default function UnauthorizedPage() {
   const router = useRouter();

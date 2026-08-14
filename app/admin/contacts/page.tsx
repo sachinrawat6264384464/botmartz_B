@@ -6,9 +6,8 @@ import {
   Mail, MailOpen, Trash2, Clock, Search, X, Reply, InboxIcon,
   AlertCircle, CheckCircle,
 } from 'lucide-react';
-import { Inter_Tight } from 'next/font/google';
 
-const interTight = Inter_Tight({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
+const interTight = { className: "" };
 
 interface Contact {
   id: string; name: string; email: string; message: string;

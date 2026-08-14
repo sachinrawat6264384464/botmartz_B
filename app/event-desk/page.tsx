@@ -1,12 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Inter_Tight } from "next/font/google";
 import { ScanFace, Search, CheckCircle, Clock, Loader2, RefreshCw, Download, Mail } from "lucide-react";
 import EventScannerModal from "@/components/EventScannerModal";
 import EmailBlastModal from "@/components/EmailBlastModal";
 
-const interTight = Inter_Tight({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
+const interTight = { className: "" };
 
 interface Attendee {
   id: string;

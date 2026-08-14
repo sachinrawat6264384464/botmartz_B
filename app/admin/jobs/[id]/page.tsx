@@ -1,14 +1,13 @@
 "use client";
 
 import { useState, useEffect, use } from 'react';
-import { Inter_Tight } from 'next/font/google';
 import { Save, ArrowLeft, Plus, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc, addDoc, collection, serverTimestamp } from 'firebase/firestore';
 
-const interTight = Inter_Tight({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
+const interTight = { className: "" };
 
 interface JobBenefit {
   tag: string;

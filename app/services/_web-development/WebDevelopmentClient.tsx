@@ -2,11 +2,11 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Inter_Tight, JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import { Globe, Layers, Code2, Cpu, Zap, ArrowRight, Gauge, Shield, Server, Compass, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 
-const inter = Inter_Tight({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700", "900"] });
+const inter = { className: "" };
 const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"] });
 
 export default function WebDevelopmentClient() {

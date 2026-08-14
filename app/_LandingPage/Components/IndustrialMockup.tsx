@@ -1,9 +1,8 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { Inter_Tight } from 'next/font/google';
 
-const inter = Inter_Tight({ subsets: ['latin'], weight: ['400', '700'], display: 'swap' });
+const inter = { className: "" };
 
 interface SectionWithMockupProps {
     title: React.ReactNode;

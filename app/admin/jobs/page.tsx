@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Inter_Tight } from 'next/font/google';
 import {
   Plus,
   Edit2,
@@ -16,7 +15,7 @@ import Link from 'next/link';
 import { db } from '@/lib/firebase';
 import { collection, getDocs, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
 
-const interTight = Inter_Tight({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
+const interTight = { className: "" };
 
 export default function JobsDashboard() {
   const [jobs, setJobs] = useState<any[]>([]);
