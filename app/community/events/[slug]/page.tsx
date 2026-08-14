@@ -241,7 +241,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                   {/* Promit */}
                   <div className="bg-paper border border-line rounded-xl p-5 text-center hover:-translate-y-1 transition-transform">
                     <div className="w-20 h-20 mx-auto rounded-full bg-slate-200 mb-4 overflow-hidden">
-                      <img src="https://ui-avatars.com/api/?name=Promit+Ray&background=random" alt="Promit Ray" className="w-full h-full object-cover" />
+                      <img src="/promit.png" alt="Dr. Promit Ray" className="w-full h-full object-cover" />
                     </div>
                     <h4 className="font-bold text-ink text-lg">Promit Ray</h4>
                     <p className="text-brand text-xs font-semibold uppercase tracking-wider mb-3">Session Lead</p>
