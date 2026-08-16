@@ -171,10 +171,10 @@ export default function BootcampDetails({ feedbackData }: { feedbackData?: any }
         {/* Bootcamps Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {bootcamps.map((bootcamp, idx) => {
-            const isBc1 = bootcamp.id === 1;
-            const closed = isBc1 && isBc1Closed;
-            const live = isBc1 && isBc1Live;
-            const completed = isBc1 && isBc1Completed;
+            const isCompleted = bootcamp.id === 1 || bootcamp.id === 2;
+            const closed = isCompleted;
+            const live = false;
+            const completed = isCompleted;
 
             return (
               <motion.div
@@ -209,30 +209,14 @@ export default function BootcampDetails({ feedbackData }: { feedbackData?: any }
                   <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-[#64748B] mb-2 flex items-center justify-between">
                     <span>Bootcamp {bootcamp.number}</span>
                     <span className="flex items-center gap-1.5">
-                      {live && (
-                        <span className="inline-flex items-center gap-1 bg-emerald-500/10 text-emerald-600 border border-emerald-500/30 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full">
-                          <Radio size={10} className="animate-pulse text-emerald-500" /> LIVE NOW (Till 1 PM)
-                        </span>
-                      )}
-                      {closed && !completed && (
-                        <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-500 border border-slate-300 text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full">
-                          <Lock size={10} /> Registration Closed
-                        </span>
-                      )}
-                      {completed && (
+                      {completed ? (
                         <span className="inline-flex items-center gap-1.5 bg-emerald-600 text-white text-[11px] font-extrabold uppercase px-3 py-1 rounded-full shadow-md tracking-wider">
                           <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                           </svg>
                           COMPLETED
                         </span>
-                      )}
-                      {bootcamp.id === 2 && (
-                        <span className="inline-flex items-center gap-1 bg-amber-50 text-amber-600 border border-amber-300 text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full animate-pulse">
-                          ⏳ Upcoming Soon
-                        </span>
-                      )}
-                      {!isBc1 && (
+                      ) : (
                         <>
                           <Calendar className="w-3 h-3" /> {bootcamp.date}
                         </>
@@ -271,7 +255,7 @@ export default function BootcampDetails({ feedbackData }: { feedbackData?: any }
                   </h4>
                   <p className="text-[#0B1C2C] font-semibold mb-6">{bootcamp.outcome}</p>
                   <div className="space-y-3">
-                    {closed ? (
+                    {completed ? (
                       <button
                         disabled
                         className="flex w-full justify-center items-center gap-2 py-3.5 rounded-xl bg-emerald-50 border-2 border-emerald-500/50 text-emerald-700 font-extrabold cursor-not-allowed opacity-90 pointer-events-none shadow-sm"
@@ -284,69 +268,18 @@ export default function BootcampDetails({ feedbackData }: { feedbackData?: any }
                         <span>Session Completed</span>
                       </button>
                     ) : (
-                      <>
-                        <Link
-                          href={`/community/ai-accelerator-workshop/checkout?plan=bootcamp-${bootcamp.id}`}
-                          className="flex w-full justify-center items-center py-3 rounded-xl border-2 border-[#E2E8F0] text-[#0B1C2C] font-bold hover:border-[#0B1C2C] hover:bg-[#F8FAFC] transition-all"
-                        >
-                          <span>Register for ₹{bootcamp.price}</span>
-                        </Link>
-                        <Link
-                          href="/community/ai-accelerator-workshop/checkout?plan=bundle"
-                          className="flex w-full justify-center items-center gap-1.5 py-3 rounded-xl bg-[#0066FF] text-white font-bold hover:bg-[#0052CC] transition-all shadow-sm"
-                        >
-                          <span>Get Full Pass (₹299)</span>
-                        </Link>
-                      </>
+                      <Link
+                        href={`/community/ai-accelerator-workshop/checkout?plan=bootcamp-${bootcamp.id}`}
+                        className="flex w-full justify-center items-center py-3.5 rounded-xl bg-[#0066FF] text-white font-bold hover:bg-[#0052CC] transition-all shadow-sm"
+                      >
+                        <span>Register for ₹{bootcamp.price}</span>
+                      </Link>
                     )}
                   </div>
                 </div>
               </motion.div>
             );
           })}
-          {/* Full Width Pass Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="lg:col-span-3 mt-4"
-          >
-            <div className="bg-[#0B1C2C] border border-[#1E293B] rounded-3xl p-8 lg:p-10 shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 group">
-              {/* Background accent */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#0066FF]/20 to-transparent blur-3xl rounded-full pointer-events-none group-hover:from-[#0066FF]/30 transition-all duration-700" />
-
-              <div className="relative z-10 flex-1">
-                <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#0066FF] to-[#3B82F6] text-white text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-4 shadow-sm">
-                  Most Popular
-                </div>
-                <h3 className="text-[28px] md:text-[36px] font-extrabold text-white mb-2 leading-tight">
-                  AI Engineering Pass
-                </h3>
-                <p className="text-[#8A9EB0] font-medium text-base md:text-lg max-w-2xl">
-                  The complete journey from beginner to production. Get access to all 3 live engineering bootcamps, community access, and certificate of completion.
-                </p>
-              </div>
-
-              <div className="relative z-10 flex flex-col items-center md:items-end flex-shrink-0 w-full md:w-auto border-t md:border-t-0 md:border-l border-[#1E293B] pt-6 md:pt-0 md:pl-10">
-                <div className="flex items-end gap-3 mb-5">
-                  <span className="text-4xl md:text-5xl font-bold text-white tracking-tight">₹299</span>
-                  <div className="flex flex-col items-start pb-1">
-                    <span className="text-[#8A9EB0] text-sm line-through leading-none">₹597</span>
-                    <span className="text-[#00B8F0] text-[13px] font-bold leading-none mt-1">
-                      Save ₹298
-                    </span>
-                  </div>
-                </div>
-                <Link
-                  href="/community/ai-accelerator-workshop/checkout?plan=bundle"
-                  className="w-full md:w-auto px-10 py-4 rounded-xl bg-[#0066FF] text-white font-bold hover:bg-[#0052CC] transition-all text-center shadow-[0_4px_14px_rgba(0,102,255,0.35)] hover:shadow-[0_4px_20px_rgba(0,102,255,0.5)] text-[15px]"
-                >
-                  Get The Full Pass
-                </Link>
-              </div>
-            </div>
-          </motion.div>
         </div>
 
         {/* Student Testimonials & Feedback Ticker */}

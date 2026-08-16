@@ -50,16 +50,28 @@ function getAdminApp(): App {
   }
 
   try {
-    adminApp = initializeApp({
-      credential: cert({
+    if (!privateKey || !process.env.FIREBASE_ADMIN_CLIENT_EMAIL) {
+      console.warn('FIREBASE_ADMIN_PRIVATE_KEY or FIREBASE_ADMIN_CLIENT_EMAIL is missing. Initializing Firebase Admin with project ID fallback.');
+      adminApp = initializeApp({
         projectId: process.env.FIREBASE_ADMIN_PROJECT_ID || process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'botmartz-main',
-        clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL!,
-        privateKey: privateKey!,
-      }),
-    });
+      });
+    } else {
+      adminApp = initializeApp({
+        credential: cert({
+          projectId: process.env.FIREBASE_ADMIN_PROJECT_ID || process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'botmartz-main',
+          clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
+          privateKey: privateKey,
+        }),
+      });
+    }
   } catch (err: any) {
-    console.error('Failed to initialize Firebase Admin app. Please verify your service account credentials or environment variables:', err.message);
-    throw err;
+    console.warn('Failed to initialize Firebase Admin app with cert:', err.message);
+    if (getApps().length > 0) {
+      return getApps()[0];
+    }
+    adminApp = initializeApp({
+      projectId: process.env.FIREBASE_ADMIN_PROJECT_ID || process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'botmartz-main',
+    });
   }
 
   return adminApp;
