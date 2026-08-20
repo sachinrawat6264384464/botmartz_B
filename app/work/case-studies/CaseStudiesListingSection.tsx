@@ -274,12 +274,14 @@ export function CaseStudiesListingSection({ initialStudies }: { initialStudies?:
                 <p className="text-[12.5px] text-[#475569] mb-4 leading-relaxed">
                   Let&apos;s build a custom solution for your business.
                 </p>
-                <Link
-                  href="/contact"
+                <a
+                  href="https://cal.com/botmartz-ai/20min"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg border border-[#0066FF] text-[#0066FF] hover:bg-[#0066FF] hover:text-white transition-all text-[13px] font-medium"
                 >
                   Book a Discovery Call <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
+                </a>
               </div>
             </div>
           </aside>

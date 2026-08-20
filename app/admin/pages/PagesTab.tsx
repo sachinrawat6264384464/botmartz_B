@@ -118,7 +118,7 @@ const DEFAULT_PAGE_CONTENTS: Record<string, Partial<PageConfig>> = {
   "home": {
     title: "Home Page",
     metadata: { title: "Botmartz - AI Solutions", description: "Home page description.", keywords: ["AI", "Botmartz"] },
-    hero: { badge: "AI Engineering Company", title: 'We Engineer <br /> Production <span class="text-[#00B8F0]">AI Systems</span>', subtitle: "Enterprise RAG. AI Agents. Real Impact.", description: "Botmartz designs, builds, and deploys secure, scalable, and production-ready AI systems for forward-thinking organizations.", ctaText: "Book a Discovery Call", ctaLink: "/contact" },
+    hero: { badge: "AI Engineering Company", title: 'We Engineer <br /> Production <span class="text-[#00B8F0]">AI Systems</span>', subtitle: "Enterprise RAG. AI Agents. Real Impact.", description: "Botmartz designs, builds, and deploys secure, scalable, and production-ready AI systems for forward-thinking organizations.", ctaText: "Book a Discovery Call", ctaLink: "https://cal.com/botmartz-ai/20min" },
     useCases: [
       { title: "Enterprise RAG", description: "Connect, retrieve, and reason over your enterprise knowledge.", iconName: "Layers" },
       { title: "AI Agents", description: "Autonomous agents that plan, act and deliver outcomes.", iconName: "Bot" },
@@ -497,7 +497,7 @@ const DEFAULT_PAGE_CONTENTS: Record<string, Partial<PageConfig>> = {
       title: "Turn Your Enterprise Knowledge Into Actionable Intelligence.",
       subtitle: "Our Enterprise RAG solutions help organizations securely connect, retrieve, and reason over their data—delivering accurate answers and insights from documents.",
       ctaText: "Book a Discovery Call →",
-      ctaLink: "/contact",
+      ctaLink: "https://cal.com/botmartz-ai/20min",
     },
     aeoQuestion: "What is enterprise RAG?",
     aeoAnswer: "Enterprise RAG (Retrieval-Augmented Generation) is an AI architecture that connects large language models securely to a company's internal data. Unlike public chatbots, enterprise RAG systems use advanced chunking, hybrid search, and strict access controls to ensure accuracy.",

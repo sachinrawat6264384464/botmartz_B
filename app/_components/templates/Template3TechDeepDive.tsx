@@ -31,9 +31,9 @@ export default function Template3TechDeepDive({ content }: TemplatePageProps) {
           )}
           <h1 className="text-[clamp(40px,6vw,64px)] leading-[1.05] font-semibold mb-6 tracking-tight text-white" dangerouslySetInnerHTML={{ __html: hero.title || 'Embedded Copilots & Tech Deep-Dive' }} />
           <p className="text-[17px] sm:text-[19px] text-[#8A9EB0] mb-10 max-w-[660px] leading-relaxed font-light">{hero.subtitle}</p>
-          <Link href={hero.ctaLink || '/contact'} className="btn btn-primary bg-[#00B8F0] text-white hover:bg-[#0096C7] px-8 py-3.5 rounded text-[15px] flex items-center gap-2 font-medium">
+          <a href={hero.ctaLink || 'https://cal.com/botmartz-ai/20min'} target="_blank" rel="noopener noreferrer" className="btn btn-primary bg-[#00B8F0] text-white hover:bg-[#0096C7] px-8 py-3.5 rounded text-[15px] flex items-center gap-2 font-medium">
             {hero.ctaText || 'Explore SDKs & Integrations →'}
-          </Link>
+          </a>
         </div>
       </section>
 
@@ -138,9 +138,9 @@ export default function Template3TechDeepDive({ content }: TemplatePageProps) {
             <div className="relative z-10">
               <h2 className="text-[32px] md:text-[40px] font-semibold tracking-tight text-white mb-6">{cta.title || 'Turn Your Platform into an AI Leader'}</h2>
               <p className="text-[#8A9EB0] text-[17px] md:text-[19px] max-w-[600px] mx-auto mb-10 leading-relaxed font-light">{cta.subtitle || 'Connect with our systems architects today.'}</p>
-              <Link href="/contact" className="btn btn-primary bg-[#00B8F0] text-white hover:bg-[#0096C7] px-8 py-4 rounded text-[15px] inline-flex items-center gap-2 font-medium">
+              <a href="https://cal.com/botmartz-ai/20min" target="_blank" rel="noopener noreferrer" className="btn btn-primary bg-[#00B8F0] text-white hover:bg-[#0096C7] px-8 py-4 rounded text-[15px] inline-flex items-center gap-2 font-medium">
                 {cta.buttonText || 'Book an Architectural Briefing →'}
-              </Link>
+              </a>
             </div>
           </div>
         </div>

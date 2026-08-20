@@ -76,12 +76,14 @@ export default async function ServicesIndexPage() {
               </p>
 
               <div className="flex flex-wrap gap-4 items-center">
-                <Link 
-                  href="/contact" 
+                <a 
+                  href="https://cal.com/botmartz-ai/20min" 
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-[#00B8F0] hover:bg-[#0096C7] text-white px-7 py-3.5 rounded-xl text-[15px] font-semibold transition-all shadow-[0_4px_20px_rgba(0,184,240,0.3)] hover:scale-[1.02] active:scale-[0.98]"
                 >
                   Book a Discovery Call <ArrowRight className="w-4 h-4" />
-                </Link>
+                </a>
                 <Link 
                   href="/work/case-studies" 
                   className="inline-flex items-center gap-2 border border-slate-700 text-white hover:border-[#00B8F0] hover:text-[#00B8F0] px-7 py-3.5 rounded-xl text-[15px] font-semibold transition-all hover:bg-white/5"
@@ -337,12 +339,14 @@ export default async function ServicesIndexPage() {
               <p className="text-[15px] text-slate-600 mb-6 leading-relaxed">
                 Book a free discovery call and let's discuss how we can solve your most critical challenges with AI.
               </p>
-              <Link 
-                href="/contact" 
+              <a 
+                href="https://cal.com/botmartz-ai/20min" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-[#00B8F0] hover:bg-[#0096C7] text-white px-7 py-3.5 rounded-xl text-[14px] font-semibold transition-all shadow-md shadow-[#00B8F0]/20"
               >
                 Book a Discovery Call →
-              </Link>
+              </a>
             </div>
 
             <div className="flex flex-col gap-4 w-full max-w-[340px]">

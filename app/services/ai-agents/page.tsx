@@ -43,7 +43,7 @@ const DEFAULT_CONTENT = {
     title: "Stop Chasing AGI. Start Deploying Reliable Agentic Workflows.",
     subtitle: "We build highly constrained, production-ready AI agents that execute specific business workflows. Deterministic routing, human-in-the-loop approvals, and strict data validation. Zero rogue actions.",
     ctaText: "Book an Architecture Review →",
-    ctaLink: "/contact",
+    ctaLink: "https://cal.com/botmartz-ai/20min",
     secondaryCtaText: "See Our Pricing & Process",
     secondaryCtaLink: "#process",
   },

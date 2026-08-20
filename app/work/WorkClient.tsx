@@ -184,12 +184,14 @@ export default function WorkClient({
               </div>
             </div>
           </div>
-          <Link
-            href="/contact"
+          <a
+            href="https://cal.com/botmartz-ai/20min"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 font-bold text-[13.5px] text-white bg-[#007BFF] hover:bg-[#0069DB] px-6 py-3.5 rounded-[9px] transition-all shadow-sm shrink-0"
           >
             Book a Discovery Call →
-          </Link>
+          </a>
         </div>
       </div>
     </div>

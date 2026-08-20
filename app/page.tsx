@@ -177,7 +177,7 @@ export default async function Home() {
     subtitle: "Enterprise RAG. AI Agents. Real Impact.",
     description: "Botmartz designs, builds, and deploys secure, scalable, and production-ready AI systems for forward-thinking organizations.",
     ctaText: "Book a Discovery Call →",
-    ctaLink: "/contact",
+    ctaLink: "https://cal.com/botmartz-ai/20min",
   };
 
   const heroUseCases: { title: string; description: string; iconName: string }[] =
@@ -575,7 +575,7 @@ export default async function Home() {
           <p className="text-[#8A9EB0] max-w-[500px] mx-auto mb-10 text-lg">
             Have a project in mind? Let's discuss how we can help you build it.
           </p>
-          <TrackedLink href="/contact" eventName="button_click" eventData={{ button_name: "home_footer_cta" }} className="btn bg-[#0066FF] hover:bg-[#0052CC] border-none text-white shadow-[0_0_15px_rgba(0,102,255,0.4)] font-semibold px-8 py-4 rounded-xl">
+          <TrackedLink href="https://cal.com/botmartz-ai/20min" target="_blank" rel="noopener noreferrer" eventName="button_click" eventData={{ button_name: "home_footer_cta" }} className="btn bg-[#0066FF] hover:bg-[#0052CC] border-none text-white shadow-[0_0_15px_rgba(0,102,255,0.4)] font-semibold px-8 py-4 rounded-xl">
             Book a Discovery Call →
           </TrackedLink>
         </div>

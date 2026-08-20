@@ -42,7 +42,7 @@ const DEFAULT_CONTENT = {
     title: "Stop Building Chatbots. Start Building Reliable Enterprise Knowledge Systems.",
     subtitle: "We help mid-market companies turn scattered documents, policies and SOPs into accurate, production-ready RAG systems in 3 to 6 weeks. Grounded answers. Verifiable citations. Zero hype.",
     ctaText: "BOOK AN ARCHITECTURE REVIEW →",
-    ctaLink: "/contact",
+    ctaLink: "https://cal.com/botmartz-ai/20min",
     secondaryCtaText: "See Our Pricing & Process",
     secondaryCtaLink: "#process",
   },

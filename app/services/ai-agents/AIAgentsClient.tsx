@@ -217,12 +217,14 @@ export default function AIAgentsClient({ content }: { content: any }) {
               <p className="text-slate-600 text-[17px] md:text-[19px] max-w-[650px] mx-auto mb-10 leading-relaxed font-normal">
                 {content.cta.subtitle}
               </p>
-              <Link 
-                href="/contact" 
+              <a 
+                href="https://cal.com/botmartz-ai/20min" 
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-[#0066FF] text-white hover:bg-[#0052CC] px-9 py-4 rounded-xl text-[16px] inline-flex items-center gap-3 font-semibold shadow-md transition-all hover:scale-105"
               >
                 {content.cta.buttonText}
-              </Link>
+              </a>
             </div>
           </div>
         </div>
