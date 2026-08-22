@@ -281,8 +281,8 @@ export default function AdminFeedbackPage() {
               className="bg-transparent text-white font-bold text-xs focus:outline-none cursor-pointer"
             >
               <option value="all" className="bg-[#050C18] text-white">⚡ All Events &amp; Workshops</option>
-              <option value="ai-accelerator-workshop" className="bg-[#050C18] text-white">🚀 AI Accelerator Workshop</option>
-              <option value="ai-frontier-2026" className="bg-[#050C18] text-white">🎪 AI Frontier 2026 Main Event</option>
+              <option value="ai-frontier-2026" className="bg-[#050C18] text-white">🎪 AI Frontier 2026 Event Feedbacks</option>
+              <option value="ai-accelerator-workshop" className="bg-[#050C18] text-white">🚀 AI Accelerator Workshop Feedbacks</option>
             </select>
           </div>
 
@@ -326,6 +326,42 @@ export default function AdminFeedbackPage() {
         </div>
       ) : (
         <>
+          {/* DEDICATED EVENT / WORKSHOP FEEDBACK SECTIONS */}
+          <div className="flex items-center gap-2 p-1.5 bg-[#050C18] border border-white/15 rounded-2xl w-fit flex-wrap">
+            <button
+              onClick={() => setSelectedEvent("all")}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                selectedEvent === "all"
+                  ? "bg-[#00B8F0] text-white shadow-lg shadow-[#00B8F0]/30"
+                  : "text-slate-400 hover:text-white hover:bg-white/5"
+              }`}
+            >
+              ⚡ All Feedbacks
+            </button>
+
+            <button
+              onClick={() => setSelectedEvent("ai-frontier-2026")}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                selectedEvent === "ai-frontier-2026"
+                  ? "bg-gradient-to-r from-cyan-500 to-[#007BFF] text-white shadow-lg shadow-cyan-500/30"
+                  : "text-slate-400 hover:text-white hover:bg-white/5"
+              }`}
+            >
+              🎪 AI Frontier 2026 Event Feedbacks
+            </button>
+
+            <button
+              onClick={() => setSelectedEvent("ai-accelerator-workshop")}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                selectedEvent === "ai-accelerator-workshop"
+                  ? "bg-[#0066FF] text-white shadow-lg shadow-[#0066FF]/30"
+                  : "text-slate-400 hover:text-white hover:bg-white/5"
+              }`}
+            >
+              🚀 Workshop Series Feedbacks
+            </button>
+          </div>
+
           {/* STATS CARDS GRID */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             
@@ -536,8 +572,12 @@ export default function AdminFeedbackPage() {
                             </td>
 
                             <td className="py-4 px-4 font-mono text-[10px]">
-                              <span className="px-2 py-1 rounded bg-[#0066FF]/15 border border-[#0066FF]/30 text-[#00B8F0] font-bold uppercase inline-block">
-                                {f.workshopId || f.eventId || "ai-accelerator-workshop"}
+                              <span className={`px-2.5 py-1 rounded-lg font-bold uppercase inline-block shadow-sm ${
+                                (f.eventId === "ai-frontier-2026" || f.workshopId === "ai-frontier-2026" || f.eventSlug === "ai-frontier-2026")
+                                  ? "bg-cyan-500/20 border border-cyan-500/40 text-cyan-300"
+                                  : "bg-[#0066FF]/15 border border-[#0066FF]/30 text-[#00B8F0]"
+                              }`}>
+                                {f.eventId === "ai-frontier-2026" || f.workshopId === "ai-frontier-2026" ? "🎪 AI FRONTIER 2026" : (f.workshopId || f.eventId || "ai-accelerator-workshop")}
                               </span>
                             </td>
 

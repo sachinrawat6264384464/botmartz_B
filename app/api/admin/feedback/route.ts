@@ -31,11 +31,15 @@ export async function GET(req: Request) {
     // Filter feedbacks for the requested event (or return all if eventId is 'all')
     const filteredFeedbacks = eventIdParam === 'all' 
       ? feedbacks 
-      : feedbacks.filter(f => 
-          f.eventId === eventIdParam || 
-          f.eventSlug === eventIdParam || 
-          (eventIdParam === 'ai-accelerator-workshop' && (f.eventId?.includes('workshop') || f.workshopId))
-        );
+      : feedbacks.filter(f => {
+          if (eventIdParam === 'ai-frontier-2026') {
+            return f.eventId === 'ai-frontier-2026' || f.eventSlug === 'ai-frontier-2026' || f.workshopId === 'ai-frontier-2026';
+          }
+          if (eventIdParam === 'ai-accelerator-workshop') {
+            return (f.eventId?.includes('workshop') || (f.workshopId && f.workshopId !== 'ai-frontier-2026')) && f.eventId !== 'ai-frontier-2026';
+          }
+          return f.eventId === eventIdParam || f.eventSlug === eventIdParam || f.workshopId === eventIdParam;
+        });
 
     // 2. Fetch all paid registrations
     const regSnap = await adminDb
