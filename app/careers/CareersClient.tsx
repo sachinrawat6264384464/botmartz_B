@@ -318,10 +318,10 @@ export default function CareersClient({
               </div>
 
               <a
-                href={`mailto:sohamnsharma@gmail.com?subject=Application for ${encodeURIComponent(role.title)}`}
+                href={`mailto:soham@botmartz.com?subject=Application for ${encodeURIComponent(role.title)}`}
                 className="font-bold text-[13px] text-white bg-[#007BFF] hover:bg-[#0052CC] px-5 py-3 rounded-[9px] shrink-0 transition-all text-center inline-flex items-center gap-2 shadow-[0_4px_14px_rgba(0,102,255,0.3)] hover:scale-[1.02]"
               >
-                <Mail size={15} /> Send CV: sohamnsharma@gmail.com
+                <Mail size={15} /> Send CV: soham@botmartz.com
               </a>
             </div>
           ))
@@ -341,14 +341,14 @@ export default function CareersClient({
                 Don't See Your <span className="text-[#00C6FF]">Role?</span>
               </div>
               <div className="font-medium text-[13.5px] sm:text-[14.5px] leading-[1.65] text-[#8FA3C4] mt-3">
-                We're always open to meeting strong AI engineers. Send your CV to <strong className="text-[#00C6FF]">sohamnsharma@gmail.com</strong> — we'll find a place for it.
+                We're always open to meeting strong AI engineers. Send your CV to <strong className="text-[#00C6FF]">soham@botmartz.com</strong> — we'll find a place for it.
               </div>
             </div>
             <a
-              href="mailto:sohamnsharma@gmail.com?subject=General Career Application — Botmartz AI"
+              href="mailto:soham@botmartz.com?subject=General Career Application — Botmartz AI"
               className="font-bold text-[13.5px] text-white bg-[#007BFF] hover:bg-[#0052CC] px-6 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] shrink-0 transition-all text-center inline-flex items-center gap-2 hover:scale-[1.02]"
             >
-              <Mail size={16} /> Send CV: sohamnsharma@gmail.com
+              <Mail size={16} /> Send CV: soham@botmartz.com
             </a>
           </div>
         </div>

@@ -128,7 +128,7 @@ export default function JobsDashboard() {
             <Briefcase size={24} className="text-admin-accent" /> Careers & Job Management
           </h1>
           <p className="text-sm text-admin-text-muted mt-1">
-            Publish open positions for Botmartz AI Solutions. Candidates send CVs to <strong className="text-admin-accent font-mono">sohamnsharma@gmail.com</strong>.
+            Publish open positions for Botmartz AI Solutions. Candidates send CVs to <strong className="text-admin-accent font-mono">soham@botmartz.com</strong>.
           </p>
         </div>
         <div className="flex items-center gap-3">

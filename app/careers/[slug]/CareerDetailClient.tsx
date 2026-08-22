@@ -296,10 +296,10 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
 
               <div className="flex flex-wrap gap-3.5 mt-8 items-center">
                 <a 
-                  href={`mailto:sohamnsharma@gmail.com?subject=Application for ${encodeURIComponent(job.title)}`}
+                  href={`mailto:soham@botmartz.com?subject=Application for ${encodeURIComponent(job.title)}`}
                   className="inline-flex items-center gap-2 bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[14px] px-7 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] transition-all cursor-pointer"
                 >
-                  <Mail size={16} /> Send CV: sohamnsharma@gmail.com
+                  <Mail size={16} /> Send CV: soham@botmartz.com
                 </a>
                 <button 
                   onClick={() => setLiked(!liked)}
@@ -496,13 +496,13 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
           <div className="bg-[#060C1F] rounded-[14px] p-6.5 text-white">
             <h3 className="font-bold text-[13px] text-white uppercase tracking-wider">Ready to Apply?</h3>
             <p className="font-medium text-xs leading-[1.6] text-[#8FA3C4] mt-2">
-              Send your CV directly to <strong className="text-white">sohamnsharma@gmail.com</strong>.
+              Send your CV directly to <strong className="text-white">soham@botmartz.com</strong>.
             </p>
             <a 
-              href={`mailto:sohamnsharma@gmail.com?subject=Application for ${encodeURIComponent(job.title)}`}
+              href={`mailto:soham@botmartz.com?subject=Application for ${encodeURIComponent(job.title)}`}
               className="w-full text-center mt-4.5 font-bold text-[12.5px] text-white bg-[#007BFF] hover:bg-[#0069DB] py-3.5 rounded-[8px] cursor-pointer transition-colors block border-none flex items-center justify-center gap-2"
             >
-              <Mail size={15} /> Send CV: sohamnsharma@gmail.com
+              <Mail size={15} /> Send CV: soham@botmartz.com
             </a>
             <button 
               onClick={() => setLiked(!liked)}
@@ -628,13 +628,13 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
           <div className="w-[64px] h-[64px] rounded-full bg-[#E8F2FF] flex items-center justify-center font-extrabold text-[20px] text-[#007BFF] shrink-0">◇</div>
           <div className="flex-1 text-center md:text-left">
             <h3 className="font-bold text-[18px] text-[#0B1220]">Don't Meet Every Requirement?</h3>
-            <p className="font-medium text-[13.5px] leading-[1.6] text-[#5B6B85] mt-1.5">Send your CV to <strong className="text-[#007BFF]">sohamnsharma@gmail.com</strong> anyway — we care more about your ability to build than a checklist.</p>
+            <p className="font-medium text-[13.5px] leading-[1.6] text-[#5B6B85] mt-1.5">Send your CV to <strong className="text-[#007BFF]">soham@botmartz.com</strong> anyway — we care more about your ability to build than a checklist.</p>
           </div>
           <a 
-            href={`mailto:sohamnsharma@gmail.com?subject=Application for ${encodeURIComponent(job.title)}`}
+            href={`mailto:soham@botmartz.com?subject=Application for ${encodeURIComponent(job.title)}`}
             className="font-bold text-[13.5px] text-white bg-[#007BFF] hover:bg-[#0069DB] px-6 py-3.5 rounded-[9px] cursor-pointer transition-colors inline-flex items-center gap-2 border-none shadow-[0_4px_12px_rgba(0,123,255,0.2)] whitespace-nowrap shrink-0"
           >
-            <Mail size={16} /> Send CV: sohamnsharma@gmail.com
+            <Mail size={16} /> Send CV: soham@botmartz.com
           </a>
         </div>
       </section>
