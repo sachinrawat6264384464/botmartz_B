@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { Trophy, Clock, Brain, ArrowLeft, Medal, Sparkles, Target, Zap } from 'lucide-react';
+import { Trophy, Clock, Brain, ArrowLeft, Medal, Sparkles, Target, Zap, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
@@ -19,27 +18,49 @@ interface QuizScore {
 export default function LeaderboardPage() {
   const [scores, setScores] = useState<QuizScore[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const fetchScores = async () => {
+    try {
+      const res = await fetch('/api/quiz/leaderboard');
+      const data = await res.json();
+      if (data.scores) {
+        setScores(data.scores);
+      } else {
+        setScores([]);
+      }
+    } catch (err) {
+      console.error("Error fetching leaderboard:", err);
+      setScores([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchScores = async () => {
-      try {
-        const res = await fetch('/api/quiz/leaderboard');
-        const data = await res.json();
-        if (data.scores) {
-          setScores(data.scores);
-        } else {
-          setScores([]);
-        }
-      } catch (err) {
-        console.error("Error fetching leaderboard:", err);
-        setScores([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchScores();
   }, []);
+
+  const handleDeletePlayer = async (id: string, name: string) => {
+    if (!confirm(`Delete player "${name}" from leaderboard?`)) return;
+    setDeletingId(id);
+    try {
+      const res = await fetch('/api/admin/quiz', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+      if (res.ok) {
+        setScores(prev => prev.filter(s => s.id !== id));
+      } else {
+        alert("Failed to delete score.");
+      }
+    } catch (err) {
+      console.error("Error deleting player:", err);
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   // Framer motion variants
   const container = {
@@ -113,12 +134,13 @@ export default function LeaderboardPage() {
             animate="show"
             className="flex flex-col gap-3"
           >
-            {/* Top 3 Header Row (optional) */}
-            <div className="hidden md:grid grid-cols-[80px_1fr_120px_120px] gap-4 px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider">
+            {/* Top Header Row */}
+            <div className="hidden md:grid grid-cols-[80px_1fr_120px_120px_48px] gap-4 px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider">
               <div className="text-center">Rank</div>
               <div>Player</div>
               <div className="text-center">Accuracy</div>
-              <div className="text-right">Time</div>
+              <div className="text-center">Time</div>
+              <div className="text-right">Action</div>
             </div>
 
             {scores.map((s, idx) => {
@@ -131,7 +153,7 @@ export default function LeaderboardPage() {
                 <motion.div 
                   key={s.id} 
                   variants={item}
-                  className={`relative overflow-hidden group flex flex-col md:grid md:grid-cols-[80px_1fr_120px_120px] gap-4 items-center p-4 md:p-5 rounded-2xl transition-all duration-300 ${
+                  className={`relative overflow-hidden group flex flex-col md:grid md:grid-cols-[80px_1fr_120px_120px_48px] gap-4 items-center p-4 md:p-5 rounded-2xl transition-all duration-300 ${
                     isTop1 ? 'bg-gradient-to-r from-yellow-50 to-white border-2 border-yellow-400 shadow-xl shadow-yellow-500/10 scale-[1.02] z-30' :
                     isTop2 ? 'bg-gradient-to-r from-slate-50 to-white border-2 border-slate-300 shadow-lg scale-[1.01] z-20' :
                     isTop3 ? 'bg-gradient-to-r from-orange-50 to-white border-2 border-orange-300 shadow-lg scale-[1.01] z-10' :
@@ -176,10 +198,22 @@ export default function LeaderboardPage() {
                   </div>
 
                   {/* Time */}
-                  <div className="w-full md:w-auto flex justify-center md:justify-end text-gray-500 font-mono text-sm">
+                  <div className="w-full md:w-auto flex justify-center md:justify-center text-gray-500 font-mono text-sm">
                     <div className="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100 group-hover:bg-white transition-colors">
                       <Clock className="w-4 h-4 opacity-50" /> {s.timeTaken.toFixed(1)}s
                     </div>
+                  </div>
+
+                  {/* Manual Delete Action Button */}
+                  <div className="w-full md:w-auto flex justify-center md:justify-end">
+                    <button
+                      onClick={() => handleDeletePlayer(s.id, s.name)}
+                      disabled={deletingId === s.id}
+                      className="p-2 text-rose-400 hover:text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-xl transition-all shadow-sm cursor-pointer disabled:opacity-50"
+                      title="Delete Player Record"
+                    >
+                      <Trash2 size={16} />
+                    </button>
                   </div>
                 </motion.div>
               );
