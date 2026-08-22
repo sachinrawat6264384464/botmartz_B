@@ -430,15 +430,6 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
             </div>
           </div>
 
-          {/* Tea Break Interlude */}
-          <div className="relative flex items-center gap-3.5 p-4 sm:px-5 border border-dashed border-[#C7CED6] rounded-xl bg-white/60 text-[#5B6B85] text-[13px] sm:text-[13.5px]">
-            <div className="absolute -left-[31px] sm:-left-[55px] top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-white border-2 border-[#8A97AC]" />
-            <span className="font-mono font-bold text-[#0B1220] shrink-0">11:45–12:00 PM</span>
-            <span className="font-medium">
-              <b className="text-[#0B1220]">Tea Break &amp; Quick Refresh</b> — recharge before our hands-on workshop sprint.
-            </span>
-          </div>
-
           {/* Beat 3: Workshop Part 1 (Harsh Sahu - 60 mins) */}
           <div className="relative pt-1">
             <div className="absolute -left-[31px] sm:-left-[55px] top-3 w-4 h-4 rounded-full bg-[#D97706] ring-4 ring-[#FEF3E2]" />
@@ -465,7 +456,14 @@ export default function AIFrontierEventBody({ event }: { event?: any }) {
             </div>
           </div>
 
-
+          {/* Lunch Interlude */}
+          <div className="relative flex items-center gap-3.5 p-4 sm:px-5 border border-dashed border-[#C7CED6] rounded-xl bg-white/60 text-[#5B6B85] text-[13px] sm:text-[13.5px]">
+            <div className="absolute -left-[31px] sm:-left-[55px] top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-white border-2 border-[#8A97AC]" />
+            <span className="font-mono font-bold text-[#0B1220] shrink-0">01:00–02:00 PM</span>
+            <span className="font-medium">
+              <b className="text-[#0B1220]">Lunch &amp; Networking Break</b> — connect with fellow builders and discuss morning insights.
+            </span>
+          </div>
 
           {/* Beat 4: Workshop Part 2 (Harsh Sahu - 60 mins) */}
           <div className="relative pt-1">

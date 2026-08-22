@@ -204,7 +204,6 @@ If you're unsure whether your background fits, email us. We'd rather tell you ho
 |---|---|---|---|
 | **10:00 – 10:30** | Registration, coffee & welcome | Open | Soham Sharma |
 | **10:30 – 11:45** | **Think Like an AI Engineer** | Keynote + live demo | Promit Ray |
-| **11:45 – 12:00** | Tea break | Break | — |
 | **12:00 – 1:00** | **Build Your First AI Agent — Part 1** | Hands-on workshop | Harsh Sahu |
 | **1:00 – 2:00** | Lunch & networking | Break | — |
 | **2:00 – 3:00** | **Build Your First AI Agent — Part 2** | Hands-on workshop | Harsh Sahu |
