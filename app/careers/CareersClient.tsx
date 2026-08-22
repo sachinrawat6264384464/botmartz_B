@@ -73,17 +73,30 @@ export default function CareersClient({
   const [submitted, setSubmitted] = useState(false);
 
   const roles: JobRole[] = useMemo(() => {
-    if (Array.isArray(initialJobs) && initialJobs.length > 0) {
-      return initialJobs.map(j => ({
-        id: j.id,
-        slug: j.slug,
-        dept: j.department || j.dept || 'Engineering',
-        location: j.location || 'Remote',
-        title: j.title || 'AI Engineer',
-        desc: j.shortDescription || j.desc || j.responsibilities || 'Build and deploy advanced AI solutions.'
-      }));
-    }
-    return PROTOTYPE_ROLES;
+    const firestoreRoles: JobRole[] = Array.isArray(initialJobs) ? initialJobs.map(j => ({
+      id: j.id,
+      slug: j.slug,
+      dept: j.department || j.dept || 'Engineering',
+      location: j.location || 'Remote',
+      title: j.title || 'AI Engineer',
+      desc: j.shortDescription || j.desc || j.responsibilities || 'Build and deploy advanced AI solutions.'
+    })) : [];
+
+    const map = new Map<string, JobRole>();
+
+    // Add built-in prototype roles first
+    PROTOTYPE_ROLES.forEach(r => {
+      const key = (r.slug || r.title).toLowerCase().trim();
+      map.set(key, r);
+    });
+
+    // Add or override with Firestore database roles
+    firestoreRoles.forEach(r => {
+      const key = (r.slug || r.title).toLowerCase().trim();
+      map.set(key, r);
+    });
+
+    return Array.from(map.values());
   }, [initialJobs]);
 
   const departments = useMemo(() => {

@@ -86,9 +86,38 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
     return [];
   };
 
-  const isInternRole = (job.title || '').toLowerCase().includes('intern');
+  const isBrandIntern = (job.slug || job.title || '').toLowerCase().includes('brand');
+  const isPartnershipsIntern = (job.slug || job.title || '').toLowerCase().includes('partner');
+  const isDevRelIntern = (job.slug || job.title || '').toLowerCase().includes('devrel');
+  const isInternRole = isBrandIntern || isPartnershipsIntern || isDevRelIntern || (job.title || '').toLowerCase().includes('intern');
 
-  const responsibilities = parseList(job.responsibilities).length ? parseList(job.responsibilities) : isInternRole ? [
+  const responsibilities = parseList(job.responsibilities).length ? parseList(job.responsibilities) : isBrandIntern ? [
+    'Manage LinkedIn, Discord, WhatsApp/Telegram, and community channels.',
+    'Create and schedule community content around AI Engineering, RAG, Agents, PyTorch, etc.',
+    'Engage with developers, students, founders, and AI professionals.',
+    'Organize meetups, webinars, workshops, and community activities.',
+    'Increase Botmartz community members and engagement.',
+    'Support AI Frontier and other Botmartz events.',
+    'Collect community feedback and identify potential opportunities.'
+  ] : isPartnershipsIntern ? [
+    'Research and identify potential technology, university, startup, community, and event partners.',
+    'Reach out to companies, developer communities, colleges, AI groups, and potential sponsors.',
+    'Build partnership proposals and collaboration opportunities.',
+    'Manage partner communication and follow-ups.',
+    'Develop collaborations for workshops, hackathons, meetups, webinars, and AI Frontier.',
+    'Maintain a partnership CRM/database.',
+    'Identify opportunities with AI/Cloud companies and developer ecosystems.',
+    'Help create mutually beneficial programs for the Botmartz community.'
+  ] : isDevRelIntern ? [
+    'Build relationships with AI/ML developers and engineers.',
+    'Create technical content, tutorials, demos, and developer resources.',
+    'Organize technical workshops, hackathons, meetups, and developer events.',
+    'Support Botmartz open-source projects and GitHub community.',
+    'Engage with developers on GitHub, Discord, LinkedIn, Reddit, and other technical communities.',
+    'Research emerging technologies such as PyTorch, LangGraph, LangChain, Google ADK, Transformers, RAG, and AI Agents.',
+    'Collect developer feedback and communicate insights back to the engineering team.',
+    'Help grow Botmartz as an AI Engineering developer brand, rather than simply a services company.'
+  ] : isInternRole ? [
     'Manage and grow our Discord community of AI engineers, developers, and students.',
     'Engage actively with developers, students, and AI enthusiasts.',
     'Coordinate workshops and community events.',
@@ -103,7 +132,22 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
     'Contribute to open-source labs and occasionally speak at community events like AI Frontier.'
   ];
 
-  const requirements = parseList(job.requirements).length ? parseList(job.requirements) : isInternRole ? [
+  const requirements = parseList(job.requirements).length ? parseList(job.requirements) : isBrandIntern ? [
+    'Communication & written presentation skills.',
+    'Content creation & social media engagement.',
+    'Community building on LinkedIn, Discord & WhatsApp/Telegram.',
+    'Passionate interest in AI Engineering, LLMs & Agents.'
+  ] : isPartnershipsIntern ? [
+    'Outreach, research & communication skills.',
+    'Networking, negotiation & relationship management.',
+    'Experience managing CRM or structured partner databases.',
+    'Ability to draft proposals for events, workshops & hackathons.'
+  ] : isDevRelIntern ? [
+    'Basic programming in Python & familiarity with GitHub.',
+    'Interest in PyTorch, LangGraph, LangChain, Google ADK, Transformers, RAG & AI Agents.',
+    'Technical writing & developer content creation.',
+    'Active participation in developer communities (GitHub, Discord, Reddit).'
+  ] : isInternRole ? [
     'Experience with Discord or online tech communities (PREFERRED).',
     'Strong communication and engagement skills.',
     'Self-motivated, proactive, and eager to learn.',
