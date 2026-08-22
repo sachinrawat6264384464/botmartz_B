@@ -160,14 +160,16 @@ export default function QuizPage() {
     const cleanEmail = email.trim().toLowerCase();
 
     try {
-      // Check if email has already submitted a score
-      const q = query(collection(db, 'quiz-scores'), where('email', '==', cleanEmail));
-      const snap = await getDocs(q);
-
-      if (!snap.empty) {
-        setEmailError('You have already completed the AI Challenge! Only 1 entry per email address is allowed.');
-        setCheckingEmail(false);
-        return;
+      // Check duplicate email via server API or client query
+      const res = await fetch('/api/quiz/leaderboard');
+      const data = await res.json();
+      if (data.scores) {
+        const alreadySubmitted = data.scores.some((s: any) => (s.email || '').toLowerCase() === cleanEmail);
+        if (alreadySubmitted) {
+          setEmailError('You have already completed the AI Challenge! Only 1 entry per email address is allowed.');
+          setCheckingEmail(false);
+          return;
+        }
       }
     } catch (err) {
       console.error('Error checking existing email:', err);
@@ -201,14 +203,22 @@ export default function QuizPage() {
     setIsSubmitting(true);
     
     try {
-      await addDoc(collection(db, 'quiz-scores'), {
-        name: name.trim(),
-        email: email.trim().toLowerCase(),
-        score: finalScore,
-        totalQuestions: QUESTIONS.length,
-        timeTaken: timeSpent,
-        createdAt: serverTimestamp()
+      const res = await fetch('/api/quiz/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim().toLowerCase(),
+          score: finalScore,
+          totalQuestions: QUESTIONS.length,
+          timeTaken: timeSpent
+        }),
       });
+
+      const resData = await res.json();
+      if (!res.ok) {
+        console.warn("Quiz submission notice:", resData.error);
+      }
     } catch (err) {
       console.error("Error saving score:", err);
     }
