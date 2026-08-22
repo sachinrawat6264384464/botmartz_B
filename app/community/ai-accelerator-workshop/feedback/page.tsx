@@ -16,6 +16,7 @@ import {
   Terminal,
   User,
   Mail,
+  Phone,
   HeartHandshake,
   MessageCircle,
   FileCheck,
@@ -27,44 +28,12 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const workshopOptions = [
   { 
-    id: "bootcamp-1", 
-    number: "01", 
-    title: "Full-Stack AI Application", 
-    date: "Aug 9, 2026",
-    icon: Code2,
-    color: "from-[#0066FF] to-[#3B82F6]" 
-  },
-  { 
-    id: "bootcamp-2", 
-    number: "02", 
-    title: "Autonomous AI Agents", 
-    date: "Aug 16, 2026",
-    icon: Zap,
-    color: "from-purple-600 to-indigo-600" 
-  },
-  { 
-    id: "bootcamp-3", 
-    number: "03", 
-    title: "Production AI Systems", 
-    date: "Aug 22, 2026",
-    icon: Terminal,
-    color: "from-[#009688] to-[#14B8A6]" 
-  },
-  { 
     id: "ai-frontier-2026", 
     number: "EVENT", 
     title: "AI Frontier 2026 Summit", 
     date: "Aug 23, 2026",
     icon: ShieldCheck,
     color: "from-[#00C6FF] to-[#007BFF]" 
-  },
-  { 
-    id: "full-pass", 
-    number: "ALL", 
-    title: "AI Engineering Pass", 
-    date: "Complete Series",
-    icon: Sparkles,
-    color: "from-amber-500 to-orange-600" 
   },
 ];
 
@@ -82,9 +51,10 @@ function isWorkshopOpen(id: string): boolean {
 
 export default function WorkshopFeedbackPage() {
   const [mounted, setMounted] = useState(false);
-  const [selectedWorkshop, setSelectedWorkshop] = useState(workshopOptions[0].id);
+  const [selectedWorkshop, setSelectedWorkshop] = useState("ai-frontier-2026");
   const [name, setName] = useState("");
   const [identifier, setIdentifier] = useState("");
+  const [phone, setPhone] = useState("");
   const [overallRating, setOverallRating] = useState(5);
   const [handsOnRating, setHandsOnRating] = useState(5);
   const [instructorRating, setInstructorRating] = useState(5);
@@ -127,11 +97,12 @@ export default function WorkshopFeedbackPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          eventId: "ai-accelerator-workshop",
-          eventSlug: "ai-accelerator-workshop",
+          eventId: "ai-frontier-2026",
+          eventSlug: "ai-frontier-2026",
           workshopId: selectedWorkshop,
           participantName: name.trim() || identifier.trim(),
           identifier: identifier.trim(),
+          phone: phone.trim(),
           overallRating,
           contentRating: handsOnRating,
           venueRating: instructorRating,
@@ -387,7 +358,7 @@ export default function WorkshopFeedbackPage() {
                 <User size={16} className="text-[#00B8F0]" /> 2. Your Information *
               </label>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-1.5">
                   <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
                     Full Name
@@ -406,16 +377,33 @@ export default function WorkshopFeedbackPage() {
 
                 <div className="space-y-1.5">
                   <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-                    Email Address / Mobile *
+                    Email Address *
                   </label>
                   <div className="relative">
                     <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
                     <input
-                      type="text"
+                      type="email"
                       required
                       value={identifier}
                       onChange={(e) => setIdentifier(e.target.value)}
-                      placeholder="e.g. rahul@example.com or 9876543210"
+                      placeholder="e.g. rahul@example.com"
+                      className="w-full bg-[#030C1A] border border-white/20 hover:border-white/40 focus:border-[#00B8F0] rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#00B8F0] transition-all placeholder:text-slate-600 font-mono"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                    Mobile / Phone Number *
+                  </label>
+                  <div className="relative">
+                    <Phone size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                    <input
+                      type="tel"
+                      required
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="e.g. 9876543210"
                       className="w-full bg-[#030C1A] border border-white/20 hover:border-white/40 focus:border-[#00B8F0] rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#00B8F0] transition-all placeholder:text-slate-600 font-mono"
                     />
                   </div>
