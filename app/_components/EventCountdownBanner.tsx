@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { Ticket, Clock } from "lucide-react";
 
 function calculateTimeLeft() {
-  const targetDate = new Date("2026-08-23T09:00:00Z").getTime();
+  const targetDate = new Date("2026-08-23T10:00:00+05:30").getTime();
   const now = new Date().getTime();
   const difference = targetDate - now;
 
