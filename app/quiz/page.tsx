@@ -112,12 +112,14 @@ export default function QuizPage() {
   
   const [currentQ, setCurrentQ] = useState(0);
   const [score, setScore] = useState(0);
+  const [userAnswers, setUserAnswers] = useState<number[]>([]);
+  const userAnswersRef = useRef<number[]>([]);
   const [startTime, setStartTime] = useState<number>(0);
   const [timeLeft, setTimeLeft] = useState(TIME_LIMIT);
   const [timeTaken, setTimeTaken] = useState<number>(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // Using ref to get latest score/currentQ in handleTimeOut without stale state
+  // Using ref to get latest score/answers in handleTimeOut without stale state
   const scoreRef = useRef(score);
   useEffect(() => {
     scoreRef.current = score;
@@ -147,7 +149,7 @@ export default function QuizPage() {
   }, [timeLeft, step]);
 
   const handleTimeOut = () => {
-    finishQuiz(scoreRef.current, TIME_LIMIT);
+    finishQuiz(scoreRef.current, TIME_LIMIT, userAnswersRef.current);
   };
 
   const startQuiz = async (e: React.FormEvent) => {
@@ -178,6 +180,8 @@ export default function QuizPage() {
     setCheckingEmail(false);
     setScore(0);
     scoreRef.current = 0;
+    setUserAnswers([]);
+    userAnswersRef.current = [];
     setCurrentQ(0);
     setStep('playing');
     setStartTime(Date.now());
@@ -189,15 +193,19 @@ export default function QuizPage() {
     setScore(updatedScore);
     scoreRef.current = updatedScore;
     
+    const updatedAnswers = [...userAnswersRef.current, optionIndex];
+    setUserAnswers(updatedAnswers);
+    userAnswersRef.current = updatedAnswers;
+
     if (currentQ < QUESTIONS.length - 1) {
       setCurrentQ(c => c + 1);
     } else {
       const time = (Date.now() - startTime) / 1000;
-      finishQuiz(updatedScore, time);
+      finishQuiz(updatedScore, time, updatedAnswers);
     }
   };
 
-  const finishQuiz = async (finalScore: number, timeSpent: number) => {
+  const finishQuiz = async (finalScore: number, timeSpent: number, answersList: number[] = userAnswersRef.current) => {
     setTimeTaken(timeSpent);
     setStep('finished');
     setIsSubmitting(true);
@@ -211,12 +219,15 @@ export default function QuizPage() {
           email: email.trim().toLowerCase(),
           score: finalScore,
           totalQuestions: QUESTIONS.length,
-          timeTaken: timeSpent
+          timeTaken: timeSpent,
+          userAnswers: answersList
         }),
       });
 
       const resData = await res.json();
-      if (!res.ok) {
+      if (res.ok && resData.score !== undefined) {
+        setScore(resData.score);
+      } else if (!res.ok) {
         console.warn("Quiz submission notice:", resData.error);
       }
     } catch (err) {
