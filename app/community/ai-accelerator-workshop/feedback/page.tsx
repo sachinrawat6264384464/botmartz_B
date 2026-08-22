@@ -51,6 +51,14 @@ const workshopOptions = [
     color: "from-[#009688] to-[#14B8A6]" 
   },
   { 
+    id: "ai-frontier-2026", 
+    number: "EVENT", 
+    title: "AI Frontier 2026 Summit", 
+    date: "Aug 23, 2026",
+    icon: ShieldCheck,
+    color: "from-[#00C6FF] to-[#007BFF]" 
+  },
+  { 
     id: "full-pass", 
     number: "ALL", 
     title: "AI Engineering Pass", 
@@ -69,23 +77,6 @@ const ratingLabels: Record<number, { text: string; color: string }> = {
 };
 
 function isWorkshopOpen(id: string): boolean {
-  if (typeof window === "undefined") return id === "bootcamp-1" || id === "full-pass";
-  const now = new Date();
-  
-  if (id === "bootcamp-1" || id === "full-pass") return true;
-  
-  if (id === "bootcamp-2") {
-    // Opens Aug 16, 2026
-    const date = new Date(Date.UTC(2026, 7, 16, 0, 0, 0));
-    return now >= date;
-  }
-  
-  if (id === "bootcamp-3") {
-    // Opens Aug 22, 2026
-    const date = new Date(Date.UTC(2026, 7, 22, 0, 0, 0));
-    return now >= date;
-  }
-  
   return true;
 }
 
@@ -333,13 +324,13 @@ export default function WorkshopFeedbackPage() {
             {/* STEP 1: SELECT WORKSHOP SESSION (CARDS GRID WITH UPCOMING STATUS) */}
             <div className="space-y-3">
               <label className="block text-xs sm:text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
-                <BookOpen size={16} className="text-[#00B8F0]" /> 1. Which Workshop Session Did You Attend? *
+                <BookOpen size={16} className="text-[#00B8F0]" /> 1. Which Workshop Session or Event Did You Attend? *
               </label>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {workshopOptions.map((item) => {
                   const Icon = item.icon;
-                  const isOpen = mounted ? isWorkshopOpen(item.id) : (item.id === "bootcamp-1" || item.id === "full-pass");
+                  const isOpen = true;
                   const isSelected = selectedWorkshop === item.id;
 
                   return (
