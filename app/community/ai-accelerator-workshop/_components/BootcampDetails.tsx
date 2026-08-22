@@ -171,7 +171,7 @@ export default function BootcampDetails({ feedbackData }: { feedbackData?: any }
         {/* Bootcamps Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {bootcamps.map((bootcamp, idx) => {
-            const isCompleted = bootcamp.id === 1 || bootcamp.id === 2;
+            const isCompleted = bootcamp.id === 1 || bootcamp.id === 2 || bootcamp.id === 3;
             const closed = isCompleted;
             const live = false;
             const completed = isCompleted;

@@ -20,7 +20,7 @@ interface EventItem {
 const PROTOTYPE_EVENTS: EventItem[] = [
   { type: 'Workshop', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Accelerator Workshop Series 1: Build Your First AI Full-Stack App', desc: 'A hands-on workshop to build an end-to-end full stack AI application with Next.js and LLMs.', date: 'August 9, 2026', location: 'Indore, India', slug: '/community/ai-accelerator-workshop' },
   { type: 'Workshop', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Accelerator Workshop Series 2: Build Smarter AI Agents', desc: 'Learn how modern AI Agents think, plan and act. Dive deep into LangGraph, Tool Calling, and MCP.', date: 'August 16, 2026', location: 'Indore, India', slug: '/community/ai-accelerator-workshop' },
-  { type: 'Workshop', status: 'Upcoming', statusColor: '#0E9F6E', title: 'AI Accelerator Workshop Series 3: Build Production Ready AI Applications', desc: 'Scale and deploy robust systems to the real world. Learn Inference, Optimization, and AI Infrastructure.', date: 'August 22, 2026', location: 'Indore, India', slug: '/community/ai-accelerator-workshop' },
+  { type: 'Workshop', status: 'Completed', statusColor: '#64748B', title: 'AI Accelerator Workshop Series 3: Build Production Ready AI Applications', desc: 'Scale and deploy robust systems to the real world. Learn Inference, Optimization, and AI Infrastructure.', date: 'August 22, 2026', location: 'Indore, India', slug: '/community/ai-accelerator-workshop' },
 ];
 
 export default function EventsClient({
