@@ -6,6 +6,7 @@ import { Mail } from 'lucide-react';
 
 interface JobRole {
   id?: string;
+  slug?: string;
   dept: string;
   department?: string;
   location: string;
@@ -48,26 +49,11 @@ export default function CareersClient({
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const departments = ['All Roles', 'Engineering', 'Research', 'Community', 'Design'];
-
-  const heroStats = [
-    { value: '5', label: 'Open Roles' },
-    { value: '100%', label: 'Remote-Friendly' },
-    { value: '2026', label: 'Team Founded' },
-    { value: '4.8', label: 'Team Rating' },
-  ];
-
-  const values = [
-    { tag: 'SH', title: 'Ship Real Systems', desc: 'We build production AI, not proof-of-concepts that never leave the lab.' },
-    { tag: 'OS', title: 'Open by Default', desc: 'We open source what we can and share what we learn with the community.' },
-    { tag: 'OW', title: 'High Ownership', desc: 'Small team, real autonomy — you own projects end to end.' },
-    { tag: 'GR', title: 'Always Learning', desc: 'The field moves fast; we set aside real time to learn and experiment.' },
-  ];
-
   const roles: JobRole[] = useMemo(() => {
-    if (Array.isArray(initialJobs)) {
+    if (Array.isArray(initialJobs) && initialJobs.length > 0) {
       return initialJobs.map(j => ({
         id: j.id,
+        slug: j.slug,
         dept: j.department || j.dept || 'Engineering',
         location: j.location || 'Remote',
         title: j.title || 'AI Engineer',
@@ -76,6 +62,30 @@ export default function CareersClient({
     }
     return PROTOTYPE_ROLES;
   }, [initialJobs]);
+
+  const departments = useMemo(() => {
+    const set = new Set<string>();
+    roles.forEach(r => {
+      if (r.dept) set.add(r.dept);
+    });
+    const defaultDepts = ['Engineering', 'Research', 'Community', 'Design'];
+    defaultDepts.forEach(d => set.add(d));
+    return ['All Roles', ...Array.from(set)];
+  }, [roles]);
+
+  const heroStats = useMemo(() => [
+    { value: roles.length.toString(), label: 'Open Roles' },
+    { value: '100%', label: 'Remote-Friendly' },
+    { value: '2026', label: 'Team Founded' },
+    { value: '4.8', label: 'Team Rating' },
+  ], [roles]);
+
+  const values = [
+    { tag: 'SH', title: 'Ship Real Systems', desc: 'We build production AI, not proof-of-concepts that never leave the lab.' },
+    { tag: 'OS', title: 'Open by Default', desc: 'We open source what we can and share what we learn with the community.' },
+    { tag: 'OW', title: 'High Ownership', desc: 'Small team, real autonomy — you own projects end to end.' },
+    { tag: 'GR', title: 'Always Learning', desc: 'The field moves fast; we set aside real time to learn and experiment.' },
+  ];
 
   const visibleRoles: JobRole[] = useMemo(() => {
     if (filter === 'All Roles') return roles;
@@ -265,7 +275,13 @@ export default function CareersClient({
                   </span>
                 </div>
                 <div className="font-bold text-[17px] text-[#0B1220] mt-2">
-                  {role.title}
+                  {role.slug ? (
+                    <Link href={`/careers/${role.slug}`} className="hover:text-[#007BFF] transition-colors">
+                      {role.title}
+                    </Link>
+                  ) : (
+                    role.title
+                  )}
                 </div>
                 <div className="font-medium text-[13px] leading-[1.6] text-[#5B6B85] mt-1.5 max-w-[620px]">
                   {role.desc}
