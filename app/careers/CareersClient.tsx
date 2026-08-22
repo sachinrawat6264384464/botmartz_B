@@ -16,12 +16,35 @@ interface JobRole {
 }
 
 const PROTOTYPE_ROLES: JobRole[] = [
-  { id: 'intern-1', dept: 'Community', location: 'Remote · Part-Time', title: 'Community Management Intern', desc: 'Help us build and grow the Botmartz AI Engineering Community of AI engineers, developers and students.' },
-  { id: '1', dept: 'Engineering', location: 'Indore, India · On-site', title: 'AI Engineer — Enterprise RAG', desc: 'Design and ship production RAG systems for enterprise clients, from retrieval to evaluation.' },
-  { id: '2', dept: 'Engineering', location: 'Remote', title: 'Agent Systems Engineer', desc: 'Build multi-agent workflows with LangGraph for real business processes, not demos.' },
-  { id: '3', dept: 'Research', location: 'Remote', title: 'AI/ML Research Engineer', desc: 'Explore new techniques in evaluation, fine-tuning and responsible AI, and bring them to production.' },
-  { id: '4', dept: 'Community', location: 'Indore, India', title: 'Community & Events Lead', desc: 'Run AI Frontier, monthly meetups, and the Botmartz AI Engineering Community end-to-end.' },
-  { id: '5', dept: 'Design', location: 'Remote', title: 'Product Designer', desc: 'Design interfaces for AI-native products used by engineers and enterprise teams.' },
+  { 
+    id: 'intern-1', 
+    slug: 'brand-community-intern',
+    dept: 'Community', 
+    location: 'Remote · Part-Time', 
+    title: 'Brand & Community Intern', 
+    desc: 'Grow the Botmartz brand and AI Engineering community across social, Discord, WhatsApp/Telegram, and community channels.' 
+  },
+  { 
+    id: 'intern-2', 
+    slug: 'partnerships-community-growth-intern',
+    dept: 'Community', 
+    location: 'Remote · Part-Time', 
+    title: 'Partnerships & Community Growth Intern', 
+    desc: 'Build strategic relationships and ecosystem partnerships to expand Botmartz\'s reach across startups, colleges, and developer communities.' 
+  },
+  { 
+    id: 'intern-3', 
+    slug: 'devrel-intern',
+    dept: 'Community', 
+    location: 'Remote · Part-Time', 
+    title: 'Developer Relations (DevRel) Intern', 
+    desc: 'Build the developer ecosystem around Botmartz\'s AI Engineering work through technical content, open-source support, and developer engagement.' 
+  },
+  { id: '1', slug: 'ai-engineer-enterprise-rag', dept: 'Engineering', location: 'Indore, India · On-site', title: 'AI Engineer — Enterprise RAG', desc: 'Design and ship production RAG systems for enterprise clients, from retrieval to evaluation.' },
+  { id: '2', slug: 'agent-systems-engineer', dept: 'Engineering', location: 'Remote', title: 'Agent Systems Engineer', desc: 'Build multi-agent workflows with LangGraph for real business processes, not demos.' },
+  { id: '3', slug: 'aiml-research-engineer', dept: 'Research', location: 'Remote', title: 'AI/ML Research Engineer', desc: 'Explore new techniques in evaluation, fine-tuning and responsible AI, and bring them to production.' },
+  { id: '4', slug: 'community-events-lead', dept: 'Community', location: 'Indore, India', title: 'Community & Events Lead', desc: 'Run AI Frontier, monthly meetups, and the Botmartz AI Engineering Community end-to-end.' },
+  { id: '5', slug: 'product-designer', dept: 'Design', location: 'Remote', title: 'Product Designer', desc: 'Design interfaces for AI-native products used by engineers and enterprise teams.' },
 ];
 
 export default function CareersClient({ 
