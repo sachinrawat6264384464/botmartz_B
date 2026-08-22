@@ -34,13 +34,29 @@ export default function LeaderboardPage() {
           ...doc.data()
         })) as QuizScore[];
         
+        // Deduplicate by email so only 1 best score per participant appears
+        const uniqueByEmail = new Map<string, QuizScore>();
+        fetchedScores.forEach((s) => {
+          const emailKey = (s as any).email ? (s as any).email.trim().toLowerCase() : s.name.trim().toLowerCase();
+          if (!uniqueByEmail.has(emailKey)) {
+            uniqueByEmail.set(emailKey, s);
+          } else {
+            const existing = uniqueByEmail.get(emailKey)!;
+            if (s.score > existing.score || (s.score === existing.score && s.timeTaken < existing.timeTaken)) {
+              uniqueByEmail.set(emailKey, s);
+            }
+          }
+        });
+
+        const deduplicated = Array.from(uniqueByEmail.values());
+
         // Tie-breaker: If score is same, lower timeTaken wins
-        fetchedScores.sort((a, b) => {
+        deduplicated.sort((a, b) => {
           if (b.score !== a.score) return b.score - a.score;
           return a.timeTaken - b.timeTaken;
         });
 
-        setScores(fetchedScores.slice(0, 50)); // top 50
+        setScores(deduplicated.slice(0, 50)); // top 50
       } catch (err) {
         console.error("Error fetching leaderboard:", err);
       } finally {

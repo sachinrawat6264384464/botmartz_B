@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Brain, Clock, Award, ChevronRight, Trophy, ArrowRight, Zap, Target, Database, Network, Code, Layers } from 'lucide-react';
 import { db } from '@/lib/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, query, where, getDocs, serverTimestamp } from 'firebase/firestore';
 
 const QUESTIONS = [
   {
@@ -107,6 +107,8 @@ export default function QuizPage() {
   const [step, setStep] = useState<'intro' | 'playing' | 'finished'>('intro');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [checkingEmail, setCheckingEmail] = useState(false);
+  const [emailError, setEmailError] = useState('');
   
   const [currentQ, setCurrentQ] = useState(0);
   const [score, setScore] = useState(0);
@@ -148,26 +150,48 @@ export default function QuizPage() {
     finishQuiz(scoreRef.current, TIME_LIMIT);
   };
 
-  const startQuiz = (e: React.FormEvent) => {
+  const startQuiz = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !email.trim()) return;
+
+    setCheckingEmail(true);
+    setEmailError('');
+
+    const cleanEmail = email.trim().toLowerCase();
+
+    try {
+      // Check if email has already submitted a score
+      const q = query(collection(db, 'quiz-scores'), where('email', '==', cleanEmail));
+      const snap = await getDocs(q);
+
+      if (!snap.empty) {
+        setEmailError('You have already completed the AI Challenge! Only 1 entry per email address is allowed.');
+        setCheckingEmail(false);
+        return;
+      }
+    } catch (err) {
+      console.error('Error checking existing email:', err);
+    }
+
+    setCheckingEmail(false);
+    setScore(0);
+    scoreRef.current = 0;
+    setCurrentQ(0);
     setStep('playing');
     setStartTime(Date.now());
   };
 
   const handleAnswer = (optionIndex: number) => {
     const isCorrect = optionIndex === QUESTIONS[currentQ].correct;
-    const newScore = score + (isCorrect ? 1 : 0);
-    
-    if (isCorrect) {
-      setScore(newScore);
-    }
+    const updatedScore = isCorrect ? score + 1 : score;
+    setScore(updatedScore);
+    scoreRef.current = updatedScore;
     
     if (currentQ < QUESTIONS.length - 1) {
       setCurrentQ(c => c + 1);
     } else {
       const time = (Date.now() - startTime) / 1000;
-      finishQuiz(newScore, time);
+      finishQuiz(updatedScore, time);
     }
   };
 
@@ -178,8 +202,8 @@ export default function QuizPage() {
     
     try {
       await addDoc(collection(db, 'quiz-scores'), {
-        name,
-        email,
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
         score: finalScore,
         totalQuestions: QUESTIONS.length,
         timeTaken: timeSpent,
@@ -228,6 +252,22 @@ export default function QuizPage() {
             <p className="text-gray-500 text-center mb-6">
               15 tough questions. 2 minutes. Prove your AI engineering mastery and climb the global leaderboard.
             </p>
+
+            {emailError && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-xs sm:text-sm space-y-2">
+                <p className="font-bold flex items-center gap-1.5">
+                  <span className="text-base">⚠️</span> Duplicate Attempt Detected
+                </p>
+                <p>{emailError}</p>
+                <button
+                  type="button"
+                  onClick={() => router.push('/quiz/leaderboard')}
+                  className="mt-2 text-xs font-bold text-[#0066FF] hover:underline block"
+                >
+                  View Leaderboard Rankings →
+                </button>
+              </div>
+            )}
             
             <form onSubmit={startQuiz} className="space-y-4">
               <div>
@@ -254,9 +294,16 @@ export default function QuizPage() {
               </div>
               <button 
                 type="submit"
-                className="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold py-3.5 rounded-lg flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl mt-6 group"
+                disabled={checkingEmail}
+                className="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold py-3.5 rounded-lg flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl mt-6 group disabled:opacity-50"
               >
-                Start Challenge <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                {checkingEmail ? (
+                  <>Checking Eligibility...</>
+                ) : (
+                  <>
+                    Start Challenge <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </>
+                )}
               </button>
             </form>
           </motion.div>
