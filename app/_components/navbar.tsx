@@ -34,8 +34,8 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
     path: "/insights",
   },
   {
-    name: "AI Frontier",
-    path: "/community/events/ai-frontier-2026",
+    name: "Gallery",
+    path: "/gallery",
   },
   {
     name: "Community",
@@ -43,7 +43,8 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
     dropdown: [
       { name: "Events", path: "/community/events" },
       { name: "Workshops", path: "/community/ai-accelerator-workshop" },
-      { name: "Discord & Forum", path: "/community" },
+      { name: "Botmartz Gallery", path: "/gallery" },
+      { name: "Discord & Forum", path: "https://discord.gg/k75ZpEnzp" },
     ],
   },
 ];
@@ -56,7 +57,40 @@ export default function Navbar({
   navItems?: NavItem[];
   logoUrl?: string;
 }) {
-  const rawItems = (navItems && navItems.length > 0) ? navItems : DEFAULT_NAV_ITEMS;
+  let rawItems = (navItems && navItems.length > 0) ? navItems : DEFAULT_NAV_ITEMS;
+  
+  // Guarantee "Gallery" is always present in top navbar items
+  const hasGallery = rawItems.some(i => i.path === '/gallery' || i.name?.toLowerCase().includes('gallery'));
+  if (!hasGallery) {
+    const insightsIdx = rawItems.findIndex(i => i.path === '/insights');
+    if (insightsIdx !== -1) {
+      rawItems = [
+        ...rawItems.slice(0, insightsIdx + 1),
+        { name: "Gallery", path: "/gallery" },
+        ...rawItems.slice(insightsIdx + 1),
+      ];
+    } else {
+      rawItems = [...rawItems, { name: "Gallery", path: "/gallery" }];
+    }
+  }
+
+  // Guarantee "Botmartz Gallery" is present in Community dropdown
+  rawItems = rawItems.map(item => {
+    if (item.name === "Community" && item.dropdown) {
+      const hasDropGal = item.dropdown.some(d => d.path === '/gallery');
+      if (!hasDropGal) {
+        return {
+          ...item,
+          dropdown: [
+            ...item.dropdown,
+            { name: "Botmartz Gallery", path: "/gallery" }
+          ]
+        };
+      }
+    }
+    return item;
+  });
+
   const cleanItems = rawItems.map(item => ({
     ...item,
     path: item.path ? item.path.trim().replace(/\s+/g, '-').replace(/%20/g, '-') : item.path,

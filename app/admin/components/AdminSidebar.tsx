@@ -6,7 +6,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { 
   Menu, X, LogOut, ChevronLeft, ChevronRight, Zap,
   ChevronDown, Globe, Briefcase, Layers, Bot,
-  Home, Mail, BookOpen, MessageSquare, Send, Users, FolderKanban, CalendarDays, Settings, ShieldAlert, FileText, Handshake, CreditCard, ScanFace, Tag, Brain
+  Home, Mail, BookOpen, MessageSquare, Send, Users, FolderKanban, CalendarDays, Settings, ShieldAlert, FileText, Handshake, CreditCard, ScanFace, Tag, Brain, Camera
 } from 'lucide-react';
 import Image from 'next/image';
 import { useAuth } from '@/lib/context/AuthContext';
@@ -376,6 +376,7 @@ export default function AdminSidebar() {
 
               {/* Flat Content Items */}
               {renderFlatItem('blogs', BookOpen, 'Engineering Insights', '/admin/Blogs')}
+              {renderFlatItem('gallery' as any, Camera, 'Gallery Manager', '/admin/gallery')}
               {renderFlatItem('comments', MessageSquare, 'Comments', '/admin/comments')}
               {renderFlatItem('newsletter', Send, 'Newsletter', '/admin/newsletter')}
             </div>
