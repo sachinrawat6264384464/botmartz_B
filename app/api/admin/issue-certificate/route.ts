@@ -114,73 +114,64 @@ async function generatePdfCertificate(name: string, bootcampTitle: string, issue
   const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const fontItalic = await pdfDoc.embedFont(StandardFonts.TimesRomanBoldItalic);
 
-  const darkNavy = rgb(0.04, 0.15, 0.25);    // #0A2540
-  const electricBlue = rgb(0.00, 0.40, 0.95); // #0066F2
-  const mutedText = rgb(0.35, 0.42, 0.50);    // #596B80
+  const darkNavy = rgb(0.05, 0.15, 0.30);      // Crisp Dark Navy
+  const electricBlue = rgb(0.00, 0.40, 0.90);  // Bright Royal Blue
+  const bodyTextDark = rgb(0.10, 0.18, 0.30);  // Highly readable dark slate
 
-  // Certificate Header
-  const titleText = "CERTIFICATE OF PARTICIPATION";
-  const titleWidth = fontBold.widthOfTextAtSize(titleText, 26);
-  page.drawText(titleText, {
-    x: width / 2 - titleWidth / 2,
-    y: 435,
-    size: 26,
+  // 1. Award text above name
+  const awardText = "THIS CERTIFICATE IS PROUDLY PRESENTED TO";
+  const awardWidth = fontBold.widthOfTextAtSize(awardText, 12);
+  page.drawText(awardText, {
+    x: width / 2 - awardWidth / 2,
+    y: 382,
+    size: 12,
     font: fontBold,
     color: darkNavy,
   });
 
-  const awardText = "THIS CERTIFICATE IS PROUDLY PRESENTED TO";
-  const awardWidth = fontRegular.widthOfTextAtSize(awardText, 11);
-  page.drawText(awardText, {
-    x: width / 2 - awardWidth / 2,
-    y: 395,
-    size: 11,
-    font: fontRegular,
-    color: mutedText,
-  });
-
-  // Student Name
+  // 2. Student Name
   const formattedName = (name || 'Participant').trim();
-  const nameWidth = fontItalic.widthOfTextAtSize(formattedName, 36);
+  const nameWidth = fontItalic.widthOfTextAtSize(formattedName, 38);
   page.drawText(formattedName, {
     x: width / 2 - nameWidth / 2,
-    y: 342,
-    size: 36,
+    y: 332,
+    size: 38,
     font: fontItalic,
     color: electricBlue,
   });
 
-  const lineHalf = Math.max(nameWidth / 2 + 20, 90);
+  // Accent Line under Name
+  const lineHalf = Math.max(nameWidth / 2 + 30, 110);
   page.drawLine({
-    start: { x: width / 2 - lineHalf, y: 332 },
-    end: { x: width / 2 + lineHalf, y: 332 },
+    start: { x: width / 2 - lineHalf, y: 320 },
+    end: { x: width / 2 + lineHalf, y: 320 },
     color: electricBlue,
     thickness: 1.5,
   });
 
-  // Description
-  const line1 = `for successfully participating in and completing the intensive hands-on workshop`;
-  const line2 = `"${bootcampTitle || 'AI ACCELERATOR WORKSHOP SERIES'}"`;
+  // 3. Description Citation Paragraph
+  const line1 = `for successfully participating in and completing`;
+  const line2 = `"${bootcampTitle || 'AI Frontier 2026 — The Future of AI Engineering'}"`;
   const line3 = `conducted by Botmartz AI Solutions, demonstrating proficiency in AI Engineering & Agentic Workflows.`;
 
-  const l1Width = fontRegular.widthOfTextAtSize(line1, 10.5);
-  const l2Width = fontBold.widthOfTextAtSize(line2, 11.5);
-  const l3Width = fontRegular.widthOfTextAtSize(line3, 10);
+  const l1Width = fontRegular.widthOfTextAtSize(line1, 13.5);
+  const l2Width = fontBold.widthOfTextAtSize(line2, 14.5);
+  const l3Width = fontRegular.widthOfTextAtSize(line3, 12.5);
 
-  page.drawText(line1, { x: width / 2 - l1Width / 2, y: 288, size: 10.5, font: fontRegular, color: rgb(0.20, 0.25, 0.32) });
-  page.drawText(line2, { x: width / 2 - l2Width / 2, y: 270, size: 11.5, font: fontBold, color: darkNavy });
-  page.drawText(line3, { x: width / 2 - l3Width / 2, y: 254, size: 10, font: fontRegular, color: rgb(0.20, 0.25, 0.32) });
+  page.drawText(line1, { x: width / 2 - l1Width / 2, y: 282, size: 13.5, font: fontRegular, color: bodyTextDark });
+  page.drawText(line2, { x: width / 2 - l2Width / 2, y: 260, size: 14.5, font: fontBold, color: darkNavy });
+  page.drawText(line3, { x: width / 2 - l3Width / 2, y: 240, size: 12.5, font: fontRegular, color: bodyTextDark });
 
-  // Issue Date & Credential Verification ID
+  // 4. Issue Date & Credential Verification ID
   const dateFormatted = issueDate || new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  const dateStr = `Issued: ${dateFormatted}`;
-  const dateWidth = fontRegular.widthOfTextAtSize(dateStr, 8.5);
-  page.drawText(dateStr, { x: width / 2 - dateWidth / 2, y: 200, size: 8.5, font: fontRegular, color: mutedText });
+  const dateStr = `Issued Date: ${dateFormatted}`;
+  const dateWidth = fontRegular.widthOfTextAtSize(dateStr, 10.5);
+  page.drawText(dateStr, { x: width / 2 - dateWidth / 2, y: 195, size: 10.5, font: fontRegular, color: bodyTextDark });
 
   if (checkInCode) {
     const certIdStr = `Credential Verification ID: BMZ-CERT-${checkInCode}`;
-    const certIdWidth = fontRegular.widthOfTextAtSize(certIdStr, 8.5);
-    page.drawText(certIdStr, { x: width / 2 - certIdWidth / 2, y: 186, size: 8.5, font: fontRegular, color: electricBlue });
+    const certIdWidth = fontBold.widthOfTextAtSize(certIdStr, 10.5);
+    page.drawText(certIdStr, { x: width / 2 - certIdWidth / 2, y: 178, size: 10.5, font: fontBold, color: electricBlue });
   }
 
   return await pdfDoc.save();
