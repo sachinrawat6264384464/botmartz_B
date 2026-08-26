@@ -58,7 +58,7 @@ function buildCertificateEmail(name: string, bootcampTitle: string, checkInCode?
             </p>
             
             <div style="background: rgba(0, 102, 255, 0.12); border: 1px solid rgba(0, 184, 240, 0.4); padding: 16px 20px; border-radius: 12px; font-weight: 700; font-size: 16px; color: #FFFFFF; margin-bottom: 24px; line-height: 1.4;">
-              ${bootcampTitle}
+              AI Frontier 2026 — The Future of AI Engineering
             </div>
           </div>
           
@@ -207,7 +207,7 @@ export async function POST(req: Request) {
           const regEmail = reg.email || email;
           if (!regEmail) continue;
 
-          let title = bootcampName || 'AI Frontier 2026 — The Future of AI Engineering RESOURCES and certificate';
+          let title = 'AI Frontier 2026 — The Future of AI Engineering';
           let title2 = 'AI Frontier 2026 — The Future of AI Engineering';
 
           const pdfBytes = await generatePdfCertificate(regName, title2, issueDate, reg.checkInCode);
@@ -286,7 +286,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing recipient name or email" }, { status: 400 });
     }
 
-    const title = bootcampName || 'AI Frontier 2026 — The Future of AI Engineering RESOURCES and certificate';
+    const title = 'AI Frontier 2026 — The Future of AI Engineering';
     const title2 = "AI Frontier 2026 — The Future of AI Engineering";
 
     const pdfBytes = await generatePdfCertificate(recipientName, title2, issueDate, checkInCode);
