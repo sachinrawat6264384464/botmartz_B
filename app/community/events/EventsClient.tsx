@@ -271,8 +271,8 @@ export default function EventsClient({
                 <span className="font-bold text-[10.5px] tracking-[0.06em] text-[#00C6FF] bg-[#00C6FF]/10 px-2.5 py-1 rounded-[5px] uppercase">
                   Flagship Conference
                 </span>
-                <span className="font-bold text-[10.5px] tracking-[0.06em] text-[#0E9F6E] bg-[#0E9F6E]/15 px-2.5 py-1 rounded-[5px] uppercase">
-                  Upcoming
+                <span className="font-bold text-[10.5px] tracking-[0.06em] text-[#00B8F0] bg-[#00B8F0]/15 px-2.5 py-1 rounded-[5px] uppercase">
+                  Completed
                 </span>
               </div>
               <h2 className="font-extrabold text-[24px] sm:text-[28px] leading-[1.3] text-white mt-4">

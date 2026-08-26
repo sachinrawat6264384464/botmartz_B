@@ -37,38 +37,24 @@ async function getSmtpCredentials() {
   return { smtpHost, smtpPort, smtpUser, smtpPass };
 }
 
-function buildCertificateEmail(name: string, bootcampTitle: string, checkInCode?: string, isResend?: boolean) {
+function buildCertificateEmail(name: string, bootcampTitle: string, checkInCode?: string) {
   return `
     <div style="background-color: #050B14; padding: 40px 20px; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #FFFFFF;">
       <div style="max-width: 640px; margin: 0 auto; background: #0E172A; border: 1px solid rgba(0, 184, 240, 0.3); border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0, 102, 255, 0.25);">
         
         <div style="background: linear-gradient(135deg, #0066FF 0%, #00B8F0 100%); padding: 32px 20px; text-align: center;">
           <h1 style="margin: 0; font-size: 24px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #FFFFFF;">
-            ${isResend ? '📹 Workshop Recordings & Access Links' : 'Official Certificate & Resources'}
+            Official Certificate &amp; Resources
           </h1>
           <p style="margin: 6px 0 0 0; font-size: 13px; opacity: 0.95; color: #E0F2FE; font-weight: 500;">Botmartz AI Solutions • AI Accelerator Program</p>
         </div>
         
         <div style="padding: 36px 28px;">
-          ${isResend ? `
-            <!-- APOLOGY & CORRECTION BANNER -->
-            <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 12px; padding: 18px 20px; margin-bottom: 24px; text-align: left;">
-              <p style="margin: 0 0 8px 0; font-size: 15px; color: #F59E0B; font-weight: 700;">
-                🙏 We Sincerely Apologize for the Inconvenience
-              </p>
-              <p style="margin: 0; font-size: 13.5px; color: #E2E8F0; line-height: 1.6;">
-                Earlier, due to a technical mistake, an incorrect session recording link was shared in our previous email. We sincerely apologize for any confusion or inconvenience this may have caused.
-                <br /><br />
-                <strong>Below are the correct, fully functional Zoom class recording links &amp; access passcodes for all 3 bootcamp sessions.</strong>
-              </p>
-            </div>
-          ` : ''}
-
           <div style="text-align: center; margin-bottom: 24px;">
-            <div style="font-size: 44px; margin-bottom: 12px;">${isResend ? '📹' : '🎓'}</div>
-            <h2 style="font-size: 24px; color: #00B8F0; margin: 0 0 12px 0; font-weight: 700;">Hello, ${name}!</h2>
+            <div style="font-size: 44px; margin-bottom: 12px;">🎓</div>
+            <h2 style="font-size: 24px; color: #00B8F0; margin: 0 0 12px 0; font-weight: 700;">Congratulations, ${name}!</h2>
             <p style="font-size: 15px; color: #94A3B8; line-height: 1.6; margin-bottom: 20px;">
-              ${isResend ? 'Here are the updated official session recordings and passcodes for your workshop sessions:' : 'We are proud to award you this official Certificate of Participation for participating in:'}
+              We are proud to award you this official Certificate of Participation for participating in:
             </p>
             
             <div style="background: rgba(0, 102, 255, 0.12); border: 1px solid rgba(0, 184, 240, 0.4); padding: 16px 20px; border-radius: 12px; font-weight: 700; font-size: 16px; color: #FFFFFF; margin-bottom: 24px; line-height: 1.4;">
@@ -76,63 +62,12 @@ function buildCertificateEmail(name: string, bootcampTitle: string, checkInCode?
             </div>
           </div>
           
-          <!-- CLASS RECORDINGS SECTION (EXACT WORKING ZOOM LINKS & PASSCODES) -->
-          <div style="background: #050B14; border: 1px solid #1E293B; border-radius: 14px; padding: 24px; margin-bottom: 28px;">
-            <h3 style="margin: 0 0 16px 0; font-size: 17px; color: #00B8F0; font-weight: 700;">
-              📹 Workshop Class Recordings & Access Passcodes
-            </h3>
-            <p style="font-size: 13.5px; color: #94A3B8; margin-bottom: 20px; line-height: 1.5;">
-              Below are the official recording links for all 3 bootcamp sessions along with their access passcodes:
-            </p>
-
-            <!-- Bootcamp 1 -->
-            <div style="margin-bottom: 18px; padding: 14px; background: rgba(255,255,255,0.03); border-radius: 10px; border-left: 4px solid #00B8F0;">
-              <div style="font-weight: 700; font-size: 14px; color: #FFFFFF; margin-bottom: 6px;">Bootcamp 1 - Session Recording</div>
-              <div style="margin-bottom: 6px;">
-                <a href="https://us06web.zoom.us/rec/share/GUAgcEaSlBvFIsCXqSI-vWvJPHZPoAtCKEsGktT2iJ7SdAWWLtbjPsHrT-fJeDVE.qBZo443xdbhugnux" target="_blank" style="color: #00B8F0; text-decoration: underline; font-size: 13px; word-break: break-all;">
-                  Watch Bootcamp 1 Recording →
-                </a>
-              </div>
-              <div style="font-size: 13px; color: #CBD5E1; font-family: monospace; background: #0A101D; padding: 4px 10px; border-radius: 6px; display: inline-block;">
-                Passcode: <strong style="color: #38BDF8;">fe#p&tK9</strong>
-              </div>
-            </div>
-
-            <!-- Bootcamp 2 -->
-            <div style="margin-bottom: 18px; padding: 14px; background: rgba(255,255,255,0.03); border-radius: 10px; border-left: 4px solid #0066FF;">
-              <div style="font-weight: 700; font-size: 14px; color: #FFFFFF; margin-bottom: 6px;">Bootcamp 2 - Session Recording</div>
-              <div style="margin-bottom: 6px;">
-                <a href="https://us06web.zoom.us/rec/share/eB17fp6BOpWi8iFax1RDwT_BETlK1-_I5m0Tf_w7rKD7GV0cyg1v6HLB-x0wkxVO.7bcBYHjqk_xHtqzt" target="_blank" style="color: #00B8F0; text-decoration: underline; font-size: 13px; word-break: break-all;">
-                  Watch Bootcamp 2 Recording →
-                </a>
-              </div>
-              <div style="font-size: 13px; color: #CBD5E1; font-family: monospace; background: #0A101D; padding: 4px 10px; border-radius: 6px; display: inline-block;">
-                Passcode: <strong style="color: #38BDF8;">*MkSHz7?</strong>
-              </div>
-            </div>
-
-            <!-- Bootcamp 3 -->
-            <div style="padding: 14px; background: rgba(255,255,255,0.03); border-radius: 10px; border-left: 4px solid #A855F7;">
-              <div style="font-weight: 700; font-size: 14px; color: #FFFFFF; margin-bottom: 6px;">Bootcamp 3 - Session Recording</div>
-              <div style="margin-bottom: 6px;">
-                <a href="https://us06web.zoom.us/rec/share/Ht4ILZBvAE3tyIFeQGQMyVh6XoZBln_GtU9mnr0vRKqjGc6pgAOPeSf8Auzx-3L6.-Ft8v_X4rWSfx_yV" target="_blank" style="color: #00B8F0; text-decoration: underline; font-size: 13px; word-break: break-all;">
-                  Watch Bootcamp 3 Recording →
-                </a>
-              </div>
-              <div style="font-size: 13px; color: #CBD5E1; font-family: monospace; background: #0A101D; padding: 4px 10px; border-radius: 6px; display: inline-block;">
-                Passcode: <strong style="color: #38BDF8;">BF!@?9CO</strong>
-              </div>
-            </div>
+          <!-- ATTACHMENTS NOTICE -->
+          <div style="background: rgba(0, 184, 240, 0.08); border: 1px dashed rgba(0, 184, 240, 0.4); border-radius: 12px; padding: 20px; text-align: center; color: #E0F2FE; font-size: 14px; line-height: 1.6; margin-bottom: 24px;">
+            📌 <strong>Attached Files in this Email:</strong><br />
+            1. 📜 <strong>Your Official PDF Certificate of Participation</strong><br />
+            2. 📘 <strong>AI Engineering Roadmap 2026-2027 PDF Handbook</strong>
           </div>
-
-          ${!isResend ? `
-            <!-- ATTACHMENTS NOTICE (Only for First Issuance) -->
-            <div style="background: rgba(0, 184, 240, 0.08); border: 1px dashed rgba(0, 184, 240, 0.4); border-radius: 12px; padding: 18px; text-align: center; color: #E0F2FE; font-size: 13.5px; line-height: 1.6; margin-bottom: 24px;">
-              📌 <strong>Attached Files in this Email:</strong><br />
-              1. 📜 Your Official PDF Certificate of Participation<br />
-              2. 📘 <strong>AI Engineering Roadmap 2026-2027 PDF Handbook</strong>
-            </div>
-          ` : ''}
           
           ${checkInCode ? `
             <div style="text-align: center; margin-top: 16px;">
@@ -253,7 +188,7 @@ async function generatePdfCertificate(name: string, bootcampTitle: string, issue
 
 export async function POST(req: Request) {
   try {
-    const { registrationId, ids, name, email, bootcampName, issueDate, isResend } = await req.json();
+    const { registrationId, ids, name, email, bootcampName, issueDate } = await req.json();
     const { smtpHost, smtpPort, smtpUser, smtpPass } = await getSmtpCredentials();
     const roadmapPath = getRoadmapPdfPath();
 
@@ -281,35 +216,33 @@ export async function POST(req: Request) {
           const regEmail = reg.email || email;
           if (!regEmail) continue;
 
-          const isAlreadySent = isResend || Boolean(reg.certificateSent);
-          let title = bootcampName || 'AI ACCELERATOR WORKSHOP SERIES RESOURCES & RECORDINGS';
-          let title2 = 'AI ACCELERATOR WORKSHOP SERIES';
+          let title = bootcampName || 'AI Frontier 2026 — The Future of AI Engineering RESOURCES and certificate';
+          let title2 = 'AI Frontier 2026 — The Future of AI Engineering';
 
-          let mailAttachments: any[] = [];
-          if (!isAlreadySent) {
-            const pdfBytes = await generatePdfCertificate(regName, title2, issueDate, reg.checkInCode);
-            mailAttachments.push({
+          const pdfBytes = await generatePdfCertificate(regName, title2, issueDate, reg.checkInCode);
+
+          let mailAttachments: any[] = [
+            {
               filename: `${regName.replace(/\s+/g, '_')}_Certificate.pdf`,
               content: Buffer.from(pdfBytes),
               contentType: 'application/pdf',
+            },
+          ];
+
+          if (roadmapPath) {
+            mailAttachments.push({
+              filename: 'AI-Engineering-Roadmap-2026-2027.pdf',
+              path: roadmapPath,
+              contentType: 'application/pdf',
             });
-            if (roadmapPath) {
-              mailAttachments.push({
-                filename: 'AI-Engineering-Roadmap-2026-2027.pdf',
-                path: roadmapPath,
-                contentType: 'application/pdf',
-              });
-            }
           }
 
           if (transporter && smtpUser) {
             await transporter.sendMail({
               from: `"Botmartz AI Solutions" <${smtpUser}>`,
               to: regEmail,
-      subject: isAlreadySent 
-        ? `[Apology & Correction] Updated Workshop Session Recordings & Passcodes: ${title}`
-        : `Your Certificate of Participation: ${title}`,
-              html: buildCertificateEmail(regName, title, reg.checkInCode, isAlreadySent),
+              subject: `Your Certificate of Participation: ${title}`,
+              html: buildCertificateEmail(regName, title, reg.checkInCode),
               attachments: mailAttachments,
             });
           }
@@ -333,7 +266,7 @@ export async function POST(req: Request) {
 
       return NextResponse.json({
         success: true,
-        message: `Workshop recordings & certificates emailed to ${successCount} attendee(s).`,
+        message: `Certificates and AI Roadmap PDF emailed to ${successCount} attendee(s).`,
         count: successCount
       }, { status: 200 });
     }
@@ -347,7 +280,6 @@ export async function POST(req: Request) {
     let recipientEmail = email;
     let checkInCode = "";
     let targetDocId = registrationId;
-    let alreadySentStatus = Boolean(isResend);
 
     if (registrationId) {
       const docSnap = await adminDb.collection("bootcamp_registrations").doc(registrationId).get();
@@ -356,7 +288,6 @@ export async function POST(req: Request) {
         if (!recipientName) recipientName = rData.name;
         if (!recipientEmail) recipientEmail = rData.email;
         checkInCode = rData.checkInCode || "";
-        if (rData.certificateSent) alreadySentStatus = true;
       }
     }
 
@@ -364,24 +295,25 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing recipient name or email" }, { status: 400 });
     }
 
-    const title = bootcampName || 'AI ACCELERATOR WORKSHOP SERIES RESOURCES & RECORDINGS';
-    const title2 = "AI ACCELERATOR WORKSHOP SERIES";
+    const title = bootcampName || 'AI Frontier 2026 — The Future of AI Engineering RESOURCES and certificate';
+    const title2 = "AI Frontier 2026 — The Future of AI Engineering";
 
-    let singleAttachments: any[] = [];
-    if (!alreadySentStatus) {
-      const pdfBytes = await generatePdfCertificate(recipientName, title2, issueDate, checkInCode);
-      singleAttachments.push({
+    const pdfBytes = await generatePdfCertificate(recipientName, title2, issueDate, checkInCode);
+
+    let singleAttachments: any[] = [
+      {
         filename: `${recipientName.replace(/\s+/g, '_')}_Certificate.pdf`,
         content: Buffer.from(pdfBytes),
         contentType: 'application/pdf',
+      },
+    ];
+
+    if (roadmapPath) {
+      singleAttachments.push({
+        filename: 'AI-Engineering-Roadmap-2026-2027.pdf',
+        path: roadmapPath,
+        contentType: 'application/pdf',
       });
-      if (roadmapPath) {
-        singleAttachments.push({
-          filename: 'AI-Engineering-Roadmap-2026-2027.pdf',
-          path: roadmapPath,
-          contentType: 'application/pdf',
-        });
-      }
     }
 
     if (!smtpUser || !smtpPass) {
@@ -400,10 +332,8 @@ export async function POST(req: Request) {
     await transporter.sendMail({
       from: `"Botmartz AI Solutions" <${smtpUser}>`,
       to: recipientEmail,
-      subject: alreadySentStatus 
-        ? `[Apology & Correction] Updated Workshop Session Recordings & Passcodes: ${title}`
-        : `Your Certificate of Participation: ${title}`,
-      html: buildCertificateEmail(recipientName, title, checkInCode, alreadySentStatus),
+      subject: `Your Certificate of Participation: ${title}`,
+      html: buildCertificateEmail(recipientName, title, checkInCode),
       attachments: singleAttachments,
     });
 
@@ -416,9 +346,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
-      message: alreadySentStatus 
-        ? `Workshop session recordings & passcodes re-sent to ${recipientEmail} successfully! (No PDF attachments attached as requested)`
-        : `Certificate & Workshop recordings emailed to ${recipientEmail} successfully!`
+      message: `Certificate PDF & AI Roadmap PDF emailed to ${recipientEmail} successfully!`
     }, { status: 200 });
 
   } catch (error: any) {
