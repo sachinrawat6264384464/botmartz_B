@@ -155,7 +155,7 @@ export default function BootcampsAdmin() {
         setCertModal({
           type: 'success',
           title: 'Certificate Issued Successfully! 🎓',
-          message: `Official Certificate of Completion has been generated and emailed to ${reg.name} (${reg.email}).`,
+          message: data.message || `Official Certificate of Completion has been generated and emailed to ${reg.name} (${reg.email}).`,
           name: reg.name,
           email: reg.email
         });

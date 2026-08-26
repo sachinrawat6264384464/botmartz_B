@@ -5,6 +5,38 @@ import { adminDb } from "@/lib/firebase-admin";
 import fs from "fs";
 import path from "path";
 
+function getRoadmapPdfPath(): string | null {
+  const publicPath = path.resolve(process.cwd(), 'public', 'AI-Engineering-Roadmap-2026-2027.pdf');
+  if (fs.existsSync(publicPath)) return publicPath;
+  const rootPath = path.resolve(process.cwd(), 'AI-Engineering-Roadmap-2026-2027.pdf');
+  if (fs.existsSync(rootPath)) return rootPath;
+  return null;
+}
+
+async function getSmtpCredentials() {
+  let smtpHost = process.env.SMTP_HOST || "smtp.hostinger.com";
+  let smtpPort = Number(process.env.SMTP_PORT) || 465;
+  let smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER || "team@botmartz.com";
+  let smtpPass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASS || "yr6c-maob-rq6u-crkj";
+
+  try {
+    const docSnap = await adminDb.collection("settings").doc("global").get();
+    if (docSnap.exists) {
+      const data = docSnap.data();
+      if (data?.email?.smtpUser && data?.email?.smtpPass) {
+        smtpUser = data.email.smtpUser;
+        smtpPass = data.email.smtpPass;
+        if (data.email.smtpHost) smtpHost = data.email.smtpHost;
+        if (data.email.smtpPort) smtpPort = Number(data.email.smtpPort);
+      }
+    }
+  } catch (err) {
+    console.warn("Could not load global settings for SMTP:", err);
+  }
+
+  return { smtpHost, smtpPort, smtpUser, smtpPass };
+}
+
 function buildCertificateEmail(name: string, bootcampTitle: string, checkInCode?: string) {
   return `
     <div style="background-color: #050B14; padding: 40px 20px; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #FFFFFF;">
@@ -206,17 +238,18 @@ async function generatePdfCertificate(name: string, bootcampTitle: string, issue
 export async function POST(req: Request) {
   try {
     const { registrationId, ids, name, email, bootcampName, issueDate } = await req.json();
+    const { smtpHost, smtpPort, smtpUser, smtpPass } = await getSmtpCredentials();
+    const roadmapPath = getRoadmapPdfPath();
 
     // 1. Bulk issuance mode
     if (ids && Array.isArray(ids) && ids.length > 0) {
       let successCount = 0;
-      const smtpUser = process.env.SMTP_USER;
-      const smtpPass = process.env.SMTP_PASS;
+      let lastErr = "";
 
       const transporter = (smtpUser && smtpPass) ? nodemailer.createTransport({
-        host: process.env.SMTP_HOST || "smtp.hostinger.com",
-        port: Number(process.env.SMTP_PORT) || 465,
-        secure: true,
+        host: smtpHost,
+        port: smtpPort,
+        secure: smtpPort === 465,
         auth: { user: smtpUser, pass: smtpPass },
         family: 4,
         tls: { rejectUnauthorized: false }
@@ -249,9 +282,9 @@ export async function POST(req: Request) {
                   content: Buffer.from(pdfBytes),
                   contentType: 'application/pdf',
                 },
-                ...(fs.existsSync(path.resolve(process.cwd(), 'AI-Engineering-Roadmap-2026-2027.pdf')) ? [{
+                ...(roadmapPath ? [{
                   filename: 'AI-Engineering-Roadmap-2026-2027.pdf',
-                  path: path.resolve(process.cwd(), 'AI-Engineering-Roadmap-2026-2027.pdf'),
+                  path: roadmapPath,
                   contentType: 'application/pdf',
                 }] : []),
               ],
@@ -265,9 +298,14 @@ export async function POST(req: Request) {
           });
 
           successCount++;
-        } catch (singleErr) {
+        } catch (singleErr: any) {
           console.error(`Certificate send failed for ID ${regId}:`, singleErr);
+          lastErr = singleErr.message || "Failed to send email";
         }
+      }
+
+      if (successCount === 0 && ids.length > 0) {
+        return NextResponse.json({ success: false, error: `Failed to email certificates: ${lastErr}` }, { status: 500 });
       }
 
       return NextResponse.json({
@@ -305,46 +343,37 @@ export async function POST(req: Request) {
     const title2 = "AI ACCELERATOR WORKSHOP SERIES";
     const pdfBytes = await generatePdfCertificate(recipientName, title2, issueDate, checkInCode);
 
-    const smtpUser = process.env.SMTP_USER;
-    const smtpPass = process.env.SMTP_PASS;
-    let mailSent = false;
-    let mailErrorMsg = "";
-
-    if (smtpUser && smtpPass) {
-      try {
-        const transporter = nodemailer.createTransport({
-          host: process.env.SMTP_HOST || "smtp.hostinger.com",
-          port: Number(process.env.SMTP_PORT) || 465,
-          secure: true,
-          auth: { user: smtpUser, pass: smtpPass },
-          family: 4,
-          tls: { rejectUnauthorized: false }
-        } as any);
-
-        await transporter.sendMail({
-          from: `"Botmartz AI Solutions" <${smtpUser}>`,
-          to: recipientEmail,
-          subject: `Your Certificate of Participation: ${title}`,
-          html: buildCertificateEmail(recipientName, title, checkInCode),
-          attachments: [
-            {
-              filename: `${recipientName.replace(/\s+/g, '_')}_Certificate.pdf`,
-              content: Buffer.from(pdfBytes),
-              contentType: 'application/pdf',
-            },
-            ...(fs.existsSync(path.resolve(process.cwd(), 'AI-Engineering-Roadmap-2026-2027.pdf')) ? [{
-              filename: 'AI-Engineering-Roadmap-2026-2027.pdf',
-              path: path.resolve(process.cwd(), 'AI-Engineering-Roadmap-2026-2027.pdf'),
-              contentType: 'application/pdf',
-            }] : []),
-          ],
-        });
-        mailSent = true;
-      } catch (mailErr: any) {
-        console.error("SMTP Mail Send Error:", mailErr);
-        mailErrorMsg = mailErr.message || "Network/DNS issue sending email";
-      }
+    if (!smtpUser || !smtpPass) {
+      return NextResponse.json({ success: false, error: "SMTP Email credentials not configured on server." }, { status: 500 });
     }
+
+    const transporter = nodemailer.createTransport({
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpPort === 465,
+      auth: { user: smtpUser, pass: smtpPass },
+      family: 4,
+      tls: { rejectUnauthorized: false }
+    } as any);
+
+    await transporter.sendMail({
+      from: `"Botmartz AI Solutions" <${smtpUser}>`,
+      to: recipientEmail,
+      subject: `Your Certificate of Participation: ${title}`,
+      html: buildCertificateEmail(recipientName, title, checkInCode),
+      attachments: [
+        {
+          filename: `${recipientName.replace(/\s+/g, '_')}_Certificate.pdf`,
+          content: Buffer.from(pdfBytes),
+          contentType: 'application/pdf',
+        },
+        ...(roadmapPath ? [{
+          filename: 'AI-Engineering-Roadmap-2026-2027.pdf',
+          path: roadmapPath,
+          contentType: 'application/pdf',
+        }] : []),
+      ],
+    });
 
     if (targetDocId) {
       await adminDb.collection("bootcamp_registrations").doc(targetDocId).update({
@@ -355,9 +384,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
-      message: mailSent 
-        ? `Certificate issued and emailed to ${recipientEmail} successfully.` 
-        : `Certificate generated & status updated in database! (Mail notice: ${mailErrorMsg || 'SMTP credentials missing'})`
+      message: `Certificate issued and emailed to ${recipientEmail} successfully!`
     }, { status: 200 });
 
   } catch (error: any) {
