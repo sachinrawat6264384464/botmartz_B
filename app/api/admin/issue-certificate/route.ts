@@ -50,11 +50,25 @@ function buildCertificateEmail(name: string, bootcampTitle: string, checkInCode?
         </div>
         
         <div style="padding: 36px 28px;">
+          ${isResend ? `
+            <!-- APOLOGY & CORRECTION BANNER -->
+            <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 12px; padding: 18px 20px; margin-bottom: 24px; text-align: left;">
+              <p style="margin: 0 0 8px 0; font-size: 15px; color: #F59E0B; font-weight: 700;">
+                🙏 We Sincerely Apologize for the Inconvenience
+              </p>
+              <p style="margin: 0; font-size: 13.5px; color: #E2E8F0; line-height: 1.6;">
+                Earlier, due to a technical mistake, an incorrect session recording link was shared in our previous email. We sincerely apologize for any confusion or inconvenience this may have caused.
+                <br /><br />
+                <strong>Below are the correct, fully functional Zoom class recording links &amp; access passcodes for all 3 bootcamp sessions.</strong>
+              </p>
+            </div>
+          ` : ''}
+
           <div style="text-align: center; margin-bottom: 24px;">
             <div style="font-size: 44px; margin-bottom: 12px;">${isResend ? '📹' : '🎓'}</div>
             <h2 style="font-size: 24px; color: #00B8F0; margin: 0 0 12px 0; font-weight: 700;">Hello, ${name}!</h2>
             <p style="font-size: 15px; color: #94A3B8; line-height: 1.6; margin-bottom: 20px;">
-              ${isResend ? 'Here are the official session recordings and passcodes for your workshop sessions:' : 'We are proud to award you this official Certificate of Participation for participating in:'}
+              ${isResend ? 'Here are the updated official session recordings and passcodes for your workshop sessions:' : 'We are proud to award you this official Certificate of Participation for participating in:'}
             </p>
             
             <div style="background: rgba(0, 102, 255, 0.12); border: 1px solid rgba(0, 184, 240, 0.4); padding: 16px 20px; border-radius: 12px; font-weight: 700; font-size: 16px; color: #FFFFFF; margin-bottom: 24px; line-height: 1.4;">
@@ -292,9 +306,9 @@ export async function POST(req: Request) {
             await transporter.sendMail({
               from: `"Botmartz AI Solutions" <${smtpUser}>`,
               to: regEmail,
-              subject: isAlreadySent 
-                ? `📹 Workshop Session Recordings & Access Passcodes: ${title}`
-                : `Your Certificate of Participation: ${title}`,
+      subject: isAlreadySent 
+        ? `[Apology & Correction] Updated Workshop Session Recordings & Passcodes: ${title}`
+        : `Your Certificate of Participation: ${title}`,
               html: buildCertificateEmail(regName, title, reg.checkInCode, isAlreadySent),
               attachments: mailAttachments,
             });
@@ -387,7 +401,7 @@ export async function POST(req: Request) {
       from: `"Botmartz AI Solutions" <${smtpUser}>`,
       to: recipientEmail,
       subject: alreadySentStatus 
-        ? `📹 Workshop Session Recordings & Access Passcodes: ${title}`
+        ? `[Apology & Correction] Updated Workshop Session Recordings & Passcodes: ${title}`
         : `Your Certificate of Participation: ${title}`,
       html: buildCertificateEmail(recipientName, title, checkInCode, alreadySentStatus),
       attachments: singleAttachments,
