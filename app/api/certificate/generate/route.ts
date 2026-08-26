@@ -34,8 +34,8 @@ async function generatePdfCertificate(name: string, bootcampTitle: string, issue
   const electricBlue = rgb(0.00, 0.40, 0.95); // #0066F2
   const mutedText = rgb(0.35, 0.42, 0.50);    // #596B80
 
-  // 2. Header Text: CERTIFICATE OF COMPLETION
-  const titleText = "CERTIFICATE OF COMPLETION";
+  // 2. Header Text: CERTIFICATE OF PARTICIPATION
+  const titleText = "CERTIFICATE OF PARTICIPATION";
   const titleWidth = fontBold.widthOfTextAtSize(titleText, 26);
   page.drawText(titleText, {
     x: width / 2 - titleWidth / 2,
@@ -108,7 +108,7 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const name = searchParams.get('name') || 'Student Name';
-    const title = searchParams.get('title') || 'AI Frontier 2026: Build Smarter AI Agents';
+    const title = searchParams.get('title') || 'AI Frontier 2026 — The Future of AI Engineering';
     const date = searchParams.get('date') || 'August 23, 2026';
     const code = searchParams.get('code') || 'BMZ-2026-AIF';
 
@@ -131,7 +131,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const name = body.name || 'Student Name';
-    const title = body.title || 'AI Frontier 2026: Build Smarter AI Agents';
+    const title = body.title || 'AI Frontier 2026 — The Future of AI Engineering';
     const date = body.date || 'August 23, 2026';
     const code = body.code || 'BMZ-2026-AIF';
 

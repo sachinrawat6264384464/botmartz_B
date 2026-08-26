@@ -6,7 +6,6 @@ import Link from "next/link";
 import { 
   Camera, 
   Share2, 
-  Download, 
   X, 
   ChevronLeft, 
   ChevronRight, 
@@ -87,15 +86,6 @@ export default function GalleryPage() {
     navigator.clipboard.writeText(fullUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
-  };
-
-  const handleDownload = (img: GalleryImage) => {
-    const a = document.createElement("a");
-    a.href = img.url;
-    a.download = `${img.title.replace(/\s+/g, "_")}.jpg`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
   };
 
   return (
@@ -268,7 +258,7 @@ export default function GalleryPage() {
               </div>
             </div>
 
-            {/* ACTION BUTTONS (Share, Download, Close) */}
+            {/* ACTION BUTTONS (Share, Close) */}
             <div className="flex items-center gap-2 sm:gap-3">
               
               {/* SHARE BUTTON */}
@@ -288,16 +278,6 @@ export default function GalleryPage() {
                     <span className="hidden sm:inline">Share</span>
                   </>
                 )}
-              </button>
-
-              {/* DOWNLOAD BUTTON */}
-              <button
-                onClick={() => handleDownload(selectedImage)}
-                className="px-3.5 py-2 rounded-xl bg-[#0066FF] hover:bg-[#0052CC] border border-[#00B8F0]/40 text-white text-xs font-bold flex items-center gap-1.5 transition-all shadow-lg shadow-[#0066FF]/30 active:scale-95"
-                title="Download Photo"
-              >
-                <Download size={15} />
-                <span className="hidden sm:inline">Download</span>
               </button>
 
               {/* CLOSE BUTTON */}
