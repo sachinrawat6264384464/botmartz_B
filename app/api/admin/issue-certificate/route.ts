@@ -37,7 +37,7 @@ async function getSmtpCredentials() {
   return { smtpHost, smtpPort, smtpUser, smtpPass };
 }
 
-function buildCertificateEmail(name: string, bootcampTitle: string, checkInCode?: string) {
+function buildCertificateEmail(name: string, bootcampTitle: string, checkInCode?: string, hasRagBook?: boolean) {
   return `
     <div style="background-color: #050B14; padding: 40px 20px; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #FFFFFF;">
       <div style="max-width: 640px; margin: 0 auto; background: #0E172A; border: 1px solid rgba(0, 184, 240, 0.3); border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0, 102, 255, 0.25);">
@@ -62,11 +62,25 @@ function buildCertificateEmail(name: string, bootcampTitle: string, checkInCode?
             </div>
           </div>
           
+          <!-- WHATSAPP COMMUNITY SECTION -->
+          <div style="background: rgba(37, 211, 102, 0.08); border: 1px solid rgba(37, 211, 102, 0.4); border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 24px;">
+            <div style="font-size: 16px; font-weight: 700; color: #25D366; margin-bottom: 8px;">
+              💬 Join Official Botmartz AI Community
+            </div>
+            <p style="font-size: 13.5px; color: #94A3B8; margin-bottom: 14px; line-height: 1.5;">
+              Connect with fellow AI engineers, get exclusive workshop updates, and access ongoing technical discussions:
+            </p>
+            <a href="https://chat.whatsapp.com/DkzKwpjuktaCYAof0tMIAQ" target="_blank" style="display: inline-block; background: #25D366; color: #000000; font-weight: 800; font-size: 14px; padding: 12px 24px; border-radius: 10px; text-decoration: none; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);">
+              Join WhatsApp Community Group →
+            </a>
+          </div>
+
           <!-- ATTACHMENTS NOTICE -->
           <div style="background: rgba(0, 184, 240, 0.08); border: 1px dashed rgba(0, 184, 240, 0.4); border-radius: 12px; padding: 20px; text-align: center; color: #E0F2FE; font-size: 14px; line-height: 1.6; margin-bottom: 24px;">
             📌 <strong>Attached Files in this Email:</strong><br />
             1. 📜 <strong>Your Official PDF Certificate of Participation</strong><br />
             2. 📘 <strong>AI Engineering Roadmap 2026-2027 PDF Handbook</strong>
+            ${hasRagBook ? '<br />3. 📖 <strong>The RAG Book (Exclusive Edition PDF)</strong>' : ''}
           </div>
           
           ${checkInCode ? `
