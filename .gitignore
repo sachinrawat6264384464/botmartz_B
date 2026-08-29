@@ -16,6 +16,8 @@
 # next.js
 /.next/
 /out/
+botmartz-community/.next/
+botmartz-community/node_modules/
 
 # production
 /build

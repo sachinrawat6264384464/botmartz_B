@@ -78,6 +78,7 @@ const FOOTER_COLS = [
       { label: "About Botmartz", href: "/about" },
       { label: "Partner Ecosystem", href: "/partnerships" },
       { label: "Engineering Insights", href: "/insights" },
+      { label: "Community & Events ↗", href: "https://community.botmartz.com" },
       { label: "Contact Us", href: "/contact" },
       { label: "Careers", href: "/careers" },
     ],

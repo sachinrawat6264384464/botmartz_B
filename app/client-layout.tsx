@@ -15,7 +15,6 @@ const AccessibilityToolbox = dynamic(
   () => import("./_components/AccessibilityToolbox").then((mod) => mod.AccessibilityToolbox),
   { ssr: false }
 );
-const FloatingOfferWidget = dynamic(() => import("./_components/FloatingOfferWidget"), { ssr: false });
 const AnalyticsProvider = dynamic(() => import("./_components/AnalyticsProvider"), { ssr: false });
 
 export default function ClientLayout({
@@ -51,7 +50,6 @@ export default function ClientLayout({
             </main>
             {!isStandaloneRoute && <Footer settings={settings} />}
             {!isStandaloneRoute && <AccessibilityToolbox />}
-            {!isStandaloneRoute && <FloatingOfferWidget />}
           </div>
         </AccessibilityProvider>
       </ThemeProvider>
