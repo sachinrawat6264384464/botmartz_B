@@ -7,7 +7,21 @@ import nodemailer from 'nodemailer';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, firstName, lastName, email, phone, company, website, message } = body;
+    const { 
+      name, 
+      firstName, 
+      lastName, 
+      email, 
+      phone, 
+      company, 
+      website, 
+      message, 
+      inquiryType, 
+      industry, 
+      systemsInvolved, 
+      dataScope, 
+      timeline 
+    } = body;
 
     // Determine final name
     const finalName = name || `${firstName || ''} ${lastName || ''}`.trim();
@@ -34,9 +48,9 @@ export async function POST(request: Request) {
       );
     }
 
-    if (message.length < 5 || message.length > 2000) {
+    if (message.length < 5 || message.length > 3000) {
       return NextResponse.json(
-        { error: 'Message must be between 5 and 2000 characters' },
+        { error: 'Message must be between 5 and 3000 characters' },
         { status: 400 }
       );
     }
@@ -48,6 +62,11 @@ export async function POST(request: Request) {
       phone: (phone || '').trim(),
       company: (company || '').trim(),
       website: (website || '').trim(),
+      inquiryType: inquiryType || 'Architecture Review',
+      industry: (industry || '').trim(),
+      systemsInvolved: (systemsInvolved || '').trim(),
+      dataScope: (dataScope || '').trim(),
+      timeline: (timeline || '').trim(),
       message: message.trim(),
       createdAt: serverTimestamp(),
       status: 'unread'

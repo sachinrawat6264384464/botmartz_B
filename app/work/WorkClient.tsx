@@ -31,10 +31,10 @@ export default function WorkClient({
   dbCases?: any[];
 }) {
   const heroStats = [
-    { value: '20+', label: 'Systems Shipped' },
-    { value: '10+', label: 'AI Models Deployed' },
-    { value: '99%+', label: 'Uptime in Production' },
-    { value: '2023', label: 'Building Since' },
+    { value: 'Reference', label: 'Implementations' },
+    { value: 'Hybrid', label: 'Dense + BM25 Search' },
+    { value: 'Strict', label: 'Citation Grounding' },
+    { value: '6-Stage', label: 'Delivery Lifecycle' },
   ];
 
   const steps = [

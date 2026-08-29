@@ -54,12 +54,23 @@ export default function EventDeskPortal() {
     }
   }, [isAuthenticated]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email === "botmartz@gmail.com" && password === "Admin@2026##") {
-      setIsAuthenticated(true);
-    } else {
-      alert("Invalid Email or Password");
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/scanner/list-attendees?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
+      if (res.ok) {
+        const data = await res.json();
+        setAttendees(data.attendees || []);
+        setIsAuthenticated(true);
+      } else {
+        alert("Invalid Email or Password");
+        setIsAuthenticated(false);
+      }
+    } catch (err) {
+      alert("Authentication request failed. Please check network connection.");
+    } finally {
+      setLoading(false);
     }
   };
 

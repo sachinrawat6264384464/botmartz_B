@@ -69,6 +69,26 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: '/solutions',
+        destination: '/services',
+        permanent: true,
+      },
+      {
+        source: '/labs',
+        destination: '/work/labs',
+        permanent: true,
+      },
+      {
+        source: '/labs/insurance-intelligence',
+        destination: '/work/labs/insurance-intelligence',
+        permanent: true,
+      },
+      {
+        source: '/partners',
+        destination: '/partnerships',
+        permanent: true,
+      },
+      {
         source: '/services/enterprise%20rag',
         destination: '/services/enterprise-rag',
         permanent: true,

@@ -81,7 +81,7 @@ Botmartz de-risks enterprise adoption through a staged offer ladder:
 ## 6. URL & Route Index
 - https://www.botmartz.com/services/enterprise-rag — Enterprise RAG service.
 - https://www.botmartz.com/services/ai-agents — AI Agents service.
-- https://www.botmartz.com/industries/healthcare — Healthcare & insurance AI focus.
+- https://www.botmartz.com/industries — Specialized Legal & Knowledge SaaS AI focus.
 - https://www.botmartz.com/work — Reference implementations and engineering showcases.
 - https://www.botmartz.com/insights — Engineering Insights (technical write-ups).
 - https://www.botmartz.com/community — Botmartz AI Engineering Community.

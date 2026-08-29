@@ -18,10 +18,8 @@ Botmartz is engineering-first: the company publishes open benchmarks, reference 
 - [AI Agents](https://www.botmartz.com/services/ai-agents): LangGraph-based multi-agent workflows with memory, tool use, planning, evaluation, and human-in-the-loop safeguards for production reliability.
 
 ## Industry Focus
-Botmartz is deliberately focused rather than broad. Current priority verticals:
-- [Healthcare & Insurance AI](https://www.botmartz.com/industries/healthcare): Enterprise RAG and document-intelligence workflows over clinical policy documents, coverage rules, and knowledge bases — the domains where messy documents, compliance, and defensible decisions matter most.
-
-Additional verticals will be added only as reference implementations and real engagements accumulate.
+Botmartz is deliberately focused on high-stakes, document-heavy domains:
+- [Vertical AI Solutions & Legal Intelligence](https://www.botmartz.com/industries): Enterprise RAG and document-intelligence workflows over legal case files, deal precedents, complex contracts, and technical SaaS documentation — the domains where messy documents, strict confidentiality, and citation grounding matter most.
 
 ## Engineering & Proof of Capability
 - [Engineering Insights](https://www.botmartz.com/insights): Technical write-ups on production RAG and agent engineering — architecture decisions, retrieval strategies, evaluation methodology, and honest failure analysis.

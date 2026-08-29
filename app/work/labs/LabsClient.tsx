@@ -5,37 +5,122 @@ import Link from "next/link";
 import { Github, ExternalLink, Code } from "lucide-react";
 import SpotlightCard from "@/app/_components/SpotlightCard";
 
+export type LabType = 'REFERENCE IMPLEMENTATION' | 'RESEARCH PROTOTYPE' | 'OPEN SOURCE PROJECT' | 'CLIENT CASE STUDY';
+
 export interface LabItem {
   id?: string;
   title: string;
   description?: string;
   desc?: string;
   category: string;
+  type?: LabType;
   tags?: string[];
   githubUrl?: string;
   demoUrl?: string;
   repoUrl?: string;
-  stars?: number | string;
-  forks?: number | string;
   badge?: string;
   isNew?: boolean;
   glyph?: string;
   status?: string;
   featured?: boolean;
+  stars?: string | number;
+  forks?: string | number;
 }
 
 const DEFAULT_LABS: LabItem[] = [
-  { id: 'rag-starter', category: 'Enterprise RAG', title: 'Enterprise RAG Starter', desc: 'A production-ready RAG platform with hybrid search, reranking, and advanced evaluation.', tags: ['LangChain', 'FastAPI', 'Qdrant', 'Docker'], stars: '1.0k', forks: '320', isNew: true, glyph: 'RAG', githubUrl: 'https://github.com/botmartz' },
-  { id: 'langgraph-agent', category: 'AI Agents', title: 'LangGraph Agent Framework', desc: 'A modular multi-agent framework built with LangGraph for complex reasoning and tool orchestration.', tags: ['LangGraph', 'Python', 'Redis', 'Docker'], stars: '2.3k', forks: '410', isNew: true, glyph: 'AG', githubUrl: 'https://github.com/botmartz' },
-  { id: 'virtual-tryon', category: 'Computer Vision', title: 'Virtual Try-On Lab', desc: 'Realistic virtual try-on system using diffusion models and garment warping techniques.', tags: ['PyTorch', 'Diffusers', 'ONNX', 'Gradio'], stars: '980', forks: '210', isNew: true, glyph: 'CV', githubUrl: 'https://github.com/botmartz' },
-  { id: 'ai-research', category: 'AI Agents', title: 'AI Research Agent', desc: 'Autonomous research agent that searches, reads, analyzes, and generates comprehensive reports.', tags: ['LangChain', 'OpenAI', 'Tavily', 'Pydantic'], stars: '1.4k', forks: '280', isNew: true, glyph: 'AG', githubUrl: 'https://github.com/botmartz' },
-  { id: 'ai-sdr', category: 'AI Agents', title: 'AI SDR (Sales Dev Rep)', desc: 'An agent that researches prospects, personalizes outreach, and books meetings autonomously.', tags: ['LangGraph', 'OpenAI', 'HubSpot', 'PostgreSQL'], stars: '760', forks: '140', isNew: false, glyph: 'AG', githubUrl: 'https://github.com/botmartz' },
-  { id: 'course-assistant', category: 'AI Agents', title: 'AI Course Assistant', desc: 'Intelligent assistant for courses that answers doubts, generates quizzes, and tracks progress.', tags: ['FastAPI', 'OpenAI', 'Chroma', 'Docker'], stars: '980', forks: '180', isNew: false, glyph: 'AG', githubUrl: 'https://github.com/botmartz' },
-  { id: 'meeting-agent', category: 'AI Agents', title: 'Meeting Agent', desc: 'AI meeting assistant that transcribes, summarizes, and extracts action items automatically.', tags: ['Whisper', 'LangChain', 'PostgreSQL', 'AWS'], stars: '1.8k', forks: '200', isNew: false, glyph: 'AG', githubUrl: 'https://github.com/botmartz' },
-  { id: 'legal-assistant', category: 'Enterprise RAG', title: 'Legal Assistant', desc: 'RAG-powered legal assistant for contract review, clause extraction, and risk analysis.', tags: ['LangChain', 'LlamaIndex', 'Qdrant', 'AWS'], stars: '1.3k', forks: '260', isNew: false, glyph: 'RAG', githubUrl: 'https://github.com/botmartz' },
+  { 
+    id: 'insurance-intelligence', 
+    category: 'Enterprise Knowledge', 
+    type: 'REFERENCE IMPLEMENTATION',
+    title: 'Insurance Intelligence Lab', 
+    desc: 'Multi-document insurance policy comparison, clause variance extraction, and zero-hallucination citation enforcement.', 
+    tags: ['Hybrid Search', 'BGE-Reranker', 'Pydantic', 'OpenSearch'], 
+    isNew: true, 
+    glyph: 'INS', 
+    featured: true,
+    demoUrl: '/work/labs/insurance-intelligence',
+    githubUrl: 'https://github.com/botmartz' 
+  },
+  { 
+    id: 'rag-starter', 
+    category: 'Enterprise Knowledge', 
+    type: 'REFERENCE IMPLEMENTATION',
+    title: 'Enterprise Knowledge & Search', 
+    desc: 'Production-ready RAG platform with hybrid vector/keyword search, cross-encoder reranking, and automated RAGAS evaluation.', 
+    tags: ['Qdrant', 'FastAPI', 'LlamaIndex', 'RAGAS'], 
+    isNew: true, 
+    glyph: 'RAG', 
+    githubUrl: 'https://github.com/botmartz' 
+  },
+  { 
+    id: 'langgraph-agent', 
+    category: 'AI Agents', 
+    type: 'REFERENCE IMPLEMENTATION',
+    title: 'Multi-Agent Workflow State Machine', 
+    desc: 'Modular LangGraph state graph with deterministic routing, human-in-the-loop validation, and tool calling.', 
+    tags: ['LangGraph', 'Python', 'Redis', 'Docker'], 
+    isNew: true, 
+    glyph: 'AG', 
+    githubUrl: 'https://github.com/botmartz' 
+  },
+  { 
+    id: 'opensearch-connector', 
+    category: 'Open Source', 
+    type: 'OPEN SOURCE PROJECT',
+    title: 'OpenSearch Vector & RAG Tools', 
+    desc: 'Open-source utilities and connectors for building hybrid vector and keyword search pipelines with OpenSearch.', 
+    tags: ['OpenSearch', 'Python', 'BM25', 'RRF'], 
+    isNew: true, 
+    glyph: 'OSS', 
+    githubUrl: 'https://github.com/botmartz' 
+  },
+  { 
+    id: 'ecommerce-intelligence', 
+    category: 'Ecommerce', 
+    type: 'REFERENCE IMPLEMENTATION',
+    title: 'Ecommerce Semantic Catalog Search', 
+    desc: 'E-commerce catalog intelligence engine with multi-facet semantic filtering, attribute extraction, and real-time ranker.', 
+    tags: ['Weaviate', 'FastAPI', 'Vector Search', 'Redis'], 
+    isNew: false, 
+    glyph: 'ECOM', 
+    githubUrl: 'https://github.com/botmartz' 
+  },
+  { 
+    id: 'virtual-tryon', 
+    category: 'Research', 
+    type: 'RESEARCH PROTOTYPE',
+    title: 'Virtual Try-On Vision Lab', 
+    desc: 'Experimental computer vision pipeline for garment deformation and realistic multi-pose virtual try-on.', 
+    tags: ['PyTorch', 'Diffusers', 'ONNX', 'Gradio'], 
+    isNew: false, 
+    glyph: 'CV', 
+    githubUrl: 'https://github.com/botmartz' 
+  },
+  { 
+    id: 'meeting-agent', 
+    category: 'AI Agents', 
+    type: 'REFERENCE IMPLEMENTATION',
+    title: 'Executive Meeting & Decision Extractor', 
+    desc: 'Automated meeting transcription, structured decision extraction, and action item task generation in enterprise tools.', 
+    tags: ['Whisper', 'LangChain', 'PostgreSQL', 'AWS'], 
+    isNew: false, 
+    glyph: 'AG', 
+    githubUrl: 'https://github.com/botmartz' 
+  },
+  { 
+    id: 'doc-intelligence-table', 
+    category: 'Enterprise Knowledge', 
+    type: 'REFERENCE IMPLEMENTATION',
+    title: 'Layout-Aware Document Intelligence', 
+    desc: 'Table extraction and multi-column parsing pipeline for high-density regulatory filings and financial disclosures.', 
+    tags: ['FastAPI', 'OCR', 'Qdrant', 'Docker'], 
+    isNew: false, 
+    glyph: 'DOC', 
+    githubUrl: 'https://github.com/botmartz' 
+  },
 ];
 
-const CATEGORIES = ['All Labs', 'Enterprise RAG', 'AI Agents', 'Computer Vision', 'Developer Tools', 'Infrastructure'];
+const CATEGORIES = ['All Labs', 'Enterprise Knowledge', 'AI Agents', 'Open Source', 'Ecommerce', 'Research'];
 
 const STACK_ITEMS = [
   { name: 'PyTorch', color: '#EE4C2C' },
@@ -253,9 +338,22 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
 
             {/* Card Content */}
             <div className="p-4.5 flex flex-col gap-2 flex-1">
-              <span className="font-bold text-[10px] tracking-[0.05em] text-[#007BFF] uppercase">
-                {lab.category}
-              </span>
+              <div className="flex items-center justify-between gap-1 flex-wrap">
+                <span className="font-bold text-[10px] tracking-[0.05em] text-[#007BFF] uppercase">
+                  {lab.category}
+                </span>
+                <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded font-bold ${
+                  lab.type === 'REFERENCE IMPLEMENTATION'
+                    ? 'bg-[#00B8F0]/10 text-[#0084B4] border border-[#00B8F0]/30'
+                    : lab.type === 'OPEN SOURCE PROJECT'
+                    ? 'bg-purple-50 text-purple-700 border border-purple-200'
+                    : lab.type === 'RESEARCH PROTOTYPE'
+                    ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                    : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                }`}>
+                  {lab.type || 'REFERENCE IMPLEMENTATION'}
+                </span>
+              </div>
               <div className="font-bold text-[15px] text-[#0B1220] group-hover:text-[#007BFF] transition-colors leading-snug">
                 {lab.title}
               </div>
@@ -274,17 +372,26 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
 
               {/* Card Footer */}
               <div className="flex items-center justify-between mt-2 pt-3 border-t border-[#EEF1F6]">
-                <a 
-                  href={lab.githubUrl || lab.repoUrl || "https://github.com/botmartz"} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="font-semibold text-[11.5px] text-[#3A4459] hover:text-[#007BFF] flex items-center gap-1.5 transition-colors"
-                >
-                  <span>⌥</span> GitHub
-                </a>
-                <span className="font-semibold text-[11.5px] text-[#8A97AC] flex items-center gap-2.5">
-                  <span>★ {lab.stars}</span>
-                  <span>⑂ {lab.forks}</span>
+                <div className="flex items-center gap-3">
+                  <a 
+                    href={lab.githubUrl || lab.repoUrl || "https://github.com/botmartz"} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="font-semibold text-[11.5px] text-[#3A4459] hover:text-[#007BFF] flex items-center gap-1 transition-colors"
+                  >
+                    <span>⌥</span> Code
+                  </a>
+                  {lab.demoUrl && (
+                    <Link 
+                      href={lab.demoUrl} 
+                      className="font-bold text-[11.5px] text-[#007BFF] hover:text-[#0052CC] flex items-center gap-1 transition-colors"
+                    >
+                      <span>⚡</span> Live Lab
+                    </Link>
+                  )}
+                </div>
+                <span className="font-mono text-[10.5px] text-[#8A97AC]">
+                  Verified
                 </span>
               </div>
             </div>

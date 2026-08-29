@@ -39,29 +39,29 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const DEFAULT_CONTENT = {
   hero: {
-    badge: "Services / AI Agents",
-    title: "Stop Chasing AGI. Start Deploying Reliable Agentic Workflows.",
-    subtitle: "We build highly constrained, production-ready AI agents that execute specific business workflows. Deterministic routing, human-in-the-loop approvals, and strict data validation. Zero rogue actions.",
+    badge: "SOLUTIONS / AI AGENTS & AUTOMATION",
+    title: "Stop Chasing Fragile Autonomy. Start Deploying Controlled Agentic Workflows.",
+    subtitle: "We build highly constrained, production-ready AI agents that execute specific enterprise workflows. Deterministic routing, human-in-the-loop approvals, and strict data validation schemas. Zero rogue actions.",
     ctaText: "Book an Architecture Review →",
     ctaLink: "https://cal.com/botmartz-ai/20min",
-    secondaryCtaText: "See Our Pricing & Process",
-    secondaryCtaLink: "#process",
+    secondaryCtaText: "See Reference Implementation",
+    secondaryCtaLink: "/work/labs",
   },
   problemSolution: {
-    title: "Why Most AI Agent Pilots Go Rogue (And How We Tame Them)",
-    trap: "Most agencies build autonomous agents using simple prompt chaining. In production, these agents hallucinate, break down on edge cases, and take unpredictable actions that risk your brand and data.",
-    approach: "We build Constrained Agentic Workflows. Using frameworks like LangGraph and Google ADK, we enforce strict, deterministic state machines, Pydantic data validation, and mandatory Human-in-the-loop (HITL) checkpoints before any critical action is taken."
+    title: "Why Most AI Agent Pilots Fail (And How We Engineer Control)",
+    trap: "Most agencies build autonomous agents using simple prompt chaining. In production, these break down on edge cases, loop unpredictably, and take unverified actions that risk enterprise data and customer trust.",
+    approach: "We engineer Constrained Agentic Workflows. Using state machines (LangGraph) and schema validation (Pydantic/Zod), we enforce deterministic execution paths, automated failure recovery, and mandatory Human-in-the-Loop (HITL) checkpoints for all state-changing actions."
   },
   features: [
-    { iconName: "Network", title: "Deterministic Routing", desc: "We don't let LLMs guess what to do next. We use state graphs (LangGraph) to enforce strict execution paths." },
-    { iconName: "Users", title: "Human-in-the-Loop (HITL)", desc: "High-stakes actions (like sending emails or writing to a database) are paused for human approval via our dashboard." },
-    { iconName: "ShieldCheck", title: "Strict Data Validation", desc: "Every input and output is validated against rigid schemas (Pydantic/Zod) to ensure the agent never processes corrupt data." },
-    { iconName: "Lock", title: "Tool Calling & Integration", desc: "Securely connect agents to your CRM, ERP, and internal databases with strict Role-Based Access Controls (RBAC)." }
+    { iconName: "Network", title: "Deterministic State Machines", desc: "We don't let LLMs guess execution paths. We use LangGraph state graphs to enforce rigid transition rules and state persistence." },
+    { iconName: "Users", title: "Human-in-the-Loop (HITL)", desc: "High-stakes actions (sending emails, updating records, approving transactions) are paused for explicit human review via our console." },
+    { iconName: "ShieldCheck", title: "Strict Data Validation", desc: "Every input, intermediate state, and tool output is validated against rigid schemas (Pydantic/Zod) to prevent corrupt data propagation." },
+    { iconName: "Lock", title: "Secure Tool Calling & RBAC", desc: "Securely connect agents to your CRM, ERP, and internal databases with strict Role-Based Access Controls and token isolation." }
   ],
   process: [
-    { step: "01", title: "Architecture & Scope", duration: "1-2 Days", cost: "Free", desc: "We define the exact boundaries of the agent, the tools it can access, and the human approval checkpoints required." },
-    { step: "02", title: "Single-Skill Agent MVP", duration: "3-4 Weeks", cost: "Starting at $4,000 (≈ ₹3.8L)", desc: "We build a highly constrained agent to execute one specific workflow flawlessly (e.g., support ticket triage or data extraction)." },
-    { step: "03", title: "Multi-Agent Production", duration: "Add 3-6 Weeks", cost: "$18k – $35k+ (≈ ₹17.1L+)", desc: "We scale the MVP into a multi-agent system where specialized agents hand off tasks to one another, featuring full observability." }
+    { step: "01", title: "Workflow & Boundary Discovery", duration: "1-2 Days", cost: "Collaborative", desc: "We define the exact boundaries of the agent, the APIs it can call, error conditions, and the human approval checkpoints required." },
+    { step: "02", title: "Single-Skill Agent MVP", duration: "3-4 Weeks", cost: "Sprint-Based", desc: "We build a highly constrained agent state machine to execute one specific workflow flawlessly (e.g. claims triage or document synthesis)." },
+    { step: "03", title: "Multi-Agent Production Scale", duration: "Add 3-6 Weeks", cost: "Enterprise Scope", desc: "We scale the MVP into a multi-agent system where specialized agents hand off tasks to one another, featuring complete telemetry and telemetry tracking." }
   ],
   pricingNotes: [
     "Note: We understand budgets vary. If this pricing does not align with your current budget, we completely understand and prefer to be transparent upfront to respect your time."

@@ -4,8 +4,8 @@ import PartnershipsClient from './PartnershipsClient';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'Partnerships | Grow the AI Engineering Ecosystem With Us',
-    description: 'We partner with frameworks, cloud providers, universities and incubators to bring AI Frontier, our labs, and our community further — together.',
+    title: 'Enterprise AI Ecosystem & Partner Integrations | Botmartz',
+    description: 'We work across the modern enterprise AI ecosystem — platforms, search engines, vector databases, and cloud infrastructure — to design solutions around client requirements.',
   };
   
   try {
@@ -34,10 +34,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function PartnershipsPage() {
   let heroContent = {
-    badge: "Partnerships",
-    title: "Grow the AI<br />Engineering <span class=\"text-[#00C6FF]\">Ecosystem</span> With Us",
-    subtitle: "We partner with frameworks, cloud providers, universities and incubators to bring AI Frontier, our labs, and our community further — together.",
-    ctaText: "Become a Partner →",
+    badge: "Enterprise AI Ecosystem",
+    title: "We Work Across the<br /><span class=\"text-[#00B8F0]\">Modern AI Ecosystem</span>",
+    subtitle: "We design solutions around client requirements rather than forcing every problem into a single technology stack. We partner and integrate across leading enterprise AI platforms, search engines, vector databases, and cloud providers.",
+    ctaText: "Discuss a Partnership →",
     ctaLink: "#partner-inquiry",
   };
   let structuredData = "";
@@ -61,8 +61,6 @@ export default async function PartnershipsPage() {
     <PartnershipsClient 
       heroContent={sanitizedHero}
       structuredData={structuredData}
-      aeoQuestion={aeoQuestion}
-      aeoAnswer={aeoAnswer}
     />
   );
 }

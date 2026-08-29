@@ -1,208 +1,167 @@
-# Botmartz — Production AI Engineering Platform
+# Botmartz — Enterprise AI & Intelligent Systems Implementation Platform
 
 ![Botmartz AI Platform](https://botmartz.com/favicon.ico)
 
-**Botmartz** is a next-generation production AI engineering platform and enterprise website designed from the ground up for high-end **Enterprise RAG (Retrieval-Augmented Generation)**, **Autonomous AI Agents**, and cutting-edge **AI systems integration**. 
+**Botmartz** is an **Enterprise AI & Intelligent Systems Implementation** platform and company codebase. We help organizations design AI solutions, architect enterprise systems, implement AI platforms, build production search and knowledge retrieval engines, deploy constrained AI agents, integrate AI into existing data backends, and operate production-hardened systems.
 
-Built with **Next.js 16 (App Router)**, **React 19**, **TypeScript**, and **Tailwind CSS v4**, this codebase delivers a world-class buyer-centric experience paired with a rich, dynamic **Admin CMS**, live event ticketing & verification systems, and deep SEO/AEO (Answer Engine Optimization) infrastructure.
+Built with **Next.js 16 (App Router)**, **React 19**, **TypeScript**, and **Tailwind CSS v4**, this platform combines a high-conversion, engineering-led enterprise web presence with reference implementation simulators, a comprehensive **Admin CMS**, event ticketing, and Answer Engine Optimization (AEO/SEO).
 
 ---
 
-## 🏛️ Architecture & Core Philosophy
+## 🏛️ Brand Positioning & Implementation Architecture
 
-The website follows a strict **Buyer-Centric Content Architecture** designed to answer key enterprise decision-maker questions at every stage of their evaluation:
+> **Primary Positioning:** *"AI Systems Built for Real Work."*  
+> *We help organizations design, implement, integrate, and operate production-ready AI systems across knowledge, workflows, data, and software.*
 
-| Section / Route | Core Buyer Question Answered | Key Implementation |
+### Information Architecture & Solution Pillars
+
+| Pillar / Route | Strategic Focus | Technical Stack & Implementation |
 | :--- | :--- | :--- |
-| **Services** (`/services`) | *Can you solve my exact problem?* | Dedicated deep-dive pages for **Enterprise RAG** & **AI Agents** with real architectures and workflows. |
-| **Industries** (`/industries/[slug]`) | *Have you deployed in my domain before?* | Tailored RAG & Agent solutions across **Education**, **Logistics**, and **Legal** sectors. |
-| **Work / Portfolio** (`/work`) | *Can you prove you've built production systems?* | Interactive case studies, live **Labs** demos (`AI SDR`, `AI Recruiter`, `Research Agent`), and open-source repos. |
-| **Engineering Insights** (`/insights`) | *Do your engineers deeply understand the stack?* | Case-study style technical breakdowns, benchmark comparisons, and research write-ups (no generic AI fluff). |
-| **Community & Events** (`/community`) | *Are you active leaders in the AI ecosystem?* | Live meetups hub, talks, and full ticket registration wizard with **Razorpay & UTR verification** (`AI Frontier 2026`). |
+| **Enterprise Knowledge & Search Systems** (`/services/enterprise-rag`) | Accurate retrieval over complex enterprise document archives and databases. | Layout-aware table extraction, hybrid dense/sparse search (BM25 + vector), cross-encoder rerankers, exact paragraph citation provenance, automated RAGAS evaluation harnesses. |
+| **AI Agents & Workflow Automation** (`/services/ai-agents`) | Constrained multi-step workflow automation with deterministic execution. | LangGraph state machines, Pydantic data validation schemas, human-in-the-loop (HITL) checkpoints, secure tool-calling with token isolation. |
+| **AI Platforms & Enterprise Integrations** (`/services/integrations`) | Production integration without building from scratch. | Glean partner implementation pathway, OpenSearch/Qdrant/Weaviate/Elastic integration, private VPC deployment on AWS, Azure, and GCP. |
+| **Custom AI Applications & Intelligent Software** (`/services/custom-ai-applications`) | Tailored intelligence consoles and operational co-pilots. | Full-stack Next.js/FastAPI applications, domain-specific evaluation suites, structured database grounding, enterprise RBAC. |
+| **Implementation Model** (`/implementation`) | Transparent 6-stage delivery methodology. | Discovery & Scope → Architecture & Benchmarks → Core Implementation → Enterprise Integration → Production Hardening → Managed Optimization. |
+| **Flagship Lab: Insurance Intelligence** (`/work/labs/insurance-intelligence`) | Reference implementation for complex document comparison. | Multi-document policy comparison simulator, clause variance matrix, exact paragraph citations, and zero-hallucination refusal benchmarks. |
+| **Industry Verticals** (`/industries`) | Domain-specific compliance & workflow solutions. | Insurance & Underwriting, Financial Services & Banking, Enterprise Operations & Logistics, and Ecommerce & Retail. |
+| **Partner Ecosystem** (`/partnerships`) | Multi-platform ecosystem alignment. | Enterprise AI platforms (Glean implementation pathway), search engines (OpenSearch, Elastic), vector databases (Qdrant, Weaviate), and cloud infrastructure. |
 
 ---
 
-## 🚀 Key Features & Built Modules
+## 🚀 Key Features & Modules
 
-### 1. Public Frontend Experience (`app/`)
-- **Dynamic Glassmorphic UI & 3D Shaders**: Powered by **Lenis** smooth scrolling, **GSAP** micro-animations, **Framer Motion**, and **Three.js (`@react-three/fiber` / `@react-three/drei`)** for immersive visual excellence.
-- **Dark/Light Theme System**: Seamless theme switching using `next-themes` with custom HSL token aesthetics and dark mode optimization across all components.
-- **Dynamic Navigation (`navbar.tsx` / `footer.tsx`)**: Configured dynamically via Firebase Firestore (`navbar` collection) with instant fallback configurations, rich dropdowns, and responsive mobile drawers.
-- **Work & Labs Hub (`/work`)**: Tabbed project filtering (`WorkClient.tsx`), full-page technical case studies (`CaseStudyDetailClient.tsx`), and open-source architecture breakdowns.
-- **Engineering Insights & Updates (`/insights`)**:
-  - Interactive category filtering (`InsightsListingSection.tsx`).
-  - Case-study style updates listing (`InsightsUpdatesClient.tsx`).
-  - Rich markdown rendering using `react-markdown`, `remark-gfm`, and syntax-highlighted code blocks (`lowlight`).
-  - Reader engagement with real-time comments (`comments`), social sharing, and related article mapping.
-- **Community & Events (`/community/events/[slug]`)**:
-  - Interactive multi-step ticket registration wizard (`EventRegistrationWizard.tsx`).
-  - Dual payment processing: Instant **Razorpay** checkout and manual **Bank Transfer (UTR)** check-in passes.
+### 1. Enterprise Web Architecture (`app/`)
+- **Engineering-Led Visual Identity**: Dark architectural aesthetic (`#050B14`, `#070E1B`), blueprint canvas grids, real-time visual node pipelines, and minimal glassmorphism.
+- **Interactive Reference Simulator (`/work/labs/insurance-intelligence`)**:
+  - Live policy comparison across Commercial Property, Cyber Risk, and CGL forms.
+  - Clause variance matrix detecting coverage exclusions and deductible conflicts.
+  - Paragraph-level evidence provenance and zero-hallucination refusal testing.
+  - Automated RAGAS evaluation benchmark metrics display.
+- **Transparent Proof Taxonomy**: Visible categorization across all engineering projects:
+  - `[REFERENCE IMPLEMENTATION]`
+  - `[RESEARCH PROTOTYPE]`
+  - `[OPEN SOURCE PROJECT]`
+  - `[CLIENT CASE STUDY]`
+- **High-Intent Lead Qualification Intake (`/contact`)**:
+  - Captures organization name, industry vertical, existing infrastructure (Glean, OpenSearch, Postgres, AWS/Azure), document scope, and desired timeline.
+  - Asynchronous Firestore persistence and automated email dispatch.
 
 ### 2. Comprehensive Admin CMS Portal (`app/admin/`)
-Protected by role-based authentication (`super-admin` & `admin`), providing complete operational control:
-- **Dashboard Overview (`/admin`)**: High-level telemetry tracking traffic views, lead volume, published articles, and event registrations.
-- **Blog & Insights CMS (`/admin/Blogs`)**: Headless WYSIWYG editor built with **TipTap** (`starter-kit`, `lowlight` syntax highlighting, tables, text alignment, and image embeds via **Cloudinary**). Supports draft/publish lifecycle, category tags, and read-time calculations.
-- **Case Studies CMS (`/admin/case-studies`)**: End-to-end management of client case studies, technical stacks, client metadata, and outcomes.
-- **Events & Payments Ledger (`/admin/events`, `/admin/payments`)**:
-  - Create, schedule, and configure events (`AI Frontier`, meetups).
-  - Manage ticket tiers, pricing, and seating capacity.
-  - Live payments dashboard (`PaymentsTab.tsx`) tracking Razorpay transactions, verifying manual UTR submissions, and exporting CSV reports.
-- **Live Navigation Builder (`/admin/navigation`)**: Visual drag-and-drop tree editor to reorder and update website headers, dropdown links, and icons in real-time.
-- **CRM & Lead Pipeline (`/admin/crm`, `/admin/contacts`)**: Track inbound contact inquiries, filter by read/new status, and manage potential client leads.
-- **Comment Moderation (`/admin/comments`)**: Approve or reject reader comments before public display.
-- **Careers & Open Roles (`/admin/jobs`)**: Manage job postings and monitor incoming applications.
-- **Newsletter Management (`/admin/newsletter`)**: View active subscribers, track growth, and export mailing lists.
+Protected by role-based authentication (`super-admin` & `admin`):
+- **Dashboard Telemetry (`/admin`)**: System metrics, lead capture analytics, article views, and event registrations.
+- **Blog & Technical Insights CMS (`/admin/Blogs`)**: TipTap WYSIWYG editor with syntax highlighting, draft/publish lifecycle, and Cloudinary media uploads.
+- **Case Studies CMS (`/admin/case-studies`)**: Management of client case studies, technical architecture diagrams, and measurable outcomes.
+- **Events & Registration Ledger (`/admin/events`, `/admin/payments`)**: Event creation, ticketing tiers, Razorpay payment reconciliation, and manual UTR verification.
+- **Ticket Scanner & Event Desk (`/admin/scanner`, `/event-desk`)**: On-site camera QR verification and attendee check-in management.
+- **CRM Pipeline (`/admin/crm`, `/admin/contacts`)**: High-intent architecture review triage and status tracking.
+- **Newsletter & Job Board CMS (`/admin/newsletter`, `/admin/jobs`)**: Subscriber management and career postings.
 
-### 3. Backend APIs & Microservices (`app/api/`)
-- `POST /api/events/create-order`: Communicates with Razorpay API to generate secure payment orders.
-- `POST /api/events/verify-payment`: Cryptographic HMAC SHA-256 verification of Razorpay signatures.
-- `POST /api/events/verify-utr`: Handles bank transfer UTR submissions and marks registrations for admin review.
-- `POST /api/events/webhook`: Handles real-time asynchronous payment confirmations from Razorpay.
-- `POST /api/contact`: Persists leads into Firestore (`contacts` / `crm` collections) and sends automated HTML confirmation emails.
-- `POST /api/newsletter`: Handles subscriber opt-ins and status management.
-- `POST /api/temp-update-navbar`: Programmable API to sync and update navigation structures.
+### 3. Events & Ticketing Infrastructure (`app/community/`)
+- **Event Experience (`/community/events/[slug]`)**: Multi-tier registration wizard for tech conferences (e.g., *AI Frontier 2026*).
+- **Payment Processing**: Dual-mode payment processing via **Razorpay** and manual **Bank Transfer (UTR)** verification.
+- **Automated Check-in Passes**: Generation of digital tickets with secure QR codes dispatched via Nodemailer.
 
-### 4. Email & Notifications Engine (`lib/mail-templates.ts`)
-Powered by **Nodemailer** (`SMTP`), generating responsive, dark-themed HTML emails:
-- **Registration Received**: Immediate acknowledgment of event seat requests.
-- **Payment Success & Check-In Pass**: Delivers verified digital passes with unique QR codes and venue guidelines.
-- **Inquiry Receipts & Admin Alerts**: Automated notifications for client inquiries and CRM leads.
-
-### 5. Automated Seeding & Markdown Content Engine (`blobs/`, `scripts/`)
-- **Rich Content Repository (`blobs/`)**: Contains structured, professional markdown files across high-value engineering clusters: `advanced-models`, `agents`, `langchain`, `llms`, `models`, `optimization`, `pytorch`, `research-explained`, `spiking-neural-networks`, and `tensorflow`.
-- **Seeding Pipelines**:
-  - `npm run seed:blobs` (`scripts/seed-blobs.js`): Automatically parses markdown files and populates Firestore with production-ready articles.
-  - `node seed-articles.js`: Seeds comprehensive technical blogs with metadata and author bios.
-  - `node scripts/seed-events.js`: Populates sample community events (`AI Frontier 2026`).
-  - `node seed-admin.js`: Bootstraps initial super-admin user credentials.
-
-### 6. SEO & Answer Engine Optimization (AEO)
-- **Dynamic XML Sitemaps & Robots (`sitemap.ts`, `robots.ts`)**: Automatically indexes all static pages, blogs, case studies, events, and careers.
-- **Structured Data JSON-LD (`SchemaMarkup.tsx`, `StructuredData.tsx`)**: Implements schema markup (`Article`, `Event`, `Organization`, `BreadcrumbList`) for rich search engine results and AI engine citations.
-- **LLM Crawling Support (`llms.txt`, `llms-full.txt`)**: Optimized plain-text summaries designed for modern AI agent crawlers (Perplexity, ChatGPT Search, Gemini).
+### 4. SEO & Answer Engine Optimization (AEO)
+- **Dynamic XML Sitemap (`app/sitemap.ts`)**: Auto-indexes all static marketing pages, implementation hubs, dynamic blog posts, and community events.
+- **AEO Plain-Text Files (`llms.txt`, `llms-full.txt`)**: Specially formatted markdown summaries for AI search engines (Perplexity, Gemini, ChatGPT).
+- **Structured Data JSON-LD**: Rich `Organization`, `Service`, `TechArticle`, and `Event` schema markup on all pages.
 
 ---
 
-## 🛠️ Tech Stack & Dependencies
+## 🛠️ Technology Stack
 
-- **Core**: `Next.js 16.0.8` (App Router), `React 19.2.1`, `TypeScript 5`
-- **Styling**: `Tailwind CSS v4`, `clsx`, `tailwind-merge`, `next-themes`
-- **Animations & 3D**: `GSAP 3.14.1`, `Framer Motion 12`, `Lenis` (smooth scroll), `Three.js 0.181`, `@react-three/fiber`, `@react-three/drei`
-- **Backend & DB**: `Firebase 12.9.0` (Firestore, Storage, Auth), `firebase-admin 13.8.0`
-- **Rich Text Editor**: `@tiptap/react`, `@tiptap/starter-kit`, `@tiptap/extension-*` (code-block-lowlight, table, image, color)
-- **Payments**: `Razorpay` (via API & Webhooks)
-- **Media & Email**: `cloudinary`, `nodemailer`
-- **Content Rendering**: `react-markdown`, `remark-gfm`, `lowlight`
+- **Framework**: Next.js 16 (App Router, React 19, TypeScript 5)
+- **Styling**: Tailwind CSS v4, Lucide Icons
+- **Database & Auth**: Firebase Firestore, Firebase Authentication, Firebase Admin SDK
+- **Rich Text & Content**: TipTap, React Markdown, Remark GFM, Lowlight
+- **Payments & Communication**: Razorpay API & Webhooks, Nodemailer (SMTP)
+- **AI Ecosystem Tooling**: LangGraph, LlamaIndex, OpenSearch, Qdrant, Weaviate, Elastic, RAGAS, FastAPI
 
 ---
 
-## 📁 Repository Structure
+## 📁 Repository Directory Structure
 
-```text
+```
 ├── app/
-│   ├── _components/        # Global Navbar, Footer, Preloader, and Structured Data
-│   ├── about/              # About us page
-│   ├── admin/              # Full-featured Admin CMS (Blogs, Case Studies, Events, Payments, CRM)
-│   ├── api/                # API routes for Events, Payments, Webhooks, Contact, Newsletter
-│   ├── careers/            # Careers index and dynamic [slug] job detail pages
-│   ├── community/          # Community hub and dynamic event registration [slug] wizard
-│   ├── contact/            # Enterprise inquiry contact page
-│   ├── industries/         # Dynamic [slug] pages for Education, Logistics, Legal RAG/Agents
-│   ├── insights/           # Engineering Insights index, updates, and dynamic [slug] articles
-│   ├── services/           # Services index, Enterprise RAG, and AI Agents pages
-│   └── work/               # Work portfolio index, Case Studies [slug], and Labs
-├── blobs/                  # Technical markdown articles organized by engineering clusters
-├── lib/                    # Firebase clients, Cloudinary utils, Nodemailer templates, formatters
-├── scripts/                # Database seeding scripts for blogs, events, and admin credentials
-├── types/                  # TypeScript definitions for Admin entities, Blogs, Case Studies, CRM
-├── firestore.rules         # Security and RBAC rules for Cloud Firestore
-├── next.config.ts          # Next.js optimization and configuration rules
-└── package.json            # Project dependencies and script shortcuts
+│   ├── _components/               # Global components (Navbar, Footer, TrackedLink, Blueprint)
+│   ├── about/                     # Company overview & team
+│   ├── admin/                     # Admin CMS dashboard & CRUD managers
+│   ├── api/                       # API routes (contact, events, payment, scanner, admin)
+│   ├── community/                 # Events, meetups, AI Frontier registration
+│   ├── contact/                   # Architecture review & enterprise lead intake
+│   ├── implementation/            # Flagship 6-stage delivery lifecycle & stack matrix
+│   ├── industries/                # Vertical solutions (Insurance, BFSI, Ops, Ecommerce)
+│   ├── insights/                  # Technical engineering blog & insights
+│   ├── partnerships/              # Enterprise AI ecosystem & integration capabilities
+│   ├── services/                  # Solutions hub & subpages
+│   │   ├── ai-agents/             # Deterministic agentic workflows & state machines
+│   │   ├── custom-ai-applications/# Tailored intelligent software & consoles
+│   │   ├── enterprise-rag/        # Knowledge systems & hybrid search
+│   │   └── integrations/          # Enterprise platform deployment (Glean, search backends)
+│   ├── work/                      # Case studies & proof showcase
+│   │   └── labs/                  # Labs hub & Reference Implementations
+│   │       └── insurance-intelligence/ # Interactive policy comparison lab
+│   ├── layout.tsx                 # Root HTML layout & fonts
+│   ├── sitemap.ts                 # Dynamic XML sitemap generator
+│   └── robots.ts                  # Search engine crawling rules
+├── lib/                           # Firebase clients, analytics, mail templates, helpers
+├── scripts/                       # Database seeding & migration utilities
+└── next.config.ts                 # Next.js configuration & 301 redirects
 ```
 
 ---
 
-## ⚡ Getting Started
+## 💻 Local Development Setup
 
-### 1. Prerequisites
-Ensure you have **Node.js 20+** installed along with `npm`, `pnpm`, or `yarn`.
-
-### 2. Environment Setup
-Copy the example environment template and configure your credentials:
-
+### 1. Clone & Install Dependencies
 ```bash
-cp .env.example .env.local
+git clone https://github.com/botmartz/botmartz-main.git
+cd botmartz-main
+npm install
 ```
 
-Required variables inside `.env.local`:
+### 2. Environment Variables Setup
+Create a `.env.local` file in the root directory with the following configuration:
 ```env
-# Firebase Client Configuration
+# Firebase Client SDK
 NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
 NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 
-# Firebase Admin Credentials (Service Account)
-FIREBASE_PROJECT_ID=your_project_id
-FIREBASE_CLIENT_EMAIL=your_service_account_email
-FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
+# Firebase Admin SDK (Private Key in JSON or formatted string)
+FIREBASE_ADMIN_CLIENT_EMAIL=your_service_account_email
+FIREBASE_ADMIN_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
 
-# Razorpay Payment Gateway
-NEXT_PUBLIC_RAZORPAY_KEY_ID=rzp_live_or_test_key
-RAZORPAY_KEY_SECRET=rzp_secret_key
-RAZORPAY_WEBHOOK_SECRET=rzp_webhook_secret
+# Razorpay Payments
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+RAZORPAY_WEBHOOK_SECRET=your_webhook_secret
 
-# Cloudinary Image Optimization
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-
-# Nodemailer SMTP Configuration
+# SMTP Email Configuration
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=465
-SMTP_USER=your_email@gmail.com
+SMTP_USER=your_email@domain.com
 SMTP_PASS=your_app_password
-SMTP_FROM_EMAIL=your_email@gmail.com
+ADMIN_EMAIL=soham@botmartz.com
 ```
 
-### 3. Installation & Local Server
-
+### 3. Run Development Server
 ```bash
-# Install dependencies
-npm install
-
-# Run local development server
 npm run dev
 ```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
-
-### 4. Database Seeding Commands
-To populate your local/staging Firebase instance with initial data:
-
+### 4. Production Build Validation
 ```bash
-# Seed initial super-admin account
-node seed-admin.js
-
-# Seed all technical markdown articles from blobs/
-node scripts/seed-blobs.js
-
-# Seed sample events (AI Frontier 2026)
-node scripts/seed-events.js
+npm run build
+npm run start
 ```
 
 ---
 
-## 🧪 Testing & Quality Assurance
+## 📄 License & Attribution
 
-- **Linting**: `npm run lint` (`eslint` checks)
-- **Bundle Analysis**: `npm run analyze` (analyzes Next.js bundle metrics)
-- **E2E & Integration Testing**: Playwright (`playwright.config.ts`) and Cypress (`cypress/`) suites configured.
-
----
-
-## 🛡️ License & Copyright
-
-© 2026 **Botmartz AI Solution Pvt Ltd**. All rights reserved. Production AI Engineering & Autonomous Systems.
+© 2026 Botmartz AI Solutions Pvt Ltd. All rights reserved.

@@ -135,7 +135,7 @@ export default async function AboutPage() {
                  <div className="absolute inset-4 bg-[#00B8F0]/10 border border-[#00B8F0]/20 rounded-full translate-x-4 translate-y-4"></div>
                  <div className="absolute inset-0 bg-[#0A111F] rounded-full overflow-hidden border border-[#1E293B] shadow-xl">
                     <Image 
-                      src="/Sohamsharma2.jpeg" 
+                      src="/Sohamsharma.jpeg" 
                       alt="Soham Sharma - Founder & GenAI Architect" 
                       fill 
                       className="object-cover grayscale hover:grayscale-0 transition-all duration-500" 

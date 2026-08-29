@@ -319,7 +319,6 @@ export default function AdminSidebar() {
               {renderFlatItem('events', ScanFace, 'Ticket Scanner', '/admin/scanner')}
               {renderFlatItem('feedback', MessageSquare, 'Event Feedback', '/admin/feedback')}
               {renderFlatItem('events', BookOpen, 'Bootcamps', '/admin/bootcamps')}
-              {renderFlatItem('events', Brain, 'Quiz Submissions', '/admin/quiz')}
               {renderFlatItem('coupons', Tag, 'Coupon Manager', '/admin/coupons')}
               {renderFlatItem('jobs', Users, 'Careers / Jobs', '/admin/jobs', true)}
               {renderFlatItem('partnerships', Handshake, 'Partnerships', '/admin/partnerships', true)}

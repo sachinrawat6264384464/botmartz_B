@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { adminDb } from "@/lib/firebase-admin";
 import { revalidateTag } from "next/cache";
 
@@ -38,7 +38,14 @@ const DEFAULT_ITEMS = [
   },
 ];
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const authHeader = req.headers.get("authorization");
+  const secretKey = req.nextUrl.searchParams.get("secret");
+  const validSecret = process.env.ADMIN_SYNC_SECRET || process.env.REVALIDATION_SECRET || "botmartz_internal_admin_sync_2026";
+  
+  if (secretKey !== validSecret && authHeader !== `Bearer ${validSecret}`) {
+    return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
+  }
   try {
     await adminDb.collection("settings").doc("navbar").set({ items: DEFAULT_ITEMS });
     await adminDb.collection("site_config").doc("navbar").set({ items: DEFAULT_ITEMS });

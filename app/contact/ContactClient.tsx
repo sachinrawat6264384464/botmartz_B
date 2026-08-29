@@ -20,12 +20,17 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
   const address = settings?.general?.address || "Indore, IN";
 
   const [form, setForm] = useState({
+    inquiryType: 'Book an Architecture Review',
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
     company: '',
     website: '',
+    industry: 'Insurance & Financial Services',
+    systemsInvolved: '',
+    dataScope: '10,000 - 100,000 Documents',
+    timeline: 'Within 1 Month',
     message: ''
   });
 
@@ -33,7 +38,7 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
   };
@@ -41,7 +46,7 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.firstName.trim() || !form.email.trim() || !form.message.trim()) {
-      setError('First Name, Work Email, and Message are required fields.');
+      setError('First Name, Work Email, and Message / Challenge are required fields.');
       return;
     }
 
@@ -59,8 +64,21 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
 
       if (res.ok) {
         setSuccess(true);
-        trackEvent("form_submission", { form_name: "contact_us", company: form.company });
-        setForm({ firstName: '', lastName: '', email: '', phone: '', company: '', website: '', message: '' });
+        trackEvent("form_submission", { form_name: "contact_us", company: form.company, inquiryType: form.inquiryType });
+        setForm({
+          inquiryType: 'Book an Architecture Review',
+          firstName: '',
+          lastName: '',
+          email: '',
+          phone: '',
+          company: '',
+          website: '',
+          industry: 'Insurance & Financial Services',
+          systemsInvolved: '',
+          dataScope: '10,000 - 100,000 Documents',
+          timeline: 'Within 1 Month',
+          message: ''
+        });
       } else {
         const data = await res.json();
         setError(data.error || 'Something went wrong. Please try again.');
@@ -81,60 +99,68 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
       />
       
       {/* HERO SECTION */}
-      <section className="relative pt-[120px] pb-[80px] bg-[#060C1F] text-white overflow-hidden">
+      <section className="relative pt-[130px] pb-[80px] bg-[#050B14] text-white overflow-hidden border-b border-white/10">
         {/* Background Grid & Mask */}
         <div 
           className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: 'linear-gradient(rgba(0,198,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,198,255,0.06) 1px, transparent 1px)',
-            backgroundSize: '44px 44px',
-            maskImage: 'radial-gradient(ellipse 80% 60% at 65% 30%, black, transparent)',
-            WebkitMaskImage: 'radial-gradient(ellipse 80% 60% at 65% 30%, black, transparent)'
+            backgroundImage: 'linear-gradient(rgba(0,184,240,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,0.06) 1px, transparent 1px)',
+            backgroundSize: '40px 40px',
           }}
         />
         {/* Background glow effects */}
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00C6FF]/10 blur-[120px] rounded-full pointer-events-none" />
-        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0066FF]/15 blur-[150px] rounded-full pointer-events-none" />
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0052FF]/15 blur-[150px] rounded-full pointer-events-none" />
 
         <div className="wrap relative z-10 flex flex-col items-center text-center max-w-[800px] mx-auto">
-          <div className="w-16 h-16 bg-[#00C6FF]/15 border border-[#00C6FF]/30 rounded-full flex items-center justify-center mb-6 shadow-sm">
-            <Mail className="w-8 h-8 text-[#00C6FF]" />
+          <div className="w-16 h-16 bg-[#00B8F0]/15 border border-[#00B8F0]/30 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+            <Mail className="w-8 h-8 text-[#00B8F0]" />
           </div>
-          <div className="font-mono text-[11px] tracking-[0.14em] text-[#00C6FF] uppercase mb-4 flex items-center gap-3 font-bold justify-center">
-            <span className="w-6 h-px bg-[#00C6FF]/30"></span>
-            {heroData.badge}
-            <span className="w-6 h-px bg-[#00C6FF]/30"></span>
+          <div className="font-mono text-[11px] tracking-[0.14em] text-[#00B8F0] uppercase mb-4 flex items-center gap-3 font-bold justify-center">
+            <span className="w-6 h-px bg-[#00B8F0]/30"></span>
+            Enterprise Architecture &amp; Implementation
+            <span className="w-6 h-px bg-[#00B8F0]/30"></span>
           </div>
-          <h1 
-            className="text-[clamp(36px,4.5vw,56px)] leading-[1.1] font-extrabold mb-6 tracking-tight text-white"
-            dangerouslySetInnerHTML={{ __html: heroData.title }}
-          />
+          <h1 className="text-[clamp(36px,4.5vw,56px)] leading-[1.1] font-extrabold mb-6 tracking-tight text-white">
+            Let's Review Your <br />
+            <span className="bg-gradient-to-r from-[#00B8F0] via-[#0066FF] to-[#60A5FA] bg-clip-text text-transparent">
+              AI Architecture.
+            </span>
+          </h1>
           <p className="text-[17px] text-[#8FA3C4] max-w-[600px] mx-auto font-medium leading-relaxed">
-            {heroData.subtitle}
+            Discuss your enterprise document challenges, search platforms, or agent workflows with an experienced AI systems architect.
           </p>
         </div>
       </section>
 
       {/* CONTACT GRID */}
-      <section className="py-[80px] bg-white">
+      <section className="py-[80px] bg-[#F8FAFC]">
         <div className="wrap flex flex-col lg:flex-row gap-12">
            
            {/* Form Side */}
-           <div className="lg:w-2/3 bg-white border border-slate-200 p-8 md:p-12 rounded-xl shadow-sm">
-              <h2 className="text-[24px] font-semibold mb-8 text-slate-900">Send us a message</h2>
+           <div className="lg:w-2/3 bg-white border border-slate-200 p-8 md:p-12 rounded-2xl shadow-sm">
+              <div className="flex items-center justify-between pb-6 mb-8 border-b border-slate-100">
+                <div>
+                  <h2 className="text-[24px] font-bold text-slate-900">Request Technical Review</h2>
+                  <p className="text-xs text-slate-500 mt-1">We evaluate technical feasibility, security constraints, and platform selection.</p>
+                </div>
+                <span className="text-xs font-mono px-3 py-1 bg-[#00B8F0]/10 text-[#0084B4] rounded-full font-bold">
+                  Fast Turnaround
+                </span>
+              </div>
               
               {success ? (
                 <div className="flex flex-col items-center justify-center text-center py-12 px-6 bg-[#00B8F0]/5 border border-[#00B8F0]/20 rounded-xl">
                   <CheckCircle className="w-16 h-16 text-[#00B8F0] mb-4 animate-bounce" />
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">Message Sent Successfully!</h3>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">Request Received!</h3>
                   <p className="text-[14px] text-slate-600 max-w-[400px] mb-6">
-                    Thank you for reaching out to Botmartz. Our engineering team has been notified and we will get back to you within 24 hours.
+                    Thank you for reaching out. An AI architect from our team will review your systems and requirements and get back to you within 24 hours.
                   </p>
                   <button 
                     onClick={() => setSuccess(false)}
-                    className="btn btn-primary bg-[#00B8F0] text-white hover:bg-[#0096C7] px-6 py-2 text-[14px] font-semibold"
+                    className="btn btn-primary bg-[#0066FF] text-white hover:bg-[#0052CC] px-6 py-2.5 text-[14px] font-semibold rounded-xl"
                   >
-                    Send Another Message
+                    Submit Another Inquiry
                   </button>
                 </div>
               ) : (
@@ -146,6 +172,22 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
                     </div>
                   )}
 
+                  {/* Inquiry Type */}
+                  <div className="flex flex-col gap-2">
+                    <label className="font-mono text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Inquiry Focus *</label>
+                    <select
+                      name="inquiryType"
+                      value={form.inquiryType}
+                      onChange={handleInputChange}
+                      className="bg-slate-50 border border-slate-200 text-slate-900 rounded-xl px-4 py-3 text-[14px] focus:outline-none focus:border-[#0066FF] focus:ring-1 focus:ring-[#0066FF]"
+                    >
+                      <option value="Book an Architecture Review">Book an Architecture Review (Free Technical Assessment)</option>
+                      <option value="Discuss an Implementation Project">Discuss an Implementation Project (RAG, Agents, Search)</option>
+                      <option value="Enterprise Platform Integration">Enterprise Platform Integration (Glean, OpenSearch, Qdrant)</option>
+                      <option value="General Technical Inquiry">General Technical Inquiry</option>
+                    </select>
+                  </div>
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="flex flex-col gap-2">
                        <label className="font-mono text-[11px] uppercase tracking-wider text-slate-500 font-semibold">First Name *</label>
@@ -155,7 +197,7 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
                          value={form.firstName}
                          onChange={handleInputChange}
                          required
-                         className="bg-slate-50 border border-slate-200 text-slate-900 rounded-lg px-4 py-3 text-[14px] focus:outline-none focus:border-[#00B8F0] focus:ring-1 focus:ring-[#00B8F0]" 
+                         className="bg-slate-50 border border-slate-200 text-slate-900 rounded-xl px-4 py-3 text-[14px] focus:outline-none focus:border-[#0066FF] focus:ring-1 focus:ring-[#0066FF]" 
                          placeholder="Jane" 
                        />
                     </div>
@@ -166,7 +208,7 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
                          name="lastName"
                          value={form.lastName}
                          onChange={handleInputChange}
-                         className="bg-slate-50 border border-slate-200 text-slate-900 rounded-lg px-4 py-3 text-[14px] focus:outline-none focus:border-[#00B8F0] focus:ring-1 focus:ring-[#00B8F0]" 
+                         className="bg-slate-50 border border-slate-200 text-slate-900 rounded-xl px-4 py-3 text-[14px] focus:outline-none focus:border-[#0066FF] focus:ring-1 focus:ring-[#0066FF]" 
                          placeholder="Doe" 
                        />
                     </div>
@@ -181,7 +223,7 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
                          value={form.email}
                          onChange={handleInputChange}
                          required
-                         className="bg-slate-50 border border-slate-200 text-slate-900 rounded-lg px-4 py-3 text-[14px] focus:outline-none focus:border-[#00B8F0] focus:ring-1 focus:ring-[#00B8F0]" 
+                         className="bg-slate-50 border border-slate-200 text-slate-900 rounded-xl px-4 py-3 text-[14px] focus:outline-none focus:border-[#0066FF] focus:ring-1 focus:ring-[#0066FF]" 
                          placeholder="jane@company.com" 
                        />
                     </div>
@@ -192,7 +234,7 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
                          name="phone"
                          value={form.phone}
                          onChange={handleInputChange}
-                         className="bg-slate-50 border border-slate-200 text-slate-900 rounded-lg px-4 py-3 text-[14px] focus:outline-none focus:border-[#00B8F0] focus:ring-1 focus:ring-[#00B8F0]" 
+                         className="bg-slate-50 border border-slate-200 text-slate-900 rounded-xl px-4 py-3 text-[14px] focus:outline-none focus:border-[#0066FF] focus:ring-1 focus:ring-[#0066FF]" 
                          placeholder="+1 (555) 000-0000" 
                        />
                     </div>
@@ -200,53 +242,88 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="flex flex-col gap-2">
-                       <label className="font-mono text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Company</label>
+                       <label className="font-mono text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Company / Organization *</label>
                        <input 
                          type="text" 
                          name="company"
                          value={form.company}
                          onChange={handleInputChange}
-                         className="bg-slate-50 border border-slate-200 text-slate-900 rounded-lg px-4 py-3 text-[14px] focus:outline-none focus:border-[#00B8F0] focus:ring-1 focus:ring-[#00B8F0]" 
-                         placeholder="Acme Corp" 
+                         required
+                         className="bg-slate-50 border border-slate-200 text-slate-900 rounded-xl px-4 py-3 text-[14px] focus:outline-none focus:border-[#0066FF] focus:ring-1 focus:ring-[#0066FF]" 
+                         placeholder="Acme Financial" 
                        />
                     </div>
                     <div className="flex flex-col gap-2">
-                       <label className="font-mono text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Website</label>
-                       <input 
-                         type="url" 
-                         name="website"
-                         value={form.website}
+                       <label className="font-mono text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Industry Sector</label>
+                       <select
+                         name="industry"
+                         value={form.industry}
                          onChange={handleInputChange}
-                         className="bg-slate-50 border border-slate-200 text-slate-900 rounded-lg px-4 py-3 text-[14px] focus:outline-none focus:border-[#00B8F0] focus:ring-1 focus:ring-[#00B8F0]" 
-                         placeholder="https://acme.com" 
+                         className="bg-slate-50 border border-slate-200 text-slate-900 rounded-xl px-4 py-3 text-[14px] focus:outline-none focus:border-[#0066FF] focus:ring-1 focus:ring-[#0066FF]"
+                       >
+                         <option value="Insurance & Underwriting">Insurance &amp; Underwriting</option>
+                         <option value="Financial Services & Banking">Financial Services &amp; Banking</option>
+                         <option value="Enterprise Operations & Logistics">Enterprise Operations &amp; Logistics</option>
+                         <option value="Ecommerce & Retail">Ecommerce &amp; Retail</option>
+                         <option value="Legal & Regulated">Legal &amp; Regulated Sectors</option>
+                         <option value="Technology & SaaS">Technology &amp; SaaS</option>
+                         <option value="Other">Other Domain</option>
+                       </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="flex flex-col gap-2">
+                       <label className="font-mono text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Existing Systems / Tech Involved</label>
+                       <input 
+                         type="text" 
+                         name="systemsInvolved"
+                         value={form.systemsInvolved}
+                         onChange={handleInputChange}
+                         className="bg-slate-50 border border-slate-200 text-slate-900 rounded-xl px-4 py-3 text-[14px] focus:outline-none focus:border-[#0066FF] focus:ring-1 focus:ring-[#0066FF]" 
+                         placeholder="e.g. Glean, OpenSearch, Postgres, AWS" 
                        />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                       <label className="font-mono text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Estimated Timeline</label>
+                       <select
+                         name="timeline"
+                         value={form.timeline}
+                         onChange={handleInputChange}
+                         className="bg-slate-50 border border-slate-200 text-slate-900 rounded-xl px-4 py-3 text-[14px] focus:outline-none focus:border-[#0066FF] focus:ring-1 focus:ring-[#0066FF]"
+                       >
+                         <option value="Immediate (< 1 month)">Immediate (&lt; 1 month)</option>
+                         <option value="1 - 3 Months">1 - 3 Months</option>
+                         <option value="3 - 6 Months">3 - 6 Months</option>
+                         <option value="Exploring Feasibility">Exploring Feasibility</option>
+                       </select>
                     </div>
                   </div>
 
                   <div className="flex flex-col gap-2">
-                     <label className="font-mono text-[11px] uppercase tracking-wider text-slate-500 font-semibold">How can we help? *</label>
+                     <label className="font-mono text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Tell us about your challenge &amp; scope *</label>
                      <textarea 
-                       rows={5} 
+                       rows={4} 
                        name="message"
                        value={form.message}
                        onChange={handleInputChange}
                        required
-                       className="bg-slate-50 border border-slate-200 text-slate-900 rounded-lg px-4 py-3 text-[14px] focus:outline-none focus:border-[#00B8F0] focus:ring-1 focus:ring-[#00B8F0] resize-none" 
-                       placeholder="Tell us about your project, use case, or business challenge..."
+                       className="bg-slate-50 border border-slate-200 text-slate-900 rounded-xl px-4 py-3 text-[14px] focus:outline-none focus:border-[#0066FF] focus:ring-1 focus:ring-[#0066FF] resize-none" 
+                       placeholder="Describe your document sources, workflow bottlenecks, current search setup, or specific AI implementation goals..."
                      />
                   </div>
 
                   <button 
                     type="submit" 
                     disabled={submitting}
-                    className="w-full sm:w-auto btn bg-[#0066FF] text-white hover:bg-[#0052CC] mt-2 px-8 py-3 rounded-lg text-[14px] font-semibold flex items-center justify-center gap-2 min-w-[160px] disabled:opacity-75 transition-all shadow-[0_4px_14px_rgba(0,102,255,0.3)] hover:shadow-[0_4px_20px_rgba(0,102,255,0.45)] hover:scale-[1.02] active:scale-[0.98]"
+                    className="w-full sm:w-auto btn bg-[#0066FF] text-white hover:bg-[#0052CC] mt-2 px-8 py-3.5 rounded-xl text-[14px] font-semibold flex items-center justify-center gap-2 min-w-[200px] disabled:opacity-75 transition-all shadow-[0_4px_14px_rgba(0,102,255,0.3)] hover:shadow-[0_4px_20px_rgba(0,102,255,0.45)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
                   >
                     {submitting ? (
                       <>
-                        <RefreshCw className="w-4 h-4 animate-spin" /> Submitting...
+                        <RefreshCw className="w-4 h-4 animate-spin" /> Submitting Request...
                       </>
                     ) : (
-                      'Submit Request'
+                      'Submit Architecture Review Request →'
                     )}
                   </button>
                 </form>

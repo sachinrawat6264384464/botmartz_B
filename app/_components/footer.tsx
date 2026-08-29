@@ -36,39 +36,50 @@ const InstagramIcon = () => (
 /* ─── LINK DATA ──────────────────────────────────────────────────────────────── */
 const FOOTER_COLS = [
   {
-    heading: "Services",
+    heading: "Solutions",
     links: [
-      { label: "Enterprise RAG", href: "/services/enterprise-rag" },
-      { label: "AI Agents", href: "/services/ai-agents" },
+      { label: "Enterprise AI Implementation", href: "/implementation" },
+      { label: "Knowledge & Search Systems", href: "/services/enterprise-rag" },
+      { label: "AI Agents & Automation", href: "/services/ai-agents" },
+      { label: "AI Integration & Platforms", href: "/services/integrations" },
+      { label: "Custom AI Applications", href: "/services/custom-ai-applications" },
     ],
   },
   {
-    heading: "Work",
+    heading: "Implementation",
     links: [
-      { label: "Labs", href: "/work/labs" },
-      { label: "Open Source", href: "/work/open-source" },
+      { label: "Delivery Lifecycle", href: "/implementation#lifecycle" },
+      { label: "Stack Integration", href: "/implementation#stack" },
+      { label: "Architecture Review", href: "/contact?type=architecture-review" },
+      { label: "Security & Governance", href: "/implementation#governance" },
+    ],
+  },
+  {
+    heading: "Labs & Proof",
+    links: [
+      { label: "Insurance Intelligence [Flagship]", href: "/work/labs/insurance-intelligence" },
+      { label: "Reference Implementations", href: "/work/labs" },
+      { label: "Open Source Projects", href: "/work/open-source" },
+      { label: "Case Studies", href: "/work/case-studies" },
+    ],
+  },
+  {
+    heading: "Industries",
+    links: [
+      { label: "Insurance & Underwriting", href: "/industries#insurance" },
+      { label: "Financial Services", href: "/industries#financial-services" },
+      { label: "Enterprise Operations", href: "/industries#enterprise-operations" },
+      { label: "Ecommerce Intelligence", href: "/industries#ecommerce" },
     ],
   },
   {
     heading: "Company",
     links: [
-      { label: "About Us", href: "/about" },
-      { label: "Contact Us", href: "/contact" },
-      { label: "Careers / Jobs", href: "/careers" },
-    ],
-  },
-  {
-    heading: "Resources",
-    links: [
+      { label: "About Botmartz", href: "/about" },
+      { label: "Partner Ecosystem", href: "/partnerships" },
       { label: "Engineering Insights", href: "/insights" },
-      { label: "Academy ↗", href: "https://academy.botmartz.com" },
-    ],
-  },
-  {
-    heading: "Events",
-    links: [
-      { label: "AI Frontier 2026", href: "/community/events/ai-frontier-2026" },
-      { label: "AI Accelerator Workshops", href: "/community/ai-accelerator-workshop" },
+      { label: "Contact Us", href: "/contact" },
+      { label: "Careers", href: "/careers" },
     ],
   },
 ];
@@ -142,7 +153,7 @@ export function Footer({ settings }: { settings?: any }) {
               </Link>
 
               <p className="text-[14px] text-[#8A9EB0] leading-relaxed max-w-[280px] mb-8">
-                We engineer production AI systems and advance AI engineering through education, community, and open-source innovation.
+                Enterprise AI &amp; Intelligent Systems Implementation. We help organizations design, implement, integrate, and operate production-ready AI systems across knowledge, workflows, data, and software.
               </p>
 
               {/* Social Icons */}

@@ -1,431 +1,401 @@
 "use client";
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { db } from '@/lib/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import React, { useState } from "react";
+import Link from "next/link";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import {
+  Globe,
+  Search,
+  Database,
+  Cloud,
+  Cpu,
+  Layers,
+  ShieldCheck,
+  CheckCircle2,
+  ArrowRight,
+  Sparkles,
+  Workflow,
+  Server,
+  Terminal,
+  FileCheck,
+  Building2
+} from "lucide-react";
+import TrackedLink from "@/app/_components/TrackedLink";
+
+const ECOSYSTEM_SPHERES = [
+  {
+    category: "Enterprise AI Platforms",
+    badge: "Platform Implementation",
+    tagline: "Turnkey workplace search and AI knowledge platforms",
+    desc: "We help organizations deploy, customize, and drive adoption for enterprise AI platforms. We develop custom data connectors, build tailored workplace agents, and provide ongoing managed optimization.",
+    platforms: [
+      { name: "Glean Partner Network Pathway", role: "Implementation, custom agents, connectors, adoption, and managed optimization" },
+      { name: "Enterprise Workplace AI", role: "Permission mapping, enterprise RBAC integration, and user adoption tuning" }
+    ],
+  },
+  {
+    category: "Search & Retrieval Infrastructure",
+    badge: "Vector & Hybrid Search",
+    tagline: "High-scale retrieval engines & vector databases",
+    desc: "We architect, tune, and operate hybrid search backends across open-source and commercial vector engines based on client scalability, latency, and compliance requirements.",
+    platforms: [
+      { name: "OpenSearch", role: "Hybrid vector + BM25 indexing, Reciprocal Rank Fusion, solutions provider ecosystem" },
+      { name: "Qdrant", role: "Production RAG, high-throughput vector search architecture, filtering at scale" },
+      { name: "Weaviate", role: "Multi-modal vector search schemas, hybrid retrieval, enterprise knowledge graphs" },
+      { name: "Elastic Search AI", role: "Enterprise search, retrieval infrastructure, and observability integration" },
+    ],
+  },
+  {
+    category: "Cloud & Data Infrastructure",
+    badge: "Cloud Foundations",
+    tagline: "Private VPC and enterprise cloud deployment",
+    desc: "We deploy production AI workloads securely within your existing cloud perimeter, ensuring zero external data leakage and full compliance.",
+    platforms: [
+      { name: "Amazon Web Services (AWS)", role: "Bedrock, OpenSearch Service, ECS/EKS, private VPC architecture" },
+      { name: "Google Cloud Platform (GCP)", role: "Vertex AI, Google ADK, BigQuery integration, private endpoints" },
+      { name: "Microsoft Azure Cloud", role: "Azure OpenAI Service, Cognitive Search, secure enterprise tenants" },
+    ],
+  },
+  {
+    category: "Foundation Models & State Frameworks",
+    badge: "Intelligence Layer",
+    tagline: "Model orchestration and deterministic execution",
+    desc: "We orchestrate leading commercial and open-weight language models with state machine frameworks for controlled execution.",
+    platforms: [
+      { name: "Model Providers", role: "Anthropic Claude 3.5, OpenAI GPT-4o, Google Gemini 2.5, Open-Weights" },
+      { name: "State Frameworks", role: "LangGraph state machines, LlamaIndex RAG pipelines, Pydantic data validation" },
+    ],
+  },
+];
+
+const COLLABORATION_MODELS = [
+  {
+    title: "Platform Vendor Co-Delivery",
+    desc: "We act as the specialized technical implementation partner for enterprise software companies, deploying their platforms for end-clients with custom connectors and tailored agents.",
+  },
+  {
+    title: "Consultancy & SI Teaming",
+    desc: "We partner with global management consultancies and systems integrators providing specialized RAG, vector search, and agentic engineering depth for complex enterprise client engagements.",
+  },
+  {
+    title: "Client-Driven Architecture",
+    desc: "We evaluate the client's existing enterprise software landscape (Glean, OpenSearch, AWS, Azure) and architect the solution around their chosen stack rather than forcing a proprietary platform.",
+  },
+];
 
 export default function PartnershipsClient({
-  heroContent = {
-    badge: "Partnerships",
-    title: "Grow the AI<br />Engineering <span class=\"text-[#00C6FF]\">Ecosystem</span> With Us",
-    subtitle: "We partner with frameworks, cloud providers, universities and incubators to bring AI Frontier, our labs, and our community further — together.",
-    ctaText: "Become a Partner →",
-    ctaLink: "#partner-inquiry",
-  },
+  heroContent,
   structuredData,
-  aeoQuestion,
-  aeoAnswer,
-  techStack
 }: {
   heroContent?: any;
   structuredData?: string;
-  aeoQuestion?: string;
-  aeoAnswer?: string;
-  techStack?: string[];
 }) {
-  const [modalOpen, setModalOpen] = useState(false);
   const [form, setForm] = useState({
-    companyName: '',
-    contactPerson: '',
-    email: '',
-    website: '',
-    partnershipType: 'Ecosystem Partner',
-    message: ''
+    companyName: "",
+    contactPerson: "",
+    email: "",
+    website: "",
+    partnerCategory: "Enterprise AI Platform Vendor",
+    message: "",
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-
-  const heroStats = [
-    { value: '4', label: 'Partnership Types' },
-    { value: '2026', label: 'Program Launch' },
-    { value: '1', label: 'Flagship Event' },
-    { value: '∞', label: 'Long-Term Focus' },
-  ];
-
-  const partnerTypes = [
-    { tag: 'EC', title: 'Ecosystem Partners', desc: 'Frameworks and platforms like PyTorch, AWS and NVIDIA collaborating on content and events.' },
-    { tag: 'UN', title: 'University Partners', desc: 'Departments and student communities bringing AI engineering to the next generation.' },
-    { tag: 'IN', title: 'Startups & Incubators', desc: 'Early-stage AI companies looking for community, visibility and technical talent.' },
-    { tag: 'ENT', title: 'Enterprise Partners', desc: 'Companies exploring production AI adoption through roundtables and workshops.' },
-  ];
-
-  const colorPalette = ['#EE4C2C', '#4285F4', '#FF9900', '#76B900', '#00C6FF', '#9333EA', '#007BFF', '#7C3AED', '#E11D48', '#10B981'];
-  const getPartnerColor = (name: string, index: number) => {
-    const knownColors: Record<string, string> = {
-      'PyTorch': '#EE4C2C',
-      'GDG': '#4285F4',
-      'AWS': '#FF9900',
-      'NVIDIA': '#76B900',
-      'Walkover': '#00C6FF',
-      'IDFC': '#9333EA',
-      'Incubators': '#007BFF',
-      'Universities': '#7C3AED',
-    };
-    return knownColors[name] || colorPalette[index % colorPalette.length];
-  };
-
-  const ecosystem = (techStack && techStack.length > 0)
-    ? techStack.map((name, i) => ({ name, color: getPartnerColor(name, i) }))
-    : [
-        { name: 'PyTorch', color: '#EE4C2C' },
-        { name: 'GDG', color: '#4285F4' },
-        { name: 'AWS', color: '#FF9900' },
-        { name: 'NVIDIA', color: '#76B900' },
-        { name: 'Walkover', color: '#00C6FF' },
-        { name: 'IDFC', color: '#9333EA' },
-        { name: 'Incubators', color: '#007BFF' },
-        { name: 'Universities', color: '#7C3AED' },
-      ];
-
-  const steps = [
-    { n: '1', title: 'Introduce', desc: 'Tell us who you are and what you’re hoping to build with the community.' },
-    { n: '2', title: 'Align', desc: 'We shape a partnership that fits both your goals and our roadmap.' },
-    { n: '3', title: 'Activate', desc: 'Show up at AI Frontier, a meetup, or a labs collaboration.' },
-    { n: '4', title: 'Grow', desc: 'We revisit and expand the partnership as the community grows.' },
-  ];
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.companyName || !form.contactPerson || !form.email) {
-      setErrorMsg('Please fill in required fields.');
+      setErrorMsg("Please fill in required fields.");
       return;
     }
     setSubmitting(true);
-    setErrorMsg('');
+    setErrorMsg("");
     try {
       await addDoc(collection(db, "partnership_inquiries"), {
         ...form,
-        status: 'new',
-        createdAt: serverTimestamp()
+        status: "new",
+        createdAt: serverTimestamp(),
       });
       setSubmitted(true);
-      setTimeout(() => {
-        setModalOpen(false);
-        setSubmitted(false);
-        setForm({ companyName: '', contactPerson: '', email: '', website: '', partnershipType: 'Ecosystem Partner', message: '' });
-      }, 2000);
+      setForm({
+        companyName: "",
+        contactPerson: "",
+        email: "",
+        website: "",
+        partnerCategory: "Enterprise AI Platform Vendor",
+        message: "",
+      });
     } catch (err: any) {
-      setErrorMsg('Submission error: ' + err.message);
-    }
-    setSubmitting(false);
-  };
-
-  const defaultSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Botmartz Ecosystem & University Partnerships",
-    "description": "Collaborate with Botmartz on AI Frontier, hackathons, open-source AI engineering labs, and university developer programs.",
-    "url": "https://www.botmartz.com/partnerships",
-    "mainEntity": {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": aeoQuestion || "How can organizations partner with Botmartz?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": aeoAnswer || "Organizations can partner with Botmartz as Ecosystem Partners (frameworks/cloud providers), University Partners (student programs/research), Startup & Incubator Partners, or Enterprise Partners for workshops, AI Frontier sponsorships, and open-source collaborations."
-          }
-        }
-      ]
+      console.error(err);
+      setErrorMsg("Failed to submit inquiry. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
-    <div className="bg-[#F5F8FC] min-h-screen font-sans text-[#0B1220]">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: structuredData ? structuredData : JSON.stringify(defaultSchema)
-        }}
-      />
-      {/* ── HERO SECTION ── */}
-      <div className="bg-[#060C1F] relative overflow-hidden pt-24 pb-16 px-6 sm:px-10 lg:pt-28 lg:pb-20">
-        <div 
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: 'linear-gradient(rgba(0,198,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,198,255,0.06) 1px, transparent 1px)',
-            backgroundSize: '44px 44px',
-            maskImage: 'radial-gradient(ellipse 80% 60% at 65% 30%, black, transparent)',
-            WebkitMaskImage: 'radial-gradient(ellipse 80% 60% at 65% 30%, black, transparent)'
-          }}
+    <div className="min-h-screen bg-[#050B14] text-white antialiased">
+      {structuredData && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: structuredData }}
         />
-        <div className="relative max-w-[1240px] mx-auto">
-          <div className="font-semibold text-[12.5px] text-[#5B6B85] mb-6 tracking-wide flex items-center gap-2">
-            <Link href="/" className="hover:text-white transition-colors">Home</Link>
-            <span>›</span>
-            <span>Company</span>
-            <span>›</span>
-            <span className="text-[#00C6FF]">Partnerships</span>
+      )}
+
+      {/* ── 1. HERO SECTION ── */}
+      <section className="relative pt-[130px] pb-[90px] overflow-hidden border-b border-white/10">
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[140px] rounded-full pointer-events-none" />
+        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0052FF]/15 blur-[160px] rounded-full pointer-events-none" />
+
+        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#00B8F0]/10 border border-[#00B8F0]/30 text-[#00B8F0] font-mono text-xs uppercase tracking-widest mb-6 font-semibold">
+            <Sparkles size={13} /> Enterprise AI Ecosystem
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
-            <div>
-              <div className="font-bold text-[12px] tracking-[0.1em] text-[#00C6FF] uppercase">
-                {heroContent.badge || "Partnerships"}
-              </div>
-              <h1 
-                className="font-extrabold text-[clamp(32px,4.5vw,44px)] leading-[1.15] text-white mt-4"
-                dangerouslySetInnerHTML={{ __html: heroContent.title || 'Grow the AI<br />Engineering <span class="text-[#00C6FF]">Ecosystem</span> With Us' }}
-              />
-              <p className="font-medium text-[14.5px] sm:text-[15.5px] leading-[1.7] text-[#8FA3C4] mt-4.5 max-w-[480px]">
-                {heroContent.subtitle || "We partner with frameworks, cloud providers, universities and incubators to bring AI Frontier, our labs, and our community further — together."}
-              </p>
-              <div className="flex flex-wrap gap-3.5 mt-7">
-                <button 
-                  onClick={() => setModalOpen(true)}
-                  className="inline-flex items-center gap-2 bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] transition-all cursor-pointer"
-                >
-                  {heroContent.ctaText || "Become a Partner →"}
-                </button>
-                <Link 
-                  href="/community/events/ai-frontier-2026" 
-                  className="inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/20 text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] transition-all"
-                >
-                  Sponsor AI Frontier
-                </Link>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3.5">
-              {heroStats.map((s, idx) => (
-                <div 
-                  key={idx}
-                  className="bg-white/[0.04] border border-white/10 rounded-[14px] p-5 backdrop-blur-sm"
-                >
-                  <div className="font-extrabold text-[26px] sm:text-[30px] text-[#00C6FF] leading-none">
-                    {s.value}
-                  </div>
-                  <div className="font-semibold text-[12px] sm:text-[13px] text-[#8FA3C4] mt-1.5">
-                    {s.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── FOUR KINDS OF PARTNERSHIPS ── */}
-      <div className="max-w-[1240px] mx-auto pt-16 px-6 sm:px-10">
-        <div className="text-center max-w-[640px] mx-auto mb-10">
-          <div className="font-bold text-[12px] tracking-[0.1em] text-[#007BFF] uppercase">
-            Ways to Partner
-          </div>
-          <h2 className="font-extrabold text-[28px] sm:text-[32px] leading-[1.3] text-[#0B1220] mt-3">
-            Four Kinds of Partnerships
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {partnerTypes.map((p, idx) => (
-            <div 
-              key={idx}
-              className="bg-white border border-[#E7ECF3] rounded-[14px] p-5 sm:p-6 flex flex-col gap-2.5 shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div className="w-[34px] h-[34px] rounded-[9px] bg-[#E8F2FF] flex items-center justify-center font-bold text-[10.5px] text-[#007BFF]">
-                {p.tag}
-              </div>
-              <div className="font-bold text-[15px] text-[#0B1220] mt-1">
-                {p.title}
-              </div>
-              <div className="font-medium text-[13px] leading-[1.55] text-[#5B6B85]">
-                {p.desc}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ── ECOSYSTEM WE WORK WITH ── */}
-      <div className="max-w-[1240px] mx-auto pt-14 px-6 sm:px-10 text-center">
-        <div className="font-bold text-[11.5px] tracking-[0.08em] text-[#007BFF] uppercase">
-          Ecosystem We Work With
-        </div>
-        <div className="flex justify-center items-center gap-7 flex-wrap mt-5">
-          {ecosystem.map((e, idx) => (
-            <span key={idx} className="font-bold text-[13.5px] text-[#3A4459] flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full" style={{ background: e.color }}></span>
-              {e.name}
+          <h1 className="text-[clamp(36px,5vw,60px)] font-bold font-heading tracking-tight leading-[1.1] max-w-4xl mb-6">
+            We Work Across the <br />
+            <span className="bg-gradient-to-r from-[#00B8F0] via-[#0066FF] to-[#60A5FA] bg-clip-text text-transparent">
+              Modern AI Ecosystem.
             </span>
-          ))}
+          </h1>
+
+          <p className="text-lg sm:text-xl text-[#8A9EB0] max-w-3xl leading-relaxed mb-10">
+            We design solutions around client requirements rather than forcing every problem into a single technology stack. We partner and integrate across leading enterprise AI platforms, search engines, vector databases, and cloud providers.
+          </p>
+
+          <div className="flex flex-wrap gap-4 items-center">
+            <a
+              href="#partner-inquiry"
+              className="inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white px-7 py-3.5 rounded-xl text-[15px] font-semibold transition-all shadow-[0_4px_20px_rgba(0,102,255,0.4)]"
+            >
+              Discuss a Partnership <ArrowRight className="w-4 h-4" />
+            </a>
+            <TrackedLink
+              href="/implementation"
+              eventName="button_click"
+              eventData={{ button_name: "partners_view_implementation" }}
+              className="inline-flex items-center gap-2 border border-slate-700 text-white hover:border-[#00B8F0] hover:text-[#00B8F0] px-7 py-3.5 rounded-xl text-[15px] font-semibold transition-all hover:bg-white/5"
+            >
+              Our Implementation Model ↓
+            </TrackedLink>
+          </div>
         </div>
-      </div>
+      </section>
 
-      {/* ── HOW IT WORKS STEPS ── */}
-      <div className="max-w-[1240px] mx-auto mt-16 px-6 sm:px-10">
-        <div className="bg-[#060C1F] rounded-[18px] p-8 sm:p-11 relative overflow-hidden shadow-xl">
-          <div 
-            className="absolute w-[300px] h-[300px] rounded-full left-[-80px] bottom-[-120px] pointer-events-none"
-            style={{ background: 'radial-gradient(circle, rgba(0,123,255,0.2), transparent 70%)' }}
-          />
-          <div className="relative z-10">
-            <div className="font-bold text-[11.5px] tracking-[0.08em] text-[#00C6FF] uppercase">
-              How It Works
+      {/* ── 2. ECOSYSTEM SPHERES ── */}
+      <section className="py-24 bg-[#070E1B] relative border-b border-white/10">
+        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="font-mono text-xs tracking-[0.14em] text-[#00B8F0] uppercase mb-3 font-semibold">
+              TECHNOLOGY STACK COVERAGE
             </div>
-            <div className="font-extrabold text-[26px] sm:text-[28px] text-white mt-2.5">
-              From Conversation to Collaboration
-            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4 text-white">
+              The 4 Technology Integration Spheres
+            </h2>
+            <p className="text-[#8A9EB0] text-base sm:text-lg">
+              How we match client requirements to proven enterprise platforms and retrieval architectures.
+            </p>
+          </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8 pt-4 border-t border-white/10">
-              {steps.map((step, idx) => (
-                <div key={idx} className="flex flex-col gap-3">
-                  <div className="w-10 h-10 rounded-full border border-[#00C6FF]/40 bg-[#00C6FF]/10 flex items-center justify-center font-bold text-[13px] text-[#00C6FF]">
-                    {step.n}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {ECOSYSTEM_SPHERES.map((sphere, idx) => (
+              <div
+                key={idx}
+                className="bg-[#0B1524]/90 border border-white/10 rounded-3xl p-8 hover:border-[#00B8F0]/40 transition-all duration-300 shadow-xl flex flex-col justify-between"
+              >
+                <div>
+                  <div className="inline-block px-3 py-1 rounded-full bg-[#0066FF]/15 border border-[#0066FF]/30 text-[#60A5FA] font-mono text-xs uppercase tracking-wider mb-4">
+                    {sphere.badge}
                   </div>
-                  <div className="font-bold text-[14.5px] text-white">
-                    {step.title}
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    {sphere.category}
+                  </h3>
+                  <div className="text-xs font-mono text-[#00B8F0] mb-4">
+                    {sphere.tagline}
                   </div>
-                  <div className="font-medium text-[12.5px] leading-[1.55] text-[#7C8CAD]">
-                    {step.desc}
+                  <p className="text-sm text-[#8A9EB0] leading-relaxed mb-6">
+                    {sphere.desc}
+                  </p>
+
+                  <div className="space-y-3 pt-4 border-t border-white/10">
+                    {sphere.platforms.map((p, i) => (
+                      <div key={i} className="p-3.5 rounded-xl bg-[#050B14] border border-white/5">
+                        <div className="text-xs font-bold text-white mb-0.5">{p.name}</div>
+                        <div className="text-[11px] text-[#8A9EB0] leading-relaxed">{p.role}</div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── HAVE A PARTNERSHIP IN MIND CTA ── */}
-      <div className="max-w-[1240px] mx-auto my-14 pb-22 px-6 sm:px-10">
-        <div className="bg-white border border-[#E7ECF3] rounded-[16px] p-7 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-sm">
-          <div className="flex items-center gap-5">
-            <div className="w-[64px] h-[64px] rounded-full bg-[#E8F2FF] flex items-center justify-center font-bold text-[20px] text-[#007BFF] shrink-0">
-              ◇
-            </div>
-            <div>
-              <div className="font-bold text-[18px] text-[#0B1220]">
-                Have a Partnership in Mind?
               </div>
-              <div className="font-medium text-[13.5px] leading-[1.6] text-[#5B6B85] mt-1.5">
-                Tell us about your organization and what you'd like to build together.
-              </div>
-            </div>
+            ))}
           </div>
-          <button 
-            onClick={() => setModalOpen(true)}
-            className="font-bold text-[13.5px] text-white bg-[#007BFF] hover:bg-[#0069DB] px-6 py-3.5 rounded-[9px] shrink-0 transition-colors text-center shadow-md cursor-pointer"
-          >
-            Start a Conversation →
-          </button>
-        </div>
-      </div>
 
-      {/* ── PARTNERSHIP INQUIRY MODAL ── */}
-      {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-[16px] border border-[#E7ECF3] p-6 sm:p-8 max-w-[520px] w-full relative shadow-2xl animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
-            <button
-              onClick={() => { setModalOpen(false); setSubmitted(false); }}
-              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#F1F4F9] text-[#5B6B85] hover:bg-[#E2E8F0] font-bold text-sm flex items-center justify-center transition-colors"
-            >
-              ✕
-            </button>
+        </div>
+      </section>
+
+      {/* ── 3. COLLABORATION MODELS ── */}
+      <section className="py-24 bg-[#050B14] relative border-b border-white/10">
+        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="font-mono text-xs tracking-[0.14em] text-[#00B8F0] uppercase mb-3 font-semibold">
+              HOW WE COLLABORATE
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4 text-white">
+              Partner Engagement Models
+            </h2>
+            <p className="text-[#8A9EB0] text-base sm:text-lg">
+              We collaborate with enterprise software vendors, consultancies, and systems integrators.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {COLLABORATION_MODELS.map((model, i) => (
+              <div
+                key={i}
+                className="bg-[#091222] border border-white/10 rounded-2xl p-7 hover:border-white/25 transition-all"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#0066FF]/20 border border-[#0066FF]/40 text-[#60A5FA] flex items-center justify-center font-bold font-mono text-sm mb-5">
+                  0{i + 1}
+                </div>
+                <h3 className="text-lg font-bold text-white mb-3">
+                  {model.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-[#8A9EB0] leading-relaxed">
+                  {model.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── 4. PARTNERSHIP INQUIRY FORM ── */}
+      <section id="partner-inquiry" className="py-24 bg-[#070E1B] relative">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="bg-[#0B1524] border border-white/10 rounded-3xl p-8 sm:p-12 shadow-2xl">
+            <div className="text-center mb-8">
+              <div className="font-mono text-xs text-[#00B8F0] uppercase tracking-wider font-semibold mb-2">
+                ECOSYSTEM COLLABORATION
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+                Partner with Botmartz
+              </h2>
+              <p className="text-sm text-[#8A9EB0]">
+                Are you an enterprise AI platform vendor, vector search company, or systems integrator looking for implementation and engineering execution? Let's connect.
+              </p>
+            </div>
 
             {submitted ? (
-              <div className="py-8 text-center">
-                <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto text-xl font-bold mb-3">✓</div>
-                <h3 className="text-xl font-bold text-[#0B1220]">Inquiry Submitted!</h3>
-                <p className="text-sm text-[#5B6B85] mt-1">Our partnerships team will reach out to align on collaboration opportunities soon.</p>
+              <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center text-emerald-300">
+                <CheckCircle2 size={32} className="mx-auto mb-3 text-emerald-400" />
+                <h3 className="text-lg font-bold text-white mb-1">Partnership Inquiry Received</h3>
+                <p className="text-xs text-emerald-200/90">
+                  Our partnerships and architecture team will review your message and reach out within 1 business day.
+                </p>
               </div>
             ) : (
-              <>
-                <div className="font-bold text-[11px] tracking-[0.08em] text-[#007BFF] uppercase">
-                  Let's Collaborate
-                </div>
-                <h3 className="font-extrabold text-[20px] text-[#0B1220] mt-1">
-                  Start a Partnership Conversation
-                </h3>
-                {errorMsg && <div className="text-red-500 text-xs mt-2 font-semibold">{errorMsg}</div>}
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {errorMsg && (
+                  <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-xs text-rose-300">
+                    {errorMsg}
+                  </div>
+                )}
 
-                <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-[#3A4459] mb-1">Company / Organization *</label>
+                    <label className="block text-xs font-mono text-slate-300 uppercase mb-1.5">Company / Organization *</label>
                     <input
                       type="text"
                       required
-                      placeholder="Acme AI Corp"
+                      placeholder="e.g. Glean / Qdrant / Acme Corp"
                       value={form.companyName}
                       onChange={(e) => setForm({ ...form, companyName: e.target.value })}
-                      className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[8px] px-3.5 py-2.5 text-sm font-medium text-[#0B1220] outline-none focus:border-[#007BFF] transition-colors"
+                      className="w-full bg-[#050B14] border border-white/15 rounded-xl px-4 py-3 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#00B8F0]"
                     />
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-xs font-bold text-[#3A4459] mb-1">Contact Name *</label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="John Smith"
-                        value={form.contactPerson}
-                        onChange={(e) => setForm({ ...form, contactPerson: e.target.value })}
-                        className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[8px] px-3.5 py-2.5 text-sm font-medium text-[#0B1220] outline-none focus:border-[#007BFF] transition-colors"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-[#3A4459] mb-1">Work Email *</label>
-                      <input
-                        type="email"
-                        required
-                        placeholder="john@acme.ai"
-                        value={form.email}
-                        onChange={(e) => setForm({ ...form, email: e.target.value })}
-                        className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[8px] px-3.5 py-2.5 text-sm font-medium text-[#0B1220] outline-none focus:border-[#007BFF] transition-colors"
-                      />
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-xs font-bold text-[#3A4459] mb-1">Website URL</label>
-                      <input
-                        type="text"
-                        placeholder="https://acme.ai"
-                        value={form.website}
-                        onChange={(e) => setForm({ ...form, website: e.target.value })}
-                        className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[8px] px-3.5 py-2.5 text-sm font-medium text-[#0B1220] outline-none focus:border-[#007BFF] transition-colors"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-[#3A4459] mb-1">Partnership Type</label>
-                      <select
-                        value={form.partnershipType}
-                        onChange={(e) => setForm({ ...form, partnershipType: e.target.value })}
-                        className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[8px] px-3.5 py-2.5 text-sm font-medium text-[#0B1220] outline-none focus:border-[#007BFF] transition-colors"
-                      >
-                        <option value="Ecosystem Partner">Ecosystem Partner</option>
-                        <option value="University Partner">University Partner</option>
-                        <option value="Startups & Incubators">Startups & Incubators</option>
-                        <option value="Enterprise Partner">Enterprise Partner</option>
-                        <option value="Conference Sponsorship">Conference Sponsorship</option>
-                      </select>
-                    </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-[#3A4459] mb-1">Collaboration Ideas / Message</label>
-                    <textarea
-                      rows={3}
-                      placeholder="Tell us what you'd like to build or host together..."
-                      value={form.message}
-                      onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      className="w-full bg-[#F8FAFC] border border-[#E2E8F0] rounded-[8px] px-3.5 py-2.5 text-sm font-medium text-[#0B1220] outline-none focus:border-[#007BFF] transition-colors resize-none"
+                    <label className="block text-xs font-mono text-slate-300 uppercase mb-1.5">Contact Person *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Your full name"
+                      value={form.contactPerson}
+                      onChange={(e) => setForm({ ...form, contactPerson: e.target.value })}
+                      className="w-full bg-[#050B14] border border-white/15 rounded-xl px-4 py-3 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#00B8F0]"
                     />
                   </div>
+                </div>
 
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="w-full mt-2 font-bold text-[13.5px] text-white bg-[#007BFF] hover:bg-[#0069DB] py-3 rounded-[8px] shadow-md transition-all flex items-center justify-center gap-2"
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-mono text-slate-300 uppercase mb-1.5">Work Email *</label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="you@company.com"
+                      value={form.email}
+                      onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      className="w-full bg-[#050B14] border border-white/15 rounded-xl px-4 py-3 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#00B8F0]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-mono text-slate-300 uppercase mb-1.5">Website</label>
+                    <input
+                      type="url"
+                      placeholder="https://company.com"
+                      value={form.website}
+                      onChange={(e) => setForm({ ...form, website: e.target.value })}
+                      className="w-full bg-[#050B14] border border-white/15 rounded-xl px-4 py-3 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#00B8F0]"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-mono text-slate-300 uppercase mb-1.5">Partnership Category</label>
+                  <select
+                    value={form.partnerCategory}
+                    onChange={(e) => setForm({ ...form, partnerCategory: e.target.value })}
+                    className="w-full bg-[#050B14] border border-white/15 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#00B8F0]"
                   >
-                    {submitting ? 'Submitting...' : 'Send Inquiry →'}
-                  </button>
-                </form>
-              </>
+                    <option value="Enterprise AI Platform Vendor">Enterprise AI Platform Vendor (e.g. Glean Partner Network)</option>
+                    <option value="Vector Search / Retrieval Infrastructure">Vector Search / Retrieval Engine (OpenSearch, Qdrant, Weaviate, Elastic)</option>
+                    <option value="Cloud / Infrastructure Provider">Cloud / Infrastructure Provider (AWS, GCP, Azure)</option>
+                    <option value="Consultancy / Systems Integrator">Consultancy / Systems Integrator</option>
+                    <option value="Enterprise Client Implementation">Enterprise Client Implementation</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-mono text-slate-300 uppercase mb-1.5">How Can We Collaborate?</label>
+                  <textarea
+                    rows={4}
+                    placeholder="Tell us about your platform, co-delivery opportunities, or implementation requirements..."
+                    value={form.message}
+                    onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    className="w-full bg-[#050B14] border border-white/15 rounded-xl px-4 py-3 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#00B8F0]"
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-[0_4px_20px_rgba(0,102,255,0.4)] cursor-pointer disabled:opacity-60"
+                >
+                  {submitting ? "Submitting Inquiry..." : "Submit Partnership Inquiry →"}
+                </button>
+              </form>
             )}
+
           </div>
+
         </div>
-      )}
+      </section>
+
     </div>
   );
 }

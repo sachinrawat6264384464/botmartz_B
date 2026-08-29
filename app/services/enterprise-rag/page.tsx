@@ -38,45 +38,44 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const DEFAULT_CONTENT = {
   hero: {
-    badge: "SERVICES / ENTERPRISE RAG",
-    title: "Stop Building Chatbots. Start Building Reliable Enterprise Knowledge Systems.",
-    subtitle: "We help mid-market companies turn scattered documents, policies and SOPs into accurate, production-ready RAG systems in 3 to 6 weeks. Grounded answers. Verifiable citations. Zero hype.",
+    badge: "SOLUTIONS / KNOWLEDGE & SEARCH SYSTEMS",
+    title: "Stop Building Fragile Chatbots. Start Building Verified Knowledge & Search Systems.",
+    subtitle: "We help organizations turn complex documents, policies, SOPs, and scattered databases into accurate, production-ready search and RAG systems. Grounded answers. Verifiable citations. Zero guessing.",
     ctaText: "BOOK AN ARCHITECTURE REVIEW →",
     ctaLink: "https://cal.com/botmartz-ai/20min",
-    secondaryCtaText: "See Our Pricing & Process",
-    secondaryCtaLink: "#process",
+    secondaryCtaText: "See Reference Implementation",
+    secondaryCtaLink: "/work/labs/insurance-intelligence",
   },
   problemSolution: {
-    title: "Why Most RAG Pilots Die (And How We Survive)",
-    trap: "Most AI agencies build you a six-month agentic platform that looks great in a demo and falls apart in production. Complexity gets added before accuracy gets proven.",
-    approach: "We focus relentlessly on traditional RAG first. We ingest your PDFs, Confluence and SharePoint data, establish hybrid retrieval, and enforce strict citations. You get a working MVP in weeks. We only layer on autonomous agents once your knowledge base is proven and reliable."
+    title: "Why Most RAG Pilots Fail in Production (And How We Engineer Reliability)",
+    trap: "Most generic AI agencies build ungrounded chat wrappers using simple prompt stuffing. In production, these break down over multi-page tables, hallucinate missing clauses, and fail to respect document permissions.",
+    approach: "We engineer deterministic Knowledge AI Systems. We implement layout-aware table extraction, hybrid dense/sparse search, cross-encoder reranking, and automated RAGAS evaluation harnesses. If evidence is absent, the system refuses to guess."
   },
   features: [
-    { iconName: "Search", title: "Hybrid Search & Reranking", desc: "We fuse vector and keyword search, then pass results through advanced rerankers to maximise contextual precision on your specific corpus." },
-    { iconName: "ShieldCheck", title: "Verifiable Source Citations", desc: "Every answer links back to the exact paragraph in your internal documents. Where the evidence isn't there, the system abstains rather than guesses. If it can't cite it, it won't say it." },
-    { iconName: "BarChart", title: "Built-in Evaluation", desc: "We implement evaluation harnesses (RAGAS and custom benchmark sets) from day one to measure faithfulness and answer relevance. You get hard metrics, not guesses." },
-    { iconName: "Lock", title: "Enterprise Security & DPDP Ready", desc: "Role-Based Access Control, secure deployment options, and alignment with applicable data protection regulations including DPDP." }
+    { iconName: "Search", title: "Hybrid Search & Cross-Encoder Reranking", desc: "We fuse vector semantic search with BM25 keyword matching, then pass results through cross-encoders to maximize contextual precision on your exact corpus." },
+    { iconName: "ShieldCheck", title: "Verifiable Source Citations", desc: "Every generated claim links directly to the exact paragraph and page in your internal documents. If evidence is missing, the system refrains from answering." },
+    { iconName: "BarChart", title: "Automated Evaluation Harnesses", desc: "We build automated evaluation benchmarks (RAGAS) from day one to quantify faithfulness, context recall@k, and answer relevancy on real business queries." },
+    { iconName: "Lock", title: "Permission-Aware RBAC & Security", desc: "Strict document-level access control, private VPC deployment options, and alignment with data protection and governance frameworks." }
   ],
   process: [
-    { step: "01", title: "Architecture Review", duration: "1–2 Days", cost: "Free", desc: "We review your actual document sources and define a clear architecture decision tree before writing any code. You leave with a recommendation on whether a RAG pilot is technically and commercially justified, even if the answer is no." },
-    { step: "02", title: "Enterprise Knowledge AI Pilot", duration: "3–4 Weeks", cost: "Starting at $5,000 (≈ ₹4.75L)", desc: "We ingest your core documents, set up hybrid retrieval and reranking, enforce citations, and deliver a secure web interface. You receive a working application, an evaluation benchmark, an accuracy report, and a production roadmap." },
-    { step: "03", title: "Production Hardening", duration: "Add 2–4 Weeks", cost: "$15K – $25K+ (≈ ₹14.2L+)", desc: "We scale the pilot into a full enterprise system with advanced observability, human-in-the-loop feedback, source integrations and strict data controls." },
-    { step: "04", title: "Managed AI Engineering", duration: "Ongoing", cost: "From $2,000/month (≈ ₹1.9L/month)", desc: "Retrieval optimisation, evaluation runs, ingestion updates, model and prompt tuning, monitoring, and a monthly architecture review. For teams running the system in production." }
+    { step: "01", title: "Architecture Review", duration: "1–2 Days", cost: "Collaborative", desc: "We review your document sources, evaluate search platforms (OpenSearch, Qdrant, Weaviate, Elastic), and define a clear architecture decision tree before writing any code." },
+    { step: "02", title: "Knowledge Search MVP", duration: "3–4 Weeks", cost: "Sprint-Based", desc: "We ingest core documents, set up hybrid retrieval and reranking, enforce citation provenance, and deliver a secure working application with an evaluation benchmark report." },
+    { step: "03", title: "Production Hardening", duration: "Add 2–4 Weeks", cost: "Enterprise Scope", desc: "We scale the MVP into full enterprise production with observability, human-in-the-loop validation, connector sync, and strict RBAC controls." },
+    { step: "04", title: "Managed Optimization", duration: "Ongoing", cost: "Monthly Retainer", desc: "Retrieval drift detection, evaluation runs, embedding fine-tuning, prompt optimization, and monthly architecture reviews for production systems." }
   ],
   pricingNotes: [
-    "Once your traditional RAG is hardened and trusted, we extend the system with multi-step agentic workflows and knowledge-graph retrieval where the data relationships justify it.",
-    "Note: We understand budgets vary. If this pricing does not align with your current budget, we completely understand and prefer to be transparent upfront to respect your time."
+    "Stack-Neutral Engineering: We select and implement retrieval backends (OpenSearch, Qdrant, Weaviate, Elastic, pgvector) based strictly on client scale and infrastructure requirements."
   ],
   useCases: [
-    { iconName: "HelpCircle", title: "Support Ticket Deflection", description: "Give support agents instant, cited answers drawn from thousands of past tickets and manuals, so resolution time drops instead of escalations rising." },
-    { iconName: "Briefcase", title: "BFSI & Compliance", description: "Navigate heavy regulatory documents, insurance policies and claims guidelines with answers traced to the exact clause they came from." },
+    { iconName: "Briefcase", title: "Insurance & Regulatory Compliance", description: "Navigate dense insurance policy forms, state filings, and compliance guidelines with verified paragraph citations and clause comparison." },
+    { iconName: "HelpCircle", title: "Support Ticket Deflection", description: "Give support engineers instant, cited answers drawn from thousands of technical manuals, so resolution time drops safely." },
     { iconName: "LayoutTemplate", title: "Manufacturing & Engineering SOPs", description: "Turn dense technical manuals and standard operating procedures into an accessible, searchable interface your floor teams will actually use." },
-    { iconName: "FileSearch", title: "Legal & Research Knowledge", description: "Surface precedent, internal memos, regulatory updates and research documentation without competing with the systems your teams already rely on." }
+    { iconName: "FileSearch", title: "Legal & Research Knowledge", description: "Surface precedent, internal memos, regulatory updates and research documentation with strict confidentiality boundaries." }
   ],
-  techStack: ["LlamaIndex", "PostgreSQL", "pgvector", "FastAPI", "RAGAS", "Redis", "Docker", "AWS"],
+  techStack: ["OpenSearch", "Qdrant", "Weaviate", "Elastic", "LlamaIndex", "FastAPI", "RAGAS", "AWS", "Azure", "GCP"],
   cta: {
-    title: "Let's Map Out Your RAG Architecture.",
-    subtitle: "Bring your toughest document challenge. We'll show you exactly how to structure ingestion, retrieval and evaluation to get it into production — and tell you honestly if it isn't worth building.",
+    title: "Let's Map Out Your Knowledge & Search Architecture.",
+    subtitle: "Bring your toughest document challenge. We'll show you exactly how to structure ingestion, retrieval, and evaluation to get it into production reliably.",
     buttonText: "Book Your Architecture Review →"
   },
   structuredData: JSON.stringify({

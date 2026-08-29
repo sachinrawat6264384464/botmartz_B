@@ -14,38 +14,44 @@ export type NavItem = { name: string; path: string; dropdown?: NavDropdownItem[]
 const DEFAULT_NAV_ITEMS: NavItem[] = [
   { name: "Home", path: "/" },
   {
-    name: "Services",
+    name: "Solutions",
     path: "/services",
     dropdown: [
-      { name: "Enterprise RAG", path: "/services/enterprise-rag" },
-      { name: "AI Agents", path: "/services/ai-agents" },
+      { name: "Enterprise AI Implementation", path: "/implementation" },
+      { name: "Knowledge & Search Systems", path: "/services/enterprise-rag" },
+      { name: "AI Agents & Automation", path: "/services/ai-agents" },
+      { name: "AI Integration & Platforms", path: "/services/integrations" },
+      { name: "Custom AI Applications", path: "/services/custom-ai-applications" },
     ],
   },
   {
-    name: "Work",
-    path: "/work",
+    name: "Industries",
+    path: "/industries",
+  },
+  {
+    name: "Implementation",
+    path: "/implementation",
+  },
+  {
+    name: "Labs",
+    path: "/work/labs",
     dropdown: [
-      { name: "Labs", path: "/work/labs" },
-      { name: "Open Source", path: "/work/open-source" },
+      { name: "Insurance Intelligence [Flagship]", path: "/work/labs/insurance-intelligence" },
+      { name: "Reference Implementations", path: "/work/labs" },
+      { name: "Open Source Projects", path: "/work/open-source" },
     ],
   },
   {
-    name: "Engineering Insights",
+    name: "Insights",
     path: "/insights",
   },
   {
-    name: "Gallery",
-    path: "/gallery",
+    name: "Partners",
+    path: "/partnerships",
   },
   {
-    name: "Community",
-    path: "/community",
-    dropdown: [
-      { name: "Events", path: "/community/events" },
-      { name: "Workshops", path: "/community/ai-accelerator-workshop" },
-      { name: "Botmartz Gallery", path: "/gallery" },
-      { name: "Discord & Forum", path: "https://discord.gg/k75ZpEnzp" },
-    ],
+    name: "Company",
+    path: "/about",
   },
 ];
 
@@ -59,38 +65,6 @@ export default function Navbar({
 }) {
   let rawItems = (navItems && navItems.length > 0) ? navItems : DEFAULT_NAV_ITEMS;
   
-  // Guarantee "Gallery" is always present in top navbar items
-  const hasGallery = rawItems.some(i => i.path === '/gallery' || i.name?.toLowerCase().includes('gallery'));
-  if (!hasGallery) {
-    const insightsIdx = rawItems.findIndex(i => i.path === '/insights');
-    if (insightsIdx !== -1) {
-      rawItems = [
-        ...rawItems.slice(0, insightsIdx + 1),
-        { name: "Gallery", path: "/gallery" },
-        ...rawItems.slice(insightsIdx + 1),
-      ];
-    } else {
-      rawItems = [...rawItems, { name: "Gallery", path: "/gallery" }];
-    }
-  }
-
-  // Guarantee "Botmartz Gallery" is present in Community dropdown
-  rawItems = rawItems.map(item => {
-    if (item.name === "Community" && item.dropdown) {
-      const hasDropGal = item.dropdown.some(d => d.path === '/gallery');
-      if (!hasDropGal) {
-        return {
-          ...item,
-          dropdown: [
-            ...item.dropdown,
-            { name: "Botmartz Gallery", path: "/gallery" }
-          ]
-        };
-      }
-    }
-    return item;
-  });
-
   const cleanItems = rawItems.map(item => ({
     ...item,
     path: item.path ? item.path.trim().replace(/\s+/g, '-').replace(/%20/g, '-') : item.path,
@@ -200,11 +174,11 @@ export default function Navbar({
               href="https://cal.com/botmartz-ai/20min"
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => trackEvent("button_click", { button_name: "navbar_book_discovery_desktop" })}
+              onClick={() => trackEvent("button_click", { button_name: "navbar_talk_to_architect_desktop" })}
               className="hidden sm:inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white text-[13px] font-bold px-5 py-2.5 rounded-lg shadow-[0_4px_14px_rgba(0,102,255,0.35)] transition-all hover:shadow-[0_4px_20px_rgba(0,102,255,0.5)] hover:-translate-y-px whitespace-nowrap"
             >
               <PhoneCall size={13} className="shrink-0" />
-              <span>Book a Discovery Call</span>
+              <span>Talk to an AI Architect</span>
               <ArrowRight size={13} className="shrink-0" />
             </a>
 
@@ -276,11 +250,11 @@ export default function Navbar({
               href="https://cal.com/botmartz-ai/20min"
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => { setMobileMenuOpen(false); trackEvent("button_click", { button_name: "navbar_book_discovery_mobile" }); }}
+              onClick={() => { setMobileMenuOpen(false); trackEvent("button_click", { button_name: "navbar_talk_to_architect_mobile" }); }}
               className="flex items-center justify-center gap-2 bg-[#0066FF] text-white font-bold py-4 rounded-xl text-base whitespace-nowrap"
             >
               <PhoneCall size={15} />
-              <span>Book a Discovery Call</span>
+              <span>Talk to an AI Architect</span>
               <ArrowRight size={15} />
             </a>
           </div>
