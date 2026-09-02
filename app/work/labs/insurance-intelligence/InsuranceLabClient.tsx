@@ -209,57 +209,59 @@ export default function InsuranceLabClient() {
   const currentScenario = SCENARIOS.find((s) => s.id === selectedScenarioId) || SCENARIOS[0];
 
   return (
-    <div className="min-h-screen bg-[#050B14] text-white antialiased">
+    <div className="min-h-screen bg-white text-slate-900 antialiased">
       
-      {/* ── 1. LAB HEADER ── */}
-      <section className="relative pt-[130px] pb-[70px] border-b border-white/10 overflow-hidden">
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[140px] rounded-full pointer-events-none" />
+      {/* ── 1. HERO SECTION (DARK THEME) ── */}
+      <section className="relative pt-[130px] pb-[80px] overflow-hidden bg-[#050B14] text-white border-b border-white/10">
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/12 blur-[140px] rounded-full pointer-events-none" />
         <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0052FF]/15 blur-[160px] rounded-full pointer-events-none" />
 
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          
+          {/* Breadcrumb / Badge */}
           <div className="flex flex-wrap items-center gap-3 mb-6">
             <Link href="/work/labs" className="text-xs font-mono text-[#8A9EB0] hover:text-[#00B8F0] transition-colors">
-              ← Back to Labs
+              ← Back to Labs Directory
             </Link>
-            <span className="text-xs text-white/20">/</span>
-            <span className="px-2.5 py-0.5 rounded-full bg-[#00B8F0]/15 border border-[#00B8F0]/30 text-[#00B8F0] font-mono text-[11px] uppercase tracking-widest font-bold">
+            <span className="text-slate-600">/</span>
+            <span className="font-mono text-xs px-2.5 py-0.5 rounded bg-[#00B8F0]/10 border border-[#00B8F0]/30 text-[#00B8F0] font-bold">
               [REFERENCE IMPLEMENTATION]
             </span>
-            <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-[11px] uppercase tracking-widest font-semibold">
-              Live Architecture
+            <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded font-semibold">
+              Live Interactive Architecture
             </span>
           </div>
 
-          <h1 className="text-[clamp(32px,4.5vw,56px)] font-bold font-heading tracking-tight leading-[1.15] max-w-4xl mb-6">
-            Insurance Intelligence: <br className="hidden sm:inline" />
-            <span className="bg-gradient-to-r from-[#00B8F0] via-[#38BDF8] to-[#60A5FA] bg-clip-text text-transparent">
-              Enterprise Knowledge &amp; Document Intelligence
+          <h1 className="text-[clamp(32px,4.5vw,56px)] font-bold font-heading tracking-tight leading-[1.1] max-w-4xl mb-6 text-white">
+            Insurance Policy Intelligence &amp; <br />
+            <span className="bg-gradient-to-r from-[#00B8F0] via-[#0066FF] to-[#60A5FA] bg-clip-text text-transparent">
+              Clause Discrepancy Engine.
             </span>
           </h1>
 
           <p className="text-base sm:text-lg text-[#8A9EB0] max-w-3xl leading-relaxed mb-8">
-            A production-grade reference implementation demonstrating how to turn dense insurance policies, endorsements, schedules, and regulatory filings into accurate, citation-grounded answers and side-by-side clause comparisons with zero hallucinations.
+            A production-style reference implementation demonstrating layout-aware multi-document policy comparison, endorsement discrepancy detection, exact paragraph citation grounding, and refusal guardrails.
           </p>
 
           {/* Quick Metrics Bar */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-5 rounded-2xl bg-[#091222] border border-white/10 shadow-lg">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-5 rounded-2xl bg-[#091222]/80 border border-white/10 backdrop-blur-md">
             <div>
-              <div className="text-[11px] font-mono text-[#00B8F0] uppercase tracking-wider">Faithfulness Metric</div>
+              <div className="text-[11px] font-mono text-[#00B8F0] uppercase tracking-wider font-semibold">RAGAS Precision</div>
               <div className="text-2xl font-bold text-white mt-0.5">98.4%</div>
-              <div className="text-[11px] text-[#64748B]">RAGAS Ground Truth Test</div>
+              <div className="text-[11px] text-[#64748B]">Context Faithfulness</div>
             </div>
             <div>
-              <div className="text-[11px] font-mono text-[#00B8F0] uppercase tracking-wider">Retrieval Recall@5</div>
+              <div className="text-[11px] font-mono text-[#00B8F0] uppercase tracking-wider font-semibold">Retrieval Recall@5</div>
               <div className="text-2xl font-bold text-white mt-0.5">96.2%</div>
               <div className="text-[11px] text-[#64748B]">Dense + BM25 Hybrid</div>
             </div>
             <div>
-              <div className="text-[11px] font-mono text-[#00B8F0] uppercase tracking-wider">Citation Strictness</div>
+              <div className="text-[11px] font-mono text-[#00B8F0] uppercase tracking-wider font-semibold">Citation Strictness</div>
               <div className="text-2xl font-bold text-white mt-0.5">Exact Paragraph</div>
               <div className="text-[11px] text-[#64748B]">Verifiable Provenance</div>
             </div>
             <div>
-              <div className="text-[11px] font-mono text-[#00B8F0] uppercase tracking-wider">Refusal Guardrail</div>
+              <div className="text-[11px] font-mono text-[#00B8F0] uppercase tracking-wider font-semibold">Refusal Guardrail</div>
               <div className="text-2xl font-bold text-white mt-0.5">Automated</div>
               <div className="text-[11px] text-[#64748B]">Zero-Evidence Refusal</div>
             </div>
@@ -267,21 +269,21 @@ export default function InsuranceLabClient() {
         </div>
       </section>
 
-      {/* ── 2. INTERACTIVE SIMULATOR SECTION ── */}
-      <section className="py-16 bg-[#070E1B] relative">
+      {/* ── 2. INTERACTIVE SIMULATOR SECTION (LIGHT THEME) ── */}
+      <section className="py-16 bg-[#F8FAFC] relative border-b border-slate-200">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Section Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
             <div>
-              <div className="font-mono text-xs text-[#00B8F0] uppercase tracking-wider font-semibold mb-2">
+              <div className="font-mono text-xs text-[#0066FF] uppercase tracking-wider font-bold mb-2">
                 INTERACTIVE REFERENCE SIMULATOR
               </div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-white">
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 font-heading">
                 Multi-Document Policy Analysis Engine
               </h2>
             </div>
-            <div className="text-xs text-[#8A9EB0] font-mono">
+            <div className="text-xs text-slate-600 font-mono">
               Select a benchmark test scenario below to inspect live analysis:
             </div>
           </div>
@@ -294,17 +296,17 @@ export default function InsuranceLabClient() {
                 onClick={() => setSelectedScenarioId(sc.id)}
                 className={`p-4 rounded-xl border text-left transition-all cursor-pointer ${
                   selectedScenarioId === sc.id
-                    ? "bg-[#0E1E38] border-[#00B8F0] shadow-[0_0_20px_rgba(0,184,240,0.15)]"
-                    : "bg-[#0A1322] border-white/10 hover:border-white/25 text-slate-300"
+                    ? "bg-white border-[#0066FF] shadow-md ring-1 ring-[#0066FF]"
+                    : "bg-white/80 border-slate-200 hover:border-slate-300 text-slate-700 shadow-sm"
                 }`}
               >
-                <div className="text-[10px] font-mono uppercase tracking-wider text-[#00B8F0] mb-1 font-semibold">
+                <div className="text-[10px] font-mono uppercase tracking-wider text-[#0066FF] mb-1 font-bold">
                   {sc.category}
                 </div>
-                <div className="text-sm font-bold text-white mb-2">
+                <div className="text-sm font-bold text-slate-900 mb-2">
                   {sc.name}
                 </div>
-                <div className="text-xs text-[#8A9EB0] line-clamp-2">
+                <div className="text-xs text-slate-600 line-clamp-2">
                   {sc.sampleQuery}
                 </div>
               </button>
@@ -312,20 +314,20 @@ export default function InsuranceLabClient() {
           </div>
 
           {/* Interactive Workspace Container */}
-          <div className="bg-[#0B1524] border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
+          <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
             
             {/* Top Workspace Bar: Active Documents */}
-            <div className="bg-[#050B14] p-4 sm:p-6 border-b border-white/10 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="bg-slate-50 p-4 sm:p-6 border-b border-slate-200 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-[#0066FF]/20 border border-[#0066FF]/40 text-[#60A5FA] flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-lg bg-blue-50 border border-blue-200 text-[#0066FF] flex items-center justify-center shrink-0">
                   <FileCheck size={20} />
                 </div>
                 <div>
-                  <div className="text-xs text-[#8A9EB0] font-mono">Ingested Policy Corpus (2 Sources)</div>
-                  <div className="text-sm font-bold text-white flex flex-wrap items-center gap-2">
-                    <span className="text-[#00B8F0]">{currentScenario.docA.name}</span>
-                    <span className="text-slate-600">↔</span>
-                    <span className="text-[#60A5FA]">{currentScenario.docB.name}</span>
+                  <div className="text-xs text-slate-500 font-mono font-semibold">Ingested Policy Corpus (2 Sources)</div>
+                  <div className="text-sm font-bold text-slate-900 flex flex-wrap items-center gap-2">
+                    <span className="text-[#0066FF]">{currentScenario.docA.name}</span>
+                    <span className="text-slate-400">↔</span>
+                    <span className="text-indigo-600">{currentScenario.docB.name}</span>
                   </div>
                 </div>
               </div>
@@ -343,8 +345,8 @@ export default function InsuranceLabClient() {
                     onClick={() => setActiveTab(t.id as any)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                       activeTab === t.id
-                        ? "bg-[#00B8F0] text-slate-950 font-bold"
-                        : "bg-white/5 text-[#8A9EB0] hover:text-white hover:bg-white/10"
+                        ? "bg-[#0066FF] text-white font-bold shadow-sm"
+                        : "bg-slate-200/70 text-slate-700 hover:text-slate-900 hover:bg-slate-200"
                     }`}
                   >
                     {t.label}
@@ -358,58 +360,58 @@ export default function InsuranceLabClient() {
               <div className="p-6 sm:p-8 space-y-6">
                 
                 {/* Query & Executive Summary Box */}
-                <div className="p-5 rounded-xl bg-[#070E1B] border border-white/10">
-                  <div className="text-xs font-mono text-[#00B8F0] uppercase tracking-wider font-semibold mb-1">
+                <div className="p-5 rounded-xl bg-slate-50 border border-slate-200">
+                  <div className="text-xs font-mono text-[#0066FF] uppercase tracking-wider font-bold mb-1">
                     Evaluated Natural Language Query
                   </div>
-                  <div className="text-base font-semibold text-white mb-3">
+                  <div className="text-base font-semibold text-slate-900 mb-3">
                     &ldquo;{currentScenario.sampleQuery}&rdquo;
                   </div>
-                  <div className="text-xs font-mono text-[#64748B] uppercase tracking-wider mb-1">
+                  <div className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-1 font-bold">
                     Synthesized Executive Analysis
                   </div>
-                  <p className="text-sm text-slate-300 leading-relaxed">
+                  <p className="text-sm text-slate-700 leading-relaxed">
                     {currentScenario.summary}
                   </p>
                 </div>
 
                 {/* Side-by-side Table of Clauses */}
                 <div className="space-y-4">
-                  <div className="text-xs font-mono text-[#8A9EB0] uppercase tracking-wider font-semibold">
+                  <div className="text-xs font-mono text-slate-600 uppercase tracking-wider font-bold">
                     Extracted Policy Clauses &amp; Cross-Document Variance:
                   </div>
 
                   {currentScenario.clauseComparison.map((clause, idx) => (
-                    <div key={idx} className="bg-[#070E1B] border border-white/10 rounded-xl p-5 hover:border-white/20 transition-all">
+                    <div key={idx} className="bg-slate-50 border border-slate-200 rounded-xl p-5 hover:border-slate-300 transition-all">
                       <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                        <div className="text-sm font-bold text-white font-mono flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#00B8F0]"></span>
+                        <div className="text-sm font-bold text-slate-900 font-mono flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#0066FF]"></span>
                           {clause.section}
                         </div>
                         <span className={`text-[11px] font-mono px-2.5 py-0.5 rounded-full border ${
                           clause.status === "discrepancy"
-                            ? "bg-amber-500/10 text-amber-300 border-amber-500/30"
+                            ? "bg-amber-100 text-amber-900 border-amber-300"
                             : clause.status === "exclusion_warning"
-                            ? "bg-rose-500/10 text-rose-300 border-rose-500/30"
-                            : "bg-emerald-500/10 text-emerald-300 border-emerald-500/30"
+                            ? "bg-rose-100 text-rose-900 border-rose-300"
+                            : "bg-emerald-100 text-emerald-900 border-emerald-300"
                         }`}>
                           {clause.status === "discrepancy" ? "Clause Variance Detected" : clause.status === "exclusion_warning" ? "Strict Exclusion Caveat" : "Terms Aligned"}
                         </span>
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div className="p-3.5 rounded-lg bg-[#050B14] border border-white/5">
-                          <div className="text-[10px] font-mono text-[#00B8F0] uppercase mb-1 font-semibold">{currentScenario.docA.name}</div>
-                          <p className="text-xs text-slate-300 italic leading-relaxed">&ldquo;{clause.docA_text}&rdquo;</p>
+                        <div className="p-3.5 rounded-lg bg-white border border-slate-200">
+                          <div className="text-[10px] font-mono text-[#0066FF] uppercase mb-1 font-bold">{currentScenario.docA.name}</div>
+                          <p className="text-xs text-slate-700 italic leading-relaxed">&ldquo;{clause.docA_text}&rdquo;</p>
                         </div>
-                        <div className="p-3.5 rounded-lg bg-[#050B14] border border-white/5">
-                          <div className="text-[10px] font-mono text-[#60A5FA] uppercase mb-1 font-semibold">{currentScenario.docB.name}</div>
-                          <p className="text-xs text-slate-300 italic leading-relaxed">&ldquo;{clause.docB_text}&rdquo;</p>
+                        <div className="p-3.5 rounded-lg bg-white border border-slate-200">
+                          <div className="text-[10px] font-mono text-indigo-600 uppercase mb-1 font-bold">{currentScenario.docB.name}</div>
+                          <p className="text-xs text-slate-700 italic leading-relaxed">&ldquo;{clause.docB_text}&rdquo;</p>
                         </div>
                       </div>
 
-                      <div className="p-3 rounded-lg bg-[#00B8F0]/5 border border-[#00B8F0]/20 text-xs text-slate-200">
-                        <span className="font-bold text-[#00B8F0]">Engineering Finding: </span>
+                      <div className="p-3 rounded-lg bg-blue-50 border border-blue-200 text-xs text-slate-800">
+                        <span className="font-bold text-[#0066FF]">Engineering Finding: </span>
                         {clause.finding}
                       </div>
                     </div>
@@ -422,26 +424,26 @@ export default function InsuranceLabClient() {
             {/* TAB CONTENT 2: EVIDENCE CITATIONS */}
             {activeTab === "citations" && (
               <div className="p-6 sm:p-8 space-y-6">
-                <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs text-blue-200">
+                <div className="p-4 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-900">
                   <span className="font-bold">Strict Provenance Protocol: </span>
                   Every claim is tied directly to an immutable source chunk. The system provides page number, section header, and paragraph text. If an exact match cannot be found, the system refrains from generating unbacked answers.
                 </div>
 
                 <div className="space-y-4">
                   {currentScenario.citations.map((cite, i) => (
-                    <div key={i} className="p-5 rounded-xl bg-[#070E1B] border border-white/10 space-y-2">
+                    <div key={i} className="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
                       <div className="flex items-center justify-between">
-                        <div className="text-sm font-bold text-white flex items-center gap-2">
-                          <FileText size={16} className="text-[#00B8F0]" />
+                        <div className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                          <FileText size={16} className="text-[#0066FF]" />
                           <span>{cite.source}</span>
                           <span className="text-xs font-mono text-slate-500">Page {cite.page}</span>
                         </div>
-                        <div className="text-xs font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        <div className="text-xs font-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300 font-semibold">
                           Relevance: {(cite.relevanceScore * 100).toFixed(1)}%
                         </div>
                       </div>
-                      <div className="text-xs font-mono text-[#00B8F0]">{cite.paragraph}</div>
-                      <p className="text-xs text-slate-300 bg-[#050B14] p-3 rounded-lg border border-white/5 leading-relaxed">
+                      <div className="text-xs font-mono text-[#0066FF] font-bold">{cite.paragraph}</div>
+                      <p className="text-xs text-slate-700 bg-white p-3 rounded-lg border border-slate-200 leading-relaxed">
                         &ldquo;{cite.text}&rdquo;
                       </p>
                     </div>
@@ -453,32 +455,32 @@ export default function InsuranceLabClient() {
             {/* TAB CONTENT 3: REFUSAL GUARDRAIL TEST */}
             {activeTab === "refusal" && (
               <div className="p-6 sm:p-8 space-y-6">
-                <div className="p-5 rounded-xl bg-amber-500/10 border border-amber-500/20">
-                  <div className="text-xs font-mono text-amber-400 uppercase tracking-wider font-bold mb-1 flex items-center gap-2">
+                <div className="p-5 rounded-xl bg-amber-50 border border-amber-200">
+                  <div className="text-xs font-mono text-amber-800 uppercase tracking-wider font-bold mb-1 flex items-center gap-2">
                     <AlertTriangle size={14} /> Zero-Hallucination Refusal Benchmark
                   </div>
-                  <p className="text-xs text-amber-200/90 leading-relaxed">
+                  <p className="text-xs text-amber-900 leading-relaxed">
                     Most commercial RAG systems fail when asked questions that sound plausible but lack evidence in the corpus. Our architecture tests for strict faithfulness refusal thresholds before returning answers.
                   </p>
                 </div>
 
-                <div className="p-5 rounded-xl bg-[#070E1B] border border-white/10 space-y-4">
+                <div className="p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-4">
                   <div>
-                    <div className="text-xs font-mono text-[#8A9EB0] uppercase mb-1">Adversarial / Out-of-Scope Query:</div>
-                    <div className="text-sm font-semibold text-white bg-[#050B14] p-3 rounded-lg border border-white/5">
+                    <div className="text-xs font-mono text-slate-600 uppercase mb-1 font-bold">Adversarial / Out-of-Scope Query:</div>
+                    <div className="text-sm font-semibold text-slate-900 bg-white p-3 rounded-lg border border-slate-200">
                       &ldquo;{currentScenario.abstentionTest.query}&rdquo;
                     </div>
                   </div>
 
                   <div>
-                    <div className="text-xs font-mono text-rose-400 uppercase mb-1">Deterministic System Response:</div>
-                    <div className="text-xs text-slate-200 bg-rose-950/20 border border-rose-500/30 p-3.5 rounded-lg leading-relaxed font-mono">
+                    <div className="text-xs font-mono text-rose-700 uppercase mb-1 font-bold">Deterministic System Response:</div>
+                    <div className="text-xs text-rose-900 bg-rose-50 border border-rose-200 p-3.5 rounded-lg leading-relaxed font-mono">
                       {currentScenario.abstentionTest.systemOutput}
                     </div>
                   </div>
 
-                  <div className="text-xs text-[#64748B]">
-                    <span className="font-bold text-slate-400">Enforcement Mechanism: </span>
+                  <div className="text-xs text-slate-600">
+                    <span className="font-bold text-slate-800">Enforcement Mechanism: </span>
                     {currentScenario.abstentionTest.reason}
                   </div>
                 </div>
@@ -488,30 +490,30 @@ export default function InsuranceLabClient() {
             {/* TAB CONTENT 4: PIPELINE ARCHITECTURE SPECS */}
             {activeTab === "architecture" && (
               <div className="p-6 sm:p-8 space-y-6">
-                <div className="text-sm font-bold text-white mb-2">Technical Implementation Stack for this Lab:</div>
+                <div className="text-sm font-bold text-slate-900 mb-2 font-heading">Technical Implementation Stack for this Lab:</div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 rounded-xl bg-[#070E1B] border border-white/10">
-                    <div className="text-xs font-mono text-[#00B8F0] uppercase mb-1 font-semibold">1. Document Parsing &amp; Chunking</div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                    <div className="text-xs font-mono text-[#0066FF] uppercase mb-1 font-bold">1. Document Parsing &amp; Chunking</div>
+                    <p className="text-xs text-slate-700 leading-relaxed">
                       Layout-aware table extraction using layout parser models. Markdown-table preserving chunkers with 512-token overlap boundaries and document header metadata injection.
                     </p>
                   </div>
-                  <div className="p-4 rounded-xl bg-[#070E1B] border border-white/10">
-                    <div className="text-xs font-mono text-[#00B8F0] uppercase mb-1 font-semibold">2. Hybrid Retrieval Engine</div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                    <div className="text-xs font-mono text-[#0066FF] uppercase mb-1 font-bold">2. Hybrid Retrieval Engine</div>
+                    <p className="text-xs text-slate-700 leading-relaxed">
                       Reciprocal Rank Fusion (RRF) combining dense semantic embeddings (768-dim) with sparse BM25 token index in OpenSearch / Qdrant to capture exact insurance clause codes.
                     </p>
                   </div>
-                  <div className="p-4 rounded-xl bg-[#070E1B] border border-white/10">
-                    <div className="text-xs font-mono text-[#00B8F0] uppercase mb-1 font-semibold">3. Cross-Encoder Reranker</div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                    <div className="text-xs font-mono text-[#0066FF] uppercase mb-1 font-bold">3. Cross-Encoder Reranker</div>
+                    <p className="text-xs text-slate-700 leading-relaxed">
                       Top-25 candidate passages re-scored using BGE-Reranker-Large cross-encoder, filtering out false positives and preserving top-5 high-precision evidence spans.
                     </p>
                   </div>
-                  <div className="p-4 rounded-xl bg-[#070E1B] border border-white/10">
-                    <div className="text-xs font-mono text-[#00B8F0] uppercase mb-1 font-semibold">4. Verifiable Citation &amp; Guardrails</div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                    <div className="text-xs font-mono text-[#0066FF] uppercase mb-1 font-bold">4. Verifiable Citation &amp; Guardrails</div>
+                    <p className="text-xs text-slate-700 leading-relaxed">
                       Pydantic structured output validation with mandatory chunk index mapping. Refusal triggered whenever max cosine similarity &lt; 0.82 or cross-encoder score &lt; 0.50.
                     </p>
                   </div>
@@ -524,18 +526,18 @@ export default function InsuranceLabClient() {
         </div>
       </section>
 
-      {/* ── 3. PIPELINE DIAGRAM SECTION ── */}
-      <section className="py-20 bg-[#050B14] border-t border-white/10">
+      {/* ── 3. PIPELINE DIAGRAM SECTION (LIGHT THEME) ── */}
+      <section className="py-20 bg-white border-b border-slate-200">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="font-mono text-xs tracking-[0.14em] text-[#00B8F0] uppercase mb-2 font-semibold">
+            <div className="font-mono text-xs tracking-[0.14em] text-[#0066FF] uppercase mb-2 font-bold">
               SYSTEM ARCHITECTURE
             </div>
-            <h2 className="text-3xl font-bold font-heading text-white mb-4">
+            <h2 className="text-3xl font-bold font-heading text-slate-900 mb-4">
               The 6-Step Insurance Document Intelligence Pipeline
             </h2>
-            <p className="text-[#8A9EB0] text-sm sm:text-base">
+            <p className="text-slate-600 text-sm sm:text-base">
               How dense legal and insurance documents are transformed into grounded, actionable intelligence.
             </p>
           </div>
@@ -549,10 +551,10 @@ export default function InsuranceLabClient() {
               { step: "05", name: "Evidence Grounding", desc: "Verifiable citation enforcement" },
               { step: "06", name: "Structured Analysis", desc: "Comparison & discrepancy extraction" },
             ].map((p, i) => (
-              <div key={i} className="p-4 rounded-xl bg-[#091222] border border-white/10 relative">
-                <div className="text-xs font-mono text-[#00B8F0] font-bold mb-1">{p.step}</div>
-                <div className="text-xs font-bold text-white mb-1">{p.name}</div>
-                <div className="text-[11px] text-[#8A9EB0] leading-snug">{p.desc}</div>
+              <div key={i} className="p-4 rounded-xl bg-slate-50 border border-slate-200 relative shadow-2xs">
+                <div className="text-xs font-mono text-[#0066FF] font-bold mb-1">{p.step}</div>
+                <div className="text-xs font-bold text-slate-900 mb-1">{p.name}</div>
+                <div className="text-[11px] text-slate-600 leading-snug">{p.desc}</div>
               </div>
             ))}
           </div>
@@ -560,13 +562,13 @@ export default function InsuranceLabClient() {
         </div>
       </section>
 
-      {/* ── 4. CTA / IMPLEMENTATION BRIEF ── */}
-      <section className="py-20 bg-[#070E1B] border-t border-white/10 text-center">
+      {/* ── 4. CTA / IMPLEMENTATION BRIEF (LIGHT THEME) ── */}
+      <section className="py-20 bg-[#F8FAFC] text-center">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-4 font-heading">
             Need Document &amp; Knowledge Intelligence for Your Enterprise?
           </h2>
-          <p className="text-sm sm:text-base text-[#8A9EB0] mb-8 leading-relaxed">
+          <p className="text-sm sm:text-base text-slate-600 mb-8 leading-relaxed">
             We adapt this reference architecture to your organization's specific policy forms, legal agreements, compliance archives, or underwriting workflows.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -574,7 +576,7 @@ export default function InsuranceLabClient() {
               href="/contact?type=architecture-review"
               eventName="button_click"
               eventData={{ button_name: "insurance_lab_book_review" }}
-              className="inline-flex items-center justify-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold text-sm px-8 py-3.5 rounded-xl shadow-[0_4px_20px_rgba(0,102,255,0.4)] transition-all"
+              className="inline-flex items-center justify-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold text-sm px-8 py-3.5 rounded-xl shadow-[0_4px_20px_rgba(0,102,255,0.3)] transition-all"
             >
               Book an Architecture Review <ArrowRight size={16} />
             </TrackedLink>
@@ -582,7 +584,7 @@ export default function InsuranceLabClient() {
               href="/work/labs"
               eventName="button_click"
               eventData={{ button_name: "insurance_lab_view_all_labs" }}
-              className="inline-flex items-center justify-center gap-2 border border-slate-700 text-white hover:border-[#00B8F0] hover:text-[#00B8F0] font-semibold text-sm px-8 py-3.5 rounded-xl transition-all hover:bg-white/5"
+              className="inline-flex items-center justify-center gap-2 border border-slate-300 text-slate-700 bg-white hover:border-[#0066FF] hover:text-[#0066FF] font-semibold text-sm px-8 py-3.5 rounded-xl transition-all shadow-sm"
             >
               Explore All Labs &amp; Open Source
             </TrackedLink>

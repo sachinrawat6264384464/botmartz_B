@@ -94,7 +94,7 @@ const SOCIALS = [
 ];
 
 const TRUST = [
-  { icon: Shield, label: "Enterprise Grade Security" },
+  { icon: Shield, label: "Security-Conscious Architecture" },
 ];
 
 /* ─── COMPONENT ──────────────────────────────────────────────────────────────── */

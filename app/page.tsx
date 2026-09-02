@@ -171,12 +171,12 @@ const LABS_SHOWCASE = [
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[#050B14] text-white antialiased">
+    <div className="min-h-screen bg-white text-slate-900 antialiased">
       
       {/* ═══════════════════════════════════════════
-          1. HERO SECTION
+          1. HERO SECTION (DARK THEME)
       ═══════════════════════════════════════════ */}
-      <section className="relative pt-[130px] pb-[100px] overflow-hidden border-b border-white/10">
+      <section className="relative pt-[130px] pb-[100px] overflow-hidden bg-[#050B14] text-white border-b border-white/10">
         {/* Glow Spheres */}
         <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/12 blur-[140px] rounded-full pointer-events-none" />
         <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0052FF]/15 blur-[160px] rounded-full pointer-events-none" />
@@ -312,40 +312,40 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════════════════════════════
-          2. FROM AI STRATEGY TO PRODUCTION (5 STAGES)
+          2. FROM AI STRATEGY TO PRODUCTION (5 STAGES) - LIGHT THEME
       ═══════════════════════════════════════════ */}
-      <section className="py-24 bg-[#070E1B] relative border-b border-white/10">
+      <section className="py-24 bg-[#F8FAFC] relative border-b border-slate-200">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="font-mono text-xs tracking-[0.14em] text-[#00B8F0] uppercase mb-3 font-semibold">
+            <div className="font-mono text-xs tracking-[0.14em] text-[#0066FF] uppercase mb-3 font-bold">
               DELIVERY LIFECYCLE
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4 text-white">
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4 text-slate-900">
               From AI Strategy to Production.
             </h2>
-            <p className="text-[#8A9EB0] text-base sm:text-lg">
+            <p className="text-slate-600 text-base sm:text-lg">
               A disciplined, milestone-driven framework that bridges executive vision with operational software.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-            {STAGES.map((s, i) => (
+            {STAGES.map((s) => (
               <div
                 key={s.step}
-                className="bg-[#0B1524] border border-white/10 rounded-2xl p-6 flex flex-col justify-between hover:border-[#00B8F0]/40 transition-all duration-300 shadow-md group"
+                className="bg-white border border-slate-200 rounded-2xl p-6 flex flex-col justify-between hover:border-[#0066FF]/40 transition-all duration-300 shadow-sm hover:shadow-md group"
               >
                 <div>
-                  <div className="font-mono text-2xl font-black text-white/20 group-hover:text-[#00B8F0] transition-colors mb-4">
+                  <div className="font-mono text-2xl font-black text-slate-300 group-hover:text-[#0066FF] transition-colors mb-4">
                     {s.step}
                   </div>
-                  <div className="font-mono text-xs text-[#00B8F0] uppercase tracking-wider font-semibold mb-2">
+                  <div className="font-mono text-xs text-[#0066FF] uppercase tracking-wider font-bold mb-2">
                     {s.name}
                   </div>
-                  <h3 className="text-base font-bold text-white mb-3">
+                  <h3 className="text-base font-bold text-slate-900 mb-3">
                     {s.title}
                   </h3>
-                  <p className="text-xs text-[#8A9EB0] leading-relaxed">
+                  <p className="text-xs text-slate-600 leading-relaxed">
                     {s.desc}
                   </p>
                 </div>
@@ -357,20 +357,20 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════════════════════════════
-          3. WHAT WE IMPLEMENT (4 CORE PILLARS)
+          3. WHAT WE IMPLEMENT (4 CORE PILLARS) - LIGHT THEME
       ═══════════════════════════════════════════ */}
-      <section id="solutions" className="py-24 bg-[#050B14] relative border-b border-white/10">
+      <section id="solutions" className="py-24 bg-white relative border-b border-slate-200">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 mb-16">
             <div>
-              <div className="font-mono text-xs tracking-[0.14em] text-[#00B8F0] uppercase mb-3 font-semibold">
+              <div className="font-mono text-xs tracking-[0.14em] text-[#0066FF] uppercase mb-3 font-bold">
                 CORE CAPABILITIES
               </div>
-              <h2 className="text-3xl sm:text-4xl font-bold font-heading text-white mb-4">
+              <h2 className="text-3xl sm:text-4xl font-bold font-heading text-slate-900 mb-4">
                 What We Implement
               </h2>
-              <p className="text-[#8A9EB0] text-base sm:text-lg max-w-2xl">
+              <p className="text-slate-600 text-base sm:text-lg max-w-2xl">
                 We engineer reliable, audited AI systems built around your specific operational workflows.
               </p>
             </div>
@@ -378,7 +378,7 @@ export default function HomePage() {
               href="/services"
               eventName="button_click"
               eventData={{ button_name: "home_view_all_solutions" }}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[#00B8F0] hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[#0066FF] hover:text-[#0052CC] transition-colors"
             >
               Explore All Solutions →
             </TrackedLink>
@@ -388,29 +388,29 @@ export default function HomePage() {
             {SOLUTIONS.map((sol, i) => (
               <div
                 key={i}
-                className="bg-[#0B1524]/80 border border-white/10 rounded-2xl p-8 hover:border-[#0066FF]/40 transition-all duration-300 shadow-xl flex flex-col justify-between group"
+                className="bg-[#F8FAFC] border border-slate-200/80 rounded-2xl p-8 hover:border-[#0066FF]/40 transition-all duration-300 shadow-sm hover:shadow-md flex flex-col justify-between group"
               >
                 <div>
                   <div className="flex items-center justify-between mb-6">
-                    <div className="w-12 h-12 rounded-xl bg-[#0066FF]/15 border border-[#0066FF]/30 text-[#00B8F0] flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 text-[#0066FF] flex items-center justify-center">
                       <sol.icon size={22} />
                     </div>
-                    <span className="font-mono text-xs px-3 py-1 rounded-full bg-white/5 border border-white/10 text-slate-300">
+                    <span className="font-mono text-xs px-3 py-1 rounded-full bg-slate-200/60 border border-slate-200 text-slate-700 font-semibold">
                       {sol.badge}
                     </span>
                   </div>
 
-                  <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-[#00B8F0] transition-colors">
+                  <h3 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-[#0066FF] transition-colors">
                     {sol.title}
                   </h3>
-                  <p className="text-sm text-[#8A9EB0] leading-relaxed mb-6">
+                  <p className="text-sm text-slate-600 leading-relaxed mb-6">
                     {sol.desc}
                   </p>
 
-                  <ul className="space-y-2.5 pt-4 border-t border-white/10 mb-8">
+                  <ul className="space-y-2.5 pt-4 border-t border-slate-200 mb-8">
                     {sol.capabilities.map((cap, idx) => (
-                      <li key={idx} className="flex items-center gap-2.5 text-xs text-slate-300">
-                        <CheckCircle2 size={13} className="text-[#00B8F0] shrink-0" />
+                      <li key={idx} className="flex items-center gap-2.5 text-xs text-slate-700 font-medium">
+                        <CheckCircle2 size={13} className="text-[#0066FF] shrink-0" />
                         <span>{cap}</span>
                       </li>
                     ))}
@@ -421,7 +421,7 @@ export default function HomePage() {
                   href={sol.href}
                   eventName="button_click"
                   eventData={{ button_name: `solution_card_${sol.badge}` }}
-                  className="inline-flex items-center gap-2 font-mono text-xs text-[#00B8F0] font-bold group-hover:text-white transition-colors"
+                  className="inline-flex items-center gap-2 font-mono text-xs text-[#0066FF] font-bold group-hover:text-[#0052CC] transition-colors"
                 >
                   Explore Architecture <ArrowRight size={13} />
                 </TrackedLink>
@@ -433,36 +433,36 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════════════════════════════
-          4. STACK INTEGRATION / IMPLEMENTATION PHILOSOPHY
+          4. STACK INTEGRATION - LIGHT THEME
       ═══════════════════════════════════════════ */}
-      <section className="py-24 bg-[#070E1B] relative border-b border-white/10">
+      <section className="py-24 bg-[#F8FAFC] relative border-b border-slate-200">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             
             <div>
-              <div className="font-mono text-xs tracking-[0.14em] text-[#00B8F0] uppercase mb-3 font-semibold">
+              <div className="font-mono text-xs tracking-[0.14em] text-[#0066FF] uppercase mb-3 font-bold">
                 STACK INTEGRATION
               </div>
-              <h2 className="text-3xl sm:text-4xl font-bold font-heading text-white mb-6 leading-tight">
+              <h2 className="text-3xl sm:text-4xl font-bold font-heading text-slate-900 mb-6 leading-tight">
                 Enterprise AI Implementation, <br />
                 Without Starting From Scratch.
               </h2>
-              <p className="text-base text-[#8A9EB0] leading-relaxed mb-6">
+              <p className="text-base text-slate-600 leading-relaxed mb-6">
                 Most organizations do not need to spend months attempting to invent a proprietary search or AI stack. We work across your existing infrastructure and select battle-tested platforms to solve client problems rapidly.
               </p>
 
               <div className="space-y-4 mb-8">
-                <div className="p-4 rounded-xl bg-[#050B14] border border-white/10">
-                  <div className="text-xs font-mono text-[#00B8F0] font-bold mb-1">Enterprise AI Platforms</div>
-                  <div className="text-xs text-slate-300">Custom agents, data connectors, and adoption support for enterprise workplace AI (e.g. Glean).</div>
+                <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+                  <div className="text-xs font-mono text-[#0066FF] font-bold mb-1">Enterprise AI Platforms</div>
+                  <div className="text-xs text-slate-600">Custom agents, data connectors, and adoption support for enterprise workplace AI (e.g. Glean).</div>
                 </div>
-                <div className="p-4 rounded-xl bg-[#050B14] border border-white/10">
-                  <div className="text-xs font-mono text-[#00B8F0] font-bold mb-1">Search &amp; Retrieval Infrastructure</div>
-                  <div className="text-xs text-slate-300">OpenSearch hybrid indexing, Qdrant vector databases, Weaviate schemas, and Elastic AI search.</div>
+                <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+                  <div className="text-xs font-mono text-[#0066FF] font-bold mb-1">Search &amp; Retrieval Infrastructure</div>
+                  <div className="text-xs text-slate-600">OpenSearch hybrid indexing, Qdrant vector databases, Weaviate schemas, and Elastic AI search.</div>
                 </div>
-                <div className="p-4 rounded-xl bg-[#050B14] border border-white/10">
-                  <div className="text-xs font-mono text-[#00B8F0] font-bold mb-1">Cloud &amp; Private VPC Deployment</div>
-                  <div className="text-xs text-slate-300">Deployable in your Amazon Web Services, Google Cloud, or Microsoft Azure environment.</div>
+                <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+                  <div className="text-xs font-mono text-[#0066FF] font-bold mb-1">Cloud &amp; Private VPC Deployment</div>
+                  <div className="text-xs text-slate-600">Deployable in your Amazon Web Services, Google Cloud, or Microsoft Azure environment.</div>
                 </div>
               </div>
 
@@ -470,14 +470,14 @@ export default function HomePage() {
                 href="/implementation"
                 eventName="button_click"
                 eventData={{ button_name: "home_implementation_methodology" }}
-                className="inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all"
+                className="inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all shadow-sm"
               >
                 Read Implementation Methodology <ArrowRight size={14} />
               </TrackedLink>
             </div>
 
-            <div className="bg-[#050B14] border border-white/10 rounded-3xl p-8 shadow-2xl">
-              <div className="font-mono text-xs text-[#00B8F0] uppercase tracking-wider mb-6 font-bold">
+            <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-md">
+              <div className="font-mono text-xs text-[#0066FF] uppercase tracking-wider mb-6 font-bold">
                 Integration Matrix
               </div>
               <div className="grid grid-cols-2 gap-3 text-xs font-mono">
@@ -489,9 +489,9 @@ export default function HomePage() {
                   { title: "Model Orchestration", desc: "OpenAI, Anthropic, Gemini" },
                   { title: "Cloud Platforms", desc: "AWS, Azure, GCP" },
                 ].map((item, idx) => (
-                  <div key={idx} className="p-4 rounded-xl bg-[#0A1322] border border-white/5">
-                    <div className="font-bold text-white mb-1">{item.title}</div>
-                    <div className="text-[#8A9EB0] text-[11px]">{item.desc}</div>
+                  <div key={idx} className="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                    <div className="font-bold text-slate-900 mb-1">{item.title}</div>
+                    <div className="text-slate-600 text-[11px]">{item.desc}</div>
                   </div>
                 ))}
               </div>
@@ -502,20 +502,20 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════════════════════════════
-          5. BOTMARTZ LABS & PROOF SHOWCASE
+          5. BOTMARTZ LABS & PROOF SHOWCASE - LIGHT THEME
       ═══════════════════════════════════════════ */}
-      <section className="py-24 bg-[#050B14] relative border-b border-white/10">
+      <section className="py-24 bg-white relative border-b border-slate-200">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 mb-16">
             <div>
-              <div className="font-mono text-xs tracking-[0.14em] text-[#00B8F0] uppercase mb-3 font-semibold">
+              <div className="font-mono text-xs tracking-[0.14em] text-[#0066FF] uppercase mb-3 font-bold">
                 ENGINEERING IN THE OPEN
               </div>
-              <h2 className="text-3xl sm:text-4xl font-bold font-heading text-white mb-4">
+              <h2 className="text-3xl sm:text-4xl font-bold font-heading text-slate-900 mb-4">
                 Botmartz Labs &amp; Reference Implementations
               </h2>
-              <p className="text-[#8A9EB0] text-base sm:text-lg max-w-2xl">
+              <p className="text-slate-600 text-base sm:text-lg max-w-2xl">
                 We prove technical depth through working reference implementations with transparent classifications and reproducible architectures.
               </p>
             </div>
@@ -523,7 +523,7 @@ export default function HomePage() {
               href="/work/labs"
               eventName="button_click"
               eventData={{ button_name: "home_view_all_labs" }}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[#00B8F0] hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[#0066FF] hover:text-[#0052CC] transition-colors"
             >
               View All Labs &amp; Open Source →
             </TrackedLink>
@@ -533,34 +533,34 @@ export default function HomePage() {
             {LABS_SHOWCASE.map((lab, idx) => (
               <div
                 key={idx}
-                className={`rounded-2xl p-7 flex flex-col justify-between border transition-all duration-300 ${
+                className={`rounded-2xl p-7 flex flex-col justify-between border transition-all duration-300 shadow-sm hover:shadow-md ${
                   lab.isFlagship
-                    ? "bg-gradient-to-br from-[#0B1A33] to-[#081224] border-[#00B8F0]/40 shadow-[0_0_30px_rgba(0,184,240,0.12)]"
-                    : "bg-[#091222] border-white/10 hover:border-white/20"
+                    ? "bg-gradient-to-br from-blue-50/80 via-slate-50 to-white border-blue-200/90 shadow-sm hover:border-[#0066FF]/60"
+                    : "bg-[#F8FAFC] border-slate-200 hover:border-slate-300"
                 }`}
               >
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-4">
-                    <span className="font-mono text-[10px] px-2.5 py-1 rounded bg-[#00B8F0]/10 border border-[#00B8F0]/30 text-[#00B8F0] font-bold">
+                    <span className="font-mono text-[10px] px-2.5 py-1 rounded bg-blue-100/70 border border-blue-200 text-[#0066FF] font-bold">
                       [{lab.tag}]
                     </span>
                     {lab.isFlagship && (
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-semibold border border-emerald-500/20">
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold border border-emerald-200">
                         Flagship Showcase
                       </span>
                     )}
                   </div>
 
-                  <h3 className="text-xl font-bold text-white mb-2.5">
+                  <h3 className="text-xl font-bold text-slate-900 mb-2.5">
                     {lab.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-[#8A9EB0] leading-relaxed mb-6">
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
                     {lab.desc}
                   </p>
 
                   <div className="flex flex-wrap gap-2 mb-6">
                     {lab.tech.map((t, i) => (
-                      <span key={i} className="text-[11px] font-mono px-2 py-0.5 bg-[#050B14] rounded border border-white/10 text-slate-300">
+                      <span key={i} className="text-[11px] font-mono px-2 py-0.5 bg-white rounded border border-slate-200 text-slate-700">
                         {t}
                       </span>
                     ))}
@@ -571,7 +571,7 @@ export default function HomePage() {
                   href={lab.href}
                   eventName="button_click"
                   eventData={{ button_name: `lab_card_${lab.title}` }}
-                  className="inline-flex items-center gap-2 text-xs font-mono font-bold text-[#00B8F0] hover:text-white transition-colors"
+                  className="inline-flex items-center gap-2 text-xs font-mono font-bold text-[#0066FF] hover:text-[#0052CC] transition-colors"
                 >
                   <span>Launch Reference Architecture</span>
                   <ArrowRight size={13} />
@@ -584,17 +584,17 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════════════════════════════
-          6. ARCHITECTURE REVIEW / BOTTOM CONVERSION
+          6. ARCHITECTURE REVIEW / BOTTOM CONVERSION - LIGHT THEME
       ═══════════════════════════════════════════ */}
-      <section className="py-24 bg-[#070E1B] relative text-center">
+      <section className="py-24 bg-[#F8FAFC] relative text-center border-t border-slate-200">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <div className="w-16 h-16 rounded-2xl bg-[#0066FF]/20 border border-[#0066FF]/40 text-[#60A5FA] flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(0,102,255,0.3)]">
+          <div className="w-16 h-16 rounded-2xl bg-blue-50 border border-blue-200 text-[#0066FF] flex items-center justify-center mx-auto mb-6 shadow-sm">
             <Scale size={28} />
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4 font-heading">
             Book an Architecture Review
           </h2>
-          <p className="text-base sm:text-lg text-[#8A9EB0] mb-8 leading-relaxed">
+          <p className="text-base sm:text-lg text-slate-600 mb-8 leading-relaxed">
             Discuss your organization's document complexity, search challenges, or agent workflows with an experienced AI systems architect.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -602,7 +602,7 @@ export default function HomePage() {
               href="/contact?type=architecture-review"
               eventName="button_click"
               eventData={{ button_name: "home_bottom_cta_review" }}
-              className="inline-flex items-center justify-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold text-base px-8 py-4 rounded-xl shadow-[0_4px_20px_rgba(0,102,255,0.4)] transition-all"
+              className="inline-flex items-center justify-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold text-base px-8 py-4 rounded-xl shadow-[0_4px_20px_rgba(0,102,255,0.3)] transition-all"
             >
               Book Architecture Review <ArrowRight size={16} />
             </TrackedLink>
@@ -610,7 +610,7 @@ export default function HomePage() {
               href="https://cal.com/botmartz-ai/20min"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 border border-slate-700 text-white hover:border-[#00B8F0] hover:text-[#00B8F0] font-semibold text-base px-8 py-4 rounded-xl transition-all hover:bg-white/5"
+              className="inline-flex items-center justify-center gap-2 border border-slate-300 text-slate-700 bg-white hover:border-[#0066FF] hover:text-[#0066FF] font-semibold text-base px-8 py-4 rounded-xl transition-all shadow-sm"
             >
               Schedule Direct Call (20 Min)
             </a>

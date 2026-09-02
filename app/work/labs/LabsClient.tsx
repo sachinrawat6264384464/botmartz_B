@@ -399,31 +399,30 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
         ))}
       </div>
 
-      {/* ══════════ WHY OUR LABS MATTER Box ══════════ */}
+      {/* ══════════ WHY OUR LABS MATTER Box (LIGHT THEME) ══════════ */}
       <div className="max-w-[1240px] mx-auto mt-4 px-6 sm:px-10">
-        <div className="bg-[#060C1F] rounded-[18px] p-8 sm:p-11 relative overflow-hidden text-white shadow-xl">
-          <div className="absolute w-[300px] h-[300px] rounded-full bg-[radial-gradient(circle,rgba(0,123,255,0.2),transparent_70%)] right-[-60px] top-[-100px] pointer-events-none" />
+        <div className="bg-white border border-slate-200 rounded-[18px] p-8 sm:p-11 relative overflow-hidden text-slate-900 shadow-sm">
           <div className="relative z-10">
-            <div className="font-bold text-[11.5px] tracking-[0.08em] text-[#00C6FF] uppercase">
+            <div className="font-bold text-[11.5px] tracking-[0.08em] text-[#0066FF] uppercase">
               Why Our Labs Matter
             </div>
-            <h2 className="font-extrabold text-2xl sm:text-[26px] text-white mt-2.5 mb-7">
-              From Experiment to <span className="text-[#00C6FF]">Enterprise.</span>
+            <h2 className="font-extrabold text-2xl sm:text-[26px] text-slate-900 mt-2.5 mb-7 font-heading">
+              From Experiment to <span className="text-[#0066FF]">Enterprise.</span>
             </h2>
-            <p className="font-medium text-[13px] leading-[1.6] text-[#8FA3C4] max-w-[460px] mt-2.5">
+            <p className="font-medium text-[13px] leading-[1.6] text-slate-600 max-w-[460px] mt-2.5">
               Our labs follow a rigorous engineering approach to turn innovative ideas into reliable, open-source solutions.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
               {PROCESS_STEPS.map((step) => (
                 <div key={step.n} className="flex flex-col gap-3">
-                  <div className="w-10 h-10 rounded-full border border-[#00C6FF]/40 bg-[#00C6FF]/[0.08] flex items-center justify-center font-bold text-[13px] text-[#00C6FF]">
+                  <div className="w-10 h-10 rounded-full border border-blue-200 bg-blue-50 flex items-center justify-center font-bold text-[13px] text-[#0066FF]">
                     {step.n}
                   </div>
-                  <div className="font-bold text-[13.5px] text-white mt-1">
+                  <div className="font-bold text-[13.5px] text-slate-900 mt-1">
                     {step.title}
                   </div>
-                  <div className="font-medium text-[12px] leading-[1.55] text-[#7C8CAD]">
+                  <div className="font-medium text-[12px] leading-[1.55] text-slate-600">
                     {step.desc}
                   </div>
                 </div>
@@ -433,16 +432,16 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
         </div>
       </div>
 
-      {/* ══════════ MODERN AI ENGINEERING STACK ══════════ */}
+      {/* ══════════ MODERN AI ENGINEERING STACK (LIGHT THEME) ══════════ */}
       <div className="max-w-[1240px] mx-auto pt-14 px-6 sm:px-10 text-center">
-        <div className="font-bold text-[11.5px] tracking-[0.08em] text-[#007BFF] uppercase">
+        <div className="font-bold text-[11.5px] tracking-[0.08em] text-[#0066FF] uppercase">
           Built With a Modern AI Engineering Stack
         </div>
         <div className="flex justify-center gap-4 sm:gap-7 flex-wrap mt-5.5">
           {STACK_ITEMS.map((s) => (
             <span 
               key={s.name} 
-              className="font-bold text-[13px] text-[#3A4459] flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-full border border-[#E7ECF3] shadow-2xs"
+              className="font-bold text-[13px] text-slate-700 flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-full border border-slate-200 shadow-2xs"
             >
               <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: s.color }} />
               {s.name}
@@ -451,15 +450,15 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
         </div>
       </div>
 
-      {/* ══════════ OPEN SOURCE BANNER ══════════ */}
+      {/* ══════════ OPEN SOURCE BANNER (LIGHT THEME) ══════════ */}
       <div className="max-w-[1240px] mx-auto mt-14 px-6 sm:px-10">
-        <div className="bg-white border border-[#E7ECF3] rounded-2xl p-7 sm:p-8 flex items-center justify-between gap-6 flex-wrap shadow-sm">
-          <div className="w-16 h-16 rounded-full bg-[#E8F2FF] flex items-center justify-center font-bold text-[22px] text-[#007BFF] shrink-0">
+        <div className="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-7 sm:p-8 flex items-center justify-between gap-6 flex-wrap shadow-sm">
+          <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center font-bold text-[22px] text-[#0066FF] shrink-0">
             ⌥
           </div>
           <div className="flex-1 min-w-[260px]">
-            <h3 className="font-bold text-[17px] text-[#0B1220]">Open Source is in Our DNA.</h3>
-            <p className="font-medium text-[13px] leading-[1.6] text-[#5B6B85] mt-1.5">
+            <h3 className="font-bold text-[17px] text-slate-900">Open Source is in Our DNA.</h3>
+            <p className="font-medium text-[13px] leading-[1.6] text-slate-600 mt-1.5">
               We believe sharing knowledge and code accelerates innovation for everyone. Explore our GitHub organization to see all our open-source projects.
             </p>
           </div>
@@ -467,30 +466,30 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
             href="https://github.com/botmartz" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="font-bold text-[13px] text-white bg-[#0B1220] hover:bg-[#1A2333] px-5 py-3 rounded-[9px] shrink-0 transition-colors shadow-sm"
+            className="font-bold text-[13px] text-white bg-slate-900 hover:bg-slate-800 px-5 py-3 rounded-[9px] shrink-0 transition-colors shadow-sm"
           >
             View on GitHub ⌥
           </a>
         </div>
       </div>
 
-      {/* ══════════ HAVE AN IDEA WORTH BUILDING? CTA Box ══════════ */}
+      {/* ══════════ HAVE AN IDEA WORTH BUILDING? CTA Box (LIGHT THEME) ══════════ */}
       <div className="max-w-[1240px] mx-auto mt-6 mb-22 px-6 sm:px-10">
-        <div className="bg-[#060C1F] rounded-[18px] p-8 sm:p-11 relative overflow-hidden text-white shadow-xl">
+        <div className="bg-slate-900 rounded-[18px] p-8 sm:p-11 relative overflow-hidden text-white shadow-xl">
           <div className="absolute w-[280px] h-[280px] rounded-full bg-[radial-gradient(circle,rgba(0,123,255,0.2),transparent_70%)] right-[-70px] bottom-[-120px] pointer-events-none" />
           
           <div className="relative z-10 flex items-start justify-between gap-8 flex-wrap">
             <div className="max-w-[480px]">
-              <h2 className="font-extrabold text-2xl sm:text-[26px] leading-[1.3] text-white">
+              <h2 className="font-extrabold text-2xl sm:text-[26px] leading-[1.3] text-white font-heading">
                 Have an <span className="text-[#00C6FF]">Idea</span> Worth Building?
               </h2>
-              <p className="font-medium text-[13.5px] leading-[1.65] text-[#8FA3C4] mt-3">
+              <p className="font-medium text-[13.5px] leading-[1.65] text-slate-300 mt-3">
                 Let&apos;s build the next lab together. We collaborate with founders, researchers, and engineers to build impactful AI systems.
               </p>
             </div>
             <Link 
               href="/contact" 
-              className="font-bold text-[13.5px] text-white bg-[#007BFF] hover:bg-[#0069DB] px-6 py-3.5 rounded-[9px] whitespace-nowrap shadow-[0_8px_24px_rgba(0,123,255,0.35)] shrink-0 transition-all"
+              className="font-bold text-[13.5px] text-white bg-[#0066FF] hover:bg-[#0052CC] px-6 py-3.5 rounded-[9px] whitespace-nowrap shadow-md shrink-0 transition-all"
             >
               Start a Conversation →
             </Link>
@@ -503,7 +502,7 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
               </div>
               <div>
                 <div className="font-bold text-[13px] text-white">Collaborate</div>
-                <div className="font-medium text-[11.5px] leading-[1.5] text-[#7C8CAD] mt-0.5">Partner with our engineering team</div>
+                <div className="font-medium text-[11.5px] leading-[1.5] text-slate-300 mt-0.5">Partner with our engineering team</div>
               </div>
             </div>
 
@@ -513,7 +512,7 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
               </div>
               <div>
                 <div className="font-bold text-[13px] text-white">Accelerate</div>
-                <div className="font-medium text-[11.5px] leading-[1.5] text-[#7C8CAD] mt-0.5">Ship faster and smarter</div>
+                <div className="font-medium text-[11.5px] leading-[1.5] text-slate-300 mt-0.5">Ship faster and smarter</div>
               </div>
             </div>
 
@@ -523,7 +522,7 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
               </div>
               <div>
                 <div className="font-bold text-[13px] text-white">Make Impact</div>
-                <div className="font-medium text-[11.5px] leading-[1.5] text-[#7C8CAD] mt-0.5">Solve real problems that matter</div>
+                <div className="font-medium text-[11.5px] leading-[1.5] text-slate-300 mt-0.5">Solve real problems that matter</div>
               </div>
             </div>
           </div>

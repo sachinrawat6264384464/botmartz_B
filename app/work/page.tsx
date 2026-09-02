@@ -4,9 +4,9 @@ import WorkClient from './WorkClient';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'Our Work & Case Studies',
-    description: 'Case studies from enterprise clients across education, logistics, healthcare and SaaS — real production AI systems, not proofs of concept.',
-    keywords: ['Production AI Systems', 'Enterprise AI Case Studies', 'AI Route Optimization', 'Clinical AI Copilot', 'EdTech AI Assistant', 'Enterprise RAG Support'],
+    title: 'Our Work & Reference Implementations',
+    description: 'Explore our innovation labs, reference architectures, and engineering methodology for shipping reliable AI systems in production.',
+    keywords: ['Production AI Systems', 'Enterprise AI Reference Implementations', 'Insurance Intelligence Lab', 'Enterprise RAG Systems', 'Agentic Workflows'],
   };
   
   try {
@@ -37,15 +37,15 @@ export default async function WorkPage() {
   let heroContent = {
     badge: "Our Work",
     title: "Production AI Systems,<br><span class=\"text-[#00C6FF]\">Shipped &amp; Proven</span>",
-    subtitle: "Case studies from enterprise clients across education, logistics, healthcare and SaaS — real systems in production, not proofs of concept.",
-    ctaText: "Browse Case Studies →",
-    ctaLink: "#cases",
+    subtitle: "Explore our innovation labs, open-source AI projects, and engineering methodology for shipping real systems in production.",
+    ctaText: "Explore Labs →",
+    ctaLink: "/work/labs",
   };
   let structuredData = JSON.stringify({
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "Our Work & Case Studies | Botmartz",
-    "description": "Case studies and real production AI systems built by Botmartz across education, logistics, healthcare and SaaS.",
+    "name": "Our Work & Reference Implementations | Botmartz",
+    "description": "Explore innovation labs, reference architectures, and production AI implementations built by Botmartz.",
     "url": "https://www.botmartz.com/work",
     "publisher": {
       "@type": "Organization",
@@ -53,8 +53,8 @@ export default async function WorkPage() {
       "url": "https://www.botmartz.com"
     }
   });
-  let aeoQuestion = "What kind of production AI systems has Botmartz built and deployed?";
-  let aeoAnswer = "Botmartz builds and deploys production AI systems across education, logistics, healthcare, and SaaS, including AI course assistants, route optimization agents, clinical documentation copilots, enterprise RAG support platforms, warehouse computer vision inspection, and voice agents for patient intake.";
+  let aeoQuestion = "What kind of production AI systems does Botmartz build?";
+  let aeoAnswer = "Botmartz builds and deploys production AI systems across enterprise knowledge retrieval, agentic workflow automation, insurance and policy intelligence, and modern AI engineering architectures.";
 
   try {
     const docSnap = await adminDb.collection("dynamic_pages").doc("work").get();

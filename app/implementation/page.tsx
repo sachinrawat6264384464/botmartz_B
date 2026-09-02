@@ -135,10 +135,10 @@ const COMPARISONS = [
 
 export default function ImplementationPage() {
   return (
-    <div className="min-h-screen bg-[#050B14] text-white antialiased">
+    <div className="min-h-screen bg-white text-slate-900 antialiased">
       
-      {/* ── 1. HERO SECTION ── */}
-      <section className="relative pt-[130px] pb-[90px] overflow-hidden border-b border-white/10">
+      {/* ── 1. HERO SECTION (DARK THEME) ── */}
+      <section className="relative pt-[130px] pb-[90px] overflow-hidden bg-[#050B14] text-white border-b border-white/10">
         <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[140px] rounded-full pointer-events-none" />
         <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0052FF]/15 blur-[160px] rounded-full pointer-events-none" />
         
@@ -156,7 +156,7 @@ export default function ImplementationPage() {
             <Sparkles size={13} /> Enterprise AI Implementation
           </div>
 
-          <h1 className="text-[clamp(36px,5vw,62px)] font-bold font-heading tracking-tight leading-[1.1] max-w-4xl mb-6">
+          <h1 className="text-[clamp(36px,5vw,62px)] font-bold font-heading tracking-tight leading-[1.1] max-w-4xl mb-6 text-white">
             Enterprise AI Implementation, <br className="hidden sm:inline" />
             <span className="bg-gradient-to-r from-[#00B8F0] via-[#0066FF] to-[#60A5FA] bg-clip-text text-transparent">
               Without Starting From Scratch.
@@ -208,18 +208,18 @@ export default function ImplementationPage() {
         </div>
       </section>
 
-      {/* ── 2. THE 6-STAGE DELIVERY LIFECYCLE ── */}
-      <section id="lifecycle" className="py-24 bg-[#070E1B] relative">
+      {/* ── 2. THE 6-STAGE DELIVERY LIFECYCLE (LIGHT THEME) ── */}
+      <section id="lifecycle" className="py-24 bg-[#F8FAFC] relative border-b border-slate-200">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-20">
-            <div className="font-mono text-xs tracking-[0.14em] text-[#00B8F0] uppercase mb-3 font-semibold">
+            <div className="font-mono text-xs tracking-[0.14em] text-[#0066FF] uppercase mb-3 font-bold">
               ENGINEERING METHODOLOGY
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4 text-white">
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4 text-slate-900">
               The 6-Stage Implementation Lifecycle
             </h2>
-            <p className="text-[#8A9EB0] text-base sm:text-lg">
+            <p className="text-slate-600 text-base sm:text-lg">
               We eliminate guesswork by applying a structured, milestone-driven engineering process from initial system discovery to continuous production optimization.
             </p>
           </div>
@@ -228,33 +228,33 @@ export default function ImplementationPage() {
             {STAGES.map((stage) => (
               <div
                 key={stage.step}
-                className="bg-[#0D1829]/90 border border-white/10 rounded-2xl p-7 flex flex-col justify-between hover:border-[#00B8F0]/40 transition-all duration-300 shadow-lg hover:shadow-[0_8px_30px_rgba(0,184,240,0.1)] group relative overflow-hidden"
+                className="bg-white border border-slate-200 rounded-2xl p-7 flex flex-col justify-between hover:border-[#0066FF]/40 transition-all duration-300 shadow-sm hover:shadow-md group relative overflow-hidden"
               >
-                <div className="absolute top-0 right-0 p-6 font-mono text-4xl font-black text-white/5 group-hover:text-[#00B8F0]/10 transition-colors">
+                <div className="absolute top-0 right-0 p-6 font-mono text-4xl font-black text-slate-200 group-hover:text-[#0066FF]/20 transition-colors">
                   {stage.step}
                 </div>
 
                 <div>
-                  <div className="font-mono text-xs text-[#00B8F0] tracking-wider uppercase font-semibold mb-2 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#00B8F0]"></span>
+                  <div className="font-mono text-xs text-[#0066FF] tracking-wider uppercase font-bold mb-2 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#0066FF]"></span>
                     Stage {stage.step} — {stage.name}
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#00B8F0] transition-colors">
+                  <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-[#0066FF] transition-colors">
                     {stage.title}
                   </h3>
-                  <p className="text-sm text-[#8A9EB0] leading-relaxed mb-6">
+                  <p className="text-sm text-slate-600 leading-relaxed mb-6">
                     {stage.desc}
                   </p>
                 </div>
 
-                <div className="pt-5 border-t border-white/10">
-                  <div className="text-xs font-mono text-[#64748B] uppercase tracking-wider mb-2 font-semibold">
+                <div className="pt-5 border-t border-slate-200">
+                  <div className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-2 font-bold">
                     Key Deliverables:
                   </div>
                   <ul className="space-y-1.5">
                     {stage.deliverables.map((item, idx) => (
-                      <li key={idx} className="flex items-center gap-2 text-xs text-slate-300">
-                        <CheckCircle2 size={13} className="text-[#00B8F0] shrink-0" />
+                      <li key={idx} className="flex items-center gap-2 text-xs text-slate-700 font-medium">
+                        <CheckCircle2 size={13} className="text-[#0066FF] shrink-0" />
                         <span>{item}</span>
                       </li>
                     ))}
@@ -267,19 +267,19 @@ export default function ImplementationPage() {
         </div>
       </section>
 
-      {/* ── 3. WE WORK ACROSS YOUR EXISTING STACK (STACK NEUTRALITY) ── */}
-      <section id="stack" className="py-24 bg-[#050B14] relative border-t border-white/10">
+      {/* ── 3. WE WORK ACROSS YOUR EXISTING STACK (LIGHT THEME) ── */}
+      <section id="stack" className="py-24 bg-white relative border-b border-slate-200">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 mb-16">
             <div>
-              <div className="font-mono text-xs tracking-[0.14em] text-[#00B8F0] uppercase mb-3 font-semibold">
+              <div className="font-mono text-xs tracking-[0.14em] text-[#0066FF] uppercase mb-3 font-bold">
                 TECHNOLOGY INTEGRATION
               </div>
-              <h2 className="text-3xl sm:text-4xl font-bold font-heading text-white mb-4">
+              <h2 className="text-3xl sm:text-4xl font-bold font-heading text-slate-900 mb-4">
                 We Work Across Your Existing Stack
               </h2>
-              <p className="text-[#8A9EB0] text-base sm:text-lg max-w-2xl">
+              <p className="text-slate-600 text-base sm:text-lg max-w-2xl">
                 We do not lock clients into closed proprietary black boxes. We architect and implement around your existing enterprise platforms, cloud providers, and databases.
               </p>
             </div>
@@ -287,7 +287,7 @@ export default function ImplementationPage() {
               href="/partnerships"
               eventName="button_click"
               eventData={{ button_name: "implementation_view_ecosystem" }}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[#00B8F0] hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[#0066FF] hover:text-[#0052CC] transition-colors"
             >
               View Partner Ecosystem &amp; Integrations →
             </TrackedLink>
@@ -297,21 +297,21 @@ export default function ImplementationPage() {
             {STACK_CATEGORIES.map((cat, idx) => (
               <div
                 key={idx}
-                className="bg-[#0B1524]/80 border border-white/10 rounded-2xl p-8 backdrop-blur-sm hover:border-[#0066FF]/40 transition-all duration-300 shadow-xl"
+                className="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-8 hover:border-[#0066FF]/40 transition-all duration-300 shadow-sm hover:shadow-md"
               >
-                <div className="inline-block px-3 py-1 rounded-full bg-[#0066FF]/15 border border-[#0066FF]/30 text-[#60A5FA] font-mono text-xs uppercase tracking-wider mb-4">
+                <div className="inline-block px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#0066FF] font-mono text-xs uppercase tracking-wider mb-4 font-bold">
                   {cat.badge}
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3">
+                <h3 className="text-2xl font-bold text-slate-900 mb-3">
                   {cat.category}
                 </h3>
-                <p className="text-[#8A9EB0] text-sm leading-relaxed mb-6">
+                <p className="text-slate-600 text-sm leading-relaxed mb-6">
                   {cat.desc}
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4 border-t border-white/10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4 border-t border-slate-200">
                   {cat.capabilities.map((cap, i) => (
-                    <div key={i} className="flex items-center gap-2 text-xs font-medium text-slate-300">
-                      <div className="w-1.5 h-1.5 rounded-full bg-[#00B8F0]"></div>
+                    <div key={i} className="flex items-center gap-2 text-xs font-medium text-slate-700">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#0066FF]"></div>
                       <span>{cap}</span>
                     </div>
                   ))}
@@ -323,37 +323,37 @@ export default function ImplementationPage() {
         </div>
       </section>
 
-      {/* ── 4. ARCHITECTURE COMPARISON: BUILD VS INTEGRATE ── */}
-      <section className="py-24 bg-[#070E1B] relative border-t border-white/10">
+      {/* ── 4. ARCHITECTURE COMPARISON: BUILD VS INTEGRATE (LIGHT THEME) ── */}
+      <section className="py-24 bg-[#F8FAFC] relative border-b border-slate-200">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="font-mono text-xs tracking-[0.14em] text-[#00B8F0] uppercase mb-3 font-semibold">
+            <div className="font-mono text-xs tracking-[0.14em] text-[#0066FF] uppercase mb-3 font-bold">
               STRATEGIC ALIGNMENT
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4 text-white">
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4 text-slate-900">
               Why Implementation Partnering Wins
             </h2>
-            <p className="text-[#8A9EB0] text-base">
+            <p className="text-slate-600 text-base">
               Comparing custom enterprise implementation against traditional over-engineered custom software builds.
             </p>
           </div>
 
-          <div className="bg-[#0B1524]/90 border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
-            <div className="grid grid-cols-1 md:grid-cols-3 bg-[#050B14] p-5 font-mono text-xs uppercase tracking-wider text-[#64748B] border-b border-white/10 font-bold">
+          <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+            <div className="grid grid-cols-1 md:grid-cols-3 bg-slate-50 p-5 font-mono text-xs uppercase tracking-wider text-slate-600 border-b border-slate-200 font-bold">
               <div>Dimension</div>
-              <div className="text-slate-400">Traditional Agency / Custom Build</div>
-              <div className="text-[#00B8F0]">Botmartz Implementation Model</div>
+              <div className="text-slate-600">Traditional Agency / Custom Build</div>
+              <div className="text-[#0066FF]">Botmartz Implementation Model</div>
             </div>
             {COMPARISONS.map((comp, i) => (
-              <div key={i} className="grid grid-cols-1 md:grid-cols-3 p-6 border-b border-white/5 last:border-0 hover:bg-white/[0.02] transition-colors gap-4">
-                <div className="font-bold text-white text-sm flex items-center">
+              <div key={i} className="grid grid-cols-1 md:grid-cols-3 p-6 border-b border-slate-100 last:border-0 hover:bg-slate-50/50 transition-colors gap-4">
+                <div className="font-bold text-slate-900 text-sm flex items-center">
                   {comp.aspect}
                 </div>
-                <div className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                <div className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                   {comp.traditional}
                 </div>
-                <div className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium bg-[#00B8F0]/5 p-3 rounded-lg border border-[#00B8F0]/20">
+                <div className="text-xs sm:text-sm text-slate-900 leading-relaxed font-semibold bg-blue-50/60 p-3 rounded-lg border border-blue-200">
                   {comp.botmartz}
                 </div>
               </div>
@@ -363,24 +363,24 @@ export default function ImplementationPage() {
         </div>
       </section>
 
-      {/* ── 5. FLAGSHIP PROOF LINK: INSURANCE INTELLIGENCE ── */}
-      <section className="py-20 bg-gradient-to-b from-[#050B14] to-[#0A1322] border-t border-white/10 relative">
+      {/* ── 5. FLAGSHIP PROOF LINK: INSURANCE INTELLIGENCE (LIGHT THEME) ── */}
+      <section className="py-20 bg-white border-b border-slate-200 relative">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-r from-[#0E1A2F] via-[#10203D] to-[#0E1A2F] border border-[#00B8F0]/30 rounded-3xl p-8 sm:p-12 shadow-[0_0_50px_rgba(0,184,240,0.12)] flex flex-col lg:flex-row items-center justify-between gap-8">
+          <div className="bg-gradient-to-r from-blue-50 via-indigo-50/60 to-blue-50 border border-blue-200/90 rounded-3xl p-8 sm:p-12 shadow-sm flex flex-col lg:flex-row items-center justify-between gap-8">
             <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00B8F0]/15 text-[#00B8F0] font-mono text-xs uppercase tracking-wider mb-4 font-bold">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 border border-blue-200 text-[#0066FF] font-mono text-xs uppercase tracking-wider mb-4 font-bold">
                 Flagship Reference Implementation
               </div>
-              <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+              <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-3 font-heading">
                 See How We Engineer: Insurance Intelligence Lab
               </h3>
-              <p className="text-sm sm:text-base text-[#8A9EB0] leading-relaxed mb-6">
+              <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-6">
                 Explore our live reference implementation for multi-document insurance policy comparison, clause discrepancy analysis, and strict citation grounding over complex regulatory filings.
               </p>
               <div className="flex flex-wrap gap-3">
-                <span className="text-xs font-mono px-2.5 py-1 bg-white/5 rounded border border-white/10 text-slate-300">Hybrid Search</span>
-                <span className="text-xs font-mono px-2.5 py-1 bg-white/5 rounded border border-white/10 text-slate-300">Cross-Encoder Reranking</span>
-                <span className="text-xs font-mono px-2.5 py-1 bg-white/5 rounded border border-white/10 text-slate-300">Zero-Hallucination Citations</span>
+                <span className="text-xs font-mono px-2.5 py-1 bg-white rounded border border-slate-200 text-slate-700 font-medium">Hybrid Search</span>
+                <span className="text-xs font-mono px-2.5 py-1 bg-white rounded border border-slate-200 text-slate-700 font-medium">Cross-Encoder Reranking</span>
+                <span className="text-xs font-mono px-2.5 py-1 bg-white rounded border border-slate-200 text-slate-700 font-medium">Zero-Hallucination Citations</span>
               </div>
             </div>
 
@@ -388,7 +388,7 @@ export default function ImplementationPage() {
               href="/work/labs/insurance-intelligence"
               eventName="button_click"
               eventData={{ button_name: "implementation_view_insurance_lab" }}
-              className="inline-flex items-center gap-2 bg-[#00B8F0] hover:bg-[#0096C7] text-white font-bold text-sm px-8 py-4 rounded-xl shadow-[0_4px_20px_rgba(0,184,240,0.3)] transition-all whitespace-nowrap hover:scale-105 shrink-0"
+              className="inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold text-sm px-8 py-4 rounded-xl shadow-md transition-all whitespace-nowrap hover:scale-105 shrink-0"
             >
               Launch Interactive Lab <ArrowRight size={16} />
             </TrackedLink>
@@ -396,16 +396,16 @@ export default function ImplementationPage() {
         </div>
       </section>
 
-      {/* ── 6. ARCHITECTURE REVIEW CTA ── */}
-      <section className="py-24 bg-[#050B14] relative border-t border-white/10 text-center">
+      {/* ── 6. ARCHITECTURE REVIEW CTA (LIGHT THEME) ── */}
+      <section className="py-24 bg-[#F8FAFC] relative text-center">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <div className="w-16 h-16 rounded-2xl bg-[#0066FF]/20 border border-[#0066FF]/40 text-[#60A5FA] flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(0,102,255,0.3)]">
+          <div className="w-16 h-16 rounded-2xl bg-blue-50 border border-blue-200 text-[#0066FF] flex items-center justify-center mx-auto mb-6 shadow-sm">
             <Scale size={28} />
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4 font-heading">
             Let's Review Your Enterprise AI Architecture
           </h2>
-          <p className="text-base sm:text-lg text-[#8A9EB0] mb-8 leading-relaxed">
+          <p className="text-base sm:text-lg text-slate-600 mb-8 leading-relaxed">
             Bring your team's workflow bottlenecks and document complexity. We'll outline a concrete system architecture, evaluate technology options, and tell you transparently what is ready for production and what isn't.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -413,7 +413,7 @@ export default function ImplementationPage() {
               href="/contact?type=architecture-review"
               eventName="button_click"
               eventData={{ button_name: "implementation_bottom_cta_review" }}
-              className="inline-flex items-center justify-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold text-base px-8 py-4 rounded-xl shadow-[0_4px_20px_rgba(0,102,255,0.4)] transition-all"
+              className="inline-flex items-center justify-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold text-base px-8 py-4 rounded-xl shadow-[0_4px_20px_rgba(0,102,255,0.3)] transition-all"
             >
               Book an Architecture Review <ArrowRight size={16} />
             </TrackedLink>
@@ -421,7 +421,7 @@ export default function ImplementationPage() {
               href="https://cal.com/botmartz-ai/20min"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 border border-slate-700 text-white hover:border-[#00B8F0] hover:text-[#00B8F0] font-semibold text-base px-8 py-4 rounded-xl transition-all hover:bg-white/5"
+              className="inline-flex items-center justify-center gap-2 border border-slate-300 text-slate-700 bg-white hover:border-[#0066FF] hover:text-[#0066FF] font-semibold text-base px-8 py-4 rounded-xl transition-all shadow-sm"
             >
               Schedule Direct Call (20 Min)
             </a>

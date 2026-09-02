@@ -91,37 +91,38 @@ export default function GalleryPage() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-[#0066FF] selection:text-white pb-24">
       
-      {/* HERO SECTION - CLEAN WHITE / LIGHT THEME */}
-      <section className="relative pt-16 pb-12 sm:pt-20 sm:pb-16 overflow-hidden border-b border-slate-200/80 bg-gradient-to-b from-[#F0F6FF] via-[#F8FAFC] to-white">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#0066FF]/10 blur-[120px] rounded-full pointer-events-none" />
+      {/* HERO SECTION (DARK THEME) */}
+      <section className="relative pt-[130px] pb-[80px] overflow-hidden bg-[#050B14] text-white border-b border-white/10">
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/12 blur-[140px] rounded-full pointer-events-none" />
+        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0052FF]/15 blur-[160px] rounded-full pointer-events-none" />
         
         <div className="wrap relative z-10 text-center max-w-4xl mx-auto px-4">
           
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#0066FF]/20 text-[#0066FF] text-xs font-bold uppercase tracking-wider mb-6 shadow-sm">
-            <Camera size={14} className="animate-pulse text-[#0066FF]" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#00B8F0]/10 border border-[#00B8F0]/30 text-[#00B8F0] text-xs font-mono font-bold uppercase tracking-wider mb-6 shadow-sm">
+            <Camera size={14} className="animate-pulse text-[#00B8F0]" />
             <span>BOTMARTZ AI GALLERY</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 mb-6 leading-[1.15]">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-6 leading-[1.15] font-heading">
             Moments, Milestones &amp; <br />
-            <span className="bg-gradient-to-r from-[#0066FF] via-[#00B8F0] to-[#2563EB] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#00B8F0] via-[#0066FF] to-[#60A5FA] bg-clip-text text-transparent">
               AI Engineering Highlights
             </span>
           </h1>
 
-          <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
+          <p className="text-[#8A9EB0] text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
             Glimpses from our AI Frontier summits, hands-on agentic hackathons, developer masterclasses, and AI community sprints.
           </p>
 
           {/* COMMUNITY DISCORD BANNER CARD */}
-          <div className="max-w-2xl mx-auto p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 shadow-xl shadow-blue-500/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="max-w-2xl mx-auto p-4 sm:p-5 rounded-2xl bg-[#0B1524] border border-white/10 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3 text-left">
               <div className="w-10 h-10 rounded-xl bg-[#5865F2] flex items-center justify-center text-white shrink-0 shadow-md">
                 <MessageSquare size={20} />
               </div>
               <div>
-                <h3 className="font-bold text-slate-900 text-sm sm:text-base">Join the Botmartz AI Community</h3>
-                <p className="text-xs text-slate-500">Connect with 1,000+ AI developers, share projects &amp; attend workshops.</p>
+                <h3 className="font-bold text-white text-sm sm:text-base">Join the Botmartz AI Community</h3>
+                <p className="text-xs text-[#8A9EB0]">Connect with 1,000+ AI developers, share projects &amp; attend workshops.</p>
               </div>
             </div>
             <a

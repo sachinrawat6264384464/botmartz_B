@@ -138,21 +138,21 @@ export default async function DynamicServicePage({ params }: { params: Promise<{
 
       {/* USE CASES */}
       {content.useCases && content.useCases.length > 0 && (
-        <section className="section-pad bg-ink text-white">
+        <section className="section-pad bg-slate-50 border-y border-line text-slate-900">
           <div className="wrap text-center mb-[60px]">
-            <div className="eyebrow justify-center">Offerings & Capabilities</div>
-            <h2 className="text-[34px] font-semibold mb-4">Core Focus Areas & Use Cases</h2>
+            <div className="eyebrow justify-center">Offerings &amp; Capabilities</div>
+            <h2 className="text-[34px] font-semibold mb-4 text-slate-900 font-heading">Core Focus Areas &amp; Use Cases</h2>
           </div>
           
           <div className="wrap grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {content.useCases.map((item: any, i: number) => (
-              <div key={i} className="bg-white/5 border border-white/10 p-6 rounded-xl hover:border-brand/60 transition-colors backdrop-blur-xs flex flex-col justify-between">
+              <div key={i} className="bg-white border border-slate-200 p-6 rounded-xl hover:border-brand/60 transition-colors shadow-sm flex flex-col justify-between">
                 <div>
                   <div className="text-brand mb-4">
                     <DynamicIcon name={item.iconName || "Briefcase"} className="w-8 h-8" />
                   </div>
-                  <h3 className="font-semibold text-[18px] mb-2">{item.title}</h3>
-                  <p className="text-[14px] text-[#9FB9C8] leading-relaxed">{item.description}</p>
+                  <h3 className="font-semibold text-[18px] mb-2 text-slate-900">{item.title}</h3>
+                  <p className="text-[14px] text-slate-600 leading-relaxed">{item.description}</p>
                 </div>
               </div>
             ))}
@@ -164,7 +164,7 @@ export default async function DynamicServicePage({ params }: { params: Promise<{
       {content.techStack && content.techStack.length > 0 && (
         <section className="section-pad border-t border-line bg-paper">
           <div className="wrap max-w-4xl text-center">
-            <div className="eyebrow justify-center mb-3">Integrations & Tech Stack</div>
+            <div className="eyebrow justify-center mb-3">Integrations &amp; Tech Stack</div>
             <h2 className="text-[28px] font-semibold mb-8 text-ink">Built With Industry-Standard Tooling</h2>
             <div className="flex flex-wrap justify-center gap-3">
               {content.techStack.map((tech: string, i: number) => (
@@ -179,16 +179,15 @@ export default async function DynamicServicePage({ params }: { params: Promise<{
 
       {/* CTA SECTION */}
       {content.cta && (
-        <section className="section-pad bg-brand text-white relative overflow-hidden">
-          <div className="absolute inset-0 bg-radial-to-t from-deep/50 to-transparent" />
+        <section className="section-pad bg-slate-50 border-t border-line text-slate-900 relative overflow-hidden">
           <div className="wrap relative z-10 text-center max-w-[720px] mx-auto">
-            <h2 className="text-[clamp(28px,4vw,42px)] leading-none font-semibold mb-4">
+            <h2 className="text-[clamp(28px,4vw,42px)] leading-tight font-semibold mb-4 text-slate-900 font-heading">
               {content.cta.title}
             </h2>
-            <p className="text-[17px] opacity-80 mb-8 max-w-[580px] mx-auto leading-relaxed">
+            <p className="text-[17px] text-slate-600 mb-8 max-w-[580px] mx-auto leading-relaxed">
               {content.cta.subtitle}
             </p>
-            <Link href="/contact" className="btn btn-primary bg-white text-brand hover:bg-neutral-50 px-8 py-3 rounded-xl font-bold transition-all shadow-md inline-block">
+            <Link href="/contact" className="btn btn-primary bg-[#0066FF] hover:bg-[#0052CC] text-white px-8 py-3 rounded-xl font-bold transition-all shadow-md inline-block">
               {content.cta.buttonText || "Schedule discovery call"}
             </Link>
           </div>

@@ -135,7 +135,7 @@ export default function PartnershipsClient({
   };
 
   return (
-    <div className="min-h-screen bg-[#050B14] text-white antialiased">
+    <div className="min-h-screen bg-white text-slate-900 antialiased">
       {structuredData && (
         <script
           type="application/ld+json"
@@ -143,8 +143,8 @@ export default function PartnershipsClient({
         />
       )}
 
-      {/* ── 1. HERO SECTION ── */}
-      <section className="relative pt-[130px] pb-[90px] overflow-hidden border-b border-white/10">
+      {/* ── 1. HERO SECTION (DARK THEME) ── */}
+      <section className="relative pt-[130px] pb-[90px] overflow-hidden bg-[#050B14] text-white border-b border-white/10">
         <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[140px] rounded-full pointer-events-none" />
         <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0052FF]/15 blur-[160px] rounded-full pointer-events-none" />
 
@@ -153,7 +153,7 @@ export default function PartnershipsClient({
             <Sparkles size={13} /> Enterprise AI Ecosystem
           </div>
 
-          <h1 className="text-[clamp(36px,5vw,60px)] font-bold font-heading tracking-tight leading-[1.1] max-w-4xl mb-6">
+          <h1 className="text-[clamp(36px,5vw,60px)] font-bold font-heading tracking-tight leading-[1.1] max-w-4xl mb-6 text-white">
             We Work Across the <br />
             <span className="bg-gradient-to-r from-[#00B8F0] via-[#0066FF] to-[#60A5FA] bg-clip-text text-transparent">
               Modern AI Ecosystem.
@@ -183,18 +183,18 @@ export default function PartnershipsClient({
         </div>
       </section>
 
-      {/* ── 2. ECOSYSTEM SPHERES ── */}
-      <section className="py-24 bg-[#070E1B] relative border-b border-white/10">
+      {/* ── 2. ECOSYSTEM SPHERES (LIGHT THEME) ── */}
+      <section className="py-24 bg-[#F8FAFC] relative border-b border-slate-200">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="font-mono text-xs tracking-[0.14em] text-[#00B8F0] uppercase mb-3 font-semibold">
+            <div className="font-mono text-xs tracking-[0.14em] text-[#0066FF] uppercase mb-3 font-bold">
               TECHNOLOGY STACK COVERAGE
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4 text-white">
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4 text-slate-900">
               The 4 Technology Integration Spheres
             </h2>
-            <p className="text-[#8A9EB0] text-base sm:text-lg">
+            <p className="text-slate-600 text-base sm:text-lg">
               How we match client requirements to proven enterprise platforms and retrieval architectures.
             </p>
           </div>
@@ -203,27 +203,27 @@ export default function PartnershipsClient({
             {ECOSYSTEM_SPHERES.map((sphere, idx) => (
               <div
                 key={idx}
-                className="bg-[#0B1524]/90 border border-white/10 rounded-3xl p-8 hover:border-[#00B8F0]/40 transition-all duration-300 shadow-xl flex flex-col justify-between"
+                className="bg-white border border-slate-200 rounded-3xl p-8 hover:border-[#0066FF]/40 transition-all duration-300 shadow-sm hover:shadow-md flex flex-col justify-between"
               >
                 <div>
-                  <div className="inline-block px-3 py-1 rounded-full bg-[#0066FF]/15 border border-[#0066FF]/30 text-[#60A5FA] font-mono text-xs uppercase tracking-wider mb-4">
+                  <div className="inline-block px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#0066FF] font-mono text-xs uppercase tracking-wider mb-4 font-bold">
                     {sphere.badge}
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">
+                  <h3 className="text-2xl font-bold text-slate-900 mb-2 font-heading">
                     {sphere.category}
                   </h3>
-                  <div className="text-xs font-mono text-[#00B8F0] mb-4">
+                  <div className="text-xs font-mono text-[#0066FF] font-semibold mb-4">
                     {sphere.tagline}
                   </div>
-                  <p className="text-sm text-[#8A9EB0] leading-relaxed mb-6">
+                  <p className="text-sm text-slate-600 leading-relaxed mb-6">
                     {sphere.desc}
                   </p>
 
-                  <div className="space-y-3 pt-4 border-t border-white/10">
+                  <div className="space-y-3 pt-4 border-t border-slate-200">
                     {sphere.platforms.map((p, i) => (
-                      <div key={i} className="p-3.5 rounded-xl bg-[#050B14] border border-white/5">
-                        <div className="text-xs font-bold text-white mb-0.5">{p.name}</div>
-                        <div className="text-[11px] text-[#8A9EB0] leading-relaxed">{p.role}</div>
+                      <div key={i} className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                        <div className="text-xs font-bold text-slate-900 mb-0.5">{p.name}</div>
+                        <div className="text-[11px] text-slate-600 leading-relaxed">{p.role}</div>
                       </div>
                     ))}
                   </div>
@@ -235,18 +235,18 @@ export default function PartnershipsClient({
         </div>
       </section>
 
-      {/* ── 3. COLLABORATION MODELS ── */}
-      <section className="py-24 bg-[#050B14] relative border-b border-white/10">
+      {/* ── 3. COLLABORATION MODELS (LIGHT THEME) ── */}
+      <section className="py-24 bg-white relative border-b border-slate-200">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="font-mono text-xs tracking-[0.14em] text-[#00B8F0] uppercase mb-3 font-semibold">
+            <div className="font-mono text-xs tracking-[0.14em] text-[#0066FF] uppercase mb-3 font-bold">
               HOW WE COLLABORATE
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4 text-white">
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4 text-slate-900">
               Partner Engagement Models
             </h2>
-            <p className="text-[#8A9EB0] text-base sm:text-lg">
+            <p className="text-slate-600 text-base sm:text-lg">
               We collaborate with enterprise software vendors, consultancies, and systems integrators.
             </p>
           </div>
@@ -255,15 +255,15 @@ export default function PartnershipsClient({
             {COLLABORATION_MODELS.map((model, i) => (
               <div
                 key={i}
-                className="bg-[#091222] border border-white/10 rounded-2xl p-7 hover:border-white/25 transition-all"
+                className="bg-[#F8FAFC] border border-slate-200 rounded-2xl p-7 hover:border-slate-300 transition-all shadow-sm"
               >
-                <div className="w-10 h-10 rounded-xl bg-[#0066FF]/20 border border-[#0066FF]/40 text-[#60A5FA] flex items-center justify-center font-bold font-mono text-sm mb-5">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-200 text-[#0066FF] flex items-center justify-center font-bold font-mono text-sm mb-5">
                   0{i + 1}
                 </div>
-                <h3 className="text-lg font-bold text-white mb-3">
+                <h3 className="text-lg font-bold text-slate-900 mb-3 font-heading">
                   {model.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-[#8A9EB0] leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                   {model.desc}
                 </p>
               </div>
@@ -273,94 +273,94 @@ export default function PartnershipsClient({
         </div>
       </section>
 
-      {/* ── 4. PARTNERSHIP INQUIRY FORM ── */}
-      <section id="partner-inquiry" className="py-24 bg-[#070E1B] relative">
+      {/* ── 4. PARTNERSHIP INQUIRY FORM (LIGHT THEME) ── */}
+      <section id="partner-inquiry" className="py-24 bg-[#F8FAFC] relative">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="bg-[#0B1524] border border-white/10 rounded-3xl p-8 sm:p-12 shadow-2xl">
+          <div className="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm">
             <div className="text-center mb-8">
-              <div className="font-mono text-xs text-[#00B8F0] uppercase tracking-wider font-semibold mb-2">
+              <div className="font-mono text-xs text-[#0066FF] uppercase tracking-wider font-bold mb-2">
                 ECOSYSTEM COLLABORATION
               </div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-3 font-heading">
                 Partner with Botmartz
               </h2>
-              <p className="text-sm text-[#8A9EB0]">
+              <p className="text-sm text-slate-600">
                 Are you an enterprise AI platform vendor, vector search company, or systems integrator looking for implementation and engineering execution? Let's connect.
               </p>
             </div>
 
             {submitted ? (
-              <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center text-emerald-300">
-                <CheckCircle2 size={32} className="mx-auto mb-3 text-emerald-400" />
-                <h3 className="text-lg font-bold text-white mb-1">Partnership Inquiry Received</h3>
-                <p className="text-xs text-emerald-200/90">
+              <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-200 text-center text-emerald-800">
+                <CheckCircle2 size={32} className="mx-auto mb-3 text-emerald-600" />
+                <h3 className="text-lg font-bold text-slate-900 mb-1">Partnership Inquiry Received</h3>
+                <p className="text-xs text-emerald-700">
                   Our partnerships and architecture team will review your message and reach out within 1 business day.
                 </p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 {errorMsg && (
-                  <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-xs text-rose-300">
+                  <div className="p-3 rounded-lg bg-rose-50 border border-rose-200 text-xs text-rose-700">
                     {errorMsg}
                   </div>
                 )}
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-mono text-slate-300 uppercase mb-1.5">Company / Organization *</label>
+                    <label className="block text-xs font-mono text-slate-700 uppercase mb-1.5 font-semibold">Company / Organization *</label>
                     <input
                       type="text"
                       required
                       placeholder="e.g. Glean / Qdrant / Acme Corp"
                       value={form.companyName}
                       onChange={(e) => setForm({ ...form, companyName: e.target.value })}
-                      className="w-full bg-[#050B14] border border-white/15 rounded-xl px-4 py-3 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#00B8F0]"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0066FF]"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-mono text-slate-300 uppercase mb-1.5">Contact Person *</label>
+                    <label className="block text-xs font-mono text-slate-700 uppercase mb-1.5 font-semibold">Contact Person *</label>
                     <input
                       type="text"
                       required
                       placeholder="Your full name"
                       value={form.contactPerson}
                       onChange={(e) => setForm({ ...form, contactPerson: e.target.value })}
-                      className="w-full bg-[#050B14] border border-white/15 rounded-xl px-4 py-3 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#00B8F0]"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0066FF]"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-mono text-slate-300 uppercase mb-1.5">Work Email *</label>
+                    <label className="block text-xs font-mono text-slate-700 uppercase mb-1.5 font-semibold">Work Email *</label>
                     <input
                       type="email"
                       required
                       placeholder="you@company.com"
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      className="w-full bg-[#050B14] border border-white/15 rounded-xl px-4 py-3 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#00B8F0]"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0066FF]"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-mono text-slate-300 uppercase mb-1.5">Website</label>
+                    <label className="block text-xs font-mono text-slate-700 uppercase mb-1.5 font-semibold">Website</label>
                     <input
                       type="url"
                       placeholder="https://company.com"
                       value={form.website}
                       onChange={(e) => setForm({ ...form, website: e.target.value })}
-                      className="w-full bg-[#050B14] border border-white/15 rounded-xl px-4 py-3 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#00B8F0]"
+                      className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0066FF]"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono text-slate-300 uppercase mb-1.5">Partnership Category</label>
+                  <label className="block text-xs font-mono text-slate-700 uppercase mb-1.5 font-semibold">Partnership Category</label>
                   <select
                     value={form.partnerCategory}
                     onChange={(e) => setForm({ ...form, partnerCategory: e.target.value })}
-                    className="w-full bg-[#050B14] border border-white/15 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#00B8F0]"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs text-slate-900 focus:outline-none focus:border-[#0066FF]"
                   >
                     <option value="Enterprise AI Platform Vendor">Enterprise AI Platform Vendor (e.g. Glean Partner Network)</option>
                     <option value="Vector Search / Retrieval Infrastructure">Vector Search / Retrieval Engine (OpenSearch, Qdrant, Weaviate, Elastic)</option>
@@ -371,20 +371,20 @@ export default function PartnershipsClient({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono text-slate-300 uppercase mb-1.5">How Can We Collaborate?</label>
+                  <label className="block text-xs font-mono text-slate-700 uppercase mb-1.5 font-semibold">How Can We Collaborate?</label>
                   <textarea
                     rows={4}
                     placeholder="Tell us about your platform, co-delivery opportunities, or implementation requirements..."
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    className="w-full bg-[#050B14] border border-white/15 rounded-xl px-4 py-3 text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-[#00B8F0]"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0066FF]"
                   ></textarea>
                 </div>
 
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-[0_4px_20px_rgba(0,102,255,0.4)] cursor-pointer disabled:opacity-60"
+                  className="w-full bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-[0_4px_20px_rgba(0,102,255,0.3)] cursor-pointer disabled:opacity-60"
                 >
                   {submitting ? "Submitting Inquiry..." : "Submit Partnership Inquiry →"}
                 </button>

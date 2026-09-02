@@ -11,101 +11,94 @@ const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"] });
 
 export default function PrivacyPolicyPage() {
   const settings = useSettings();
-  const email = settings?.general?.email || "soham@botmartz.com";
+  const email = settings?.general?.email || "team@botmartz.com";
   const companyName = settings?.general?.companyName || "Botmartz AI Solutions";
 
   return (
-    <main className={`${inter.className} min-h-screen bg-[#080808] text-white pt-36 pb-20 px-6 md:px-10 lg:px-16`}>
-      {/* Background Effects */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-[#D4AF37]/5 blur-[120px] rounded-full" />
-      </div>
+    <main className="min-h-screen bg-[#F8FAFC] text-slate-900">
+      
+      {/* ── 1. HERO SECTION (DARK THEME) ── */}
+      <section className="relative pt-[140px] pb-[70px] overflow-hidden bg-[#050B14] text-white border-b border-white/10">
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/12 blur-[140px] rounded-full pointer-events-none" />
+        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0052FF]/15 blur-[160px] rounded-full pointer-events-none" />
 
-      <div className="relative z-10 max-w-4xl mx-auto">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="mb-12 border-b border-white/10 pb-8"
-        >
-          <div className={`${mono.className} inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/5 text-[#D4AF37] text-[10px] tracking-widest uppercase mb-4`}>
-            <Shield className="w-3 h-3" />
+        <div className="max-w-4xl mx-auto px-6 md:px-10 relative z-10">
+          <div className={`${mono.className} inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#00B8F0]/30 bg-[#00B8F0]/10 text-[#00B8F0] text-xs font-mono font-bold uppercase mb-4`}>
+            <Shield className="w-3.5 h-3.5" />
             <span>Document ID: SEC-PRIV-01</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight uppercase text-white drop-shadow-md">Privacy Policy</h1>
-          <p className="text-gray-400 mt-2 font-mono text-xs">Last Updated: July 8, 2026</p>
-        </motion.div>
+          <h1 className="text-3xl md:text-5xl font-black font-heading tracking-tight text-white mb-3">
+            Privacy Policy
+          </h1>
+          <p className="text-[#8A9EB0] font-mono text-xs">
+            Last Updated: July 2026 &bull; Botmartz AI Solutions
+          </p>
+        </div>
+      </section>
 
-        {/* Content Sections */}
-        <div className="space-y-10 text-gray-300 font-light leading-relaxed">
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="space-y-4"
-          >
+      {/* ── 2. BODY CONTENT (LIGHT THEME) ── */}
+      <section className="py-16 px-6 md:px-10 max-w-4xl mx-auto">
+        <div className="space-y-10 text-slate-700 font-normal leading-relaxed">
+          
+          <div className="p-5 rounded-2xl bg-blue-50 border border-blue-200 text-xs text-blue-900 leading-relaxed">
+            <strong>Infrastructure Scope Note:</strong> This policy applies strictly to data collected directly through the <code>botmartz.com</code> website, contact inquiry forms, and community educational platforms. Client enterprise AI solutions, custom models, and enterprise knowledge systems are deployed directly in client-owned cloud VPCs or on-premises environments and are governed by dedicated Master Services Agreements (MSAs).
+          </div>
+
+          <section className="space-y-4 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs">
             <div className="flex items-center gap-3">
-              <Lock className="w-5 h-5 text-[#D4AF37]" />
-              <h2 className="text-xl md:text-2xl font-bold text-white uppercase tracking-wide">1. Information We Collect</h2>
+              <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0066FF] flex items-center justify-center">
+                <Lock className="w-4 h-4" />
+              </div>
+              <h2 className="text-lg md:text-xl font-bold text-slate-900 font-heading">1. Information We Collect</h2>
             </div>
             <p>
-              At {companyName}, we are committed to protecting your privacy. We collect information you provide directly to us when filling out our contact forms, subscribing to our newsletter, or enrolling in our GenAI Bootcamps. This may include your name, email address, phone number, company name, and any other details you share.
+              At {companyName}, we are committed to protecting your privacy. We collect information you provide directly to us when filling out our architecture review and contact forms, subscribing to our engineering briefs, or enrolling in our workshops. This may include your name, work email address, company name, project requirements, and communication details.
             </p>
-          </motion.section>
+          </section>
 
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="space-y-4"
-          >
+          <section className="space-y-4 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs">
             <div className="flex items-center gap-3">
-              <Eye className="w-5 h-5 text-[#D4AF37]" />
-              <h2 className="text-xl md:text-2xl font-bold text-white uppercase tracking-wide">2. How We Use Your Data</h2>
+              <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0066FF] flex items-center justify-center">
+                <Eye className="w-4 h-4" />
+              </div>
+              <h2 className="text-lg md:text-xl font-bold text-slate-900 font-heading">2. How We Use Website Data</h2>
             </div>
             <p>
-              We use the collected information for the following business purposes:
+              We use the information collected on this website for legitimate business communication:
             </p>
             <ul className="list-disc list-inside space-y-2 pl-4">
-              <li>To respond to your inquiries and schedule scoping calls.</li>
-              <li>To deliver newsletter updates and educational campaign briefs.</li>
-              <li>To manage student registrations and access to the GenAI Bootcamp platforms.</li>
-              <li>To maintain the security and stability of our website infrastructure.</li>
+              <li>To respond to your inquiries and schedule technical scoping calls.</li>
+              <li>To deliver technical engineering briefs and newsletter releases.</li>
+              <li>To manage workshop registrations and access to community platforms.</li>
+              <li>To maintain website performance, security, and traffic monitoring.</li>
             </ul>
-          </motion.section>
+          </section>
 
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="space-y-4"
-          >
+          <section className="space-y-4 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs">
             <div className="flex items-center gap-3">
-              <FileText className="w-5 h-5 text-[#D4AF37]" />
-              <h2 className="text-xl md:text-2xl font-bold text-white uppercase tracking-wide">3. Information Sharing and Disclosure</h2>
+              <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0066FF] flex items-center justify-center">
+                <FileText className="w-4 h-4" />
+              </div>
+              <h2 className="text-lg md:text-xl font-bold text-slate-900 font-heading">3. Information Sharing and Processing</h2>
             </div>
             <p>
-              We do not sell, rent, or trade your personal data with third parties. Your data is stored securely using Google Firebase and is only processed through safe third-party applications (such as Cloudinary for media and Gmail/Nodemailer for communications) needed to run our services.
+              We do not sell, rent, or trade your personal data. Website data is processed securely through standard cloud providers (such as Google Cloud / Firebase for form handling and secure transactional mail services for communications) necessary to operate our website services.
             </p>
-          </motion.section>
+          </section>
 
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="space-y-4"
-          >
+          <section className="space-y-4 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs">
             <div className="flex items-center gap-3">
-              <Shield className="w-5 h-5 text-[#D4AF37]" />
-              <h2 className="text-xl md:text-2xl font-bold text-white uppercase tracking-wide">4. Your Rights and Choices</h2>
+              <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0066FF] flex items-center justify-center">
+                <Shield className="w-4 h-4" />
+              </div>
+              <h2 className="text-lg md:text-xl font-bold text-slate-900 font-heading">4. Your Rights and Inquiries</h2>
             </div>
             <p>
-              You have the right to request access to the personal data we hold about you, request corrections, or request deletion. You can unsubscribe from our newsletter at any time by clicking the &quot;Unsubscribe&quot; link in our emails, or contact us directly at <a href={`mailto:${email}`} className="text-[#D4AF37] hover:underline">{email}</a> to request data removal.
+              You have the right to request access to the personal data we hold about you, request corrections, or request deletion. You can unsubscribe from our email communications at any time, or contact our engineering and compliance team directly at <a href={`mailto:${email}`} className="text-[#0066FF] font-medium hover:underline">{email}</a>.
             </p>
-          </motion.section>
+          </section>
         </div>
-      </div>
+      </section>
     </main>
   );
 }

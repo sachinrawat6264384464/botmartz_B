@@ -131,21 +131,20 @@ export default function WorkClient({
 
 
 
-      {/* ─── 3. HOW WE WORK (FROM PROBLEM TO PRODUCTION) ─── */}
+      {/* ─── 3. HOW WE WORK (FROM PROBLEM TO PRODUCTION) (LIGHT THEME) ─── */}
       <div className="max-w-[1240px] mx-auto mt-16 px-6 sm:px-10">
-        <div className="bg-[#060C1F] rounded-[18px] p-8 sm:p-11 relative overflow-hidden shadow-lg border border-[rgba(255,255,255,0.06)]">
-          <div className="absolute w-[320px] h-[320px] rounded-full bg-[radial-gradient(circle,rgba(0,123,255,0.22),transparent_70%)] -right-[70px] -top-[100px] pointer-events-none" />
+        <div className="bg-white rounded-[18px] p-8 sm:p-11 relative overflow-hidden shadow-sm border border-slate-200 text-slate-900">
           <div className="relative z-10">
-            <div className="font-bold text-xs tracking-[0.08em] text-[#00C6FF] uppercase">How We Work</div>
-            <div className="font-extrabold text-[26px] sm:text-[30px] text-white mt-2.5">From Problem to Production</div>
+            <div className="font-bold text-xs tracking-[0.08em] text-[#0066FF] uppercase">How We Work</div>
+            <div className="font-extrabold text-[26px] sm:text-[30px] text-slate-900 mt-2.5 font-heading">From Problem to Production</div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8 sm:mt-10">
               {steps.map((step, i) => (
                 <div key={i} className="flex flex-col gap-3 relative group">
-                  <div className="w-[42px] h-[42px] rounded-full border border-[rgba(0,198,255,0.4)] bg-[rgba(0,198,255,0.08)] flex items-center justify-center font-bold text-[14px] text-[#00C6FF] shadow-[0_0_15px_rgba(0,198,255,0.15)] group-hover:scale-105 transition-transform">
+                  <div className="w-[42px] h-[42px] rounded-full border border-blue-200 bg-blue-50 flex items-center justify-center font-bold text-[14px] text-[#0066FF] shadow-2xs group-hover:scale-105 transition-transform">
                     {step.n}
                   </div>
-                  <div className="font-bold text-[15px] text-white mt-1">{step.title}</div>
-                  <div className="font-medium text-[12.5px] leading-[1.6] text-[#7C8CAD]">{step.desc}</div>
+                  <div className="font-bold text-[15px] text-slate-900 font-heading mt-1">{step.title}</div>
+                  <div className="font-medium text-[12.5px] leading-[1.6] text-slate-600">{step.desc}</div>
                 </div>
               ))}
             </div>
@@ -164,7 +163,7 @@ export default function WorkClient({
               {aeoQuestion || "What kind of production AI systems has Botmartz built?"}
             </h3>
             <p className="text-[#5B6B85] text-[13.5px] sm:text-[14.5px] leading-relaxed">
-              {aeoAnswer || "Botmartz builds and deploys production AI systems across education, logistics, healthcare, and SaaS, including AI course assistants, route optimization agents, clinical documentation copilots, enterprise RAG support platforms, warehouse computer vision inspection, and voice agents for patient intake."}
+              {aeoAnswer || "Botmartz builds and deploys production AI systems across enterprise knowledge retrieval, agentic workflow automation, insurance and policy intelligence, and modern AI engineering architectures."}
             </p>
           </div>
         </div>

@@ -78,10 +78,10 @@ const INTEGRATION_PILLARS = [
 
 export default function IntegrationsServicePage() {
   return (
-    <div className="min-h-screen bg-[#050B14] text-white antialiased">
+    <div className="min-h-screen bg-white text-slate-900 antialiased">
       
-      {/* ── HERO ── */}
-      <section className="relative pt-[130px] pb-[90px] overflow-hidden border-b border-white/10">
+      {/* ── HERO (DARK THEME) ── */}
+      <section className="relative pt-[130px] pb-[90px] overflow-hidden bg-[#050B14] text-white border-b border-white/10">
         <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[140px] rounded-full pointer-events-none" />
         <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0052FF]/15 blur-[160px] rounded-full pointer-events-none" />
 
@@ -90,7 +90,7 @@ export default function IntegrationsServicePage() {
             <Sparkles size={13} /> Platform Implementation &amp; Integration
           </div>
 
-          <h1 className="text-[clamp(36px,5vw,60px)] font-bold font-heading tracking-tight leading-[1.1] max-w-4xl mb-6">
+          <h1 className="text-[clamp(36px,5vw,60px)] font-bold font-heading tracking-tight leading-[1.1] max-w-4xl mb-6 text-white">
             AI That Works With Your <br />
             <span className="bg-gradient-to-r from-[#00B8F0] via-[#0066FF] to-[#60A5FA] bg-clip-text text-transparent">
               Existing Systems.
@@ -122,18 +122,18 @@ export default function IntegrationsServicePage() {
         </div>
       </section>
 
-      {/* ── PILLARS ── */}
-      <section className="py-24 bg-[#070E1B] relative border-b border-white/10">
+      {/* ── PILLARS (LIGHT THEME) ── */}
+      <section className="py-24 bg-[#F8FAFC] relative border-b border-slate-200">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="font-mono text-xs tracking-[0.14em] text-[#00B8F0] uppercase mb-3 font-semibold">
+            <div className="font-mono text-xs tracking-[0.14em] text-[#0066FF] uppercase mb-3 font-bold">
               INTEGRATION SPHERES
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4 text-white">
+            <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4 text-slate-900">
               End-to-End Enterprise Stack Integration
             </h2>
-            <p className="text-[#8A9EB0] text-base sm:text-lg">
+            <p className="text-slate-600 text-base sm:text-lg">
               We bridge the gap between platform technologies, internal data silos, and end-user workflows.
             </p>
           </div>
@@ -142,21 +142,21 @@ export default function IntegrationsServicePage() {
             {INTEGRATION_PILLARS.map((pillar, i) => (
               <div
                 key={i}
-                className="bg-[#0B1524]/90 border border-white/10 rounded-2xl p-8 hover:border-[#00B8F0]/40 transition-all duration-300 shadow-xl"
+                className="bg-white border border-slate-200 rounded-2xl p-8 hover:border-[#0066FF]/40 transition-all duration-300 shadow-sm hover:shadow-md"
               >
-                <div className="w-12 h-12 rounded-xl bg-[#0066FF]/15 border border-[#0066FF]/30 text-[#00B8F0] flex items-center justify-center mb-6">
+                <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 text-[#0066FF] flex items-center justify-center mb-6">
                   <pillar.icon size={24} />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3">
+                <h3 className="text-2xl font-bold text-slate-900 mb-3">
                   {pillar.title}
                 </h3>
-                <p className="text-sm text-[#8A9EB0] leading-relaxed mb-6">
+                <p className="text-sm text-slate-600 leading-relaxed mb-6">
                   {pillar.desc}
                 </p>
-                <ul className="space-y-2.5 pt-4 border-t border-white/10">
+                <ul className="space-y-2.5 pt-4 border-t border-slate-200">
                   {pillar.points.map((pt, idx) => (
-                    <li key={idx} className="flex items-center gap-2.5 text-xs text-slate-300">
-                      <CheckCircle2 size={13} className="text-[#00B8F0] shrink-0" />
+                    <li key={idx} className="flex items-center gap-2.5 text-xs text-slate-700 font-medium">
+                      <CheckCircle2 size={13} className="text-[#0066FF] shrink-0" />
                       <span>{pt}</span>
                     </li>
                   ))}
@@ -168,20 +168,20 @@ export default function IntegrationsServicePage() {
         </div>
       </section>
 
-      {/* ── CTA ── */}
-      <section className="py-20 bg-[#050B14] text-center">
+      {/* ── CTA (LIGHT THEME) ── */}
+      <section className="py-20 bg-white text-center border-t border-slate-200">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <h2 className="text-3xl font-bold text-white mb-4">
+          <h2 className="text-3xl font-bold text-slate-900 mb-4 font-heading">
             Connect AI to Your Existing Enterprise Stack
           </h2>
-          <p className="text-base text-[#8A9EB0] mb-8 leading-relaxed">
+          <p className="text-base text-slate-600 mb-8 leading-relaxed">
             Let's discuss how we can implement and integrate enterprise AI platforms, search engines, or custom connectors without disrupting day-to-day operations.
           </p>
           <TrackedLink
             href="/contact?type=platform-integration"
             eventName="button_click"
             eventData={{ button_name: "integrations_bottom_book_review" }}
-            className="inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold text-sm px-8 py-4 rounded-xl shadow-[0_4px_20px_rgba(0,102,255,0.4)] transition-all"
+            className="inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold text-sm px-8 py-4 rounded-xl shadow-[0_4px_20px_rgba(0,102,255,0.3)] transition-all"
           >
             Book an Architecture Review <ArrowRight size={16} />
           </TrackedLink>

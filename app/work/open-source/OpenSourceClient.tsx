@@ -256,31 +256,27 @@ export default function OpenSourceClient({
         ))}
       </div>
 
-      {/* ── GET INVOLVED STEPS ── */}
+      {/* ── GET INVOLVED STEPS (LIGHT THEME) ── */}
       <div className="max-w-[1240px] mx-auto mt-16 px-6 sm:px-10">
-        <div className="bg-[#060C1F] rounded-[18px] p-8 sm:p-11 relative overflow-hidden shadow-xl">
-          <div 
-            className="absolute w-[300px] h-[300px] rounded-full right-[-70px] top-[-100px] pointer-events-none"
-            style={{ background: 'radial-gradient(circle, rgba(0,123,255,0.2), transparent 70%)' }}
-          />
+        <div className="bg-white border border-slate-200 rounded-[18px] p-8 sm:p-11 relative overflow-hidden shadow-sm text-slate-900">
           <div className="relative z-10">
-            <div className="font-bold text-[11.5px] tracking-[0.08em] text-[#00C6FF] uppercase">
+            <div className="font-bold text-[11.5px] tracking-[0.08em] text-[#0066FF] uppercase">
               Get Involved
             </div>
-            <div className="font-extrabold text-[26px] sm:text-[28px] text-white mt-2.5">
+            <div className="font-extrabold text-[26px] sm:text-[28px] text-slate-900 mt-2.5 font-heading">
               How to Contribute
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8 pt-4 border-t border-white/10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-8 pt-4 border-t border-slate-200">
               {steps.map((step, idx) => (
                 <div key={idx} className="flex flex-col gap-3">
-                  <div className="w-10 h-10 rounded-full border border-[#00C6FF]/40 bg-[#00C6FF]/10 flex items-center justify-center font-bold text-[13px] text-[#00C6FF]">
+                  <div className="w-10 h-10 rounded-full border border-blue-200 bg-blue-50 flex items-center justify-center font-bold text-[13px] text-[#0066FF]">
                     {step.n}
                   </div>
-                  <div className="font-bold text-[14.5px] text-white">
+                  <div className="font-bold text-[14.5px] text-slate-900 font-heading">
                     {step.title}
                   </div>
-                  <div className="font-medium text-[12.5px] leading-[1.55] text-[#7C8CAD]">
+                  <div className="font-medium text-[12.5px] leading-[1.55] text-slate-600">
                     {step.desc}
                   </div>
                 </div>

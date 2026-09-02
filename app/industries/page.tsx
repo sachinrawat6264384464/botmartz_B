@@ -101,10 +101,10 @@ const VERTICALS = [
 
 export default function IndustriesPage() {
   return (
-    <div className="min-h-screen bg-[#050B14] text-white antialiased">
+    <div className="min-h-screen bg-white text-slate-900 antialiased">
       
-      {/* ── HERO ── */}
-      <section className="relative pt-[130px] pb-[90px] overflow-hidden border-b border-white/10">
+      {/* ── HERO (DARK THEME) ── */}
+      <section className="relative pt-[130px] pb-[90px] overflow-hidden bg-[#050B14] text-white border-b border-white/10">
         <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[140px] rounded-full pointer-events-none" />
         <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0052FF]/15 blur-[160px] rounded-full pointer-events-none" />
 
@@ -113,7 +113,7 @@ export default function IndustriesPage() {
             <Sparkles size={13} /> Domain Specialization
           </div>
 
-          <h1 className="text-[clamp(36px,5vw,60px)] font-bold font-heading tracking-tight leading-[1.1] max-w-4xl mb-6">
+          <h1 className="text-[clamp(36px,5vw,60px)] font-bold font-heading tracking-tight leading-[1.1] max-w-4xl mb-6 text-white">
             Industry Solutions Built for <br />
             <span className="bg-gradient-to-r from-[#00B8F0] via-[#0066FF] to-[#60A5FA] bg-clip-text text-transparent">
               High-Stakes Operations.
@@ -145,26 +145,26 @@ export default function IndustriesPage() {
         </div>
       </section>
 
-      {/* ── VERTICALS LIST ── */}
-      <section className="py-24 bg-[#070E1B] relative">
+      {/* ── VERTICALS LIST (LIGHT THEME) ── */}
+      <section className="py-24 bg-[#F8FAFC] relative border-b border-slate-200">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           
           {VERTICALS.map((v) => (
             <div
               key={v.id}
               id={v.id}
-              className="bg-[#0B1524]/90 border border-white/10 rounded-3xl p-8 sm:p-10 backdrop-blur-xl shadow-xl hover:border-[#00B8F0]/40 transition-all duration-300 relative overflow-hidden"
+              className="bg-white border border-slate-200 rounded-3xl p-8 sm:p-10 shadow-sm hover:shadow-md hover:border-[#0066FF]/40 transition-all duration-300 relative overflow-hidden"
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-[#0066FF]/20 border border-[#0066FF]/40 text-[#00B8F0] flex items-center justify-center shrink-0">
+                  <div className="w-14 h-14 rounded-2xl bg-blue-50 border border-blue-200 text-[#0066FF] flex items-center justify-center shrink-0">
                     <v.icon size={28} />
                   </div>
                   <div>
-                    <span className="text-xs font-mono text-[#00B8F0] uppercase tracking-wider font-bold block mb-1">
+                    <span className="text-xs font-mono text-[#0066FF] uppercase tracking-wider font-bold block mb-1">
                       {v.badge}
                     </span>
-                    <h2 className="text-2xl sm:text-3xl font-bold text-white">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 font-heading">
                       {v.title}
                     </h2>
                   </div>
@@ -174,31 +174,31 @@ export default function IndustriesPage() {
                   href={v.labLink}
                   eventName="button_click"
                   eventData={{ button_name: `industries_${v.id}_lab_link` }}
-                  className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#00B8F0] hover:text-white transition-colors self-start sm:self-center"
+                  className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#0066FF] hover:text-[#0052CC] transition-colors self-start sm:self-center"
                 >
                   <span>{v.labText}</span>
                 </TrackedLink>
               </div>
 
-              <p className="text-sm sm:text-base text-[#8A9EB0] mb-8 leading-relaxed">
+              <p className="text-sm sm:text-base text-slate-600 mb-8 leading-relaxed">
                 {v.tagline}
               </p>
 
               {/* Problem vs Solution Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-2xl bg-[#050B14] border border-white/5 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-2xl bg-slate-50 border border-slate-200 mb-8">
                 <div>
-                  <div className="text-xs font-mono text-rose-400 uppercase tracking-wider font-bold mb-2">
+                  <div className="text-xs font-mono text-rose-600 uppercase tracking-wider font-bold mb-2">
                     The Industry Challenge:
                   </div>
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
                     {v.problem}
                   </p>
                 </div>
                 <div>
-                  <div className="text-xs font-mono text-[#00B8F0] uppercase tracking-wider font-bold mb-2">
+                  <div className="text-xs font-mono text-[#0066FF] uppercase tracking-wider font-bold mb-2">
                     The Botmartz Architecture:
                   </div>
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
                     {v.solution}
                   </p>
                 </div>
@@ -206,13 +206,13 @@ export default function IndustriesPage() {
 
               {/* Applications */}
               <div>
-                <div className="text-xs font-mono text-[#64748B] uppercase tracking-wider mb-3 font-semibold">
+                <div className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-3 font-bold">
                   Core Implementation Applications:
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {v.applications.map((app, idx) => (
-                    <div key={idx} className="flex items-center gap-2.5 text-xs sm:text-sm text-slate-200">
-                      <CheckCircle2 size={15} className="text-[#00B8F0] shrink-0" />
+                    <div key={idx} className="flex items-center gap-2.5 text-xs sm:text-sm text-slate-700 font-medium">
+                      <CheckCircle2 size={15} className="text-[#0066FF] shrink-0" />
                       <span>{app}</span>
                     </div>
                   ))}
@@ -225,20 +225,20 @@ export default function IndustriesPage() {
         </div>
       </section>
 
-      {/* ── CTA ── */}
-      <section className="py-20 bg-[#050B14] text-center border-t border-white/10">
+      {/* ── CTA (LIGHT THEME) ── */}
+      <section className="py-20 bg-white text-center border-t border-slate-200">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <h2 className="text-3xl font-bold text-white mb-4">
+          <h2 className="text-3xl font-bold text-slate-900 mb-4 font-heading">
             Discuss Your Industry Workflow
           </h2>
-          <p className="text-base text-[#8A9EB0] mb-8 leading-relaxed">
+          <p className="text-base text-slate-600 mb-8 leading-relaxed">
             Let's evaluate your domain documents, compliance constraints, and operational goals during a dedicated technical architecture review.
           </p>
           <TrackedLink
             href="/contact?type=architecture-review"
             eventName="button_click"
             eventData={{ button_name: "industries_bottom_book_review" }}
-            className="inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold text-sm px-8 py-4 rounded-xl shadow-[0_4px_20px_rgba(0,102,255,0.4)] transition-all"
+            className="inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold text-sm px-8 py-4 rounded-xl shadow-[0_4px_20px_rgba(0,102,255,0.3)] transition-all"
           >
             Book an Architecture Review <ArrowRight size={16} />
           </TrackedLink>
