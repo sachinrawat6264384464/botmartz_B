@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
-import { Mail } from 'lucide-react';
+import { Send, CheckCircle2, Sparkles, X, Loader2, ArrowRight } from 'lucide-react';
 
 interface JobRole {
   id?: string;
@@ -18,19 +18,19 @@ interface JobRole {
 const PROTOTYPE_ROLES: JobRole[] = [
   { 
     id: 'intern-1', 
-    slug: 'brand-community-intern',
-    dept: 'Community', 
-    location: 'Remote · Part-Time', 
-    title: 'Brand & Community Intern', 
-    desc: 'Grow the Botmartz brand and AI Engineering community across social, Discord, WhatsApp/Telegram, and community channels.' 
+    slug: 'graphic-designer',
+    dept: 'Design', 
+    location: 'Remote · Flexible', 
+    title: 'Graphic Designer', 
+    desc: 'Create visual identity & communication assets across social media, events, workshops, campaigns, presentations, and websites.' 
   },
   { 
     id: 'intern-2', 
-    slug: 'partnerships-community-growth-intern',
+    slug: 'event-organizer',
     dept: 'Community', 
-    location: 'Remote · Part-Time', 
-    title: 'Partnerships & Community Growth Intern', 
-    desc: 'Build strategic relationships and ecosystem partnerships to expand Botmartz\'s reach across startups, colleges, and developer communities.' 
+    location: 'Remote · Flexible', 
+    title: 'Event Organizer', 
+    desc: 'Plan and execute Botmartz Community events, technical sessions, workshops, webinars, hackathons, and meetups.' 
   },
   { 
     id: 'intern-3', 
@@ -40,6 +40,38 @@ const PROTOTYPE_ROLES: JobRole[] = [
     title: 'Developer Relations (DevRel) Intern', 
     desc: 'Build the developer ecosystem around Botmartz\'s AI Engineering work through technical content, open-source support, and developer engagement.' 
   },
+  { 
+    id: 'intern-4', 
+    slug: 'brand-partnerships',
+    dept: 'Business & Growth', 
+    location: 'Remote · Flexible', 
+    title: 'Brand & Partnerships', 
+    desc: 'Build relationships between Botmartz and colleges, communities, startups, companies, and event partners.' 
+  },
+  { 
+    id: 'intern-5', 
+    slug: 'video-editor-photographer',
+    dept: 'Design & Media', 
+    location: 'Remote · Flexible', 
+    title: 'Video Editor & Photographer', 
+    desc: 'Transform Botmartz activities, events, workshops, projects, and people into high-quality visual stories.' 
+  },
+  { 
+    id: 'intern-6', 
+    slug: 'social-media-manager',
+    dept: 'Marketing', 
+    location: 'Remote · Flexible', 
+    title: 'Social Media Manager', 
+    desc: 'Manage and strategically grow Botmartz\'s presence across LinkedIn, Instagram, X, and community channels.' 
+  },
+  { 
+    id: 'intern-7', 
+    slug: 'content-writer',
+    dept: 'Content', 
+    location: 'Remote · Flexible', 
+    title: 'Content Writer', 
+    desc: 'Communicate what Botmartz is building through technical, educational, community, and business-oriented content.' 
+  }
 ];
 
 export default function CareersClient({ 
@@ -51,21 +83,29 @@ export default function CareersClient({
     ctaText: "View Open Roles →",
     ctaLink: "#roles",
   },
-  structuredData,
-  aeoQuestion,
-  aeoAnswer
+  structuredData
 }: { 
   initialJobs: any[];
   heroContent?: any;
   structuredData?: string;
-  aeoQuestion?: string;
-  aeoAnswer?: string;
 }) {
   const [filter, setFilter] = useState('All Roles');
-  const [selectedRoleForApply, setSelectedRoleForApply] = useState<JobRole | null>(null);
-  const [applyForm, setApplyForm] = useState({ name: '', email: '', phone: '', linkedinOrResume: '', note: '' });
+  const [showApplyModal, setShowApplyModal] = useState(false);
+  const [selectedRoleTitle, setSelectedRoleTitle] = useState<string>('General Application');
+  const [selectedRoleId, setSelectedRoleId] = useState<string>('');
+  
+  const [applyForm, setApplyForm] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    portfolioUrl: '',
+    experienceLevel: 'Students / Freshers',
+    coverNote: ''
+  });
+  
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const roles: JobRole[] = useMemo(() => {
     const firestoreRoles: JobRole[] = Array.isArray(initialJobs) ? initialJobs.map(j => ({
@@ -77,21 +117,11 @@ export default function CareersClient({
       desc: j.shortDescription || j.desc || j.responsibilities || 'Build and deploy advanced AI solutions.'
     })) : [];
 
-    const map = new Map<string, JobRole>();
+    if (firestoreRoles.length > 0) {
+      return firestoreRoles;
+    }
 
-    // Add built-in prototype roles first
-    PROTOTYPE_ROLES.forEach(r => {
-      const key = (r.slug || r.title).toLowerCase().trim();
-      map.set(key, r);
-    });
-
-    // Add or override with Firestore database roles
-    firestoreRoles.forEach(r => {
-      const key = (r.slug || r.title).toLowerCase().trim();
-      map.set(key, r);
-    });
-
-    return Array.from(map.values());
+    return PROTOTYPE_ROLES;
   }, [initialJobs]);
 
   const departments = useMemo(() => {
@@ -121,28 +151,74 @@ export default function CareersClient({
     return roles.filter(r => r.dept.toLowerCase().includes(filter.toLowerCase()) || filter.toLowerCase().includes(r.dept.toLowerCase()));
   }, [filter, roles]);
 
+  const openApplicationForm = (role?: JobRole) => {
+    if (role) {
+      setSelectedRoleTitle(role.title);
+      setSelectedRoleId(role.id || '');
+    } else {
+      setSelectedRoleTitle('General Application');
+      setSelectedRoleId('');
+    }
+    setErrorMessage('');
+    setShowApplyModal(true);
+  };
+
+  const handleApplySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage('');
+    if (!applyForm.fullName || !applyForm.email || !applyForm.phone || !applyForm.portfolioUrl) {
+      setErrorMessage('Please fill in all required fields marked with *');
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/careers/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: applyForm.fullName,
+          email: applyForm.email,
+          phone: applyForm.phone,
+          roleTitle: selectedRoleTitle,
+          roleId: selectedRoleId,
+          portfolioUrl: applyForm.portfolioUrl,
+          experienceLevel: applyForm.experienceLevel,
+          coverNote: applyForm.coverNote
+        })
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setSubmitted(true);
+        setTimeout(() => {
+          setShowApplyModal(false);
+          setSubmitted(false);
+          setApplyForm({
+            fullName: '',
+            email: '',
+            phone: '',
+            portfolioUrl: '',
+            experienceLevel: 'Students / Freshers',
+            coverNote: ''
+          });
+        }, 3000);
+      } else {
+        setErrorMessage(data.error || 'Failed to submit application. Please try again.');
+      }
+    } catch (err: any) {
+      console.error("Application submission error:", err);
+      setErrorMessage("Network error occurred. Please try again.");
+    }
+    setSubmitting(false);
+  };
+
   const defaultSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Careers at Botmartz | Build the Future of AI Engineering",
     "description": "Join our engineering and research team building production AI systems and community around them in Indore, India and Remote.",
-    "url": "https://www.botmartz.com/careers",
-    "about": {
-      "@type": "Organization",
-      "name": "Botmartz",
-      "sameAs": "https://www.botmartz.com"
-    },
-    "mainEntity": {
-      "@type": "ItemList",
-      "itemListElement": roles.map((r, i) => ({
-        "@type": "JobPosting",
-        "title": r.title,
-        "description": r.desc,
-        "jobLocation": r.location.toLowerCase().includes('remote') ? { "@type": "Place", "address": "Remote" } : { "@type": "Place", "address": { "@type": "PostalAddress", "addressLocality": "Indore", "addressCountry": "IN" } },
-        "employmentType": "FULL_TIME",
-        "hiringOrganization": { "@type": "Organization", "name": "Botmartz", "sameAs": "https://www.botmartz.com" }
-      }))
-    }
+    "url": "https://www.botmartz.com/careers"
   };
 
   return (
@@ -153,6 +229,7 @@ export default function CareersClient({
           __html: structuredData ? structuredData : JSON.stringify(defaultSchema)
         }}
       />
+      
       {/* ── HERO SECTION ── */}
       <div className="bg-[#060C1F] relative overflow-hidden pt-24 pb-16 px-6 sm:px-10 lg:pt-28 lg:pb-20">
         <div 
@@ -173,6 +250,12 @@ export default function CareersClient({
             <span className="text-[#00C6FF]">Careers</span>
           </div>
 
+          {/* HIGH IMPACT URGENCY BANNER */}
+          <div className="mb-6 inline-flex items-center gap-2 bg-gradient-to-r from-amber-500/20 via-rose-500/20 to-brand/20 border border-amber-400/40 rounded-full px-4 py-2 text-amber-300 font-bold text-xs sm:text-sm animate-pulse shadow-lg">
+            <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
+            <span>🔥 Roles Open — Apply Hurry Up & Join the Botmartz Team!</span>
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
             <div>
               <div className="font-bold text-[12px] tracking-[0.1em] text-[#00C6FF] uppercase">
@@ -187,17 +270,17 @@ export default function CareersClient({
               </p>
               <div className="flex flex-wrap gap-3.5 mt-7">
                 <a 
-                  href={heroContent.ctaLink || "#roles"} 
+                  href="#roles" 
                   className="inline-flex items-center gap-2 bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] transition-all"
                 >
-                  {heroContent.ctaText || "View Open Roles →"}
+                  View Open Roles →
                 </a>
-                <a 
-                  href="#values" 
-                  className="inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/20 text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] transition-all"
+                <button
+                  onClick={() => openApplicationForm()}
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] shadow-lg transition-all cursor-pointer"
                 >
-                  Life at Botmartz
-                </a>
+                  Apply Directly <Send size={15} />
+                </button>
               </div>
             </div>
 
@@ -254,32 +337,20 @@ export default function CareersClient({
       {/* ── OPEN ROLES FILTER HEADER ── */}
       <div id="roles" className="max-w-[1240px] mx-auto pt-16 px-6 sm:px-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="font-bold text-[12px] tracking-[0.1em] text-[#007BFF] uppercase">
-            Open Roles
+          <div className="flex items-center gap-2">
+            <span className="font-bold text-[12px] tracking-[0.1em] text-[#007BFF] uppercase">
+              Open Roles
+            </span>
+            <span className="bg-amber-500/10 text-amber-600 border border-amber-500/20 text-[10px] font-extrabold px-2 py-0.5 rounded-md uppercase">
+              🔥 Hiring Now
+            </span>
           </div>
           <div className="font-extrabold text-[26px] sm:text-[30px] text-[#0B1220] mt-2">
-            Join the Team
+            Join the Team — Apply Today
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2">
-          {departments.map((dept) => {
-            const active = filter === dept;
-            return (
-              <button
-                key={dept}
-                onClick={() => setFilter(dept)}
-                className={`font-bold text-[12.5px] px-4 py-2.5 rounded-[8px] border transition-all ${
-                  active
-                    ? 'bg-[#007BFF] border-[#007BFF] text-white shadow-sm'
-                    : 'bg-white border-[#E2E8F0] text-[#3A4459] hover:bg-[#F8FAFC]'
-                }`}
-              >
-                {dept}
-              </button>
-            );
-          })}
-        </div>
+
       </div>
 
       {/* ── ROLES LIST ── */}
@@ -292,7 +363,7 @@ export default function CareersClient({
           visibleRoles.map((role, idx) => (
             <div 
               key={role.id || idx}
-              className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 sm:p-7 flex flex-col sm:flex-row sm:items-center justify-between gap-5 shadow-sm hover:border-[#007BFF]/40 transition-all"
+              className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 sm:p-7 flex flex-col sm:flex-row sm:items-center justify-between gap-5 shadow-sm hover:border-[#007BFF]/40 transition-all group"
             >
               <div className="flex-1 min-w-[260px]">
                 <div className="flex flex-wrap items-center gap-2">
@@ -303,7 +374,7 @@ export default function CareersClient({
                     {role.location}
                   </span>
                 </div>
-                <div className="font-bold text-[17px] text-[#0B1220] mt-2">
+                <div className="font-bold text-[17px] text-[#0B1220] mt-2 group-hover:text-[#007BFF] transition-colors">
                   {role.slug ? (
                     <Link href={`/careers/${role.slug}`} className="hover:text-[#007BFF] transition-colors">
                       {role.title}
@@ -317,12 +388,23 @@ export default function CareersClient({
                 </div>
               </div>
 
-              <a
-                href={`mailto:soham@botmartz.com?subject=Application for ${encodeURIComponent(role.title)}`}
-                className="font-bold text-[13px] text-white bg-[#007BFF] hover:bg-[#0052CC] px-5 py-3 rounded-[9px] shrink-0 transition-all text-center inline-flex items-center gap-2 shadow-[0_4px_14px_rgba(0,102,255,0.3)] hover:scale-[1.02]"
-              >
-                <Mail size={15} /> Send CV: soham@botmartz.com
-              </a>
+              <div className="flex items-center gap-3 shrink-0">
+                {role.slug && (
+                  <Link
+                    href={`/careers/${role.slug}`}
+                    className="font-bold text-[13px] text-[#007BFF] bg-[#E8F2FF] hover:bg-[#D4E5FF] px-4 py-3 rounded-[9px] transition-all text-center inline-flex items-center gap-1.5"
+                  >
+                    Details <ArrowRight size={14} />
+                  </Link>
+                )}
+
+                <button
+                  onClick={() => openApplicationForm(role)}
+                  className="font-bold text-[13px] text-white bg-[#007BFF] hover:bg-[#0052CC] px-5 py-3 rounded-[9px] transition-all text-center inline-flex items-center gap-2 shadow-[0_4px_14px_rgba(0,102,255,0.3)] hover:scale-[1.02] cursor-pointer"
+                >
+                  Apply Now <Send size={14} />
+                </button>
+              </div>
             </div>
           ))
         )}
@@ -341,18 +423,199 @@ export default function CareersClient({
                 Don't See Your <span className="text-[#00C6FF]">Role?</span>
               </div>
               <div className="font-medium text-[13.5px] sm:text-[14.5px] leading-[1.65] text-[#8FA3C4] mt-3">
-                We're always open to meeting strong AI engineers. Send your CV to <strong className="text-[#00C6FF]">soham@botmartz.com</strong> — we'll find a place for it.
+                We're always open to meeting strong engineers, designers, and community builders. Fill out the application form — we'll review it immediately!
               </div>
             </div>
-            <a
-              href="mailto:soham@botmartz.com?subject=General Career Application — Botmartz AI"
-              className="font-bold text-[13.5px] text-white bg-[#007BFF] hover:bg-[#0052CC] px-6 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] shrink-0 transition-all text-center inline-flex items-center gap-2 hover:scale-[1.02]"
+            <button
+              onClick={() => openApplicationForm()}
+              className="font-bold text-[13.5px] text-white bg-[#007BFF] hover:bg-[#0052CC] px-6 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] shrink-0 transition-all text-center inline-flex items-center gap-2 hover:scale-[1.02] cursor-pointer"
             >
-              <Mail size={16} /> Send CV: soham@botmartz.com
-            </a>
+              Submit Spontaneous Application <Send size={16} />
+            </button>
           </div>
         </div>
       </div>
+
+      {/* ── APPLICATION FORM MODAL ── */}
+      {showApplyModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
+          <div className="bg-[#0A1224] border border-white/15 rounded-2xl w-full max-w-lg p-6 sm:p-8 text-white relative shadow-2xl my-8">
+            {/* Close button */}
+            <button
+              onClick={() => setShowApplyModal(false)}
+              className="absolute top-5 right-5 text-gray-400 hover:text-white p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+            >
+              <X size={18} />
+            </button>
+
+            {submitted ? (
+              <div className="py-8 text-center space-y-4 animate-in zoom-in-95 duration-200">
+                <div className="w-16 h-16 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto">
+                  <CheckCircle2 size={36} />
+                </div>
+                <h3 className="text-2xl font-bold text-white">Application Received!</h3>
+                <p className="text-gray-300 text-sm max-w-sm mx-auto">
+                  Thank you for applying for <strong className="text-[#00C6FF]">{selectedRoleTitle}</strong>. Our team will review your profile and reach out shortly.
+                </p>
+              </div>
+            ) : (
+              <div>
+                <div className="mb-6">
+                  <span className="text-[11px] font-bold text-[#00C6FF] bg-[#00C6FF]/10 px-2.5 py-1 rounded uppercase tracking-wider">
+                    Careers @ Botmartz
+                  </span>
+                  <h2 className="text-2xl font-bold text-white mt-2">Apply for Position</h2>
+                  <p className="text-xs text-gray-400 mt-1">
+                    Complete the details below to submit your application directly to our team.
+                  </p>
+                </div>
+
+                {errorMessage && (
+                  <div className="mb-4 p-3 bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs rounded-lg">
+                    {errorMessage}
+                  </div>
+                )}
+
+                <form onSubmit={handleApplySubmit} className="space-y-4">
+                  {/* Role Dropdown */}
+                  <div>
+                    <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">
+                      Applying For <span className="text-rose-400">*</span>
+                    </label>
+                    <select
+                      value={selectedRoleTitle}
+                      onChange={(e) => {
+                        setSelectedRoleTitle(e.target.value);
+                        const matched = roles.find(r => r.title === e.target.value);
+                        setSelectedRoleId(matched?.id || '');
+                      }}
+                      className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#00C6FF]"
+                      required
+                    >
+                      <option value="General Application" className="bg-[#0A1224] text-white">
+                        General Application (Other)
+                      </option>
+                      {roles.map(r => (
+                        <option key={r.id || r.title} value={r.title} className="bg-[#0A1224] text-white">
+                          {r.title} ({r.dept})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Full Name */}
+                  <div>
+                    <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">
+                      Full Name <span className="text-rose-400">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Rahul Sharma"
+                      value={applyForm.fullName}
+                      onChange={(e) => setApplyForm({ ...applyForm, fullName: e.target.value })}
+                      className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#00C6FF]"
+                      required
+                    />
+                  </div>
+
+                  {/* Email & Phone Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">
+                        Email Address <span className="text-rose-400">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        placeholder="you@example.com"
+                        value={applyForm.email}
+                        onChange={(e) => setApplyForm({ ...applyForm, email: e.target.value })}
+                        className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#00C6FF]"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">
+                        Phone / WhatsApp <span className="text-rose-400">*</span>
+                      </label>
+                      <input
+                        type="tel"
+                        placeholder="+91 9876543210"
+                        value={applyForm.phone}
+                        onChange={(e) => setApplyForm({ ...applyForm, phone: e.target.value })}
+                        className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#00C6FF]"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* Portfolio / LinkedIn URL */}
+                  <div>
+                    <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">
+                      LinkedIn / Portfolio URL <span className="text-rose-400">*</span>
+                    </label>
+                    <input
+                      type="url"
+                      placeholder="https://linkedin.in/in/username or portfolio link"
+                      value={applyForm.portfolioUrl}
+                      onChange={(e) => setApplyForm({ ...applyForm, portfolioUrl: e.target.value })}
+                      className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#00C6FF]"
+                      required
+                    />
+                  </div>
+
+                  {/* Experience Level */}
+                  <div>
+                    <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">
+                      Experience Level / Status
+                    </label>
+                    <select
+                      value={applyForm.experienceLevel}
+                      onChange={(e) => setApplyForm({ ...applyForm, experienceLevel: e.target.value })}
+                      className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#00C6FF]"
+                    >
+                      <option value="Students / Freshers" className="bg-[#0A1224] text-white">Students / Freshers</option>
+                      <option value="1-2 Years Experience" className="bg-[#0A1224] text-white">1-2 Years Experience</option>
+                      <option value="3+ Years Experience" className="bg-[#0A1224] text-white">3+ Years Experience</option>
+                    </select>
+                  </div>
+
+                  {/* Cover Note */}
+                  <div>
+                    <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">
+                      Short Cover Note / Why Botmartz?
+                    </label>
+                    <textarea
+                      rows={3}
+                      placeholder="Tell us briefly about your background, projects, or why you want to join..."
+                      value={applyForm.coverNote}
+                      onChange={(e) => setApplyForm({ ...applyForm, coverNote: e.target.value })}
+                      className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#00C6FF]"
+                    />
+                  </div>
+
+                  {/* Submit button */}
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="w-full bg-[#007BFF] hover:bg-[#0052CC] text-white font-bold py-3.5 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 mt-2"
+                  >
+                    {submitting ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" /> Submitting...
+                      </>
+                    ) : (
+                      <>
+                        Submit Application <Send size={16} />
+                      </>
+                    )}
+                  </button>
+                </form>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

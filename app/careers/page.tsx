@@ -13,8 +13,8 @@ async function getPublishedJobs() {
     const jobs: any[] = [];
     snap.forEach((doc) => {
       const data = doc.data();
-      // Exclude explicitly drafted/archived/inactive jobs
-      if (data.status === 'draft' || data.status === 'archived' || data.status === 'inactive') {
+      // Exclude explicitly drafted/archived/inactive/closed/suspended jobs
+      if (data.status === 'draft' || data.status === 'archived' || data.status === 'inactive' || data.status === 'closed' || data.status === 'suspended') {
         return;
       }
       const plainObj = JSON.parse(JSON.stringify({ id: doc.id, ...data }));

@@ -68,7 +68,6 @@ interface JobRole {
 
 export default function CareerDetailClient({ job }: { job: JobRole }) {
   const [showApplyModal, setShowApplyModal] = useState(false);
-  const [applyForm, setApplyForm] = useState({ name: '', email: '', phone: '', linkedinOrResume: '', note: '' });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [liked, setLiked] = useState(false);
@@ -182,12 +181,20 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
     { tag: 'PL', title: 'Flexible Leave', desc: 'No fixed PTO cap — take what you need, communicate early.' }
   ];
 
-  const hiringSteps = job.hiringSteps && job.hiringSteps.length ? job.hiringSteps : [
-    { n: '1', title: 'Application Review', desc: 'Our team reads every application within a week.' },
-    { n: '2', title: 'Technical Screen', desc: '45-minute call on your background and past systems.' },
-    { n: '3', title: 'System Design Interview', desc: 'Whiteboard a RAG or agent architecture together.' },
-    { n: '4', title: 'Paid Take-Home', desc: 'A small, scoped project reflecting real client work.' },
-    { n: '5', title: 'Founder Conversation', desc: 'Culture fit, expectations, and any open questions.' }
+  const formatHeading = (str: string) => {
+    if (!str) return 'Career Position';
+    if (str.includes('-')) {
+      return str.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    }
+    return str.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  };
+
+  const formattedTitle = formatHeading(job.title || job.slug);
+
+  const hiringSteps = [
+    { n: '1', title: 'Application Review', desc: 'Our team reads every application within 24–48 hours.' },
+    { n: '2', title: 'Quick Screening Call', desc: 'A 20-minute conversation to discuss your background, goals, and availability.' },
+    { n: '3', title: 'Selection & Onboarding', desc: 'Final role alignment, expectations, and welcome to the Botmartz team.' }
   ];
 
   const team = job.team && job.team.length ? job.team : [
@@ -204,26 +211,53 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
     { q: 'What is the team size right now?', a: 'You’d be joining a team of under ten — real ownership from day one.' }
   ];
 
+  const [applyForm, setApplyForm] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    portfolioUrl: '',
+    experienceLevel: 'Students / Freshers',
+    coverNote: ''
+  });
+  const [errorMessage, setErrorMessage] = useState('');
+
   const handleApplySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!applyForm.name || !applyForm.email) return;
+    setErrorMessage('');
+    if (!applyForm.fullName || !applyForm.email || !applyForm.phone || !applyForm.portfolioUrl) {
+      setErrorMessage('Please fill in all required fields marked with *');
+      return;
+    }
     setSubmitting(true);
     try {
-      await addDoc(collection(db, "job_applications"), {
-        jobId: job.id,
-        role: job.title,
-        dept: job.department || 'Engineering',
-        ...applyForm,
-        createdAt: serverTimestamp()
+      const res = await fetch('/api/careers/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: applyForm.fullName,
+          email: applyForm.email,
+          phone: applyForm.phone,
+          roleTitle: formattedTitle,
+          roleId: job.id,
+          portfolioUrl: applyForm.portfolioUrl,
+          experienceLevel: applyForm.experienceLevel,
+          coverNote: applyForm.coverNote
+        })
       });
-      setSubmitted(true);
-      setTimeout(() => {
-        setShowApplyModal(false);
-        setSubmitted(false);
-        setApplyForm({ name: '', email: '', phone: '', linkedinOrResume: '', note: '' });
-      }, 2500);
+      const data = await res.json();
+      if (data.success) {
+        setSubmitted(true);
+        setTimeout(() => {
+          setShowApplyModal(false);
+          setSubmitted(false);
+          setApplyForm({ fullName: '', email: '', phone: '', portfolioUrl: '', experienceLevel: 'Students / Freshers', coverNote: '' });
+        }, 2500);
+      } else {
+        setErrorMessage(data.error || 'Failed to submit application.');
+      }
     } catch (err) {
       console.error("Application submission error:", err);
+      setErrorMessage("Network error occurred. Please try again.");
     }
     setSubmitting(false);
   };
@@ -262,17 +296,17 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
             <span>›</span>
             <Link href="/careers" className="hover:text-white transition-colors">Careers</Link>
             <span>›</span>
-            <span className="text-[#00C6FF]">{job.title}</span>
+            <span className="text-[#00C6FF]">{formattedTitle}</span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_0.7fr] gap-12 items-start">
             <div>
               <div className="flex flex-wrap gap-2">
                 <span className="font-bold text-[10.5px] tracking-wider text-[#00C6FF] bg-[#00C6FF]/10 px-2.5 py-1 rounded-[5px] uppercase border border-[#00C6FF]/20">
-                  {job.department || 'Engineering'}
+                  {job.department || 'Community & Tech'}
                 </span>
                 <span className="font-bold text-[10.5px] tracking-wider text-[#0E9F6E] bg-[#0E9F6E]/10 px-2.5 py-1 rounded-[5px] uppercase border border-[#0E9F6E]/20">
-                  {job.type || 'Full-Time'}
+                  {job.type || 'Remote / Flexible'}
                 </span>
                 <span className="font-bold text-[10.5px] tracking-wider text-[#D97706] bg-[#D97706]/10 px-2.5 py-1 rounded-[5px] uppercase border border-[#D97706]/20">
                   Actively Hiring
@@ -280,27 +314,20 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
               </div>
 
               <h1 className="font-extrabold text-[34px] sm:text-[46px] leading-[1.15] text-white mt-6">
-                {job.title.includes('—') ? (
-                  <>
-                    {job.title.split('—')[0]}—<br />
-                    <span className="text-[#00C6FF]">{job.title.split('—')[1]}</span>
-                  </>
-                ) : (
-                  job.title
-                )}
+                {formattedTitle}
               </h1>
 
               <p className="font-medium text-[14.5px] sm:text-[15px] leading-[1.75] text-[#8FA3C4] mt-5 max-w-[560px]">
-                {job.shortDescription || 'Design and ship production systems — from ingestion pipelines to evaluation and observability. Direct ownership over systems that ship into real companies.'}
+                {job.shortDescription || 'Join the Botmartz team to build production AI systems, organize events, and grow the AI Engineering community.'}
               </p>
 
               <div className="flex flex-wrap gap-3.5 mt-8 items-center">
-                <a 
-                  href={`mailto:soham@botmartz.com?subject=Application for ${encodeURIComponent(job.title)}`}
+                <button 
+                  onClick={() => setShowApplyModal(true)}
                   className="inline-flex items-center gap-2 bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[14px] px-7 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] transition-all cursor-pointer"
                 >
-                  <Mail size={16} /> Send CV: soham@botmartz.com
-                </a>
+                  Apply Now →
+                </button>
                 <button 
                   onClick={() => setLiked(!liked)}
                   className={`inline-flex items-center gap-2 border px-7 py-3.5 rounded-[9px] text-[14px] font-bold transition-all cursor-pointer ${
@@ -334,8 +361,8 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
                   <MapPin size={16} />
                 </div>
                 <div>
-                  <div className="font-bold text-[13.5px] text-white">{job.location || 'Indore, India'}</div>
-                  <div className="font-medium text-[11.5px] text-[#7C8CAD]">On-site, relocation supported</div>
+                  <div className="font-bold text-[13.5px] text-white">{job.location || 'Remote / Flexible'}</div>
+                  <div className="font-medium text-[11.5px] text-[#7C8CAD]">Remote-Friendly</div>
                 </div>
               </div>
 
@@ -344,8 +371,8 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
                   <Banknote size={16} />
                 </div>
                 <div>
-                  <div className="font-bold text-[13.5px] text-white">{job.salary || 'Competitive Package'}</div>
-                  <div className="font-medium text-[11.5px] text-[#7C8CAD]">+ meaningful equity options</div>
+                  <div className="font-bold text-[13.5px] text-white">Unpaid</div>
+                  <div className="font-medium text-[11.5px] text-[#7C8CAD]">Certificate + Performance LOR</div>
                 </div>
               </div>
 
@@ -354,8 +381,8 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
                   <Clock size={16} />
                 </div>
                 <div>
-                  <div className="font-bold text-[13.5px] text-white">{job.experience || '3+ Years Exp'}</div>
-                  <div className="font-medium text-[11.5px] text-[#7C8CAD]">Mid to Senior level</div>
+                  <div className="font-bold text-[13.5px] text-white">Remote / Flexible</div>
+                  <div className="font-medium text-[11.5px] text-[#7C8CAD]">Part-Time / Project-Based</div>
                 </div>
               </div>
 
@@ -364,8 +391,8 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
                   <Calendar size={16} />
                 </div>
                 <div>
-                  <div className="font-bold text-[13.5px] text-white">Posted Recently</div>
-                  <div className="font-medium text-[11.5px] text-[#7C8CAD]">Rolling applications</div>
+                  <div className="font-bold text-[13.5px] text-white">Actively Hiring</div>
+                  <div className="font-medium text-[11.5px] text-[#7C8CAD]">Apply Hurry Up</div>
                 </div>
               </div>
             </div>
@@ -374,36 +401,24 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
           <div className="h-[1px] bg-white/8 mt-11" />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white/6 mt-[1px] py-4 rounded-xl px-4 border border-white/5 backdrop-blur-sm">
             <div className="text-center md:text-left py-2">
-              <div className="font-extrabold text-[22px] text-[#00C6FF]">10</div>
-              <div className="font-semibold text-[11.5px] text-[#8FA3C4] mt-1">Person Team</div>
+              <div className="font-extrabold text-[22px] text-[#00C6FF]">Active Roles</div>
+              <div className="font-semibold text-[11.5px] text-[#8FA3C4] mt-1">Open Positions</div>
             </div>
             <div className="text-center md:text-left py-2 border-l border-white/5">
-              <div className="font-extrabold text-[22px] text-[#00C6FF]">5 Steps</div>
+              <div className="font-extrabold text-[22px] text-[#00C6FF]">3 Steps</div>
               <div className="font-semibold text-[11.5px] text-[#8FA3C4] mt-1">Hiring Process</div>
             </div>
             <div className="text-center md:text-left py-2 border-l border-white/5">
-              <div className="font-extrabold text-[22px] text-[#00C6FF]">5 Days</div>
-              <div className="font-semibold text-[11.5px] text-[#8FA3C4] mt-1">To First Response</div>
+              <div className="font-extrabold text-[22px] text-[#00C6FF]">24/7 Hours</div>
+              <div className="font-semibold text-[11.5px] text-[#8FA3C4] mt-1">Response Time</div>
             </div>
             <div className="text-center md:text-left py-2 border-l border-white/5">
-              <div className="font-extrabold text-[22px] text-[#00C6FF]">20%</div>
-              <div className="font-semibold text-[11.5px] text-[#8FA3C4] mt-1">Open Source Time</div>
+              <div className="font-extrabold text-[22px] text-[#00C6FF]">100%</div>
+              <div className="font-semibold text-[11.5px] text-[#8FA3C4] mt-1">Remote-Friendly</div>
             </div>
           </div>
         </div>
       </section>
-
-      {/* ── COVER IMAGE HERO ── */}
-      <div className="max-w-[1080px] mx-auto px-6 sm:px-10">
-        <div className="h-[280px] rounded-[18px] overflow-hidden -mt-8 relative shadow-[0_20px_50px_rgba(6,12,31,0.25)] border-[6px] border-white">
-          <Image 
-            fill
-            src="/BotmartznewBot.png" 
-            alt="Botmartz Team"
-            className="object-cover object-center"
-          />
-        </div>
-      </div>
 
       {/* ── CORE DETAILS & JOB SPECS ── */}
       <section className="max-w-[1080px] mx-auto px-6 sm:px-10 pt-12 grid grid-cols-1 lg:grid-cols-[1.7fr_1fr] gap-12 items-start">
@@ -496,14 +511,14 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
           <div className="bg-[#060C1F] rounded-[14px] p-6.5 text-white">
             <h3 className="font-bold text-[13px] text-white uppercase tracking-wider">Ready to Apply?</h3>
             <p className="font-medium text-xs leading-[1.6] text-[#8FA3C4] mt-2">
-              Send your CV directly to <strong className="text-white">soham@botmartz.com</strong>.
+              Apply directly using our quick online form.
             </p>
-            <a 
-              href={`mailto:soham@botmartz.com?subject=Application for ${encodeURIComponent(job.title)}`}
-              className="w-full text-center mt-4.5 font-bold text-[12.5px] text-white bg-[#007BFF] hover:bg-[#0069DB] py-3.5 rounded-[8px] cursor-pointer transition-colors block border-none flex items-center justify-center gap-2"
+            <button 
+              onClick={() => setShowApplyModal(true)}
+              className="w-full text-center mt-4.5 font-bold text-[13px] text-white bg-[#007BFF] hover:bg-[#0069DB] py-3.5 rounded-[8px] cursor-pointer transition-colors block border-none shadow-lg"
             >
-              <Mail size={15} /> Send CV: soham@botmartz.com
-            </a>
+              Apply Now →
+            </button>
             <button 
               onClick={() => setLiked(!liked)}
               className="w-full text-center mt-2.5 font-bold text-[12.5px] text-[#C7D6EE] bg-white/6 hover:bg-white/12 border border-white/14 py-3 rounded-[8px] cursor-pointer transition-colors block"
@@ -530,23 +545,6 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
             </div>
           </div>
 
-          {/* Future Team */}
-          <div className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 flex flex-col gap-4 shadow-sm">
-            <h3 className="font-bold text-[13px] text-[#0B1220] uppercase tracking-wider">Meet Your Future Team</h3>
-            <div className="flex flex-col gap-3.5">
-              {team.map((t, idx) => (
-                <div key={idx} className="flex gap-3 items-center">
-                  <div className="w-[38px] h-[38px] rounded-full bg-gradient-to-br from-[#007BFF] to-[#00C6FF] flex items-center justify-center font-bold text-[12px] text-white shrink-0">
-                    {t.initials}
-                  </div>
-                  <div>
-                    <div className="font-bold text-[12.5px] text-[#0B1220]">{t.name}</div>
-                    <div className="font-medium text-[11px] text-[#8A97AC]">{t.role}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
 
           {/* Share */}
           <div className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 shadow-sm">
@@ -577,24 +575,6 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
         </div>
       </section>
 
-      {/* ── LIFE AT BOTMARTZ GALLERY ── */}
-      <section className="max-w-[1080px] mx-auto px-6 sm:px-10 mt-16">
-        <div className="text-center max-w-[640px] mx-auto mb-10">
-          <div className="font-bold text-[12px] tracking-[0.15em] text-[#007BFF] uppercase">Life at Botmartz</div>
-          <h2 className="font-extrabold text-[26px] sm:text-[28px] leading-[1.3] text-[#0B1220] mt-3">A Small Team, Shipping Real Systems</h2>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="h-[220px] rounded-[14px] overflow-hidden relative shadow-sm border border-[#E2E8F0]">
-            <Image fill src="/labs_hero_cube_1784152647556.png" alt="Office Life 1" className="object-cover" />
-          </div>
-          <div className="h-[220px] rounded-[14px] overflow-hidden relative shadow-sm border border-[#E2E8F0]">
-            <Image fill src="/labs_hero_cube_1784152227156.png" alt="Office Life 2" className="object-cover" />
-          </div>
-          <div className="h-[220px] rounded-[14px] overflow-hidden relative shadow-sm border border-[#E2E8F0]">
-            <Image fill src="/BotmartznewBot.png" alt="Office Life 3" className="object-cover" />
-          </div>
-        </div>
-      </section>
 
       {/* ── COLLAPSIBLE FAQ SECTION ── */}
       <section className="max-w-[1080px] mx-auto px-6 sm:px-10 mt-16 pb-12">
@@ -627,17 +607,163 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
         <div className="bg-white border border-[#E7ECF3] rounded-[16px] p-7.5 md:p-8 flex flex-col md:flex-row items-center gap-6 shadow-md">
           <div className="w-[64px] h-[64px] rounded-full bg-[#E8F2FF] flex items-center justify-center font-extrabold text-[20px] text-[#007BFF] shrink-0">◇</div>
           <div className="flex-1 text-center md:text-left">
-            <h3 className="font-bold text-[18px] text-[#0B1220]">Don't Meet Every Requirement?</h3>
-            <p className="font-medium text-[13.5px] leading-[1.6] text-[#5B6B85] mt-1.5">Send your CV to <strong className="text-[#007BFF]">soham@botmartz.com</strong> anyway — we care more about your ability to build than a checklist.</p>
+            <h3 className="font-bold text-[18px] text-[#0B1220]">Apply for {formattedTitle}</h3>
+            <p className="font-medium text-[13.5px] leading-[1.6] text-[#5B6B85] mt-1.5">Submit your details online to get interviewed for this role.</p>
           </div>
-          <a 
-            href={`mailto:soham@botmartz.com?subject=Application for ${encodeURIComponent(job.title)}`}
+          <button 
+            onClick={() => setShowApplyModal(true)}
             className="font-bold text-[13.5px] text-white bg-[#007BFF] hover:bg-[#0069DB] px-6 py-3.5 rounded-[9px] cursor-pointer transition-colors inline-flex items-center gap-2 border-none shadow-[0_4px_12px_rgba(0,123,255,0.2)] whitespace-nowrap shrink-0"
           >
-            <Mail size={16} /> Send CV: soham@botmartz.com
-          </a>
+            Apply Now →
+          </button>
         </div>
       </section>
+
+      {/* ── APPLICATION FORM MODAL ── */}
+      {showApplyModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
+          <div className="bg-[#0A1224] border border-white/15 rounded-2xl w-full max-w-lg p-6 sm:p-8 text-white relative shadow-2xl my-8">
+            <button
+              onClick={() => setShowApplyModal(false)}
+              className="absolute top-5 right-5 text-gray-400 hover:text-white p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+            >
+              ✕
+            </button>
+
+            {submitted ? (
+              <div className="py-8 text-center space-y-4">
+                <div className="w-16 h-16 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">
+                  ✓
+                </div>
+                <h3 className="text-2xl font-bold text-white">Application Submitted!</h3>
+                <p className="text-gray-300 text-sm max-w-sm mx-auto">
+                  Thank you for applying for <strong className="text-[#00C6FF]">{formattedTitle}</strong>. Our hiring team will review your application soon.
+                </p>
+              </div>
+            ) : (
+              <div>
+                <div className="mb-6">
+                  <span className="text-[11px] font-bold text-[#00C6FF] bg-[#00C6FF]/10 px-2.5 py-1 rounded uppercase tracking-wider">
+                    {job.department || 'Community & Tech'}
+                  </span>
+                  <h2 className="text-2xl font-bold text-white mt-2">Apply for {formattedTitle}</h2>
+                  <p className="text-xs text-gray-400 mt-1">
+                    Fill in your details below to apply.
+                  </p>
+                </div>
+
+                {errorMessage && (
+                  <div className="mb-4 p-3 bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs rounded-lg">
+                    {errorMessage}
+                  </div>
+                )}
+
+                <form onSubmit={handleApplySubmit} className="space-y-4">
+                  {/* Full Name */}
+                  <div>
+                    <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">
+                      Full Name <span className="text-rose-400">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Rahul Sharma"
+                      value={applyForm.fullName}
+                      onChange={(e) => setApplyForm({ ...applyForm, fullName: e.target.value })}
+                      className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#00C6FF]"
+                      required
+                    />
+                  </div>
+
+                  {/* Email & Phone */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">
+                        Email Address <span className="text-rose-400">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        placeholder="you@example.com"
+                        value={applyForm.email}
+                        onChange={(e) => setApplyForm({ ...applyForm, email: e.target.value })}
+                        className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#00C6FF]"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">
+                        Phone / WhatsApp <span className="text-rose-400">*</span>
+                      </label>
+                      <input
+                        type="tel"
+                        placeholder="+91 9876543210"
+                        value={applyForm.phone}
+                        onChange={(e) => setApplyForm({ ...applyForm, phone: e.target.value })}
+                        className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#00C6FF]"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* LinkedIn or Portfolio */}
+                  <div>
+                    <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">
+                      LinkedIn / Portfolio URL <span className="text-rose-400">*</span>
+                    </label>
+                    <input
+                      type="url"
+                      placeholder="https://linkedin.in/in/username or portfolio URL"
+                      value={applyForm.portfolioUrl}
+                      onChange={(e) => setApplyForm({ ...applyForm, portfolioUrl: e.target.value })}
+                      className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#00C6FF]"
+                      required
+                    />
+                  </div>
+
+                  {/* Experience Level */}
+                  <div>
+                    <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">
+                      Experience Level / Status
+                    </label>
+                    <select
+                      value={applyForm.experienceLevel}
+                      onChange={(e) => setApplyForm({ ...applyForm, experienceLevel: e.target.value })}
+                      className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#00C6FF]"
+                    >
+                      <option value="Students / Freshers" className="bg-[#0A1224] text-white">Students / Freshers</option>
+                      <option value="1-2 Years Experience" className="bg-[#0A1224] text-white">1-2 Years Experience</option>
+                      <option value="3+ Years Experience" className="bg-[#0A1224] text-white">3+ Years Experience</option>
+                    </select>
+                  </div>
+
+                  {/* Cover Note */}
+                  <div>
+                    <label className="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">
+                      Short Cover Note / Why Botmartz?
+                    </label>
+                    <textarea
+                      rows={3}
+                      placeholder="Tell us about your background or motivation..."
+                      value={applyForm.coverNote}
+                      onChange={(e) => setApplyForm({ ...applyForm, coverNote: e.target.value })}
+                      className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#00C6FF]"
+                    />
+                  </div>
+
+                  {/* Submit button */}
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="w-full bg-[#007BFF] hover:bg-[#0052CC] text-white font-bold py-3.5 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 mt-2"
+                  >
+                    {submitting ? "Submitting..." : "Submit Application →"}
+                  </button>
+                </form>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
