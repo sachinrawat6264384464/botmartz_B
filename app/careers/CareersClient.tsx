@@ -136,7 +136,7 @@ export default function CareersClient({
     { value: roles.length.toString(), label: 'Open Roles' },
     { value: '100%', label: 'Remote-Friendly' },
     { value: '2026', label: 'Team Founded' },
-    { value: '4.8', label: 'Team Rating' },
+    { value: '24-48h', label: 'Response Time' },
   ], [roles]);
 
   const values = [
