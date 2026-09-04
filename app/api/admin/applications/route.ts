@@ -4,12 +4,16 @@ import { sendCandidateStatusEmail } from "@/lib/mail-templates";
 
 export async function GET() {
   try {
-    const snap = await adminDb.collection("applications").orderBy("createdAt", "desc").get();
+    const snap = await adminDb.collection("applications").get();
     
     const applications = snap.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
-    }));
+    })).sort((a: any, b: any) => {
+      const aTime = new Date(a.createdAt || 0).getTime();
+      const bTime = new Date(b.createdAt || 0).getTime();
+      return bTime - aTime;
+    });
 
     let pending = 0;
     let selected = 0;

@@ -250,11 +250,12 @@ export async function POST(request: Request) {
           `,
         };
 
-        await transporter.sendMail(mailOptions);
-        console.log('✅ Lead email notification sent successfully to', adminEmail);
-      } catch (mailError) {
-        console.error('⚠️ Nodemailer failed to send email:', mailError);
-        // We log it but do not crash the response so the lead is not lost
+        // Dispatch email notification asynchronously without blocking HTTP response
+        transporter.sendMail(mailOptions)
+          .then(() => console.log('✅ Lead email notification sent successfully to', adminEmail))
+          .catch(mailError => console.error('⚠️ Nodemailer failed to send email:', mailError));
+      } catch (transporterErr) {
+        console.warn('⚠️ Nodemailer creation failed:', transporterErr);
       }
     } else {
       console.warn('⚠️ SMTP mail credentials not found in env. Skipping email notification.');
