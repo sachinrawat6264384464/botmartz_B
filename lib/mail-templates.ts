@@ -1,7 +1,13 @@
 import nodemailer from "nodemailer";
 import { adminDb } from "@/lib/firebase-admin";
 
+let cachedTransporter: any = null;
+
 export async function getSmtpTransporter() {
+  if (cachedTransporter) {
+    return cachedTransporter;
+  }
+
   let settings: any = {};
   try {
     const settingsSnap = await adminDb.collection("settings").doc("global").get();
@@ -26,6 +32,9 @@ export async function getSmtpTransporter() {
     host: smtpHost,
     port: smtpPort,
     secure: smtpPort === 465,
+    pool: true,
+    maxConnections: 5,
+    maxMessages: 100,
     auth: {
       user: smtpUser,
       pass: smtpPass,
@@ -33,7 +42,8 @@ export async function getSmtpTransporter() {
     tls: { rejectUnauthorized: false }
   });
 
-  return { transporter, smtpUser };
+  cachedTransporter = { transporter, smtpUser };
+  return cachedTransporter;
 }
 
 export function buildRegistrationEmail(name: string, eventTitle: string): string {
