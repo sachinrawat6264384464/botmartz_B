@@ -371,8 +371,12 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
                   <Banknote size={16} />
                 </div>
                 <div>
-                  <div className="font-bold text-[13.5px] text-white">Unpaid</div>
-                  <div className="font-medium text-[11.5px] text-[#7C8CAD]">Certificate + Performance LOR</div>
+                  <div className="font-bold text-[13.5px] text-white">
+                    {job.salary && !job.salary.toLowerCase().includes('unpaid') ? job.salary : 'Unpaid'}
+                  </div>
+                  <div className="font-medium text-[11.5px] text-[#7C8CAD]">
+                    {job.salary && job.salary.toLowerCase().includes('competitive') ? 'Competitive Compensation' : 'Certificate + Performance LOR'}
+                  </div>
                 </div>
               </div>
 
