@@ -1,5 +1,4 @@
-// app/yout.tsx
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Inter } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "./client-layout";
@@ -10,6 +9,13 @@ import EventCountdownBanner from "./_components/EventCountdownBanner";
 import FlashSaleBanner from "./_components/FlashSaleBanner";
 import Script from "next/script";
 import { WebVitals } from "./web-vitals";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#060C1F",
+};
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",

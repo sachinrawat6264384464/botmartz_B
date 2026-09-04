@@ -360,7 +360,7 @@ export default function CareersClient({
               key={idx}
               className="bg-white border border-[#E7ECF3] rounded-[14px] p-5 sm:p-6 flex flex-col gap-2.5 shadow-sm hover:shadow-md transition-shadow"
             >
-              <div className="w-[34px] h-[34px] rounded-[9px] bg-[#E8F2FF] flex items-center justify-center font-bold text-[10.5px] text-[#007BFF]">
+              <div className="w-[34px] h-[34px] rounded-[9px] bg-[#E8F2FF] flex items-center justify-center font-bold text-xs text-[#007BFF]">
                 {v.tag}
               </div>
               <div className="font-bold text-[15px] text-[#0B1220] mt-1">
@@ -381,7 +381,7 @@ export default function CareersClient({
             <span className="font-bold text-[12px] tracking-[0.1em] text-[#007BFF] uppercase">
               Open Roles
             </span>
-            <span className="bg-amber-500/10 text-amber-600 border border-amber-500/20 text-[10px] font-extrabold px-2 py-0.5 rounded-md uppercase">
+            <span className="bg-amber-500/10 text-amber-600 border border-amber-500/20 text-xs font-extrabold px-2 py-0.5 rounded-md uppercase">
               🔥 Hiring Now
             </span>
           </div>
@@ -407,10 +407,10 @@ export default function CareersClient({
             >
               <div className="flex-1 min-w-[260px]">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-bold text-[10px] tracking-[0.05em] text-[#007BFF] bg-[#E8F2FF] px-2.5 py-1 rounded-[5px] uppercase">
+                  <span className="font-bold text-xs tracking-[0.05em] text-[#007BFF] bg-[#E8F2FF] px-2.5 py-1 rounded-[5px] uppercase">
                     {role.dept}
                   </span>
-                  <span className="font-semibold text-[11.5px] text-[#8A97AC]">
+                  <span className="font-semibold text-xs text-[#8A97AC]">
                     {role.location}
                   </span>
                 </div>
