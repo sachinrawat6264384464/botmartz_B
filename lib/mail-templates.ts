@@ -369,3 +369,275 @@ export function buildEventTicketEmail(
 </html>`;
 }
 
+export function buildCandidateApplicationReceivedEmail(name: string, roleTitle: string): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Application Received | Botmartz Careers</title>
+</head>
+<body style="margin:0;padding:0;background:#050B14;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#ffffff;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#050B14;padding:32px 16px;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#0A111F;border:1px solid #1E293B;border-radius:16px;overflow:hidden;padding:32px;">
+          <!-- Header -->
+          <tr>
+            <td style="padding-bottom:24px;border-bottom:1px solid #1E293B;">
+              <span style="font-size:16px;font-weight:800;letter-spacing:-0.3px;color:#ffffff;text-transform:uppercase;">BOTMARTZ AI SOLUTIONS</span>
+              <span style="font-size:11px;color:#00C6FF;font-weight:600;margin-left:8px;font-family:monospace;">/ CAREERS</span>
+            </td>
+          </tr>
+          
+          <!-- Body -->
+          <tr>
+            <td style="padding-top:32px;padding-bottom:24px;">
+              <div style="display:inline-block;background:rgba(0,198,255,0.12);border:1px solid rgba(0,198,255,0.3);color:#00C6FF;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:6px 14px;border-radius:8px;font-family:monospace;margin-bottom:20px;">
+                ✓ APPLICATION RECEIVED
+              </div>
+              
+              <h1 style="margin:0;font-size:22px;font-weight:800;color:#ffffff;margin-bottom:16px;line-height:1.3;">
+                We Received Your Application!
+              </h1>
+
+              <p style="margin:0;font-size:15px;color:#CBD5E1;line-height:1.6;margin-bottom:16px;">
+                Hi <strong>${name}</strong>,
+              </p>
+
+              <p style="margin:0;font-size:14.5px;color:#94A3B8;line-height:1.6;margin-bottom:24px;">
+                Thank you for applying for the position of <strong style="color:#00C6FF;">${roleTitle}</strong> at Botmartz. Your application details have been safely logged into our recruitment system.
+              </p>
+
+              <!-- Application Info Box -->
+              <div style="background:#0F172A;border:1px solid #1E293B;border-left:4px solid #00C6FF;border-radius:10px;padding:20px;margin-bottom:24px;">
+                <p style="margin:0;font-size:12px;color:#8A9EB0;text-transform:uppercase;letter-spacing:0.05em;font-weight:600;font-family:monospace;margin-bottom:6px;">Role Applied For:</p>
+                <h2 style="margin:0;font-size:18px;font-weight:700;color:#ffffff;margin-bottom:4px;">${roleTitle}</h2>
+                <p style="margin:0;font-size:13px;color:#10B981;font-weight:600;margin-top:6px;">Status: PENDING REVIEW</p>
+              </div>
+
+              <p style="margin:0;font-size:14px;color:#CBD5E1;line-height:1.6;margin-bottom:24px;">
+                Our hiring team reviews every application within <strong>24 to 48 hours</strong>. If your background matches what we're looking for, we will reach out to schedule an introductory call.
+              </p>
+
+              <!-- Sign-off -->
+              <p style="margin:0;font-size:14px;color:#94A3B8;line-height:1.6;">
+                Best regards,<br/>
+                <strong style="color:#ffffff;">Botmartz Talent Team</strong>
+              </p>
+            </td>
+          </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="border-top:1px solid #1E293B;padding-top:24px;text-align:center;">
+              <p style="margin:0 0 6px 0;font-size:11px;color:#64748B;letter-spacing:0.05em;text-transform:uppercase;">
+                BOTMARTZ AI SOLUTIONS PVT LTD · CAREERS
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
+export function buildCandidateSelectedEmail(name: string, roleTitle: string): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Application Shortlisted | Botmartz Careers</title>
+</head>
+<body style="margin:0;padding:0;background:#050B14;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#ffffff;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#050B14;padding:32px 16px;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#0A111F;border:1px solid #1E293B;border-radius:16px;overflow:hidden;padding:32px;">
+          <!-- Header -->
+          <tr>
+            <td style="padding-bottom:24px;border-bottom:1px solid #1E293B;">
+              <span style="font-size:16px;font-weight:800;letter-spacing:-0.3px;color:#ffffff;text-transform:uppercase;">BOTMARTZ AI SOLUTIONS</span>
+              <span style="font-size:11px;color:#10B981;font-weight:600;margin-left:8px;font-family:monospace;">/ SHORTLISTED</span>
+            </td>
+          </tr>
+          
+          <!-- Body -->
+          <tr>
+            <td style="padding-top:32px;padding-bottom:24px;">
+              <div style="display:inline-block;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#10B981;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:6px 14px;border-radius:8px;font-family:monospace;margin-bottom:20px;">
+                🎉 CONGRATULATIONS! YOU'RE SHORTLISTED
+              </div>
+              
+              <h1 style="margin:0;font-size:24px;font-weight:800;color:#ffffff;margin-bottom:16px;line-height:1.3;">
+                Your Application Has Been Shortlisted!
+              </h1>
+
+              <p style="margin:0;font-size:15px;color:#CBD5E1;line-height:1.6;margin-bottom:16px;">
+                Hi <strong>${name}</strong>,
+              </p>
+
+              <p style="margin:0;font-size:14.5px;color:#CBD5E1;line-height:1.65;margin-bottom:24px;">
+                Great news! Our hiring team reviewed your application for the <strong style="color:#10B981;">${roleTitle}</strong> role and was very impressed with your profile and project background.
+              </p>
+
+              <!-- Shortlist Info Box -->
+              <div style="background:#06141D;border:1px solid #0E3D30;border-left:4px solid #10B981;border-radius:10px;padding:20px;margin-bottom:24px;">
+                <p style="margin:0;font-size:12px;color:#6EE7B7;text-transform:uppercase;letter-spacing:0.05em;font-weight:600;font-family:monospace;margin-bottom:6px;">Next Step in Hiring Process:</p>
+                <h3 style="margin:0;font-size:16px;font-weight:700;color:#ffffff;margin-bottom:8px;">Introductory Call & Discussion</h3>
+                <p style="margin:0;font-size:13.5px;color:#94A3B8;line-height:1.5;">
+                  Our team will reach out to you via WhatsApp / Phone or Email shortly to schedule a quick 20-minute discussion regarding expectations and onboarding.
+                </p>
+              </div>
+
+              <!-- Call to Action -->
+              <div style="background:#0F172A;border:1px solid #1E293B;border-radius:10px;padding:20px;margin-bottom:24px;">
+                <h4 style="margin:0 0 10px 0;font-size:14px;font-weight:700;color:#ffffff;">Explore Botmartz Community</h4>
+                <p style="margin:0 0 14px 0;font-size:13px;color:#94A3B8;">Feel free to join our community channels to learn more about what we build:</p>
+                <a href="https://discord.gg/k75ZpEnzp" target="_blank" style="display:inline-block;background:#007BFF;color:#ffffff;text-decoration:none;font-weight:700;font-size:13px;padding:10px 20px;border-radius:8px;">
+                  Join Botmartz Discord →
+                </a>
+              </div>
+
+              <!-- Sign-off -->
+              <p style="margin:0;font-size:14px;color:#94A3B8;line-height:1.6;">
+                Congratulations once again!<br/>
+                <strong style="color:#ffffff;">Team Botmartz AI Solutions</strong>
+              </p>
+            </td>
+          </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="border-top:1px solid #1E293B;padding-top:24px;text-align:center;">
+              <p style="margin:0 0 6px 0;font-size:11px;color:#64748B;letter-spacing:0.05em;text-transform:uppercase;">
+                BOTMARTZ AI SOLUTIONS PVT LTD · CAREERS
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
+export function buildCandidateRejectedEmail(name: string, roleTitle: string): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Application Status Update | Botmartz Careers</title>
+</head>
+<body style="margin:0;padding:0;background:#050B14;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#ffffff;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#050B14;padding:32px 16px;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#0A111F;border:1px solid #1E293B;border-radius:16px;overflow:hidden;padding:32px;">
+          <!-- Header -->
+          <tr>
+            <td style="padding-bottom:24px;border-bottom:1px solid #1E293B;">
+              <span style="font-size:16px;font-weight:800;letter-spacing:-0.3px;color:#ffffff;text-transform:uppercase;">BOTMARTZ AI SOLUTIONS</span>
+              <span style="font-size:11px;color:#94A3B8;font-weight:600;margin-left:8px;font-family:monospace;">/ APPLICATION UPDATE</span>
+            </td>
+          </tr>
+          
+          <!-- Body -->
+          <tr>
+            <td style="padding-top:32px;padding-bottom:24px;">
+              <h1 style="margin:0;font-size:22px;font-weight:800;color:#ffffff;margin-bottom:16px;line-height:1.3;">
+                Update Regarding Your Application
+              </h1>
+
+              <p style="margin:0;font-size:15px;color:#CBD5E1;line-height:1.6;margin-bottom:16px;">
+                Hi <strong>${name}</strong>,
+              </p>
+
+              <p style="margin:0;font-size:14.5px;color:#CBD5E1;line-height:1.65;margin-bottom:20px;">
+                Thank you for taking the time to apply for the position of <strong style="color:#00C6FF;">${roleTitle}</strong> at Botmartz AI Solutions.
+              </p>
+
+              <p style="margin:0;font-size:14px;color:#94A3B8;line-height:1.65;margin-bottom:24px;">
+                After reviewing your profile against our current requirements for this role, we regret to inform you that we will not be moving forward with your application for this specific position at this time.
+              </p>
+
+              <div style="background:#0F172A;border:1px solid #1E293B;border-radius:10px;padding:20px;margin-bottom:24px;">
+                <p style="margin:0;font-size:13.5px;color:#CBD5E1;line-height:1.6;">
+                  Please note that this decision is specific to this opening. We encourage you to keep building your projects and check our careers page for future opportunities that align with your skillset.
+                </p>
+              </div>
+
+              <!-- Sign-off -->
+              <p style="margin:0;font-size:14px;color:#94A3B8;line-height:1.6;">
+                We wish you all the best in your career journey.<br/><br/>
+                Warm regards,<br/>
+                <strong style="color:#ffffff;">Botmartz Talent Team</strong>
+              </p>
+            </td>
+          </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="border-top:1px solid #1E293B;padding-top:24px;text-align:center;">
+              <p style="margin:0 0 6px 0;font-size:11px;color:#64748B;letter-spacing:0.05em;text-transform:uppercase;">
+                BOTMARTZ AI SOLUTIONS PVT LTD · CAREERS
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
+export async function sendCandidateStatusEmail(
+  toEmail: string,
+  candidateName: string,
+  roleTitle: string,
+  status: 'received' | 'selected' | 'rejected'
+) {
+  try {
+    const smtpData = await getSmtpTransporter();
+    if (!smtpData) {
+      console.warn(`[Candidate Email] SMTP credentials missing in settings/env. Skipping email send to ${toEmail}`);
+      return { success: false, reason: "SMTP credentials missing" };
+    }
+
+    const { transporter, smtpUser } = smtpData;
+    let subject = "";
+    let htmlContent = "";
+
+    if (status === 'received') {
+      subject = `Application Received for ${roleTitle} | Botmartz AI Solutions`;
+      htmlContent = buildCandidateApplicationReceivedEmail(candidateName, roleTitle);
+    } else if (status === 'selected') {
+      subject = `🎉 Shortlisted: ${roleTitle} Position | Botmartz AI Solutions`;
+      htmlContent = buildCandidateSelectedEmail(candidateName, roleTitle);
+    } else if (status === 'rejected') {
+      subject = `Application Update: ${roleTitle} Position | Botmartz AI Solutions`;
+      htmlContent = buildCandidateRejectedEmail(candidateName, roleTitle);
+    }
+
+    await transporter.sendMail({
+      from: `"Botmartz Careers" <${smtpUser}>`,
+      to: toEmail,
+      subject: subject,
+      html: htmlContent,
+    });
+
+    console.log(`✅ [Candidate Email] ${status.toUpperCase()} email sent successfully to ${toEmail}`);
+    return { success: true };
+  } catch (err: any) {
+    console.error(`❌ [Candidate Email Error] Failed to send ${status} email to ${toEmail}:`, err);
+    return { success: false, error: err.message };
+  }
+}
+
+

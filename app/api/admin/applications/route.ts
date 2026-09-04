@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { adminDb } from "@/lib/firebase-admin";
+import { sendCandidateStatusEmail } from "@/lib/mail-templates";
 
 export async function GET() {
   try {
@@ -58,10 +59,32 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ success: false, error: "Invalid status" }, { status: 400 });
     }
 
-    await adminDb.collection("applications").doc(id).update({
+    const appRef = adminDb.collection("applications").doc(id);
+    const appSnap = await appRef.get();
+
+    if (!appSnap.exists) {
+      return NextResponse.json({ success: false, error: "Application not found" }, { status: 404 });
+    }
+
+    const appData = appSnap.data() || {};
+    const candidateEmail = appData.email;
+    const candidateName = appData.fullName || "Candidate";
+    const roleTitle = appData.roleTitle || "Applied Position";
+
+    await appRef.update({
       status,
       updatedAt: new Date().toISOString()
     });
+
+    // Send email notification if status changed to 'selected' or 'rejected'
+    if (candidateEmail && (status === 'selected' || status === 'rejected')) {
+      sendCandidateStatusEmail(
+        candidateEmail,
+        candidateName,
+        roleTitle,
+        status as 'selected' | 'rejected'
+      ).catch(err => console.error(`Error sending candidate ${status} email:`, err));
+    }
 
     return NextResponse.json({
       success: true,

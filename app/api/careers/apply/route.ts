@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { adminDb } from "@/lib/firebase-admin";
+import { sendCandidateStatusEmail } from "@/lib/mail-templates";
 
 export async function POST(req: Request) {
   try {
@@ -36,6 +37,14 @@ export async function POST(req: Request) {
     };
 
     const docRef = await adminDb.collection("applications").add(applicationPayload);
+
+    // Send confirmation email to candidate
+    sendCandidateStatusEmail(
+      applicationPayload.email,
+      applicationPayload.fullName,
+      applicationPayload.roleTitle,
+      "received"
+    ).catch(err => console.error("Error sending candidate application received email:", err));
 
     return NextResponse.json({
       success: true,
