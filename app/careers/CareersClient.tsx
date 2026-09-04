@@ -223,10 +223,42 @@ export default function CareersClient({
 
   const defaultSchema = {
     "@context": "https://schema.org",
-    "@type": "WebPage",
+    "@type": "ItemList",
     "name": "Careers at Botmartz | Build the Future of AI Engineering",
-    "description": "Join our engineering and research team building production AI systems and community around them in Indore, India and Remote.",
-    "url": "https://www.botmartz.com/careers"
+    "description": "Explore open job positions and engineering roles at Botmartz. Build production AI systems, enterprise RAG, and autonomous agents.",
+    "url": "https://www.botmartz.com/careers",
+    "numberOfItems": roles.length,
+    "itemListElement": roles.map((role, idx) => ({
+      "@type": "ListItem",
+      "position": idx + 1,
+      "item": {
+        "@type": "JobPosting",
+        "title": role.title,
+        "description": role.desc,
+        "datePosted": "2026-08-01",
+        "validThrough": "2026-12-31",
+        "employmentType": "FULL_TIME",
+        "hiringOrganization": {
+          "@type": "Organization",
+          "name": "Botmartz AI Solutions",
+          "sameAs": "https://www.botmartz.com"
+        },
+        "jobLocation": {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Indore",
+            "addressRegion": "MP",
+            "addressCountry": "IN"
+          }
+        },
+        "applicantLocationRequirements": {
+          "@type": "Country",
+          "name": "India"
+        },
+        "jobLocationType": "TELECOMMUTE"
+      }
+    }))
   };
 
   return (
@@ -259,7 +291,7 @@ export default function CareersClient({
           </div>
 
           {/* HIGH IMPACT URGENCY BANNER */}
-          <div className="mb-6 inline-flex items-center gap-2 bg-gradient-to-r from-amber-500/20 via-rose-500/20 to-brand/20 border border-amber-400/40 rounded-full px-4 py-2 text-amber-300 font-bold text-xs sm:text-sm animate-pulse shadow-lg">
+          <div className="mb-6 inline-flex items-center gap-2 bg-gradient-to-r from-amber-500/20 via-rose-500/20 to-brand/20 border border-amber-400/40 rounded-full px-4 py-2 text-amber-300 font-bold text-xs sm:text-sm shadow-lg">
             <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
             <span>🔥 Roles Open — Apply Hurry Up & Join the Botmartz Team!</span>
           </div>
