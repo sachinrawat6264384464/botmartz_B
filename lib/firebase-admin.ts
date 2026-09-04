@@ -35,6 +35,15 @@ function getAdminApp(): App {
 
   // 2. Fallback to ENV variables with robust normalization
   let privateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY;
+  let clientEmail = process.env.FIREBASE_ADMIN_CLIENT_EMAIL;
+
+  if (privateKey && (privateKey === '[SENSITIVE]' || privateKey.includes('[SENSITIVE]'))) {
+    privateKey = undefined;
+  }
+  if (clientEmail && (clientEmail === '[SENSITIVE]' || clientEmail.includes('[SENSITIVE]'))) {
+    clientEmail = undefined;
+  }
+
   if (privateKey) {
     // Strip leading/trailing quotes (single, double, or backticks)
     privateKey = privateKey.replace(/^["'`]+|["'`]+$/g, '');
@@ -50,7 +59,7 @@ function getAdminApp(): App {
   }
 
   try {
-    if (!privateKey || !process.env.FIREBASE_ADMIN_CLIENT_EMAIL) {
+    if (!privateKey || !clientEmail) {
       console.warn('FIREBASE_ADMIN_PRIVATE_KEY or FIREBASE_ADMIN_CLIENT_EMAIL is missing. Initializing Firebase Admin with project ID fallback.');
       adminApp = initializeApp({
         projectId: process.env.FIREBASE_ADMIN_PROJECT_ID || process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'botmartz-main',
@@ -59,7 +68,7 @@ function getAdminApp(): App {
       adminApp = initializeApp({
         credential: cert({
           projectId: process.env.FIREBASE_ADMIN_PROJECT_ID || process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'botmartz-main',
-          clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
+          clientEmail: clientEmail,
           privateKey: privateKey,
         }),
       });
