@@ -71,6 +71,14 @@ const PROTOTYPE_ROLES: JobRole[] = [
     location: 'Remote · Flexible', 
     title: 'Content Writer', 
     desc: 'Communicate what Botmartz is building through technical, educational, community, and business-oriented content.' 
+  },
+  { 
+    id: 'intern-8', 
+    slug: 'community-management-intern',
+    dept: 'Community', 
+    location: 'Remote · Part-Time', 
+    title: 'Community Management Intern', 
+    desc: 'Help us build and grow the Botmartz AI Engineering Community of AI engineers, developers, and students.' 
   }
 ];
 

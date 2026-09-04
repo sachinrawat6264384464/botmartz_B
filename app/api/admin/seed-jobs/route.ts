@@ -136,6 +136,21 @@ const DEFAULT_JOBS = [
     requirements: "Interest in AI, Generative AI, RAG, Agentic AI, and Software Development\nAccurate, useful, original, and well-researched writing style\nStrong grammar and editing skills",
     niceToHave: "Published tech blogs or articles",
     createdAt: new Date().toISOString()
+  },
+  {
+    title: "Community Management Intern",
+    slug: "community-management-intern",
+    department: "Community",
+    location: "Remote / Part-Time",
+    type: "Part-Time / Internship",
+    experience: "Students / Freshers",
+    salary: "Unpaid (Certificate + LOR)",
+    status: "published",
+    shortDescription: "Help us build and grow the Botmartz AI Engineering Community of AI engineers, developers, and students.",
+    responsibilities: "Manage and grow our Discord, Telegram, and WhatsApp community of AI engineers and students\nEngage actively with developers, students, and AI enthusiasts\nCoordinate workshops, webinars, and community meetups\nCreate announcements, community updates, and educational posts\nSupport key community initiatives like AI Accelerator and AI Frontier",
+    requirements: "Active presence on developer and AI community channels\nPassionate about community building, AI, and developer engagement\nStrong written and verbal communication skills",
+    niceToHave: "Prior experience managing tech communities or Discord servers\nExposure to AI/ML ecosystems",
+    createdAt: new Date().toISOString()
   }
 ];
 
@@ -149,7 +164,7 @@ export async function POST(request: Request) {
     const snap = await jobsRef.get();
 
     // If reset requested or if duplicates exist, wipe and re-seed clean set
-    if (isReset || snap.size > 9) {
+    if (isReset || snap.size > 10) {
       const batchDeletes = snap.docs.map(doc => doc.ref.delete());
       await Promise.all(batchDeletes);
 
