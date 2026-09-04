@@ -15,10 +15,9 @@ export default function EventCountdownBanner() {
     <div className="bg-gradient-to-r from-[#050B14] via-[#0A1628] to-[#050B14] border-b border-white/10 py-2.5 sm:py-3 relative z-[60] text-white">
       <div className="wrap flex flex-col sm:flex-row items-center justify-between sm:justify-center gap-2 sm:gap-6 text-xs sm:text-sm">
         
-        {/* Badge & Live Pulse */}
+        {/* Badge & Live Status */}
         <div className="flex items-center gap-2 font-bold text-[#00B8F0] tracking-wide">
           <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00B8F0] opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#00B8F0]"></span>
           </span>
           <MessageSquare size={15} className="text-[#00B8F0]" />

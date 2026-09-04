@@ -273,12 +273,9 @@ export default function CareersClient({
       {/* ── HERO SECTION ── */}
       <div className="bg-[#060C1F] relative overflow-hidden pt-24 pb-16 px-6 sm:px-10 lg:pt-28 lg:pb-20">
         <div 
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0 pointer-events-none opacity-40"
           style={{
-            backgroundImage: 'linear-gradient(rgba(0,198,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,198,255,0.06) 1px, transparent 1px)',
-            backgroundSize: '44px 44px',
-            maskImage: 'radial-gradient(ellipse 80% 60% at 65% 30%, black, transparent)',
-            WebkitMaskImage: 'radial-gradient(ellipse 80% 60% at 65% 30%, black, transparent)'
+            backgroundImage: 'radial-gradient(circle at 65% 30%, rgba(0,198,255,0.15), transparent 70%)',
           }}
         />
         <div className="relative max-w-[1240px] mx-auto">
