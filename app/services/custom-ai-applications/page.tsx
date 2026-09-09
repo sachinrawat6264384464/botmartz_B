@@ -18,10 +18,10 @@ import {
 import TrackedLink from "@/app/_components/TrackedLink";
 
 export const metadata: Metadata = {
-  title: "Custom AI Applications & Intelligent Software | Botmartz",
+  title: "Custom AI Applications & Intelligent Software",
   description: "Engineer domain-specific AI software, internal co-pilot consoles, and intelligent workflow systems tailored to specialized operational requirements.",
   openGraph: {
-    title: "Custom AI Applications & Intelligent Software | Botmartz",
+    title: "Custom AI Applications & Intelligent Software",
     description: "Full-stack intelligent software, multi-document analysis consoles, and scalable AI microservices built for high-stakes business operations.",
     url: "https://www.botmartz.com/services/custom-ai-applications",
     type: "website",

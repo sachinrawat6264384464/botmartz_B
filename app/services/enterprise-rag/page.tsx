@@ -11,8 +11,8 @@ import EnterpriseRAGClient from "./EnterpriseRAGClient";
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'Enterprise RAG & Knowledge Intelligence | Botmartz AI Solutions',
-    description: 'We turn scattered documents, policies and SOPs into production-ready RAG systems in 3–6 weeks. Grounded answers, verifiable citations, measured retrieval quality.',
+    title: 'Enterprise RAG & Knowledge Intelligence',
+    description: 'We turn scattered documents, policies and SOPs into production-ready RAG systems in 4–6 weeks. Grounded answers, verifiable citations, measured retrieval quality.',
   };
   
   try {
@@ -25,8 +25,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     ...meta,
     openGraph: {
-      title: 'Stop Building Chatbots. Start Building Reliable Enterprise Knowledge Systems.',
-      description: 'Focused 3–4 week Enterprise Knowledge AI pilots for document-heavy teams. Hybrid retrieval, citation-backed answers, RAGAS evaluation from day one.',
+      title: 'Enterprise RAG & Knowledge Intelligence',
+      description: 'Focused 4–6 week Enterprise Knowledge AI pilots for document-heavy teams. Hybrid retrieval, citation-backed answers, benchmark evaluation from day one.',
       url: 'https://www.botmartz.com/services/enterprise-rag',
       type: 'website',
     },
@@ -40,7 +40,7 @@ const DEFAULT_CONTENT = {
   hero: {
     badge: "SOLUTIONS / KNOWLEDGE & SEARCH SYSTEMS",
     title: "Stop Building Fragile Chatbots. Start Building Verified Knowledge & Search Systems.",
-    subtitle: "We help organizations turn complex documents, policies, SOPs, and scattered databases into accurate, production-ready search and RAG systems. Grounded answers. Verifiable citations. Zero guessing.",
+    subtitle: "We help organizations turn complex documents, policies, SOPs, and scattered databases into accurate, production-ready search and RAG systems. Grounded answers. Verifiable citations. Refuses when evidence is missing.",
     ctaText: "BOOK AN ARCHITECTURE REVIEW →",
     ctaLink: "https://cal.com/botmartz-ai/20min",
     secondaryCtaText: "See Reference Implementation",

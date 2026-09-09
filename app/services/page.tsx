@@ -4,10 +4,10 @@ import { ArrowRight, Search, Bot, Blocks, Code2, ShieldCheck, CheckCircle2, Spar
 import TrackedLink from "@/app/_components/TrackedLink";
 
 export const metadata: Metadata = {
-  title: 'Enterprise AI Solutions & Implementation Services | Botmartz',
+  title: 'Enterprise AI Solutions & Implementation Services',
   description: 'Production-ready AI solutions across enterprise knowledge, search architecture, agent workflow automation, platform integration, and custom AI software.',
   openGraph: {
-    title: 'Enterprise AI Solutions & Implementation Services | Botmartz',
+    title: 'Enterprise AI Solutions & Implementation Services',
     description: 'We design, architect, implement, and operate production-ready AI systems across knowledge, search, agents, and cloud platforms.',
     url: 'https://www.botmartz.com/services',
     type: 'website',

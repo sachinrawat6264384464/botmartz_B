@@ -4,7 +4,7 @@ import LabsClient from './LabsClient';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'Botmartz Labs | AI Experiments & Open Source',
+    title: 'AI Innovation Labs & Reference Implementations',
     description: 'Our labs is where we experiment, build, and open source production-ready AI systems that solve real problems.',
   };
   

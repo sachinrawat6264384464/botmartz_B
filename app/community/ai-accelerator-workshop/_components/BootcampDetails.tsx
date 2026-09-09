@@ -120,7 +120,7 @@ export default function BootcampDetails({ feedbackData }: { feedbackData?: any }
 
   const avgRating = feedbackData?.avgRating || "4.9 / 5.0";
   const totalReviewsLabel = feedbackData?.totalReviewsLabel || "(180+ Student Reviews)";
-  const recommendRate = feedbackData?.recommendRate || "98.4% Recommend Rate";
+  const recommendRate = feedbackData?.recommendRate || "98% Recommend Rate";
   const activeReviews = (feedbackData?.reviews && feedbackData.reviews.length > 0)
     ? feedbackData.reviews.slice(0, 8)
     : studentReviews.slice(0, 4);

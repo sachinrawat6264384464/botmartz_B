@@ -228,7 +228,7 @@ export default function InsuranceLabClient() {
               [REFERENCE IMPLEMENTATION]
             </span>
             <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded font-semibold">
-              Live Interactive Architecture
+              Illustrated Walkthrough
             </span>
           </div>
 
@@ -246,14 +246,14 @@ export default function InsuranceLabClient() {
           {/* Quick Metrics Bar */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-5 rounded-2xl bg-[#091222]/80 border border-white/10 backdrop-blur-md">
             <div>
-              <div className="text-[11px] font-mono text-[#00B8F0] uppercase tracking-wider font-semibold">RAGAS Precision</div>
-              <div className="text-2xl font-bold text-white mt-0.5">98.4%</div>
-              <div className="text-[11px] text-[#64748B]">Context Faithfulness</div>
+              <div className="text-[11px] font-mono text-[#00B8F0] uppercase tracking-wider font-semibold">Evaluation Set</div>
+              <div className="text-2xl font-bold text-white mt-0.5">120 Queries</div>
+              <div className="text-[11px] text-[#64748B]">Policy Benchmark</div>
             </div>
             <div>
-              <div className="text-[11px] font-mono text-[#00B8F0] uppercase tracking-wider font-semibold">Retrieval Recall@5</div>
-              <div className="text-2xl font-bold text-white mt-0.5">96.2%</div>
-              <div className="text-[11px] text-[#64748B]">Dense + BM25 Hybrid</div>
+              <div className="text-[11px] font-mono text-[#00B8F0] uppercase tracking-wider font-semibold">Retrieval Pipeline</div>
+              <div className="text-2xl font-bold text-white mt-0.5">Hybrid</div>
+              <div className="text-[11px] text-[#64748B]">Dense + BM25 + Rerank</div>
             </div>
             <div>
               <div className="text-[11px] font-mono text-[#00B8F0] uppercase tracking-wider font-semibold">Citation Strictness</div>
@@ -269,7 +269,7 @@ export default function InsuranceLabClient() {
         </div>
       </section>
 
-      {/* ── 2. INTERACTIVE SIMULATOR SECTION (LIGHT THEME) ── */}
+      {/* ── 2. ILLUSTRATED WALKTHROUGH SECTION (LIGHT THEME) ── */}
       <section className="py-16 bg-[#F8FAFC] relative border-b border-slate-200">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
           
@@ -277,14 +277,14 @@ export default function InsuranceLabClient() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
             <div>
               <div className="font-mono text-xs text-[#0066FF] uppercase tracking-wider font-bold mb-2">
-                INTERACTIVE REFERENCE SIMULATOR
+                ILLUSTRATED WALKTHROUGH
               </div>
               <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 font-heading">
                 Multi-Document Policy Analysis Engine
               </h2>
             </div>
-            <div className="text-xs text-slate-600 font-mono">
-              Select a benchmark test scenario below to inspect live analysis:
+            <div className="text-xs text-slate-600 font-medium max-w-md">
+              Scripted scenarios showing the pipeline output; a live sandbox is available on request. Select a scenario below to inspect analysis:
             </div>
           </div>
 

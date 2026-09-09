@@ -56,8 +56,8 @@ export default async function ContactPage() {
     settings = await getCachedGlobalSettings();
   } catch (e) {}
 
-  const email = settings?.general?.email || "soham@botmartz.com";
-  const phone = settings?.general?.phone || "+91 94073 28842";
+  const email = settings?.general?.email || "team@botmartz.com";
+  const phone = settings?.general?.phone || "+91 97300 84626";
   const companyName = settings?.general?.companyName || "Botmartz AI Solutions";
   const address = settings?.general?.address || "Indore, IN";
 

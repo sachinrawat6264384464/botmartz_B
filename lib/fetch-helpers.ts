@@ -149,7 +149,7 @@ export const getCachedPublicFeedbacks = cache(async () => {
 
         const totalCount = list.length;
         const avgRating = totalCount > 0 ? (totalRating / totalCount).toFixed(1) : "4.9";
-        const recommendRate = totalCount > 0 ? ((recommendCount / totalCount) * 100).toFixed(1) : "98.4";
+        const recommendRate = totalCount > 0 ? Math.round((recommendCount / totalCount) * 100) : "98";
 
         // Sort by createdAt desc
         list.sort((a, b) => {
@@ -192,7 +192,7 @@ export const getCachedPublicFeedbacks = cache(async () => {
         avgRating: "4.9 / 5.0",
         totalReviewsCount: 180,
         totalReviewsLabel: "180+ Student Reviews",
-        recommendRate: "98.4% Recommend Rate",
+        recommendRate: "98% Recommend Rate",
         reviews: DEFAULT_FALLBACK_REVIEWS,
       };
     },

@@ -19,7 +19,7 @@ import {
 import TrackedLink from '@/app/_components/TrackedLink';
 
 export const metadata: Metadata = {
-  title: 'About Botmartz | AI Engineering & Implementation Practice',
+  title: 'About Us',
   description: 'Botmartz helps organizations design, implement, integrate, and operate production-ready AI systems across knowledge, workflows, data, and software.',
   keywords: [
     'About Botmartz',
@@ -53,7 +53,7 @@ export default function AboutPage() {
       "logo": "https://www.botmartz.com/icon.png",
       "sameAs": [
         "https://github.com/botmartz",
-        "https://discord.gg/k75ZpEnzp"
+        "https://discord.gg/QfxuHQAZz"
       ]
     }
   };

@@ -1,9 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: {
-    absolute: "Contact Botmartz | Scope Your AI Implementation | Botmartz"
-  },
+  title: "Contact Us",
   description: "Get in touch with Botmartz AI Solutions. Schedule an architecture review or discovery scoping call for enterprise RAG, AI agents, and custom AI systems.",
   keywords: [
     "Contact Botmartz",
@@ -12,7 +10,7 @@ export const metadata: Metadata = {
     "AI Engineering Consulting"
   ],
   openGraph: {
-    title: "Contact Botmartz | Scope Your AI Implementation | Botmartz",
+    title: "Contact Us",
     description: "Get in touch with Botmartz AI Solutions. Schedule an architecture review or discovery scoping call for enterprise RAG, AI agents, and custom AI systems.",
     url: "https://www.botmartz.com/contact",
     type: "website",

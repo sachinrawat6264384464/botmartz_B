@@ -305,8 +305,8 @@ export function buildEventTicketEmail(
 
                 <div style="margin-bottom:16px;">
                   <p style="margin:0 0 6px 0;font-size:14px;font-weight:700;color:#ffffff;">Discord:</p>
-                  <a href="https://discord.gg/k75ZpEnzp" target="_blank" style="display:inline-block;background:#5865F2;color:#ffffff;text-decoration:none;font-weight:600;font-size:13px;padding:10px 18px;border-radius:8px;">
-                    👉 https://discord.gg/k75ZpEnzp
+                  <a href="https://discord.gg/QfxuHQAZz" target="_blank" style="display:inline-block;background:#5865F2;color:#ffffff;text-decoration:none;font-weight:600;font-size:13px;padding:10px 18px;border-radius:8px;">
+                    👉 https://discord.gg/QfxuHQAZz
                   </a>
                 </div>
 

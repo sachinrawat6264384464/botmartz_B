@@ -20,9 +20,9 @@ const TABS = [
 const DEFAULT_SETTINGS = {
   general: {
     companyName: "Botmartz AI Solution PVT LTD.",
-    email: "hello@botmartz.com",
-    phone: "+91 94073 28842",
-    websiteUrl: "https://botmartz.com",
+    email: "team@botmartz.com",
+    phone: "+91 97300 84626",
+    websiteUrl: "https://www.botmartz.com",
     timezone: "GMT+05:30 (Asia/Kolkata)",
     language: "English (US)",
     address: "Walkover Co-working, Vijay Nagar, Indore, MP 452010"
@@ -45,7 +45,7 @@ const DEFAULT_SETTINGS = {
     supportEmail: "support@botmartz.com"
   },
   seo: {
-    titleSuffix: "| Botmartz AI Solutions",
+    titleSuffix: "| Botmartz",
     globalDescription: "Botmartz helps organizations design, build, and deploy production-grade AI agents, enterprise RAG pipelines, and LLM applications.",
     globalKeywords: "AI Engineering, Enterprise RAG, Autonomous AI Agents, LangChain, LlamaIndex, Indore Tech",
     ogImageUrl: "/BotmartznewBot.png",

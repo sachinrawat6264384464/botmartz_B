@@ -21,7 +21,7 @@ Botmartz is deliberately focused on high-stakes, document-heavy domains:
 
 ## Engineering & Proof of Capability
 - [Engineering Insights](https://www.botmartz.com/insights): Technical write-ups on production RAG and agent engineering — architecture decisions, retrieval strategies, evaluation methodology, and honest failure analysis.
-- [Work & Reference Implementations](https://www.botmartz.com/work): Open, reproducible reference builds — including our flagship Insurance Policy Intelligence Lab (/work/labs/insurance-intelligence) with 98.4% RAGAS precision and exact paragraph citation grounding.
+- [Work & Reference Implementations](https://www.botmartz.com/work): Open, reproducible reference builds — including our flagship Insurance Policy Intelligence Lab (/work/labs/insurance-intelligence) with exact paragraph citation grounding and benchmark evaluation.
 
 ## Flagship Event & Community
 - [AI Frontier 2026](https://www.botmartz.com/community/events/ai-frontier-2026): Botmartz's flagship AI Engineering Summit — an engineering-focused event covering Agents, Enterprise AI, AI-assisted development, and responsible AI. Taking place in **August 2026 in Indore, India**.

@@ -4,7 +4,7 @@ import OpenSourceClient from './OpenSourceClient';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'Open Source | AI Engineering Labs & Repositories',
+    title: 'Open Source AI Engineering Labs & Repositories',
     description: "Open Source is in our DNA. We believe sharing code accelerates innovation. Explore our production RAG frameworks, agent libraries, and developer tools.",
   };
   
@@ -53,8 +53,8 @@ export default async function OpenSourcePage() {
     badge: "Open Source",
     title: "Open Source Is<br />in Our <span class=\"text-[#00C6FF]\">DNA</span>",
     subtitle: "We believe sharing knowledge and code accelerates innovation for everyone. Every lab we're proud of eventually ships as an open-source repo.",
-    ctaText: "Browse Repositories →",
-    ctaLink: "#repos",
+    ctaText: "View GitHub Org →",
+    ctaLink: "https://github.com/botmartz",
   };
   let structuredData = "";
   let aeoQuestion = "";

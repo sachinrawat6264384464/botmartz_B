@@ -38,7 +38,7 @@ export default async function CommunityPage() {
     title: "One Community.<br /><span class=\"text-[#00C6FF]\">Many Ways</span> to Build.",
     subtitle: "Launched at AI Frontier 2026 — meetups, a Discord, an open-source GitHub org, a reading club and hackathons, all in one place for engineers who want to build, not just watch.",
     ctaText: "Join the Discord →",
-    ctaLink: "https://discord.gg/k75ZpEnzp",
+    ctaLink: "https://discord.gg/QfxuHQAZz",
   };
   let structuredData = "";
   let aeoQuestion = "";

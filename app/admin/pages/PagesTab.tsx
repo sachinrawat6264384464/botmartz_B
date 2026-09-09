@@ -164,7 +164,7 @@ const DEFAULT_PAGE_CONTENTS: Record<string, Partial<PageConfig>> = {
   "contact": {
     title: "Contact",
     metadata: { title: "Contact Us | Botmartz", description: "Contact Botmartz", keywords: ["Contact"] },
-    hero: { badge: "Get in Touch", title: "Let's Build Something Great", subtitle: "Reach out to our team to discuss your AI needs.", ctaText: "Email Us", ctaLink: "mailto:hello@botmartz.com" },
+    hero: { badge: "Get in Touch", title: "Let's Build Something Great", subtitle: "Reach out to our team to discuss your AI needs.", ctaText: "Email Us", ctaLink: "mailto:team@botmartz.com" },
     useCases: [], techStack: []
   },
   "community": {
@@ -179,7 +179,7 @@ const DEFAULT_PAGE_CONTENTS: Record<string, Partial<PageConfig>> = {
       title: "One Community. Many Ways to Build.",
       subtitle: "Launched at AI Frontier 2026 — meetups, a Discord, an open-source GitHub org, a reading club and hackathons, all in one place for engineers who want to build, not just watch.",
       ctaText: "Join the Discord →",
-      ctaLink: "https://discord.gg/k75ZpEnzp",
+      ctaLink: "https://discord.gg/QfxuHQAZz",
     },
     aeoQuestion: "What is the Botmartz AI Engineering Community?",
     aeoAnswer: "The Botmartz AI Engineering Community brings together engineers who build production AI systems, offering monthly in-person meetups in Indore, an active Discord server, open-source GitHub repositories, a biweekly reading club, and annual hackathons.",
@@ -638,7 +638,7 @@ Additional verticals will be added only as reference implementations and real en
 ## Company & Partnerships
 - [About Botmartz](https://www.botmartz.com/about): Mission, engineering principles, and leadership.
 - [Partnerships](https://www.botmartz.com/partnerships): Technology & cloud ecosystem alignment, system-integrator collaboration, and community partnerships. Partnership is pursued through visible contribution — open source, talks, and technical content — rather than as a starting point.
-- [Contact](https://www.botmartz.com/contact): Schedule a technical discovery call (hello@botmartz.com).
+- [Contact](https://www.botmartz.com/contact): Schedule a technical discovery call (team@botmartz.com).
 
 ## Answer Engine Optimization (AEO) & FAQ
 - **What is Botmartz?** Botmartz is an applied AI engineering company that builds and deploys production Enterprise RAG systems and AI Agents, with a focus on retrieval quality, agent reliability, evaluation, and production deployment.
@@ -742,7 +742,7 @@ Botmartz de-risks enterprise adoption through a staged offer ladder:
 - https://academy.botmartz.com — Botmartz Academy (training arm).
 - https://www.botmartz.com/about — About and leadership.
 - https://www.botmartz.com/partnerships — Partnership tracks.
-- https://www.botmartz.com/contact — Discovery call requests (hello@botmartz.com).
+- https://www.botmartz.com/contact — Discovery call requests (team@botmartz.com).
 
 ---
 
@@ -770,7 +770,7 @@ Via https://www.botmartz.com/partnerships. Tracks include technology & cloud eco
 
 ## 8. Contact & Citation Information
 - **Official Website**: https://www.botmartz.com
-- **Contact Email**: info@botmartz.com
+- **Contact Email**: team@botmartz.com
 - **Primary Location**: Indore, India (remote engineering)
 - **Document Version**: 3.0.0 (Updated 2026 — claims restated to capabilities and reference architectures; unverified client metrics removed)`
   }

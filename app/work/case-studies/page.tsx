@@ -20,11 +20,11 @@ import {
 import TrackedLink from "@/app/_components/TrackedLink";
 
 export const metadata: Metadata = {
-  title: "Reference Implementations & Architecture Teardowns | Botmartz",
-  description: "Explore our production-grade AI architectures, open reference builds, and benchmarked engineering teardowns.",
+  title: "Reference Implementations & Architecture Teardowns",
+  description: "Explore Botmartz reference architectures, production RAG pipelines, and deterministic agent implementations with explicit blueprints and benchmark standards.",
   openGraph: {
-    title: "Reference Implementations & Architecture Teardowns | Botmartz",
-    description: "Explore our production-grade AI architectures, open reference builds, and benchmarked engineering teardowns.",
+    title: "Reference Implementations & Architecture Teardowns",
+    description: "Explore Botmartz reference architectures, production RAG pipelines, and deterministic agent implementations.",
     url: "https://www.botmartz.com/work/case-studies",
     type: "website"
   },
@@ -36,14 +36,14 @@ export const metadata: Metadata = {
 const REFERENCE_BUILDS = [
   {
     id: "insurance-intelligence",
-    badge: "Flagship Live Reference Implementation",
+    badge: "Flagship Reference Implementation",
     badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200",
     title: "Insurance Policy Intelligence & Clause Discrepancy Engine",
     description: "A production-style reference implementation demonstrating layout-aware multi-document policy comparison, endorsement discrepancy detection, exact paragraph citation grounding, and automated refusal guardrails.",
     stack: ["OpenSearch / Qdrant", "Dense 768-dim Vectors", "BM25 Keyword Sparse", "BGE-Reranker-Large", "Pydantic Schema", "FastAPI"],
     metrics: [
-      { label: "RAGAS Precision", value: "98.4%" },
-      { label: "Retrieval Recall@5", value: "96.2%" },
+      { label: "Evaluation", value: "Benchmark Set" },
+      { label: "Retrieval", value: "Hybrid (Dense + BM25)" },
       { label: "Citation Strictness", value: "Exact Paragraph" },
       { label: "Refusal Guardrail", value: "Deterministic" }
     ],
@@ -53,8 +53,8 @@ const REFERENCE_BUILDS = [
       "Cross-encoder reranking re-scoring top-25 candidate passages to top-5 evidence spans",
       "Zero-hallucination abstention trigger when cosine similarity or cross-encoder thresholds fail"
     ],
-    status: "Live Interactive Reference Architecture",
-    linkText: "Launch Interactive Simulator →",
+    status: "Illustrated Walkthrough",
+    linkText: "View Illustrated Walkthrough →",
     href: "/work/labs/insurance-intelligence"
   },
   {
@@ -132,7 +132,7 @@ export default function CaseStudiesPage() {
           </p>
 
           <div className="p-4 rounded-xl bg-[#091222]/80 border border-white/10 text-xs text-[#8A9EB0] max-w-3xl font-mono">
-            <strong className="text-white">Editorial Standard: </strong> All builds below are presented either as live interactive reference implementations with reproducible benchmarks or as verified architecture patterns with explicit structural blueprints.
+            <strong className="text-white">Editorial Standard: </strong> All builds below are presented either as illustrated walkthroughs with reproducible benchmarks or as verified architecture patterns with explicit structural blueprints.
           </div>
         </div>
       </section>

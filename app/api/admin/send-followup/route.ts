@@ -37,7 +37,7 @@ export async function POST(req: Request) {
               </a>
             </div>
 
-            <p>If you have any questions, feel free to reply directly to this email or reach out in the <a href="https://discord.gg/d7PmsQFx9">Discord Community</a>.</p>
+            <p>If you have any questions, feel free to reply directly to this email or reach out in the <a href="https://discord.gg/QfxuHQAZz">Discord Community</a>.</p>
             <br/>
             <p>Best regards,</p>
             <p><strong>The Botmartz Team</strong></p>

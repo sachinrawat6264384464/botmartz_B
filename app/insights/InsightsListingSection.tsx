@@ -475,12 +475,12 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                             </div>
                             <div className="grid grid-cols-2 gap-2 my-2">
                               <div className="bg-slate-50 p-2 rounded border border-slate-200">
-                                <div className="text-[#64748B]">LATENCY</div>
-                                <div className="text-[14px] font-bold text-slate-900 mt-0.5">142ms</div>
+                                <div className="text-[#64748B]">TELEMETRY</div>
+                                <div className="text-[12px] font-bold text-slate-900 mt-0.5 font-mono">TRACED</div>
                               </div>
                               <div className="bg-slate-50 p-2 rounded border border-slate-200">
-                                <div className="text-[#64748B]">ACCURACY</div>
-                                <div className="text-[14px] font-bold text-[#00B8F0] mt-0.5">98.4%</div>
+                                <div className="text-[#64748B]">GUARDRAILS</div>
+                                <div className="text-[12px] font-bold text-[#00B8F0] mt-0.5 font-mono">ACTIVE</div>
                               </div>
                             </div>
                             {/* Bar mini chart */}
