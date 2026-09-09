@@ -845,7 +845,7 @@ Attending from outside Indore? Tell us on the registration form. If there's enou
 
 ### Accessibility
 
-The venue is wheelchair accessible with accessible restrooms. If you have any accessibility requirement — mobility, dietary, sensory, or anything else — tell us on the registration form or email `hello@botmartz.com`. We will sort it out.
+The venue is wheelchair accessible with accessible restrooms. If you have any accessibility requirement — mobility, dietary, sensory, or anything else — tell us on the registration form or email `team@botmartz.com`. We will sort it out.
 
 ---
 
@@ -940,7 +940,7 @@ AI Frontier is annual. Quarterly mini-meetups run between editions, and the comm
 
 | Purpose | Email |
 |---|---|
-| General enquiries | `hello@botmartz.com` |
+| General enquiries | `team@botmartz.com` |
 | Sponsorship | `sponsors@botmartz.com` |
 | Speaking | `speakers@botmartz.com` |
 | Code of conduct | `conduct@botmartz.com` |

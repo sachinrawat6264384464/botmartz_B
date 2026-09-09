@@ -118,7 +118,7 @@ Via https://www.botmartz.com/partnerships. Tracks include technology & cloud eco
 
 ## 8. Contact & Citation Information
 - **Official Website**: https://www.botmartz.com
-- **Contact Email**: info@botmartz.com
+- **Contact Email**: team@botmartz.com
 - **Primary Location**: Indore, India (remote engineering)
 - **Document Version**: 3.0.0 (Updated 2026 — claims restated to capabilities and reference architectures; unverified client metrics removed)
 `;

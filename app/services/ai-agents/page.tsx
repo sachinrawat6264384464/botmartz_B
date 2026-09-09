@@ -12,7 +12,7 @@ import AIAgentsClient from "./AIAgentsClient";
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'Intelligent AI Agents for Business',
+    title: 'AI Agents & Autonomous Workflows',
     description: 'We build production-ready AI agents that reason, plan, take action, and deliver real business outcomes across your tools, data, and workflows.',
   };
   
@@ -41,7 +41,7 @@ const DEFAULT_CONTENT = {
   hero: {
     badge: "SOLUTIONS / AI AGENTS & AUTOMATION",
     title: "Stop Chasing Fragile Autonomy. Start Deploying Controlled Agentic Workflows.",
-    subtitle: "We build highly constrained, production-ready AI agents that execute specific enterprise workflows. Deterministic routing, human-in-the-loop approvals, and strict data validation schemas. Zero rogue actions.",
+    subtitle: "We build highly constrained, production-ready AI agents that execute specific enterprise workflows. Deterministic routing, human-in-the-loop approvals, and strict data validation schemas. Every state-changing action is gated by verification.",
     ctaText: "Book an Architecture Review →",
     ctaLink: "https://cal.com/botmartz-ai/20min",
     secondaryCtaText: "See Reference Implementation",

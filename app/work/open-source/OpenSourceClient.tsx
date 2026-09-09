@@ -15,14 +15,7 @@ interface RepoItem {
   githubUrl?: string;
 }
 
-const PROTOTYPE_REPOS: RepoItem[] = [
-  { category: 'Enterprise RAG', license: 'MIT', name: 'enterprise-rag-starter', desc: 'A production-ready RAG platform with hybrid search, reranking, and advanced evaluation.', tags: ['LangChain', 'FastAPI', 'Qdrant'], stars: '1.0k', forks: '320', githubUrl: 'https://github.com/botmartz/enterprise-rag-starter' },
-  { category: 'AI Agents', license: 'Apache-2.0', name: 'langgraph-agent-framework', desc: 'A modular multi-agent framework built with LangGraph for complex reasoning and orchestration.', tags: ['LangGraph', 'Python', 'Redis'], stars: '2.3k', forks: '410', githubUrl: 'https://github.com/botmartz/langgraph-agent-framework' },
-  { category: 'Developer Tools', license: 'MIT', name: 'ai-eval-toolkit', desc: 'A lightweight evaluation harness for benchmarking LLM and RAG pipelines.', tags: ['Python', 'Pytest', 'CLI'], stars: '640', forks: '95', githubUrl: 'https://github.com/botmartz/ai-eval-toolkit' },
-  { category: 'AI Agents', license: 'MIT', name: 'ai-research-agent', desc: 'Autonomous research agent that searches, reads, analyzes, and generates comprehensive reports.', tags: ['LangChain', 'OpenAI', 'Tavily'], stars: '1.4k', forks: '280', githubUrl: 'https://github.com/botmartz/ai-research-agent' },
-  { category: 'Infrastructure', license: 'Apache-2.0', name: 'rag-eval-dashboard', desc: 'A self-hosted dashboard for tracking RAG evaluation metrics over time.', tags: ['Next.js', 'PostgreSQL', 'Docker'], stars: '410', forks: '60', githubUrl: 'https://github.com/botmartz/rag-eval-dashboard' },
-  { category: 'Developer Tools', license: 'MIT', name: 'prompt-registry', desc: 'Version-controlled prompt management for teams shipping multiple AI products.', tags: ['TypeScript', 'Redis', 'Docker'], stars: '520', forks: '80', githubUrl: 'https://github.com/botmartz/prompt-registry' },
-];
+const PROTOTYPE_REPOS: RepoItem[] = [];
 
 export default function OpenSourceClient({ 
   initialRepos,
@@ -30,8 +23,8 @@ export default function OpenSourceClient({
     badge: "Open Source",
     title: "Open Source Is<br />in Our <span class=\"text-[#00C6FF]\">DNA</span>",
     subtitle: "We believe sharing knowledge and code accelerates innovation for everyone. Every lab we're proud of eventually ships as an open-source repo.",
-    ctaText: "Browse Repositories →",
-    ctaLink: "#repos",
+    ctaText: "View GitHub Org →",
+    ctaLink: "https://github.com/botmartz",
   },
   structuredData,
   aeoQuestion,
@@ -46,13 +39,6 @@ export default function OpenSourceClient({
   const [filter, setFilter] = useState('All Repos');
 
   const categoryList = ['All Repos', 'Enterprise RAG', 'AI Agents', 'Developer Tools', 'Infrastructure'];
-
-  const heroStats = [
-    { value: '15+', label: 'Public Repos' },
-    { value: '6.5k+', label: 'Combined Stars' },
-    { value: '40+', label: 'Contributors' },
-    { value: 'MIT/Apache', label: 'Licenses' },
-  ];
 
   const steps = [
     { n: '1', title: 'Pick an Issue', desc: 'Browse good-first-issues across our repos on GitHub.' },
@@ -70,12 +56,12 @@ export default function OpenSourceClient({
         name: r.name || r.title || 'open-source-project',
         desc: r.desc || r.description || 'Open source tool maintained by Botmartz.',
         tags: (Array.isArray(r.tags) ? r.tags : ['Python', 'AI']) as string[],
-        stars: r.stars || '100+',
-        forks: r.forks || '20+',
+        stars: r.stars || '0',
+        forks: r.forks || '0',
         githubUrl: r.githubUrl || r.url || 'https://github.com/botmartz'
       }));
     }
-    return PROTOTYPE_REPOS;
+    return [];
   }, [initialRepos]);
 
   const visibleRepos = useMemo(() => {
@@ -89,17 +75,6 @@ export default function OpenSourceClient({
     "name": "Botmartz Open Source Repositories & AI Labs",
     "description": "Production RAG frameworks, LangGraph agent toolkits, and evaluation harnesses open-sourced under MIT and Apache-2.0 licenses.",
     "url": "https://www.botmartz.com/work/open-source",
-    "mainEntity": {
-      "@type": "ItemList",
-      "itemListElement": repos.map((r, i) => ({
-        "@type": "SoftwareSourceCode",
-        "name": r.name,
-        "description": r.desc,
-        "license": r.license.toLowerCase().includes('mit') ? "https://opensource.org/licenses/MIT" : "https://opensource.org/licenses/Apache-2.0",
-        "codeRepository": r.githubUrl,
-        "programmingLanguage": r.tags
-      }))
-    }
   };
 
   return (
@@ -144,116 +119,132 @@ export default function OpenSourceClient({
               </p>
               <div className="flex flex-wrap gap-3.5 mt-7">
                 <a 
-                  href={heroContent.ctaLink || "#repos"} 
-                  className="inline-flex items-center gap-2 bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] transition-all"
-                >
-                  {heroContent.ctaText || "Browse Repositories →"}
-                </a>
-                <a 
                   href="https://github.com/botmartz" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/20 text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] transition-all"
+                  className="inline-flex items-center gap-2 bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] transition-all"
                 >
                   View GitHub Org ⌥
                 </a>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3.5">
-              {heroStats.map((s, idx) => (
-                <div 
-                  key={idx}
-                  className="bg-white/[0.04] border border-white/10 rounded-[14px] p-5 backdrop-blur-sm"
-                >
-                  <div className="font-extrabold text-[26px] sm:text-[30px] text-[#00C6FF] leading-none">
-                    {s.value}
-                  </div>
-                  <div className="font-semibold text-[12px] sm:text-[13px] text-[#8FA3C4] mt-1.5">
-                    {s.label}
-                  </div>
-                </div>
-              ))}
+            <div className="bg-white/[0.04] border border-white/10 rounded-[18px] p-6 sm:p-8 backdrop-blur-md">
+              <div className="flex items-center gap-3">
+                <span className="w-3 h-3 rounded-full bg-[#00C6FF] animate-pulse" />
+                <span className="text-xs font-mono font-bold text-[#00C6FF] uppercase tracking-wider">Release Roadmap</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold text-white mt-3">
+                First Releases in Q4 2026
+              </h2>
+              <p className="text-sm leading-relaxed text-[#8FA3C4] mt-3">
+                We are packaging our internal evaluation harnesses, hybrid retrieval utilities, and LangGraph agent blueprints for public distribution under MIT and Apache-2.0 licenses.
+              </p>
+              <div className="mt-5 pt-4 border-t border-white/10 flex flex-wrap items-center gap-4 text-xs font-mono text-[#5B6B85]">
+                <span className="text-[#8FA3C4]">License: MIT / Apache-2.0</span>
+                <span>•</span>
+                <span className="text-[#8FA3C4]">Host: GitHub /botmartz</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── REPOSITORIES FILTER HEADER ── */}
-      <div id="repos" className="max-w-[1240px] mx-auto pt-16 px-6 sm:px-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div className="font-bold text-[12px] tracking-[0.1em] text-[#007BFF] uppercase">
-            Repositories
+      {/* ── REPOSITORIES SECTION ── */}
+      <div id="repos" className="max-w-[1240px] mx-auto pt-16 px-6 sm:px-10">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div className="font-bold text-[12px] tracking-[0.1em] text-[#007BFF] uppercase">
+              Repositories
+            </div>
+            <div className="font-extrabold text-[26px] sm:text-[30px] text-[#0B1220] mt-2">
+              Open Source Toolkits &amp; Repos
+            </div>
           </div>
-          <div className="font-extrabold text-[26px] sm:text-[30px] text-[#0B1220] mt-2">
-            Explore Our Open Source Work
-          </div>
+
+          {repos.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {categoryList.map((cat) => {
+                const active = filter === cat;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setFilter(cat)}
+                    className={`font-bold text-[12.5px] px-4 py-2.5 rounded-[8px] border transition-all ${
+                      active
+                        ? 'bg-[#007BFF] border-[#007BFF] text-white shadow-sm'
+                        : 'bg-white border-[#E2E8F0] text-[#3A4459] hover:bg-[#F8FAFC]'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
 
-        <div className="flex flex-wrap gap-2">
-          {categoryList.map((cat) => {
-            const active = filter === cat;
-            return (
-              <button
-                key={cat}
-                onClick={() => setFilter(cat)}
-                className={`font-bold text-[12.5px] px-4 py-2.5 rounded-[8px] border transition-all ${
-                  active
-                    ? 'bg-[#007BFF] border-[#007BFF] text-white shadow-sm'
-                    : 'bg-white border-[#E2E8F0] text-[#3A4459] hover:bg-[#F8FAFC]'
-                }`}
+        {repos.length > 0 ? (
+          <div className="pt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {visibleRepos.map((repo, idx) => (
+              <div 
+                key={idx}
+                className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 flex flex-col gap-3 shadow-sm hover:shadow-md transition-all hover:border-[#007BFF]/40"
               >
-                {cat}
-              </button>
-            );
-          })}
-        </div>
-      </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-[10px] tracking-[0.05em] text-[#007BFF] bg-[#E8F2FF] px-2.5 py-1 rounded-[5px] uppercase">
+                    {repo.category}
+                  </span>
+                  <span className="font-semibold text-[11px] text-[#8A97AC]">
+                    {repo.license}
+                  </span>
+                </div>
 
-      {/* ── REPOSITORIES GRID ── */}
-      <div className="max-w-[1240px] mx-auto pt-6 px-6 sm:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {visibleRepos.map((repo, idx) => (
-          <div 
-            key={idx}
-            className="bg-white border border-[#E7ECF3] rounded-[14px] p-6 flex flex-col gap-3 shadow-sm hover:shadow-md transition-all hover:border-[#007BFF]/40"
-          >
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-[10px] tracking-[0.05em] text-[#007BFF] bg-[#E8F2FF] px-2.5 py-1 rounded-[5px] uppercase">
-                {repo.category}
-              </span>
-              <span className="font-semibold text-[11px] text-[#8A97AC]">
-                {repo.license}
-              </span>
+                <a 
+                  href={repo.githubUrl || `https://github.com/botmartz/${repo.name}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-bold text-[16px] text-[#0B1220] hover:text-[#007BFF] flex items-center gap-2 transition-colors mt-1"
+                >
+                  <span>⌥</span>
+                  <span>{repo.name}</span>
+                </a>
+
+                <div className="font-medium text-[13px] leading-[1.6] text-[#5B6B85] flex-1">
+                  {repo.desc}
+                </div>
+
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {repo.tags.map((tag: string, tIdx: number) => (
+                    <span key={tIdx} className="font-semibold text-[11px] text-[#5B6B85] bg-[#F1F4F9] px-2 py-0.5 rounded-[5px]">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-8 bg-white border border-[#E2E8F0] rounded-[16px] p-8 sm:p-12 text-center max-w-2xl mx-auto shadow-sm">
+            <div className="w-14 h-14 rounded-full bg-[#E8F2FF] text-[#007BFF] flex items-center justify-center mx-auto text-2xl font-mono mb-4">
+              ⌥
             </div>
-
-            <a 
-              href={repo.githubUrl || `https://github.com/botmartz/${repo.name}`}
+            <h3 className="text-xl font-bold text-[#0B1220] mb-2 font-heading">
+              First Public Releases Scheduled for Q4 2026
+            </h3>
+            <p className="text-sm text-[#5B6B85] leading-relaxed max-w-md mx-auto mb-6">
+              Our open-source repositories are undergoing final packaging and licensing preparation. Star and follow our GitHub organization to get notified upon release.
+            </p>
+            <a
+              href="https://github.com/botmartz"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-bold text-[16px] text-[#0B1220] hover:text-[#007BFF] flex items-center gap-2 transition-colors mt-1"
+              className="inline-flex items-center gap-2 bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[13.5px] px-6 py-3 rounded-lg shadow-sm transition-all"
             >
-              <span>⌥</span>
-              <span>{repo.name}</span>
+              Follow github.com/botmartz →
             </a>
-
-            <div className="font-medium text-[13px] leading-[1.6] text-[#5B6B85] flex-1">
-              {repo.desc}
-            </div>
-
-            <div className="flex flex-wrap gap-1.5 pt-1">
-              {repo.tags.map((tag: string, tIdx: number) => (
-                <span key={tIdx} className="font-semibold text-[11px] text-[#5B6B85] bg-[#F1F4F9] px-2 py-0.5 rounded-[5px]">
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            <div className="flex items-center gap-4 mt-2 pt-3 border-t border-[#EEF1F6] font-semibold text-[12px] text-[#8A97AC]">
-              <span>★ {repo.stars}</span>
-              <span>⑂ {repo.forks}</span>
-            </div>
           </div>
-        ))}
+        )}
       </div>
 
       {/* ── GET INVOLVED STEPS (LIGHT THEME) ── */}
@@ -303,7 +294,9 @@ export default function OpenSourceClient({
             </div>
           </div>
           <Link 
-            href="/community/events" 
+            href="https://community.botmartz.com" 
+            target="_blank"
+            rel="noopener noreferrer"
             className="font-bold text-[13.5px] text-white bg-[#007BFF] hover:bg-[#0069DB] px-6 py-3.5 rounded-[9px] shrink-0 transition-colors text-center shadow-md"
           >
             See Next Session →

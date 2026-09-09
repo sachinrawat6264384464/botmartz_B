@@ -25,10 +25,10 @@ import {
 import TrackedLink from "@/app/_components/TrackedLink";
 
 export const metadata: Metadata = {
-  title: "Enterprise AI Implementation | Botmartz AI Solutions",
+  title: "Enterprise AI Implementation",
   description: "Enterprise AI Implementation without starting from scratch. We help organizations design, architect, integrate, and operate production AI systems across search, knowledge, agents, and cloud platforms.",
   openGraph: {
-    title: "Enterprise AI Implementation Without Starting From Scratch | Botmartz",
+    title: "Enterprise AI Implementation",
     description: "Move from AI ambition to working production systems. We evaluate your existing stack, select proven platforms, and build reliable enterprise knowledge and agent systems.",
     url: "https://www.botmartz.com/implementation",
     type: "website",

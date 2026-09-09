@@ -24,16 +24,7 @@ const DEFAULT_ITEMS: NavItem[] = [
     name: "Engineering Insights", path: "/insights",
   },
   {
-    name: "Gallery", path: "/gallery",
-  },
-  {
-    name: "Community", path: "/community",
-    dropdown: [
-      { name: "Events", path: "/community/events" },
-      { name: "Workshops", path: "/community/ai-accelerator-workshop" },
-      { name: "Botmartz Gallery", path: "/gallery" },
-      { name: "Discord & Forum", path: "https://discord.gg/k75ZpEnzp" },
-    ],
+    name: "Community", path: "https://community.botmartz.com",
   },
 ];
 

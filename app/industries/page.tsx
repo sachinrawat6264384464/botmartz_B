@@ -17,10 +17,10 @@ import {
 import TrackedLink from "@/app/_components/TrackedLink";
 
 export const metadata: Metadata = {
-  title: "Industry Verticals & Specialized Solutions | Botmartz",
+  title: "Industry Verticals & Specialized Solutions",
   description: "How Botmartz applies production search, RAG, and agent architectures to Insurance, Financial Services, Enterprise Operations, and Ecommerce.",
   openGraph: {
-    title: "Industry Verticals & Specialized Solutions | Botmartz",
+    title: "Industry Verticals & Specialized Solutions",
     description: "Tailored enterprise AI implementation for Insurance, Financial Services, Enterprise Operations, and Ecommerce.",
     url: "https://www.botmartz.com/industries",
     type: "website",

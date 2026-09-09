@@ -122,11 +122,11 @@ export default function GalleryPage() {
               </div>
               <div>
                 <h3 className="font-bold text-white text-sm sm:text-base">Join the Botmartz AI Community</h3>
-                <p className="text-xs text-[#8A9EB0]">Connect with 1,000+ AI developers, share projects &amp; attend workshops.</p>
+                <p className="text-xs text-[#8A9EB0]">Connect with AI developers, share projects &amp; attend workshops.</p>
               </div>
             </div>
             <a
-              href="https://discord.gg/k75ZpEnzp"
+              href="https://discord.gg/QfxuHQAZz"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[#5865F2] hover:bg-[#4752C4] text-white text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-md shadow-[#5865F2]/25 flex-shrink-0"

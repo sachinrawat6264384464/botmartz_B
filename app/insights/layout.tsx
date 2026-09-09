@@ -1,9 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: {
-    absolute: "Botmartz Blog | AI Insights, Tech Trends & Solutions | Botmartz"
-  },
+  title: "Engineering Insights",
   description: "Read our latest publications on Artificial Intelligence, neural systems, automated agent workflows, and modern high-performance web development.",
   keywords: [
     "Botmartz Blog",
@@ -12,7 +10,7 @@ export const metadata: Metadata = {
     "Software Engineering Trends"
   ],
   openGraph: {
-    title: "Botmartz Blog | AI Insights, Tech Trends & Solutions | Botmartz",
+    title: "Engineering Insights",
     description: "Read our latest publications on Artificial Intelligence, neural systems, automated agent workflows, and modern high-performance web development.",
     url: "https://www.botmartz.com/insights",
     type: "website",

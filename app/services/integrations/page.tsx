@@ -18,11 +18,11 @@ import {
 import TrackedLink from "@/app/_components/TrackedLink";
 
 export const metadata: Metadata = {
-  title: "Enterprise AI Platforms & Integrations | Botmartz",
+  title: "Enterprise AI Platforms & Integrations",
   description: "Implement and integrate enterprise AI platforms, search engines, and custom data connectors into your existing infrastructure without starting from scratch.",
   openGraph: {
-    title: "Enterprise AI Platforms & Integrations | Botmartz",
-    description: "Connect enterprise AI platforms (e.g. Glean), search backends (OpenSearch, Qdrant), and custom connectors to your existing data environment.",
+    title: "Enterprise AI Platforms & Integrations",
+    description: "Connect enterprise AI platforms, search backends (OpenSearch, Qdrant), and custom connectors to your existing data environment.",
     url: "https://www.botmartz.com/services/integrations",
     type: "website",
   },

@@ -15,8 +15,8 @@ interface ContactClientProps {
 }
 
 export default function ContactClient({ heroData, structuredData, settings }: ContactClientProps) {
-  const email = settings?.general?.email || "soham@botmartz.com";
-  const phone = settings?.general?.phone || "+91 94073 28842";
+  const email = settings?.general?.email || "team@botmartz.com";
+  const phone = settings?.general?.phone || "+91 97300 84626";
   const address = settings?.general?.address || "Indore, IN";
 
   const [form, setForm] = useState({
@@ -356,7 +356,7 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
                      <MapPin className="w-5 h-5" />
                   </div>
                   <h3 className="font-semibold text-[16px] mb-2 text-slate-900">Headquarters</h3>
-                  <p className="text-[14px] text-slate-600 mb-4">We are a globally distributed team headquartered in India.</p>
+                  <p className="text-[14px] text-slate-600 mb-4">Engineering team in Indore, India, working with clients in North America and Europe.</p>
                   <span className="font-mono text-[13px] text-slate-800 font-semibold uppercase tracking-wide">{address}</span>
                </div>
 

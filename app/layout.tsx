@@ -109,9 +109,6 @@ export async function generateMetadata(): Promise<Metadata> {
       apple: [
         { url: settings?.branding?.faviconUrl || '/botmartz_favicon.png', sizes: '180x180', type: 'image/png' },
       ],
-    },
-    alternates: {
-      canonical: general.websiteUrl || "https://www.botmartz.com",
     }
   };
 }

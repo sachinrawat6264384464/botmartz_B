@@ -296,13 +296,13 @@ export default function HomePage() {
                       <ShieldCheck size={15} className="text-emerald-400" />
                       <span className="text-emerald-300 font-bold">Evidence Grounding &amp; Citations</span>
                     </div>
-                    <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400">Zero Guessing</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400">Refuses when evidence is missing</span>
                   </div>
                 </div>
 
                 <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#8A9EB0]">
-                  <span>Evaluation: RAGAS Harness</span>
-                  <span className="text-[#00B8F0] font-mono">Precision: 98.4%</span>
+                  <span>Evaluation: Benchmark Harness</span>
+                  <span className="text-[#00B8F0] font-mono">Grounded Citations</span>
                 </div>
               </div>
             </div>

@@ -76,3 +76,7 @@ botmartz-knowledge/
 compiled_content.txt
 generate_kb.py
 generate_unknowns.py
+
+# Key files / secrets
+rzp-key*.csv
+*.csv

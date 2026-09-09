@@ -11,8 +11,8 @@ export default function SchemaMarkup({ type, data, settings }: SchemaMarkupProps
 
   const companyName = settings?.general?.companyName || 'Botmartz';
   const logoUrl = settings?.branding?.primaryLogo || 'https://www.botmartz.com/BotmartzNewLogo.png';
-  const phone = settings?.general?.phone || '+91 94073 28842';
-  const email = settings?.general?.email || 'soham@botmartz.com';
+  const phone = settings?.general?.phone || '+91 97300 84626';
+  const email = settings?.general?.email || 'team@botmartz.com';
   const websiteUrl = settings?.general?.websiteUrl || 'https://www.botmartz.com';
 
   if (type === 'Organization') {
