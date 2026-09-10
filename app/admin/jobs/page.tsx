@@ -18,7 +18,8 @@ import {
   Sparkles,
   Phone,
   Mail,
-  FileText
+  FileText,
+  Download
 } from 'lucide-react';
 import Link from 'next/link';
 import { db } from '@/lib/firebase';
@@ -197,6 +198,101 @@ export default function JobsDashboard() {
     }
   };
 
+  // CSV Export functions
+  const exportApplicationsToCSV = () => {
+    const dataToExport = filteredApplications.length > 0 ? filteredApplications : applications;
+    if (!dataToExport || dataToExport.length === 0) {
+      alert("No candidate applications available to export.");
+      return;
+    }
+
+    const headers = [
+      "Candidate Name",
+      "Role Applied",
+      "Email",
+      "Phone",
+      "Experience Level",
+      "Portfolio / LinkedIn URL",
+      "Status",
+      "Submitted Date",
+      "Cover Note / Remarks"
+    ];
+
+    const rows = dataToExport.map(app => {
+      const name = app.fullName || app.candidateName || app.name || 'Anonymous';
+      const role = app.roleTitle || app.jobTitle || app.role || 'General Application';
+      const email = app.email || '';
+      const phone = app.phone || '';
+      const exp = app.experienceLevel || 'Students / Freshers';
+      const link = app.portfolioUrl || app.linkedinOrResume || app.resumeUrl || '';
+      const status = app.status || 'pending';
+      const date = app.createdAt ? new Date(app.createdAt).toLocaleString() : '';
+      const note = app.coverNote || app.note || '';
+
+      return [name, role, email, phone, exp, link, status, date, note].map(val => {
+        const strVal = String(val).replace(/"/g, '""');
+        return `"${strVal}"`;
+      }).join(',');
+    });
+
+    const csvContent = [headers.map(h => `"${h}"`).join(','), ...rows].join('\r\n');
+    const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    const dateStr = new Date().toISOString().split('T')[0];
+    link.setAttribute('download', `Candidate_Applications_${dateStr}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const exportJobsToCSV = () => {
+    const dataToExport = filteredJobs.length > 0 ? filteredJobs : jobs;
+    if (!dataToExport || dataToExport.length === 0) {
+      alert("No job positions available to export.");
+      return;
+    }
+
+    const headers = [
+      "Role Title",
+      "Slug",
+      "Department",
+      "Location",
+      "Type",
+      "Status",
+      "Created At"
+    ];
+
+    const rows = dataToExport.map(job => {
+      const title = job.title || '';
+      const slug = job.slug || '';
+      const dept = job.department || 'Engineering';
+      const loc = job.location || 'Remote';
+      const type = job.type || 'Full-time';
+      const status = job.status || 'published';
+      const date = job.createdAt ? new Date(job.createdAt).toLocaleString() : '';
+
+      return [title, slug, dept, loc, type, status, date].map(val => {
+        const strVal = String(val).replace(/"/g, '""');
+        return `"${strVal}"`;
+      }).join(',');
+    });
+
+    const csvContent = [headers.map(h => `"${h}"`).join(','), ...rows].join('\r\n');
+    const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    const dateStr = new Date().toISOString().split('T')[0];
+    link.setAttribute('download', `Job_Positions_${dateStr}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const filteredJobs = jobs.filter(job => {
     if (!searchJobQuery.trim()) return true;
     const q = searchJobQuery.toLowerCase();
@@ -349,6 +445,14 @@ export default function JobsDashboard() {
                 title="Wipe duplicate positions and reset database to exact canonical roles"
               >
                 <Sparkles size={14} /> {seeding ? "Cleaning..." : "Clean Duplicates"}
+              </button>
+
+              <button
+                onClick={exportJobsToCSV}
+                className="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-sm cursor-pointer"
+                title="Download open job positions as CSV"
+              >
+                <Download size={14} /> Export CSV
               </button>
 
               <Link 
@@ -548,6 +652,14 @@ export default function JobsDashboard() {
                   <X size={14} /> Clear
                 </button>
               )}
+
+              <button
+                onClick={exportApplicationsToCSV}
+                className="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-sm cursor-pointer"
+                title="Download candidate applications as CSV"
+              >
+                <Download size={14} /> Export CSV
+              </button>
             </div>
           </div>
 
