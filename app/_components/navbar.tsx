@@ -65,14 +65,20 @@ export default function Navbar({
 }) {
   let rawItems = (navItems && navItems.length > 0) ? navItems : DEFAULT_NAV_ITEMS;
   
+  const isCommunity = (str?: string) => {
+    if (!str) return false;
+    const lower = str.trim().toLowerCase();
+    return lower.includes("community");
+  };
+
   const cleanItems = rawItems
-    .filter((item) => item.name?.toLowerCase() !== "community")
+    .filter((item) => !isCommunity(item.name) && !isCommunity(item.path))
     .map((item) => ({
       ...item,
       path: item.path ? item.path.trim().replace(/\s+/g, '-').replace(/%20/g, '-') : item.path,
       dropdown: item.dropdown
         ? item.dropdown
-            .filter((d) => d.name?.toLowerCase() !== "community")
+            .filter((d) => !isCommunity(d.name) && !isCommunity(d.path))
             .map((d) => ({
               ...d,
               path: d.path ? d.path.trim().replace(/\s+/g, '-').replace(/%20/g, '-') : d.path,
