@@ -27,8 +27,13 @@ export default function ClientLayout({
   settings?: any;
 }) {
   const pathname = usePathname();
+  const [mounted, setMounted] = React.useState(false);
 
-  const isStandaloneRoute = pathname?.startsWith('/admin') || pathname?.includes('/feedback') || false;
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isStandaloneRoute = mounted && (pathname?.startsWith('/admin') || pathname?.includes('/feedback') || false);
 
   return (
     <SettingsContext.Provider value={settings || {}}>

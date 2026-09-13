@@ -99,6 +99,16 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: '/community',
+        destination: 'http://localhost:3001/community',
+        permanent: false,
+      },
+      {
+        source: '/community/:path*',
+        destination: 'http://localhost:3001/community/:path*',
+        permanent: false,
+      },
+      {
         source: '/services/ai%20agents',
         destination: '/services/ai-agents',
         permanent: true,

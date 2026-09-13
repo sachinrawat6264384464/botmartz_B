@@ -65,14 +65,20 @@ export default function Navbar({
 }) {
   let rawItems = (navItems && navItems.length > 0) ? navItems : DEFAULT_NAV_ITEMS;
   
-  const cleanItems = rawItems.map(item => ({
-    ...item,
-    path: item.path ? item.path.trim().replace(/\s+/g, '-').replace(/%20/g, '-') : item.path,
-    dropdown: item.dropdown ? item.dropdown.map(d => ({
-      ...d,
-      path: d.path ? d.path.trim().replace(/\s+/g, '-').replace(/%20/g, '-') : d.path,
-    })) : undefined,
-  }));
+  const cleanItems = rawItems
+    .filter((item) => item.name?.toLowerCase() !== "community")
+    .map((item) => ({
+      ...item,
+      path: item.path ? item.path.trim().replace(/\s+/g, '-').replace(/%20/g, '-') : item.path,
+      dropdown: item.dropdown
+        ? item.dropdown
+            .filter((d) => d.name?.toLowerCase() !== "community")
+            .map((d) => ({
+              ...d,
+              path: d.path ? d.path.trim().replace(/\s+/g, '-').replace(/%20/g, '-') : d.path,
+            }))
+        : undefined,
+    }));
   const NAV_ITEMS = cleanItems;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);

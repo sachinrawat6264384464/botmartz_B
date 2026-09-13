@@ -23,9 +23,6 @@ const DEFAULT_ITEMS: NavItem[] = [
   {
     name: "Engineering Insights", path: "/insights",
   },
-  {
-    name: "Community", path: "https://community.botmartz.com",
-  },
 ];
 
 export default async function NavbarWrapper({ settings }: { settings?: any }) {
