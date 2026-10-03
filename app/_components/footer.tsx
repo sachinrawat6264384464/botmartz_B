@@ -99,7 +99,7 @@ const TRUST = [
 /* ─── COMPONENT ──────────────────────────────────────────────────────────────── */
 export function Footer({ settings }: { settings?: any }) {
   const companyName = settings?.general?.companyName || "Botmartz AI Solution PVT LTD.";
-  const logoUrl = "/Logo-removebg-preview.png";
+  const logoUrl = "/botmartz_silver_bg_free.png";
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
