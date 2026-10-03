@@ -142,12 +142,13 @@ export function Footer({ settings }: { settings?: any }) {
 
           {/* LEFT: Brand */}
           <div className="flex flex-col">
-              <Link href="/" prefetch={false} className="inline-block mb-6">
+              <Link href="/" prefetch={false} className="inline-block mb-6" suppressHydrationWarning>
                 <Image
                   src={logoUrl}
                   alt={companyName}
                   width={280}
                   height={78}
+                  suppressHydrationWarning
                   className="h-[68px] sm:h-[78px] w-auto object-contain"
                 />
               </Link>
