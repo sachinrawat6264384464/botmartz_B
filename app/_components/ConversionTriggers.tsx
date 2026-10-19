@@ -13,17 +13,19 @@ export default function ConversionTriggers() {
 
   // Don't show inside admin or feedback portals
   const isExcluded = pathname?.startsWith("/admin") || pathname?.startsWith("/feedback");
+  const isBlogDetailPage = pathname?.startsWith("/insights/") && pathname !== "/insights";
 
-  // Subtle prompt after 25s on page or 40% scroll
+  // Subtle prompt after 25s on page or 40% scroll (skip on blog detail pages to protect reader focus)
   useEffect(() => {
-    if (isExcluded) return;
+    if (isExcluded || isBlogDetailPage) return;
+    if (typeof window !== "undefined" && sessionStorage.getItem("hide_review_prompt") === "true") return;
 
     const timer = setTimeout(() => {
       setShowQuickReviewPrompt(true);
-    }, 20000);
+    }, 25000);
 
     const handleScroll = () => {
-      if (window.scrollY > 800) {
+      if (window.scrollY > 1200) {
         setShowQuickReviewPrompt(true);
       }
     };
@@ -33,7 +35,7 @@ export default function ConversionTriggers() {
       clearTimeout(timer);
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [isExcluded]);
+  }, [isExcluded, isBlogDetailPage]);
 
   // Exit intent detection (desktop mouse leaving window)
   useEffect(() => {
@@ -65,7 +67,10 @@ export default function ConversionTriggers() {
         {showQuickReviewPrompt && (
           <div className="relative bg-[#050B14] text-white border border-[#00B8F0]/40 rounded-2xl p-4 shadow-[0_8px_30px_rgba(0,184,240,0.25)] max-w-[290px] animate-fade-in transition-all">
             <button
-              onClick={() => setShowQuickReviewPrompt(false)}
+              onClick={() => {
+                setShowQuickReviewPrompt(false);
+                if (typeof window !== "undefined") sessionStorage.setItem("hide_review_prompt", "true");
+              }}
               className="absolute top-2 right-2 text-slate-400 hover:text-white p-1"
               aria-label="Dismiss quick review prompt"
             >

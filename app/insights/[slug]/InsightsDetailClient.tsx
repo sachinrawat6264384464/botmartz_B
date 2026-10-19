@@ -18,7 +18,8 @@ import {
   doc 
 } from "firebase/firestore";
 import { 
-  ArrowLeft, 
+  ArrowLeft,
+  ArrowRight, 
   Calendar, 
   Clock, 
   User, 
@@ -34,6 +35,9 @@ import {
   Terminal
 } from "lucide-react";
 import SchemaMarkup from "@/app/_components/SchemaMarkup";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 
 interface RelatedPost {
   id: string;
@@ -275,75 +279,148 @@ export default function InsightsDetailClient({
 
       {/* Embedded CSS for prose styling in rich article body */}
       <style jsx global>{`
+        .blog-content {
+          color: #1E293B;
+          font-size: 16.5px;
+          line-height: 1.85;
+        }
         .blog-content p {
           margin-bottom: 1.75rem;
-          line-height: 1.9;
-          color: #475569;
+          line-height: 1.85;
+          color: #334155;
           font-weight: 400;
-          font-size: 15.5px;
+          font-size: 16.5px;
+        }
+        .blog-content h1 {
+          font-size: 2rem;
+          font-weight: 800;
+          margin-top: 3rem;
+          margin-bottom: 1.25rem;
+          color: #0F172A;
+          line-height: 1.3;
+          letter-spacing: -0.02em;
         }
         .blog-content h2 {
-          font-size: 1.6rem;
+          font-size: 1.65rem;
           font-weight: 800;
           margin-top: 2.75rem;
           margin-bottom: 1.25rem;
           color: #0F172A;
-          line-height: 1.4;
-          letter-spacing: -0.01em;
+          line-height: 1.35;
+          letter-spacing: -0.015em;
+          border-bottom: 1px solid #E2E8F0;
+          padding-bottom: 0.5rem;
         }
         .blog-content h3 {
-          font-size: 1.3rem;
+          font-size: 1.35rem;
           font-weight: 700;
-          margin-top: 2rem;
+          margin-top: 2.25rem;
           margin-bottom: 1rem;
           color: #0066FF;
+          line-height: 1.4;
+        }
+        .blog-content h4 {
+          font-size: 1.15rem;
+          font-weight: 700;
+          margin-top: 1.75rem;
+          margin-bottom: 0.75rem;
+          color: #0F172A;
         }
         .blog-content ul {
-          list-style-type: square;
-          padding-left: 1.5rem;
+          list-style-type: disc;
+          padding-left: 1.75rem;
           margin-bottom: 1.75rem;
-          color: #475569;
-          font-weight: 400;
+          color: #334155;
         }
         .blog-content ol {
           list-style-type: decimal;
-          padding-left: 1.5rem;
+          padding-left: 1.75rem;
           margin-bottom: 1.75rem;
-          color: #475569;
-          font-weight: 400;
+          color: #334155;
         }
         .blog-content li {
           margin-bottom: 0.5rem;
           line-height: 1.75;
-          font-size: 14.5px;
+          font-size: 16px;
+        }
+        .blog-content strong {
+          color: #0F172A;
+          font-weight: 700;
         }
         .blog-content pre {
-          background-color: #F8FAFC;
-          padding: 1.5rem;
-          border-radius: 12px;
-          border: 1px solid #E2E8F0;
-          overflow-x: auto;
-          margin: 28px 0;
-          font-family: monospace;
-          color: #334155;
-          font-size: 12.5px;
-          line-height: 1.7;
+          background-color: #0B132B !important;
+          color: #E2E8F0 !important;
+          padding: 1.5rem !important;
+          border-radius: 12px !important;
+          border: 1px solid #1E293B !important;
+          overflow-x: auto !important;
+          margin: 28px 0 !important;
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+          font-size: 13.5px !important;
+          line-height: 1.65 !important;
+          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2) !important;
+        }
+        .blog-content pre code {
+          background-color: transparent !important;
+          color: #F1F5F9 !important;
+          padding: 0 !important;
+          border-radius: 0 !important;
+          font-size: 13.5px !important;
         }
         .blog-content code {
           background-color: rgba(0, 102, 255, 0.08);
-          padding: 0.2rem 0.4rem;
-          border-radius: 0.25rem;
-          font-family: monospace;
-          font-size: 0.9em;
           color: #0066FF;
+          padding: 0.2rem 0.45rem;
+          border-radius: 0.35rem;
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+          font-size: 0.9em;
+          font-weight: 600;
+        }
+        .blog-content blockquote {
+          border-left: 4px solid #00B8F0;
+          background-color: #F8FAFC;
+          padding: 1rem 1.25rem;
+          margin: 1.75rem 0;
+          color: #475569;
+          font-style: italic;
+          border-radius: 0 8px 8px 0;
+        }
+        .blog-content table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 2rem 0;
+          font-size: 14.5px;
+        }
+        .blog-content th {
+          background-color: #F1F5F9;
+          color: #0F172A;
+          font-weight: 700;
+          border: 1px solid #CBD5E1;
+          padding: 10px 14px;
+          text-align: left;
+        }
+        .blog-content td {
+          border: 1px solid #E2E8F0;
+          padding: 10px 14px;
+          color: #334155;
         }
         .blog-content img {
           border-radius: 12px;
-          margin: 2rem auto;
+          margin: 2.5rem auto;
           max-width: 100%;
           height: auto;
           display: block;
           border: 1px solid #E2E8F0;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+        .blog-content a {
+          color: #0066FF;
+          text-decoration: underline;
+          text-underline-offset: 4px;
+          font-weight: 500;
+        }
+        .blog-content a:hover {
+          color: #0052CC;
         }
       `}</style>
 
@@ -632,10 +709,54 @@ export default function InsightsDetailClient({
         </div>
 
         {/* Content Render */}
-        <article 
-          className="blog-content text-gray-300 font-light leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+        <article className="blog-content max-w-none text-slate-800 font-normal leading-relaxed">
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeRaw]}
+            components={{
+              h1: ({ node, ...props }) => <h1 className="text-3xl font-extrabold text-slate-900 mt-10 mb-4 tracking-tight" {...props} />,
+              h2: ({ node, ...props }) => <h2 className="text-2xl font-bold text-slate-900 mt-10 mb-4 pb-2 border-b border-slate-200 tracking-tight" {...props} />,
+              h3: ({ node, ...props }) => <h3 className="text-xl font-bold text-[#0066FF] mt-8 mb-3 tracking-tight" {...props} />,
+              h4: ({ node, ...props }) => <h4 className="text-lg font-bold text-slate-900 mt-6 mb-2" {...props} />,
+              p: ({ node, ...props }) => <p className="text-[16.5px] leading-[1.85] text-slate-700 mb-6 font-normal" {...props} />,
+              ul: ({ node, ...props }) => <ul className="list-disc pl-6 mb-6 space-y-2 text-slate-700 text-[16px]" {...props} />,
+              ol: ({ node, ...props }) => <ol className="list-decimal pl-6 mb-6 space-y-2 text-slate-700 text-[16px]" {...props} />,
+              li: ({ node, ...props }) => <li className="leading-relaxed" {...props} />,
+              strong: ({ node, ...props }) => <strong className="font-bold text-slate-900" {...props} />,
+              blockquote: ({ node, ...props }) => <blockquote className="border-l-4 border-[#00B8F0] bg-slate-50 pl-4 py-3 my-6 italic text-slate-600 rounded-r-lg" {...props} />,
+              pre: ({ node, ...props }) => (
+                <div className="relative my-6 rounded-xl overflow-hidden border border-slate-800 bg-[#0B132B] shadow-lg">
+                  <div className="flex items-center justify-between px-4 py-2 bg-slate-900/90 border-b border-slate-800 text-xs font-mono text-slate-400">
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block"/>
+                      <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80 inline-block"/>
+                      <span className="w-2.5 h-2.5 rounded-full bg-green-500/80 inline-block"/>
+                    </span>
+                    <span>Code Snippet</span>
+                  </div>
+                  <pre className="p-4 overflow-x-auto text-[13.5px] font-mono leading-relaxed text-slate-200 bg-[#0B132B] m-0" {...props} />
+                </div>
+              ),
+              code: ({ node, inline, className, children, ...props }: any) => {
+                if (inline) {
+                  return <code className="px-1.5 py-0.5 rounded bg-blue-50 text-[#0066FF] font-mono text-[0.9em] font-semibold border border-blue-100" {...props}>{children}</code>;
+                }
+                return <code className={className} {...props}>{children}</code>;
+              },
+              img: ({ node, ...props }) => <img className="rounded-xl border border-slate-200 my-8 max-w-full shadow-md mx-auto" {...props} />,
+              table: ({ node, ...props }) => (
+                <div className="overflow-x-auto my-6 border border-slate-200 rounded-xl shadow-sm">
+                  <table className="w-full text-left text-sm border-collapse" {...props} />
+                </div>
+              ),
+              th: ({ node, ...props }) => <th className="bg-slate-100 font-bold text-slate-900 px-4 py-3 border-b border-slate-200" {...props} />,
+              td: ({ node, ...props }) => <td className="px-4 py-3 border-b border-slate-100 text-slate-700" {...props} />,
+              a: ({ node, ...props }) => <a className="text-[#0066FF] hover:text-[#0052CC] underline underline-offset-4 font-medium" target="_blank" rel="noopener noreferrer" {...props} />
+            }}
+          >
+            {post.content || ""}
+          </ReactMarkdown>
+        </article>
 
         {/* Key Takeaways */}
         {closingPoints.length > 0 && (
@@ -1004,24 +1125,34 @@ export default function InsightsDetailClient({
 
         {/* Related Insights Grid */}
         <div className="border-t border-slate-200 mt-14 pt-11">
-          <div className="font-bold text-[12px] tracking-[0.1em] text-[#0066FF] uppercase mb-4.5">More Engineering Insights</div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          <div className="font-bold text-[12px] tracking-[0.1em] text-[#0066FF] uppercase mb-6 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#0066FF]" />
+            More Engineering Insights
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {initialRelated.map((r, idx) => (
               <div 
-                key={idx} 
-                style={{
-                  backgroundColor: '#F8FAFC',
-                  border: '1px solid rgba(255, 255, 255, 0.05)'
-                }}
-                className="rounded-xl overflow-hidden flex flex-col hover:border-[#00C6FF]/30 transition-all"
+                key={`related-${r.slug || idx}`} 
+                className="bg-white border border-slate-200 hover:border-[#0066FF] rounded-xl overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-all group"
               >
-                <div className="h-[100px] bg-gradient-to-br from-[#060C1F] to-[#0A1630]" />
-                <div className="p-4.5 flex-1 flex flex-col gap-2">
-                  <span className="font-bold text-[9px] tracking-wide text-[#0066FF] uppercase">{r.category}</span>
-                  <Link href={`/insights/${r.slug}`} className="font-bold text-[13px] leading-snug text-slate-900 hover:text-[#0066FF] transition-colors block flex-1">
+                <div className="h-[90px] bg-gradient-to-br from-[#060C1F] via-[#0A1630] to-[#0F1E3D] p-3.5 flex items-center justify-between relative overflow-hidden border-b border-slate-100">
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-white/10 text-[#00C6FF] border border-white/15 uppercase">
+                      {r.category}
+                    </span>
+                  </div>
+                  <span className="text-[11px] font-mono text-slate-400">{r.readTime} min read</span>
+                </div>
+                <div className="p-4 flex-1 flex flex-col justify-between gap-3 bg-white">
+                  <Link href={`/insights/${r.slug}`} className="font-bold text-[14px] leading-snug text-slate-900 group-hover:text-[#0066FF] transition-colors line-clamp-2">
                     {r.title}
                   </Link>
-                  <div className="font-medium text-[11px] text-slate-600/60 mt-1.5">{r.author} · {r.readTime} min read</div>
+                  <div className="font-medium text-[11px] text-slate-500 pt-2 border-t border-slate-100 flex items-center justify-between">
+                    <span>{r.author}</span>
+                    <span className="text-[#0066FF] font-semibold group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                      Read <ArrowRight size={12} />
+                    </span>
+                  </div>
                 </div>
               </div>
             ))}
