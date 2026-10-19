@@ -186,31 +186,35 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
     }
   };
 
-  const getPageNumbers = () => {
-    const pages = [];
+  const getPaginationItems = () => {
+    const items: Array<{ type: 'page' | 'ellipsis'; value: number | string; key: string }> = [];
     if (totalPages <= 5) {
       for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
+        items.push({ type: 'page', value: i, key: `page-${i}` });
       }
     } else {
-      pages.push(1);
+      items.push({ type: 'page', value: 1, key: 'page-1' });
       if (currentPage > 3) {
-        pages.push("ellipsis-1");
+        items.push({ type: 'ellipsis', value: '...', key: 'ellipsis-start' });
       }
       
       const start = Math.max(2, currentPage - 1);
       const end = Math.min(totalPages - 1, currentPage + 1);
       
       for (let i = start; i <= end; i++) {
-        pages.push(i);
+        items.push({ type: 'page', value: i, key: `page-${i}` });
       }
       
       if (currentPage < totalPages - 2) {
-        pages.push("ellipsis-2");
+        items.push({ type: 'ellipsis', value: '...', key: 'ellipsis-end' });
       }
-      pages.push(totalPages);
+      items.push({ type: 'page', value: totalPages, key: `page-${totalPages}` });
     }
-    return pages;
+
+    // Deduplicate any keys defensively
+    return items.filter((item, index, self) => 
+      index === self.findIndex((t) => t.key === item.key)
+    );
   };
 
   return (
@@ -460,7 +464,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                         {art.visualType === "microservices-blocks" && (
                           <div className="grid grid-cols-3 gap-2.5 w-full max-w-[220px]">
                             {[1, 2, 3, 4, 5, 6].map((i) => (
-                              <div key={i} className={`h-12 rounded-lg border flex items-center justify-center ${i % 2 === 0 ? "bg-[#0066FF]/20 border-[#0066FF] text-[#00B8F0]" : "bg-white border-slate-200 text-slate-600"}`}>
+                              <div key={`microservice-block-${i}`} className={`h-12 rounded-lg border flex items-center justify-center ${i % 2 === 0 ? "bg-[#0066FF]/20 border-[#0066FF] text-[#00B8F0]" : "bg-white border-slate-200 text-slate-600"}`}>
                                 <Layers className="w-5 h-5" />
                               </div>
                             ))}
@@ -628,26 +632,26 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                 </button>
 
                 <div className="flex items-center gap-1.5">
-                  {getPageNumbers().map((p, idx) => {
-                    if (typeof p === 'string') {
+                  {getPaginationItems().map((item) => {
+                    if (item.type === 'ellipsis') {
                       return (
-                        <span key={`ellipsis-${p}-${idx}`} className="text-[#64748B] px-1 font-bold">
+                        <span key={item.key} className="text-[#64748B] px-1 font-bold">
                           ...
                         </span>
                       );
                     }
-                    const isCurrent = currentPage === p;
+                    const isCurrent = currentPage === item.value;
                     return (
                       <button
-                        key={`page-num-${p}`}
-                        onClick={() => handlePageChange(p)}
+                        key={item.key}
+                        onClick={() => handlePageChange(item.value as number)}
                         className={`w-9 h-9 rounded-lg border font-semibold text-[13.5px] flex items-center justify-center transition-all shadow-sm ${
                           isCurrent
                             ? "bg-[#0066FF] text-white border-[#0066FF]"
                             : "border-[#E2E8F0] bg-white text-[#475569] hover:border-[#0066FF] hover:text-[#0066FF]"
                         }`}
                       >
-                        {p}
+                        {item.value}
                       </button>
                     );
                   })}
@@ -765,7 +769,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                   { label: "Open Source @ Botmartz", icon: Code2, href: "/contact" },
                   { label: "YouTube Channel", icon: PlayCircle, href: "/contact" },
                 ].map((res, i) => (
-                  <li key={i}>
+                  <li key={`resource-${res.label.toLowerCase().replace(/\s+/g, '-')}-${i}`}>
                     <Link
                       href={res.href}
                       className="flex items-center justify-between p-3 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] hover:border-[#0066FF] hover:bg-white transition-all group shadow-sm"

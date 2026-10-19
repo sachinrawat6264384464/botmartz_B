@@ -479,7 +479,7 @@ export default function InsightsDetailClient({
               </button>
               {shareLinks.map((s, idx) => (
                 <button 
-                  key={idx}
+                  key={`share-${s.label.toLowerCase()}-${idx}`}
                   onClick={handleShare}
                   title={`Share on ${s.label}`}
                   className="w-10 h-10 border border-white/14 bg-white/6 hover:bg-white/12 text-[#C7D6EE] font-bold text-[11px] flex items-center justify-center rounded-[9px] transition-all cursor-pointer"
@@ -687,7 +687,7 @@ export default function InsightsDetailClient({
         <div className="flex gap-2 flex-wrap mb-9">
           {toc.map((t, idx) => (
             <a 
-              key={idx}
+              key={`toc-${t.toLowerCase().replace(/\s+/g, '-')}-${idx}`}
               href={`#${t.toLowerCase().replace(/\s+/g, '-')}`}
               style={{
                 fontFamily: 'Montserrat, sans-serif',
@@ -769,7 +769,7 @@ export default function InsightsDetailClient({
             <h2 className="font-extrabold text-[22px] text-slate-900 mb-5 mt-0">Closing Takeaways</h2>
             <div className="flex flex-col gap-4">
               {closingPoints.map((pt, idx) => (
-                <div key={idx} className="flex gap-3.5 items-start">
+                <div key={`takeaway-${idx}`} className="flex gap-3.5 items-start">
                   <div 
                     style={{
                       width: '22px',
@@ -863,7 +863,7 @@ export default function InsightsDetailClient({
         <div className="flex flex-wrap gap-2 mt-9">
           {tags.map((tag, idx) => (
             <span 
-              key={idx} 
+              key={`tag-${tag.toLowerCase().replace(/\s+/g, '-')}-${idx}`} 
               style={{
                 fontWeight: '600',
                 fontSize: '11.5px',
