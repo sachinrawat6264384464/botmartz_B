@@ -360,7 +360,7 @@ export default function InsightsDetailClient({
         />
         <div className="absolute w-[420px] h-[420px] rounded-full bg-radial-gradient from-[#007BFF]/28 to-transparent -top-36 -right-20 filter blur-xl pointer-events-none" />
         
-        <div className="max-w-[820px] mx-auto relative z-10">
+        <div className="w-full max-w-[1400px] mx-auto relative z-10">
           <div className="font-semibold text-[12.5px] text-[#5B6B85] mb-6 tracking-wide flex items-center gap-2">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>›</span>
@@ -373,17 +373,11 @@ export default function InsightsDetailClient({
             {post.category || 'General'}
           </span>
 
-          <h1 className="font-extrabold text-[32px] sm:text-[44px] leading-[1.18] text-white mt-5">
-            {post.title.includes('in') ? (
-              <>
-                {post.title.split('in')[0]} in <span className="text-[#00C6FF]">{post.title.split('in').slice(1).join('in')}</span>
-              </>
-            ) : (
-              post.title
-            )}
+          <h1 className="font-extrabold text-[32px] sm:text-[46px] leading-[1.18] text-white mt-5 max-w-5xl">
+            {post.title}
           </h1>
 
-          <p className="font-medium text-[15px] sm:text-[15.5px] leading-[1.75] text-[#8FA3C4] mt-4 max-w-[660px]">
+          <p className="font-medium text-[15px] sm:text-[16px] leading-[1.75] text-[#8FA3C4] mt-4 max-w-4xl">
             {post.excerpt}
           </p>
 
@@ -552,8 +546,8 @@ export default function InsightsDetailClient({
       </div>
 
       {/* ── COVER IMAGE HERO ── */}
-      <div className="max-w-[820px] mx-auto px-6 sm:px-10">
-        <div className="h-[280px] rounded-[18px] overflow-hidden -mt-10 relative shadow-[0_20px_50px_rgba(6,12,31,0.25)] border-[6px] border-white bg-slate-900">
+      <div className="w-full max-w-[1400px] mx-auto px-6 sm:px-10">
+        <div className="h-[280px] sm:h-[380px] rounded-[18px] overflow-hidden -mt-10 relative shadow-[0_20px_50px_rgba(6,12,31,0.25)] border-[6px] border-white bg-slate-900">
           {post.featuredImage ? (
             <Image 
               fill
@@ -610,7 +604,7 @@ export default function InsightsDetailClient({
       </div>
 
       {/* ── ARTICLE PROSE BODY ── */}
-      <div className="max-w-[820px] mx-auto px-6 sm:px-10 pt-12">
+      <div className="w-full max-w-[1400px] mx-auto px-6 sm:px-10 pt-12">
         {/* Table of Contents anchors */}
         <div className="flex gap-2 flex-wrap mb-9">
           {toc.map((t, idx) => (
