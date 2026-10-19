@@ -435,8 +435,8 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-                {paginatedGridArticles.map((art) => (
-                  <Link key={art.id} href={`/insights/${art.slug}`} className="block group h-full">
+                {paginatedGridArticles.map((art, idx) => (
+                  <Link key={art.slug ? `article-${art.slug}` : `article-${art.id || idx}`} href={`/insights/${art.slug}`} className="block group h-full">
                     <article className="bg-white border border-[#E2E8F0] rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all flex flex-col h-full">
                       
                       {/* Top Dark Graphic Box */}
@@ -631,7 +631,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                   {getPageNumbers().map((p, idx) => {
                     if (typeof p === 'string') {
                       return (
-                        <span key={idx} className="text-[#64748B] px-1 font-bold">
+                        <span key={`ellipsis-${p}-${idx}`} className="text-[#64748B] px-1 font-bold">
                           ...
                         </span>
                       );
@@ -639,7 +639,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                     const isCurrent = currentPage === p;
                     return (
                       <button
-                        key={p}
+                        key={`page-num-${p}`}
                         onClick={() => handlePageChange(p)}
                         className={`w-9 h-9 rounded-lg border font-semibold text-[13.5px] flex items-center justify-center transition-all shadow-sm ${
                           isCurrent
