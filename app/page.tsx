@@ -29,11 +29,11 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Botmartz AI Solutions | Enterprise AI & Intelligent Systems Implementation",
-  description: "AI Systems Built for Real Work. Botmartz helps organizations design, implement, integrate, and operate production-ready AI systems across knowledge, workflows, data, and software.",
+  title: "Enterprise RAG & AI Agents That Cite Sources | Botmartz",
+  description: "Botmartz builds citation-grounded Enterprise RAG systems and deterministic AI agents in 4–6 week production pilots. Benchmarked with RAGAS, RBAC-secured, DPDPA-compliant.",
   openGraph: {
-    title: "Botmartz AI Solutions | Enterprise AI & Intelligent Systems Implementation",
-    description: "AI Systems Built for Real Work. We help organizations design, implement, integrate, and operate production-ready AI systems.",
+    title: "Enterprise RAG & AI Agents That Cite Sources | Botmartz",
+    description: "Production-ready Enterprise RAG and deterministic AI agents benchmarked with RAGAS. Fixed 4–6 week delivery.",
     url: "https://www.botmartz.com",
     type: "website",
   },
@@ -134,38 +134,34 @@ const SOLUTIONS = [
   },
 ];
 
-const LABS_SHOWCASE = [
+const RESEARCH_AREAS = [
   {
-    tag: "REFERENCE IMPLEMENTATION",
-    title: "Insurance Intelligence Lab",
-    desc: "Multi-document insurance policy comparison, clause variance extraction, and zero-hallucination citation enforcement over complex regulatory filings.",
-    tech: ["Hybrid Search", "BGE-Reranker", "Pydantic", "OpenSearch"],
-    href: "/work/labs/insurance-intelligence",
-    isFlagship: true,
+    tag: "ATTENTION & MEMORY RESEARCH",
+    title: "KV Cache Optimization & Grouped Query Attention (GQA)",
+    desc: "Investigating 8–16x KV cache reduction in autoregressive inference without model degradation, enabling long-context enterprise document intelligence on constrained compute.",
+    tech: ["PyTorch", "GQA", "KV Cache", "Transformers"],
+    focus: "Inference Efficiency"
   },
   {
-    tag: "REFERENCE IMPLEMENTATION",
-    title: "Enterprise Knowledge & Search",
-    desc: "Production-ready enterprise RAG platform with reciprocal rank fusion, cross-encoder reranking, and automated RAGAS evaluation harness.",
-    tech: ["Qdrant", "FastAPI", "LlamaIndex", "RAGAS"],
-    href: "/work/labs",
-    isFlagship: false,
+    tag: "AGENTIC STATE TOPOLOGY",
+    title: "Deterministic State Machines & HITL Verification",
+    desc: "Developing bounded LangGraph state topologies that eliminate unbounded LLM recursion and enforce strict schema gating on enterprise ERP and CRM tool-calling.",
+    tech: ["LangGraph", "Pydantic", "State Graphs", "Python"],
+    focus: "Agent Reliability"
   },
   {
-    tag: "REFERENCE IMPLEMENTATION",
-    title: "Multi-Agent Workflow State Machine",
-    desc: "Deterministic LangGraph state machine with explicit routing, state checkpoints, and human approval gates for high-stakes enterprise tasks.",
-    tech: ["LangGraph", "Python", "Redis", "Docker"],
-    href: "/work/labs",
-    isFlagship: false,
+    tag: "RETRIEVAL BENCHMARKS",
+    title: "Layout-Aware Parsing & Dense/Sparse Hybrid Retrieval",
+    desc: "Benchmarking table extraction across complex multi-page regulatory filings, combining BM25 keyword matching with cross-encoder rerankers and automated RAGAS scoring.",
+    tech: ["OpenSearch", "BM25", "RAGAS", "Qdrant"],
+    focus: "Zero Hallucination"
   },
   {
-    tag: "OPEN SOURCE PROJECT",
-    title: "OpenSearch Vector & RAG Tools",
-    desc: "Open-source connectors and hybrid search utilities for building scalable, enterprise-grade vector retrieval on OpenSearch.",
-    tech: ["OpenSearch", "BM25", "Python", "RRF"],
-    href: "/work/open-source",
-    isFlagship: false,
+    tag: "NEUROMORPHIC & ADVANCED AI",
+    title: "Spiking Neural Networks & Efficient Neural Architectures",
+    desc: "Exploratory research into temporal spiking dynamics and neuromorphic computing paradigms for ultra-low latency, energy-efficient edge intelligence.",
+    tech: ["SNNs", "PyTorch", "Spike Timing", "Edge AI"],
+    focus: "Next-Gen Computing"
   },
 ];
 
@@ -196,37 +192,46 @@ export default function HomePage() {
             {/* Left Content */}
             <div className="flex-1 text-left">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#00B8F0]/10 border border-[#00B8F0]/30 text-[#00B8F0] font-mono text-[11px] uppercase tracking-widest mb-6 font-semibold">
-                <span className="w-2 h-2 rounded-full bg-[#00B8F0] animate-pulse"></span>
-                Enterprise AI &amp; Intelligent Systems Implementation
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>Enterprise RAG &amp; Deterministic AI Agent Engineering</span>
               </div>
 
               <h1 className="text-[clamp(38px,5.5vw,66px)] font-bold font-heading tracking-tight leading-[1.08] mb-6 text-white">
-                AI Systems Built <br />
+                Enterprise AI Systems <br />
                 <span className="bg-gradient-to-r from-[#00B8F0] via-[#0066FF] to-[#60A5FA] bg-clip-text text-transparent">
-                  for Real Work.
+                  That Cite Sources.
                 </span>
               </h1>
 
-              <p className="text-[17px] sm:text-[19px] text-[#8A9EB0] max-w-[580px] mb-10 leading-relaxed font-normal">
-                Botmartz helps organizations design, implement, integrate, and operate production-ready AI systems across knowledge, workflows, data, and software.
+              <p className="text-[17px] sm:text-[19px] text-[#8A9EB0] max-w-[580px] mb-8 leading-relaxed font-normal">
+                We turn messy documents, regulatory policies, and multi-step workflows into production-ready RAG search and deterministic AI agents in 4–6 weeks. Zero hallucinations. Verified paragraph citations. Measured retrieval quality.
               </p>
+
+              {/* Trust & Brain-Priming Metric Bar */}
+              <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-slate-300 mb-8 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 max-w-fit">
+                <span className="text-[#00B8F0] font-bold">● 4–6 Wk Production Pilots</span>
+                <span className="text-slate-600">|</span>
+                <span>RAGAS Evaluated</span>
+                <span className="text-slate-600">|</span>
+                <span>DPDPA &amp; Private VPC Ready</span>
+              </div>
 
               <div className="flex flex-wrap gap-4 items-center mb-12">
                 <TrackedLink
-                  href="/contact?type=implementation"
+                  href="/contact?type=architecture-review"
                   eventName="button_click"
-                  eventData={{ button_name: "home_hero_discuss_implementation" }}
+                  eventData={{ button_name: "home_hero_book_review" }}
                   className="inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white px-7 py-4 rounded-xl text-[15px] font-semibold transition-all shadow-[0_4px_20px_rgba(0,102,255,0.4)] hover:scale-[1.02] active:scale-[0.98]"
                 >
-                  Discuss an Implementation <ArrowRight className="w-4 h-4" />
+                  Book Architecture Review <ArrowRight className="w-4 h-4" />
                 </TrackedLink>
                 <TrackedLink
-                  href="/implementation"
+                  href="/contact?type=feasibility-audit"
                   eventName="button_click"
-                  eventData={{ button_name: "home_hero_explore_capabilities" }}
+                  eventData={{ button_name: "home_hero_free_audit" }}
                   className="inline-flex items-center gap-2 border border-slate-700 text-white hover:border-[#00B8F0] hover:text-[#00B8F0] px-7 py-4 rounded-xl text-[15px] font-semibold transition-all hover:bg-white/5"
                 >
-                  Explore Capabilities ↗
+                  Request 48-Hour Feasibility Audit ↗
                 </TrackedLink>
               </div>
 
@@ -502,64 +507,58 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════════════════════════════
-          5. BOTMARTZ LABS & PROOF SHOWCASE - LIGHT THEME
+          5. BOTMARTZ APPLIED RESEARCH & METHODOLOGY - LIGHT THEME
       ═══════════════════════════════════════════ */}
-      <section className="py-24 bg-white relative border-b border-slate-200">
+      <section id="research" className="py-24 bg-white relative border-b border-slate-200">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 mb-16">
             <div>
               <div className="font-mono text-xs tracking-[0.14em] text-[#0066FF] uppercase mb-3 font-bold">
-                ENGINEERING IN THE OPEN
+                APPLIED AI RESEARCH &amp; FIRST PRINCIPLES
               </div>
               <h2 className="text-3xl sm:text-4xl font-bold font-heading text-slate-900 mb-4">
-                Botmartz Labs &amp; Reference Implementations
+                Our Research &amp; Architectural Focus
               </h2>
               <p className="text-slate-600 text-base sm:text-lg max-w-2xl">
-                We prove technical depth through working reference implementations with transparent classifications and reproducible architectures.
+                We bridge cutting-edge machine learning research with deterministic enterprise engineering — investigating attention efficiency, state machines, and verified citation boundaries.
               </p>
             </div>
             <TrackedLink
-              href="/work/labs"
+              href="/contact?type=architecture-review"
               eventName="button_click"
-              eventData={{ button_name: "home_view_all_labs" }}
+              eventData={{ button_name: "home_research_discuss" }}
               className="inline-flex items-center gap-2 text-sm font-semibold text-[#0066FF] hover:text-[#0052CC] transition-colors"
             >
-              View All Labs &amp; Open Source →
+              Discuss Architecture &amp; Research →
             </TrackedLink>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {LABS_SHOWCASE.map((lab, idx) => (
+            {RESEARCH_AREAS.map((item, idx) => (
               <div
                 key={idx}
-                className={`rounded-2xl p-7 flex flex-col justify-between border transition-all duration-300 shadow-sm hover:shadow-md ${
-                  lab.isFlagship
-                    ? "bg-gradient-to-br from-blue-50/80 via-slate-50 to-white border-blue-200/90 shadow-sm hover:border-[#0066FF]/60"
-                    : "bg-[#F8FAFC] border-slate-200 hover:border-slate-300"
-                }`}
+                className="rounded-2xl p-7 flex flex-col justify-between border bg-[#F8FAFC] border-slate-200 hover:border-blue-300 transition-all duration-300 shadow-sm hover:shadow-md"
               >
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-4">
                     <span className="font-mono text-[10px] px-2.5 py-1 rounded bg-blue-100/70 border border-blue-200 text-[#0066FF] font-bold">
-                      [{lab.tag}]
+                      [{item.tag}]
                     </span>
-                    {lab.isFlagship && (
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold border border-emerald-200">
-                        Flagship Showcase
-                      </span>
-                    )}
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-200 text-slate-800 font-semibold">
+                      {item.focus}
+                    </span>
                   </div>
 
                   <h3 className="text-xl font-bold text-slate-900 mb-2.5">
-                    {lab.title}
+                    {item.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
-                    {lab.desc}
+                    {item.desc}
                   </p>
 
                   <div className="flex flex-wrap gap-2 mb-6">
-                    {lab.tech.map((t, i) => (
+                    {item.tech.map((t, i) => (
                       <span key={i} className="text-[11px] font-mono px-2 py-0.5 bg-white rounded border border-slate-200 text-slate-700">
                         {t}
                       </span>
@@ -567,15 +566,16 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <TrackedLink
-                  href={lab.href}
-                  eventName="button_click"
-                  eventData={{ button_name: `lab_card_${lab.title}` }}
-                  className="inline-flex items-center gap-2 text-xs font-mono font-bold text-[#0066FF] hover:text-[#0052CC] transition-colors"
-                >
-                  <span>Launch Reference Architecture</span>
-                  <ArrowRight size={13} />
-                </TrackedLink>
+                <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                  <span className="text-xs font-mono text-slate-500">Active Laboratory Focus</span>
+                  <Link
+                    href="/contact?type=feasibility-audit"
+                    className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#0066FF] hover:text-[#0052CC] transition-colors"
+                  >
+                    <span>Request Technical Review</span>
+                    <ArrowRight size={13} />
+                  </Link>
+                </div>
               </div>
             ))}
           </div>

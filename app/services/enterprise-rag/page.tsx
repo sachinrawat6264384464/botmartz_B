@@ -78,16 +78,79 @@ const DEFAULT_CONTENT = {
     subtitle: "Bring your toughest document challenge. We'll show you exactly how to structure ingestion, retrieval, and evaluation to get it into production reliably.",
     buttonText: "Book Your Architecture Review →"
   },
+  answerCapsule: {
+    question: "What is Production Enterprise RAG?",
+    answer: "Production Enterprise RAG is an architecture that transforms private company documentation into reliable, deterministic intelligence. Rather than relying on simple vector lookup, it integrates layout-aware parsing, BM25 dense/sparse hybrid search, cross-encoder reranking, and citation provenance. Every answer links to exact paragraphs, and the system explicitly abstains from answering when source evidence is absent."
+  },
+  faqs: [
+    {
+      q: "How does Botmartz eliminate hallucinations in enterprise document search?",
+      a: "We enforce strict citation grounding at the retrieval layer. We combine hybrid vector search (Qdrant/OpenSearch) with BM25 keyword matching and cross-encoder reranking. If the retrieved context confidence falls below our benchmarked threshold, the model is architected to explicitly state that evidence is missing rather than speculating."
+    },
+    {
+      q: "What is your typical pilot timeline and pricing structure?",
+      a: "We deploy focused, production-grade RAG MVPs in 4–6 weeks. Sprints begin with a 1–2 day collaborative architecture review, followed by data ingestion, hybrid retrieval setup, and automated RAGAS evaluation. Architecture reviews are fixed at collaborative terms; pilot MVPs range from ₹3.5L to ₹8L ($4,200 to $9,500) depending on document volume, connector complexity, and private VPC security requirements."
+    },
+    {
+      q: "Can our RAG system be deployed inside our private cloud (VPC) for DPDPA / GDPR compliance?",
+      a: "Yes. We specialize in private VPC deployments on AWS (ap-south-1), Azure (Central India), or GCP (Mumbai). Your internal documents, embeddings, and telemetry never leave your protected network boundary, ensuring full alignment with Indian Digital Personal Data Protection Act (DPDPA) and enterprise compliance standards."
+    },
+    {
+      q: "How do you benchmark and measure RAG retrieval performance?",
+      a: "From day one, we implement automated evaluation harnesses using RAGAS and custom test fixtures. We continuously measure context precision, context recall@k, faithfulness, and answer relevancy against real enterprise queries before clearing production deployment."
+    }
+  ],
   structuredData: JSON.stringify({
     "@context": "https://schema.org",
-    "@type": "Service",
-    "name": "Enterprise RAG & Knowledge Intelligence",
-    "provider": {
-      "@type": "Organization",
-      "name": "Botmartz"
-    },
-    "description": "We turn scattered documents, policies and SOPs into production-ready RAG systems in 3–6 weeks. Grounded answers, verifiable citations, measured retrieval quality.",
-    "serviceType": "AI Engineering Services"
+    "@graph": [
+      {
+        "@type": "Service",
+        "@id": "https://www.botmartz.com/services/enterprise-rag#service",
+        "name": "Enterprise RAG & Knowledge Intelligence",
+        "provider": {
+          "@type": "Organization",
+          "name": "Botmartz AI Solutions Private Limited",
+          "url": "https://www.botmartz.com"
+        },
+        "description": "Turn scattered documents, policies and SOPs into production-ready RAG systems in 4–6 weeks with verifiable citations and RAGAS benchmarked retrieval quality.",
+        "serviceType": "AI Engineering Services",
+        "areaServed": "Global",
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Enterprise RAG Implementation Sprints"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.botmartz.com/services/enterprise-rag#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How does Botmartz eliminate hallucinations in enterprise document search?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We enforce strict citation grounding at the retrieval layer. We combine hybrid vector search (Qdrant/OpenSearch) with BM25 keyword matching and cross-encoder reranking. If the retrieved context confidence falls below our benchmarked threshold, the model is architected to explicitly state that evidence is missing rather than speculating."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is your typical pilot timeline and pricing structure?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We deploy focused, production-grade RAG MVPs in 4–6 weeks. Architecture reviews are fixed at collaborative terms; pilot MVPs range from ₹3.5L to ₹8L ($4,200 to $9,500) depending on document volume, connector complexity, and private VPC security requirements."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can our RAG system be deployed inside our private cloud (VPC) for DPDPA / GDPR compliance?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. We specialize in private VPC deployments on AWS (ap-south-1), Azure, or GCP. Your internal documents, embeddings, and telemetry never leave your protected network boundary, ensuring full alignment with Indian DPDPA compliance."
+            }
+          }
+        ]
+      }
+    ]
   })
 };
 
@@ -122,6 +185,8 @@ export default async function EnterpriseRAGPage() {
           subtitle: data?.cta?.subtitle || DEFAULT_CONTENT.cta.subtitle,
           buttonText: data?.cta?.buttonText || DEFAULT_CONTENT.cta.buttonText,
         },
+        answerCapsule: data?.answerCapsule || DEFAULT_CONTENT.answerCapsule,
+        faqs: data?.faqs || DEFAULT_CONTENT.faqs,
         structuredData: data?.structuredData || DEFAULT_CONTENT.structuredData
       };
     }

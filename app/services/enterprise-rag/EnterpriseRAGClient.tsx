@@ -222,25 +222,84 @@ export default function EnterpriseRAGClient({ content }: { content: any }) {
          </div>
       </section>
 
+      {/* 2.5 AEO ANSWER CAPSULE (Direct Answer Architecture for AI Engines & Technical Buyers) */}
+      {content.answerCapsule && (
+        <section className="py-12 bg-slate-50 border-b border-slate-200">
+          <div className="wrap max-w-[1000px] mx-auto px-4">
+            <div className="bg-white border-2 border-[#00B8F0]/30 rounded-2xl p-8 shadow-sm">
+              <div className="flex items-center gap-2 font-mono text-[11px] text-[#0066FF] uppercase font-bold tracking-wider mb-3">
+                <span className="w-2 h-2 rounded-full bg-[#00B8F0]"></span>
+                <span>Direct Technical Architecture Specification</span>
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">{content.answerCapsule.question}</h3>
+              <p className="text-slate-700 leading-relaxed text-[15px] font-normal">
+                {content.answerCapsule.answer}
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 7.5 TECHNICAL FAQS & AEO CITATION BLOCKS */}
+      {content.faqs && content.faqs.length > 0 && (
+        <section className="py-[100px] bg-white border-t border-slate-200">
+          <div className="wrap max-w-[950px] mx-auto px-4">
+            <div className="text-center mb-14">
+              <div className="font-mono text-[11px] tracking-[0.14em] text-[#0066FF] uppercase mb-3 font-semibold">
+                TECHNICAL QUESTIONS &amp; ARCHITECTURE DECISIONS
+              </div>
+              <h2 className="text-[30px] md:text-[38px] font-semibold text-slate-900 tracking-tight">
+                Frequently Asked Technical Questions
+              </h2>
+            </div>
+
+            <div className="space-y-6">
+              {content.faqs.map((faq: any, idx: number) => (
+                <div key={idx} className="bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-8 hover:border-slate-300 transition-colors">
+                  <h3 className="text-lg font-bold text-slate-900 mb-3 flex items-start gap-3">
+                    <span className="text-[#0066FF] font-mono text-sm shrink-0">0{idx + 1}.</span>
+                    <span>{faq.q}</span>
+                  </h3>
+                  <p className="text-slate-700 text-sm sm:text-base leading-relaxed pl-8">
+                    {faq.a}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* 8. FINAL CTA SECTION */}
-      <section className="py-[120px] bg-white relative overflow-hidden">
-        <div className="wrap max-w-[1000px] mx-auto">
-          <div className="bg-slate-50 border border-slate-200 rounded-3xl p-12 md:p-16 text-center relative overflow-hidden shadow-lg">
+      <section className="py-[120px] bg-[#050B14] text-white relative overflow-hidden">
+        <div className="wrap max-w-[1000px] mx-auto px-4">
+          <div className="bg-gradient-to-br from-white/10 to-white/5 border border-white/15 rounded-3xl p-12 md:p-16 text-center relative overflow-hidden shadow-2xl">
             <div className="relative z-10">
-              <h2 className="text-[32px] md:text-[44px] font-semibold tracking-tight text-slate-900 mb-6 leading-tight">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#00B8F0]/10 border border-[#00B8F0]/30 text-[#00B8F0] font-mono text-[11px] uppercase tracking-widest mb-6 font-semibold">
+                <span>Direct Access to Principal Architects</span>
+              </div>
+              <h2 className="text-[32px] md:text-[44px] font-semibold tracking-tight text-white mb-6 leading-tight">
                 {content.cta.title}
               </h2>
-              <p className="text-slate-600 text-[17px] md:text-[19px] max-w-[700px] mx-auto mb-10 leading-relaxed font-normal">
+              <p className="text-[#8A9EB0] text-[17px] md:text-[19px] max-w-[700px] mx-auto mb-10 leading-relaxed font-normal">
                 {content.cta.subtitle}
               </p>
-              <a 
-                href="https://cal.com/botmartz-ai/20min" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-[#0066FF] text-white hover:bg-[#0052CC] px-9 py-4 rounded-xl text-[16px] inline-flex items-center gap-3 font-semibold shadow-md transition-all hover:scale-105"
-              >
-                {content.cta.buttonText}
-              </a>
+              <div className="flex flex-wrap gap-4 justify-center items-center">
+                <a 
+                  href="https://cal.com/botmartz-ai/20min" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#0066FF] text-white hover:bg-[#0052CC] px-9 py-4 rounded-xl text-[16px] inline-flex items-center gap-3 font-semibold shadow-md transition-all hover:scale-105"
+                >
+                  {content.cta.buttonText}
+                </a>
+                <Link
+                  href="/contact?type=feasibility-audit"
+                  className="border border-white/20 hover:border-[#00B8F0] text-slate-300 hover:text-white px-8 py-4 rounded-xl text-[15px] font-semibold transition-all hover:bg-white/5"
+                >
+                  Request Confidential Audit Form ↗
+                </Link>
+              </div>
             </div>
           </div>
         </div>

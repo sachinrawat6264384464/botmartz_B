@@ -16,6 +16,7 @@ const AccessibilityToolbox = dynamic(
   { ssr: false }
 );
 const AnalyticsProvider = dynamic(() => import("./_components/AnalyticsProvider"), { ssr: false });
+const ConversionTriggers = dynamic(() => import("./_components/ConversionTriggers"), { ssr: false });
 
 export default function ClientLayout({
   children,
@@ -50,6 +51,7 @@ export default function ClientLayout({
             </main>
             {!isStandaloneRoute && <Footer settings={settings} />}
             {!isStandaloneRoute && <AccessibilityToolbox />}
+            {!isStandaloneRoute && <ConversionTriggers />}
           </div>
         </AccessibilityProvider>
       </ThemeProvider>
