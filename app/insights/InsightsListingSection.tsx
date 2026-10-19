@@ -770,11 +770,11 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
               </div>
               <ul className="space-y-3">
                 {[
-                  { label: "Engineering Handbook", icon: BookOpen, href: "/contact" },
-                  { label: "System Design Patterns", icon: Layers, href: "/contact" },
-                  { label: "AI Engineering Roadmap", icon: Network, href: "/contact" },
-                  { label: "Open Source @ Botmartz", icon: Code2, href: "/contact" },
-                  { label: "YouTube Channel", icon: PlayCircle, href: "/contact" },
+                  { label: "Engineering Handbook", icon: BookOpen, href: "/implementation" },
+                  { label: "System Design Patterns", icon: Layers, href: "/work/case-studies" },
+                  { label: "AI Engineering Roadmap", icon: Network, href: "/services/enterprise-rag" },
+                  { label: "Open Source @ Botmartz", icon: Code2, href: "/work/open-source" },
+                  { label: "YouTube Channel", icon: PlayCircle, href: "https://youtube.com/@botmartz" },
                 ].map((res, i) => (
                   <li key={`resource-${res.label.toLowerCase().replace(/\s+/g, '-')}-${i}`}>
                     <Link

@@ -12,12 +12,18 @@ const PROTOTYPE_EVENTS = [
 const DEFAULT_ITEMS = [
   { name: "Home", path: "/" },
   {
-    name: "Services", path: "/services",
+    name: "Solutions",
+    path: "/services",
     dropdown: [
-      { name: "Enterprise RAG", path: "/services/enterprise-rag" },
-      { name: "AI Agents", path: "/services/ai-agents" },
+      { name: "Enterprise AI Implementation", path: "/implementation" },
+      { name: "Knowledge & Search Systems", path: "/services/enterprise-rag" },
+      { name: "AI Agents & Automation", path: "/services/ai-agents" },
+      { name: "AI Integration & Platforms", path: "/services/integrations" },
+      { name: "Custom AI Applications", path: "/services/custom-ai-applications" },
     ],
   },
+  { name: "Industries", path: "/industries" },
+  { name: "Implementation", path: "/implementation" },
   {
     name: "Work", path: "/work",
     dropdown: [
@@ -25,17 +31,9 @@ const DEFAULT_ITEMS = [
       { name: "Open Source", path: "/work/open-source" },
     ],
   },
-  {
-    name: "Engineering Insights", path: "/insights",
-  },
-  {
-    name: "Community", path: "/community",
-    dropdown: [
-      { name: "Events", path: "/community/events" },
-      { name: "Workshops", path: "/community/ai-accelerator-workshop" },
-      { name: "Discord & Forum", path: "/community" },
-    ],
-  },
+  { name: "Engineering Insights", path: "/insights" },
+  { name: "Partners", path: "/partnerships" },
+  { name: "Company", path: "/about" },
 ];
 
 export async function GET(req: NextRequest) {

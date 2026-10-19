@@ -325,7 +325,7 @@ export default function ImplementationPage() {
       </section>
 
       {/* ── 4. ARCHITECTURE COMPARISON: BUILD VS INTEGRATE (LIGHT THEME) ── */}
-      <section className="py-16 sm:py-24 bg-[#F8FAFC] relative border-b border-slate-200">
+      <section id="governance" className="py-16 sm:py-24 bg-[#F8FAFC] relative border-b border-slate-200">
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">

@@ -18,9 +18,23 @@ interface NavItem {
 
 const DEFAULT_ITEMS: NavItem[] = [
   { name: "Home", path: "/" },
+  {
+    name: "Solutions",
+    path: "/services",
+    dropdown: [
+      { name: "Enterprise AI Implementation", path: "/implementation" },
+      { name: "Knowledge & Search Systems", path: "/services/enterprise-rag" },
+      { name: "AI Agents & Automation", path: "/services/ai-agents" },
+      { name: "AI Integration & Platforms", path: "/services/integrations" },
+      { name: "Custom AI Applications", path: "/services/custom-ai-applications" },
+    ],
+  },
+  { name: "Industries", path: "/industries" },
+  { name: "Implementation", path: "/implementation" },
   { name: "Work", path: "/work", dropdown: [{ name: "Labs", path: "/work/labs" }, { name: "Open Source", path: "/work/open-source" }] },
   { name: "Engineering Insights", path: "/insights" },
-  { name: "Community", path: "/community", dropdown: [{ name: "Events", path: "/community/events" }, { name: "Discord & Forum", path: "/community" }] },
+  { name: "Partners", path: "/partnerships" },
+  { name: "Company", path: "/about" },
 ];
 
 export default function NavigationAdminPage() {
@@ -54,7 +68,7 @@ export default function NavigationAdminPage() {
   };
 
   const addItem = () => {
-    setItems(prev => [...prev, { name: "New Link", path: "/new-link" }]);
+    setItems(prev => [...prev, { name: "New Link", path: "/contact" }]);
     setExpandedIndex(items.length);
   };
 
@@ -66,7 +80,7 @@ export default function NavigationAdminPage() {
   const addDropdownItem = (navIndex: number) => {
     setItems(prev => prev.map((it, i) => {
       if (i !== navIndex) return it;
-      return { ...it, dropdown: [...(it.dropdown || []), { name: "Sub Link", path: "/sub-link" }] };
+      return { ...it, dropdown: [...(it.dropdown || []), { name: "Sub Link", path: "/services" }] };
     }));
   };
 

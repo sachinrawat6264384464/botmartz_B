@@ -315,11 +315,7 @@ export default function AdminSidebar() {
               {renderFlatItem('dashboard', Home, 'Dashboard', '/admin')}
               {renderFlatItem('crm', Users, 'CRM', '/admin/crm')}
               {renderFlatItem('projects', FolderKanban, 'Projects', '/admin/projects')}
-              {renderFlatItem('events', CalendarDays, 'Events', '/admin/events')}
-              {renderFlatItem('events', ScanFace, 'Ticket Scanner', '/admin/scanner')}
-              {renderFlatItem('feedback', MessageSquare, 'Event Feedback', '/admin/feedback')}
-              {renderFlatItem('events', BookOpen, 'Bootcamps', '/admin/bootcamps')}
-              {renderFlatItem('coupons', Tag, 'Coupon Manager', '/admin/coupons')}
+              {renderFlatItem('payments', CreditCard, 'Payments', '/admin/payments')}
               {renderFlatItem('jobs', Users, 'Careers / Jobs', '/admin/jobs', true)}
               {renderFlatItem('partnerships', Handshake, 'Partnerships', '/admin/partnerships', true)}
             </div>

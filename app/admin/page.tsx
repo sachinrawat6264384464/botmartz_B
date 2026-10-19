@@ -234,7 +234,7 @@ export default function AdminDashboard() {
         <div className="lg:col-span-1 bg-admin-card border border-admin-border rounded-xl p-5 shadow-sm flex flex-col">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-semibold text-admin-text">Upcoming Events</h2>
-            <Link href="/admin/bootcamps" className="text-xs text-admin-text-muted hover:text-admin-text">View all</Link>
+            <Link href="/admin/crm" className="text-xs text-admin-text-muted hover:text-admin-text">View all</Link>
           </div>
           <div className="flex-1 overflow-y-auto space-y-4">
             {UPCOMING_EVENTS.map(event => {
@@ -261,7 +261,7 @@ export default function AdminDashboard() {
         <div className="lg:col-span-1 bg-admin-card border border-admin-border rounded-xl p-5 shadow-sm flex flex-col">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-semibold text-admin-text">Recent Registrations</h2>
-            <Link href="/admin/bootcamps" className="text-xs text-admin-text-muted hover:text-admin-text">View all</Link>
+            <Link href="/admin/crm" className="text-xs text-admin-text-muted hover:text-admin-text">View all</Link>
           </div>
           <div className="flex-1 space-y-4">
             {recentActivitiesList.length > 0 ? (
@@ -288,10 +288,10 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-2 gap-3">
             <QuickAction icon={FileText} label="Create Article" href="/admin/Blogs" />
             <QuickAction icon={FolderKanban} label="Add Case Study" href="/admin/case-studies" />
-            <QuickAction icon={Calendar} label="Create Event" href="/admin/events" />
-            <QuickAction icon={UserPlus} label="Invite Member" href="/admin/crm" />
-            <QuickAction icon={Activity} label="Create AI Agent" href="/admin/projects" />
-            <QuickAction icon={Settings} label="Upload Document" href="/admin/settings" />
+            <QuickAction icon={CreditCard} label="Manage Payments" href="/admin/payments" />
+            <QuickAction icon={UserPlus} label="CRM & Leads" href="/admin/crm" />
+            <QuickAction icon={Activity} label="Manage Projects" href="/admin/projects" />
+            <QuickAction icon={Settings} label="Site Settings" href="/admin/settings" />
           </div>
         </div>
       </div>
