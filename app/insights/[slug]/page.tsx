@@ -224,7 +224,15 @@ Legal documents present unique AI challenges: dense terminology, multi-page cros
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const resolvedParams = await params;
+  const slug = resolvedParams?.slug;
+  if (!slug) {
+    return {
+      title: "Insight",
+      description: "Explore engineering insights and AI research from Botmartz.",
+    };
+  }
+
   let post: any = null;
   
   try {
@@ -275,7 +283,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function InsightsDetailPage({ params }: Props) {
-  const { slug } = await params;
+  const resolvedParams = await params;
+  const slug = resolvedParams?.slug;
+  if (!slug) {
+    notFound();
+  }
+
   let post: any = null;
   let postId: string = "";
   
@@ -349,10 +362,12 @@ export default async function InsightsDetailPage({ params }: Props) {
   };
 
   const sanitizedPost = JSON.parse(JSON.stringify({
-    id: postId,
     ...post,
-    createdAt: formatTimestamp(post.createdAt || new Date()),
-    updatedAt: formatTimestamp(post.updatedAt || new Date()),
+    id: postId || post?.id || `post-${slug}`,
+    slug: post?.slug || slug,
+    title: post?.title || "Insight",
+    createdAt: formatTimestamp(post?.createdAt || new Date()),
+    updatedAt: formatTimestamp(post?.updatedAt || new Date()),
   }));
 
   const sanitizedRelated = JSON.parse(JSON.stringify(related));

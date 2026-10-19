@@ -111,9 +111,12 @@ export default function InsightsDetailClient({
 
   useEffect(() => {
     async function fetchComments() {
+      const targetSlug = post?.slug;
+      if (!targetSlug) return;
+
       try {
         const commentsRef = collection(db, "comments");
-        const q = query(commentsRef, where("postSlug", "==", post.slug));
+        const q = query(commentsRef, where("postSlug", "==", targetSlug));
         const snapshot = await getDocs(q);
         const items = snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -135,20 +138,20 @@ export default function InsightsDetailClient({
     }
 
     fetchComments();
-  }, [post.slug, commentStatus]);
+  }, [post?.slug, commentStatus]);
 
   // Increment views once on load
   useEffect(() => {
-    if (!post.id) return;
+    if (!post?.id || post.id.startsWith("static-")) return;
     const postRef = doc(db, "blog-posts", post.id);
     updateDoc(postRef, { views: increment(1) }).catch((err) =>
       console.error("Failed to increment view:", err)
     );
     setViewCount((prev) => prev + 1);
-  }, [post.id]);
+  }, [post?.id]);
 
   const handleLike = async () => {
-    if (!post.id || likeLoading) return;
+    if (!post?.id || post.id.startsWith("static-") || likeLoading) return;
     setLikeLoading(true);
     const postRef = doc(db, "blog-posts", post.id);
     try {
@@ -170,7 +173,8 @@ export default function InsightsDetailClient({
 
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!commentForm.name.trim() || !commentForm.email.trim() || !commentForm.content.trim()) return;
+    const targetSlug = post?.slug;
+    if (!targetSlug || !commentForm.name.trim() || !commentForm.email.trim() || !commentForm.content.trim()) return;
 
     setCommentStatus("submitting");
     setCommentError("");
