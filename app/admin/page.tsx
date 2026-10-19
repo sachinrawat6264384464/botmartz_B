@@ -8,7 +8,7 @@ import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { 
   DollarSign, PhoneCall, FolderKanban, Users, Globe, 
   ArrowUpRight, ArrowDownRight, MoreVertical, Calendar, 
-  Clock, Plus, FileText, UserPlus, Settings, Activity
+  Clock, Plus, FileText, UserPlus, Settings, Activity, CreditCard
 } from 'lucide-react';
 import { 
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,

@@ -46,6 +46,7 @@ interface RelatedPost {
   category: string;
   author: string;
   readTime: number;
+  featuredImage?: string;
 }
 
 interface BlogPost {
@@ -1140,12 +1141,19 @@ export default function InsightsDetailClient({
                 className="bg-white border border-slate-200 hover:border-[#0066FF] rounded-xl overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-all group"
               >
                 <div className="h-[90px] bg-gradient-to-br from-[#060C1F] via-[#0A1630] to-[#0F1E3D] p-3.5 flex items-center justify-between relative overflow-hidden border-b border-slate-100">
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-white/10 text-[#00C6FF] border border-white/15 uppercase">
+                  {r.featuredImage && (
+                    <img
+                      src={r.featuredImage}
+                      alt={r.title}
+                      className="absolute inset-0 w-full h-full object-cover opacity-35 group-hover:scale-105 group-hover:opacity-45 transition-all duration-300"
+                    />
+                  )}
+                  <div className="flex items-center gap-2 relative z-10">
+                    <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-[#00C6FF] border border-white/15 uppercase backdrop-blur-sm">
                       {r.category}
                     </span>
                   </div>
-                  <span className="text-[11px] font-mono text-slate-400">{r.readTime} min read</span>
+                  <span className="text-[11px] font-mono text-slate-300 relative z-10 bg-black/50 px-2 py-0.5 rounded backdrop-blur-sm">{r.readTime} min read</span>
                 </div>
                 <div className="p-4 flex-1 flex flex-col justify-between gap-3 bg-white">
                   <Link href={`/insights/${r.slug}`} className="font-bold text-[14px] leading-snug text-slate-900 group-hover:text-[#0066FF] transition-colors line-clamp-2">

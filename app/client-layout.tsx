@@ -34,7 +34,7 @@ export default function ClientLayout({
     setMounted(true);
   }, []);
 
-  const isStandaloneRoute = mounted && (pathname?.startsWith('/admin') || pathname?.includes('/feedback') || false);
+  const isStandaloneRoute = Boolean(pathname?.startsWith('/admin') || pathname?.includes('/feedback'));
 
   return (
     <SettingsContext.Provider value={settings || {}}>
@@ -51,9 +51,9 @@ export default function ClientLayout({
               Skip to main content
             </a>
             {!isStandaloneRoute && navbar}
-            <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none" suppressHydrationWarning>
+            <div id="main-content" tabIndex={-1} className="flex-1 focus:outline-none" suppressHydrationWarning>
               {children}
-            </main>
+            </div>
             {!isStandaloneRoute && <Footer settings={settings} />}
             {!isStandaloneRoute && <AccessibilityToolbox />}
             {!isStandaloneRoute && <ConversionTriggers />}

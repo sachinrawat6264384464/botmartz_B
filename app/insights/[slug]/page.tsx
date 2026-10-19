@@ -332,7 +332,8 @@ export default async function InsightsDetailPage({ params }: Props) {
           slug: data.slug || "",
           category: data.category || "AI Engineering",
           author: data.author || "Botmartz Team",
-          readTime: data.readTime || 8
+          readTime: data.readTime || 8,
+          featuredImage: data.featuredImage || data.image || data.coverImage || ""
         };
       })
       .filter(p => KEPT_SLUGS.has(p.slug) && p.slug !== slug);

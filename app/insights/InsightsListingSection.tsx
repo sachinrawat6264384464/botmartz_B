@@ -31,7 +31,7 @@ import {
 } from "lucide-react";
 
 export interface InsightArticle {
-  id: number;
+  id: number | string;
   title: string;
   category: string;
   description: string;
@@ -40,7 +40,8 @@ export interface InsightArticle {
   readTime: string;
   slug?: string;
   featured?: boolean;
-  visualType: "rag-featured" | "agents-circle" | "microservices-blocks" | "mlops-dashboard" | "rag-hybrid" | "langgraph-flow" | "open-source-hub" | "prompt-blueprint" | "legal-doc-flow";
+  visualType?: "rag-featured" | "agents-circle" | "microservices-blocks" | "mlops-dashboard" | "rag-hybrid" | "langgraph-flow" | "open-source-hub" | "prompt-blueprint" | "legal-doc-flow";
+  featuredImage?: string;
 }
 
 const ARTICLES_DATA: InsightArticle[] = [
@@ -54,7 +55,8 @@ const ARTICLES_DATA: InsightArticle[] = [
     readTime: "12 min read",
     featured: true,
     slug: "building-a-scalable-enterprise-rag-system-architecture-components-best-practices",
-    visualType: "rag-featured"
+    visualType: "rag-featured",
+    featuredImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80"
   },
   {
     id: 2,
@@ -65,7 +67,8 @@ const ARTICLES_DATA: InsightArticle[] = [
     date: "May 8, 2024",
     readTime: "9 min read",
     slug: "inside-ai-agents-from-reasoning-to-real-world-action",
-    visualType: "agents-circle"
+    visualType: "agents-circle",
+    featuredImage: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&auto=format&fit=crop&q=80"
   },
   {
     id: 4,
@@ -76,7 +79,8 @@ const ARTICLES_DATA: InsightArticle[] = [
     date: "Apr 30, 2024",
     readTime: "8 min read",
     slug: "observability-for-llm-applications-metrics-that-matter",
-    visualType: "mlops-dashboard"
+    visualType: "mlops-dashboard",
+    featuredImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&auto=format&fit=crop&q=80"
   }
 ];
 
@@ -111,7 +115,7 @@ const getAuthorInitials = (author?: string) => {
 
 export default function InsightsListingSection({ dbArticles = [] }: { dbArticles?: any[] }) {
   const [activeCategory, setActiveCategory] = useState<string>("All Articles");
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("" );
   const [mobileFilterOpen, setMobileFilterOpen] = useState<boolean>(false);
 
   const mergedArticles = useMemo(() => {
@@ -126,7 +130,8 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
         readTime: `${art.readTime || 8} min read`,
         slug: art.slug || generateSlugRaw(art.title),
         featured: !!art.featured,
-        visualType: (art.visualType || "mlops-dashboard") as any
+        visualType: (art.visualType || "mlops-dashboard") as any,
+        featuredImage: art.featuredImage || art.image || art.coverImage || "",
       }));
 
     const dbSlugs = new Set(formattedDb.map(a => a.slug));
@@ -269,13 +274,26 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                 </div>
                 
                 {/* Visual Preview Banner */}
-                <div className="bg-white border border-slate-200 rounded-xl p-6 h-full min-h-[280px] flex items-center justify-center relative overflow-hidden group-hover:border-[#00B8F0]/40 transition-colors">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,184,240,0.1),transparent_70%)] pointer-events-none" />
-                  <div className="text-center relative z-10 p-4">
-                    <Database className="w-12 h-12 text-[#00B8F0] mx-auto mb-3 opacity-80" />
-                    <div className="font-mono text-xs text-slate-600 uppercase tracking-wider mb-1">Architecture Diagram</div>
-                    <div className="font-semibold text-sm text-slate-900 max-w-[260px] mx-auto">{featuredArticle.title}</div>
-                  </div>
+                <div className={`bg-slate-50 border border-slate-200 rounded-xl h-full min-h-[280px] flex items-center justify-center relative overflow-hidden group-hover:border-[#00B8F0]/40 transition-colors ${featuredArticle.featuredImage ? '' : 'p-6'}`}>
+                  {featuredArticle.featuredImage ? (
+                    <div className="relative w-full h-full min-h-[280px] overflow-hidden">
+                      <img
+                        src={featuredArticle.featuredImage}
+                        alt={featuredArticle.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
+                    </div>
+                  ) : (
+                    <>
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,184,240,0.1),transparent_70%)] pointer-events-none" />
+                      <div className="text-center relative z-10 p-4">
+                        <Database className="w-12 h-12 text-[#00B8F0] mx-auto mb-3 opacity-80" />
+                        <div className="font-mono text-xs text-slate-600 uppercase tracking-wider mb-1">Architecture Diagram</div>
+                        <div className="font-semibold text-sm text-slate-900 max-w-[260px] mx-auto">{featuredArticle.title}</div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </Link>
@@ -351,59 +369,70 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
               <Link href={`/insights/${featuredArticle.slug}`} className="block group">
                 <article className="bg-white border border-[#E2E8F0] rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
                   
-                  {/* Left Graphic Block: RAG Schematic */}
-                  <div className="md:col-span-6 h-[240px] sm:h-[280px] bg-slate-50 rounded-xl relative overflow-hidden border border-slate-200 flex items-center justify-center p-4 sm:p-6 shadow-inner select-none">
+                  {/* Left Graphic Block: RAG Schematic or Featured Image */}
+                  <div className={`md:col-span-6 h-[240px] sm:h-[280px] bg-slate-50 rounded-xl relative overflow-hidden border border-slate-200 flex items-center justify-center shadow-inner select-none ${featuredArticle.featuredImage ? '' : 'p-4 sm:p-6'}`}>
                     <div className="absolute top-4 left-4 bg-[#0066FF] text-white font-mono text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded shadow-md z-20">
                       FEATURED
                     </div>
                     
-                    {/* Pipeline Mockup */}
-                    <div className="w-full max-w-[360px] flex flex-col gap-6 relative z-10 text-slate-900 font-mono text-[10px]">
-                      {/* Top Row */}
-                      <div className="grid grid-cols-3 gap-3 items-center">
-                        <div className="bg-white border border-slate-200 rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1.5 shadow">
-                          <FileText className="w-5 h-5 text-[#00B8F0]" />
-                          <span>Document<br/>Ingestion</span>
-                        </div>
-                        <div className="flex items-center justify-center relative">
-                          <ArrowRight className="w-4 h-4 text-[#00B8F0] absolute -left-1" />
-                          <div className="bg-white border border-slate-200 rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1.5 shadow w-full">
-                            <Network className="w-5 h-5 text-[#0066FF]" />
-                            <span>Chunking &<br/>Embedding</span>
-                          </div>
-                        </div>
-                        <div className="flex items-center justify-center relative">
-                          <ArrowRight className="w-4 h-4 text-[#00B8F0] absolute -left-1" />
-                          <div className="bg-white border border-[#00B8F0]/40 rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1.5 shadow w-full bg-[#00B8F0]/10">
-                            <Database className="w-5 h-5 text-[#00B8F0]" />
-                            <span>Vector DB</span>
-                          </div>
-                        </div>
+                    {featuredArticle.featuredImage ? (
+                      <div className="relative w-full h-full overflow-hidden">
+                        <img
+                          src={featuredArticle.featuredImage}
+                          alt={featuredArticle.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
                       </div>
+                    ) : (
+                      /* Pipeline Mockup */
+                      <div className="w-full max-w-[360px] flex flex-col gap-6 relative z-10 text-slate-900 font-mono text-[10px]">
+                        {/* Top Row */}
+                        <div className="grid grid-cols-3 gap-3 items-center">
+                          <div className="bg-white border border-slate-200 rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1.5 shadow">
+                            <FileText className="w-5 h-5 text-[#00B8F0]" />
+                            <span>Document<br/>Ingestion</span>
+                          </div>
+                          <div className="flex items-center justify-center relative">
+                            <ArrowRight className="w-4 h-4 text-[#00B8F0] absolute -left-1" />
+                            <div className="bg-white border border-slate-200 rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1.5 shadow w-full">
+                              <Network className="w-5 h-5 text-[#0066FF]" />
+                              <span>Chunking &<br/>Embedding</span>
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-center relative">
+                            <ArrowRight className="w-4 h-4 text-[#00B8F0] absolute -left-1" />
+                            <div className="bg-white border border-[#00B8F0]/40 rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1.5 shadow w-full bg-[#00B8F0]/10">
+                              <Database className="w-5 h-5 text-[#00B8F0]" />
+                              <span>Vector DB</span>
+                            </div>
+                          </div>
+                        </div>
 
-                      {/* Bottom Row */}
-                      <div className="grid grid-cols-4 gap-2 items-center pt-2 border-t border-slate-200/60">
-                        <div className="bg-white border border-slate-200 rounded-md p-2 flex flex-col items-center text-center gap-1">
-                          <Search className="w-4 h-4 text-slate-600" />
-                          <span className="text-[9px]">Retrieval</span>
-                        </div>
-                        <div className="bg-white border border-slate-200 rounded-md p-2 flex flex-col items-center text-center gap-1 relative">
-                          <ArrowRight className="w-3 h-3 text-[#64748B] absolute -left-1.5 top-1/2 -translate-y-1/2" />
-                          <SlidersHorizontal className="w-4 h-4 text-[#00B8F0]" />
-                          <span className="text-[9px]">Reranker</span>
-                        </div>
-                        <div className="bg-white border border-slate-200 rounded-md p-2 flex flex-col items-center text-center gap-1 relative">
-                          <ArrowRight className="w-3 h-3 text-[#64748B] absolute -left-1.5 top-1/2 -translate-y-1/2" />
-                          <Bot className="w-4 h-4 text-[#0066FF]" />
-                          <span className="text-[9px]">LLM</span>
-                        </div>
-                        <div className="bg-[#0066FF] text-white rounded-md p-2 flex flex-col items-center text-center gap-1 relative shadow-md">
-                          <ArrowRight className="w-3 h-3 text-[#64748B] absolute -left-1.5 top-1/2 -translate-y-1/2" />
-                          <CheckCircle2 className="w-4 h-4 text-slate-900" />
-                          <span className="text-[9px]">Answer</span>
+                        {/* Bottom Row */}
+                        <div className="grid grid-cols-4 gap-2 items-center pt-2 border-t border-slate-200/60">
+                          <div className="bg-white border border-slate-200 rounded-md p-2 flex flex-col items-center text-center gap-1">
+                            <Search className="w-4 h-4 text-slate-600" />
+                            <span className="text-[9px]">Retrieval</span>
+                          </div>
+                          <div className="bg-white border border-slate-200 rounded-md p-2 flex flex-col items-center text-center gap-1 relative">
+                            <ArrowRight className="w-3 h-3 text-[#64748B] absolute -left-1.5 top-1/2 -translate-y-1/2" />
+                            <SlidersHorizontal className="w-4 h-4 text-[#00B8F0]" />
+                            <span className="text-[9px]">Reranker</span>
+                          </div>
+                          <div className="bg-white border border-slate-200 rounded-md p-2 flex flex-col items-center text-center gap-1 relative">
+                            <ArrowRight className="w-3 h-3 text-[#64748B] absolute -left-1.5 top-1/2 -translate-y-1/2" />
+                            <Bot className="w-4 h-4 text-[#0066FF]" />
+                            <span className="text-[9px]">LLM</span>
+                          </div>
+                          <div className="bg-[#0066FF] text-white rounded-md p-2 flex flex-col items-center text-center gap-1 relative shadow-md">
+                            <ArrowRight className="w-3 h-3 text-[#64748B] absolute -left-1.5 top-1/2 -translate-y-1/2" />
+                            <CheckCircle2 className="w-4 h-4 text-slate-900" />
+                            <span className="text-[9px]">Answer</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
                   </div>
 
                   {/* Right Content Block */}
@@ -450,143 +479,155 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                   <Link key={art.slug ? `article-${art.slug}` : `article-${art.id || idx}`} href={`/insights/${art.slug}`} className="block group h-full">
                     <article className="bg-white border border-[#E2E8F0] rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all flex flex-col h-full">
                       
-                      {/* Top Dark Graphic Box */}
-                      <div className="h-[200px] bg-slate-50 rounded-xl border border-slate-200 relative overflow-hidden p-4 flex items-center justify-center shadow-inner select-none">
-                        
-                        {/* Custom Visual Schematics based on visualType */}
-                        {art.visualType === "agents-circle" && (
-                          <div className="relative w-40 h-40 flex items-center justify-center">
-                            <div className="absolute inset-0 rounded-full border border-dashed border-[#00B8F0]/40 animate-spin-slow" />
-                            <div className="w-14 h-14 rounded-full bg-[#0066FF] border-2 border-white/20 flex items-center justify-center text-slate-900 shadow-lg z-10">
-                              <Bot className="w-7 h-7" />
-                            </div>
-                            {/* Surrounding Nodes */}
-                            <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[#00B8F0]"><Users className="w-4 h-4"/></div>
-                            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[#00B8F0]"><Terminal className="w-4 h-4"/></div>
-                            <div className="absolute top-1/2 -left-1 -translate-y-1/2 w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[#00B8F0]"><Database className="w-4 h-4"/></div>
-                            <div className="absolute top-1/2 -right-1 -translate-y-1/2 w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[#00B8F0]"><CheckCircle2 className="w-4 h-4"/></div>
+                      {/* Top Graphic / Image Box */}
+                      <div className={`h-[200px] bg-slate-50 rounded-xl border border-slate-200 relative overflow-hidden flex items-center justify-center shadow-inner select-none ${art.featuredImage ? '' : 'p-4'}`}>
+                        {art.featuredImage ? (
+                          <div className="relative w-full h-full overflow-hidden">
+                            <img
+                              src={art.featuredImage}
+                              alt={art.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
                           </div>
-                        )}
-
-                        {art.visualType === "microservices-blocks" && (
-                          <div className="grid grid-cols-3 gap-2.5 w-full max-w-[220px]">
-                            {[1, 2, 3, 4, 5, 6].map((i) => (
-                              <div key={`microservice-block-${i}`} className={`h-12 rounded-lg border flex items-center justify-center ${i % 2 === 0 ? "bg-[#0066FF]/20 border-[#0066FF] text-[#00B8F0]" : "bg-white border-slate-200 text-slate-600"}`}>
-                                <Layers className="w-5 h-5" />
+                        ) : (
+                          <>
+                            {/* Custom Visual Schematics based on visualType */}
+                            {art.visualType === "agents-circle" && (
+                              <div className="relative w-40 h-40 flex items-center justify-center">
+                                <div className="absolute inset-0 rounded-full border border-dashed border-[#00B8F0]/40 animate-spin-slow" />
+                                <div className="w-14 h-14 rounded-full bg-[#0066FF] border-2 border-white/20 flex items-center justify-center text-slate-900 shadow-lg z-10">
+                                  <Bot className="w-7 h-7" />
+                                </div>
+                                {/* Surrounding Nodes */}
+                                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[#00B8F0]"><Users className="w-4 h-4"/></div>
+                                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[#00B8F0]"><Terminal className="w-4 h-4"/></div>
+                                <div className="absolute top-1/2 -left-1 -translate-y-1/2 w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[#00B8F0]"><Database className="w-4 h-4"/></div>
+                                <div className="absolute top-1/2 -right-1 -translate-y-1/2 w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[#00B8F0]"><CheckCircle2 className="w-4 h-4"/></div>
                               </div>
-                            ))}
-                          </div>
-                        )}
+                            )}
 
-                        {art.visualType === "mlops-dashboard" && (
-                          <div className="w-full h-full bg-white border border-slate-200 rounded-lg p-3.5 flex flex-col justify-between text-slate-900 font-mono text-[9px]">
-                            <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-                              <span className="text-[#00B8F0] font-bold">LLM OBSERVABILITY</span>
-                              <span className="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400">ONLINE</span>
-                            </div>
-                            <div className="grid grid-cols-2 gap-2 my-2">
-                              <div className="bg-slate-50 p-2 rounded border border-slate-200">
-                                <div className="text-[#64748B]">TELEMETRY</div>
-                                <div className="text-[12px] font-bold text-slate-900 mt-0.5 font-mono">TRACED</div>
+                            {art.visualType === "microservices-blocks" && (
+                              <div className="grid grid-cols-3 gap-2.5 w-full max-w-[220px]">
+                                {[1, 2, 3, 4, 5, 6].map((i) => (
+                                  <div key={`microservice-block-${i}`} className={`h-12 rounded-lg border flex items-center justify-center ${i % 2 === 0 ? "bg-[#0066FF]/20 border-[#0066FF] text-[#00B8F0]" : "bg-white border-slate-200 text-slate-600"}`}>
+                                    <Layers className="w-5 h-5" />
+                                  </div>
+                                ))}
                               </div>
-                              <div className="bg-slate-50 p-2 rounded border border-slate-200">
-                                <div className="text-[#64748B]">GUARDRAILS</div>
-                                <div className="text-[12px] font-bold text-[#00B8F0] mt-0.5 font-mono">ACTIVE</div>
+                            )}
+
+                            {art.visualType === "mlops-dashboard" && (
+                              <div className="w-full h-full bg-white border border-slate-200 rounded-lg p-3.5 flex flex-col justify-between text-slate-900 font-mono text-[9px]">
+                                <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+                                  <span className="text-[#00B8F0] font-bold">LLM OBSERVABILITY</span>
+                                  <span className="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400">ONLINE</span>
+                                </div>
+                                <div className="grid grid-cols-2 gap-2 my-2">
+                                  <div className="bg-slate-50 p-2 rounded border border-slate-200">
+                                    <div className="text-[#64748B]">TELEMETRY</div>
+                                    <div className="text-[12px] font-bold text-slate-900 mt-0.5 font-mono">TRACED</div>
+                                  </div>
+                                  <div className="bg-slate-50 p-2 rounded border border-slate-200">
+                                    <div className="text-[#64748B]">GUARDRAILS</div>
+                                    <div className="text-[12px] font-bold text-[#00B8F0] mt-0.5 font-mono">ACTIVE</div>
+                                  </div>
+                                </div>
+                                {/* Bar mini chart */}
+                                <div className="flex items-end gap-1.5 h-10 px-1 pt-1 border-t border-slate-200">
+                                  <div className="w-full bg-[#0066FF] h-[60%] rounded-t-sm" />
+                                  <div className="w-full bg-[#00B8F0] h-[90%] rounded-t-sm" />
+                                  <div className="w-full bg-[#0066FF] h-[40%] rounded-t-sm" />
+                                  <div className="w-full bg-[#00B8F0] h-[75%] rounded-t-sm" />
+                                  <div className="w-full bg-[#0066FF] h-[100%] rounded-t-sm" />
+                                </div>
                               </div>
-                            </div>
-                            {/* Bar mini chart */}
-                            <div className="flex items-end gap-1.5 h-10 px-1 pt-1 border-t border-slate-200">
-                              <div className="w-full bg-[#0066FF] h-[60%] rounded-t-sm" />
-                              <div className="w-full bg-[#00B8F0] h-[90%] rounded-t-sm" />
-                              <div className="w-full bg-[#0066FF] h-[40%] rounded-t-sm" />
-                              <div className="w-full bg-[#00B8F0] h-[75%] rounded-t-sm" />
-                              <div className="w-full bg-[#0066FF] h-[100%] rounded-t-sm" />
-                            </div>
-                          </div>
-                        )}
+                            )}
 
-                        {art.visualType === "rag-hybrid" && (
-                          <div className="flex flex-col gap-3 w-full max-w-[240px] text-slate-900 font-mono text-[10px]">
-                            <div className="flex items-center justify-between gap-2">
-                              <div className="bg-white border border-slate-200 px-3 py-2 rounded text-center flex-1">Dense Vector</div>
-                              <div className="bg-white border border-slate-200 px-3 py-2 rounded text-center flex-1">Sparse BM25</div>
-                            </div>
-                            <div className="flex items-center justify-center">
-                              <ArrowDownIcon className="w-4 h-4 text-[#00B8F0]" />
-                            </div>
-                            <div className="bg-[#0066FF] text-white py-2 rounded font-bold text-center shadow-md">
-                              Cross-Encoder Reranker
-                            </div>
-                          </div>
-                        )}
+                            {art.visualType === "rag-hybrid" && (
+                              <div className="flex flex-col gap-3 w-full max-w-[240px] text-slate-900 font-mono text-[10px]">
+                                <div className="flex items-center justify-between gap-2">
+                                  <div className="bg-white border border-slate-200 px-3 py-2 rounded text-center flex-1">Dense Vector</div>
+                                  <div className="bg-white border border-slate-200 px-3 py-2 rounded text-center flex-1">Sparse BM25</div>
+                                </div>
+                                <div className="flex items-center justify-center">
+                                  <ArrowDownIcon className="w-4 h-4 text-[#00B8F0]" />
+                                </div>
+                                <div className="bg-[#0066FF] text-white py-2 rounded font-bold text-center shadow-md">
+                                  Cross-Encoder Reranker
+                                </div>
+                              </div>
+                            )}
 
-                        {art.visualType === "langgraph-flow" && (
-                          <div className="flex items-center gap-2.5 text-slate-900 font-mono text-[10px]">
-                            <div className="bg-white border border-slate-200 p-3 rounded-lg flex flex-col items-center gap-1 shadow">
-                              <Bot className="w-5 h-5 text-[#00B8F0]" />
-                              <span>LangGraph</span>
-                            </div>
-                            <ArrowRight className="w-4 h-4 text-slate-600" />
-                            <div className="bg-white border border-[#00B8F0]/40 p-3 rounded-lg flex flex-col items-center gap-1 shadow bg-[#00B8F0]/10">
-                              <Code2 className="w-5 h-5 text-[#00B8F0]" />
-                              <span>Tool Node</span>
-                            </div>
-                            <ArrowRight className="w-4 h-4 text-slate-600" />
-                            <div className="bg-[#0066FF] text-white p-3 rounded-lg flex flex-col items-center gap-1 shadow">
-                              <CheckCircle2 className="w-5 h-5" />
-                              <span>Output</span>
-                            </div>
-                          </div>
-                        )}
+                            {art.visualType === "langgraph-flow" && (
+                              <div className="flex items-center gap-2.5 text-slate-900 font-mono text-[10px]">
+                                <div className="bg-white border border-slate-200 p-3 rounded-lg flex flex-col items-center gap-1 shadow">
+                                  <Bot className="w-5 h-5 text-[#00B8F0]" />
+                                  <span>LangGraph</span>
+                                </div>
+                                <ArrowRight className="w-4 h-4 text-slate-600" />
+                                <div className="bg-white border border-[#00B8F0]/40 p-3 rounded-lg flex flex-col items-center gap-1 shadow bg-[#00B8F0]/10">
+                                  <Code2 className="w-5 h-5 text-[#00B8F0]" />
+                                  <span>Tool Node</span>
+                                </div>
+                                <ArrowRight className="w-4 h-4 text-slate-600" />
+                                <div className="bg-[#0066FF] text-white p-3 rounded-lg flex flex-col items-center gap-1 shadow">
+                                  <CheckCircle2 className="w-5 h-5" />
+                                  <span>Output</span>
+                                </div>
+                              </div>
+                            )}
 
-                        {art.visualType === "open-source-hub" && (
-                          <div className="relative flex items-center justify-center w-full h-full">
-                            <div className="w-20 h-20 rounded-full bg-white border border-[#00B8F0]/50 flex items-center justify-center text-[#00B8F0] shadow-[0_0_25px_rgba(0,184,240,0.25)] z-10">
-                              <GitBranch className="w-9 h-9" />
-                            </div>
-                            <div className="absolute inset-4 border border-dashed border-slate-200 rounded-full" />
-                            <span className="absolute top-3 left-6 text-slate-900 font-mono text-[10px] bg-white px-2 py-0.5 rounded border border-slate-200">botmartz/rag</span>
-                            <span className="absolute bottom-3 right-6 text-[#00B8F0] font-mono text-[10px] bg-white px-2 py-0.5 rounded border border-slate-200">botmartz/agent</span>
-                          </div>
-                        )}
+                            {art.visualType === "open-source-hub" && (
+                              <div className="relative flex items-center justify-center w-full h-full">
+                                <div className="w-20 h-20 rounded-full bg-white border border-[#00B8F0]/50 flex items-center justify-center text-[#00B8F0] shadow-[0_0_25px_rgba(0,184,240,0.25)] z-10">
+                                  <GitBranch className="w-9 h-9" />
+                                </div>
+                                <div className="absolute inset-4 border border-dashed border-slate-200 rounded-full" />
+                                <span className="absolute top-3 left-6 text-slate-900 font-mono text-[10px] bg-white px-2 py-0.5 rounded border border-slate-200">botmartz/rag</span>
+                                <span className="absolute bottom-3 right-6 text-[#00B8F0] font-mono text-[10px] bg-white px-2 py-0.5 rounded border border-slate-200">botmartz/agent</span>
+                              </div>
+                            )}
 
-                        {art.visualType === "prompt-blueprint" && (
-                          <div className="w-full max-w-[220px] bg-white border border-slate-200 rounded-lg p-3 text-slate-900 font-mono text-[9.5px] space-y-1.5">
-                            <div className="border-b border-slate-200 pb-1 text-[#00B8F0] font-bold">SYSTEM PROMPT</div>
-                            <div className="bg-slate-50 p-1.5 rounded text-slate-600 flex items-center justify-between">
-                              <span>User Role Setup</span>
-                              <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                            </div>
-                            <div className="bg-slate-50 p-1.5 rounded text-slate-600 flex items-center justify-between">
-                              <span>Structured Guardrails</span>
-                              <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                            </div>
-                            <div className="bg-[#0066FF]/20 border border-[#0066FF]/40 p-1.5 rounded text-[#00B8F0] flex items-center justify-between font-semibold">
-                              <span>JSON Schema Output</span>
-                              <CheckCircle2 className="w-3 h-3 text-[#00B8F0]" />
-                            </div>
-                          </div>
-                        )}
+                            {art.visualType === "prompt-blueprint" && (
+                              <div className="w-full max-w-[220px] bg-white border border-slate-200 rounded-lg p-3 text-slate-900 font-mono text-[9.5px] space-y-1.5">
+                                <div className="border-b border-slate-200 pb-1 text-[#00B8F0] font-bold">SYSTEM PROMPT</div>
+                                <div className="bg-slate-50 p-1.5 rounded text-slate-600 flex items-center justify-between">
+                                  <span>User Role Setup</span>
+                                  <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                                </div>
+                                <div className="bg-slate-50 p-1.5 rounded text-slate-600 flex items-center justify-between">
+                                  <span>Structured Guardrails</span>
+                                  <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                                </div>
+                                <div className="bg-[#0066FF]/20 border border-[#0066FF]/40 p-1.5 rounded text-[#00B8F0] flex items-center justify-between font-semibold">
+                                  <span>JSON Schema Output</span>
+                                  <CheckCircle2 className="w-3 h-3 text-[#00B8F0]" />
+                                </div>
+                              </div>
+                            )}
 
-                        {art.visualType === "legal-doc-flow" && (
-                          <div className="flex items-center gap-2 text-slate-900 font-mono text-[10px]">
-                            <div className="bg-white border border-slate-200 p-2.5 rounded flex flex-col items-center gap-1 text-center">
-                              <FileText className="w-5 h-5 text-slate-600" />
-                              <span className="text-[8.5px]">100K+ PDFs</span>
-                            </div>
-                            <ArrowRight className="w-4 h-4 text-[#00B8F0]" />
-                            <div className="bg-white border border-[#00B8F0]/40 p-2.5 rounded flex flex-col items-center gap-1 text-center bg-[#00B8F0]/10">
-                              <Cpu className="w-5 h-5 text-[#00B8F0]" />
-                              <span className="text-[8.5px]">Clause AI</span>
-                            </div>
-                            <ArrowRight className="w-4 h-4 text-[#00B8F0]" />
-                            <div className="bg-[#0066FF] p-2.5 rounded flex flex-col items-center gap-1 text-center text-slate-900 shadow">
-                              <BarChart3 className="w-5 h-5" />
-                              <span className="text-[8.5px]">Risk Report</span>
-                            </div>
-                          </div>
+                            {art.visualType === "legal-doc-flow" && (
+                              <div className="flex items-center gap-2 text-slate-900 font-mono text-[10px]">
+                                <div className="bg-white border border-slate-200 p-2.5 rounded flex flex-col items-center gap-1 text-center">
+                                  <FileText className="w-5 h-5 text-slate-600" />
+                                  <span className="text-[8.5px]">100K+ PDFs</span>
+                                </div>
+                                <ArrowRight className="w-4 h-4 text-[#00B8F0]" />
+                                <div className="bg-white border border-[#00B8F0]/40 p-2.5 rounded flex flex-col items-center gap-1 text-center bg-[#00B8F0]/10">
+                                  <Cpu className="w-5 h-5 text-[#00B8F0]" />
+                                  <span className="text-[8.5px]">Clause AI</span>
+                                </div>
+                                <ArrowRight className="w-4 h-4 text-[#00B8F0]" />
+                                <div className="bg-[#0066FF] p-2.5 rounded flex flex-col items-center gap-1 text-center text-slate-900 shadow">
+                                  <BarChart3 className="w-5 h-5" />
+                                  <span className="text-[8.5px]">Risk Report</span>
+                                </div>
+                              </div>
+                            )}
+                          </>
                         )}
-
                       </div>
 
                       {/* Bottom Content */}
@@ -695,10 +736,18 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                   return (
                     <Link key={`popular-art-${art.id}-${idx}`} href={href} className="flex items-center gap-4 group block">
                       <div className="w-14 h-12 rounded-lg bg-slate-50 border border-slate-200 relative flex items-center justify-center shrink-0 overflow-hidden shadow-inner">
-                        <div className="absolute top-1 left-1 w-4.5 h-4.5 rounded-full bg-[#0066FF] text-white text-[10px] font-bold flex items-center justify-center shadow z-10">
+                        <div className="absolute top-1 left-1 w-4 h-4 rounded-full bg-[#0066FF] text-white text-[9px] font-bold flex items-center justify-center shadow z-10">
                           {idx + 1}
                         </div>
-                        <Network className="w-5 h-5 text-slate-600 group-hover:text-[#00B8F0] transition-colors" />
+                        {matchingArt?.featuredImage ? (
+                          <img
+                            src={matchingArt.featuredImage}
+                            alt={art.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        ) : (
+                          <Network className="w-5 h-5 text-slate-600 group-hover:text-[#00B8F0] transition-colors" />
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <h4 className="font-semibold text-[13.5px] text-[#0F172A] group-hover:text-[#0066FF] transition-colors leading-snug line-clamp-2">
