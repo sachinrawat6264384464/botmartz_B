@@ -131,11 +131,11 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
   const categoriesList = useMemo(() => {
     const counts: Record<string, number> = {};
     mergedArticles.forEach((a) => {
-      const cat = a.category ? (a.category.charAt(0).toUpperCase() + a.category.slice(1).toLowerCase()) : "General";
+      const cat = (a.category || "AI ENGINEERING").trim().toUpperCase();
       counts[cat] = (counts[cat] || 0) + 1;
     });
     const list = Object.entries(counts).map(([name, count]) => ({
-      name: name.toUpperCase(),
+      name,
       count,
     }));
     return [
@@ -292,11 +292,11 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
 
           {/* Desktop Filter Pills / Collapsible Mobile Pills */}
           <div className={`${mobileFilterOpen ? "flex" : "hidden"} lg:flex flex-wrap items-center gap-2 w-full lg:w-auto`}>
-            {categoriesList.map((cat) => {
+            {categoriesList.map((cat, idx) => {
               const isActive = activeCategory === cat.name;
               return (
                 <button
-                  key={cat.name}
+                  key={`cat-pill-${cat.name}-${idx}`}
                   onClick={() => {
                     setActiveCategory(cat.name);
                     setMobileFilterOpen(false);
@@ -682,7 +682,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                   const matchingArt = mergedArticles.find(m => m.title.includes(art.title) || m.id === art.id);
                   const href = matchingArt ? `/insights/${matchingArt.slug}` : "/contact";
                   return (
-                    <Link key={art.id} href={href} className="flex items-center gap-4 group block">
+                    <Link key={`popular-art-${art.id}-${idx}`} href={href} className="flex items-center gap-4 group block">
                       <div className="w-14 h-12 rounded-lg bg-slate-50 border border-slate-200 relative flex items-center justify-center shrink-0 overflow-hidden shadow-inner">
                         <div className="absolute top-1 left-1 w-4.5 h-4.5 rounded-full bg-[#0066FF] text-white text-[10px] font-bold flex items-center justify-center shadow z-10">
                           {idx + 1}
@@ -712,7 +712,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                 {CATEGORIES_LIST.filter(c => !c.isAll).map((cat, idx) => {
                   const IconComponent = cat.icon || BookOpen;
                   return (
-                    <li key={idx}>
+                    <li key={`cat-sidebar-${cat.name}-${idx}`}>
                       <button
                         onClick={() => setActiveCategory(cat.name)}
                         className="w-full flex items-center justify-between py-2.5 px-2 rounded-lg text-[13.5px] text-[#475569] hover:bg-[#F8FAFC] hover:text-[#0066FF] transition-all group border-b border-[#F1F5F9] last:border-0"
