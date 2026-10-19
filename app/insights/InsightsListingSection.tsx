@@ -102,6 +102,13 @@ const generateSlugRaw = (title: string) => {
     .trim();
 };
 
+const getAuthorInitials = (author?: string) => {
+  if (!author) return "B";
+  const parts = author.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+};
+
 export default function InsightsListingSection({ dbArticles = [] }: { dbArticles?: any[] }) {
   const [activeCategory, setActiveCategory] = useState<string>("All Articles");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -250,8 +257,8 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                   </div>
                   <div className="flex items-center justify-between pt-6 border-t border-slate-200">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center font-mono text-xs font-bold text-[#00B8F0]">
-                        {featuredArticle.author?.charAt(0) || "B"}
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#007BFF] to-[#00C6FF] text-white flex items-center justify-center font-bold text-[11.5px] shadow-sm shrink-0">
+                        {getAuthorInitials(featuredArticle.author)}
                       </div>
                       <span className="text-sm font-medium text-slate-900">{featuredArticle.author}</span>
                     </div>
@@ -414,8 +421,8 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                     </div>
 
                     <div className="flex items-center gap-3 pt-4 border-t border-[#F1F5F9] mt-auto">
-                      <div className="w-9 h-9 rounded-full bg-[#0F172A] text-slate-900 flex items-center justify-center font-bold text-[13px] shadow-sm">
-                        B
+                      <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#007BFF] to-[#00C6FF] text-white flex items-center justify-center font-bold text-[12px] shadow-sm shrink-0">
+                        {getAuthorInitials(featuredArticle.author)}
                       </div>
                       <div>
                         <div className="font-semibold text-[13.5px] text-[#0F172A]">
@@ -596,8 +603,8 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
 
                         {/* Author Footer */}
                         <div className="flex items-center gap-3 mt-auto pt-4 border-t border-[#F1F5F9]">
-                          <div className="w-8 h-8 rounded-full bg-[#0F172A] text-slate-900 flex items-center justify-center font-bold text-[12px] shrink-0">
-                            {art.author.charAt(0)}
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#007BFF] to-[#00C6FF] text-white flex items-center justify-center font-bold text-[11.5px] shadow-sm shrink-0">
+                            {getAuthorInitials(art.author)}
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="text-[13px] font-semibold text-[#0F172A] truncate">
