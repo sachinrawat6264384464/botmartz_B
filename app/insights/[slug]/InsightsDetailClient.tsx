@@ -555,6 +555,7 @@ export default function InsightsDetailClient({
               alt={post.title}
               className="object-cover object-center"
               priority
+              unoptimized
             />
           ) : (
             <div 
