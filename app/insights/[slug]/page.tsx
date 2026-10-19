@@ -3,6 +3,9 @@ import { notFound } from 'next/navigation';
 import { adminDb } from '@/lib/firebase-admin';
 import InsightsDetailClient from './InsightsDetailClient';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface Props {
   params: Promise<{
     slug: string;

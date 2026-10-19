@@ -5,6 +5,9 @@ import { ArrowRight, ExternalLink } from 'lucide-react';
 import { adminDb } from '@/lib/firebase-admin';
 import InsightsListingSection from './InsightsListingSection';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
     title: 'Engineering Insights',
