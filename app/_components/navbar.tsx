@@ -33,15 +33,6 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
     path: "/implementation",
   },
   {
-    name: "Labs",
-    path: "/work/labs",
-    dropdown: [
-      { name: "Insurance Intelligence [Flagship]", path: "/work/labs/insurance-intelligence" },
-      { name: "Reference Implementations", path: "/work/labs" },
-      { name: "Open Source Projects", path: "/work/open-source" },
-    ],
-  },
-  {
     name: "Insights",
     path: "/insights",
   },

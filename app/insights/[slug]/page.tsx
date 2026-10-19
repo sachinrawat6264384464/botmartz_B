@@ -222,11 +222,6 @@ Legal documents present unique AI challenges: dense terminology, multi-page cros
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  if (!KEPT_SLUGS.has(slug)) {
-    return {
-      title: "Insight Not Found",
-    };
-  }
   let post: any = null;
   
   try {
@@ -278,9 +273,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function InsightsDetailPage({ params }: Props) {
   const { slug } = await params;
-  if (!KEPT_SLUGS.has(slug)) {
-    notFound();
-  }
   let post: any = null;
   let postId: string = "";
   

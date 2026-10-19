@@ -181,9 +181,10 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
                       onChange={handleInputChange}
                       className="bg-slate-50 border border-slate-200 text-slate-900 rounded-xl px-4 py-3 text-[14px] focus:outline-none focus:border-[#0066FF] focus:ring-1 focus:ring-[#0066FF]"
                     >
+                      <option value="48-Hour RAG Feasibility Audit">Free 48-Hour RAG &amp; Agent Feasibility Audit (Fast Verdict)</option>
                       <option value="Book an Architecture Review">Book an Architecture Review (Free Technical Assessment)</option>
                       <option value="Discuss an Implementation Project">Discuss an Implementation Project (RAG, Agents, Search)</option>
-                      <option value="Enterprise Platform Integration">Enterprise Platform Integration (Glean, OpenSearch, Qdrant)</option>
+                      <option value="Enterprise Platform Integration">Enterprise Platform Integration (OpenSearch, Qdrant, Weaviate)</option>
                       <option value="General Technical Inquiry">General Technical Inquiry</option>
                     </select>
                   </div>

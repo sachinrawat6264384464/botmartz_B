@@ -77,16 +77,63 @@ const DEFAULT_CONTENT = {
     subtitle: "Let’s map out the state machines, tools, and human checkpoints needed to bring your first AI Agent to production safely.",
     buttonText: "Book Your Architecture Review →"
   },
+  answerCapsule: {
+    question: "What are Deterministic AI Agents for Enterprise?",
+    answer: "Deterministic AI Agents are enterprise software systems built on state machines (such as LangGraph) rather than autonomous unbounded LLM loops. They execute complex, multi-step business workflows with strict Pydantic/Zod schema validation, explicit state checkpoints, and mandatory Human-in-the-Loop (HITL) approval gates before executing any state-changing operations like database updates, email dispatch, or financial transactions."
+  },
+  faqs: [
+    {
+      q: "How do you prevent AI agents from going into infinite loops or taking wrong actions?",
+      a: "We engineer agents using explicit state graph topologies (LangGraph) rather than open-ended autonomous prompts. Every node has bounded transitions, schema-validated inputs/outputs, and maximum iteration ceilings. High-stakes actions trigger an automated pause state that requires human authorization through our console."
+    },
+    {
+      q: "What systems and tools can Botmartz AI agents integrate with?",
+      a: "Our agents connect natively via secure REST APIs, webhooks, and database connectors into enterprise software including Salesforce, HubSpot, ClickUp, Slack, PostgreSQL, Snowflake, Jira, and custom ERP systems with strict Role-Based Access Control (RBAC)."
+    },
+    {
+      q: "What is your typical delivery timeline for an enterprise AI agent pilot?",
+      a: "A single-skill, high-precision agent MVP typically deploys in 3–4 weeks. Multi-agent systems with cross-tool handoffs and human review consoles take 6–8 weeks to harden and benchmark."
+    }
+  ],
   structuredData: JSON.stringify({
     "@context": "https://schema.org",
-    "@type": "Service",
-    "name": "Enterprise AI Agents Development",
-    "provider": {
-      "@type": "Organization",
-      "name": "Botmartz"
-    },
-    "description": "AI agents for business are autonomous software systems that can plan, reason, and take action to solve complex workflows. We build enterprise AI agents that connect to your internal tools.",
-    "serviceType": "AI Engineering Services"
+    "@graph": [
+      {
+        "@type": "Service",
+        "@id": "https://www.botmartz.com/services/ai-agents#service",
+        "name": "Enterprise AI Agents & Deterministic Workflows",
+        "provider": {
+          "@type": "Organization",
+          "name": "Botmartz AI Solutions Private Limited",
+          "url": "https://www.botmartz.com"
+        },
+        "description": "Production-ready AI agents built on LangGraph state machines with Human-in-the-Loop checkpoints and strict schema validation.",
+        "serviceType": "AI Engineering Services",
+        "areaServed": "Global"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.botmartz.com/services/ai-agents#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do you prevent AI agents from going into infinite loops or taking wrong actions?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We engineer agents using explicit state graph topologies (LangGraph) rather than open-ended autonomous prompts. Every node has bounded transitions, schema-validated inputs/outputs, and maximum iteration ceilings. High-stakes actions trigger an automated pause state that requires human authorization through our console."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What systems and tools can Botmartz AI agents integrate with?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Our agents connect natively via secure REST APIs, webhooks, and database connectors into enterprise software including Salesforce, HubSpot, ClickUp, Slack, PostgreSQL, Snowflake, Jira, and custom ERP systems with strict Role-Based Access Control (RBAC)."
+            }
+          }
+        ]
+      }
+    ]
   })
 };
 
@@ -121,6 +168,8 @@ export default async function AIAgentsPage() {
           subtitle: data?.cta?.subtitle || DEFAULT_CONTENT.cta.subtitle,
           buttonText: data?.cta?.buttonText || DEFAULT_CONTENT.cta.buttonText,
         },
+        answerCapsule: data?.answerCapsule || DEFAULT_CONTENT.answerCapsule,
+        faqs: data?.faqs || DEFAULT_CONTENT.faqs,
         structuredData: data?.structuredData || DEFAULT_CONTENT.structuredData
       };
     }

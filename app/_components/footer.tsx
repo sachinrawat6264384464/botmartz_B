@@ -55,12 +55,12 @@ const FOOTER_COLS = [
     ],
   },
   {
-    heading: "Labs & Proof",
+    heading: "Research & Systems",
     links: [
-      { label: "Insurance Intelligence [Flagship]", href: "/work/labs/insurance-intelligence" },
-      { label: "Reference Implementations", href: "/work/labs" },
-      { label: "Open Source Projects", href: "/work/open-source" },
-      { label: "Case Studies", href: "/work/case-studies" },
+      { label: "Attention & KV Cache Research", href: "/#research" },
+      { label: "Deterministic LangGraph State", href: "/services/ai-agents" },
+      { label: "Grounded Retrieval & RAGAS", href: "/services/enterprise-rag" },
+      { label: "DPDPA & Data Sovereignty", href: "/services/enterprise-rag" },
     ],
   },
   {
