@@ -1,53 +1,31 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
+import { motion, AnimatePresence, useScroll } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
-import { motion, useScroll, useSpring } from "framer-motion";
-import { db } from "@/lib/firebase";
-import { 
-  collection, 
-  getDocs, 
-  query, 
-  where, 
-  addDoc, 
-  serverTimestamp, 
-  updateDoc, 
-  increment, 
-  doc 
-} from "firebase/firestore";
-import { 
-  ArrowLeft,
-  ArrowRight, 
-  Calendar, 
-  Clock, 
-  User, 
-  Share2, 
-  AlertCircle, 
-  MessageSquare, 
-  Send, 
-  CheckCircle, 
-  Eye, 
-  Heart,
-  ChevronDown,
+import {
+  Clock,
+  AlertCircle,
   Code,
-  Terminal
+  Terminal,
+  Share2,
+  Heart,
+  Eye,
+  Check,
+  Copy,
+  ArrowUp,
+  Github,
+  Sparkles,
+  ChevronRight,
+  MessageSquare,
 } from "lucide-react";
-import SchemaMarkup from "@/app/_components/SchemaMarkup";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 
-interface RelatedPost {
-  id: string;
-  title: string;
-  slug: string;
-  category: string;
-  author: string;
-  readTime: number;
-  featuredImage?: string;
-}
+import FloatingSideBar from "./_components/FloatingSideBar";
+import SchemaMarkup from "@/app/_components/SchemaMarkup";
 
 interface BlogPost {
   id: string;
@@ -55,487 +33,434 @@ interface BlogPost {
   slug: string;
   excerpt: string;
   content: string;
-  category: string;
   author: string;
+  category: string;
+  tags?: string[];
   featuredImage?: string;
+  featuredImageAlt?: string;
+  image?: string;
+  coverImage?: string;
   createdAt?: string;
+  publishedAt?: string;
   updatedAt?: string;
-  readTime?: number;
-  views?: number;
   likes?: number;
-  
-  // Custom detail layout fields
+  views?: number;
+  authorId?: string;
+  authorPhotoURL?: string;
   colabLink?: string;
+  notebookLink?: string;
   githubLink?: string;
+  codeLink?: string;
+  readTime?: number;
   failureModes?: number;
   codeSnippets?: number;
   runnableNotebooks?: number;
   toc?: string[];
-  closingPoints?: string[];
-  tags?: string[];
 }
 
-interface BlogComment {
-  id: string;
-  name: string;
-  content: string;
-  createdAt: any;
-  status: string;
+interface InsightsDetailClientProps {
+  post: BlogPost;
+  initialRelated?: any[];
 }
 
-export default function InsightsDetailClient({ 
-  post, 
-  initialRelated 
-}: { 
-  post: BlogPost; 
-  initialRelated: RelatedPost[]; 
-}) {
-  const router = useRouter();
-  
-  const [comments, setComments] = useState<BlogComment[]>([]);
-  const [commentForm, setCommentForm] = useState({ name: "", email: "", content: "" });
-  const [commentStatus, setCommentStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
-  const [commentError, setCommentError] = useState("");
+function TwitterXIcon({ size = 15 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M18.9 3H21l-4.58 5.24L22 21h-4.4l-3.45-4.52L10.2 21H8.1l4.9-5.6L2 3h4.5l3.12 4.1L13.5 3h5.4Z" fill="currentColor" />
+    </svg>
+  );
+}
 
-  const [viewCount, setViewCount] = useState(post.views ?? 0);
-  const [likeCount, setLikeCount] = useState(post.likes ?? 0);
-  const [liked, setLiked] = useState(false);
-  const [likeLoading, setLikeLoading] = useState(false);
+function FacebookIcon({ size = 15 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M13.5 21v-7h2.4l.4-3h-2.8V9.2c0-.9.3-1.5 1.6-1.5h1.3V5c-.2 0-.9-.1-1.8-.1-2.2 0-3.6 1.3-3.6 3.8V11H9v3h2.2v7h2.3Z" fill="currentColor" />
+    </svg>
+  );
+}
 
-  // Scroll Progress Bar Setup
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
+function LinkedInIcon({ size = 15 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M6.2 8.6a1.7 1.7 0 1 0 0-3.4 1.7 1.7 0 0 0 0 3.4ZM4.8 19.5h2.8v-9H4.8v9Zm7.2 0h2.8v-4.8c0-1.3.5-2.2 1.8-2.2s1.7 1 1.7 2.3v4.7H21v-5.2c0-2.8-1.5-4.1-3.6-4.1-1.7 0-2.4.9-2.8 1.6v-1.4H12c0 .9 0 9 0 9Z" fill="currentColor" />
+    </svg>
+  );
+}
 
-  useEffect(() => {
-    async function fetchComments() {
-      const targetSlug = post?.slug;
-      if (!targetSlug) return;
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
 
-      try {
-        const commentsRef = collection(db, "comments");
-        const q = query(commentsRef, where("postSlug", "==", targetSlug));
-        const snapshot = await getDocs(q);
-        const items = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data()
-        })) as BlogComment[];
+export default function InsightsDetailClient({
+  post,
+  initialRelated = [],
+}: InsightsDetailClientProps) {
+  const [likes, setLikes] = useState(post.likes ?? 0);
+  const [hasLiked, setHasLiked] = useState(false);
+  const [isLiking, setIsLiking] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [readingProgress, setReadingProgress] = useState(0);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
-        const approvedSorted = items
-          .filter((c) => c.status === "approved")
-          .sort((a, b) => {
-            const timeA = a.createdAt?.seconds || 0;
-            const timeB = b.createdAt?.seconds || 0;
-            return timeA - timeB;
-          });
+  const featuredImg = post.featuredImage || post.image || post.coverImage || "";
+  const colabLink = post.colabLink || post.notebookLink || (post.content?.includes("colab.research.google.com") ? post.content.match(/https:\/\/colab\.research\.google\.com[^\s"'>)]+/)?.[0] : "https://colab.research.google.com");
+  const githubLink = post.githubLink || post.codeLink || (post.content?.includes("github.com") ? post.content.match(/https:\/\/github\.com\/[^\s"'>)]+/)?.[0] : "https://github.com/botmartz");
+  const hasNotebook = Boolean(post.colabLink || post.notebookLink || post.content?.includes("colab.research.google.com"));
 
-        setComments(approvedSorted);
-      } catch (err) {
-        console.error("Error fetching comments:", err);
+  const words = (post.content || "").split(/\s+/).length;
+  const readTime = post.readTime || Math.max(4, Math.ceil(words / 220));
+  const codeSnippets = post.codeSnippets || (post.content?.match(/```|<pre/g) || []).length || 3;
+  const failureModes = post.failureModes || 5;
+  const runnableNotebooks = post.runnableNotebooks || (hasNotebook ? 1 : 0);
+
+  // Extract TOC items
+  const toc = useMemo(() => {
+    if (post.toc && post.toc.length > 0) return post.toc;
+    const headings: string[] = [];
+    const htmlMatches = post.content?.matchAll(/<h[2-3][^>]*>(.*?)<\/h[2-3]>/gi) || [];
+    for (const m of htmlMatches) {
+      const text = m[1].replace(/<[^>]*>/g, "").trim();
+      if (text) headings.push(text);
+    }
+    if (headings.length === 0) {
+      const mdMatches = post.content?.matchAll(/^##\s+(.*$)/gim) || [];
+      for (const m of mdMatches) {
+        const text = m[1].trim();
+        if (text) headings.push(text);
       }
     }
+    return headings.length > 0 ? headings.slice(0, 10) : [
+      "Architecture Overview",
+      "Core Components",
+      "Production Implementation",
+      "Evaluation & Best Practices"
+    ];
+  }, [post.content, post.toc]);
 
-    fetchComments();
-  }, [post?.slug, commentStatus]);
+  const authorInitials = useMemo(() => {
+    if (!post.author) return "BM";
+    const parts = post.author.trim().split(" ");
+    if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+    return parts[0].slice(0, 2).toUpperCase();
+  }, [post.author]);
 
-  // Increment views once on load
+  const formattedDate = useMemo(() => {
+    try {
+      const raw = post.publishedAt || post.createdAt;
+      if (!raw) return "Oct 20, 2026";
+      const d = new Date(raw);
+      if (isNaN(d.getTime())) return "Oct 20, 2026";
+      return new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        timeZone: "UTC",
+      }).format(d);
+    } catch {
+      return "Oct 20, 2026";
+    }
+  }, [post.publishedAt, post.createdAt]);
+
+  const tags = post.tags && post.tags.length > 0 ? post.tags : [
+    post.category || "AI Engineering",
+    "Production AI",
+    "Deep Dive"
+  ];
+
+  // Reading progress
   useEffect(() => {
-    if (!post?.id || post.id.startsWith("static-")) return;
-    const postRef = doc(db, "blog-posts", post.id);
-    updateDoc(postRef, { views: increment(1) }).catch((err) =>
-      console.error("Failed to increment view:", err)
-    );
-    setViewCount((prev) => prev + 1);
-  }, [post?.id]);
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const pct = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
+          setReadingProgress(Math.min(pct, 100));
+          setShowScrollTop(window.scrollY > 500);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // View tracking
+  useEffect(() => {
+    if (!post.id) return;
+    const viewedKey = `blog_viewed_${post.id}`;
+    if (typeof window !== "undefined" && !sessionStorage.getItem(viewedKey)) {
+      setTimeout(async () => {
+        try {
+          await fetch("/api/blogs/view", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ blogId: post.id }),
+          });
+          sessionStorage.setItem(viewedKey, "true");
+        } catch (e) {}
+      }, 2500);
+    }
+  }, [post.id]);
+
+  // Check liked state
+  useEffect(() => {
+    if (typeof document === "undefined" || !post.id) return;
+    const cookieVal = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("liked_posts="))
+      ?.split("=")[1];
+    if (cookieVal && cookieVal.split(",").includes(post.id)) {
+      setHasLiked(true);
+    }
+  }, [post.id]);
 
   const handleLike = async () => {
-    if (!post?.id || post.id.startsWith("static-") || likeLoading) return;
-    setLikeLoading(true);
-    const postRef = doc(db, "blog-posts", post.id);
+    if (hasLiked || isLiking || !post.id) return;
+    setIsLiking(true);
+    setLikes((prev) => prev + 1);
+    setHasLiked(true);
+
     try {
-      if (liked) {
-        await updateDoc(postRef, { likes: increment(-1) });
-        setLikeCount((prev) => Math.max(0, prev - 1));
-        setLiked(false);
-      } else {
-        await updateDoc(postRef, { likes: increment(1) });
-        setLikeCount((prev) => prev + 1);
-        setLiked(true);
+      const response = await fetch(`/api/blogs/${post.id}/like`, { method: "POST" });
+      const data = await response.json();
+      if (data.alreadyLiked) {
+        setLikes(data.likes);
+        setHasLiked(true);
+        return;
       }
-    } catch (err) {
-      console.error("Failed to update likes:", err);
+      if (!response.ok) throw new Error("Failed");
+      if (typeof data.likes === "number") setLikes(data.likes);
+    } catch {
+      setLikes((prev) => prev - 1);
+      setHasLiked(false);
     } finally {
-      setLikeLoading(false);
+      setIsLiking(false);
     }
   };
 
-  const handleCommentSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const targetSlug = post?.slug;
-    if (!targetSlug || !commentForm.name.trim() || !commentForm.email.trim() || !commentForm.content.trim()) return;
-
-    setCommentStatus("submitting");
-    setCommentError("");
-
-    try {
-      const commentsRef = collection(db, "comments");
-      await addDoc(commentsRef, {
-        name: commentForm.name.trim(),
-        email: commentForm.email.trim(),
-        content: commentForm.content.trim(),
-        postSlug: post.slug,
-        postTitle: post.title,
-        status: "pending",
-        createdAt: serverTimestamp(),
-      });
-
-      setCommentStatus("success");
-      setCommentForm({ name: "", email: "", content: "" });
-    } catch (err: any) {
-      console.error("Error submitting comment:", err);
-      setCommentStatus("error");
-      setCommentError(err.message || "Failed to submit comment. Please try again.");
+  const sharePost = (platform: string) => {
+    if (typeof window === "undefined") return;
+    const url = window.location.href;
+    const title = post?.title || "";
+    const shareUrls: Record<string, string> = {
+      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+    };
+    if (shareUrls[platform]) {
+      window.open(shareUrls[platform], "_blank", "width=600,height=400");
     }
   };
 
-  const handleShare = () => {
+  const copyLink = () => {
+    if (typeof window === "undefined") return;
     navigator.clipboard.writeText(window.location.href);
-    alert("Article link copied to clipboard!");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
-  // Parsing & Fallbacks
-  const parseList = (val: any): string[] => {
-    if (Array.isArray(val)) return val;
-    if (typeof val === 'string' && val.trim()) {
-      return val.split('\n').map(l => l.replace(/^[•\-*+✓\s]+/, '').trim()).filter(Boolean);
-    }
-    return [];
-  };
-
-  const colabLink = post.colabLink || "#";
-  const githubLink = post.githubLink || "#";
-  const failureModes = post.failureModes || 5;
-  const codeSnippets = post.codeSnippets || 3;
-  const runnableNotebooks = post.runnableNotebooks || 1;
-  const readTime = post.readTime || 12;
-
-  const toc = post.toc && post.toc.length ? post.toc : [
-    'Retrieval Quality', 
-    'Chunking Strategy', 
-    'Hybrid Search', 
-    'Continuous Evaluation', 
-    'Guardrails', 
-    'Takeaways'
-  ];
-
-  const closingPoints = parseList(post.closingPoints).length ? parseList(post.closingPoints) : [
-    'Measure retrieval precision and recall in isolation before touching the model.',
-    'Chunk along document structure, not arbitrary character counts.',
-    'Combine vector and keyword search — hybrid retrieval beats either alone.',
-    'Treat evaluation as continuous infrastructure, not a launch-week report.'
-  ];
-
-  const tags = post.tags && post.tags.length ? post.tags : parseList(post.tags).length ? parseList(post.tags) : [
-    'Enterprise RAG', 
-    'Evaluation', 
-    'Production AI', 
-    'LangChain'
-  ];
-
-  const formattedDate = post.createdAt 
-    ? new Date(post.createdAt).toLocaleDateString("en-US", {
-        year: "numeric", month: "long", day: "numeric"
-      })
-    : "Jul 12, 2026";
-
-  const authorInitials = post.author
-    ? post.author.split(' ').map(n => n[0]).join('').toUpperCase()
-    : "AI";
-
-  const shareLinks = [
-    { label: 'LinkedIn', glyph: 'in' },
-    { label: 'X / Twitter', glyph: 'X' },
-    { label: 'WhatsApp', glyph: 'WA' },
-    { label: 'Email', glyph: '@' },
+  const shareButtons = [
+    { label: "Twitter", color: "#1DA1F2", icon: <TwitterXIcon size={15} />, fn: () => sharePost("twitter") },
+    { label: "Facebook", color: "#1877F2", icon: <FacebookIcon size={15} />, fn: () => sharePost("facebook") },
+    { label: "LinkedIn", color: "#0A66C2", icon: <LinkedInIcon size={15} />, fn: () => sharePost("linkedin") },
+    { label: "Copy link", color: "#00C6FF", icon: copied ? <Check size={15} /> : <Copy size={15} />, fn: copyLink },
   ];
 
   return (
-    <main className="bg-white min-h-screen text-slate-700 font-sans pb-24 overflow-x-hidden">
+    <div className="min-h-screen bg-white text-slate-900">
+      {/* Schema Markup for SEO */}
       <SchemaMarkup
         type="Article"
         data={{
-          title: post.title,
-          slug: post.slug,
-          excerpt: post.excerpt,
-          featuredImage: post.featuredImage,
-          author: post.author,
-          createdAt: post.createdAt || new Date().toISOString(),
-          updatedAt: post.updatedAt || undefined,
+          headline: post.title,
+          description: post.excerpt,
+          image: featuredImg || "https://www.botmartz.com/og-image.png",
+          datePublished: post.createdAt,
+          dateModified: post.updatedAt || post.createdAt,
+          author: {
+            "@type": "Person",
+            name: post.author || "Botmartz Engineering Team"
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "Botmartz",
+            logo: {
+              "@type": "ImageObject",
+              url: "https://www.botmartz.com/Logo.png"
+            }
+          },
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": `https://www.botmartz.com/insights/${post.slug}`
+          }
         }}
       />
-      {/* Scroll Progress Bar */}
-      <motion.div 
-        className="fixed top-0 left-0 right-0 h-[3px] bg-[#00C6FF] origin-left z-50"
-        style={{ scaleX }}
+
+      {/* Top Reading Progress Bar */}
+      <div
+        className="fixed top-0 left-0 right-0 z-[60] origin-left h-[3px] bg-gradient-to-r from-[#00C6FF] via-[#0066FF] to-[#00B8F0]"
+        style={{ transform: `scaleX(${readingProgress / 100})`, willChange: "transform" }}
       />
 
-      {/* Embedded CSS for prose styling in rich article body */}
-      <style jsx global>{`
-        .blog-content {
-          color: #1E293B;
-          font-size: 16.5px;
-          line-height: 1.85;
-        }
-        .blog-content p {
-          margin-bottom: 1.75rem;
-          line-height: 1.85;
-          color: #334155;
-          font-weight: 400;
-          font-size: 16.5px;
-        }
-        .blog-content h1 {
-          font-size: 2rem;
-          font-weight: 800;
-          margin-top: 3rem;
-          margin-bottom: 1.25rem;
-          color: #0F172A;
-          line-height: 1.3;
-          letter-spacing: -0.02em;
-        }
-        .blog-content h2 {
-          font-size: 1.65rem;
-          font-weight: 800;
-          margin-top: 2.75rem;
-          margin-bottom: 1.25rem;
-          color: #0F172A;
-          line-height: 1.35;
-          letter-spacing: -0.015em;
-          border-bottom: 1px solid #E2E8F0;
-          padding-bottom: 0.5rem;
-        }
-        .blog-content h3 {
-          font-size: 1.35rem;
-          font-weight: 700;
-          margin-top: 2.25rem;
-          margin-bottom: 1rem;
-          color: #0066FF;
-          line-height: 1.4;
-        }
-        .blog-content h4 {
-          font-size: 1.15rem;
-          font-weight: 700;
-          margin-top: 1.75rem;
-          margin-bottom: 0.75rem;
-          color: #0F172A;
-        }
-        .blog-content ul {
-          list-style-type: disc;
-          padding-left: 1.75rem;
-          margin-bottom: 1.75rem;
-          color: #334155;
-        }
-        .blog-content ol {
-          list-style-type: decimal;
-          padding-left: 1.75rem;
-          margin-bottom: 1.75rem;
-          color: #334155;
-        }
-        .blog-content li {
-          margin-bottom: 0.5rem;
-          line-height: 1.75;
-          font-size: 16px;
-        }
-        .blog-content strong {
-          color: #0F172A;
-          font-weight: 700;
-        }
-        .blog-content pre {
-          background-color: #0B132B !important;
-          color: #E2E8F0 !important;
-          padding: 1.5rem !important;
-          border-radius: 12px !important;
-          border: 1px solid #1E293B !important;
-          overflow-x: auto !important;
-          margin: 28px 0 !important;
-          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
-          font-size: 13.5px !important;
-          line-height: 1.65 !important;
-          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2) !important;
-        }
-        .blog-content pre code {
-          background-color: transparent !important;
-          color: #F1F5F9 !important;
-          padding: 0 !important;
-          border-radius: 0 !important;
-          font-size: 13.5px !important;
-        }
-        .blog-content code {
-          background-color: rgba(0, 102, 255, 0.08);
-          color: #0066FF;
-          padding: 0.2rem 0.45rem;
-          border-radius: 0.35rem;
-          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-          font-size: 0.9em;
-          font-weight: 600;
-        }
-        .blog-content blockquote {
-          border-left: 4px solid #00B8F0;
-          background-color: #F8FAFC;
-          padding: 1rem 1.25rem;
-          margin: 1.75rem 0;
-          color: #475569;
-          font-style: italic;
-          border-radius: 0 8px 8px 0;
-        }
-        .blog-content table {
-          width: 100%;
-          border-collapse: collapse;
-          margin: 2rem 0;
-          font-size: 14.5px;
-        }
-        .blog-content th {
-          background-color: #F1F5F9;
-          color: #0F172A;
-          font-weight: 700;
-          border: 1px solid #CBD5E1;
-          padding: 10px 14px;
-          text-align: left;
-        }
-        .blog-content td {
-          border: 1px solid #E2E8F0;
-          padding: 10px 14px;
-          color: #334155;
-        }
-        .blog-content img {
-          border-radius: 12px;
-          margin: 2.5rem auto;
-          max-width: 100%;
-          height: auto;
-          display: block;
-          border: 1px solid #E2E8F0;
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-        }
-        .blog-content a {
-          color: #0066FF;
-          text-decoration: underline;
-          text-underline-offset: 4px;
-          font-weight: 500;
-        }
-        .blog-content a:hover {
-          color: #0052CC;
-        }
-      `}</style>
+      {/* Scroll-to-top */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="fixed right-6 bottom-6 z-50 w-11 h-11 rounded-full flex items-center justify-center shadow-2xl bg-[#060C1F] text-white border border-white/20 hover:scale-105 transition-all cursor-pointer"
+            aria-label="Scroll to top"
+          >
+            <ArrowUp size={16} />
+          </motion.button>
+        )}
+      </AnimatePresence>
 
-      {/* ── HEADER BANNER ── */}
-      <div className="bg-[#060C1F] relative overflow-hidden pt-32 pb-16 px-6 sm:px-10">
-        <div 
+      {/* Floating Side Action Bar */}
+      <FloatingSideBar
+        shareButtons={shareButtons}
+        hasLiked={hasLiked}
+        isLiking={isLiking}
+        likes={likes}
+        onLike={handleLike}
+      />
+
+      {/* ═══════════════════════════════════════════════════════════════
+          HERO BANNER (DARK TECH / BLUEPRINT)
+      ═══════════════════════════════════════════════════════════════ */}
+      <div className="bg-[#060C1F] relative overflow-hidden pt-32 pb-20 px-6 sm:px-10 text-white">
+        {/* Blueprint cyan grid pattern */}
+        <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: 'linear-gradient(rgba(0,198,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,198,255,0.06) 1px, transparent 1px)',
-            backgroundSize: '44px 44px',
-            maskImage: 'radial-gradient(ellipse 80% 60% at 65% 30%, black, transparent)',
-            WebkitMaskImage: 'radial-gradient(ellipse 80% 60% at 65% 30%, black, transparent)'
+            backgroundImage: "linear-gradient(rgba(0,198,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,198,255,0.06) 1px, transparent 1px)",
+            backgroundSize: "44px 44px",
+            maskImage: "radial-gradient(ellipse 80% 60% at 65% 30%, black, transparent)",
+            WebkitMaskImage: "radial-gradient(ellipse 80% 60% at 65% 30%, black, transparent)",
           }}
         />
-        <div className="absolute w-[420px] h-[420px] rounded-full bg-radial-gradient from-[#007BFF]/28 to-transparent -top-36 -right-20 filter blur-xl pointer-events-none" />
-        
-        <div className="w-full max-w-[1400px] mx-auto relative z-10">
+        <div className="absolute w-[460px] h-[460px] rounded-full bg-[#0066FF]/20 -top-36 -right-20 blur-3xl pointer-events-none" />
+
+        <div className="w-full max-w-[1300px] mx-auto relative z-10">
+          {/* Breadcrumbs */}
           <div className="font-semibold text-[12.5px] text-[#5B6B85] mb-6 tracking-wide flex items-center gap-2">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>›</span>
             <Link href="/insights" className="hover:text-white transition-colors">Engineering Insights</Link>
             <span>›</span>
-            <span className="text-[#00C6FF]">{post.category || 'General'}</span>
+            <span className="text-[#00C6FF]">{post.category || "AI Architecture"}</span>
           </div>
 
-          <span className="inline-block font-bold text-[10.5px] tracking-wider text-[#00C6FF] bg-[#00C6FF]/12 px-2.5 py-1 rounded-[5px] uppercase">
-            {post.category || 'General'}
+          {/* Category Pill */}
+          <span className="inline-block font-bold text-[10.5px] tracking-wider text-[#00C6FF] bg-[#00C6FF]/12 border border-[#00C6FF]/25 px-3 py-1 rounded-[6px] uppercase font-mono">
+            {post.category || "AI Architecture"}
           </span>
 
-          <h1 className="font-extrabold text-[32px] sm:text-[46px] leading-[1.18] text-white mt-5 max-w-5xl">
+          {/* Title */}
+          <h1 className="font-extrabold text-[32px] sm:text-[46px] leading-[1.18] text-white mt-5 max-w-5xl tracking-tight">
             {post.title}
           </h1>
 
-          <p className="font-medium text-[15px] sm:text-[16px] leading-[1.75] text-[#8FA3C4] mt-4 max-w-4xl">
-            {post.excerpt}
-          </p>
+          {/* Excerpt */}
+          {post.excerpt && (
+            <p className="font-medium text-[15px] sm:text-[17px] leading-[1.75] text-[#8FA3C4] mt-4 max-w-4xl">
+              {post.excerpt}
+            </p>
+          )}
 
+          {/* Author & Share Row */}
           <div className="flex flex-wrap items-center justify-between gap-4 bg-white/[0.04] border border-white/10 rounded-[14px] p-4.5 mt-8">
             <div className="flex items-center gap-3.5">
-              <div className="w-[48px] h-[48px] rounded-full bg-gradient-to-br from-[#007BFF] to-[#00C6FF] flex items-center justify-center font-bold text-[14px] text-white">
-                {authorInitials}
+              <div className="w-[48px] h-[48px] rounded-full overflow-hidden bg-gradient-to-br from-[#007BFF] to-[#00C6FF] flex items-center justify-center font-bold text-[14px] text-white shrink-0">
+                {post.authorPhotoURL ? (
+                  <img src={post.authorPhotoURL} alt={post.author} className="w-full h-full object-cover" />
+                ) : (
+                  authorInitials
+                )}
               </div>
               <div>
-                <div className="font-bold text-[13.5px] text-white">{post.author || 'AI Engineer'}</div>
-                <div className="font-medium text-[11px] text-[#7C8CAD]">AI Engineer, Botmartz · {formattedDate} · {readTime} min read</div>
+                <div className="font-bold text-[14px] text-white">{post.author || "Botmartz Engineering Team"}</div>
+                <div className="font-medium text-[11.5px] text-[#7C8CAD]">
+                  AI Engineer, Botmartz · {formattedDate} · {readTime} min read
+                </div>
               </div>
             </div>
-            
-            <div className="flex gap-2">
-              <button 
-                onClick={handleShare}
+
+            {/* Social Share Buttons */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={copyLink}
                 className="w-10 h-10 border border-white/14 bg-white/6 hover:bg-white/12 text-[#C7D6EE] font-bold text-[11px] flex items-center justify-center rounded-[9px] transition-all cursor-pointer"
                 title="Copy Link"
               >
-                <Share2 size={15} />
+                {copied ? <Check size={15} className="text-[#00C6FF]" /> : <Copy size={15} />}
               </button>
-              {shareLinks.map((s, idx) => (
-                <button 
-                  key={`share-${s.label.toLowerCase()}-${idx}`}
-                  onClick={handleShare}
+              {shareButtons.slice(0, 3).map((s) => (
+                <button
+                  key={s.label}
+                  onClick={s.fn}
                   title={`Share on ${s.label}`}
                   className="w-10 h-10 border border-white/14 bg-white/6 hover:bg-white/12 text-[#C7D6EE] font-bold text-[11px] flex items-center justify-center rounded-[9px] transition-all cursor-pointer"
                 >
-                  {s.glyph}
+                  {s.icon}
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="flex gap-3 mt-5 flex-wrap">
-            <a 
-              href={colabLink} 
-              target="_blank" 
+          {/* ACTION BUTTONS: Google Colab & GitHub */}
+          <div className="flex gap-3 mt-6 flex-wrap">
+            <a
+              href={colabLink}
+              target="_blank"
               rel="noopener noreferrer"
               style={{
-                backgroundColor: '#F9AB00',
-                color: '#0B1220',
-                fontWeight: '700',
-                fontSize: '13px',
-                padding: '13px 22px',
-                borderRadius: '9px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                transition: 'all 0.2s',
-                boxShadow: '0 8px 24px rgba(249,171,0,0.25)',
-                cursor: 'pointer',
-                border: 'none'
+                backgroundColor: "#F9AB00",
+                color: "#0B1220",
+                fontWeight: "700",
+                fontSize: "13px",
+                padding: "13px 22px",
+                borderRadius: "9px",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                transition: "all 0.2s",
+                boxShadow: "0 8px 24px rgba(249,171,0,0.25)",
+                cursor: "pointer",
+                border: "none",
+                textDecoration: "none",
               }}
               className="hover:scale-[1.02]"
             >
               ◈ Open in Google Colab
             </a>
-            <a 
-              href={githubLink} 
-              target="_blank" 
+            <a
+              href={githubLink}
+              target="_blank"
               rel="noopener noreferrer"
               style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.06)',
-                color: '#FFFFFF',
-                fontWeight: '700',
-                fontSize: '13px',
-                padding: '13px 22px',
-                borderRadius: '9px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                transition: 'all 0.2s',
-                border: '1px solid rgba(255, 255, 255, 0.18)',
-                cursor: 'pointer'
+                backgroundColor: "rgba(255, 255, 255, 0.06)",
+                color: "#FFFFFF",
+                fontWeight: "700",
+                fontSize: "13px",
+                padding: "13px 22px",
+                borderRadius: "9px",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                transition: "all 0.2s",
+                border: "1px solid rgba(255, 255, 255, 0.18)",
+                cursor: "pointer",
+                textDecoration: "none",
               }}
               className="hover:bg-white/10"
             >
@@ -543,17 +468,21 @@ export default function InsightsDetailClient({
             </a>
           </div>
 
+          {/* ═══════════════════════════════════════════════════════════════
+              THE 4 METRIC STATS CARDS
+          ═══════════════════════════════════════════════════════════════ */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-            <div 
+            {/* Card 1: Read Time */}
+            <div
               style={{
-                background: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '12px',
-                padding: '16px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '8px',
-                transition: 'all 0.3s'
+                background: "rgba(255, 255, 255, 0.03)",
+                border: "1px solid rgba(255, 255, 255, 0.08)",
+                borderRadius: "12px",
+                padding: "16px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "8px",
+                transition: "all 0.3s",
               }}
               className="hover:bg-white/[0.06] hover:border-white/15"
             >
@@ -564,16 +493,17 @@ export default function InsightsDetailClient({
               <div className="font-extrabold text-[22px] text-white mt-1">{readTime} min</div>
             </div>
 
-            <div 
+            {/* Card 2: Failure Modes */}
+            <div
               style={{
-                background: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '12px',
-                padding: '16px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '8px',
-                transition: 'all 0.3s'
+                background: "rgba(255, 255, 255, 0.03)",
+                border: "1px solid rgba(255, 255, 255, 0.08)",
+                borderRadius: "12px",
+                padding: "16px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "8px",
+                transition: "all 0.3s",
               }}
               className="hover:bg-white/[0.06] hover:border-white/15"
             >
@@ -584,16 +514,17 @@ export default function InsightsDetailClient({
               <div className="font-extrabold text-[22px] text-white mt-1">{failureModes}</div>
             </div>
 
-            <div 
+            {/* Card 3: Code Snippets */}
+            <div
               style={{
-                background: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '12px',
-                padding: '16px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '8px',
-                transition: 'all 0.3s'
+                background: "rgba(255, 255, 255, 0.03)",
+                border: "1px solid rgba(255, 255, 255, 0.08)",
+                borderRadius: "12px",
+                padding: "16px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "8px",
+                transition: "all 0.3s",
               }}
               className="hover:bg-white/[0.06] hover:border-white/15"
             >
@@ -604,16 +535,17 @@ export default function InsightsDetailClient({
               <div className="font-extrabold text-[22px] text-white mt-1">{codeSnippets}</div>
             </div>
 
-            <div 
+            {/* Card 4: Runnable Notebook */}
+            <div
               style={{
-                background: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: '12px',
-                padding: '16px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '8px',
-                transition: 'all 0.3s'
+                background: "rgba(255, 255, 255, 0.03)",
+                border: "1px solid rgba(255, 255, 255, 0.08)",
+                borderRadius: "12px",
+                padding: "16px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "8px",
+                transition: "all 0.3s",
               }}
               className="hover:bg-white/[0.06] hover:border-white/15"
             >
@@ -628,550 +560,491 @@ export default function InsightsDetailClient({
       </div>
 
       {/* ── COVER IMAGE HERO ── */}
-      <div className="w-full max-w-[1400px] mx-auto px-6 sm:px-10">
-        <div className="h-[280px] sm:h-[380px] rounded-[18px] overflow-hidden -mt-10 relative shadow-[0_20px_50px_rgba(6,12,31,0.25)] border-[6px] border-white bg-slate-900">
-          {post.featuredImage ? (
-            <Image 
+      <div className="w-full max-w-[1300px] mx-auto px-6 sm:px-10">
+        <div className="h-[280px] sm:h-[400px] rounded-[18px] overflow-hidden -mt-10 relative shadow-[0_20px_50px_rgba(6,12,31,0.25)] border-[6px] border-white bg-slate-900">
+          {featuredImg ? (
+            <Image
               fill
-              src={post.featuredImage} 
+              src={featuredImg}
               alt={post.title}
               className="object-cover object-center"
               priority
               unoptimized
             />
           ) : (
-            <div 
+            <div
               style={{
-                background: 'linear-gradient(135deg, #060C1F 0%, #0A1630 100%)',
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                position: 'relative',
-                overflow: 'hidden'
+                background: "linear-gradient(135deg, #060C1F 0%, #0A1630 100%)",
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "relative",
               }}
             >
-              {/* Tech blueprint background effect */}
-              <div 
-                style={{
-                  position: 'absolute',
-                  inset: '0',
-                  backgroundImage: 'linear-gradient(rgba(0,198,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,198,255,0.04) 1px, transparent 1px)',
-                  backgroundSize: '24px 24px',
-                  pointerEvents: 'none'
-                }}
-              />
-              {/* Glowing ambient light */}
-              <div style={{
-                position: 'absolute',
-                width: '300px',
-                height: '300px',
-                borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(0, 198, 255, 0.08) 0%, transparent 70%)',
-                filter: 'blur(30px)',
-                pointerEvents: 'none'
-              }} />
-              
-              <AlertCircle className="w-10 h-10 text-[#0066FF]/40 mb-3 relative z-10" />
-              <div className="font-extrabold text-[15px] tracking-widest text-[#0066FF]/60 uppercase relative z-10">
-                Botmartz AI Insight
+              <div className="w-16 h-16 rounded-2xl bg-[#00C6FF]/10 flex items-center justify-center border border-[#00C6FF]/25 mb-3">
+                <Sparkles size={28} className="text-[#00C6FF]" />
               </div>
-              <div className="font-medium text-[11px] text-slate-600/50 mt-1 relative z-10">
-                Evaluating Retrieval, Chunking, and Generation in Production
+              <div className="font-extrabold text-[18px] tracking-widest text-[#00C6FF] uppercase">
+                {post.category || "Botmartz Engineering Insight"}
+              </div>
+              <div className="font-medium text-[12px] text-slate-400 mt-1">
+                Production AI Architecture & Engineering Deep Dive
               </div>
             </div>
           )}
         </div>
       </div>
 
-      {/* ── ARTICLE PROSE BODY ── */}
-      <div className="w-full max-w-[1400px] mx-auto px-6 sm:px-10 pt-12">
-        {/* Table of Contents anchors */}
-        <div className="flex gap-2 flex-wrap mb-9">
-          {toc.map((t, idx) => (
-            <a 
-              key={`toc-${t.toLowerCase().replace(/\s+/g, '-')}-${idx}`}
-              href={`#${t.toLowerCase().replace(/\s+/g, '-')}`}
-              style={{
-                fontFamily: 'Montserrat, sans-serif',
-                fontWeight: '700',
-                fontSize: '12px',
-                color: '#475569',
-                backgroundColor: '#F8FAFC',
-                border: '1px solid #E2E8F0',
-                padding: '8px 14px',
-                borderRadius: '7px',
-                transition: 'all 0.2s',
-                cursor: 'pointer'
-              }}
-              className="hover:text-[#0066FF] hover:bg-[#00C6FF]/10 hover:border-[#00C6FF]/20"
-            >
-              {t}
-            </a>
-          ))}
-        </div>
-
-        {/* Content Render */}
-        <article className="blog-content max-w-none text-slate-800 font-normal leading-relaxed">
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeRaw]}
-            components={{
-              h1: ({ node, ...props }) => <h1 className="text-3xl font-extrabold text-slate-900 mt-10 mb-4 tracking-tight" {...props} />,
-              h2: ({ node, ...props }) => <h2 className="text-2xl font-bold text-slate-900 mt-10 mb-4 pb-2 border-b border-slate-200 tracking-tight" {...props} />,
-              h3: ({ node, ...props }) => <h3 className="text-xl font-bold text-[#0066FF] mt-8 mb-3 tracking-tight" {...props} />,
-              h4: ({ node, ...props }) => <h4 className="text-lg font-bold text-slate-900 mt-6 mb-2" {...props} />,
-              p: ({ node, ...props }) => <p className="text-[16.5px] leading-[1.85] text-slate-700 mb-6 font-normal" {...props} />,
-              ul: ({ node, ...props }) => <ul className="list-disc pl-6 mb-6 space-y-2 text-slate-700 text-[16px]" {...props} />,
-              ol: ({ node, ...props }) => <ol className="list-decimal pl-6 mb-6 space-y-2 text-slate-700 text-[16px]" {...props} />,
-              li: ({ node, ...props }) => <li className="leading-relaxed" {...props} />,
-              strong: ({ node, ...props }) => <strong className="font-bold text-slate-900" {...props} />,
-              blockquote: ({ node, ...props }) => <blockquote className="border-l-4 border-[#00B8F0] bg-slate-50 pl-4 py-3 my-6 italic text-slate-600 rounded-r-lg" {...props} />,
-              pre: ({ node, ...props }) => (
-                <div className="relative my-6 rounded-xl overflow-hidden border border-slate-800 bg-[#0B132B] shadow-lg">
-                  <div className="flex items-center justify-between px-4 py-2 bg-slate-900/90 border-b border-slate-800 text-xs font-mono text-slate-400">
-                    <span className="flex items-center gap-1.5">
-                      <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block"/>
-                      <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80 inline-block"/>
-                      <span className="w-2.5 h-2.5 rounded-full bg-green-500/80 inline-block"/>
-                    </span>
-                    <span>Code Snippet</span>
-                  </div>
-                  <pre className="p-4 overflow-x-auto text-[13.5px] font-mono leading-relaxed text-slate-200 bg-[#0B132B] m-0" {...props} />
-                </div>
-              ),
-              code: ({ node, inline, className, children, ...props }: any) => {
-                if (inline) {
-                  return <code className="px-1.5 py-0.5 rounded bg-blue-50 text-[#0066FF] font-mono text-[0.9em] font-semibold border border-blue-100" {...props}>{children}</code>;
-                }
-                return <code className={className} {...props}>{children}</code>;
-              },
-              img: ({ node, ...props }) => <img className="rounded-xl border border-slate-200 my-8 max-w-full shadow-md mx-auto" {...props} />,
-              table: ({ node, ...props }) => (
-                <div className="overflow-x-auto my-6 border border-slate-200 rounded-xl shadow-sm">
-                  <table className="w-full text-left text-sm border-collapse" {...props} />
-                </div>
-              ),
-              th: ({ node, ...props }) => <th className="bg-slate-100 font-bold text-slate-900 px-4 py-3 border-b border-slate-200" {...props} />,
-              td: ({ node, ...props }) => <td className="px-4 py-3 border-b border-slate-100 text-slate-700" {...props} />,
-              a: ({ node, ...props }) => <a className="text-[#0066FF] hover:text-[#0052CC] underline underline-offset-4 font-medium" target="_blank" rel="noopener noreferrer" {...props} />
-            }}
-          >
-            {post.content || ""}
-          </ReactMarkdown>
-        </article>
-
-        {/* Key Takeaways */}
-        {closingPoints.length > 0 && (
-          <div className="mt-11" style={{
-            backgroundColor: '#F8FAFC',
-            border: '1px solid #E2E8F0',
-            borderRadius: '14px',
-            padding: '24px'
-          }}>
-            <h2 className="font-extrabold text-[22px] text-slate-900 mb-5 mt-0">Closing Takeaways</h2>
-            <div className="flex flex-col gap-4">
-              {closingPoints.map((pt, idx) => (
-                <div key={`takeaway-${idx}`} className="flex gap-3.5 items-start">
-                  <div 
-                    style={{
-                      width: '22px',
-                      height: '22px',
-                      borderRadius: '50%',
-                      backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                      border: '1px solid rgba(16, 185, 129, 0.2)',
-                      color: '#10B981',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontWeight: '700',
-                      fontSize: '11px',
-                      flexShrink: 0,
-                      marginTop: '2px'
-                    }}
-                  >
-                    ✓
-                  </div>
-                  <div className="font-medium text-[14.5px] leading-[1.7] text-[#A3B3CC]">{pt}</div>
-                </div>
-              ))}
-            </div>
+      {/* ═══════════════════════════════════════════════════════════════
+          ARTICLE BODY & SIDEBAR
+      ═══════════════════════════════════════════════════════════════ */}
+      <div className="w-full max-w-[1300px] mx-auto px-6 sm:px-10 pt-12 pb-24">
+        {/* Table of contents quick filter pills */}
+        {toc.length > 0 && (
+          <div className="flex gap-2 flex-wrap mb-10">
+            {toc.map((t, idx) => (
+              <a
+                key={`toc-${idx}`}
+                href={`#${slugify(t)}`}
+                style={{
+                  fontWeight: "700",
+                  fontSize: "12px",
+                  color: "#475569",
+                  backgroundColor: "#F8FAFC",
+                  border: "1px solid #E2E8F0",
+                  padding: "8px 14px",
+                  borderRadius: "7px",
+                  transition: "all 0.2s",
+                  textDecoration: "none",
+                }}
+                className="hover:text-[#0066FF] hover:bg-[#00C6FF]/10 hover:border-[#00C6FF]/20"
+              >
+                {t}
+              </a>
+            ))}
           </div>
         )}
 
-        {/* Try it yourself callout */}
-        <div 
-          style={{
-            backgroundColor: '#F8FAFC',
-            border: '1px solid #E2E8F0',
-            borderRadius: '14px',
-            padding: '26px'
-          }}
-          className="mt-9 flex flex-col sm:flex-row items-center gap-5 justify-between shadow-lg"
-        >
-          <div className="flex-1">
-            <div className="font-bold text-[15px] text-slate-900">Try It Yourself</div>
-            <div className="font-medium text-[12.5px] leading-[1.6] text-slate-600 mt-1.5">A runnable Google Colab notebook with the eval harness and hybrid search code from this post.</div>
-          </div>
-          <div className="flex gap-2 shrink-0">
-            <a 
-              href={colabLink} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              style={{
-                backgroundColor: '#F9AB00',
-                color: '#0B1220',
-                fontWeight: '700',
-                fontSize: '12.5px',
-                padding: '11px 18px',
-                borderRadius: '8px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                transition: 'all 0.2s',
-                boxShadow: '0 4px 12px rgba(249,171,0,0.2)',
-                cursor: 'pointer',
-                border: 'none'
-              }}
-              className="hover:scale-[1.02]"
-            >
-              ◈ Open in Colab
-            </a>
-            <a 
-              href={githubLink} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              style={{
-                backgroundColor: '#F1F5F9',
-                color: '#0F172A',
-                fontWeight: '700',
-                fontSize: '12.5px',
-                padding: '11px 18px',
-                borderRadius: '8px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                transition: 'all 0.2s',
-                border: '1px solid #CBD5E1',
-                cursor: 'pointer'
-              }}
-              className="hover:bg-[#E2E8F0]"
-            >
-              ⌥ GitHub Repo
-            </a>
-          </div>
-        </div>
-
-        {/* Tags */}
-        <div className="flex flex-wrap gap-2 mt-9">
-          {tags.map((tag, idx) => (
-            <span 
-              key={`tag-${tag.toLowerCase().replace(/\s+/g, '-')}-${idx}`} 
-              style={{
-                fontWeight: '600',
-                fontSize: '11.5px',
-                color: '#475569',
-                backgroundColor: '#F8FAFC',
-                border: '1px solid #E2E8F0',
-                padding: '6px 12px',
-                borderRadius: '6px'
-              }}
-            >
-              #{tag}
-            </span>
-          ))}
-        </div>
-
-        {/* Likes / Views count */}
-        <div className="flex items-center gap-4 mt-8 border-t border-slate-200 pt-6 justify-between">
-          <div className="flex items-center gap-4 text-xs font-semibold text-slate-600">
-            <span className="flex items-center gap-1.5">
-              <Eye className="w-4 h-4 text-[#0066FF]" />
-              {viewCount.toLocaleString()} views
-            </span>
-          </div>
-          <button 
-            onClick={handleLike}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              fontSize: '12px',
-              fontWeight: '700',
-              padding: '8px 16px',
-              borderRadius: '9999px',
-              cursor: 'pointer',
-              transition: 'all 0.2s'
-            }}
-            className={liked 
-              ? 'bg-pink-500/10 border border-pink-500/30 text-pink-500' 
-              : 'bg-white border border-slate-200 text-slate-600 hover:text-pink-500 hover:border-pink-500/30 hover:bg-pink-500/5'
-            }
-          >
-            <Heart className={`w-3.5 h-3.5 ${liked ? 'fill-pink-500 text-pink-500' : ''}`} />
-            <span>{likeCount.toLocaleString()} Likes</span>
-          </button>
-        </div>
-
-        {/* Author Bio Box */}
-        <div 
-          style={{
-            backgroundColor: '#F8FAFC',
-            border: '1px solid #E2E8F0',
-            borderRadius: '14px',
-            padding: '24px'
-          }}
-          className="mt-11 flex gap-4.5 items-center"
-        >
-          <div className="w-[56px] h-[56px] rounded-full bg-gradient-to-br from-[#007BFF] to-[#00C6FF] flex items-center justify-center font-bold text-[16px] text-white shrink-0">
-            {authorInitials}
-          </div>
-          <div>
-            <div className="font-bold text-[15px] text-slate-900">{post.author}</div>
-            <div className="font-medium text-[13px] leading-[1.6] text-slate-600 mt-1">AI Engineer at Botmartz, building enterprise RAG and agent systems in production. Contributing to open-source libraries.</div>
-          </div>
-        </div>
-
-        {/* Discussion / Comments Section */}
-        <div className="mt-12 pt-12 border-t border-slate-200">
-          <div className="flex items-center gap-2.5 mb-7">
-            <MessageSquare className="w-5 h-5 text-[#0066FF]" />
-            <h2 className="text-xl font-bold tracking-tight text-slate-900 m-0">
-              Discussion ({comments.length})
-            </h2>
-          </div>
-
-          {/* Comments List */}
-          <div className="space-y-4 mb-9">
-            {comments.length === 0 ? (
-              <p className="text-slate-600 font-medium text-xs italic">
-                No approved comments yet. Be the first to share your thoughts!
-              </p>
-            ) : (
-              comments.map((c) => {
-                const initials = c.name
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")
-                  .toUpperCase()
-                  .slice(0, 2) || "U";
-                const dateStr = c.createdAt?.seconds 
-                  ? new Date(c.createdAt.seconds * 1000).toLocaleDateString("en-US", {
-                      month: "short", day: "numeric", year: "numeric"
-                    })
-                  : "Recent";
-
-                return (
-                  <motion.div 
-                    key={c.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    style={{
-                      backgroundColor: 'rgba(255, 255, 255, 0.01)',
-                      border: '1px solid rgba(255, 255, 255, 0.05)'
-                    }}
-                    className="flex gap-3.5 p-4 rounded-xl shadow-sm"
-                  >
-                    <div className="w-9 h-9 rounded-full bg-[#00C6FF]/10 border border-[#00C6FF]/20 flex items-center justify-center text-xs font-bold text-[#0066FF] flex-shrink-0">
-                      {initials}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-4 mb-1.5">
-                        <span className="text-sm font-bold text-slate-900 truncate">{c.name}</span>
-                        <span className="text-[10px] font-semibold text-slate-600/60">{dateStr}</span>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+          {/* Main Article Content */}
+          <div className="lg:col-span-8">
+            <article className="prose prose-lg max-w-none text-slate-800 leading-relaxed">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+                components={{
+                  h1: ({ node, children, ...props }) => {
+                    const id = slugify(String(children));
+                    return <h1 id={id} className="text-3xl font-extrabold text-slate-900 mt-12 mb-5 tracking-tight" {...props}>{children}</h1>;
+                  },
+                  h2: ({ node, children, ...props }) => {
+                    const id = slugify(String(children));
+                    return <h2 id={id} className="text-2xl font-bold text-slate-900 mt-12 mb-4 pb-2 border-b border-slate-200 tracking-tight" {...props}>{children}</h2>;
+                  },
+                  h3: ({ node, children, ...props }) => {
+                    const id = slugify(String(children));
+                    return <h3 id={id} className="text-xl font-bold text-[#0066FF] mt-9 mb-3 tracking-tight" {...props}>{children}</h3>;
+                  },
+                  h4: ({ node, ...props }) => <h4 className="text-lg font-bold text-slate-900 mt-6 mb-2" {...props} />,
+                  p: ({ node, ...props }) => <p className="text-[16.5px] leading-[1.85] text-slate-700 mb-6 font-normal" {...props} />,
+                  ul: ({ node, ...props }) => <ul className="list-disc pl-6 mb-6 space-y-2 text-slate-700 text-[16px]" {...props} />,
+                  ol: ({ node, ...props }) => <ol className="list-decimal pl-6 mb-6 space-y-2 text-slate-700 text-[16px]" {...props} />,
+                  li: ({ node, ...props }) => <li className="leading-relaxed" {...props} />,
+                  strong: ({ node, ...props }) => <strong className="font-bold text-slate-900" {...props} />,
+                  blockquote: ({ node, ...props }) => (
+                    <blockquote className="border-l-4 border-[#00B8F0] bg-slate-50 pl-5 py-4 my-6 italic text-slate-700 rounded-r-xl" {...props} />
+                  ),
+                  pre: ({ node, children, ...props }: any) => {
+                    return (
+                      <div className="relative my-7 rounded-xl overflow-hidden border border-slate-800 bg-[#0B132B] shadow-lg group">
+                        <div className="flex items-center justify-between px-4 py-2.5 bg-slate-900 border-b border-slate-800 text-xs font-mono text-slate-400">
+                          <span className="flex items-center gap-1.5">
+                            <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block" />
+                            <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80 inline-block" />
+                            <span className="w-2.5 h-2.5 rounded-full bg-green-500/80 inline-block" />
+                            <span className="ml-2 text-slate-300 font-semibold">Code Snippet</span>
+                          </span>
+                          <button
+                            onClick={(e) => {
+                              const btn = e.currentTarget;
+                              const pre = btn.closest(".group")?.querySelector("pre");
+                              if (pre) {
+                                navigator.clipboard.writeText(pre.innerText);
+                                btn.innerText = "Copied!";
+                                setTimeout(() => { btn.innerText = "Copy"; }, 2000);
+                              }
+                            }}
+                            className="text-xs px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-white/80 hover:text-white transition-all cursor-pointer border border-white/15"
+                          >
+                            Copy
+                          </button>
+                        </div>
+                        <pre className="p-5 overflow-x-auto text-[14px] font-mono leading-relaxed text-slate-200 bg-[#0B132B] m-0" {...props}>
+                          {children}
+                        </pre>
                       </div>
-                      <p className="text-xs text-slate-600 font-medium leading-relaxed whitespace-pre-wrap">
-                        {c.content}
-                      </p>
+                    );
+                  },
+                  code: ({ node, inline, className, children, ...props }: any) => {
+                    if (inline) {
+                      return (
+                        <code className="px-2 py-0.5 rounded bg-blue-50 text-[#0066FF] font-mono text-[0.9em] font-semibold border border-blue-100" {...props}>
+                          {children}
+                        </code>
+                      );
+                    }
+                    return <code className={className} {...props}>{children}</code>;
+                  },
+                  img: ({ node, ...props }: any) => {
+                    return (
+                      <img
+                        className="rounded-xl shadow-lg my-8 max-w-full h-auto mx-auto border border-slate-200"
+                        {...props}
+                      />
+                    );
+                  },
+                  table: ({ node, ...props }) => (
+                    <div className="overflow-x-auto my-8 rounded-xl border border-slate-200 shadow-sm">
+                      <table className="w-full border-collapse text-left text-sm" {...props} />
                     </div>
-                  </motion.div>
-                );
-              })
-            )}
-          </div>
-
-          {/* Comment Form */}
-          <div 
-            style={{
-              backgroundColor: '#F8FAFC',
-              border: '1px solid #E2E8F0',
-              borderRadius: '16px',
-              padding: '24px'
-            }}
-            className="shadow-sm"
-          >
-            <h3 className="text-[15px] font-bold text-slate-900 mb-1.5 uppercase tracking-wider mt-0">Leave a Comment</h3>
-            <p className="text-xs text-slate-600/70 mb-5 font-semibold">
-              Your email address will not be published. Required fields are marked *
-            </p>
-
-            {commentStatus === "success" ? (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="flex flex-col items-center justify-center text-center gap-3 py-6"
+                  ),
+                  th: ({ node, ...props }) => <th className="bg-slate-100 px-4 py-3 font-bold text-slate-900 border-b border-slate-200" {...props} />,
+                  td: ({ node, ...props }) => <td className="px-4 py-3 border-b border-slate-100 text-slate-700" {...props} />,
+                }}
               >
-                <div className="w-10 h-10 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center text-green-500">
-                  <CheckCircle className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-bold text-slate-900 uppercase mb-1">Comment Submitted</h4>
-                  <p className="text-xs text-slate-600 font-semibold max-w-xs">
-                    Thank you! Your comment is pending moderator approval and will be visible shortly.
-                  </p>
-                </div>
-                <button 
-                  onClick={() => setCommentStatus("idle")}
-                  className="px-5 py-2 border border-[#00C6FF] text-[#0066FF] text-xs font-bold uppercase rounded-lg hover:bg-[#00C6FF]/10 transition-all cursor-pointer bg-transparent"
-                >
-                  Write Another
-                </button>
-              </motion.div>
-            ) : (
-              <form onSubmit={handleCommentSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">
-                      Name *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={commentForm.name}
-                      onChange={(e) => setCommentForm(f => ({ ...f, name: e.target.value }))}
-                      placeholder="John Doe"
-                      style={{
-                        backgroundColor: '#060C1F',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
-                        color: '#0F172A'
-                      }}
-                      className="w-full rounded-lg px-3.5 py-2 text-xs focus:outline-none focus:border-[#00C6FF] transition-all"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">
-                      Email *
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={commentForm.email}
-                      onChange={(e) => setCommentForm(f => ({ ...f, email: e.target.value }))}
-                      placeholder="you@company.com"
-                      style={{
-                        backgroundColor: '#060C1F',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
-                        color: '#0F172A'
-                      }}
-                      className="w-full rounded-lg px-3.5 py-2 text-xs focus:outline-none focus:border-[#00C6FF] transition-all"
-                    />
-                  </div>
-                </div>
+                {post.content || ""}
+              </ReactMarkdown>
+            </article>
 
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">
-                    Comment *
-                  </label>
-                  <textarea
-                    required
-                    rows={4}
-                    value={commentForm.content}
-                    onChange={(e) => setCommentForm(f => ({ ...f, content: e.target.value }))}
-                    placeholder="Share your thoughts on this transmission..."
-                    style={{
-                      backgroundColor: '#060C1F',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      color: '#0F172A'
-                    }}
-                    className="w-full rounded-lg px-3.5 py-2 text-xs focus:outline-none focus:border-[#00C6FF] transition-all resize-none"
-                  />
-                </div>
-
-                {commentStatus === "error" && (
-                  <p className="text-red-500 text-xs font-semibold">⚠️ {commentError}</p>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={commentStatus === "submitting"}
-                  style={{
-                    backgroundColor: '#00C6FF',
-                    color: '#050B14',
-                    border: 'none',
-                    fontWeight: '700',
-                    fontSize: '12px',
-                    letterSpacing: '0.05em',
-                    padding: '10px 20px',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    transition: 'all 0.2s',
-                    boxShadow: '0 4px 12px rgba(0, 198, 255, 0.2)'
-                  }}
-                  className="hover:scale-[1.02] disabled:opacity-50"
-                >
-                  {commentStatus === "submitting" ? (
-                    <span>Submitting...</span>
-                  ) : (
-                    <>
-                      <span>Submit Comment</span>
-                      <Send className="w-3 h-3" />
-                    </>
-                  )}
-                </button>
-              </form>
-            )}
-          </div>
-        </div>
-
-        {/* Related Insights Grid */}
-        <div className="border-t border-slate-200 mt-14 pt-11">
-          <div className="font-bold text-[12px] tracking-[0.1em] text-[#0066FF] uppercase mb-6 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#0066FF]" />
-            More Engineering Insights
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {initialRelated.map((r, idx) => (
-              <div 
-                key={`related-${r.slug || idx}`} 
-                className="bg-white border border-slate-200 hover:border-[#0066FF] rounded-xl overflow-hidden flex flex-col shadow-sm hover:shadow-md transition-all group"
-              >
-                <div className="h-[90px] bg-gradient-to-br from-[#060C1F] via-[#0A1630] to-[#0F1E3D] p-3.5 flex items-center justify-between relative overflow-hidden border-b border-slate-100">
-                  {r.featuredImage && (
-                    <img
-                      src={r.featuredImage}
-                      alt={r.title}
-                      className="absolute inset-0 w-full h-full object-cover opacity-35 group-hover:scale-105 group-hover:opacity-45 transition-all duration-300"
-                    />
-                  )}
-                  <div className="flex items-center gap-2 relative z-10">
-                    <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-[#00C6FF] border border-white/15 uppercase backdrop-blur-sm">
-                      {r.category}
-                    </span>
-                  </div>
-                  <span className="text-[11px] font-mono text-slate-300 relative z-10 bg-black/50 px-2 py-0.5 rounded backdrop-blur-sm">{r.readTime} min read</span>
-                </div>
-                <div className="p-4 flex-1 flex flex-col justify-between gap-3 bg-white">
-                  <Link href={`/insights/${r.slug}`} className="font-bold text-[14px] leading-snug text-slate-900 group-hover:text-[#0066FF] transition-colors line-clamp-2">
-                    {r.title}
-                  </Link>
-                  <div className="font-medium text-[11px] text-slate-500 pt-2 border-t border-slate-100 flex items-center justify-between">
-                    <span>{r.author}</span>
-                    <span className="text-[#0066FF] font-semibold group-hover:translate-x-1 transition-transform flex items-center gap-1">
-                      Read <ArrowRight size={12} />
-                    </span>
-                  </div>
+            {/* Try It Yourself Callout */}
+            <div
+              style={{
+                backgroundColor: "#F8FAFC",
+                border: "1px solid #E2E8F0",
+                borderRadius: "14px",
+                padding: "26px",
+              }}
+              className="mt-10 flex flex-col sm:flex-row items-center gap-5 justify-between shadow-sm"
+            >
+              <div className="flex-1">
+                <div className="font-bold text-[16px] text-slate-900">Try It Yourself</div>
+                <div className="font-medium text-[13px] leading-[1.6] text-slate-600 mt-1.5">
+                  A runnable Google Colab notebook with interactive architecture implementation and code from this insight.
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
+              <div className="flex gap-2.5 shrink-0">
+                <a
+                  href={colabLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    backgroundColor: "#F9AB00",
+                    color: "#0B1220",
+                    fontWeight: "700",
+                    fontSize: "12.5px",
+                    padding: "11px 18px",
+                    borderRadius: "8px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    transition: "all 0.2s",
+                    boxShadow: "0 4px 12px rgba(249,171,0,0.2)",
+                    cursor: "pointer",
+                    textDecoration: "none",
+                  }}
+                  className="hover:scale-[1.02]"
+                >
+                  ◈ Open in Colab
+                </a>
+                <a
+                  href={githubLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    backgroundColor: "#F1F5F9",
+                    color: "#0F172A",
+                    fontWeight: "700",
+                    fontSize: "12.5px",
+                    padding: "11px 18px",
+                    borderRadius: "8px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    transition: "all 0.2s",
+                    border: "1px solid #CBD5E1",
+                    cursor: "pointer",
+                    textDecoration: "none",
+                  }}
+                  className="hover:bg-[#E2E8F0]"
+                >
+                  ⌥ GitHub Repo
+                </a>
+              </div>
+            </div>
 
+            {/* Topic Tags */}
+            <div className="flex flex-wrap gap-2 mt-8">
+              {tags.map((tag, idx) => (
+                <span
+                  key={`tag-${idx}`}
+                  style={{
+                    fontWeight: "600",
+                    fontSize: "12px",
+                    color: "#475569",
+                    backgroundColor: "#F8FAFC",
+                    border: "1px solid #E2E8F0",
+                    padding: "6px 14px",
+                    borderRadius: "6px",
+                  }}
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+
+            {/* Likes Counter & Button */}
+            <div className="flex items-center gap-4 mt-8 border-t border-slate-200 pt-6 justify-between">
+              <div className="flex items-center gap-4 text-xs font-semibold text-slate-600">
+                <span className="flex items-center gap-1.5">
+                  <Eye className="w-4 h-4 text-[#0066FF]" />
+                  {(post.views || 1).toLocaleString()} views
+                </span>
+              </div>
+              <button
+                onClick={handleLike}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  fontSize: "12px",
+                  fontWeight: "700",
+                  padding: "8px 16px",
+                  borderRadius: "9999px",
+                  cursor: "pointer",
+                  transition: "all 0.2s",
+                }}
+                className={
+                  hasLiked
+                    ? "bg-pink-500/10 border border-pink-500/30 text-pink-500"
+                    : "bg-white border border-slate-200 text-slate-600 hover:text-pink-500 hover:border-pink-500/30 hover:bg-pink-500/5"
+                }
+              >
+                <Heart className={`w-3.5 h-3.5 ${hasLiked ? "fill-pink-500 text-pink-500" : ""}`} />
+                <span>{likes.toLocaleString()} Likes</span>
+              </button>
+            </div>
+
+            {/* Author Bio Card */}
+            <div
+              style={{
+                backgroundColor: "#F8FAFC",
+                border: "1px solid #E2E8F0",
+                borderRadius: "14px",
+                padding: "24px",
+              }}
+              className="mt-10 flex gap-4 items-center"
+            >
+              <div className="w-[56px] h-[56px] rounded-full overflow-hidden bg-gradient-to-br from-[#007BFF] to-[#00C6FF] flex items-center justify-center font-bold text-[16px] text-white shrink-0">
+                {post.authorPhotoURL ? (
+                  <img src={post.authorPhotoURL} alt={post.author} className="w-full h-full object-cover" />
+                ) : (
+                  authorInitials
+                )}
+              </div>
+              <div>
+                <div className="font-bold text-[15px] text-slate-900">{post.author || "Botmartz Team"}</div>
+                <div className="font-medium text-[13px] leading-[1.6] text-slate-600 mt-1">
+                  AI Engineer at Botmartz, architecting Enterprise RAG and multi-agent production systems. Contributing to open-source developer tooling.
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Right Sidebar */}
+          <aside className="lg:col-span-4 space-y-6">
+            <div className="sticky top-28 space-y-6">
+              {/* Sticky Colab Notebook Card */}
+              {hasNotebook && (
+                <a
+                  href={colabLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between gap-3 w-full px-5 py-4 rounded-2xl no-underline text-white transition-all hover:scale-[1.02]"
+                  style={{
+                    background: "linear-gradient(135deg, #060C1F, #0A1630)",
+                    border: "1px solid rgba(0, 198, 255, 0.3)",
+                    boxShadow: "0 8px 32px rgba(0, 102, 255, 0.15)",
+                  }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-[#00C6FF]/15 text-[#00C6FF]">
+                      <Terminal size={17} />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm leading-tight text-white m-0">Open Notebook</p>
+                      <p className="text-[11px] text-[#00C6FF] mt-0.5 m-0">Run interactive Google Colab</p>
+                    </div>
+                  </div>
+                  <ChevronRight size={16} className="text-white/60 shrink-0" />
+                </a>
+              )}
+
+              {/* Sticky GitHub Card */}
+              {githubLink && (
+                <a
+                  href={githubLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between gap-3 w-full px-5 py-4 rounded-2xl no-underline text-white transition-all hover:scale-[1.02]"
+                  style={{
+                    background: "#0A0A0A",
+                    border: "1px solid rgba(255, 255, 255, 0.15)",
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.1)",
+                  }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-white/10 text-white">
+                      <Github size={17} />
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm leading-tight text-white m-0">View Repository</p>
+                      <p className="text-[11px] text-white/60 mt-0.5 m-0">GitHub code & architecture</p>
+                    </div>
+                  </div>
+                  <ChevronRight size={16} className="text-white/60 shrink-0" />
+                </a>
+              )}
+
+              {/* Sticky Table of Contents Card */}
+              {toc.length > 0 && (
+                <div
+                  style={{
+                    backgroundColor: "#FFFFFF",
+                    border: "1px solid #E2E8F0",
+                    borderRadius: "16px",
+                    padding: "22px",
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.03)",
+                  }}
+                >
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="w-2 h-2 rounded-full bg-[#00C6FF]" />
+                    <h3 className="font-bold text-sm text-slate-900 m-0 uppercase tracking-wider text-[11px]">
+                      Article Outline
+                    </h3>
+                  </div>
+                  <nav className="space-y-1">
+                    {toc.map((t, idx) => (
+                      <a
+                        key={`side-toc-${idx}`}
+                        href={`#${slugify(t)}`}
+                        className="block py-1.5 px-2.5 rounded-lg text-[13px] text-slate-600 hover:text-[#0066FF] hover:bg-slate-50 transition-colors font-medium no-underline"
+                      >
+                        {t}
+                      </a>
+                    ))}
+                  </nav>
+                </div>
+              )}
+
+              {/* Consultation / Talk to Architect CTA */}
+              <div
+                style={{
+                  background: "linear-gradient(135deg, #060C1F 0%, #0A1630 100%)",
+                  border: "1px solid rgba(0, 198, 255, 0.25)",
+                  borderRadius: "16px",
+                  padding: "24px",
+                  color: "#FFFFFF",
+                  boxShadow: "0 10px 30px rgba(6, 12, 31, 0.2)",
+                }}
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#00C6FF]/15 flex items-center justify-center border border-[#00C6FF]/25 mb-4">
+                  <Sparkles size={18} className="text-[#00C6FF]" />
+                </div>
+                <h4 className="font-bold text-[16px] text-white mb-2">Build Production AI with Botmartz</h4>
+                <p className="text-[12.5px] text-[#8FA3C4] leading-relaxed mb-5">
+                  Evaluating an Enterprise RAG or Multi-Agent system? Get an architectural review and 24h feasibility verdict from our principal engineers.
+                </p>
+                <Link
+                  href="/contact"
+                  className="block text-center py-2.5 px-4 rounded-xl text-white font-bold text-xs bg-gradient-to-r from-[#007BFF] to-[#00C6FF] hover:opacity-90 transition-opacity no-underline shadow-md"
+                >
+                  Talk to an AI Architect →
+                </Link>
+              </div>
+            </div>
+          </aside>
+        </div>
       </div>
-    </main>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          RELATED POSTS SECTION
+      ═══════════════════════════════════════════════════════════════ */}
+      {initialRelated.length > 0 && (
+        <section className="bg-[#F8FAFC] border-t border-slate-200 py-20 px-6 sm:px-10">
+          <div className="max-w-[1300px] mx-auto">
+            <div className="flex items-center justify-between mb-10">
+              <div>
+                <span className="text-[11px] font-mono uppercase tracking-widest text-[#0066FF] font-bold">
+                  Continue Reading
+                </span>
+                <h2 className="text-3xl font-extrabold text-slate-900 mt-1">Related Engineering Insights</h2>
+              </div>
+              <Link
+                href="/insights"
+                className="hidden sm:inline-flex items-center gap-1.5 font-bold text-sm text-[#0066FF] hover:underline"
+              >
+                Browse all insights <ChevronRight size={16} />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {initialRelated.slice(0, 3).map((rp, i) => (
+                <Link
+                  key={rp.id || rp.slug || i}
+                  href={`/insights/${rp.slug}`}
+                  className="group bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col no-underline"
+                >
+                  <div className="relative aspect-[16/10] bg-slate-900 overflow-hidden">
+                    {rp.featuredImage ? (
+                      <img
+                        src={rp.featuredImage}
+                        alt={rp.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#060C1F] to-[#0A1630] text-white/30 font-bold font-mono text-xl">
+                        BOTMARTZ
+                      </div>
+                    )}
+                    <div className="absolute top-3 left-3">
+                      <span className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#00C6FF] bg-[#060C1F]/80 backdrop-blur-md rounded-md border border-[#00C6FF]/30">
+                        {rp.category || "AI"}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-6 flex flex-col flex-1">
+                    <div className="text-xs text-slate-500 mb-2 font-medium">
+                      {rp.readTime || 8} min read · {rp.author || "Botmartz Team"}
+                    </div>
+                    <h3 className="text-base font-bold text-slate-900 group-hover:text-[#0066FF] transition-colors leading-snug line-clamp-2 mb-3">
+                      {rp.title}
+                    </h3>
+                    <div className="mt-auto pt-3 flex items-center gap-1 text-xs font-bold text-[#0066FF]">
+                      <span>Read insight</span>
+                      <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+    </div>
   );
 }

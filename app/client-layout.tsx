@@ -10,12 +10,12 @@ export const useSettings = () => useContext(SettingsContext);
 
 import { AccessibilityProvider } from "./_context/AccessibilityContext";
 import dynamic from "next/dynamic";
+import AnalyticsProvider from "./_components/AnalyticsProvider";
 
 const AccessibilityToolbox = dynamic(
   () => import("./_components/AccessibilityToolbox").then((mod) => mod.AccessibilityToolbox),
   { ssr: false }
 );
-const AnalyticsProvider = dynamic(() => import("./_components/AnalyticsProvider"), { ssr: false });
 const ConversionTriggers = dynamic(() => import("./_components/ConversionTriggers"), { ssr: false });
 
 export default function ClientLayout({
@@ -38,10 +38,10 @@ export default function ClientLayout({
 
   return (
     <SettingsContext.Provider value={settings || {}}>
-      <AnalyticsProvider />
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
         <AccessibilityProvider>
           <div className="min-h-screen flex flex-col" suppressHydrationWarning>
+            <AnalyticsProvider />
             {/* WCAG Skip to Main Content Link */}
             <a
               href="#main-content"
@@ -55,8 +55,8 @@ export default function ClientLayout({
               {children}
             </div>
             {!isStandaloneRoute && <Footer settings={settings} />}
-            {!isStandaloneRoute && <AccessibilityToolbox />}
-            {!isStandaloneRoute && <ConversionTriggers />}
+            {mounted && !isStandaloneRoute && <AccessibilityToolbox />}
+            {mounted && !isStandaloneRoute && <ConversionTriggers />}
           </div>
         </AccessibilityProvider>
       </ThemeProvider>

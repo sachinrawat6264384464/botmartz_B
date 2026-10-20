@@ -1,0 +1,843 @@
+/* ========================================
+   CORE CONTAINER
+   ======================================== */
+.blog-content {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+}
+
+/* ========================================
+   PARAGRAPHS - Match TipTap Editor Spacing
+   ======================================== */
+
+.blog-content p {
+  margin-top: 1em !important;
+  margin-bottom: 1em !important;
+  line-height: 1.75 !important;
+  font-size: 1.125rem !important;
+}
+
+.blog-content>p:first-child {
+  margin-top: 0 !important;
+}
+
+.blog-content>p:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* ========================================
+   IMAGE WRAPPER (iOS Isolation Strategy)
+   ======================================== */
+
+.blog-image-wrapper {
+  /* Mimic Featured Image Container Structure */
+  position: relative !important;
+  display: block !important;
+  overflow: hidden !important;
+  /* Critical: isolates GPU layer */
+
+  /* Layout */
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 2.5rem 0 !important;
+
+  /* Visual */
+  background-color: #f9fafb !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+
+  /* Isolation */
+  isolation: isolate !important;
+  contain: layout style paint !important;
+}
+
+.blog-image-wrapper img {
+  /* Reset - wrapper handles everything */
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+
+  /* Stability */
+  transform: none !important;
+  -webkit-transform: none !important;
+  will-change: auto !important;
+  backface-visibility: visible !important;
+  -webkit-backface-visibility: visible !important;
+
+  /* Interaction */
+  pointer-events: auto !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}
+
+/* ========================================
+   FALLBACK IMAGES (Before JS Wraps Them)
+   ======================================== */
+
+.blog-content img:not(.blog-image-wrapper img) {
+  display: block !important;
+  max-width: 100% !important;
+  height: auto !important;
+  margin: 2rem 0 !important;
+  border-radius: 0.5rem !important;
+}
+
+/* ========================================
+   CODE BLOCKS - RESPONSIVE WRAPPER
+   ======================================== */
+
+.code-block-wrapper {
+  position: relative !important;
+  display: block !important;
+  overflow: hidden !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 2rem 0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  background: linear-gradient(135deg, #1a1c20 0%, #2b2e34 100%) !important;
+  isolation: isolate !important;
+  contain: layout style paint !important;
+}
+
+/* Header bar with traffic lights */
+.code-block-wrapper::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 40px !important;
+  background: linear-gradient(135deg, #2b2e34 0%, #1a1c20 100%) !important;
+  border-bottom: 1px solid rgba(117, 94, 177, 0.2) !important;
+  z-index: 1 !important;
+}
+
+/* Traffic light dots */
+.code-block-wrapper::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 14px !important;
+  left: 16px !important;
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 50% !important;
+  background: #ff5f56 !important;
+  box-shadow:
+    20px 0 0 #ffbd2e,
+    40px 0 0 #27c93f !important;
+  z-index: 2 !important;
+}
+
+.code-block-wrapper pre {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  margin: 0 !important;
+  padding: 52px 24px 24px 24px !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-family: 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+  font-size: 14px !important;
+  line-height: 1.7 !important;
+  color: #e5e7eb !important;
+  position: relative !important;
+  z-index: 0 !important;
+  tab-size: 4 !important;
+  -moz-tab-size: 4 !important;
+}
+
+.code-block-wrapper pre code {
+  display: block !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  color: inherit !important;
+  white-space: pre !important;
+  word-wrap: normal !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+}
+
+/* Custom scrollbar for code blocks */
+.code-block-wrapper pre::-webkit-scrollbar {
+  height: 10px !important;
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-radius: 0 0 12px 12px !important;
+}
+
+.code-block-wrapper pre::-webkit-scrollbar-thumb {
+  background: rgba(249, 115, 22, 0.6) !important;
+  border-radius: 5px !important;
+  transition: background 0.3s ease !important;
+}
+
+.code-block-wrapper pre::-webkit-scrollbar-thumb:hover {
+  background: rgba(249, 115, 22, 0.8) !important;
+}
+
+/* Firefox scrollbar */
+.code-block-wrapper pre {
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(249, 115, 22, 0.6) rgba(0, 0, 0, 0.2) !important;
+}
+
+/* ========================================
+   FALLBACK CODE BLOCKS (Before JS Wraps)
+   ======================================== */
+
+.blog-content pre:not(.code-block-wrapper pre) {
+  display: block !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  margin: 2rem 0 !important;
+  padding: 1.5rem !important;
+  background: linear-gradient(135deg, #1a1c20 0%, #2b2e34 100%) !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(117, 94, 177, 0.2) !important;
+  font-family: 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+  font-size: 14px !important;
+  line-height: 1.7 !important;
+  color: #e5e7eb !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.blog-content pre:not(.code-block-wrapper pre) code {
+  display: block !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  color: inherit !important;
+  white-space: pre !important;
+}
+
+/* Custom scrollbar for fallback code blocks */
+.blog-content pre:not(.code-block-wrapper pre)::-webkit-scrollbar {
+  height: 10px !important;
+  background: rgba(0, 0, 0, 0.2) !important;
+  border-radius: 0 0 12px 12px !important;
+}
+
+.blog-content pre:not(.code-block-wrapper pre)::-webkit-scrollbar-thumb {
+  background: rgba(249, 115, 22, 0.6) !important;
+  border-radius: 5px !important;
+}
+
+.blog-content pre:not(.code-block-wrapper pre)::-webkit-scrollbar-thumb:hover {
+  background: rgba(249, 115, 22, 0.8) !important;
+}
+
+/* ========================================
+   INLINE CODE
+   ======================================== */
+
+.blog-content code:not(pre code) {
+  display: inline !important;
+  padding: 3px 8px !important;
+  margin: 0 2px !important;
+  background: rgba(249, 115, 22, 0.08) !important;
+  border: 1px solid rgba(249, 115, 22, 0.2) !important;
+  border-radius: 4px !important;
+  font-family: 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+  font-size: 0.9em !important;
+  color: #EA6F0E !important;
+  white-space: nowrap !important;
+  font-weight: 500 !important;
+}
+
+/* ========================================
+   SYNTAX HIGHLIGHTING PRESERVATION
+   ======================================== */
+
+/* Preserve lowlight/highlight.js classes */
+.code-block-wrapper .hljs,
+.blog-content pre .hljs {
+  display: block !important;
+  color: #e5e7eb !important;
+}
+
+.code-block-wrapper .hljs-comment,
+.code-block-wrapper .hljs-quote,
+.blog-content pre .hljs-comment,
+.blog-content pre .hljs-quote {
+  color: #6b7280 !important;
+  font-style: italic !important;
+}
+
+.code-block-wrapper .hljs-keyword,
+.code-block-wrapper .hljs-selector-tag,
+.code-block-wrapper .hljs-literal,
+.code-block-wrapper .hljs-type,
+.blog-content pre .hljs-keyword,
+.blog-content pre .hljs-selector-tag,
+.blog-content pre .hljs-literal,
+.blog-content pre .hljs-type {
+  color: #c792ea !important;
+}
+
+.code-block-wrapper .hljs-string,
+.code-block-wrapper .hljs-title,
+.code-block-wrapper .hljs-section,
+.blog-content pre .hljs-string,
+.blog-content pre .hljs-title,
+.blog-content pre .hljs-section {
+  color: #c3e88d !important;
+}
+
+.code-block-wrapper .hljs-name,
+.code-block-wrapper .hljs-attribute,
+.blog-content pre .hljs-name,
+.blog-content pre .hljs-attribute {
+  color: #ffcb6b !important;
+}
+
+.code-block-wrapper .hljs-variable,
+.code-block-wrapper .hljs-template-variable,
+.blog-content pre .hljs-variable,
+.blog-content pre .hljs-template-variable {
+  color: #82aaff !important;
+}
+
+.code-block-wrapper .hljs-number,
+.code-block-wrapper .hljs-built_in,
+.blog-content pre .hljs-number,
+.blog-content pre .hljs-built_in {
+  color: #f78c6c !important;
+}
+
+.code-block-wrapper .hljs-function,
+.blog-content pre .hljs-function {
+  color: #82aaff !important;
+}
+
+.code-block-wrapper .hljs-params,
+.blog-content pre .hljs-params {
+  color: #89ddff !important;
+}
+
+.code-block-wrapper .hljs-class .hljs-title,
+.blog-content pre .hljs-class .hljs-title {
+  color: #ffcb6b !important;
+}
+
+.code-block-wrapper .hljs-tag,
+.blog-content pre .hljs-tag {
+  color: #f07178 !important;
+}
+
+.code-block-wrapper .hljs-attr,
+.blog-content pre .hljs-attr {
+  color: #c792ea !important;
+}
+
+.code-block-wrapper .hljs-meta,
+.blog-content pre .hljs-meta {
+  color: #82aaff !important;
+}
+
+/* Language-specific classes */
+.code-block-wrapper [class*="language-"],
+.blog-content pre [class*="language-"] {
+  color: inherit !important;
+}
+
+/* ========================================
+   iOS SAFARI COMPREHENSIVE FIX
+   ======================================== */
+
+@supports (-webkit-touch-callout: none) {
+
+  /* Ensure wrapper creates stable stacking context on iOS */
+  .blog-image-wrapper {
+    transform: translate3d(0, 0, 0) !important;
+    -webkit-transform: translate3d(0, 0, 0) !important;
+  }
+
+  /* Force CPU rendering on images inside wrapper */
+  .blog-image-wrapper img {
+    transform: none !important;
+    -webkit-transform: none !important;
+    will-change: auto !important;
+    backface-visibility: visible !important;
+    -webkit-backface-visibility: visible !important;
+    perspective: none !important;
+    -webkit-perspective: none !important;
+
+    /* Remove expensive effects on iOS */
+    box-shadow: none !important;
+    filter: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+
+  /* Disable hover effects on iOS */
+  .blog-image-wrapper img:hover,
+  .blog-image-wrapper img:active {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Fallback images on iOS */
+  .blog-content img:not(.blog-image-wrapper img) {
+    transform: none !important;
+    -webkit-transform: none !important;
+    will-change: auto !important;
+    backface-visibility: visible !important;
+    box-shadow: none !important;
+    transition: none !important;
+  }
+
+  /* Code blocks on iOS */
+  .code-block-wrapper {
+    transform: translate3d(0, 0, 0) !important;
+    -webkit-transform: translate3d(0, 0, 0) !important;
+  }
+
+  .code-block-wrapper pre {
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
+/* ========================================
+   INLINE STYLE OVERRIDES
+   Allow TipTap inline styles to pass through
+   ======================================== */
+
+/* Let inline style attribute values from TipTap take effect naturally.
+   Previously used 'revert !important' which fell back to browser defaults
+   instead of honoring the editor's inline styles for font-size,
+   font-family, color, and background-color.
+   Now removed so TipTap's inline styles render as-is. */
+
+/* ========================================
+   FONT SIZES (PX AND PT)
+   ======================================== */
+
+/* Font sizes from TipTap - allow inline styles to take effect naturally.
+   Only override if you want to normalize specific sizes. */
+
+/* ========================================
+   FONT FAMILIES
+   ======================================== */
+
+.blog-content [style*="font-family: Georgia"],
+.blog-content [style*="font-family: 'Georgia'"] {
+  font-family: Georgia, serif !important;
+}
+
+.blog-content [style*="font-family: Inter"],
+.blog-content [style*="font-family: 'Inter'"] {
+  font-family: Inter, sans-serif !important;
+}
+
+.blog-content [style*="font-family: Merriweather"],
+.blog-content [style*="font-family: 'Merriweather'"] {
+  font-family: Merriweather, serif !important;
+}
+
+.blog-content [style*="font-family: Arial"],
+.blog-content [style*="font-family: 'Arial'"] {
+  font-family: Arial, sans-serif !important;
+}
+
+.blog-content [style*="font-family: Roboto"],
+.blog-content [style*="font-family: 'Roboto'"] {
+  font-family: Roboto, sans-serif !important;
+}
+
+/* ========================================
+   COLORS & HIGHLIGHTS
+   Allow editor colors to pass through
+   ======================================== */
+
+/* Colors set via TipTap Color extension pass through as inline styles.
+   No override needed — the inline style takes effect naturally. */
+
+.blog-content [style*="background-color: rgb"],
+.blog-content [style*="background-color: #"] {
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+
+/* ========================================
+   PRESERVE EMPTY PARAGRAPHS
+   TipTap generates <p></p> for blank lines
+   ======================================== */
+
+.blog-content p:empty,
+.blog-content p:has(> br:only-child) {
+  min-height: 1.75em !important;
+  display: block !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.blog-content p:empty::before {
+  content: "\00a0";
+  display: inline-block;
+}
+
+/* ========================================
+   HEADINGS - Match TipTap CustomHeading
+   Editor uses: h1=text-4xl, h2=text-3xl, h3=text-2xl
+   ======================================== */
+
+.blog-content h1,
+.blog-content h2,
+.blog-content h3 {
+  font-family: serif !important;
+  font-weight: bold !important;
+  color: #2b2e34 !important;
+  line-height: 1.2 !important;
+}
+
+/* h1 = text-4xl (2.25rem) with mb-6 mt-10 */
+.blog-content h1 {
+  font-size: 2.25rem !important;
+  margin-bottom: 1.5rem !important;
+  margin-top: 2.5rem !important;
+}
+
+/* h2 = text-3xl (1.875rem) with mb-5 mt-8 */
+.blog-content h2 {
+  font-size: 1.875rem !important;
+  margin-bottom: 1.25rem !important;
+  margin-top: 2rem !important;
+}
+
+/* h3 = text-2xl (1.5rem) with mb-4 mt-6 */
+.blog-content h3 {
+  font-size: 1.5rem !important;
+  margin-bottom: 1rem !important;
+  margin-top: 1.5rem !important;
+}
+
+/* ========================================
+   TEXT FORMATTING
+   ======================================== */
+
+.blog-content strong {
+  font-weight: 700 !important;
+}
+
+.blog-content em {
+  font-style: italic !important;
+}
+
+.blog-content u {
+  text-decoration: underline !important;
+}
+
+/* ========================================
+   LINKS
+   ======================================== */
+
+.blog-content a {
+  color: #F97316 !important;
+  text-decoration: underline !important;
+}
+
+.blog-content a:hover {
+  color: #EA6F0E !important;
+}
+
+/* ========================================
+   LISTS
+   ======================================== */
+
+.blog-content ul {
+  list-style-type: disc !important;
+}
+
+.blog-content ol {
+  list-style-type: decimal !important;
+}
+
+.blog-content li::marker {
+  color: #F97316 !important;
+}
+
+/* ========================================
+   TEXT ALIGNMENT
+   ======================================== */
+
+.blog-content [style*="text-align: center"] {
+  text-align: center !important;
+}
+
+.blog-content [style*="text-align: right"] {
+  text-align: right !important;
+}
+
+.blog-content [style*="text-align: left"] {
+  text-align: left !important;
+}
+
+.blog-content [style*="text-align: justify"] {
+  text-align: justify !important;
+}
+
+/* ========================================
+   TABLES - RESPONSIVE WRAPPER
+   ======================================== */
+
+.table-responsive-wrapper {
+  display: block !important;
+  width: 100% !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  margin: 2rem 0 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 4px !important;
+}
+
+.blog-content table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  border: 2px solid #000000 !important;
+  margin: 0 !important;
+  background-color: white !important;
+}
+
+.blog-content thead,
+.blog-content tbody {
+  display: table-header-group !important;
+  width: 100% !important;
+}
+
+.blog-content tr {
+  display: table-row !important;
+}
+
+.blog-content th,
+.blog-content td {
+  display: table-cell !important;
+  white-space: nowrap !important;
+}
+
+.blog-content th {
+  background: linear-gradient(135deg, #F97316 0%, #EA6F0E 100%) !important;
+  color: white !important;
+  font-weight: 700 !important;
+  padding: 0.875rem 0.75rem !important;
+  text-align: left !important;
+  border: 1px solid rgba(0,0,0,0.15) !important;
+}
+
+.blog-content td {
+  padding: 0.875rem 0.75rem !important;
+  border: 1px solid #000000 !important;
+  color: #2b2e34 !important;
+  background-color: white !important;
+}
+
+.blog-content tbody tr:nth-child(even) td {
+  background-color: #f9fafb !important;
+}
+
+.blog-content tbody tr:hover td {
+  background-color: #f3f4f6 !important;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+  .blog-content table {
+    font-size: 0.875rem !important;
+  }
+
+  .blog-content th,
+  .blog-content td {
+    padding: 0.625rem 0.5rem !important;
+    font-size: 0.813rem !important;
+  }
+
+  .code-block-wrapper pre {
+    padding: 48px 16px 16px 16px !important;
+    font-size: 13px !important;
+  }
+
+  .blog-content code:not(pre code) {
+    font-size: 0.85em !important;
+    padding: 2px 6px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .blog-content table {
+    font-size: 0.813rem !important;
+  }
+
+  .blog-content th,
+  .blog-content td {
+    padding: 0.5rem 0.375rem !important;
+    font-size: 0.75rem !important;
+  }
+
+  .code-block-wrapper pre {
+    padding: 44px 12px 12px 12px !important;
+    font-size: 12px !important;
+  }
+
+  .code-block-wrapper::after {
+    width: 8px !important;
+    height: 8px !important;
+    top: 16px !important;
+    left: 12px !important;
+    box-shadow:
+      16px 0 0 #ffbd2e,
+      32px 0 0 #27c93f !important;
+  }
+
+  .blog-content code:not(pre code) {
+    font-size: 0.8em !important;
+  }
+}
+
+.blog-content table[style*="width"] {
+  width: revert !important;
+}
+
+.blog-content th[style*="background"],
+.blog-content td[style*="background"] {
+  background-color: revert !important;
+}
+
+.blog-content th[style*="text-align"],
+.blog-content td[style*="text-align"] {
+  text-align: revert !important;
+}
+
+.blog-content th[style*="color"],
+.blog-content td[style*="color"] {
+  color: revert !important;
+}
+
+/* ========================================
+   TABLES - EDITOR (ProseMirror)
+   ======================================== */
+
+.ProseMirror {
+  outline: none !important;
+}
+
+.ProseMirror table {
+  display: block !important;
+  width: auto !important;
+  min-width: 100% !important;
+  max-width: none !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  border-collapse: collapse !important;
+  margin: 1rem 0 !important;
+  border: 2px solid #000000 !important;
+  background-color: white !important;
+}
+
+.ProseMirror table:focus {
+  outline: 3px solid #F97316 !important;
+  outline-offset: 2px !important;
+}
+
+.ProseMirror thead,
+.ProseMirror tbody {
+  display: table !important;
+  width: 100% !important;
+}
+
+.ProseMirror tr {
+  display: table-row !important;
+}
+
+.ProseMirror td,
+.ProseMirror th {
+  display: table-cell !important;
+  min-width: 100px !important;
+  border: 1px solid #000000 !important;
+  padding: 12px !important;
+  vertical-align: top !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  background-color: white !important;
+  white-space: nowrap !important;
+}
+
+.ProseMirror th {
+  font-weight: bold !important;
+  text-align: left !important;
+  background-color: #F97316 !important;
+  color: white !important;
+}
+
+.ProseMirror .selectedCell:after {
+  z-index: 2 !important;
+  position: absolute !important;
+  content: "" !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  background: rgba(249, 115, 22, 0.15) !important;
+  pointer-events: none !important;
+}
+
+.ProseMirror .column-resize-handle {
+  position: absolute !important;
+  right: -2px !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  width: 4px !important;
+  background-color: #755eb1 !important;
+  pointer-events: none !important;
+}
+
+.ProseMirror.resize-cursor {
+  cursor: ew-resize !important;
+  cursor: col-resize !important;
+}
+
+.ProseMirror td p,
+.ProseMirror th p {
+  margin: 0 !important;
+}
+
+.ProseMirror td:empty::after,
+.ProseMirror th:empty::after {
+  content: '\00a0' !important;
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

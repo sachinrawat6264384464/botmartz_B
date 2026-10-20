@@ -302,6 +302,16 @@ export default async function InsightsDetailPage({ params }: Props) {
       const doc = querySnapshot.docs[0];
       post = doc.data();
       postId = doc.id;
+
+      // Backfill author photo from user_roles if not on post
+      if (!post.authorPhotoURL && post.authorId) {
+        try {
+          const roleSnap = await adminDb.collection("user_roles").doc(post.authorId).get();
+          if (roleSnap.exists) {
+            post.authorPhotoURL = roleSnap.data()?.photoURL || "";
+          }
+        } catch (e) {}
+      }
     }
   } catch (e) {
     console.error("Error fetching blog post:", e);
@@ -316,11 +326,12 @@ export default async function InsightsDetailPage({ params }: Props) {
     }
   }
   
-  // Fetch related articles (only within kept engineering blogs)
+  // Fetch related articles (all published blogs from Firestore + fallback to static)
   let related: any[] = [];
   try {
     const relatedSnapshot = await adminDb.collection("blog-posts")
       .where("status", "==", "published")
+      .limit(10)
       .get();
       
     related = relatedSnapshot.docs
@@ -331,27 +342,31 @@ export default async function InsightsDetailPage({ params }: Props) {
           title: data.title || "",
           slug: data.slug || "",
           category: data.category || "AI Engineering",
-          author: data.author || "Botmartz Team",
+          author: data.author || data.authorName || "Botmartz Team",
           readTime: data.readTime || 8,
-          featuredImage: data.featuredImage || data.image || data.coverImage || ""
+          featuredImage: data.featuredImage || data.image || data.coverImage || "",
+          excerpt: data.excerpt || ""
         };
       })
-      .filter(p => KEPT_SLUGS.has(p.slug) && p.slug !== slug);
+      .filter(p => p.slug && p.slug !== slug);
   } catch (err) {
     console.error("Error fetching related posts:", err);
   }
 
-  if (related.length === 0) {
-    related = Object.entries(STATIC_POSTS)
-      .filter(([key]) => key !== slug)
+  if (related.length < 3) {
+    const staticRelated = Object.entries(STATIC_POSTS)
+      .filter(([key]) => key !== slug && !related.some(r => r.slug === key))
       .map(([key, val]) => ({
         id: `static-${key}`,
         title: val.title,
         slug: key,
         category: val.category,
         author: val.author,
-        readTime: val.readTime
+        readTime: val.readTime || 8,
+        excerpt: val.excerpt || "",
+        featuredImage: val.featuredImage || ""
       }));
+    related = [...related, ...staticRelated];
   }
 
   const formatTimestamp = (ts: any) => {
