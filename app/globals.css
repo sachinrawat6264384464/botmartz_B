@@ -85,11 +85,11 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground font-sans selection:bg-brand/20 overflow-x-hidden max-w-full;
+    @apply bg-background text-foreground font-sans selection:bg-brand/20 overflow-x-clip max-w-full;
   }
   html {
     scroll-behavior: smooth;
-    @apply overflow-x-hidden max-w-full;
+    @apply overflow-x-clip max-w-full;
   }
   
   /* Defer rendering of below-fold sections for faster LCP */

@@ -19,14 +19,18 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
 
     // Not authenticated → send to login
     if (!user && !isLoginPage) {
-      router.replace('/admin/login');
-      return;
+      const timer = setTimeout(() => {
+        router.replace('/admin/login');
+      }, 0);
+      return () => clearTimeout(timer);
     }
 
     // Already authenticated → skip login page
     if (user && isLoginPage) {
-      router.replace('/admin');
-      return;
+      const timer = setTimeout(() => {
+        router.replace('/admin');
+      }, 0);
+      return () => clearTimeout(timer);
     }
 
     // Route permission check (skip login & unauthorized pages)
@@ -36,7 +40,10 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
       );
       const moduleId = matchedKey ? ROUTE_MODULE_MAP[matchedKey] : undefined;
       if (moduleId && !hasAccess(moduleId)) {
-        router.replace('/admin/unauthorized');
+        const timer = setTimeout(() => {
+          router.replace('/admin/unauthorized');
+        }, 0);
+        return () => clearTimeout(timer);
       }
     }
   }, [user, userRole, loading, isLoginPage, pathname, router, hasAccess]);

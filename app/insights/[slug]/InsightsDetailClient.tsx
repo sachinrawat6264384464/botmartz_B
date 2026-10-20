@@ -698,10 +698,51 @@ export default function InsightsDetailClient({
                     }
                     return <code className={className} {...props}>{children}</code>;
                   },
-                  img: ({ node, ...props }: any) => {
+                  a: ({ node, href, children, ...props }: any) => {
+                    const isColab = href?.includes("colab.research.google.com");
+                    if (isColab) {
+                      return (
+                        <a
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center my-6 no-underline group transition-transform duration-300 hover:scale-[1.04]"
+                          {...props}
+                        >
+                          {children}
+                        </a>
+                      );
+                    }
+                    return (
+                      <a href={href} className="text-[#0066FF] hover:underline font-semibold" {...props}>
+                        {children}
+                      </a>
+                    );
+                  },
+                  img: ({ node, src, alt, ...props }: any) => {
+                    const isColabBadge = src?.includes("colab-badge.svg") || alt?.toLowerCase().includes("colab");
+                    if (isColabBadge) {
+                      return (
+                        <img
+                          src={src}
+                          alt={alt || "Open In Google Colab"}
+                          className="h-[54px] sm:h-[62px] w-auto max-w-full object-contain rounded-xl shadow-[0_10px_25px_rgba(249,171,0,0.3)] hover:shadow-[0_15px_35px_rgba(249,171,0,0.45)] transition-all duration-300 border-2 border-[#F9AB00]/50"
+                          style={{
+                            height: "58px",
+                            width: "auto",
+                            minHeight: "52px",
+                            display: "inline-block",
+                            borderRadius: "12px",
+                          }}
+                          {...props}
+                        />
+                      );
+                    }
                     return (
                       <img
                         className="rounded-xl shadow-lg my-8 max-w-full h-auto mx-auto border border-slate-200"
+                        src={src}
+                        alt={alt}
                         {...props}
                       />
                     );
@@ -864,32 +905,36 @@ export default function InsightsDetailClient({
 
           </div>
 
-          {/* Right Sidebar */}
-          <aside className="lg:col-span-4 space-y-6">
-            <div className="sticky top-28 space-y-6">
+          {/* Right Sidebar - Sticky pinned while left article scrolls */}
+          <aside className="lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
+            <div className="space-y-5 max-h-[calc(100vh-7rem)] overflow-y-auto pr-1">
               {/* Sticky Colab Notebook Card */}
               {hasNotebook && (
                 <a
                   href={colabLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between gap-3 w-full px-5 py-4 rounded-2xl no-underline text-white transition-all hover:scale-[1.02]"
+                  className="flex items-center justify-between gap-3 w-full px-5 py-4 rounded-2xl no-underline text-white transition-all hover:scale-[1.02] group"
                   style={{
                     background: "linear-gradient(135deg, #060C1F, #0A1630)",
-                    border: "1px solid rgba(0, 198, 255, 0.3)",
-                    boxShadow: "0 8px 32px rgba(0, 102, 255, 0.15)",
+                    border: "1px solid rgba(249, 171, 0, 0.4)",
+                    boxShadow: "0 8px 32px rgba(249, 171, 0, 0.15)",
                   }}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-[#00C6FF]/15 text-[#00C6FF]">
-                      <Terminal size={17} />
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/5 border border-white/10 shrink-0">
+                      {/* Google Colab Logo: Interlocking Yellow/Orange and Blue Loops */}
+                      <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+                        <path d="M11.6 19.4c-2.4 0-4.4-2-4.4-4.4s2-4.4 4.4-4.4c1.8 0 3.4 1.1 4.1 2.7.4.9 1.4 1.4 2.3 1.1.9-.4 1.4-1.4 1.1-2.3C17.7 8.5 14.8 6.8 11.6 6.8 7.1 6.8 3.4 10.5 3.4 15s3.7 8.2 8.2 8.2c3.2 0 6.1-1.7 7.5-4.6.4-.9 0-1.9-.9-2.3-.9-.4-1.9 0-2.3.9-.7 1.6-2.3 2.7-4.3 2.7z" fill="#F9AB00" />
+                        <path d="M20.4 12.6c2.4 0 4.4 2 4.4 4.4s-2 4.4-4.4 4.4c-1.8 0-3.4-1.1-4.1-2.7-.4-.9-1.4-1.4-2.3-1.1-.9.4-1.4 1.4-1.1 2.3 1.4 3.6 4.3 5.3 7.5 5.3 4.5 0 8.2-3.7 8.2-8.2s-3.7-8.2-8.2-8.2c-3.2 0-6.1 1.7-7.5 4.6-.4.9 0 1.9.9 2.3.9.4 1.9 0 2.3-.9.7-1.6 2.3-2.7 4.3-2.7z" fill="#1A73E8" />
+                      </svg>
                     </div>
                     <div>
-                      <p className="font-bold text-sm leading-tight text-white m-0">Open Notebook</p>
-                      <p className="text-[11px] text-[#00C6FF] mt-0.5 m-0">Run interactive Google Colab</p>
+                      <p className="font-bold text-sm leading-tight text-white m-0 group-hover:text-[#F9AB00] transition-colors">Open Notebook</p>
+                      <p className="text-[11px] text-[#F9AB00] mt-0.5 m-0 font-medium">Run interactive Google Colab</p>
                     </div>
                   </div>
-                  <ChevronRight size={16} className="text-white/60 shrink-0" />
+                  <ChevronRight size={16} className="text-white/60 shrink-0 group-hover:translate-x-1 transition-transform" />
                 </a>
               )}
 

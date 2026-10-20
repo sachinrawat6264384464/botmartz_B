@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { ArrowRight, ExternalLink } from 'lucide-react';
 import { adminDb } from '@/lib/firebase-admin';
 import InsightsListingSection from './InsightsListingSection';
+import WriterRegistrationModal from './_components/WriterRegistrationModal';
+import OpenWriterModalButton from './_components/OpenWriterModalButton';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -84,6 +86,7 @@ export default async function InsightsPage() {
 
   return (
     <main className="bg-white min-h-screen">
+      <WriterRegistrationModal />
       
       {/* HERO SECTION (DARK) */}
       <section className="relative pt-[120px] pb-[80px] bg-[#050B14] text-white overflow-hidden">
@@ -102,12 +105,15 @@ export default async function InsightsPage() {
               className="text-[clamp(36px,5vw,56px)] leading-[1.1] font-semibold mb-6 tracking-tight text-white"
               dangerouslySetInnerHTML={{ __html: heroData.title }}
             />
-            <p className="text-[17px] text-slate-600 mb-8 max-w-[500px]">
+            <p className="text-[17px] text-slate-300 mb-8 max-w-[500px] leading-relaxed">
               {heroData.subtitle}
             </p>
-            <div className="flex flex-wrap gap-4">
-              <Link href="#articles" className="btn btn-primary bg-[#00B8F0] text-slate-900 hover:bg-[#0096C7] px-6 py-3 rounded text-[14px] flex items-center gap-2">Explore All Articles <ArrowRight className="w-4 h-4" /></Link>
-              <a href="#" className="btn border border-slate-200 hover:border-[#00B8F0] hover:text-[#00B8F0] transition-colors text-slate-900 px-6 py-3 rounded text-[14px] flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-4">
+              <Link href="#articles" className="btn btn-primary bg-[#00B8F0] text-slate-950 font-semibold hover:bg-[#0096C7] px-6 py-3 rounded text-[14px] flex items-center gap-2 transition-all">
+                Explore All Articles <ArrowRight className="w-4 h-4" />
+              </Link>
+              <OpenWriterModalButton />
+              <a href="#" className="btn border border-slate-700 hover:border-[#00B8F0] hover:text-[#00B8F0] transition-colors text-slate-300 px-6 py-3 rounded text-[14px] flex items-center gap-2">
                 Subscribe to Newsletter <ExternalLink className="w-4 h-4" />
               </a>
             </div>

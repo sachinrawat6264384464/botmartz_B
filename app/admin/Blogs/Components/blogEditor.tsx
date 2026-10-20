@@ -681,6 +681,8 @@ export default function BlogEditorModal({
         category: formData.category === "Custom" ? formData.customCategory : formData.category,
         tags: tags,
         featuredImage: finalFeaturedImage,
+        image: finalFeaturedImage,
+        coverImage: finalFeaturedImage,
         featuredImageAlt: formData.featuredImageAlt,
         featuredImageName: formData.featuredImageName,
         status: formData.status,
@@ -688,8 +690,10 @@ export default function BlogEditorModal({
         readTime: editor ? calculateReadingTime(editor.getText()) : 5,
         updatedAt: serverTimestamp(),
         // Extra detail fields
-        colabLink,
-        githubLink,
+        colabLink: colabLink || "",
+        notebookLink: colabLink || "",
+        githubLink: githubLink || "",
+        codeLink: githubLink || "",
         failureModes: Number(failureModes) || 0,
         codeSnippets: Number(codeSnippets) || 0,
         runnableNotebooks: Number(runnableNotebooks) || 0,
@@ -774,6 +778,16 @@ export default function BlogEditorModal({
               onFeaturedImageUpload={handleFeaturedImageUpload}
               onRemoveFeaturedImage={handleRemoveFeaturedImage}
               generateSlugRaw={generateSlugRaw}
+              colabLink={colabLink}
+              setColabLink={setColabLink}
+              githubLink={githubLink}
+              setGithubLink={setGithubLink}
+              failureModes={failureModes}
+              setFailureModes={setFailureModes}
+              codeSnippets={codeSnippets}
+              setCodeSnippets={setCodeSnippets}
+              runnableNotebooks={runnableNotebooks}
+              setRunnableNotebooks={setRunnableNotebooks}
             />
           )}
 
