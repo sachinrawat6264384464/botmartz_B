@@ -11,8 +11,13 @@ export default function ConversionTriggers() {
   const [hasShownExit, setHasShownExit] = useState(false);
   const [showQuickReviewPrompt, setShowQuickReviewPrompt] = useState(false);
 
-  // Don't show inside admin, feedback portals, or insights page (insights has its own author registration modal)
-  const isExcluded = pathname?.startsWith("/admin") || pathname?.startsWith("/feedback") || pathname?.startsWith("/insights");
+  // Don't show inside admin, feedback portals, insights, or writer guidelines pages
+  const isExcluded = 
+    pathname?.startsWith("/admin") || 
+    pathname?.startsWith("/feedback") || 
+    pathname?.startsWith("/insights") ||
+    pathname?.startsWith("/write-access") ||
+    pathname?.startsWith("/write-for-us");
   const isBlogDetailPage = pathname?.startsWith("/insights/") && pathname !== "/insights";
 
   // Subtle prompt after 25s on page or 40% scroll (skip on blog detail pages to protect reader focus)
