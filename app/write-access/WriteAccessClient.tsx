@@ -189,7 +189,7 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
         style={{
           background: "linear-gradient(145deg, #051226 0%, #003BB3 50%, #0059E6 100%)",
         }}
-        className="relative pt-[135px] pb-[95px] lg:pb-[115px] text-white overflow-hidden shadow-2xl border-b border-blue-600/30"
+        className="relative pt-[160px] pb-[140px] lg:pt-[200px] lg:pb-[170px] min-h-[78vh] flex items-center text-white overflow-hidden shadow-2xl border-b border-blue-600/30"
       >
         {/* Luminous Glow Overlays */}
         <div 
@@ -210,11 +210,11 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
           }}
         />
 
-        <div className="max-w-6xl mx-auto px-5 sm:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        <div className="max-w-6xl mx-auto px-5 sm:px-8 relative z-10 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
             
             {/* ── LEFT COLUMN: REWRITTEN HEADLINE & CTAS (7 COLS) ── */}
-            <div className="lg:col-span-7 text-left space-y-6">
+            <div className="lg:col-span-7 text-left space-y-7">
               
               {/* Badge */}
               <div 
