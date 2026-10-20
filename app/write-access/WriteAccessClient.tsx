@@ -184,23 +184,23 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
   return (
     <main className="min-h-screen bg-white text-slate-900 font-sans">
       
-      {/* ── HERO BANNER: CENTERED RESPONSIVE EDITORIAL DESK ── */}
+      {/* ── HERO BANNER: ULTRA-PREMIUM REDESIGNED EDITORIAL DESK ── */}
       <section 
         suppressHydrationWarning
         style={{
           backgroundColor: "#051226",
-          backgroundImage: "linear-gradient(145deg, #051226 0%, #003BB3 50%, #0059E6 100%)",
+          backgroundImage: "linear-gradient(155deg, #030B18 0%, #002B8A 45%, #0052E0 100%)",
         }}
-        className="relative pt-[145px] pb-[140px] sm:pt-[175px] sm:pb-[170px] lg:pt-[200px] lg:pb-[210px] text-white overflow-hidden shadow-2xl border-b border-blue-600/30"
+        className="relative pt-[160px] pb-[140px] sm:pt-[190px] sm:pb-[165px] lg:pt-[225px] lg:pb-[195px] min-h-[90vh] lg:min-h-[860px] flex flex-col justify-center text-white overflow-hidden shadow-2xl border-b border-blue-500/30"
       >
         {/* Luminous Ambient Glow Overlays */}
         <div 
-          style={{ backgroundColor: "rgba(0, 240, 255, 0.2)", filter: "blur(140px)" }}
-          className="absolute top-[-20%] left-[-10%] w-[55%] h-[55%] rounded-full pointer-events-none" 
+          style={{ backgroundColor: "rgba(0, 240, 255, 0.22)", filter: "blur(150px)" }}
+          className="absolute top-[-15%] left-[-10%] w-[55%] h-[55%] rounded-full pointer-events-none" 
         />
         <div 
-          style={{ backgroundColor: "rgba(0, 41, 163, 0.65)", filter: "blur(160px)" }}
-          className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full pointer-events-none" 
+          style={{ backgroundColor: "rgba(0, 50, 190, 0.7)", filter: "blur(170px)" }}
+          className="absolute bottom-[-15%] right-[-10%] w-[65%] h-[65%] rounded-full pointer-events-none" 
         />
         
         {/* Subtle Tech Grid Pattern */}
@@ -212,43 +212,49 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
           }}
         />
 
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <div className="flex flex-col items-center space-y-6 sm:space-y-7">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+          <div className="flex flex-col items-center space-y-6 sm:space-y-8">
             
             {/* Centered Pill Badge */}
             <div 
               style={{
-                backgroundColor: "rgba(255, 255, 255, 0.12)",
-                borderColor: "rgba(255, 255, 255, 0.25)",
-                color: "#FFFFFF",
+                backgroundColor: "rgba(0, 240, 255, 0.1)",
+                borderColor: "rgba(0, 240, 255, 0.35)",
+                color: "#00F0FF",
               }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-xs sm:text-xs font-mono font-bold tracking-wider uppercase shadow-sm backdrop-blur-md max-w-full"
+              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border text-xs font-mono font-bold tracking-wider uppercase shadow-[0_0_20px_rgba(0,240,255,0.15)] backdrop-blur-md max-w-full"
             >
               <span className="w-2 h-2 rounded-full bg-[#00F0FF] animate-pulse shrink-0" />
               <Sparkles size={13} style={{ color: "#00F0FF" }} className="shrink-0" />
-              <span className="truncate sm:whitespace-normal">BOTMARTZ WRITERS PROGRAM & SUBMISSION GUIDELINES</span>
+              <span className="truncate sm:whitespace-normal">BOTMARTZ WRITERS PROGRAM &amp; SUBMISSION GUIDELINES</span>
             </div>
 
-            {/* Rewritten Title (No numbers, deeply impactful & inspiring) */}
-            <h1 className="text-3xl sm:text-5xl lg:text-[56px] font-extrabold tracking-tight leading-[1.14] text-white">
-              Publish on <span style={{ color: "#00F0FF" }}>Engineering Insights</span>.<br className="hidden sm:inline" />
-              Architecting the Next Frontier of Production AI.
+            {/* Redesigned Title with Glowing Gradient (Zero Numbers) */}
+            <h1 className="text-3xl sm:text-5xl lg:text-[58px] font-extrabold tracking-tight leading-[1.12] text-white">
+              Publish on{" "}
+              <span className="bg-gradient-to-r from-[#00F0FF] via-[#70E1FF] to-white bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(0,240,255,0.35)]">
+                Engineering Insights
+              </span>
+              .<br className="hidden sm:inline" />
+              <span className="block mt-2.5 text-2xl sm:text-4xl lg:text-[44px] font-bold text-slate-100">
+                Architecting the Next Frontier of Production AI.
+              </span>
             </h1>
 
             {/* Subtitle / Description */}
             <p className="text-slate-100 text-sm sm:text-base lg:text-lg leading-relaxed font-normal opacity-95 max-w-2xl mx-auto">
-              We partner with engineers, researchers, and technical builders to publish production-grade AI deep dives. Submit your draft — our editorial team formats your code, validates your notebooks, and publishes your work live under <strong className="text-white font-bold underline decoration-[#00F0FF]">your verified author byline</strong>.
+              We partner with engineers, researchers, and technical builders to publish production-grade AI deep dives. Submit your draft — our editorial team formats your code, validates your notebooks, and publishes your work live under <strong className="text-white font-bold underline decoration-[#00F0FF] underline-offset-4">your verified author byline</strong>.
             </p>
 
-            {/* Fully Responsive Centered Buttons with Generous Bottom Clearance */}
-            <div className="pt-3 sm:pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
+            {/* Fully Responsive Centered Buttons */}
+            <div className="pt-2 sm:pt-3 flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4.5 w-full sm:w-auto">
               <a
                 href={`mailto:${emailAddress}?subject=[Author Submission] Engineering Insights`}
                 style={{
                   backgroundColor: "#FFFFFF",
                   color: "#003BB3",
                 }}
-                className="w-full sm:w-auto font-extrabold px-7 py-3.5 sm:py-4 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2.5 shadow-xl transition-all hover:bg-slate-100 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                className="w-full sm:w-auto font-extrabold px-8 py-3.5 sm:py-4 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2.5 shadow-[0_10px_25px_rgba(0,0,0,0.3)] transition-all hover:bg-slate-100 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
               >
                 <Send size={16} style={{ color: "#003BB3" }} />
                 <span>Submit Draft to {emailAddress}</span>
@@ -258,15 +264,78 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
                 onClick={handleCopyEmail}
                 type="button"
                 style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.14)",
-                  borderColor: "rgba(255, 255, 255, 0.3)",
+                  backgroundColor: "rgba(255, 255, 255, 0.12)",
+                  borderColor: "rgba(255, 255, 255, 0.28)",
                   color: "#FFFFFF",
                 }}
-                className="w-full sm:w-auto px-6 py-3.5 sm:py-4 rounded-xl border text-xs sm:text-sm font-bold flex items-center justify-center gap-2 backdrop-blur-md transition-all hover:bg-white/25 active:scale-[0.98] cursor-pointer shadow-sm"
+                className="w-full sm:w-auto px-7 py-3.5 sm:py-4 rounded-xl border text-xs sm:text-sm font-bold flex items-center justify-center gap-2 backdrop-blur-md transition-all hover:bg-white/20 active:scale-[0.98] cursor-pointer shadow-sm"
               >
                 {copiedEmail ? <Check size={16} style={{ color: "#34D399" }} /> : <Copy size={16} />}
                 <span>{copiedEmail ? "Email Copied!" : "Copy Editorial Email"}</span>
               </button>
+            </div>
+
+            {/* ── 3 Sleek Glassmorphism Editorial Value Pillars ── */}
+            <div className="pt-10 sm:pt-14 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 w-full max-w-4xl mx-auto text-left">
+              {/* Pillar 1 */}
+              <div 
+                style={{
+                  backgroundColor: "rgba(6, 20, 48, 0.65)",
+                  borderColor: "rgba(255, 255, 255, 0.12)",
+                }}
+                className="p-5 rounded-2xl border backdrop-blur-xl hover:border-cyan-400/40 transition-all shadow-lg"
+              >
+                <div 
+                  style={{ backgroundColor: "rgba(0, 240, 255, 0.12)", color: "#00F0FF", borderColor: "rgba(0, 240, 255, 0.3)" }}
+                  className="w-9 h-9 rounded-xl border flex items-center justify-center mb-3"
+                >
+                  <Award size={18} />
+                </div>
+                <h4 className="text-white font-bold text-sm">100% Author Ownership</h4>
+                <p className="text-slate-300 text-xs mt-1 leading-relaxed">
+                  Full byline, verified bio card, and canonical links to your personal portfolio or GitHub.
+                </p>
+              </div>
+
+              {/* Pillar 2 */}
+              <div 
+                style={{
+                  backgroundColor: "rgba(6, 20, 48, 0.65)",
+                  borderColor: "rgba(255, 255, 255, 0.12)",
+                }}
+                className="p-5 rounded-2xl border backdrop-blur-xl hover:border-cyan-400/40 transition-all shadow-lg"
+              >
+                <div 
+                  style={{ backgroundColor: "rgba(250, 204, 21, 0.12)", color: "#FACC15", borderColor: "rgba(250, 204, 21, 0.3)" }}
+                  className="w-9 h-9 rounded-xl border flex items-center justify-center mb-3"
+                >
+                  <Zap size={18} />
+                </div>
+                <h4 className="text-white font-bold text-sm">Runnable Code &amp; Colabs</h4>
+                <p className="text-slate-300 text-xs mt-1 leading-relaxed">
+                  Our engineering team tests code, formats clean diagrams, and embeds interactive Google Colabs.
+                </p>
+              </div>
+
+              {/* Pillar 3 */}
+              <div 
+                style={{
+                  backgroundColor: "rgba(6, 20, 48, 0.65)",
+                  borderColor: "rgba(255, 255, 255, 0.12)",
+                }}
+                className="p-5 rounded-2xl border backdrop-blur-xl hover:border-cyan-400/40 transition-all shadow-lg"
+              >
+                <div 
+                  style={{ backgroundColor: "rgba(52, 211, 153, 0.12)", color: "#34D399", borderColor: "rgba(52, 211, 153, 0.3)" }}
+                  className="w-9 h-9 rounded-xl border flex items-center justify-center mb-3"
+                >
+                  <Globe size={18} />
+                </div>
+                <h4 className="text-white font-bold text-sm">Global Technical Reach</h4>
+                <p className="text-slate-300 text-xs mt-1 leading-relaxed">
+                  Read and referenced by production ML engineers, AI systems architects, and technical leaders.
+                </p>
+              </div>
             </div>
 
           </div>
