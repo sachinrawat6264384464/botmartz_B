@@ -268,25 +268,7 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
                 </button>
               </div>
 
-              {/* Trust Badges Row */}
-              <div className="pt-4 flex flex-wrap items-center gap-y-2 gap-x-5 text-xs text-white/80 font-mono">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[#00F0FF]">⚡</span>
-                  <span>24–48h Technical Review</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[#FDE047]">✍️</span>
-                  <span>100% Author Byline</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-emerald-300">🧪</span>
-                  <span>Runnable Colabs Included</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-sky-300">🌐</span>
-                  <span>12,000+ Monthly Engineers</span>
-                </div>
-              </div>
+
 
             </div>
 
