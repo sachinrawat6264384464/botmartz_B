@@ -59,7 +59,7 @@ export default function AdminSidebar() {
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const [cContacts, cJobs, cPartnerships, cWriters] = await Promise.all([
+        const [cContacts, cJobs, cPartnerships] = await Promise.all([
           getCountFromServer(query(collection(db, 'contacts'), where('status', '==', 'unread'))).catch(() => ({ data: () => ({ count: 0 }) })),
           getCountFromServer(query(collection(db, 'job_applications'), where('status', '==', 'new'))).catch(() => ({ data: () => ({ count: 0 }) })),
           getCountFromServer(query(collection(db, 'partnership_inquiries'), where('status', '==', 'new'))).catch(() => ({ data: () => ({ count: 0 }) })),
