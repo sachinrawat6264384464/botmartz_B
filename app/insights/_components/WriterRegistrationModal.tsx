@@ -108,10 +108,11 @@ export default function WriterRegistrationModal() {
               <X size={16} strokeWidth={2.5} />
             </button>
 
-            {/* ── TOP ORANGE BRAND HEADER ── */}
+            {/* ── TOP BLUE BRAND HEADER ── */}
             <div 
               style={{
-                background: "linear-gradient(145deg, #F97316 0%, #EA580C 100%)",
+                backgroundColor: "#051226",
+                backgroundImage: "linear-gradient(145deg, #051226 0%, #003BB3 55%, #0059E6 100%)",
               }}
               className="text-white p-6 sm:p-7 relative overflow-hidden"
             >
@@ -125,7 +126,7 @@ export default function WriterRegistrationModal() {
                     className="object-contain brightness-0 invert" 
                   />
                 </div>
-                <span className="font-extrabold text-xs tracking-wider uppercase font-mono text-white">
+                <span className="font-extrabold text-xs tracking-wider uppercase font-mono text-cyan-300">
                   BOTMARTZ WRITERS PROGRAM
                 </span>
               </div>
@@ -133,7 +134,7 @@ export default function WriterRegistrationModal() {
               <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight tracking-tight mt-3">
                 Publish on Engineering Insights.
               </h2>
-              <p className="text-orange-100 text-xs sm:text-sm mt-1 max-w-md font-medium">
+              <p className="text-blue-100 text-xs sm:text-sm mt-1 max-w-md font-medium">
                 Share your research, Colab notebooks, and architecture deep dives with 12,000+ AI practitioners.
               </p>
             </div>
@@ -144,7 +145,7 @@ export default function WriterRegistrationModal() {
               {/* How it works summary */}
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2.5">
                 <h4 className="font-bold text-slate-900 text-xs sm:text-sm flex items-center gap-2">
-                  <Sparkles size={15} className="text-[#F97316]" />
+                  <Sparkles size={15} className="text-[#0059E6]" />
                   <span>How to Publish Your Article:</span>
                 </h4>
                 <p className="text-slate-600 text-xs leading-relaxed">
@@ -153,13 +154,13 @@ export default function WriterRegistrationModal() {
               </div>
 
               {/* Email Box */}
-              <div className="p-3.5 rounded-xl bg-orange-50/60 border border-orange-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="p-3.5 rounded-xl bg-blue-50/60 border border-blue-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-[#F97316] text-white flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-[#0059E6] text-white flex items-center justify-center shrink-0 shadow-sm">
                     <Mail size={16} />
                   </div>
                   <div>
-                    <span className="text-[10px] font-bold text-orange-900 uppercase tracking-wider block">
+                    <span className="text-[10px] font-bold text-blue-900 uppercase tracking-wider block">
                       Editorial Submission Desk
                     </span>
                     <span className="font-mono font-bold text-xs sm:text-sm text-slate-900">
@@ -171,7 +172,7 @@ export default function WriterRegistrationModal() {
                 <button
                   type="button"
                   onClick={handleCopyEmail}
-                  className="px-3 py-1.5 rounded-lg bg-white hover:bg-orange-100/60 text-slate-800 border border-orange-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  className="px-3 py-1.5 rounded-lg bg-white hover:bg-blue-100/60 text-slate-800 border border-blue-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
                   {copied ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
                   <span>{copied ? "Copied!" : "Copy Email"}</span>
@@ -183,10 +184,10 @@ export default function WriterRegistrationModal() {
                 <Link
                   href="/write-access"
                   onClick={handleClose}
-                  className="w-full bg-[#0092D7] hover:bg-[#0678BE] text-white font-bold py-3 px-5 rounded-xl text-center text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_4px_16px_rgba(0,146,215,0.35)] transition-all cursor-pointer group"
+                  className="w-full bg-[#0059E6] hover:bg-[#0047BA] text-white font-bold py-3 px-5 rounded-xl text-center text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_4px_16px_rgba(0,89,230,0.35)] transition-all cursor-pointer group"
                 >
                   <BookOpen size={16} />
-                  <span>Read Author & Submission Guidelines</span>
+                  <span>Read Author &amp; Submission Guidelines</span>
                   <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
 
@@ -202,7 +203,7 @@ export default function WriterRegistrationModal() {
               {/* Footer Note */}
               <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
                 <span>Turnaround: 24–48 hours</span>
-                <Link href="/write-access" onClick={handleClose} className="text-[#F97316] font-semibold hover:underline">
+                <Link href="/write-access" onClick={handleClose} className="text-[#0059E6] font-semibold hover:underline">
                   Full Submission Guide →
                 </Link>
               </div>

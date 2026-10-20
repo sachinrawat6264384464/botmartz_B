@@ -191,7 +191,7 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
           backgroundColor: "#051226",
           backgroundImage: "linear-gradient(155deg, #030B18 0%, #002B8A 45%, #0052E0 100%)",
         }}
-        className="relative pt-[160px] pb-[140px] sm:pt-[190px] sm:pb-[165px] lg:pt-[225px] lg:pb-[195px] min-h-[90vh] lg:min-h-[860px] flex flex-col justify-center text-white overflow-hidden shadow-2xl border-b border-blue-500/30"
+        className="relative pt-[125px] pb-[85px] sm:pt-[140px] sm:pb-[100px] lg:pt-[155px] lg:pb-[115px] text-white overflow-hidden shadow-2xl border-b border-blue-500/30"
       >
         {/* Luminous Ambient Glow Overlays */}
         <div 
@@ -212,10 +212,10 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
           }}
         />
 
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <div className="flex flex-col items-center space-y-6 sm:space-y-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+          <div className="flex flex-col items-center space-y-6 sm:space-y-7">
             
-            {/* Live Editorial Desk Status Pill (Replaced old banner) */}
+            {/* Live Editorial Desk Status Pill */}
             <div 
               style={{
                 backgroundColor: "rgba(255, 255, 255, 0.09)",
@@ -233,7 +233,7 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
             </div>
 
             {/* Redesigned Title (Ultra-Crisp Solid Cyan Glow, Zero Fading) */}
-            <h1 className="text-3xl sm:text-5xl lg:text-[58px] font-extrabold tracking-tight leading-[1.12] text-white">
+            <h1 className="text-3xl sm:text-5xl lg:text-[54px] font-extrabold tracking-tight leading-[1.14] text-white">
               Publish on{" "}
               <span 
                 style={{ 
@@ -245,13 +245,13 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
                 Engineering Insights
               </span>
               .<br className="hidden sm:inline" />
-              <span className="block mt-2.5 text-2xl sm:text-4xl lg:text-[44px] font-bold text-slate-100">
+              <span className="block mt-2 text-2xl sm:text-4xl lg:text-[42px] font-bold text-slate-100">
                 Architecting the Next Frontier of Production AI.
               </span>
             </h1>
 
             {/* Subtitle / Description */}
-            <p className="text-slate-100 text-sm sm:text-base lg:text-lg leading-relaxed font-normal opacity-95 max-w-2xl mx-auto">
+            <p className="text-slate-100 text-sm sm:text-base leading-relaxed font-normal opacity-95 max-w-2xl mx-auto">
               We partner with engineers, researchers, and technical builders to publish production-grade AI deep dives. Submit your draft — our editorial team formats your code, validates your notebooks, and publishes your work live under <strong className="text-white font-bold underline decoration-[#00F0FF] underline-offset-4">your verified author byline</strong>.
             </p>
 
@@ -282,69 +282,6 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
                 {copiedEmail ? <Check size={16} style={{ color: "#34D399" }} /> : <Copy size={16} />}
                 <span>{copiedEmail ? "Email Copied!" : "Copy Editorial Email"}</span>
               </button>
-            </div>
-
-            {/* ── 3 Sleek Glassmorphism Editorial Value Pillars ── */}
-            <div className="pt-10 sm:pt-14 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 w-full max-w-4xl mx-auto text-left">
-              {/* Pillar 1 */}
-              <div 
-                style={{
-                  backgroundColor: "rgba(6, 20, 48, 0.65)",
-                  borderColor: "rgba(255, 255, 255, 0.12)",
-                }}
-                className="p-5 rounded-2xl border backdrop-blur-xl hover:border-cyan-400/40 transition-all shadow-lg"
-              >
-                <div 
-                  style={{ backgroundColor: "rgba(0, 240, 255, 0.12)", color: "#00F0FF", borderColor: "rgba(0, 240, 255, 0.3)" }}
-                  className="w-9 h-9 rounded-xl border flex items-center justify-center mb-3"
-                >
-                  <Award size={18} />
-                </div>
-                <h4 className="text-white font-bold text-sm">100% Author Ownership</h4>
-                <p className="text-slate-300 text-xs mt-1 leading-relaxed">
-                  Full byline, verified bio card, and canonical links to your personal portfolio or GitHub.
-                </p>
-              </div>
-
-              {/* Pillar 2 */}
-              <div 
-                style={{
-                  backgroundColor: "rgba(6, 20, 48, 0.65)",
-                  borderColor: "rgba(255, 255, 255, 0.12)",
-                }}
-                className="p-5 rounded-2xl border backdrop-blur-xl hover:border-cyan-400/40 transition-all shadow-lg"
-              >
-                <div 
-                  style={{ backgroundColor: "rgba(250, 204, 21, 0.12)", color: "#FACC15", borderColor: "rgba(250, 204, 21, 0.3)" }}
-                  className="w-9 h-9 rounded-xl border flex items-center justify-center mb-3"
-                >
-                  <Zap size={18} />
-                </div>
-                <h4 className="text-white font-bold text-sm">Runnable Code &amp; Colabs</h4>
-                <p className="text-slate-300 text-xs mt-1 leading-relaxed">
-                  Our engineering team tests code, formats clean diagrams, and embeds interactive Google Colabs.
-                </p>
-              </div>
-
-              {/* Pillar 3 */}
-              <div 
-                style={{
-                  backgroundColor: "rgba(6, 20, 48, 0.65)",
-                  borderColor: "rgba(255, 255, 255, 0.12)",
-                }}
-                className="p-5 rounded-2xl border backdrop-blur-xl hover:border-cyan-400/40 transition-all shadow-lg"
-              >
-                <div 
-                  style={{ backgroundColor: "rgba(52, 211, 153, 0.12)", color: "#34D399", borderColor: "rgba(52, 211, 153, 0.3)" }}
-                  className="w-9 h-9 rounded-xl border flex items-center justify-center mb-3"
-                >
-                  <Globe size={18} />
-                </div>
-                <h4 className="text-white font-bold text-sm">Global Technical Reach</h4>
-                <p className="text-slate-300 text-xs mt-1 leading-relaxed">
-                  Read and referenced by production ML engineers, AI systems architects, and technical leaders.
-                </p>
-              </div>
             </div>
 
           </div>
