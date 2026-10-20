@@ -72,19 +72,6 @@ export default function WriterRegistrationModal() {
 
   return (
     <>
-      {/* Floating Trigger Button (visible when modal is closed) */}
-      {!isOpen && (
-        <button
-          onClick={handleOpen}
-          aria-label="Author Guidelines & Submission"
-          className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-[#0059E6] to-[#003BB3] hover:from-[#0047BA] hover:to-[#002B8A] text-white px-4 py-2.5 rounded-full font-bold shadow-[0_8px_25px_rgba(0,89,230,0.45)] flex items-center gap-2 transition-all duration-200 hover:scale-105 group border border-cyan-400/40 text-xs sm:text-sm cursor-pointer"
-        >
-          <PenTool size={14} className="text-white group-hover:rotate-12 transition-transform duration-300" />
-          <span>Write for Us (Guidelines)</span>
-          <span className="w-2 h-2 rounded-full bg-cyan-300 animate-pulse" />
-        </button>
-      )}
-
       {/* Modal Dialog Backdrop */}
       {isOpen && (
         <div 
@@ -145,7 +132,7 @@ export default function WriterRegistrationModal() {
               {/* How it works summary */}
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2.5">
                 <h4 className="font-bold text-slate-900 text-xs sm:text-sm flex items-center gap-2">
-                  <Sparkles size={15} className="text-[#0059E6]" />
+                  <Sparkles size={15} style={{ color: "#0059E6" }} />
                   <span>How to Publish Your Article:</span>
                 </h4>
                 <p className="text-slate-600 text-xs leading-relaxed">
@@ -154,10 +141,13 @@ export default function WriterRegistrationModal() {
               </div>
 
               {/* Email Box */}
-              <div className="p-3.5 rounded-xl bg-blue-50/60 border border-blue-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-[#0059E6] text-white flex items-center justify-center shrink-0 shadow-sm">
-                    <Mail size={16} />
+              <div className="p-3.5 rounded-xl bg-blue-50/70 border border-blue-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div 
+                    style={{ backgroundColor: "#0059E6", color: "#FFFFFF" }}
+                    className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 shadow-sm"
+                  >
+                    <Mail size={17} />
                   </div>
                   <div>
                     <span className="text-[10px] font-bold text-blue-900 uppercase tracking-wider block">
@@ -172,7 +162,7 @@ export default function WriterRegistrationModal() {
                 <button
                   type="button"
                   onClick={handleCopyEmail}
-                  className="px-3 py-1.5 rounded-lg bg-white hover:bg-blue-100/60 text-slate-800 border border-blue-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  className="px-3.5 py-1.5 rounded-lg bg-white hover:bg-blue-100/60 text-slate-800 border border-blue-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-xs"
                 >
                   {copied ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
                   <span>{copied ? "Copied!" : "Copy Email"}</span>
@@ -180,22 +170,33 @@ export default function WriterRegistrationModal() {
               </div>
 
               {/* Action Buttons */}
-              <div className="space-y-2.5 pt-1">
+              <div className="space-y-3 pt-1">
+                {/* Primary Button to Write-Access Page */}
                 <Link
                   href="/write-access"
                   onClick={handleClose}
-                  className="w-full bg-[#0059E6] hover:bg-[#0047BA] text-white font-bold py-3 px-5 rounded-xl text-center text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_4px_16px_rgba(0,89,230,0.35)] transition-all cursor-pointer group"
+                  style={{
+                    backgroundColor: "#0059E6",
+                    color: "#FFFFFF",
+                    boxShadow: "0 6px 22px rgba(0, 89, 230, 0.4)",
+                  }}
+                  className="w-full font-bold py-3.5 px-6 rounded-xl text-center text-xs sm:text-sm flex items-center justify-center gap-2.5 transition-all hover:opacity-95 hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
                 >
-                  <BookOpen size={16} />
+                  <BookOpen size={17} />
                   <span>Read Author &amp; Submission Guidelines</span>
-                  <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight size={16} />
                 </Link>
 
+                {/* Secondary Button to Send Email */}
                 <a
                   href={`mailto:${emailAddress}?subject=[Author Submission] Engineering Insights`}
-                  className="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold py-2.5 px-5 rounded-xl text-center text-xs flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  style={{
+                    backgroundColor: "#F1F5F9",
+                    color: "#1E293B",
+                  }}
+                  className="w-full font-semibold py-3 px-5 rounded-xl text-center text-xs sm:text-sm flex items-center justify-center gap-2 transition-all hover:bg-slate-200 cursor-pointer border border-slate-200/60"
                 >
-                  <Mail size={14} className="text-slate-600" />
+                  <Mail size={15} className="text-slate-600" />
                   <span>Send Draft Directly via Email</span>
                 </a>
               </div>
@@ -203,7 +204,12 @@ export default function WriterRegistrationModal() {
               {/* Footer Note */}
               <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
                 <span>Turnaround: 24–48 hours</span>
-                <Link href="/write-access" onClick={handleClose} className="text-[#0059E6] font-semibold hover:underline">
+                <Link 
+                  href="/write-access" 
+                  onClick={handleClose} 
+                  style={{ color: "#0059E6" }}
+                  className="font-bold hover:underline"
+                >
                   Full Submission Guide →
                 </Link>
               </div>
