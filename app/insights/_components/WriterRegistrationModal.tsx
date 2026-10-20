@@ -77,11 +77,11 @@ export default function WriterRegistrationModal() {
         <button
           onClick={handleOpen}
           aria-label="Author Guidelines & Submission"
-          className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-[#F97316] to-[#EA580C] hover:from-[#EA580C] hover:to-[#C2410C] text-white px-4 py-2.5 rounded-full font-bold shadow-[0_8px_25px_rgba(249,115,22,0.4)] flex items-center gap-2 transition-all duration-200 hover:scale-105 group border border-orange-400/40 text-xs sm:text-sm cursor-pointer"
+          className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-[#0059E6] to-[#003BB3] hover:from-[#0047BA] hover:to-[#002B8A] text-white px-4 py-2.5 rounded-full font-bold shadow-[0_8px_25px_rgba(0,89,230,0.45)] flex items-center gap-2 transition-all duration-200 hover:scale-105 group border border-cyan-400/40 text-xs sm:text-sm cursor-pointer"
         >
           <PenTool size={14} className="text-white group-hover:rotate-12 transition-transform duration-300" />
           <span>Write for Us (Guidelines)</span>
-          <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-cyan-300 animate-pulse" />
         </button>
       )}
 
