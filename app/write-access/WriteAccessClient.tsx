@@ -13,7 +13,10 @@ import {
   ChevronDown, 
   ChevronRight, 
   CheckCircle2, 
-  XCircle
+  XCircle,
+  FileText,
+  Award,
+  Globe
 } from "lucide-react";
 
 export default function WriteAccessClient() {
@@ -87,7 +90,7 @@ x_merged = layers.concatenate([x_text, inputs_features])`,
       id: "colab",
       title: "2. Interactive Google Colab Notebook",
       tagline: "1-Click Reproducibility in Browser",
-      desc: "Our readers expect to test and inspect the model immediately. Provide a runnable Google Colab (.ipynb) link where dependencies (pip install ...) and environment variables are pre-configured.",
+      desc: "Our readers expect to test and inspect the model immediately. Provide a runnable Google Colab (.ipynb) link where dependencies and environment variables are pre-configured.",
       previewTitle: "Runnable Colab Notebook: Zero-Shot Evaluation",
       previewBadge: "GOOGLE COLAB RUNNABLE",
       previewCode: `!pip install -q transformers datasets accelerate torch vllm
@@ -186,11 +189,17 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
         style={{
           background: "linear-gradient(145deg, #06152D 0%, #0045D8 45%, #0066FF 100%)",
         }}
-        className="relative pt-[130px] pb-[90px] text-white overflow-hidden shadow-xl"
+        className="relative pt-[130px] pb-[75px] text-white overflow-hidden shadow-xl"
       >
         {/* Luminous Glow Overlays */}
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00F0FF]/20 blur-[130px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-[#002699]/60 blur-[160px] rounded-full pointer-events-none" />
+        <div 
+          style={{ background: "rgba(0, 240, 255, 0.2)", filter: "blur(130px)" }}
+          className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full pointer-events-none" 
+        />
+        <div 
+          style={{ background: "rgba(0, 38, 153, 0.6)", filter: "blur(160px)" }}
+          className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full pointer-events-none" 
+        />
         
         {/* Subtle Network Pattern */}
         <div 
@@ -204,143 +213,152 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
         <div className="max-w-5xl mx-auto px-5 sm:px-8 relative z-10 text-center">
           
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-white text-xs font-mono font-bold tracking-wider uppercase mb-6 shadow-sm">
-            <Sparkles size={14} className="text-[#00F0FF]" />
+          <div 
+            style={{
+              background: "rgba(255, 255, 255, 0.15)",
+              borderColor: "rgba(255, 255, 255, 0.3)",
+              color: "#FFFFFF",
+            }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-xs font-mono font-bold tracking-wider uppercase mb-6 shadow-sm backdrop-blur-md"
+          >
+            <Sparkles size={14} style={{ color: "#00F0FF" }} />
             <span>Botmartz Writers Program & Submission Guidelines</span>
           </div>
 
-          {/* Heading - 100% Crisp White with Electric Highlights */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] mb-6 text-white drop-shadow-sm">
-            Publish on <span className="text-[#00F0FF] underline decoration-[#00F0FF]/40 underline-offset-8">Engineering Insights</span>.<br />
-            Reach <span className="text-amber-300">12,000+ AI Leaders</span> Worldwide.
+          {/* Heading - 100% Crisp White with Vibrant Cyan and Yellow */}
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] mb-6 text-white">
+            Publish on <span style={{ color: "#00F0FF" }}>Engineering Insights</span>.<br />
+            Reach <span style={{ color: "#FDE047" }}>12,000+ AI Leaders</span> Worldwide.
           </h1>
 
           {/* Subtitle */}
-          <p className="text-white/90 text-base sm:text-lg max-w-3xl mx-auto mb-9 leading-relaxed font-normal">
-            We partner with engineers, researchers, and technical builders to publish production-grade AI deep dives. Submit your draft — our editorial team formats your code, validates your notebooks, and publishes your work live under <strong className="text-white font-bold underline decoration-white/40">your author byline</strong>.
+          <p className="text-white text-base sm:text-lg max-w-3xl mx-auto mb-9 leading-relaxed font-normal opacity-95">
+            We partner with engineers, researchers, and technical builders to publish production-grade AI deep dives. Submit your draft — our editorial team formats your code, validates your notebooks, and publishes your work live under <strong className="text-white font-bold underline">your author byline</strong>.
           </p>
 
           {/* Action CTAs */}
-          <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <a
               href={`mailto:${emailAddress}?subject=[Author Submission] Engineering Insights`}
-              className="bg-white hover:bg-slate-100 text-[#0045D8] font-extrabold px-8 py-4 rounded-xl text-sm sm:text-base flex items-center gap-2.5 shadow-[0_10px_35px_rgba(0,0,0,0.3)] transition-all transform hover:-translate-y-0.5 cursor-pointer"
+              style={{
+                backgroundColor: "#FFFFFF",
+                color: "#0045D8",
+              }}
+              className="font-extrabold px-8 py-4 rounded-xl text-sm sm:text-base flex items-center gap-2.5 shadow-2xl transition-all hover:bg-slate-100 cursor-pointer"
             >
-              <Send size={18} className="text-[#0045D8]" />
+              <Send size={18} style={{ color: "#0045D8" }} />
               <span>Submit Draft to team@botmartz.com</span>
             </a>
 
             <button
               onClick={handleCopyEmail}
-              className="px-6 py-4 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/30 text-sm font-bold flex items-center gap-2.5 backdrop-blur-md transition-all cursor-pointer shadow-sm"
+              style={{
+                backgroundColor: "rgba(255, 255, 255, 0.15)",
+                borderColor: "rgba(255, 255, 255, 0.35)",
+                color: "#FFFFFF",
+              }}
+              className="px-6 py-4 rounded-xl border text-sm font-bold flex items-center gap-2.5 backdrop-blur-md transition-all hover:bg-white/25 cursor-pointer shadow-sm"
             >
-              {copiedEmail ? <Check size={18} className="text-emerald-300" /> : <Copy size={18} />}
+              {copiedEmail ? <Check size={18} style={{ color: "#34D399" }} /> : <Copy size={18} />}
               <span>{copiedEmail ? "Email Copied!" : "Copy Editorial Email"}</span>
             </button>
           </div>
 
-          {/* Stats Bar */}
-          <div className="pt-8 border-t border-white/15 grid grid-cols-2 md:grid-cols-4 gap-4 text-left">
-            <div className="p-3 bg-white/10 backdrop-blur-md rounded-xl border border-white/15">
-              <div className="text-2xl font-black text-white">12,000+</div>
-              <div className="text-xs text-white/80 font-medium mt-0.5">Monthly Tech Readers</div>
-            </div>
-            <div className="p-3 bg-white/10 backdrop-blur-md rounded-xl border border-white/15">
-              <div className="text-2xl font-black text-[#00F0FF]">24–48h</div>
-              <div className="text-xs text-white/80 font-medium mt-0.5">Editorial Turnaround</div>
-            </div>
-            <div className="p-3 bg-white/10 backdrop-blur-md rounded-xl border border-white/15">
-              <div className="text-2xl font-black text-amber-300">100%</div>
-              <div className="text-xs text-white/80 font-medium mt-0.5">Author Byline & Links</div>
-            </div>
-            <div className="p-3 bg-white/10 backdrop-blur-md rounded-xl border border-white/15">
-              <div className="text-2xl font-black text-emerald-300">Runnable</div>
-              <div className="text-xs text-white/80 font-medium mt-0.5">Google Colab Ready</div>
-            </div>
-          </div>
-
         </div>
       </section>
 
-      {/* ── SECTION 1: CONNECTED PUBLISHING PIPELINE (NOT BOXES) ── */}
-      <section className="py-20 bg-[#F8FAFC] border-b border-slate-200">
+      {/* ── SECTION 1: STREAMLINED EDITORIAL WORKFLOW (NO NUMBER BOXES) ── */}
+      <section className="py-16 bg-[#F8FAFC] border-b border-slate-200">
         <div className="max-w-5xl mx-auto px-5 sm:px-8">
           
-          <div className="text-center mb-16">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#0052FF] bg-[#0052FF]/10 px-3.5 py-1.5 rounded-full border border-[#0052FF]/20">
-              Zero Friction Workflow
+          <div className="text-center mb-12">
+            <span 
+              style={{ backgroundColor: "rgba(0, 82, 255, 0.1)", color: "#0052FF", borderColor: "rgba(0, 82, 255, 0.25)" }}
+              className="text-xs font-mono font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full border inline-block"
+            >
+              Simple Editorial Workflow
             </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">
-              How Your Article Goes From Draft to Live
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-3">
+              How Your Draft Goes Live
             </h2>
-            <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-xl mx-auto">
-              No complex CMS setup. Send your draft via email, and our engineering team handles formatting, code testing, and publishing.
+            <p className="text-slate-600 text-sm mt-1 max-w-xl mx-auto">
+              Zero CMS onboarding. Send your draft via email, and our team handles formatting, code verification, and publishing.
             </p>
           </div>
 
-          {/* Continuous Connected Flow */}
-          <div className="relative">
-            {/* Connecting Line (Desktop) */}
-            <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-[#0052FF] via-[#00B8F0] to-emerald-500 -translate-y-8 z-0" />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
-              
-              {/* Step 1 */}
-              <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm hover:border-[#0052FF] transition-all">
-                <div className="w-12 h-12 rounded-xl bg-[#0052FF] text-white font-mono font-black text-lg flex items-center justify-center mb-5 shadow-md">
-                  01
-                </div>
-                <h3 className="text-base font-bold text-slate-900 mb-2">Write Your Draft</h3>
-                <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                  Draft in Notion, Google Docs, or Markdown. Include tested code snippets and an optional Google Colab notebook link.
-                </p>
+          {/* Clean Horizontal Timeline (Clean icons and text, NO number boxes!) */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            
+            {/* Step 1 */}
+            <div className="flex flex-col items-start p-5 bg-white rounded-xl border border-slate-200/90 shadow-xs">
+              <div 
+                style={{ backgroundColor: "rgba(0, 82, 255, 0.1)", color: "#0052FF" }}
+                className="w-10 h-10 rounded-lg flex items-center justify-center mb-3"
+              >
+                <FileText size={20} />
               </div>
-
-              {/* Step 2 */}
-              <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm hover:border-[#00B8F0] transition-all">
-                <div className="w-12 h-12 rounded-xl bg-[#0092D7] text-white font-mono font-black text-lg flex items-center justify-center mb-5 shadow-md">
-                  02
-                </div>
-                <h3 className="text-base font-bold text-slate-900 mb-2">Email team@botmartz.com</h3>
-                <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                  Send your draft link, code repo, and author bio to our editorial desk using our structured email template.
-                </p>
-              </div>
-
-              {/* Step 3 */}
-              <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm hover:border-amber-500 transition-all">
-                <div className="w-12 h-12 rounded-xl bg-amber-500 text-white font-mono font-black text-lg flex items-center justify-center mb-5 shadow-md">
-                  03
-                </div>
-                <h3 className="text-base font-bold text-slate-900 mb-2">Engineering Peer Review</h3>
-                <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                  Within 24–48 hours, our technical architects verify code reproducibility, format syntax, and polish diagrams.
-                </p>
-              </div>
-
-              {/* Step 4 */}
-              <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm hover:border-emerald-500 transition-all">
-                <div className="w-12 h-12 rounded-xl bg-emerald-600 text-white font-mono font-black text-lg flex items-center justify-center mb-5 shadow-md">
-                  04
-                </div>
-                <h3 className="text-base font-bold text-slate-900 mb-2">Published Under Your Name</h3>
-                <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                  Published live on Engineering Insights with your verified author profile, social links, and distributed to 12,000+ readers.
-                </p>
-              </div>
-
+              <h3 className="text-sm font-bold text-slate-900 mb-1">1. Write Your Draft</h3>
+              <p className="text-slate-600 text-xs leading-relaxed">
+                Draft in Notion, Google Docs, or Markdown. Include tested code snippets and an optional runnable Colab link.
+              </p>
             </div>
+
+            {/* Step 2 */}
+            <div className="flex flex-col items-start p-5 bg-white rounded-xl border border-slate-200/90 shadow-xs">
+              <div 
+                style={{ backgroundColor: "rgba(14, 165, 233, 0.1)", color: "#0284C7" }}
+                className="w-10 h-10 rounded-lg flex items-center justify-center mb-3"
+              >
+                <Mail size={20} />
+              </div>
+              <h3 className="text-sm font-bold text-slate-900 mb-1">2. Email Our Team</h3>
+              <p className="text-slate-600 text-xs leading-relaxed">
+                Send your draft link, code repo, and short bio to <strong className="text-slate-900">team@botmartz.com</strong>.
+              </p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="flex flex-col items-start p-5 bg-white rounded-xl border border-slate-200/90 shadow-xs">
+              <div 
+                style={{ backgroundColor: "rgba(245, 158, 11, 0.1)", color: "#D97706" }}
+                className="w-10 h-10 rounded-lg flex items-center justify-center mb-3"
+              >
+                <CheckCircle2 size={20} />
+              </div>
+              <h3 className="text-sm font-bold text-slate-900 mb-1">3. Technical Review</h3>
+              <p className="text-slate-600 text-xs leading-relaxed">
+                Within 24–48 hours, our engineers verify code reproducibility, polish syntax, and format diagrams.
+              </p>
+            </div>
+
+            {/* Step 4 */}
+            <div className="flex flex-col items-start p-5 bg-white rounded-xl border border-slate-200/90 shadow-xs">
+              <div 
+                style={{ backgroundColor: "rgba(16, 185, 129, 0.1)", color: "#059669" }}
+                className="w-10 h-10 rounded-lg flex items-center justify-center mb-3"
+              >
+                <Award size={20} />
+              </div>
+              <h3 className="text-sm font-bold text-slate-900 mb-1">4. Live With Your Byline</h3>
+              <p className="text-slate-600 text-xs leading-relaxed">
+                Published live on Engineering Insights with your verified author badge, bio, and portfolio link.
+              </p>
+            </div>
+
           </div>
 
         </div>
       </section>
 
-      {/* ── SECTION 2: INTERACTIVE ARTICLE BLUEPRINT (NO DULL BOXES!) ── */}
+      {/* ── SECTION 2: INTERACTIVE ARTICLE BLUEPRINT ── */}
       <section className="py-20 bg-white border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-5 sm:px-8">
           
           <div className="text-center mb-14">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#0052FF] bg-[#0052FF]/10 px-3.5 py-1.5 rounded-full border border-[#0052FF]/20">
+            <span 
+              style={{ backgroundColor: "rgba(0, 82, 255, 0.1)", color: "#0052FF", borderColor: "rgba(0, 82, 255, 0.25)" }}
+              className="text-xs font-mono font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full border inline-block"
+            >
               Deconstructed from Live Botmartz Articles
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">
@@ -362,28 +380,41 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(idx)}
-                    className={`w-full text-left p-4 rounded-xl border transition-all cursor-pointer flex items-center justify-between ${
-                      isActive 
-                        ? "bg-[#0045D8] text-white border-[#0045D8] shadow-md shadow-[#0045D8]/20 translate-x-1" 
-                        : "bg-[#F8FAFC] text-slate-800 border-slate-200 hover:border-slate-300 hover:bg-slate-100/70"
+                    style={{
+                      backgroundColor: isActive ? "#0052FF" : "#F8FAFC",
+                      color: isActive ? "#FFFFFF" : "#0F172A",
+                      borderColor: isActive ? "#0052FF" : "#E2E8F0",
+                    }}
+                    className={`w-full text-left p-4 rounded-xl border transition-all cursor-pointer flex items-center justify-between shadow-xs ${
+                      isActive ? "shadow-md" : "hover:border-slate-300"
                     }`}
                   >
                     <div>
-                      <div className={`text-xs font-mono font-bold uppercase tracking-wider ${isActive ? "text-[#00F0FF]" : "text-[#0052FF]"}`}>
+                      <div 
+                        style={{ color: isActive ? "#A5F3FC" : "#0052FF" }}
+                        className="text-xs font-mono font-bold uppercase tracking-wider"
+                      >
                         {tab.tagline}
                       </div>
                       <div className="text-sm sm:text-base font-bold mt-0.5">
                         {tab.title}
                       </div>
                     </div>
-                    <ChevronRight size={18} className={`shrink-0 transition-transform ${isActive ? "translate-x-1 text-white" : "text-slate-400"}`} />
+                    <ChevronRight 
+                      size={18} 
+                      style={{ color: isActive ? "#FFFFFF" : "#94A3B8" }}
+                      className="shrink-0" 
+                    />
                   </button>
                 );
               })}
             </div>
 
             {/* Right Live Preview Window */}
-            <div className="lg:col-span-7 bg-[#061124] text-white rounded-2xl p-6 sm:p-8 border border-slate-800 shadow-xl relative overflow-hidden">
+            <div 
+              style={{ backgroundColor: "#061124" }}
+              className="lg:col-span-7 text-white rounded-2xl p-6 sm:p-8 border border-slate-800 shadow-xl relative overflow-hidden"
+            >
               
               {/* Window Header */}
               <div className="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
@@ -393,7 +424,14 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
                   <span className="w-3 h-3 rounded-full bg-emerald-500 inline-block" />
                   <span className="ml-2 font-mono text-xs text-slate-400">botmartz-insights // article-standard.py</span>
                 </div>
-                <span className="text-[11px] font-mono font-bold text-[#00F0FF] bg-[#00F0FF]/10 px-2.5 py-1 rounded border border-[#00F0FF]/20">
+                <span 
+                  style={{
+                    backgroundColor: "rgba(0, 184, 240, 0.15)",
+                    color: "#00F0FF",
+                    border: "1px solid rgba(0, 184, 240, 0.4)",
+                  }}
+                  className="text-[11px] font-mono font-bold px-2.5 py-1 rounded"
+                >
                   {blueprintTabs[activeTab].previewBadge}
                 </span>
               </div>
@@ -409,13 +447,27 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
               </div>
 
               {/* Code Demonstration Block */}
-              <div className="bg-black/60 rounded-xl p-4 border border-white/10 font-mono text-xs text-emerald-300 overflow-x-auto leading-relaxed mb-4">
+              <div 
+                style={{
+                  backgroundColor: "#030712",
+                  color: "#34D399",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                }}
+                className="rounded-xl p-4 font-mono text-xs overflow-x-auto leading-relaxed mb-4"
+              >
                 <pre>{blueprintTabs[activeTab].previewCode}</pre>
               </div>
 
               {/* Golden Highlight Rule */}
-              <div className="p-3 bg-amber-400/10 border border-amber-400/30 rounded-xl text-xs text-amber-200 flex items-center gap-2.5">
-                <Zap size={16} className="text-amber-400 shrink-0" />
+              <div 
+                style={{
+                  backgroundColor: "rgba(245, 158, 11, 0.12)",
+                  color: "#FDE68A",
+                  border: "1px solid rgba(245, 158, 11, 0.35)",
+                }}
+                className="p-3 rounded-xl text-xs flex items-center gap-2.5"
+              >
+                <Zap size={16} style={{ color: "#FBBF24" }} className="shrink-0" />
                 <span>{blueprintTabs[activeTab].previewHighlight}</span>
               </div>
 
@@ -436,14 +488,17 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
         <div className="max-w-4xl mx-auto px-5 sm:px-8">
           
           <div className="text-center mb-12">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#0052FF] bg-[#0052FF]/10 px-3.5 py-1.5 rounded-full border border-[#0052FF]/20">
+            <span 
+              style={{ backgroundColor: "rgba(0, 82, 255, 0.1)", color: "#0052FF", borderColor: "rgba(0, 82, 255, 0.25)" }}
+              className="text-xs font-mono font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full border inline-block"
+            >
               Direct Editorial Submission
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">
               Ready to Submit? Send Directly to Our Team
             </h2>
             <p className="text-slate-600 text-sm mt-2">
-              Send your draft to <strong className="text-[#0052FF] font-bold font-mono">team@botmartz.com</strong>. Use our pre-structured template below for fast-track review.
+              Send your draft to <strong style={{ color: "#0052FF" }} className="font-bold font-mono">team@botmartz.com</strong>. Use our pre-structured template below for fast-track review.
             </p>
           </div>
 
@@ -452,14 +507,20 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
             {/* Email Header Bar */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-slate-200 gap-4 mb-6">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#0052FF] text-white flex items-center justify-center shrink-0 shadow-md">
+                <div 
+                  style={{ backgroundColor: "#0052FF" }}
+                  className="w-10 h-10 rounded-xl text-white flex items-center justify-center shrink-0 shadow-md"
+                >
                   <Mail size={18} />
                 </div>
                 <div>
                   <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
                     Official Editorial Desk
                   </span>
-                  <span className="font-mono font-black text-base sm:text-lg text-[#0052FF]">
+                  <span 
+                    style={{ color: "#0052FF" }}
+                    className="font-mono font-black text-base sm:text-lg"
+                  >
                     {emailAddress}
                   </span>
                 </div>
@@ -470,21 +531,25 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
                   onClick={handleCopyEmail}
                   className="px-3.5 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer border border-slate-200"
                 >
-                  {copiedEmail ? <Check size={14} className="text-emerald-600" /> : <Copy size={14} />}
+                  {copiedEmail ? <Check size={14} style={{ color: "#059669" }} /> : <Copy size={14} />}
                   <span>{copiedEmail ? "Email Copied!" : "Copy Email"}</span>
                 </button>
                 <button
                   onClick={handleCopyTemplate}
-                  className="px-3.5 py-2 rounded-lg bg-[#0052FF] hover:bg-[#0041CC] text-white text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm"
+                  style={{ backgroundColor: "#0052FF", color: "#FFFFFF" }}
+                  className="px-3.5 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm hover:opacity-90"
                 >
-                  {copiedTemplate ? <Check size={14} className="text-emerald-300" /> : <Copy size={14} />}
+                  {copiedTemplate ? <Check size={14} style={{ color: "#34D399" }} /> : <Copy size={14} />}
                   <span>{copiedTemplate ? "Template Copied!" : "Copy Full Template"}</span>
                 </button>
               </div>
             </div>
 
             {/* Email Body Preformatted */}
-            <div className="bg-slate-900 text-slate-200 rounded-xl p-5 font-mono text-xs leading-relaxed overflow-x-auto border border-slate-800 shadow-inner">
+            <div 
+              style={{ backgroundColor: "#0B132B", color: "#E2E8F0" }}
+              className="rounded-xl p-5 font-mono text-xs leading-relaxed overflow-x-auto border border-slate-800 shadow-inner"
+            >
               <pre className="whitespace-pre-wrap">{emailTemplate}</pre>
             </div>
 
@@ -495,7 +560,8 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
               </div>
               <a
                 href={`mailto:${emailAddress}?subject=[Author Submission] Engineering Insights&body=${encodeURIComponent(emailTemplate)}`}
-                className="w-full sm:w-auto px-7 py-3 rounded-xl bg-[#0052FF] hover:bg-[#0041CC] text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer"
+                style={{ backgroundColor: "#0052FF", color: "#FFFFFF" }}
+                className="w-full sm:w-auto px-7 py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-md transition-all hover:opacity-95 cursor-pointer"
               >
                 <Send size={15} />
                 <span>Open in Email Client</span>
@@ -523,52 +589,64 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             
             {/* What Gets Fast-Tracked */}
-            <div className="bg-emerald-50/50 p-6 sm:p-8 rounded-2xl border-2 border-emerald-200">
-              <div className="flex items-center gap-2.5 text-emerald-800 font-extrabold text-lg mb-4">
-                <CheckCircle2 size={22} className="text-emerald-600" />
+            <div 
+              style={{ backgroundColor: "rgba(16, 185, 129, 0.05)", borderColor: "#A7F3D0" }}
+              className="p-6 sm:p-8 rounded-2xl border-2"
+            >
+              <div 
+                style={{ color: "#065F46" }}
+                className="flex items-center gap-2.5 font-extrabold text-lg mb-4"
+              >
+                <CheckCircle2 size={22} style={{ color: "#059669" }} />
                 <span>What Gets Fast-Tracked & Accepted</span>
               </div>
               <ul className="space-y-3.5 text-xs sm:text-sm text-slate-700">
                 <li className="flex items-start gap-2.5">
-                  <span className="text-emerald-600 font-bold text-base leading-none">✓</span>
+                  <span style={{ color: "#059669" }} className="font-bold text-base leading-none">✓</span>
                   <span>Tested, runnable code snippets with documented libraries and dependencies.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <span className="text-emerald-600 font-bold text-base leading-none">✓</span>
+                  <span style={{ color: "#059669" }} className="font-bold text-base leading-none">✓</span>
                   <span>Direct analysis of production trade-offs, bottlenecks, and failure modes.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <span className="text-emerald-600 font-bold text-base leading-none">✓</span>
+                  <span style={{ color: "#059669" }} className="font-bold text-base leading-none">✓</span>
                   <span>Clear architecture flowcharts or system visual diagrams.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <span className="text-emerald-600 font-bold text-base leading-none">✓</span>
+                  <span style={{ color: "#059669" }} className="font-bold text-base leading-none">✓</span>
                   <span>Concrete benchmark numbers (latency, throughput, VRAM, memory usage).</span>
                 </li>
               </ul>
             </div>
 
             {/* What Gets Rejected */}
-            <div className="bg-rose-50/50 p-6 sm:p-8 rounded-2xl border-2 border-rose-200">
-              <div className="flex items-center gap-2.5 text-rose-800 font-extrabold text-lg mb-4">
-                <XCircle size={22} className="text-rose-600" />
+            <div 
+              style={{ backgroundColor: "rgba(244, 63, 94, 0.05)", borderColor: "#FECDD3" }}
+              className="p-6 sm:p-8 rounded-2xl border-2"
+            >
+              <div 
+                style={{ color: "#9F1239" }}
+                className="flex items-center gap-2.5 font-extrabold text-lg mb-4"
+              >
+                <XCircle size={22} style={{ color: "#E11D48" }} />
                 <span>What We Do Not Publish</span>
               </div>
               <ul className="space-y-3.5 text-xs sm:text-sm text-slate-700">
                 <li className="flex items-start gap-2.5">
-                  <span className="text-rose-600 font-bold text-base leading-none">✗</span>
+                  <span style={{ color: "#E11D48" }} className="font-bold text-base leading-none">✗</span>
                   <span>Generic high-level AI overviews or unedited AI-generated text.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <span className="text-rose-600 font-bold text-base leading-none">✗</span>
+                  <span style={{ color: "#E11D48" }} className="font-bold text-base leading-none">✗</span>
                   <span>Articles with broken, non-reproducible code or missing dependencies.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <span className="text-rose-600 font-bold text-base leading-none">✗</span>
+                  <span style={{ color: "#E11D48" }} className="font-bold text-base leading-none">✗</span>
                   <span>Pure sales pitches or promotional marketing articles.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <span className="text-rose-600 font-bold text-base leading-none">✗</span>
+                  <span style={{ color: "#E11D48" }} className="font-bold text-base leading-none">✗</span>
                   <span>Plagiarized content from existing documentation or blogs.</span>
                 </li>
               </ul>
@@ -602,7 +680,8 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
                   </h4>
                   <ChevronDown 
                     size={18} 
-                    className={`text-[#0052FF] shrink-0 transition-transform ${openFaq === i ? "rotate-180" : ""}`} 
+                    style={{ color: "#0052FF" }}
+                    className={`shrink-0 transition-transform ${openFaq === i ? "rotate-180" : ""}`} 
                   />
                 </div>
                 {openFaq === i && (
@@ -628,14 +707,15 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
           <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-3">
             Have an Article Idea or Draft?
           </h3>
-          <p className="text-white/80 text-sm sm:text-base mb-7">
+          <p className="text-white text-sm sm:text-base mb-7 opacity-90">
             You don't need a finished article to start. Send an outline or technical topic to our team.
           </p>
           <a
             href={`mailto:${emailAddress}?subject=[Article Pitch] Engineering Insights`}
-            className="inline-flex items-center gap-2 bg-white text-[#0045D8] hover:bg-slate-100 font-extrabold px-8 py-3.5 rounded-xl text-sm sm:text-base shadow-xl transition-all"
+            style={{ backgroundColor: "#FFFFFF", color: "#0045D8" }}
+            className="inline-flex items-center gap-2 font-extrabold px-8 py-3.5 rounded-xl text-sm sm:text-base shadow-xl transition-all hover:bg-slate-100 cursor-pointer"
           >
-            <Send size={16} />
+            <Send size={16} style={{ color: "#0045D8" }} />
             <span>Email Editorial Team ({emailAddress})</span>
           </a>
         </div>
