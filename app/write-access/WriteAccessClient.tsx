@@ -215,24 +215,33 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <div className="flex flex-col items-center space-y-6 sm:space-y-8">
             
-            {/* Centered Pill Badge */}
+            {/* Live Editorial Desk Status Pill (Replaced old banner) */}
             <div 
               style={{
-                backgroundColor: "rgba(0, 240, 255, 0.1)",
-                borderColor: "rgba(0, 240, 255, 0.35)",
-                color: "#00F0FF",
+                backgroundColor: "rgba(255, 255, 255, 0.09)",
+                borderColor: "rgba(255, 255, 255, 0.22)",
               }}
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border text-xs font-mono font-bold tracking-wider uppercase shadow-[0_0_20px_rgba(0,240,255,0.15)] backdrop-blur-md max-w-full"
+              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border backdrop-blur-md text-xs shadow-md max-w-full"
             >
-              <span className="w-2 h-2 rounded-full bg-[#00F0FF] animate-pulse shrink-0" />
-              <Sparkles size={13} style={{ color: "#00F0FF" }} className="shrink-0" />
-              <span className="truncate sm:whitespace-normal">BOTMARTZ WRITERS PROGRAM &amp; SUBMISSION GUIDELINES</span>
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+              </span>
+              <span className="text-slate-300 font-mono text-[11px] uppercase tracking-wider">EDITORIAL DESK</span>
+              <span className="text-white/40">•</span>
+              <span className="text-[#00F0FF] font-semibold tracking-wide">Accepting AI Deep Dives &amp; Research</span>
             </div>
 
-            {/* Redesigned Title with Glowing Gradient (Zero Numbers) */}
+            {/* Redesigned Title (Ultra-Crisp Solid Cyan Glow, Zero Fading) */}
             <h1 className="text-3xl sm:text-5xl lg:text-[58px] font-extrabold tracking-tight leading-[1.12] text-white">
               Publish on{" "}
-              <span className="bg-gradient-to-r from-[#00F0FF] via-[#70E1FF] to-white bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(0,240,255,0.35)]">
+              <span 
+                style={{ 
+                  color: "#00F0FF", 
+                  textShadow: "0 0 30px rgba(0, 240, 255, 0.5)" 
+                }} 
+                className="font-extrabold"
+              >
                 Engineering Insights
               </span>
               .<br className="hidden sm:inline" />
