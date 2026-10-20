@@ -184,86 +184,181 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
   return (
     <main className="min-h-screen bg-white text-slate-900 font-sans">
       
-      {/* ── HERO BANNER: VIBRANT BOTMARTZ BLUE & CRISP WHITE ── */}
+      {/* ── HERO BANNER: 2-COLUMN PREMIUM EDITORIAL DESK ── */}
       <section 
         style={{
-          background: "linear-gradient(145deg, #06152D 0%, #0045D8 45%, #0066FF 100%)",
+          background: "linear-gradient(145deg, #051226 0%, #003BB3 50%, #0059E6 100%)",
         }}
-        className="relative pt-[130px] pb-[75px] text-white overflow-hidden shadow-xl"
+        className="relative pt-[135px] pb-[95px] lg:pb-[115px] text-white overflow-hidden shadow-2xl border-b border-blue-600/30"
       >
         {/* Luminous Glow Overlays */}
         <div 
-          style={{ background: "rgba(0, 240, 255, 0.2)", filter: "blur(130px)" }}
-          className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full pointer-events-none" 
+          style={{ background: "rgba(0, 240, 255, 0.22)", filter: "blur(140px)" }}
+          className="absolute top-[-25%] left-[-15%] w-[55%] h-[55%] rounded-full pointer-events-none" 
         />
         <div 
-          style={{ background: "rgba(0, 38, 153, 0.6)", filter: "blur(160px)" }}
+          style={{ background: "rgba(0, 41, 163, 0.65)", filter: "blur(160px)" }}
           className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full pointer-events-none" 
         />
         
-        {/* Subtle Network Pattern */}
+        {/* Subtle Tech Grid Pattern */}
         <div 
           className="absolute inset-0 opacity-15 pointer-events-none"
           style={{
-            backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.4) 1px, transparent 0)",
-            backgroundSize: "32px 32px"
+            backgroundImage: "radial-gradient(circle at 1.5px 1.5px, rgba(255,255,255,0.45) 1.5px, transparent 0)",
+            backgroundSize: "36px 36px"
           }}
         />
 
-        <div className="max-w-5xl mx-auto px-5 sm:px-8 relative z-10 text-center">
-          
-          {/* Badge */}
-          <div 
-            style={{
-              background: "rgba(255, 255, 255, 0.15)",
-              borderColor: "rgba(255, 255, 255, 0.3)",
-              color: "#FFFFFF",
-            }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-xs font-mono font-bold tracking-wider uppercase mb-6 shadow-sm backdrop-blur-md"
-          >
-            <Sparkles size={14} style={{ color: "#00F0FF" }} />
-            <span>Botmartz Writers Program & Submission Guidelines</span>
+        <div className="max-w-6xl mx-auto px-5 sm:px-8 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            
+            {/* ── LEFT COLUMN: REWRITTEN HEADLINE & CTAS (7 COLS) ── */}
+            <div className="lg:col-span-7 text-left space-y-6">
+              
+              {/* Badge */}
+              <div 
+                style={{
+                  background: "rgba(255, 255, 255, 0.12)",
+                  borderColor: "rgba(255, 255, 255, 0.25)",
+                  color: "#FFFFFF",
+                }}
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-mono font-bold tracking-wider uppercase shadow-sm backdrop-blur-md"
+              >
+                <span className="w-2 h-2 rounded-full bg-[#00F0FF] animate-pulse" />
+                <Sparkles size={13} style={{ color: "#00F0FF" }} />
+                <span>Botmartz AI Editorial Desk · Call for Authors</span>
+              </div>
+
+              {/* Rewritten Punchy Headline */}
+              <h1 className="text-3xl sm:text-5xl lg:text-[54px] font-extrabold tracking-tight leading-[1.14] text-white">
+                Turn Your AI Architecture into a <span style={{ color: "#00F0FF" }}>Canonical Deep Dive</span>.
+              </h1>
+
+              {/* Rewritten Technical Subtitle */}
+              <p className="text-slate-100 text-sm sm:text-base leading-relaxed font-normal opacity-95 max-w-2xl">
+                We partner with AI systems architects, ML researchers, and production engineers to document real-world breakthroughs. From complex LangGraph agent state machines and enterprise RAG retrieval to distributed model serving — submit your technical draft to our desk. We review the code, format the interactive Colab notebooks, and publish the article live under <strong className="text-white font-bold underline decoration-[#00F0FF]">your verified author byline</strong>.
+              </p>
+
+              {/* Action Buttons with High-Contrast Colors */}
+              <div className="flex flex-wrap items-center gap-3.5 pt-2">
+                <a
+                  href={`mailto:${emailAddress}?subject=[Author Submission] Engineering Insights`}
+                  style={{
+                    backgroundColor: "#FFFFFF",
+                    color: "#003BB3",
+                  }}
+                  className="font-extrabold px-7 py-3.5 rounded-xl text-xs sm:text-sm flex items-center gap-2.5 shadow-xl transition-all hover:bg-slate-100 hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
+                >
+                  <Send size={16} style={{ color: "#003BB3" }} />
+                  <span>Submit Draft to team@botmartz.com</span>
+                </a>
+
+                <button
+                  onClick={handleCopyEmail}
+                  style={{
+                    backgroundColor: "rgba(255, 255, 255, 0.14)",
+                    borderColor: "rgba(255, 255, 255, 0.3)",
+                    color: "#FFFFFF",
+                  }}
+                  className="px-5 py-3.5 rounded-xl border text-xs sm:text-sm font-bold flex items-center gap-2 backdrop-blur-md transition-all hover:bg-white/25 cursor-pointer shadow-sm"
+                >
+                  {copiedEmail ? <Check size={16} style={{ color: "#34D399" }} /> : <Copy size={16} />}
+                  <span>{copiedEmail ? "Email Copied!" : "Copy Editorial Email"}</span>
+                </button>
+              </div>
+
+              {/* Trust Badges Row */}
+              <div className="pt-4 flex flex-wrap items-center gap-y-2 gap-x-5 text-xs text-white/80 font-mono">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[#00F0FF]">⚡</span>
+                  <span>24–48h Technical Review</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[#FDE047]">✍️</span>
+                  <span>100% Author Byline</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-emerald-300">🧪</span>
+                  <span>Runnable Colabs Included</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-sky-300">🌐</span>
+                  <span>12,000+ Monthly Engineers</span>
+                </div>
+              </div>
+
+            </div>
+
+            {/* ── RIGHT COLUMN: VISUAL ARTICLE MOCKUP CARD (5 COLS) ── */}
+            <div className="lg:col-span-5 relative">
+              <div 
+                style={{
+                  backgroundColor: "rgba(6, 17, 36, 0.92)",
+                  borderColor: "rgba(0, 240, 255, 0.3)",
+                  boxShadow: "0 25px 60px rgba(0, 0, 0, 0.45)",
+                }}
+                className="rounded-2xl p-6 border backdrop-blur-xl relative overflow-hidden"
+              >
+                {/* Header Window Bar */}
+                <div className="flex items-center justify-between pb-3.5 border-b border-slate-800 mb-4">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" />
+                    <span className="ml-2 font-mono text-[10px] text-slate-400">preview // author-byline.md</span>
+                  </div>
+                  <span 
+                    style={{
+                      backgroundColor: "rgba(0, 240, 255, 0.12)",
+                      color: "#00F0FF",
+                      borderColor: "rgba(0, 240, 255, 0.3)",
+                    }}
+                    className="text-[9px] font-mono font-bold px-2 py-0.5 rounded border"
+                  >
+                    LIVE PUBLICATION
+                  </span>
+                </div>
+
+                {/* Article Snapshot Details */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-wider bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">
+                      RAG & MULTI-AGENT
+                    </span>
+                    <span className="text-[11px] font-mono text-slate-400">12 min read</span>
+                  </div>
+
+                  <h3 className="text-base font-bold text-white leading-snug">
+                    Deterministic LangGraph State Routing with Fallback Retrieval
+                  </h3>
+
+                  <div className="p-2.5 rounded-lg bg-black/50 border border-white/10 font-mono text-[11px] text-emerald-300 overflow-x-auto leading-relaxed">
+                    <span className="text-slate-500"># Runnable in 1 click</span><br />
+                    <span>workflow.compile(checkpointer=MemorySaver())</span>
+                  </div>
+
+                  {/* Author Card Footer inside Preview */}
+                  <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#0052FF] to-[#00B8F0] flex items-center justify-center text-white text-xs font-bold font-mono">
+                        AU
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-white">Your Name & Title</div>
+                        <div className="text-[10px] text-[#00F0FF] font-mono">Verified Author @ Botmartz</div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-mono text-slate-400 flex items-center gap-1">
+                      <span>▶ Colab</span>
+                    </span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
           </div>
-
-          {/* Heading - 100% Crisp White with Vibrant Cyan and Yellow */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] mb-6 text-white">
-            Publish on <span style={{ color: "#00F0FF" }}>Engineering Insights</span>.<br />
-            Reach <span style={{ color: "#FDE047" }}>12,000+ AI Leaders</span> Worldwide.
-          </h1>
-
-          {/* Subtitle */}
-          <p className="text-white text-base sm:text-lg max-w-3xl mx-auto mb-9 leading-relaxed font-normal opacity-95">
-            We partner with engineers, researchers, and technical builders to publish production-grade AI deep dives. Submit your draft — our editorial team formats your code, validates your notebooks, and publishes your work live under <strong className="text-white font-bold underline">your author byline</strong>.
-          </p>
-
-          {/* Action CTAs */}
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <a
-              href={`mailto:${emailAddress}?subject=[Author Submission] Engineering Insights`}
-              style={{
-                backgroundColor: "#FFFFFF",
-                color: "#0045D8",
-              }}
-              className="font-extrabold px-8 py-4 rounded-xl text-sm sm:text-base flex items-center gap-2.5 shadow-2xl transition-all hover:bg-slate-100 cursor-pointer"
-            >
-              <Send size={18} style={{ color: "#0045D8" }} />
-              <span>Submit Draft to team@botmartz.com</span>
-            </a>
-
-            <button
-              onClick={handleCopyEmail}
-              style={{
-                backgroundColor: "rgba(255, 255, 255, 0.15)",
-                borderColor: "rgba(255, 255, 255, 0.35)",
-                color: "#FFFFFF",
-              }}
-              className="px-6 py-4 rounded-xl border text-sm font-bold flex items-center gap-2.5 backdrop-blur-md transition-all hover:bg-white/25 cursor-pointer shadow-sm"
-            >
-              {copiedEmail ? <Check size={18} style={{ color: "#34D399" }} /> : <Copy size={18} />}
-              <span>{copiedEmail ? "Email Copied!" : "Copy Editorial Email"}</span>
-            </button>
-          </div>
-
         </div>
       </section>
 
