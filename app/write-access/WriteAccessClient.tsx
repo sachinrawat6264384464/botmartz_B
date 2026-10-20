@@ -184,19 +184,19 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
   return (
     <main className="min-h-screen bg-white text-slate-900 font-sans">
       
-      {/* ── HERO BANNER: 2-COLUMN PREMIUM EDITORIAL DESK ── */}
+      {/* ── HERO BANNER: CENTERED RESPONSIVE EDITORIAL DESK ── */}
       <section 
         suppressHydrationWarning
         style={{
           backgroundColor: "#051226",
           backgroundImage: "linear-gradient(145deg, #051226 0%, #003BB3 50%, #0059E6 100%)",
         }}
-        className="relative pt-[180px] pb-[160px] lg:pt-[220px] lg:pb-[200px] min-h-[90vh] lg:min-h-[820px] flex items-center text-white overflow-hidden shadow-2xl border-b border-blue-600/30"
+        className="relative pt-[145px] pb-[140px] sm:pt-[175px] sm:pb-[170px] lg:pt-[200px] lg:pb-[210px] text-white overflow-hidden shadow-2xl border-b border-blue-600/30"
       >
-        {/* Luminous Glow Overlays */}
+        {/* Luminous Ambient Glow Overlays */}
         <div 
-          style={{ backgroundColor: "rgba(0, 240, 255, 0.22)", filter: "blur(140px)" }}
-          className="absolute top-[-25%] left-[-15%] w-[55%] h-[55%] rounded-full pointer-events-none" 
+          style={{ backgroundColor: "rgba(0, 240, 255, 0.2)", filter: "blur(140px)" }}
+          className="absolute top-[-20%] left-[-10%] w-[55%] h-[55%] rounded-full pointer-events-none" 
         />
         <div 
           style={{ backgroundColor: "rgba(0, 41, 163, 0.65)", filter: "blur(160px)" }}
@@ -212,145 +212,61 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
           }}
         />
 
-        <div className="max-w-6xl mx-auto px-5 sm:px-8 relative z-10 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+          <div className="flex flex-col items-center space-y-6 sm:space-y-7">
             
-            {/* ── LEFT COLUMN: REWRITTEN HEADLINE & CTAS (7 COLS) ── */}
-            <div className="lg:col-span-7 text-left space-y-7">
-              
-              {/* Badge */}
-              <div 
-                style={{
-                  backgroundColor: "rgba(255, 255, 255, 0.12)",
-                  borderColor: "rgba(255, 255, 255, 0.25)",
-                  color: "#FFFFFF",
-                }}
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-mono font-bold tracking-wider uppercase shadow-sm backdrop-blur-md"
-              >
-                <span className="w-2 h-2 rounded-full bg-[#00F0FF] animate-pulse" />
-                <Sparkles size={13} style={{ color: "#00F0FF" }} />
-                <span>Botmartz AI Editorial Desk · Call for Authors</span>
-              </div>
-
-              {/* Rewritten Punchy Headline */}
-              <h1 className="text-3xl sm:text-5xl lg:text-[54px] font-extrabold tracking-tight leading-[1.14] text-white">
-                Turn Your AI Architecture into a <span style={{ color: "#00F0FF" }}>Canonical Deep Dive</span>.
-              </h1>
-
-              {/* Rewritten Technical Subtitle */}
-              <p className="text-slate-100 text-sm sm:text-base leading-relaxed font-normal opacity-95 max-w-2xl">
-                We partner with AI systems architects, ML researchers, and production engineers to document real-world breakthroughs. From complex LangGraph agent state machines and enterprise RAG retrieval to distributed model serving — submit your technical draft to our desk. We review the code, format the interactive Colab notebooks, and publish the article live under <strong className="text-white font-bold underline decoration-[#00F0FF]">your verified author byline</strong>.
-              </p>
-
-              {/* Action Buttons with High-Contrast Colors */}
-              <div className="flex flex-wrap items-center gap-3.5 pt-4">
-                <a
-                  href={`mailto:${emailAddress}?subject=[Author Submission] Engineering Insights`}
-                  style={{
-                    backgroundColor: "#FFFFFF",
-                    color: "#003BB3",
-                  }}
-                  className="font-extrabold px-7 py-3.5 rounded-xl text-xs sm:text-sm flex items-center gap-2.5 shadow-xl transition-all hover:bg-slate-100 hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
-                >
-                  <Send size={16} style={{ color: "#003BB3" }} />
-                  <span>Submit Draft to team@botmartz.com</span>
-                </a>
-
-                <button
-                  onClick={handleCopyEmail}
-                  type="button"
-                  style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.14)",
-                    borderColor: "rgba(255, 255, 255, 0.3)",
-                    color: "#FFFFFF",
-                  }}
-                  className="px-5 py-3.5 rounded-xl border text-xs sm:text-sm font-bold flex items-center gap-2 backdrop-blur-md transition-all hover:bg-white/25 cursor-pointer shadow-sm"
-                >
-                  {copiedEmail ? <Check size={16} style={{ color: "#34D399" }} /> : <Copy size={16} />}
-                  <span>{copiedEmail ? "Email Copied!" : "Copy Editorial Email"}</span>
-                </button>
-              </div>
-
+            {/* Centered Pill Badge */}
+            <div 
+              style={{
+                backgroundColor: "rgba(255, 255, 255, 0.12)",
+                borderColor: "rgba(255, 255, 255, 0.25)",
+                color: "#FFFFFF",
+              }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-xs sm:text-xs font-mono font-bold tracking-wider uppercase shadow-sm backdrop-blur-md max-w-full"
+            >
+              <span className="w-2 h-2 rounded-full bg-[#00F0FF] animate-pulse shrink-0" />
+              <Sparkles size={13} style={{ color: "#00F0FF" }} className="shrink-0" />
+              <span className="truncate sm:whitespace-normal">BOTMARTZ WRITERS PROGRAM & SUBMISSION GUIDELINES</span>
             </div>
 
-            {/* ── RIGHT COLUMN: EXPANDED VISUAL ARTICLE MOCKUP CARD (5 COLS) ── */}
-            <div className="lg:col-span-5 relative">
-              <div 
+            {/* Rewritten Title (No numbers, deeply impactful & inspiring) */}
+            <h1 className="text-3xl sm:text-5xl lg:text-[56px] font-extrabold tracking-tight leading-[1.14] text-white">
+              Publish on <span style={{ color: "#00F0FF" }}>Engineering Insights</span>.<br className="hidden sm:inline" />
+              Architecting the Next Frontier of Production AI.
+            </h1>
+
+            {/* Subtitle / Description */}
+            <p className="text-slate-100 text-sm sm:text-base lg:text-lg leading-relaxed font-normal opacity-95 max-w-2xl mx-auto">
+              We partner with engineers, researchers, and technical builders to publish production-grade AI deep dives. Submit your draft — our editorial team formats your code, validates your notebooks, and publishes your work live under <strong className="text-white font-bold underline decoration-[#00F0FF]">your verified author byline</strong>.
+            </p>
+
+            {/* Fully Responsive Centered Buttons with Generous Bottom Clearance */}
+            <div className="pt-3 sm:pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
+              <a
+                href={`mailto:${emailAddress}?subject=[Author Submission] Engineering Insights`}
                 style={{
-                  backgroundColor: "rgba(6, 17, 36, 0.94)",
-                  borderColor: "rgba(0, 240, 255, 0.35)",
-                  boxShadow: "0 30px 70px rgba(0, 0, 0, 0.5)",
+                  backgroundColor: "#FFFFFF",
+                  color: "#003BB3",
                 }}
-                className="rounded-2xl p-7 border backdrop-blur-xl relative overflow-hidden min-h-[440px] flex flex-col justify-between"
+                className="w-full sm:w-auto font-extrabold px-7 py-3.5 sm:py-4 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2.5 shadow-xl transition-all hover:bg-slate-100 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
               >
-                {/* Header Window Bar */}
-                <div>
-                  <div className="flex items-center justify-between pb-3.5 border-b border-slate-800 mb-4">
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" />
-                      <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block" />
-                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" />
-                      <span className="ml-2 font-mono text-[11px] text-slate-300">langgraph_router.py</span>
-                    </div>
-                    <span 
-                      style={{
-                        backgroundColor: "rgba(0, 240, 255, 0.15)",
-                        color: "#00F0FF",
-                        borderColor: "rgba(0, 240, 255, 0.35)",
-                      }}
-                      className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded border"
-                    >
-                      LIVE ON BOTMARTZ
-                    </span>
-                  </div>
+                <Send size={16} style={{ color: "#003BB3" }} />
+                <span>Submit Draft to {emailAddress}</span>
+              </a>
 
-                  {/* Article Snapshot Details */}
-                  <div className="space-y-3.5">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-wider bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">
-                        RAG & AGENTS
-                      </span>
-                      <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider bg-emerald-400/10 px-2 py-0.5 rounded border border-emerald-400/20">
-                        PRODUCTION CODE
-                      </span>
-                      <span className="text-[11px] font-mono text-slate-400 ml-auto">12 min read</span>
-                    </div>
-
-                    <h3 className="text-base sm:text-lg font-bold text-white leading-snug">
-                      Deterministic LangGraph State Routing with Fallback Retrieval
-                    </h3>
-
-                    {/* Rich Code Preview Block */}
-                    <div className="p-3.5 rounded-xl bg-black/60 border border-white/10 font-mono text-[11px] text-emerald-300 overflow-x-auto leading-relaxed space-y-1">
-                      <div className="text-slate-500"># Production conditional routing edge</div>
-                      <div><span className="text-cyan-400">@workflow.router</span></div>
-                      <div><span className="text-purple-400">def</span> <span className="text-yellow-300">eval_retrieval</span>(state):</div>
-                      <div className="pl-4 text-emerald-300">score = state[<span className="text-amber-200">"reranker_score"</span>]</div>
-                      <div className="pl-4 text-slate-300"><span className="text-purple-400">return</span> <span className="text-amber-200">"synthesize"</span> <span className="text-purple-400">if</span> score &gt; 0.85 <span className="text-purple-400">else</span> <span className="text-amber-200">"fallback"</span></div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Author Card Footer inside Preview */}
-                <div className="pt-4 mt-4 border-t border-slate-800/80 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#0052FF] to-[#00B8F0] flex items-center justify-center text-white text-xs font-bold font-mono shadow-md">
-                      AU
-                    </div>
-                    <div>
-                      <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                        <span>Your Name & Title</span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                      </div>
-                      <div className="text-[10px] text-[#00F0FF] font-mono">Verified Author @ Botmartz</div>
-                    </div>
-                  </div>
-                  <span className="text-[11px] font-mono font-medium text-emerald-300 bg-emerald-500/10 px-2.5 py-1 rounded-md border border-emerald-500/20 flex items-center gap-1.5">
-                    <span>▶ Runnable Colab</span>
-                  </span>
-                </div>
-
-              </div>
+              <button
+                onClick={handleCopyEmail}
+                type="button"
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.14)",
+                  borderColor: "rgba(255, 255, 255, 0.3)",
+                  color: "#FFFFFF",
+                }}
+                className="w-full sm:w-auto px-6 py-3.5 sm:py-4 rounded-xl border text-xs sm:text-sm font-bold flex items-center justify-center gap-2 backdrop-blur-md transition-all hover:bg-white/25 active:scale-[0.98] cursor-pointer shadow-sm"
+              >
+                {copiedEmail ? <Check size={16} style={{ color: "#34D399" }} /> : <Copy size={16} />}
+                <span>{copiedEmail ? "Email Copied!" : "Copy Editorial Email"}</span>
+              </button>
             </div>
 
           </div>
