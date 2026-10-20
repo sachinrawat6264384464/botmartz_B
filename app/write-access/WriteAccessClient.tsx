@@ -186,18 +186,20 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
       
       {/* ── HERO BANNER: 2-COLUMN PREMIUM EDITORIAL DESK ── */}
       <section 
+        suppressHydrationWarning
         style={{
-          background: "linear-gradient(145deg, #051226 0%, #003BB3 50%, #0059E6 100%)",
+          backgroundColor: "#051226",
+          backgroundImage: "linear-gradient(145deg, #051226 0%, #003BB3 50%, #0059E6 100%)",
         }}
-        className="relative pt-[160px] pb-[140px] lg:pt-[200px] lg:pb-[170px] min-h-[78vh] flex items-center text-white overflow-hidden shadow-2xl border-b border-blue-600/30"
+        className="relative pt-[180px] pb-[160px] lg:pt-[220px] lg:pb-[200px] min-h-[90vh] lg:min-h-[820px] flex items-center text-white overflow-hidden shadow-2xl border-b border-blue-600/30"
       >
         {/* Luminous Glow Overlays */}
         <div 
-          style={{ background: "rgba(0, 240, 255, 0.22)", filter: "blur(140px)" }}
+          style={{ backgroundColor: "rgba(0, 240, 255, 0.22)", filter: "blur(140px)" }}
           className="absolute top-[-25%] left-[-15%] w-[55%] h-[55%] rounded-full pointer-events-none" 
         />
         <div 
-          style={{ background: "rgba(0, 41, 163, 0.65)", filter: "blur(160px)" }}
+          style={{ backgroundColor: "rgba(0, 41, 163, 0.65)", filter: "blur(160px)" }}
           className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full pointer-events-none" 
         />
         
@@ -219,7 +221,7 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
               {/* Badge */}
               <div 
                 style={{
-                  background: "rgba(255, 255, 255, 0.12)",
+                  backgroundColor: "rgba(255, 255, 255, 0.12)",
                   borderColor: "rgba(255, 255, 255, 0.25)",
                   color: "#FFFFFF",
                 }}
@@ -241,7 +243,7 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
               </p>
 
               {/* Action Buttons with High-Contrast Colors */}
-              <div className="flex flex-wrap items-center gap-3.5 pt-2">
+              <div className="flex flex-wrap items-center gap-3.5 pt-4">
                 <a
                   href={`mailto:${emailAddress}?subject=[Author Submission] Engineering Insights`}
                   style={{
@@ -256,6 +258,7 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
 
                 <button
                   onClick={handleCopyEmail}
+                  type="button"
                   style={{
                     backgroundColor: "rgba(255, 255, 255, 0.14)",
                     borderColor: "rgba(255, 255, 255, 0.3)",
@@ -268,73 +271,83 @@ Platform Distribution: 12,000+ monthly AI architects, CTOs, and technical builde
                 </button>
               </div>
 
-
-
             </div>
 
-            {/* ── RIGHT COLUMN: VISUAL ARTICLE MOCKUP CARD (5 COLS) ── */}
+            {/* ── RIGHT COLUMN: EXPANDED VISUAL ARTICLE MOCKUP CARD (5 COLS) ── */}
             <div className="lg:col-span-5 relative">
               <div 
                 style={{
-                  backgroundColor: "rgba(6, 17, 36, 0.92)",
-                  borderColor: "rgba(0, 240, 255, 0.3)",
-                  boxShadow: "0 25px 60px rgba(0, 0, 0, 0.45)",
+                  backgroundColor: "rgba(6, 17, 36, 0.94)",
+                  borderColor: "rgba(0, 240, 255, 0.35)",
+                  boxShadow: "0 30px 70px rgba(0, 0, 0, 0.5)",
                 }}
-                className="rounded-2xl p-6 border backdrop-blur-xl relative overflow-hidden"
+                className="rounded-2xl p-7 border backdrop-blur-xl relative overflow-hidden min-h-[440px] flex flex-col justify-between"
               >
                 {/* Header Window Bar */}
-                <div className="flex items-center justify-between pb-3.5 border-b border-slate-800 mb-4">
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" />
-                    <span className="ml-2 font-mono text-[10px] text-slate-400">preview // author-byline.md</span>
+                <div>
+                  <div className="flex items-center justify-between pb-3.5 border-b border-slate-800 mb-4">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" />
+                      <span className="ml-2 font-mono text-[11px] text-slate-300">langgraph_router.py</span>
+                    </div>
+                    <span 
+                      style={{
+                        backgroundColor: "rgba(0, 240, 255, 0.15)",
+                        color: "#00F0FF",
+                        borderColor: "rgba(0, 240, 255, 0.35)",
+                      }}
+                      className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded border"
+                    >
+                      LIVE ON BOTMARTZ
+                    </span>
                   </div>
-                  <span 
-                    style={{
-                      backgroundColor: "rgba(0, 240, 255, 0.12)",
-                      color: "#00F0FF",
-                      borderColor: "rgba(0, 240, 255, 0.3)",
-                    }}
-                    className="text-[9px] font-mono font-bold px-2 py-0.5 rounded border"
-                  >
-                    LIVE PUBLICATION
-                  </span>
+
+                  {/* Article Snapshot Details */}
+                  <div className="space-y-3.5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-wider bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">
+                        RAG & AGENTS
+                      </span>
+                      <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider bg-emerald-400/10 px-2 py-0.5 rounded border border-emerald-400/20">
+                        PRODUCTION CODE
+                      </span>
+                      <span className="text-[11px] font-mono text-slate-400 ml-auto">12 min read</span>
+                    </div>
+
+                    <h3 className="text-base sm:text-lg font-bold text-white leading-snug">
+                      Deterministic LangGraph State Routing with Fallback Retrieval
+                    </h3>
+
+                    {/* Rich Code Preview Block */}
+                    <div className="p-3.5 rounded-xl bg-black/60 border border-white/10 font-mono text-[11px] text-emerald-300 overflow-x-auto leading-relaxed space-y-1">
+                      <div className="text-slate-500"># Production conditional routing edge</div>
+                      <div><span className="text-cyan-400">@workflow.router</span></div>
+                      <div><span className="text-purple-400">def</span> <span className="text-yellow-300">eval_retrieval</span>(state):</div>
+                      <div className="pl-4 text-emerald-300">score = state[<span className="text-amber-200">"reranker_score"</span>]</div>
+                      <div className="pl-4 text-slate-300"><span className="text-purple-400">return</span> <span className="text-amber-200">"synthesize"</span> <span className="text-purple-400">if</span> score &gt; 0.85 <span className="text-purple-400">else</span> <span className="text-amber-200">"fallback"</span></div>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Article Snapshot Details */}
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-wider bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">
-                      RAG & MULTI-AGENT
-                    </span>
-                    <span className="text-[11px] font-mono text-slate-400">12 min read</span>
-                  </div>
-
-                  <h3 className="text-base font-bold text-white leading-snug">
-                    Deterministic LangGraph State Routing with Fallback Retrieval
-                  </h3>
-
-                  <div className="p-2.5 rounded-lg bg-black/50 border border-white/10 font-mono text-[11px] text-emerald-300 overflow-x-auto leading-relaxed">
-                    <span className="text-slate-500"># Runnable in 1 click</span><br />
-                    <span>workflow.compile(checkpointer=MemorySaver())</span>
-                  </div>
-
-                  {/* Author Card Footer inside Preview */}
-                  <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#0052FF] to-[#00B8F0] flex items-center justify-center text-white text-xs font-bold font-mono">
-                        AU
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-white">Your Name & Title</div>
-                        <div className="text-[10px] text-[#00F0FF] font-mono">Verified Author @ Botmartz</div>
-                      </div>
+                {/* Author Card Footer inside Preview */}
+                <div className="pt-4 mt-4 border-t border-slate-800/80 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#0052FF] to-[#00B8F0] flex items-center justify-center text-white text-xs font-bold font-mono shadow-md">
+                      AU
                     </div>
-                    <span className="text-[10px] font-mono text-slate-400 flex items-center gap-1">
-                      <span>▶ Colab</span>
-                    </span>
+                    <div>
+                      <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                        <span>Your Name & Title</span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                      </div>
+                      <div className="text-[10px] text-[#00F0FF] font-mono">Verified Author @ Botmartz</div>
+                    </div>
                   </div>
+                  <span className="text-[11px] font-mono font-medium text-emerald-300 bg-emerald-500/10 px-2.5 py-1 rounded-md border border-emerald-500/20 flex items-center gap-1.5">
+                    <span>▶ Runnable Colab</span>
+                  </span>
                 </div>
 
               </div>
