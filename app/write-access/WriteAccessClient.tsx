@@ -8,25 +8,12 @@ import {
   Copy, 
   Check, 
   ArrowRight, 
-  Code2, 
-  Terminal, 
-  FileText, 
-  Award, 
+  Send, 
+  Zap, 
+  ChevronDown, 
+  ChevronRight, 
   CheckCircle2, 
-  XCircle, 
-  Cpu, 
-  ExternalLink,
-  BookOpen,
-  Share2,
-  Clock,
-  Send,
-  Zap,
-  HelpCircle,
-  ChevronDown,
-  ChevronRight,
-  Layers,
-  ShieldCheck,
-  CheckCircle
+  XCircle
 } from "lucide-react";
 
 export default function WriteAccessClient() {
