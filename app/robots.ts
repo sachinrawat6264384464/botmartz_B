@@ -17,6 +17,9 @@ export default function robots(): MetadataRoute.Robots {
           '/careers',
           '/careers/*',
           '/insights/updates',
+          '/write-access',
+          '/write-for-us',
+          '/event-desk',
         ],
       },
       {
@@ -34,6 +37,9 @@ export default function robots(): MetadataRoute.Robots {
           '/careers',
           '/careers/*',
           '/insights/updates',
+          '/write-access',
+          '/write-for-us',
+          '/event-desk',
         ],
       }
     ],

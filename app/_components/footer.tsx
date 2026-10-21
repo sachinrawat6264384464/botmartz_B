@@ -39,10 +39,8 @@ const FOOTER_COLS = [
     heading: "Solutions",
     links: [
       { label: "Enterprise AI Implementation", href: "/implementation" },
-      { label: "Knowledge & Search Systems", href: "/services/enterprise-rag" },
-      { label: "AI Agents & Automation", href: "/services/ai-agents" },
-      { label: "AI Integration & Platforms", href: "/services/integrations" },
-      { label: "Custom AI Applications", href: "/services/custom-ai-applications" },
+      { label: "Enterprise RAG & Search", href: "/services/enterprise-rag" },
+      { label: "AI Agents & State Machines", href: "/services/ai-agents" },
     ],
   },
   {
@@ -76,11 +74,12 @@ const FOOTER_COLS = [
     heading: "Company",
     links: [
       { label: "About Botmartz", href: "/about" },
-      { label: "Partner Ecosystem", href: "/partnerships" },
       { label: "Engineering Insights", href: "/insights" },
-      { label: "Write for Us (Guidelines)", href: "/write-access" },
+      { label: "Partner Ecosystem", href: "/partnerships" },
+      { label: "Write for Us", href: "/write-for-us" },
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms of Service", href: "/terms" },
       { label: "Contact Us", href: "/contact" },
-      { label: "Careers", href: "/careers" },
     ],
   },
 ];
@@ -273,8 +272,8 @@ export function Footer({ settings }: { settings?: any }) {
           </div>
         </div>
 
-        {/* ── BOTTOM BAR ── */}
-        <div className="py-5 flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-0 justify-between">
+        {/* ── BOTTOM BAR (with safe padding for floating widgets) ── */}
+        <div className="pt-6 pb-24 sm:pb-10 flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-0 justify-between border-t border-white/5 mt-4">
 
           {/* Copyright + trust badges */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
@@ -285,20 +284,20 @@ export function Footer({ settings }: { settings?: any }) {
             <div className="flex flex-wrap items-center gap-5">
               {TRUST.map(({ icon: Icon, label }) => (
                 <div key={label} className="flex items-center gap-1.5 text-[11.5px] text-[#8A9EB0]">
-                  <Icon size={13} className="text-[#8A9EB0]" />
+                  <Icon size={13} className="text-[#00B8F0]" />
                   {label}
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Legal links */}
-          <div className="flex items-center gap-1 text-[12px] text-[#8A9EB0]">
-            <Link href="/privacy" prefetch={false} className="hover:text-white transition-colors px-1">Privacy Policy</Link>
-            <span className="text-white/20">•</span>
-            <Link href="/terms" prefetch={false} className="hover:text-white transition-colors px-1">Terms of Service</Link>
-            <span className="text-white/20">•</span>
-            <Link href="/cookies" prefetch={false} className="hover:text-white transition-colors px-1">Cookie Policy</Link>
+          {/* Legal links (High-contrast, fully visible) */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-[12.5px] text-[#CBD5E1] font-medium">
+            <Link href="/privacy" prefetch={false} className="hover:text-[#00B8F0] transition-colors underline-offset-4 hover:underline py-1">Privacy Policy</Link>
+            <span className="text-white/30 hidden sm:inline">•</span>
+            <Link href="/terms" prefetch={false} className="hover:text-[#00B8F0] transition-colors underline-offset-4 hover:underline py-1">Terms of Service</Link>
+            <span className="text-white/30 hidden sm:inline">•</span>
+            <Link href="/cookies" prefetch={false} className="hover:text-[#00B8F0] transition-colors underline-offset-4 hover:underline py-1">Cookie Policy</Link>
           </div>
         </div>
 

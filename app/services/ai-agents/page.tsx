@@ -12,8 +12,8 @@ import AIAgentsClient from "./AIAgentsClient";
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'AI Agents & Autonomous Workflows',
-    description: 'We build production-ready AI agents that reason, plan, take action, and deliver real business outcomes across your tools, data, and workflows.',
+    title: 'AI Agent Development Company | Custom Multi-Agent Systems',
+    description: 'Botmartz is a premier enterprise AI agent development company. We build deterministic, LangGraph-powered multi-agent systems with human-in-the-loop controls, RBAC security, and guaranteed pilot timelines.',
   };
   
   try {
@@ -30,6 +30,20 @@ export async function generateMetadata(): Promise<Metadata> {
       description: meta.description,
       url: 'https://www.botmartz.com/services/ai-agents',
       type: 'website',
+      images: [
+        {
+          url: 'https://www.botmartz.com/BotmartznewBot.png',
+          width: 1200,
+          height: 630,
+          alt: 'Botmartz - AI Agent Development Company',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${meta.title} | Botmartz`,
+      description: meta.description,
+      images: ['https://www.botmartz.com/BotmartznewBot.png'],
     },
     alternates: {
       canonical: 'https://www.botmartz.com/services/ai-agents',

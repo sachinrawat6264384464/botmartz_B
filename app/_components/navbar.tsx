@@ -18,10 +18,8 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
     path: "/services",
     dropdown: [
       { name: "Enterprise AI Implementation", path: "/implementation" },
-      { name: "Knowledge & Search Systems", path: "/services/enterprise-rag" },
-      { name: "AI Agents & Automation", path: "/services/ai-agents" },
-      { name: "AI Integration & Platforms", path: "/services/integrations" },
-      { name: "Custom AI Applications", path: "/services/custom-ai-applications" },
+      { name: "Enterprise RAG & Search", path: "/services/enterprise-rag" },
+      { name: "AI Agents & State Machines", path: "/services/ai-agents" },
     ],
   },
   {
