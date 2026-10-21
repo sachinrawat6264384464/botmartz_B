@@ -7,6 +7,8 @@ import InsightsListingSection from './InsightsListingSection';
 import WriterRegistrationModal from './_components/WriterRegistrationModal';
 import OpenWriterModalButton from './_components/OpenWriterModalButton';
 
+import { getAllLocalBlogs } from '@/lib/localBlogs';
+
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
@@ -82,7 +84,15 @@ export default async function InsightsPage() {
     console.error("Error loading blog posts:", err);
   }
 
-  const sanitizedArticles = JSON.parse(JSON.stringify(dbArticles));
+  // Load all 86 local markdown blogs
+  const localArticles = getAllLocalBlogs();
+  const dbSlugs = new Set(dbArticles.map((a: any) => a.slug));
+  const combinedArticles = [
+    ...dbArticles,
+    ...localArticles.filter((la) => !dbSlugs.has(la.slug)),
+  ];
+
+  const sanitizedArticles = JSON.parse(JSON.stringify(combinedArticles));
 
   return (
     <main className="bg-white min-h-screen">

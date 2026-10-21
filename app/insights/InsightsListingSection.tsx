@@ -140,7 +140,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
           author: authorName,
           authorRole,
           authorAvatar,
-          date: art.createdAt ? new Date(art.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent",
+          date: art.date || (art.createdAt ? new Date(art.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent"),
           readTime: readTimeFormatted,
           slug: art.slug || generateSlugRaw(art.title),
           featured: !!art.featured,
@@ -193,7 +193,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
   const gridArticles = filteredArticles.filter((a) => a.id !== featuredArticle?.id);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const ITEMS_PER_PAGE = 6;
+  const ITEMS_PER_PAGE = 8;
   
   useEffect(() => {
     setCurrentPage(1);
