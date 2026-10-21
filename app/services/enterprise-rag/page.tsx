@@ -11,8 +11,8 @@ import EnterpriseRAGClient from "./EnterpriseRAGClient";
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'Enterprise RAG & Knowledge Intelligence',
-    description: 'We turn scattered documents, policies and SOPs into production-ready RAG systems in 4–6 weeks. Grounded answers, verifiable citations, measured retrieval quality.',
+    title: 'Enterprise RAG Consulting & Architecture Services',
+    description: 'Botmartz provides enterprise RAG consulting and architecture services. We build citation-grounded hybrid search pipelines benchmarked with RAGAS, secured by RBAC, and delivered in 4–6 week production pilots.',
   };
   
   try {
@@ -25,10 +25,24 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     ...meta,
     openGraph: {
-      title: 'Enterprise RAG & Knowledge Intelligence',
-      description: 'Focused 4–6 week Enterprise Knowledge AI pilots for document-heavy teams. Hybrid retrieval, citation-backed answers, benchmark evaluation from day one.',
+      title: `${meta.title} | Botmartz`,
+      description: meta.description,
       url: 'https://www.botmartz.com/services/enterprise-rag',
       type: 'website',
+      images: [
+        {
+          url: 'https://www.botmartz.com/BotmartznewBot.png',
+          width: 1200,
+          height: 630,
+          alt: 'Botmartz - Enterprise RAG Consulting & Architecture Services',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${meta.title} | Botmartz`,
+      description: meta.description,
+      images: ['https://www.botmartz.com/BotmartznewBot.png'],
     },
     alternates: {
       canonical: 'https://www.botmartz.com/services/enterprise-rag',

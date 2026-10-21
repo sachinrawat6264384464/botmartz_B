@@ -142,9 +142,14 @@ export default function InsightsDetailClient({
     ];
   }, [post.content, post.toc]);
 
+  const authorName = typeof post.author === "string" ? post.author : (post.author?.name || "Botmartz Team");
+  const authorRole = typeof post.author === "object" && post.author?.role ? post.author.role : "AI Engineer, Botmartz";
+  const authorBio = typeof post.author === "object" && post.author?.bio ? post.author.bio : "Leading AI systems research, enterprise RAG, and multi-agent workflow architecture at Botmartz AI Solutions.";
+  const authorPhoto = (typeof post.author === "object" && post.author?.avatar) || post.authorPhotoURL || post.authorImage;
+
   const authorInitials = useMemo(() => {
-    if (!post.author) return "BM";
-    const parts = post.author.trim().split(" ");
+    const raw = typeof post.author === "string" ? post.author : (post.author?.name || "Botmartz Team");
+    const parts = String(raw).trim().split(/\s+/);
     if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
     return parts[0].slice(0, 2).toUpperCase();
   }, [post.author]);
@@ -381,16 +386,16 @@ export default function InsightsDetailClient({
           <div className="flex flex-wrap items-center justify-between gap-4 bg-white/[0.04] border border-white/10 rounded-[14px] p-4.5 mt-8">
             <div className="flex items-center gap-3.5">
               <div className="w-[48px] h-[48px] rounded-full overflow-hidden bg-gradient-to-br from-[#007BFF] to-[#00C6FF] flex items-center justify-center font-bold text-[14px] text-white shrink-0">
-                {post.authorPhotoURL ? (
-                  <img src={post.authorPhotoURL} alt={post.author} className="w-full h-full object-cover" />
+                {authorPhoto ? (
+                  <img src={authorPhoto} alt={authorName} className="w-full h-full object-cover" />
                 ) : (
                   authorInitials
                 )}
               </div>
               <div>
-                <div className="font-bold text-[14px] text-white">{post.author || "Botmartz Engineering Team"}</div>
+                <div className="font-bold text-[14px] text-white">{authorName}</div>
                 <div className="font-medium text-[11.5px] text-[#7C8CAD]">
-                  AI Engineer, Botmartz · {formattedDate} · {readTime} min read
+                  {authorRole} · {formattedDate} · {readTime} min read
                 </div>
               </div>
             </div>
@@ -889,16 +894,16 @@ export default function InsightsDetailClient({
               className="mt-10 flex gap-4 items-center"
             >
               <div className="w-[56px] h-[56px] rounded-full overflow-hidden bg-gradient-to-br from-[#007BFF] to-[#00C6FF] flex items-center justify-center font-bold text-[16px] text-white shrink-0">
-                {post.authorPhotoURL ? (
-                  <img src={post.authorPhotoURL} alt={post.author} className="w-full h-full object-cover" />
+                {authorPhoto ? (
+                  <img src={authorPhoto} alt={authorName} className="w-full h-full object-cover" />
                 ) : (
                   authorInitials
                 )}
               </div>
               <div>
-                <div className="font-bold text-[15px] text-slate-900">{post.author || "Botmartz Team"}</div>
+                <div className="font-bold text-[15px] text-slate-900">{authorName}</div>
                 <div className="font-medium text-[13px] leading-[1.6] text-slate-600 mt-1">
-                  AI Engineer at Botmartz, architecting Enterprise RAG and multi-agent production systems. Contributing to open-source developer tooling.
+                  {authorBio}
                 </div>
               </div>
             </div>

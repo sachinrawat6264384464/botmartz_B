@@ -36,6 +36,20 @@ export const metadata: Metadata = {
     description: "Production-ready Enterprise RAG and deterministic AI agents benchmarked with RAGAS. Fixed 4–6 week delivery.",
     url: "https://www.botmartz.com",
     type: "website",
+    images: [
+      {
+        url: "https://www.botmartz.com/BotmartznewBot.png",
+        width: 1200,
+        height: 630,
+        alt: "Botmartz - Enterprise RAG & AI Agents",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Enterprise RAG & AI Agents That Cite Sources | Botmartz",
+    description: "Production-ready Enterprise RAG and deterministic AI agents benchmarked with RAGAS. Fixed 4–6 week delivery.",
+    images: ["https://www.botmartz.com/BotmartznewBot.png"],
   },
   alternates: {
     canonical: "https://www.botmartz.com",
@@ -116,21 +130,21 @@ const SOLUTIONS = [
       "API & business application gateways",
       "Private VPC & cloud orchestration",
     ],
-    href: "/services/integrations",
+    href: "/services/enterprise-rag",
   },
   {
     icon: Code2,
-    title: "Custom AI Applications",
+    title: "Domain Intelligence Systems",
     badge: "Intelligent Software",
-    desc: "Engineer domain-specific AI software, internal co-pilot tools, and intelligent workflow systems tailored to specialized operations.",
+    desc: "Engineer domain-specific AI software, aviation airworthiness OS (MRO), and visa document intelligence consoles tailored to high-stakes operations.",
     capabilities: [
-      "Industry-specific workflow software",
+      "Industry-specific workflow software (MRO, Legal, Visa)",
       "Internal decision-support co-pilots",
       "Multi-document analysis consoles",
       "Intelligent extraction pipelines",
       "Scalable microservices & APIs",
     ],
-    href: "/services/custom-ai-applications",
+    href: "/services/ai-agents",
   },
 ];
 

@@ -106,11 +106,12 @@ const generateSlugRaw = (title: string) => {
     .trim();
 };
 
-const getAuthorInitials = (author?: string) => {
-  if (!author) return "B";
-  const parts = author.trim().split(/\s+/);
+const getAuthorInitials = (author?: any) => {
+  if (!author) return "BM";
+  const name = typeof author === "string" ? author : (author?.name || author?.displayName || "Botmartz Team");
+  const parts = String(name).trim().split(/\s+/);
   if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  return (parts[0][0] + (parts[parts.length - 1]?.[0] || "")).toUpperCase();
 };
 
 export default function InsightsListingSection({ dbArticles = [] }: { dbArticles?: any[] }) {
@@ -120,19 +121,33 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
 
   const mergedArticles = useMemo(() => {
     const formattedDb = dbArticles
-      .map((art: any) => ({
-        id: art.id,
-        title: art.title,
-        category: art.category?.toUpperCase() || "AI ENGINEERING",
-        description: art.excerpt || art.description || "",
-        author: art.author || "Botmartz Team",
-        date: art.createdAt ? new Date(art.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent",
-        readTime: `${art.readTime || 8} min read`,
-        slug: art.slug || generateSlugRaw(art.title),
-        featured: !!art.featured,
-        visualType: (art.visualType || "mlops-dashboard") as any,
-        featuredImage: art.featuredImage || art.image || art.coverImage || "",
-      }));
+      .map((art: any) => {
+        const authorName = typeof art.author === "string" 
+          ? art.author 
+          : (art.author?.name || art.author?.displayName || "Botmartz Team");
+        const authorRole = typeof art.author === "object" ? art.author?.role : undefined;
+        const authorAvatar = typeof art.author === "object" ? art.author?.avatar : undefined;
+        const rawReadTime = art.readTime || art.readingTime;
+        const readTimeFormatted = typeof rawReadTime === "string" 
+          ? (rawReadTime.toLowerCase().includes("min") ? rawReadTime : `${rawReadTime} min read`)
+          : `${rawReadTime || 8} min read`;
+
+        return {
+          id: art.id,
+          title: art.title,
+          category: art.category?.toUpperCase() || "AI ENGINEERING",
+          description: art.excerpt || art.description || "",
+          author: authorName,
+          authorRole,
+          authorAvatar,
+          date: art.createdAt ? new Date(art.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent",
+          readTime: readTimeFormatted,
+          slug: art.slug || generateSlugRaw(art.title),
+          featured: !!art.featured,
+          visualType: (art.visualType || "mlops-dashboard") as any,
+          featuredImage: art.featuredImage || art.image || art.coverImage || "",
+        };
+      });
 
     const dbSlugs = new Set(formattedDb.map(a => a.slug));
     const staticKept = ARTICLES_DATA.filter(a => !dbSlugs.has(a.slug || generateSlugRaw(a.title)));
