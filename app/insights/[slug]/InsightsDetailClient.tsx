@@ -33,7 +33,7 @@ interface BlogPost {
   slug: string;
   excerpt: string;
   content: string;
-  author: string;
+  author: any;
   category: string;
   tags?: string[];
   featuredImage?: string;
@@ -47,6 +47,7 @@ interface BlogPost {
   views?: number;
   authorId?: string;
   authorPhotoURL?: string;
+  authorImage?: string;
   colabLink?: string;
   notebookLink?: string;
   githubLink?: string;
@@ -142,17 +143,18 @@ export default function InsightsDetailClient({
     ];
   }, [post.content, post.toc]);
 
-  const authorName = typeof post.author === "string" ? post.author : (post.author?.name || "Botmartz Team");
-  const authorRole = typeof post.author === "object" && post.author?.role ? post.author.role : "AI Engineer, Botmartz";
-  const authorBio = typeof post.author === "object" && post.author?.bio ? post.author.bio : "Leading AI systems research, enterprise RAG, and multi-agent workflow architecture at Botmartz AI Solutions.";
-  const authorPhoto = (typeof post.author === "object" && post.author?.avatar) || post.authorPhotoURL || post.authorImage;
+  const rawAuthor: any = post.author;
+  const authorName: string = typeof rawAuthor === "string" ? rawAuthor : (rawAuthor?.name || "Botmartz Team");
+  const authorRole: string = typeof rawAuthor === "object" && rawAuthor?.role ? rawAuthor.role : "AI Engineer, Botmartz";
+  const authorBio: string = typeof rawAuthor === "object" && rawAuthor?.bio ? rawAuthor.bio : "Leading AI systems research, enterprise RAG, and multi-agent workflow architecture at Botmartz AI Solutions.";
+  const authorPhoto: string | undefined = (typeof rawAuthor === "object" && rawAuthor?.avatar) || post.authorPhotoURL || post.authorImage;
 
   const authorInitials = useMemo(() => {
-    const raw = typeof post.author === "string" ? post.author : (post.author?.name || "Botmartz Team");
+    const raw = typeof rawAuthor === "string" ? rawAuthor : (rawAuthor?.name || "Botmartz Team");
     const parts = String(raw).trim().split(/\s+/);
     if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
     return parts[0].slice(0, 2).toUpperCase();
-  }, [post.author]);
+  }, [rawAuthor]);
 
   const formattedDate = useMemo(() => {
     try {
@@ -1079,7 +1081,7 @@ export default function InsightsDetailClient({
 
                   <div className="p-6 flex flex-col flex-1">
                     <div className="text-xs text-slate-500 mb-2 font-medium">
-                      {rp.readTime || 8} min read · {rp.author || "Botmartz Team"}
+                      {rp.readTime || 8} min read · {typeof rp.author === "string" ? rp.author : (rp.author?.name || "Botmartz Team")}
                     </div>
                     <h3 className="text-base font-bold text-slate-900 group-hover:text-[#0066FF] transition-colors leading-snug line-clamp-2 mb-3">
                       {rp.title}

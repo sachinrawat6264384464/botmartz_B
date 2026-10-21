@@ -342,7 +342,7 @@ export default async function InsightsDetailPage({ params }: Props) {
           title: data.title || "",
           slug: data.slug || "",
           category: data.category || "AI Engineering",
-          author: data.author || data.authorName || "Botmartz Team",
+          author: typeof data.author === 'string' ? data.author : (data.author?.name || data.authorName || "Botmartz Team"),
           readTime: data.readTime || 8,
           featuredImage: data.featuredImage || data.image || data.coverImage || "",
           excerpt: data.excerpt || ""
