@@ -97,6 +97,41 @@ function slugify(text: string): string {
     .replace(/^-|-$/g, "");
 }
 
+function AuthorAvatar({
+  src,
+  name,
+  initials,
+  sizeClassName = "w-[48px] h-[48px]",
+  textClassName = "font-bold text-[14px] text-white",
+}: {
+  src?: string;
+  name: string;
+  initials: string;
+  sizeClassName?: string;
+  textClassName?: string;
+}) {
+  const [imgError, setImgError] = useState(false);
+  const fallbackSrc = name?.toLowerCase().includes("soham") ? "/soham-founder.png" : undefined;
+  const currentSrc = !imgError ? (src || fallbackSrc) : (src && src !== fallbackSrc ? fallbackSrc : undefined);
+
+  return (
+    <div
+      className={`${sizeClassName} rounded-full overflow-hidden bg-gradient-to-br from-[#007BFF] to-[#00C6FF] flex items-center justify-center ${textClassName} shrink-0 select-none shadow-sm relative`}
+    >
+      {currentSrc ? (
+        <img
+          src={currentSrc}
+          alt={name}
+          className="w-full h-full object-cover"
+          onError={() => setImgError(true)}
+        />
+      ) : (
+        <span>{initials}</span>
+      )}
+    </div>
+  );
+}
+
 export default function InsightsDetailClient({
   post,
   initialRelated = [],
@@ -147,7 +182,11 @@ export default function InsightsDetailClient({
   const authorName: string = typeof rawAuthor === "string" ? rawAuthor : (rawAuthor?.name || "Botmartz Team");
   const authorRole: string = typeof rawAuthor === "object" && rawAuthor?.role ? rawAuthor.role : "AI Engineer, Botmartz";
   const authorBio: string = typeof rawAuthor === "object" && rawAuthor?.bio ? rawAuthor.bio : "Leading AI systems research, enterprise RAG, and multi-agent workflow architecture at Botmartz AI Solutions.";
-  const authorPhoto: string | undefined = (typeof rawAuthor === "object" && rawAuthor?.avatar) || post.authorPhotoURL || post.authorImage;
+  const authorPhoto: string | undefined =
+    (typeof rawAuthor === "object" && rawAuthor?.avatar) ||
+    post.authorPhotoURL ||
+    post.authorImage ||
+    (authorName.toLowerCase().includes("soham") ? "/soham-founder.png" : undefined);
 
   const authorInitials = useMemo(() => {
     const raw = typeof rawAuthor === "string" ? rawAuthor : (rawAuthor?.name || "Botmartz Team");
@@ -387,13 +426,13 @@ export default function InsightsDetailClient({
           {/* Author & Share Row */}
           <div className="flex flex-wrap items-center justify-between gap-4 bg-white/[0.04] border border-white/10 rounded-[14px] p-4.5 mt-8">
             <div className="flex items-center gap-3.5">
-              <div className="w-[48px] h-[48px] rounded-full overflow-hidden bg-gradient-to-br from-[#007BFF] to-[#00C6FF] flex items-center justify-center font-bold text-[14px] text-white shrink-0">
-                {authorPhoto ? (
-                  <img src={authorPhoto} alt={authorName} className="w-full h-full object-cover" />
-                ) : (
-                  authorInitials
-                )}
-              </div>
+              <AuthorAvatar
+                src={authorPhoto}
+                name={authorName}
+                initials={authorInitials}
+                sizeClassName="w-[48px] h-[48px]"
+                textClassName="font-bold text-[14px] text-white"
+              />
               <div>
                 <div className="font-bold text-[14px] text-white">{authorName}</div>
                 <div className="font-medium text-[11.5px] text-[#7C8CAD]">
@@ -609,32 +648,6 @@ export default function InsightsDetailClient({
           ARTICLE BODY & SIDEBAR
       ═══════════════════════════════════════════════════════════════ */}
       <div className="w-full max-w-[1300px] mx-auto px-6 sm:px-10 pt-12 pb-24">
-        {/* Table of contents quick filter pills */}
-        {toc.length > 0 && (
-          <div className="flex gap-2 flex-wrap mb-10">
-            {toc.map((t, idx) => (
-              <a
-                key={`toc-${idx}`}
-                href={`#${slugify(t)}`}
-                style={{
-                  fontWeight: "700",
-                  fontSize: "12px",
-                  color: "#475569",
-                  backgroundColor: "#F8FAFC",
-                  border: "1px solid #E2E8F0",
-                  padding: "8px 14px",
-                  borderRadius: "7px",
-                  transition: "all 0.2s",
-                  textDecoration: "none",
-                }}
-                className="hover:text-[#0066FF] hover:bg-[#00C6FF]/10 hover:border-[#00C6FF]/20"
-              >
-                {t}
-              </a>
-            ))}
-          </div>
-        )}
-
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Main Article Content */}
           <div className="lg:col-span-8">
@@ -895,13 +908,13 @@ export default function InsightsDetailClient({
               }}
               className="mt-10 flex gap-4 items-center"
             >
-              <div className="w-[56px] h-[56px] rounded-full overflow-hidden bg-gradient-to-br from-[#007BFF] to-[#00C6FF] flex items-center justify-center font-bold text-[16px] text-white shrink-0">
-                {authorPhoto ? (
-                  <img src={authorPhoto} alt={authorName} className="w-full h-full object-cover" />
-                ) : (
-                  authorInitials
-                )}
-              </div>
+              <AuthorAvatar
+                src={authorPhoto}
+                name={authorName}
+                initials={authorInitials}
+                sizeClassName="w-[56px] h-[56px]"
+                textClassName="font-bold text-[16px] text-white"
+              />
               <div>
                 <div className="font-bold text-[15px] text-slate-900">{authorName}</div>
                 <div className="font-medium text-[13px] leading-[1.6] text-slate-600 mt-1">
