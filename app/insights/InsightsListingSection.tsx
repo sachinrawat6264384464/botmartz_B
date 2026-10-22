@@ -134,10 +134,12 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
         featuredImage: art.featuredImage || art.image || art.coverImage || "",
       }));
 
-    const dbSlugs = new Set(formattedDb.map(a => a.slug));
-    const staticKept = ARTICLES_DATA.filter(a => !dbSlugs.has(a.slug || generateSlugRaw(a.title)));
+    // Only display articles actually published in the database (or fallback if DB is completely empty)
+    if (formattedDb.length > 0) {
+      return formattedDb;
+    }
 
-    return [...formattedDb, ...staticKept];
+    return ARTICLES_DATA;
   }, [dbArticles]);
 
   const categoriesList = useMemo(() => {
