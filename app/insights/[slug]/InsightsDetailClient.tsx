@@ -22,7 +22,10 @@ import {
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
 import rehypeRaw from "rehype-raw";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css";
 
 import FloatingSideBar from "./_components/FloatingSideBar";
 import SchemaMarkup from "@/app/_components/SchemaMarkup";
@@ -655,8 +658,8 @@ export default function InsightsDetailClient({
           <div className="lg:col-span-8">
             <article className="prose prose-lg max-w-none text-slate-800 leading-relaxed">
               <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeRaw]}
+                remarkPlugins={[remarkGfm, remarkMath]}
+                rehypePlugins={[rehypeRaw, rehypeKatex]}
                 components={{
                   h1: ({ node, children, ...props }) => {
                     const id = slugify(String(children));
