@@ -38,18 +38,9 @@ const FOOTER_COLS = [
   {
     heading: "Solutions",
     links: [
-      { label: "Enterprise AI Implementation", href: "/implementation" },
       { label: "Enterprise RAG & Search", href: "/services/enterprise-rag" },
       { label: "AI Agents & State Machines", href: "/services/ai-agents" },
-    ],
-  },
-  {
-    heading: "Implementation",
-    links: [
-      { label: "Delivery Lifecycle", href: "/implementation#lifecycle" },
-      { label: "Stack Integration", href: "/implementation#stack" },
-      { label: "Architecture Review", href: "/contact?type=architecture-review" },
-      { label: "Security & Governance", href: "/implementation#governance" },
+      { label: "Systems Architecture", href: "/services" },
     ],
   },
   {
@@ -62,12 +53,11 @@ const FOOTER_COLS = [
     ],
   },
   {
-    heading: "Industries",
+    heading: "Work & Labs",
     links: [
-      { label: "Insurance & Underwriting", href: "/industries#insurance" },
-      { label: "Financial Services", href: "/industries#financial-services" },
-      { label: "Enterprise Operations", href: "/industries#enterprise-operations" },
-      { label: "Ecommerce Intelligence", href: "/industries#ecommerce" },
+      { label: "Systems Labs", href: "/work/labs" },
+      { label: "Production Reference Work", href: "/work" },
+      { label: "Open Source Blueprint", href: "/insights/how-to-build-multi-million-dollar-ai-agents-with-antigravity-and-mcp" },
     ],
   },
   {
@@ -75,7 +65,6 @@ const FOOTER_COLS = [
     links: [
       { label: "About Botmartz", href: "/about" },
       { label: "Engineering Insights", href: "/insights" },
-      { label: "Partner Ecosystem", href: "/partnerships" },
       { label: "Write for Us", href: "/write-for-us" },
       { label: "Privacy Policy", href: "/privacy" },
       { label: "Terms of Service", href: "/terms" },
@@ -99,7 +88,7 @@ const TRUST = [
 /* ─── COMPONENT ──────────────────────────────────────────────────────────────── */
 export function Footer({ settings }: { settings?: any }) {
   const companyName = settings?.general?.companyName || "Botmartz AI Solution PVT LTD.";
-  const logoUrl = "/WHITELOGO.png";
+  const logoUrl = "/Logo-removebg-preview.png";
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 

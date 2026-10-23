@@ -108,9 +108,9 @@ export default function InsightsDetailClient({
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   const featuredImg = post.featuredImage || post.image || post.coverImage || "";
-  const colabLink = post.colabLink || post.notebookLink || (post.content?.includes("colab.research.google.com") ? post.content.match(/https:\/\/colab\.research\.google\.com[^\s"'>)]+/)?.[0] : "https://colab.research.google.com");
+  const colabLink = post.colabLink || post.notebookLink || (post.content?.includes("colab.research.google.com") ? post.content.match(/https:\/\/colab\.research\.google\.com[^\s"'>)]+/)?.[0] : null);
   const githubLink = post.githubLink || post.codeLink || (post.content?.includes("github.com") ? post.content.match(/https:\/\/github\.com\/[^\s"'>)]+/)?.[0] : "https://github.com/botmartz");
-  const hasNotebook = Boolean(post.colabLink || post.notebookLink || post.content?.includes("colab.research.google.com"));
+  const hasNotebook = Boolean(colabLink);
 
   const words = (post.content || "").split(/\s+/).length;
   const readTime = post.readTime || Math.max(4, Math.ceil(words / 220));
@@ -417,32 +417,34 @@ export default function InsightsDetailClient({
             </div>
           </div>
 
-          {/* ACTION BUTTONS: Google Colab & GitHub */}
+          {/* ACTION BUTTONS: Google Colab (if technical/notebook available) & GitHub */}
           <div className="flex gap-3 mt-6 flex-wrap">
-            <a
-              href={colabLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                backgroundColor: "#F9AB00",
-                color: "#0B1220",
-                fontWeight: "700",
-                fontSize: "13px",
-                padding: "13px 22px",
-                borderRadius: "9px",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                transition: "all 0.2s",
-                boxShadow: "0 8px 24px rgba(249,171,0,0.25)",
-                cursor: "pointer",
-                border: "none",
-                textDecoration: "none",
-              }}
-              className="hover:scale-[1.02]"
-            >
-              ◈ Open in Google Colab
-            </a>
+            {hasNotebook && colabLink && (
+              <a
+                href={colabLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  backgroundColor: "#F9AB00",
+                  color: "#0B1220",
+                  fontWeight: "700",
+                  fontSize: "13px",
+                  padding: "13px 22px",
+                  borderRadius: "9px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  transition: "all 0.2s",
+                  boxShadow: "0 8px 24px rgba(249,171,0,0.25)",
+                  cursor: "pointer",
+                  border: "none",
+                  textDecoration: "none",
+                }}
+                className="hover:scale-[1.02]"
+              >
+                ◈ Open in Google Colab
+              </a>
+            )}
             <a
               href={githubLink}
               target="_blank"
@@ -760,71 +762,73 @@ export default function InsightsDetailClient({
               </ReactMarkdown>
             </article>
 
-            {/* Try It Yourself Callout */}
-            <div
-              style={{
-                backgroundColor: "#F8FAFC",
-                border: "1px solid #E2E8F0",
-                borderRadius: "14px",
-                padding: "26px",
-              }}
-              className="mt-10 flex flex-col sm:flex-row items-center gap-5 justify-between shadow-sm"
-            >
-              <div className="flex-1">
-                <div className="font-bold text-[16px] text-slate-900">Try It Yourself</div>
-                <div className="font-medium text-[13px] leading-[1.6] text-slate-600 mt-1.5">
-                  A runnable Google Colab notebook with interactive architecture implementation and code from this insight.
+            {/* Try It Yourself Callout (Only when Runnable Colab Notebook exists) */}
+            {hasNotebook && colabLink && (
+              <div
+                style={{
+                  backgroundColor: "#F8FAFC",
+                  border: "1px solid #E2E8F0",
+                  borderRadius: "14px",
+                  padding: "26px",
+                }}
+                className="mt-10 flex flex-col sm:flex-row items-center gap-5 justify-between shadow-sm"
+              >
+                <div className="flex-1">
+                  <div className="font-bold text-[16px] text-slate-900">Try It Yourself</div>
+                  <div className="font-medium text-[13px] leading-[1.6] text-slate-600 mt-1.5">
+                    A runnable Google Colab notebook with interactive architecture implementation and code from this insight.
+                  </div>
+                </div>
+                <div className="flex gap-2.5 shrink-0">
+                  <a
+                    href={colabLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      backgroundColor: "#F9AB00",
+                      color: "#0B1220",
+                      fontWeight: "700",
+                      fontSize: "12.5px",
+                      padding: "11px 18px",
+                      borderRadius: "8px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      transition: "all 0.2s",
+                      boxShadow: "0 4px 12px rgba(249,171,0,0.2)",
+                      cursor: "pointer",
+                      textDecoration: "none",
+                    }}
+                    className="hover:scale-[1.02]"
+                  >
+                    ◈ Open in Colab
+                  </a>
+                  <a
+                    href={githubLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      backgroundColor: "#F1F5F9",
+                      color: "#0F172A",
+                      fontWeight: "700",
+                      fontSize: "12.5px",
+                      padding: "11px 18px",
+                      borderRadius: "8px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      transition: "all 0.2s",
+                      border: "1px solid #CBD5E1",
+                      cursor: "pointer",
+                      textDecoration: "none",
+                    }}
+                    className="hover:bg-[#E2E8F0]"
+                  >
+                    ⌥ GitHub Repo
+                  </a>
                 </div>
               </div>
-              <div className="flex gap-2.5 shrink-0">
-                <a
-                  href={colabLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    backgroundColor: "#F9AB00",
-                    color: "#0B1220",
-                    fontWeight: "700",
-                    fontSize: "12.5px",
-                    padding: "11px 18px",
-                    borderRadius: "8px",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    transition: "all 0.2s",
-                    boxShadow: "0 4px 12px rgba(249,171,0,0.2)",
-                    cursor: "pointer",
-                    textDecoration: "none",
-                  }}
-                  className="hover:scale-[1.02]"
-                >
-                  ◈ Open in Colab
-                </a>
-                <a
-                  href={githubLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    backgroundColor: "#F1F5F9",
-                    color: "#0F172A",
-                    fontWeight: "700",
-                    fontSize: "12.5px",
-                    padding: "11px 18px",
-                    borderRadius: "8px",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    transition: "all 0.2s",
-                    border: "1px solid #CBD5E1",
-                    cursor: "pointer",
-                    textDecoration: "none",
-                  }}
-                  className="hover:bg-[#E2E8F0]"
-                >
-                  ⌥ GitHub Repo
-                </a>
-              </div>
-            </div>
+            )}
 
             {/* Topic Tags */}
             <div className="flex flex-wrap gap-2 mt-8">
@@ -909,7 +913,7 @@ export default function InsightsDetailClient({
           <aside className="lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
             <div className="space-y-5 max-h-[calc(100vh-7rem)] overflow-y-auto pr-1">
               {/* Sticky Colab Notebook Card */}
-              {hasNotebook && (
+              {hasNotebook && colabLink && (
                 <a
                   href={colabLink}
                   target="_blank"

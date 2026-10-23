@@ -486,12 +486,12 @@ export default function HomePage() {
               </div>
 
               <TrackedLink
-                href="/implementation"
+                href="/work"
                 eventName="button_click"
                 eventData={{ button_name: "home_implementation_methodology" }}
                 className="inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all shadow-sm"
               >
-                Read Implementation Methodology <ArrowRight size={14} />
+                Explore Production Systems <ArrowRight size={14} />
               </TrackedLink>
             </div>
 

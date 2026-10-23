@@ -17,6 +17,7 @@ export interface LabItem {
   tags?: string[];
   githubUrl?: string;
   demoUrl?: string;
+  colabUrl?: string;
   repoUrl?: string;
   badge?: string;
   isNew?: boolean;
@@ -29,98 +30,82 @@ export interface LabItem {
 
 const DEFAULT_LABS: LabItem[] = [
   { 
-    id: 'insurance-intelligence', 
+    id: 'visadesk-intelligence', 
     category: 'Enterprise Knowledge', 
     type: 'REFERENCE IMPLEMENTATION',
-    title: 'Insurance Intelligence Lab', 
-    desc: 'Multi-document insurance policy comparison, clause variance extraction, and zero-hallucination citation enforcement.', 
-    tags: ['Hybrid Search', 'BGE-Reranker', 'Pydantic', 'OpenSearch'], 
+    title: 'VisaDesk Document Intelligence & Sovereign RAG', 
+    desc: 'High-assurance document extraction and legal verification pipeline for complex immigration filings with ColBERT late interaction and 94.2% citation faithfulness.', 
+    tags: ['ColBERT', 'Qdrant', 'LayoutParser', 'FastAPI'], 
     isNew: true, 
-    glyph: 'INS', 
+    glyph: 'VISA', 
     featured: true,
-    demoUrl: '/work/labs/insurance-intelligence',
-    githubUrl: 'https://github.com/botmartz' 
+    demoUrl: '/work/labs/visadesk',
+    colabUrl: 'https://colab.research.google.com/drive/1-botmartz-visadesk-colbert-eval',
+    githubUrl: 'https://github.com/botmartz/visadesk-rag-pipeline' 
   },
   { 
-    id: 'rag-starter', 
-    category: 'Enterprise Knowledge', 
-    type: 'REFERENCE IMPLEMENTATION',
-    title: 'Enterprise Knowledge & Search', 
-    desc: 'Production-ready RAG platform with hybrid vector/keyword search, cross-encoder reranking, and automated RAGAS evaluation.', 
-    tags: ['Qdrant', 'FastAPI', 'LlamaIndex', 'RAGAS'], 
-    isNew: true, 
-    glyph: 'RAG', 
-    githubUrl: 'https://github.com/botmartz' 
-  },
-  { 
-    id: 'langgraph-agent', 
-    category: 'AI Agents', 
-    type: 'REFERENCE IMPLEMENTATION',
-    title: 'Multi-Agent Workflow State Machine', 
-    desc: 'Modular LangGraph state graph with deterministic routing, human-in-the-loop validation, and tool calling.', 
-    tags: ['LangGraph', 'Python', 'Redis', 'Docker'], 
-    isNew: true, 
-    glyph: 'AG', 
-    githubUrl: 'https://github.com/botmartz' 
-  },
-  { 
-    id: 'opensearch-connector', 
-    category: 'Open Source', 
-    type: 'OPEN SOURCE PROJECT',
-    title: 'OpenSearch Vector & RAG Tools', 
-    desc: 'Open-source utilities and connectors for building hybrid vector and keyword search pipelines with OpenSearch.', 
-    tags: ['OpenSearch', 'Python', 'BM25', 'RRF'], 
-    isNew: true, 
-    glyph: 'OSS', 
-    githubUrl: 'https://github.com/botmartz' 
-  },
-  { 
-    id: 'ecommerce-intelligence', 
-    category: 'Ecommerce', 
-    type: 'REFERENCE IMPLEMENTATION',
-    title: 'Ecommerce Semantic Catalog Search', 
-    desc: 'E-commerce catalog intelligence engine with multi-facet semantic filtering, attribute extraction, and real-time ranker.', 
-    tags: ['Weaviate', 'FastAPI', 'Vector Search', 'Redis'], 
-    isNew: false, 
-    glyph: 'ECOM', 
-    githubUrl: 'https://github.com/botmartz' 
-  },
-  { 
-    id: 'virtual-tryon', 
+    id: 'optimtensors-engine', 
     category: 'Research', 
     type: 'RESEARCH PROTOTYPE',
-    title: 'Virtual Try-On Vision Lab', 
-    desc: 'Experimental computer vision pipeline for garment deformation and realistic multi-pose virtual try-on.', 
-    tags: ['PyTorch', 'Diffusers', 'ONNX', 'Gradio'], 
-    isNew: false, 
-    glyph: 'CV', 
-    githubUrl: 'https://github.com/botmartz' 
+    title: 'OptimTensors: KV-Cache & Attention Optimization', 
+    desc: 'Deep learning inference acceleration library reducing transformer KV-cache memory footprints by up to 8x using Grouped-Query Attention (GQA) and custom PyTorch kernels.', 
+    tags: ['PyTorch', 'CUDA', 'KV-Cache', 'GQA'], 
+    isNew: true, 
+    glyph: 'OPT', 
+    featured: true,
+    colabUrl: 'https://colab.research.google.com/drive/1-botmartz-optimtensors-gqa-benchmark',
+    githubUrl: 'https://github.com/botmartz/optimtensors' 
   },
   { 
-    id: 'meeting-agent', 
+    id: 'langgraph-deterministic-agents', 
     category: 'AI Agents', 
     type: 'REFERENCE IMPLEMENTATION',
-    title: 'Executive Meeting & Decision Extractor', 
-    desc: 'Automated meeting transcription, structured decision extraction, and action item task generation in enterprise tools.', 
-    tags: ['Whisper', 'LangChain', 'PostgreSQL', 'AWS'], 
-    isNew: false, 
+    title: 'Deterministic Multi-Agent State Machine', 
+    desc: 'LangGraph architecture enforcing finite-state routing, Pydantic tool verification, human-in-the-loop approvals, and replayable execution traces.', 
+    tags: ['LangGraph', 'Python', 'Redis', 'MCP Protocol'], 
+    isNew: true, 
     glyph: 'AG', 
-    githubUrl: 'https://github.com/botmartz' 
+    colabUrl: 'https://colab.research.google.com/drive/1-botmartz-langgraph-state-machine',
+    githubUrl: 'https://github.com/botmartz/langgraph-agent-engine' 
+  },
+  { 
+    id: 'hybrid-rag-opensearch', 
+    category: 'Enterprise Knowledge', 
+    type: 'OPEN SOURCE PROJECT',
+    title: 'Hybrid Dense + BM25 Search with RRF', 
+    desc: 'Enterprise retrieval pipeline orchestrating OpenSearch BM25 keyword matching with dense embeddings fused via Reciprocal Rank Fusion and BGE-reranker-v2.', 
+    tags: ['OpenSearch', 'BM25', 'BGE Reranker', 'RRF'], 
+    isNew: true, 
+    glyph: 'RAG', 
+    colabUrl: 'https://colab.research.google.com/drive/1-botmartz-hybrid-rag-rrf-benchmark',
+    githubUrl: 'https://github.com/botmartz/hybrid-rag-eval-suite' 
+  },
+  { 
+    id: 'sovereign-airgapped-pipeline', 
+    category: 'Research', 
+    type: 'RESEARCH PROTOTYPE',
+    title: 'Air-Gapped Sovereign AI Inference Stack', 
+    desc: 'Private on-premise execution framework utilizing vLLM, TensorRT-LLM, and local Qdrant vectors for compliance with Indian DPDPA and strict data sovereignty.', 
+    tags: ['vLLM', 'TensorRT', 'DPDPA', 'Qdrant'], 
+    isNew: false, 
+    glyph: 'SOV', 
+    githubUrl: 'https://github.com/botmartz/sovereign-ai-stack' 
   },
   { 
     id: 'doc-intelligence-table', 
     category: 'Enterprise Knowledge', 
     type: 'REFERENCE IMPLEMENTATION',
-    title: 'Layout-Aware Document Intelligence', 
-    desc: 'Table extraction and multi-column parsing pipeline for high-density regulatory filings and financial disclosures.', 
-    tags: ['FastAPI', 'OCR', 'Qdrant', 'Docker'], 
+    title: 'Layout-Aware Financial Table Parser', 
+    desc: 'High-density multi-column table extraction and regulatory clause parser preserving hierarchy and tabular relations across unformatted PDFs.', 
+    tags: ['OCR', 'FastAPI', 'Qdrant', 'PyMuPDF'], 
     isNew: false, 
     glyph: 'DOC', 
+    colabUrl: 'https://colab.research.google.com/drive/1-botmartz-table-extraction-pipeline',
     githubUrl: 'https://github.com/botmartz' 
   },
 ];
 
-const CATEGORIES = ['All Labs', 'Enterprise Knowledge', 'AI Agents', 'Open Source', 'Ecommerce', 'Research'];
+const CATEGORIES = ['All Labs', 'Enterprise Knowledge', 'AI Agents', 'Research', 'Open Source'];
 
 const STACK_ITEMS = [
   { name: 'PyTorch', color: '#EE4C2C' },
@@ -372,25 +357,35 @@ export default function LabsClient({ initialLabs = [], heroContent, structuredDa
 
               {/* Card Footer */}
               <div className="flex items-center justify-between mt-2 pt-3 border-t border-[#EEF1F6]">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5 flex-wrap">
                   <a 
                     href={lab.githubUrl || lab.repoUrl || "https://github.com/botmartz"} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="font-semibold text-[11.5px] text-[#3A4459] hover:text-[#007BFF] flex items-center gap-1 transition-colors"
+                    className="font-semibold text-[11px] text-[#3A4459] hover:text-[#007BFF] flex items-center gap-1 transition-colors"
                   >
                     <span>⌥</span> Code
                   </a>
+                  {lab.colabUrl && (
+                    <a 
+                      href={lab.colabUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="font-bold text-[11px] text-[#F9AB00] hover:text-[#D98200] flex items-center gap-1 transition-colors"
+                    >
+                      <span>▶</span> Colab
+                    </a>
+                  )}
                   {lab.demoUrl && (
                     <Link 
                       href={lab.demoUrl} 
-                      className="font-bold text-[11.5px] text-[#007BFF] hover:text-[#0052CC] flex items-center gap-1 transition-colors"
+                      className="font-bold text-[11px] text-[#007BFF] hover:text-[#0052CC] flex items-center gap-1 transition-colors"
                     >
                       <span>⚡</span> Live Lab
                     </Link>
                   )}
                 </div>
-                <span className="font-mono text-[10.5px] text-[#8A97AC]">
+                <span className="font-mono text-[10px] text-[#8A97AC]">
                   Verified
                 </span>
               </div>

@@ -17,25 +17,19 @@ Botmartz is engineering-first: the company publishes open benchmarks, reference 
 - [Enterprise RAG](https://www.botmartz.com/services/enterprise-rag): Hybrid dense/sparse vector retrieval with query decomposition, reranking, and evaluation-gated builds. We prove retrieval quality against a client's own documents before committing to a full build.
 - [AI Agents](https://www.botmartz.com/services/ai-agents): LangGraph-based multi-agent workflows with memory, tool use, planning, evaluation, and human-in-the-loop safeguards for production reliability.
 
-## Industry Focus
-Botmartz is deliberately focused on high-stakes, document-heavy domains:
-- [Insurance & Underwriting](https://www.botmartz.com/industries#insurance): Policy comparison, endorsement discrepancy analysis, claims verification, and submission ingestion.
-- [Financial Services](https://www.botmartz.com/industries#financial-services): Regulatory compliance checking, audit trail generation, and financial document intelligence.
-- [Enterprise Operations](https://www.botmartz.com/industries#enterprise-operations): Multi-system agent orchestration, internal knowledge base retrieval, and SLA automation.
-- [Ecommerce Intelligence](https://www.botmartz.com/industries#ecommerce): Dynamic product search, catalog knowledge grounding, and customer support agent routing.
+## Production Systems & Research Focus
+Botmartz is deliberately focused on high-stakes, document-heavy and compute-intensive domains:
+- **VisaDesk OS**: High-assurance immigration and legal document intelligence with ColBERT late interaction, sovereign OCR, and automated citation verification.
+- **OptimTensors**: Deep learning inference efficiency research, KV cache memory footprint reduction (up to 8x), and Grouped-Query Attention (GQA) PyTorch kernels.
+- **Enterprise Knowledge & RAG**: Multi-document comparison, hybrid sparse/dense retrieval, and automated RAGAS evaluation harnesses.
+- **Deterministic Agent Graphs**: LangGraph state machines with schema-gated tool execution and human-in-the-loop oversight.
 
 ## Engineering & Proof of Capability
 - [Engineering Insights](https://www.botmartz.com/insights): Technical write-ups on production RAG and agent engineering — architecture decisions, retrieval strategies, evaluation methodology, and honest failure analysis.
-- [Work & Reference Implementations](https://www.botmartz.com/work): Open, reproducible reference builds — including our flagship Insurance Policy Intelligence Lab (/work/labs/insurance-intelligence) with exact paragraph citation grounding and benchmark evaluation.
+- [Work & Reference Implementations](https://www.botmartz.com/work): Open, reproducible reference builds and reference labs (/work/labs) with exact paragraph citation grounding and benchmark evaluation.
 
-## Flagship Event & Community
-- [AI Frontier 2026](https://www.botmartz.com/community/events/ai-frontier-2026): Botmartz's flagship AI Engineering Summit — an engineering-focused event covering Agents, Enterprise AI, AI-assisted development, and responsible AI. Taking place in **August 2026 in Indore, India**.
-- [Botmartz AI Engineering Community](https://www.botmartz.com/community): Meetups, Discord, open-source GitHub organization, reading club, and hackathons for engineers building production AI systems.
-- [Botmartz Academy](https://academy.botmartz.com): The training arm of Botmartz — an AI engineering accelerator focused on building production AI systems (Enterprise RAG, AI Agents, production deployment).
-
-## Company & Partnerships
-- [About Botmartz](https://www.botmartz.com/about): Mission, 5-stage engineering lifecycle, and leadership.
-- [Partnerships](https://www.botmartz.com/partnerships): Technology & cloud ecosystem alignment, system-integrator collaboration, and community partnerships.
+## Company
+- [About Botmartz](https://www.botmartz.com/about): Mission, engineering standards, and Indore research lab vision.
 - [Contact](https://www.botmartz.com/contact): Schedule a technical discovery call (team@botmartz.com).
 
 ## Answer Engine Optimization (AEO) & FAQ

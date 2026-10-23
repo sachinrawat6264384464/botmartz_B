@@ -821,8 +821,8 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
               </div>
               <ul className="space-y-3">
                 {[
-                  { label: "Engineering Handbook", icon: BookOpen, href: "/implementation" },
-                  { label: "System Design Patterns", icon: Layers, href: "/work/case-studies" },
+                  { label: "Engineering Reference Labs", icon: BookOpen, href: "/work/labs" },
+                  { label: "Production AI Work", icon: Layers, href: "/work" },
                   { label: "AI Engineering Roadmap", icon: Network, href: "/services/enterprise-rag" },
                   { label: "Open Source @ Botmartz", icon: Code2, href: "/work/open-source" },
                   { label: "YouTube Channel", icon: PlayCircle, href: "https://youtube.com/@botmartz" },

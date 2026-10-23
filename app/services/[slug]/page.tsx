@@ -106,7 +106,7 @@ export default async function DynamicServicePage({ params }: { params: Promise<{
               <Link href={content.hero?.ctaLink || "/contact"} className="btn btn-primary bg-brand text-white hover:bg-deep">
                 {content.hero?.ctaText || "Get Started →"}
               </Link>
-              <Link href="/work/case-studies" className="btn btn-ghost border-line text-white hover:border-brand hover:text-brand">Explore Case Studies ↗</Link>
+              <Link href="/work" className="btn btn-ghost border-line text-white hover:border-brand hover:text-brand">Explore Production Work ↗</Link>
             </div>
           </div>
           

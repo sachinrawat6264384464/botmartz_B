@@ -85,12 +85,12 @@ export default function ServicesPage() {
               Book an Architecture Review <ArrowRight className="w-4 h-4" />
             </TrackedLink>
             <TrackedLink
-              href="/implementation"
+              href="/work"
               eventName="button_click"
               eventData={{ button_name: "services_hero_view_methodology" }}
               className="inline-flex items-center gap-2 border border-slate-700 text-white hover:border-[#00B8F0] hover:text-[#00B8F0] px-7 py-3.5 rounded-xl text-[15px] font-semibold transition-all hover:bg-white/5"
             >
-              How We Implement ↓
+              See Our Work ↓
             </TrackedLink>
           </div>
         </div>

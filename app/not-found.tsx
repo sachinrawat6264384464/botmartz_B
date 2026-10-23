@@ -41,11 +41,11 @@ export default function NotFound() {
             <span>Return to Homepage</span>
           </Link>
           <Link
-            href="/work/case-studies"
+            href="/work/labs"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-sm font-semibold transition-colors"
           >
             <Search className="w-4 h-4" />
-            <span>Reference Implementations</span>
+            <span>Reference Labs</span>
           </Link>
         </div>
       </div>
