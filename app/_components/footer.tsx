@@ -188,21 +188,22 @@ export function Footer({ settings }: { settings?: any }) {
                     {col.heading}
                     <span className="absolute -bottom-2 left-0 w-5 h-[2px] bg-[#0052FF] rounded-full" />
                   </h5>
-                  <ul className="space-y-3 mt-4">
+                  <ul className="space-y-3 mt-4" suppressHydrationWarning>
                     {col.links.map((link) => (
-                      <li key={link.label}>
+                      <li key={link.label} suppressHydrationWarning>
                         <Link
                           href={link.href}
                           prefetch={false}
+                          suppressHydrationWarning
                           className="text-[13px] text-[#8A9EB0] hover:text-white transition-colors leading-snug"
                         >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
           </div>
         </div>
 

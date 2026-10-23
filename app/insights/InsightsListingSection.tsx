@@ -106,11 +106,12 @@ const generateSlugRaw = (title: string) => {
     .trim();
 };
 
-const getAuthorInitials = (author?: string) => {
-  if (!author) return "B";
-  const parts = author.trim().split(/\s+/);
+const getAuthorInitials = (author?: any) => {
+  if (!author) return "BM";
+  const name = typeof author === "string" ? author : (author?.name || author?.displayName || "Botmartz Team");
+  const parts = String(name).trim().split(/\s+/);
   if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  return (parts[0][0] + (parts[parts.length - 1]?.[0] || "")).toUpperCase();
 };
 
 export default function InsightsListingSection({ dbArticles = [] }: { dbArticles?: any[] }) {
@@ -120,19 +121,33 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
 
   const mergedArticles = useMemo(() => {
     const formattedDb = dbArticles
-      .map((art: any) => ({
-        id: art.id,
-        title: art.title,
-        category: art.category?.toUpperCase() || "AI ENGINEERING",
-        description: art.excerpt || art.description || "",
-        author: art.author || "Botmartz Team",
-        date: art.createdAt ? new Date(art.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent",
-        readTime: `${art.readTime || 8} min read`,
-        slug: art.slug || generateSlugRaw(art.title),
-        featured: !!art.featured,
-        visualType: (art.visualType || "mlops-dashboard") as any,
-        featuredImage: art.featuredImage || art.image || art.coverImage || "",
-      }));
+      .map((art: any) => {
+        const authorName = typeof art.author === "string" 
+          ? art.author 
+          : (art.author?.name || art.author?.displayName || "Botmartz Team");
+        const authorRole = typeof art.author === "object" ? art.author?.role : undefined;
+        const authorAvatar = typeof art.author === "object" ? art.author?.avatar : undefined;
+        const rawReadTime = art.readTime || art.readingTime;
+        const readTimeFormatted = typeof rawReadTime === "string" 
+          ? (rawReadTime.toLowerCase().includes("min") ? rawReadTime : `${rawReadTime} min read`)
+          : `${rawReadTime || 8} min read`;
+
+        return {
+          id: art.id,
+          title: art.title,
+          category: art.category?.toUpperCase() || "AI ENGINEERING",
+          description: art.excerpt || art.description || "",
+          author: authorName,
+          authorRole,
+          authorAvatar,
+          date: art.date || (art.createdAt ? new Date(art.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "Recent"),
+          readTime: readTimeFormatted,
+          slug: art.slug || generateSlugRaw(art.title),
+          featured: !!art.featured,
+          visualType: (art.visualType || "mlops-dashboard") as any,
+          featuredImage: art.featuredImage || art.image || art.coverImage || "",
+        };
+      });
 
     // Only display articles actually published in the database (or fallback if DB is completely empty)
     if (formattedDb.length > 0) {
@@ -180,7 +195,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
   const gridArticles = filteredArticles.filter((a) => a.id !== featuredArticle?.id);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const ITEMS_PER_PAGE = 6;
+  const ITEMS_PER_PAGE = 8;
   
   useEffect(() => {
     setCurrentPage(1);
@@ -276,15 +291,19 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                 </div>
                 
                 {/* Visual Preview Banner */}
-                <div className={`bg-slate-50 border border-slate-200 rounded-xl h-full min-h-[280px] flex items-center justify-center relative overflow-hidden group-hover:border-[#00B8F0]/40 transition-colors ${featuredArticle.featuredImage ? '' : 'p-6'}`}>
+                <div className={`border rounded-xl h-full min-h-[280px] flex items-center justify-center relative overflow-hidden transition-all duration-300 ${
+                  featuredArticle.featuredImage
+                    ? 'bg-gradient-to-br from-[#060C18] via-[#0B1528] to-[#040810] border-[#1E293B] group-hover:border-[#00B8F0]/60 p-6 sm:p-8'
+                    : 'bg-slate-50 border-slate-200 p-6'
+                }`}>
                   {featuredArticle.featuredImage ? (
-                    <div className="relative w-full h-full min-h-[280px] overflow-hidden">
+                    <div className="relative w-full h-full min-h-[220px] flex items-center justify-center overflow-hidden">
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,184,240,0.12),transparent_70%)] pointer-events-none" />
                       <img
                         src={featuredArticle.featuredImage}
                         alt={featuredArticle.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full max-h-[220px] object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_8px_24px_rgba(0,184,240,0.25)] relative z-10"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
                     </div>
                   ) : (
                     <>
@@ -372,19 +391,23 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                 <article className="bg-white border border-[#E2E8F0] rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
                   
                   {/* Left Graphic Block: RAG Schematic or Featured Image */}
-                  <div className={`md:col-span-6 h-[240px] sm:h-[280px] bg-slate-50 rounded-xl relative overflow-hidden border border-slate-200 flex items-center justify-center shadow-inner select-none ${featuredArticle.featuredImage ? '' : 'p-4 sm:p-6'}`}>
+                  <div className={`md:col-span-6 h-[240px] sm:h-[280px] rounded-xl relative overflow-hidden border flex items-center justify-center shadow-inner select-none ${
+                    featuredArticle.featuredImage
+                      ? 'bg-gradient-to-br from-[#060C18] via-[#0B1528] to-[#040810] border-[#1E293B] p-6'
+                      : 'bg-slate-50 border-slate-200 p-4 sm:p-6'
+                  }`}>
                     <div className="absolute top-4 left-4 bg-[#0066FF] text-white font-mono text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded shadow-md z-20">
                       FEATURED
                     </div>
                     
                     {featuredArticle.featuredImage ? (
-                      <div className="relative w-full h-full overflow-hidden">
+                      <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,184,240,0.12),transparent_70%)] pointer-events-none" />
                         <img
                           src={featuredArticle.featuredImage}
                           alt={featuredArticle.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="w-full h-full max-h-[200px] object-contain group-hover:scale-105 transition-transform duration-500 relative z-10 drop-shadow-[0_8px_24px_rgba(0,184,240,0.25)]"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
                       </div>
                     ) : (
                       /* Pipeline Mockup */
@@ -482,16 +505,26 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                     <article className="bg-white border border-[#E2E8F0] rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-all flex flex-col h-full">
                       
                       {/* Top Graphic / Image Box */}
-                      <div className={`h-[200px] bg-slate-50 rounded-xl border border-slate-200 relative overflow-hidden flex items-center justify-center shadow-inner select-none ${art.featuredImage ? '' : 'p-4'}`}>
+                      <div className={`h-[200px] rounded-xl border relative overflow-hidden flex items-center justify-center shadow-inner select-none ${
+                        art.featuredImage?.includes('LOGO') || art.featuredImage?.includes('logo')
+                          ? 'bg-gradient-to-br from-[#060C18] to-[#0A1628] border-[#1E293B] p-4'
+                          : art.featuredImage ? 'bg-slate-50 border-slate-200' : 'bg-slate-50 border-slate-200 p-4'
+                      }`}>
                         {art.featuredImage ? (
-                          <div className="relative w-full h-full overflow-hidden">
+                          <div className="relative w-full h-full overflow-hidden flex items-center justify-center">
                             <img
                               src={art.featuredImage}
                               alt={art.title}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              className={`w-full h-full transition-transform duration-500 group-hover:scale-105 ${
+                                art.featuredImage?.includes('LOGO') || art.featuredImage?.includes('logo')
+                                  ? 'object-contain max-h-[150px] drop-shadow-[0_4px_16px_rgba(0,184,240,0.2)]'
+                                  : 'object-cover'
+                              }`}
                               loading="lazy"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+                            {!art.featuredImage?.includes('LOGO') && !art.featuredImage?.includes('logo') && (
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+                            )}
                           </div>
                         ) : (
                           <>

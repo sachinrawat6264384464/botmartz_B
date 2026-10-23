@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { adminDb } from '@/lib/firebase-admin';
 import InsightsDetailClient from './InsightsDetailClient';
+import { getLocalBlogBySlug, getAllLocalBlogs } from '@/lib/localBlogs';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -251,6 +252,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post && STATIC_POSTS[slug]) {
     post = STATIC_POSTS[slug];
   }
+
+  if (!post) {
+    post = getLocalBlogBySlug(slug);
+  }
   
   if (!post) {
     return {
@@ -322,7 +327,13 @@ export default async function InsightsDetailPage({ params }: Props) {
       post = STATIC_POSTS[slug];
       postId = `static-${slug}`;
     } else {
-      notFound();
+      const localPost = getLocalBlogBySlug(slug);
+      if (localPost) {
+        post = localPost;
+        postId = localPost.id;
+      } else {
+        notFound();
+      }
     }
   }
   
@@ -342,7 +353,7 @@ export default async function InsightsDetailPage({ params }: Props) {
           title: data.title || "",
           slug: data.slug || "",
           category: data.category || "AI Engineering",
-          author: data.author || data.authorName || "Botmartz Team",
+          author: typeof data.author === 'string' ? data.author : (data.author?.name || data.authorName || "Botmartz Team"),
           readTime: data.readTime || 8,
           featuredImage: data.featuredImage || data.image || data.coverImage || "",
           excerpt: data.excerpt || ""
@@ -367,6 +378,24 @@ export default async function InsightsDetailPage({ params }: Props) {
         featuredImage: val.featuredImage || ""
       }));
     related = [...related, ...staticRelated];
+  }
+
+  if (related.length < 6) {
+    const allLocal = getAllLocalBlogs();
+    const localRelated = allLocal
+      .filter((lb) => lb.slug !== slug && !related.some((r) => r.slug === lb.slug))
+      .slice(0, 6 - related.length)
+      .map((lb) => ({
+        id: lb.id,
+        title: lb.title,
+        slug: lb.slug,
+        category: lb.category,
+        author: lb.author,
+        readTime: lb.readTimeMinutes || 8,
+        excerpt: lb.excerpt || "",
+        featuredImage: lb.featuredImage || "",
+      }));
+    related = [...related, ...localRelated];
   }
 
   const formatTimestamp = (ts: any) => {
