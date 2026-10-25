@@ -1,655 +1,544 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Botmartz AI Solutions | Enterprise RAG & Production AI Agents</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg-dark: #050811;
-      --bg-card: rgba(13, 20, 36, 0.7);
-      --border-card: rgba(0, 229, 255, 0.15);
-      --cyan-glow: #00E5FF;
-      --blue-accent: #2563EB;
-      --blue-deep: #1D4ED8;
-      --text-main: #F8FAFC;
-      --text-muted: #94A3B8;
-      --code-bg: #090E1A;
-      --gradient-accent: linear-gradient(135deg, #00E5FF 0%, #2563EB 50%, #9333EA 100%);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
-      line-height: 1.6;
-      overflow-x: hidden;
-      background-image: 
-        radial-gradient(circle at 15% 15%, rgba(0, 229, 255, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 85% 30%, rgba(37, 99, 235, 0.12) 0%, transparent 50%),
-        linear-gradient(to bottom, #050811, #080D1A);
-      background-attachment: fixed;
-    }
-
-    /* Container */
-    .container {
-      max-width: 1240px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    /* Header Nav */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(5, 8, 17, 0.85);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 18px 0;
-    }
-    .nav-wrap {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-    }
-    .logo-badge {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--cyan-glow);
-      box-shadow: 0 0 12px var(--cyan-glow);
-    }
-    .nav-links {
-      display: flex;
-      gap: 32px;
-      align-items: center;
-      list-style: none;
-    }
-    .nav-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 600;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover {
-      color: var(--cyan-glow);
-    }
-    .nav-cta {
-      background: rgba(0, 229, 255, 0.1);
-      border: 1px solid rgba(0, 229, 255, 0.3);
-      color: var(--cyan-glow) !important;
-      padding: 8px 18px;
-      border-radius: 8px;
-      font-weight: 700 !important;
-      transition: all 0.2s !important;
-    }
-    .nav-cta:hover {
-      background: var(--cyan-glow) !important;
-      color: #050811 !important;
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
-    }
-
-    /* Hero Section */
-    .hero {
-      padding: 90px 0 70px;
-      display: grid;
-      grid-template-columns: 1.15fr 1fr;
-      gap: 48px;
-      align-items: center;
-    }
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(0, 229, 255, 0.08);
-      border: 1px solid rgba(0, 229, 255, 0.25);
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 12.5px;
-      font-weight: 700;
-      color: var(--cyan-glow);
-      margin-bottom: 22px;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .hero h1 {
-      font-size: 50px;
-      line-height: 1.12;
-      font-weight: 800;
-      letter-spacing: -1.5px;
-      margin-bottom: 20px;
-    }
-    .hero h1 span {
-      background: var(--gradient-accent);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .hero p {
-      font-size: 17px;
-      color: var(--text-muted);
-      line-height: 1.65;
-      margin-bottom: 34px;
-      max-width: 540px;
-    }
-    .hero-actions {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
-    .btn-primary {
-      background: var(--blue-accent);
-      color: #fff;
-      font-weight: 700;
-      font-size: 14.5px;
-      padding: 14px 26px;
-      border-radius: 9px;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 20px rgba(37, 99, 235, 0.35);
-      transition: all 0.2s;
-    }
-    .btn-primary:hover {
-      background: #1d4ed8;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.5);
-    }
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.04);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      font-weight: 700;
-      font-size: 14.5px;
-      padding: 14px 24px;
-      border-radius: 9px;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.3);
-    }
-
-    /* Live Interactive Architecture Visualizer */
-    .arch-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-card);
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(12px);
-      position: relative;
-    }
-    .arch-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding-bottom: 14px;
-      margin-bottom: 20px;
-    }
-    .arch-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12.5px;
-      color: var(--cyan-glow);
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #10B981;
-      box-shadow: 0 0 8px #10B981;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-
-    .pipeline-step {
-      background: var(--code-bg);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: 10px;
-      padding: 14px 16px;
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: all 0.2s;
-    }
-    .pipeline-step:hover {
-      border-color: rgba(0, 229, 255, 0.4);
-      background: rgba(13, 20, 36, 0.9);
-      transform: translateX(4px);
-    }
-    .step-info {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-    .step-name {
-      font-weight: 700;
-      font-size: 13.5px;
-      color: #fff;
-    }
-    .step-tech {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-    .step-metric {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--cyan-glow);
-      background: rgba(0, 229, 255, 0.08);
-      padding: 3px 8px;
-      border-radius: 5px;
-    }
-
-    /* Solutions Section */
-    .section-title-wrap {
-      text-align: center;
-      max-width: 680px;
-      margin: 90px auto 48px;
-    }
-    .section-tag {
-      font-family: 'JetBrains Mono', monospace;
-      color: var(--cyan-glow);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-    .section-title {
-      font-size: 36px;
-      font-weight: 800;
-      letter-spacing: -0.8px;
-      margin-bottom: 14px;
-    }
-    .section-desc {
-      color: var(--text-muted);
-      font-size: 15.5px;
-    }
-
-    .solutions-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      margin-bottom: 80px;
-    }
-    .sol-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      padding: 32px 26px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: all 0.25s;
-      position: relative;
-      overflow: hidden;
-    }
-    .sol-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--cyan-glow), transparent);
-      opacity: 0;
-      transition: opacity 0.25s;
-    }
-    .sol-card:hover {
-      border-color: rgba(0, 229, 255, 0.3);
-      transform: translateY(-4px);
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
-    }
-    .sol-card:hover::before {
-      opacity: 1;
-    }
-    .sol-icon {
-      font-size: 26px;
-      margin-bottom: 18px;
-      color: var(--cyan-glow);
-    }
-    .sol-heading {
-      font-size: 20px;
-      font-weight: 800;
-      margin-bottom: 12px;
-      color: #fff;
-    }
-    .sol-text {
-      color: var(--text-muted);
-      font-size: 14px;
-      line-height: 1.6;
-      margin-bottom: 24px;
-    }
-    .sol-features {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding-top: 18px;
-      margin-bottom: 24px;
-    }
-    .sol-features li {
-      font-size: 12.5px;
-      color: #E2E8F0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .sol-features li::before {
-      content: '✓';
-      color: var(--cyan-glow);
-      font-weight: 800;
-    }
-    .sol-link {
-      color: var(--cyan-glow);
-      font-size: 13.5px;
-      font-weight: 700;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: gap 0.2s;
-    }
-    .sol-link:hover {
-      gap: 10px;
-    }
-
-    /* Delivery Roadmap */
-    .roadmap {
-      background: rgba(13, 20, 36, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 40px;
-      margin-bottom: 90px;
-    }
-    .roadmap-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 16px;
-      margin-top: 32px;
-    }
-    .roadmap-step {
-      background: var(--code-bg);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 10px;
-      padding: 20px 16px;
-      position: relative;
-    }
-    .step-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: var(--cyan-glow);
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
-    .step-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 6px;
-    }
-    .step-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-
-    /* Footer */
-    footer {
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 40px 0;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 13px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Botmartz engineers enterprise RAG systems and production AI agents." />
+<title>Botmartz — Intelligence, Engineered.</title>
+<style>
+  :root {
+    --paper: #F8FAFD;
+    --white: #ffffff;
+    --ink: #0B1C2C;
+    --muted: #4B6175;
+    --line: #C9DCE9;
+    --signal: #00B8F0;
+    --brand: #0092D7;
+    --deep: #0678BE;
+    --blue: #0077CC;
+    --soft: #EFF5FA;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  button, input, textarea, select { font: inherit; }
+  .wrap { width: min(1220px, calc(100% - 48px)); margin-inline: auto; }
+  .topbar { height: 76px; display:flex; align-items:center; border-bottom:1px solid var(--line); background:rgba(247,247,242,.92); position:sticky; top:0; z-index:20; backdrop-filter: blur(14px); }
+  .nav { display:flex; align-items:center; justify-content:space-between; gap:28px; }
+  .brand { display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:-.055em; font-size:21px; white-space:nowrap; }
+  .brandmark { width:26px; height:26px; position:relative; border:2px solid var(--ink); border-radius:50%; display:inline-block; }
+  .brandmark:before { content:""; position:absolute; width:8px; height:8px; background:var(--signal); border:1px solid var(--ink); border-radius:50%; right:-3px; top:-3px; box-shadow:0 0 6px rgba(0,184,240,0.8); }
+  .brandmark:after { content:""; position:absolute; width:9px; height:2px; background:var(--ink); left:5px; top:10px; transform:rotate(-42deg); }
+  .navlinks { display:flex; align-items:center; gap:30px; font-size:13px; color:#48534c; }
+  .navlinks a:hover { color:var(--blue); }
+  .button { display:inline-flex; align-items:center; justify-content:center; gap:12px; padding:13px 17px; border:1px solid var(--ink); background:var(--ink); color:white; font-size:13px; font-weight:650; transition:transform .2s, background .2s; }
+  .button:hover { transform:translateY(-2px); background:#2a3a30; }
+  .button .arrow { font-size:17px; line-height:10px; }
+  .button.light { color:var(--ink); background:transparent; }
+  .button.light:hover { background:var(--white); }
+  .menu { display:none; border:1px solid var(--line); background:transparent; padding:9px 12px; }
+  .hero { padding:86px 0 62px; overflow:hidden; }
+  .hero-grid { display:grid; grid-template-columns: .98fr 1.02fr; align-items:center; gap:58px; }
+  .eyebrow { display:flex; align-items:center; gap:10px; color:var(--muted); text-transform:uppercase; font:11px var(--mono); letter-spacing:.11em; }
+  .pulse { width:8px; height:8px; background:var(--deep); border-radius:50%; box-shadow:0 0 0 4px rgba(0,184,240,0.2); }
+  h1 { font-size:clamp(52px, 6.3vw, 88px); line-height:.98; letter-spacing:-.078em; font-weight:690; margin:25px 0 24px; max-width:650px; }
+  h1 em { font-style:normal; position:relative; white-space:nowrap; }
+  h1 em:after { content:""; position:absolute; left:0; right:0; height:12px; bottom:3px; background:rgba(0,184,240,0.3); z-index:-1; transform:rotate(-1.5deg); }
+  .hero-copy { max-width:520px; color:#59655d; font-size:17px; line-height:1.7; }
+  .hero-actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:30px; }
+  .capabilities { display:flex; gap:18px; flex-wrap:wrap; margin-top:34px; padding-top:20px; border-top:1px solid var(--line); }
+  .capabilities span { display:flex; gap:7px; align-items:center; color:#46534a; font-size:11px; }
+  .tick { display:inline-grid; place-items:center; width:16px; height:16px; border-radius:50%; background:#E0F2FE; color:var(--deep); font-size:10px; font-weight:800; }
+  .visual-shell { position:relative; min-height:500px; display:grid; place-items:center; }
+  .visual-bg { position:absolute; inset:5% 0 3% 5%; border:1px solid #CCE0EE; background:linear-gradient(145deg,#EBF4FB,#FCFDFE 70%); overflow:hidden; }
+  .visual-bg:before { content:""; position:absolute; inset:0; background-image:linear-gradient(#D5E6F2 1px,transparent 1px),linear-gradient(90deg,#D5E6F2 1px,transparent 1px); background-size:28px 28px; opacity:.55; mask-image:linear-gradient(135deg,black,transparent 85%); }
+  .visual-label { position:absolute; z-index:2; font:10px var(--mono); letter-spacing:.1em; color:#4A6277; }
+  .label-a { top:22px; left:22px; } .label-b { bottom:18px; right:22px; }
+  .diagram { width:100%; max-width:540px; position:relative; z-index:2; padding:26px 18px; }
+  .diagram svg { width:100%; height:auto; overflow:visible; }
+  .node { fill:#fff; stroke:#B4D2E7; stroke-width:1.2; }
+  .node-strong { fill:#0B1C2C; stroke:#0B1C2C; }
+  .route { stroke:#5B86A4; stroke-width:1.5; fill:none; stroke-dasharray:4 5; animation:dash 16s linear infinite; }
+  .route-blue { stroke:var(--blue); stroke-width:1.8; fill:none; stroke-dasharray:3 5; animation:dash 12s linear infinite; }
+  .node-dot { fill:var(--signal); stroke:#0678BE; stroke-width:1; }
+  .diagram-text { font:10px var(--mono); fill:#3C4C5C; letter-spacing:.04em; }
+  .diagram-white { font:11px var(--mono); fill:#fff; }
+  .floating-note { position:absolute; z-index:4; background:white; border:1px solid #CCE0EE; padding:12px 14px; box-shadow:0 10px 32px #253b2510; }
+  .floating-note small { display:block; font:9px var(--mono); color:#7b897b; letter-spacing:.1em; margin-bottom:5px; }
+  .floating-note strong { font-size:12px; font-weight:650; }
+  .note-top { top:16%; right:-1%; } .note-bottom { bottom:14%; left:0; }
+  @keyframes dash { to { stroke-dashoffset:-100; } }
+  .ticker { border-block:1px solid var(--line); background:#EFF5FA; }
+  .ticker-inner { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:20px 0; flex-wrap:wrap; }
+  .ticker-label { color:#5C7184; font:10px var(--mono); text-transform:uppercase; letter-spacing:.12em; }
+  .ticker-item { font-size:12px; color:#2C3E50; display:flex; align-items:center; gap:9px; }
+  .ticker-item b { color:var(--deep); font-size:17px; }
+  section { padding:108px 0; }
+  .section-head { display:grid; grid-template-columns:1fr .7fr; gap:40px; align-items:end; margin-bottom:54px; }
+  .section-number { font:11px var(--mono); color:#718071; letter-spacing:.1em; margin-bottom:20px; }
+  h2 { font-size:clamp(36px,4.5vw,60px); line-height:1.04; letter-spacing:-.065em; font-weight:650; margin:0; max-width:760px; }
+  .section-intro { color:var(--muted); font-size:15px; line-height:1.75; max-width:430px; margin:0 0 4px; }
+  .reality { background:#fff; }
+  .comparison { display:grid; grid-template-columns:1fr 1fr; border:1px solid var(--line); }
+  .compare-col { padding:30px; }
+  .compare-col + .compare-col { border-left:1px solid var(--line); background:#F0F7FC; }
+  .compare-title { font:11px var(--mono); text-transform:uppercase; letter-spacing:.1em; color:#788478; padding-bottom:20px; border-bottom:1px solid var(--line); }
+  .compare-row { display:grid; grid-template-columns:30px 1fr; gap:12px; padding:19px 0; border-bottom:1px solid #DCE8F2; }
+  .compare-row:last-child { border-bottom:0; }
+  .compare-icon { width:25px; height:25px; display:grid; place-items:center; background:#EAF1F7; color:#566B7C; font-size:12px; }
+  .compare-col + .compare-col .compare-icon { background:var(--signal); color:#0B1C2C; }
+  .compare-row strong { display:block; font-size:14px; margin:2px 0 5px; }
+  .compare-row p { margin:0; font-size:12px; line-height:1.6; color:var(--muted); }
+  .solutions { background:var(--paper); }
+  .solution-list { border-top:1px solid var(--line); }
+  .solution { display:grid; grid-template-columns:70px .8fr 1fr 34px; gap:22px; align-items:start; padding:29px 0; border-bottom:1px solid var(--line); transition:padding .2s; }
+  .solution:hover { padding-left:8px; }
+  .solution-no { font:12px var(--mono); color:#627A8F; padding-top:7px; }
+  .solution h3 { font-size:24px; letter-spacing:-.045em; margin:0 0 9px; font-weight:620; }
+  .solution .tagline { font-size:13px; color:#3C4C5C; line-height:1.6; }
+  .solution .details { color:#4B6175; font-size:13px; line-height:1.8; max-width:410px; }
+  .solution-arrow { font-size:22px; color:#627A8F; transition:transform .2s; }
+  .solution:hover .solution-arrow { transform:translate(3px,-3px); color:var(--blue); }
+  .architecture { background:#050B14; color:#f5f7f0; position:relative; overflow:hidden; }
+  .architecture:before { content:""; position:absolute; width:520px; height:520px; border:1px solid #0D2744; border-radius:50%; right:-170px; top:-230px; box-shadow:0 0 0 55px #17271e,0 0 0 56px #0D2744,0 0 0 120px #17271e,0 0 0 121px #0D2744; opacity:.6; }
+  .architecture .section-number { color:#7FB2D6; }
+  .architecture .section-intro { color:#9AC6E4; }
+  .arch-flow { display:grid; grid-template-columns:repeat(7,1fr); align-items:stretch; position:relative; z-index:1; border:1px solid #16385C; margin-top:48px; }
+  .arch-step { min-height:145px; padding:17px 12px; border-right:1px solid #16385C; display:flex; flex-direction:column; justify-content:space-between; position:relative; }
+  .arch-step:last-child { border-right:0; }
+  .arch-step .n { color:#6FA4CA; font:10px var(--mono); }
+  .arch-step .glyph { font-size:22px; color:var(--signal); }
+  .arch-step strong { font-size:12px; line-height:1.4; font-weight:550; }
+  .arch-step.active { background:#0D2B4A; }
+  .arch-step.active:after { content:""; position:absolute; height:3px; left:0; right:0; top:0; background:var(--signal); }
+  .arch-foot { display:flex; justify-content:space-between; gap:24px; margin-top:18px; color:#9AC6E4; font:10px var(--mono); letter-spacing:.04em; flex-wrap:wrap; }
+  .principles { background:#fff; }
+  .principle-grid { display:grid; grid-template-columns:repeat(5,1fr); border-top:1px solid var(--line); }
+  .principle { padding:23px 17px 20px 0; margin-right:17px; border-bottom:1px solid var(--line); }
+  .principle .num { color:var(--blue); font:11px var(--mono); margin-bottom:35px; }
+  .principle h3 { font-size:17px; line-height:1.25; letter-spacing:-.035em; margin:0 0 12px; }
+  .principle p { color:var(--muted); font-size:12px; line-height:1.7; margin:0; }
+  .industries { background:#EFF5FA; }
+  .industry-layout { display:grid; grid-template-columns:.8fr 1.2fr; gap:80px; }
+  .industry-list { border-top:1px solid #C4DCED; }
+  .industry-btn { width:100%; border:0; border-bottom:1px solid #C4DCED; background:transparent; display:flex; justify-content:space-between; align-items:center; padding:20px 0; text-align:left; cursor:pointer; color:#475D70; font-size:17px; letter-spacing:-.025em; }
+  .industry-btn span:last-child { font-size:20px; }
+  .industry-btn.active { color:var(--ink); font-weight:650; }
+  .industry-btn.active span:first-child:before { content:"↳"; color:var(--deep); margin-right:10px; }
+  .industry-detail { min-height:300px; background:#fff; border:1px solid #CCE0EE; padding:36px; position:relative; }
+  .industry-detail .eyebrow { font-size:10px; }
+  .industry-detail h3 { font-size:34px; letter-spacing:-.055em; margin:35px 0 12px; }
+  .industry-detail p { color:var(--muted); line-height:1.7; max-width:450px; font-size:14px; }
+  .usecases { display:flex; gap:8px; flex-wrap:wrap; margin-top:25px; }
+  .usecases span { border:1px solid var(--line); padding:8px 10px; font-size:11px; color:#3C4C5C; background:#FCFDFE; }
+  .notes { background:var(--paper); }
+  .notes-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .note-card { border:1px solid var(--line); padding:28px; background:#fff; min-height:310px; display:flex; flex-direction:column; justify-content:space-between; transition:transform .2s, box-shadow .2s; }
+  .note-card:hover { transform:translateY(-4px); box-shadow:0 16px 36px #263a2510; }
+  .note-meta { display:flex; justify-content:space-between; gap:15px; color:#556D82; font:10px var(--mono); text-transform:uppercase; letter-spacing:.08em; }
+  .note-graphic { height:72px; margin:26px 0; display:flex; align-items:center; gap:8px; }
+  .mini-doc { width:44px; height:58px; border:1px solid #C4DCED; background:#F5F9FD; padding:10px 7px; }
+  .mini-doc i { display:block; height:2px; background:#CCE0EE; margin-bottom:5px; }
+  .mini-doc i:first-child { background:var(--deep); width:60%; }
+  .mini-line { height:1px; background:#0092D7; flex:1; position:relative; }
+  .mini-line:after { content:"›"; position:absolute; right:0; top:-11px; color:var(--deep); font-size:22px; }
+  .mini-node { width:45px; height:45px; border:1px solid #8EC2E6; border-radius:50%; display:grid; place-items:center; background:#EBF4FB; font:9px var(--mono); }
+  .note-card h3 { font-size:25px; line-height:1.15; letter-spacing:-.05em; max-width:440px; margin:0 0 12px; }
+  .note-card p { color:var(--muted); font-size:13px; line-height:1.7; max-width:440px; margin:0; }
+  .note-link { margin-top:24px; font-size:12px; font-weight:650; display:flex; justify-content:space-between; align-items:center; }
+  .insights { background:#fff; }
+  .insights-head { display:flex; justify-content:space-between; align-items:end; gap:30px; margin-bottom:44px; }
+  .article-grid { display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--line); }
+  .article { padding:22px 20px 20px 0; margin-right:20px; border-bottom:1px solid var(--line); }
+  .article-art { height:130px; background:#E8F2FA; margin-bottom:20px; position:relative; overflow:hidden; }
+  .article-art.a:before { content:""; position:absolute; width:140px; height:140px; border:1px solid #91C2E6; border-radius:50%; left:25%; top:-25px; box-shadow:0 0 0 15px #E8F2FA,0 0 0 16px #91C2E6,0 0 0 32px #E8F2FA,0 0 0 33px #91C2E6; }
+  .article-art.b:before { content:""; position:absolute; inset:25px; background:repeating-linear-gradient(0deg,transparent 0 13px,#A2CEEC 14px 15px),repeating-linear-gradient(90deg,transparent 0 25px,#A2CEEC 26px 27px); transform:skewY(-8deg); }
+  .article-art.c:before { content:""; position:absolute; width:200px; height:200px; border:1px dashed #0092D7; border-radius:50%; left:10%; top:-40px; box-shadow:0 0 0 18px #E8F2FA,0 0 0 19px #0092D7; }
+  .article-cat { font:10px var(--mono); color:#50687C; text-transform:uppercase; letter-spacing:.08em; }
+  .article h3 { font-size:20px; line-height:1.25; letter-spacing:-.04em; margin:12px 0 18px; max-width:320px; }
+  .article-bottom { display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#4A6277; }
+  .article-bottom b { font-size:17px; color:var(--ink); font-weight:400; }
+  .process { background:#EFF5FA; }
+  .process-list { display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid #C6DDEE; }
+  .process-step { padding:22px 22px 20px 0; margin-right:20px; border-bottom:1px solid #C6DDEE; }
+  .process-step .num { font:11px var(--mono); color:#50687C; margin-bottom:42px; }
+  .process-step h3 { font-size:20px; letter-spacing:-.04em; margin:0 0 10px; }
+  .process-step p { color:var(--muted); font-size:12px; line-height:1.7; margin:0 0 16px; }
+  .process-step small { font:10px var(--mono); color:var(--deep); }
+  .cta { padding:0 0 70px; background:#EFF5FA; }
+  .cta-panel { background:var(--signal); padding:58px; display:grid; grid-template-columns:1fr auto; align-items:end; gap:36px; position:relative; overflow:hidden; }
+  .cta-panel:after { content:""; position:absolute; width:360px; height:360px; border:1px solid #0092D7; border-radius:50%; right:15%; top:-220px; box-shadow:0 0 0 35px var(--signal),0 0 0 36px #0092D7,0 0 0 72px var(--signal),0 0 0 73px #0092D7; opacity:.7; }
+  .cta-panel > * { position:relative; z-index:1; }
+  .cta-panel .section-number { color:#034E7B; }
+  .cta-panel h2 { max-width:650px; }
+  .cta-panel p { color:#0B1C2C; font-size:14px; line-height:1.7; max-width:520px; margin:20px 0 0; }
+  .cta-panel .button { background:var(--ink); border-color:var(--ink); white-space:nowrap; }
+  footer { background:#fff; border-top:1px solid var(--line); }
+  .footer-main { padding:35px 0; display:flex; justify-content:space-between; align-items:start; gap:40px; }
+  .footer-desc { max-width:280px; color:var(--muted); font-size:12px; line-height:1.7; margin-top:14px; }
+  .footer-links { display:flex; gap:45px; }
+  .footer-col { display:flex; flex-direction:column; gap:11px; font-size:12px; color:#4B6175; }
+  .footer-col strong { color:var(--ink); font-size:11px; margin-bottom:5px; }
+  .footer-bottom { padding:16px 0 20px; border-top:1px solid var(--line); color:#627A8F; font:10px var(--mono); display:flex; justify-content:space-between; gap:20px; }
+  .prototype { position:fixed; bottom:15px; right:15px; background:#fff; border:1px solid var(--line); box-shadow:0 6px 24px #1d2a1d14; padding:9px 12px; font:10px var(--mono); z-index:50; color:#556D82; }
+  @media (max-width: 960px) {
+    .navlinks { gap:16px; } .hero-grid { gap:24px; } .visual-shell { min-height:420px; }
+    .arch-flow { grid-template-columns:repeat(4,1fr); } .arch-step:nth-child(4) { border-right:0; } .arch-step:nth-child(-n+4) { border-bottom:1px solid #16385C; }
+    .principle-grid { grid-template-columns:repeat(3,1fr); } .industry-layout { gap:36px; }
+    .section-head { grid-template-columns:1fr .8fr; }
+  }
+  @media (max-width: 720px) {
+    .wrap { width:min(100% - 32px, 560px); }
+    .topbar { height:66px; } .navlinks, .nav > .button { display:none; } .menu { display:block; }
+    .navlinks.open { display:flex; position:absolute; top:65px; left:0; right:0; padding:22px 24px; background:var(--paper); border-bottom:1px solid var(--line); flex-direction:column; align-items:flex-start; gap:20px; }
+    .hero { padding:58px 0 42px; } .hero-grid { grid-template-columns:1fr; gap:20px; } h1 { font-size:clamp(48px,13vw,70px); }
+    .hero-copy { font-size:15px; } .visual-shell { min-height:360px; } .note-top { right:0; top:10%; } .note-bottom { bottom:8%; }
+    .ticker-inner { justify-content:flex-start; gap:16px 25px; } .ticker-label { width:100%; }
+    section { padding:72px 0; } .section-head { grid-template-columns:1fr; gap:20px; margin-bottom:34px; }
+    .comparison { grid-template-columns:1fr; } .compare-col + .compare-col { border-left:0; border-top:1px solid var(--line); }
+    .compare-col { padding:22px; }
+    .solution { grid-template-columns:32px 1fr 24px; gap:12px; padding:24px 0; }
+    .solution .tagline { grid-column:2; } .solution .details { grid-column:2; } .solution-arrow { grid-column:3; grid-row:1; }
+    .arch-flow { grid-template-columns:repeat(2,1fr); } .arch-step { min-height:125px; border-bottom:1px solid #16385C; } .arch-step:nth-child(2n) { border-right:0; } .arch-step:nth-child(4) { border-right:0; } .arch-step:nth-child(5) { border-bottom:1px solid #16385C; }
+    .principle-grid { grid-template-columns:repeat(2,1fr); } .principle { margin-right:14px; padding-right:12px; } .principle .num { margin-bottom:22px; }
+    .industry-layout { grid-template-columns:1fr; gap:24px; } .industry-detail { padding:25px; min-height:280px; } .industry-detail h3 { margin-top:25px; }
+    .notes-grid, .article-grid { grid-template-columns:1fr; } .article { margin-right:0; padding:22px 0; } .article-art { height:155px; }
+    .insights-head { align-items:start; flex-direction:column; } .process-list { grid-template-columns:repeat(2,1fr); } .process-step { margin-right:14px; } .process-step .num { margin-bottom:24px; }
+    .cta-panel { padding:32px 25px; grid-template-columns:1fr; align-items:start; gap:28px; } .cta-panel:after { right:-30%; top:-160px; }
+    .footer-main { flex-direction:column; } .footer-links { gap:28px; flex-wrap:wrap; } .footer-bottom { flex-direction:column; gap:8px; }
+    .prototype { bottom:8px; right:8px; font-size:9px; }
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior:auto !important; animation:none !important; transition:none !important; } }
+</style>
 </head>
 <body>
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Botmartz home"><span class="brandmark"></span>botmartz<span style="font-weight:450;color:#718071">/ai</span></a>
+    <nav class="navlinks" id="navlinks">
+      <a href="#solutions">Solutions</a><a href="#industries">Industries</a><a href="#engineering">Engineering</a><a href="#insights">Insights</a>
+    </nav>
+    <a class="button" href="#contact">Discuss an AI Project <span class="arrow">↗</span></a>
+    <button class="menu" id="menuBtn" aria-expanded="false" aria-controls="navlinks">Menu +</button>
+  </div>
+</header>
 
-  <!-- Navigation -->
-  <header>
-    <div class="container nav-wrap">
-      <a href="/" class="logo">
-        <span class="logo-badge"></span>
-        BOTMARTZ
-      </a>
-      <ul class="nav-links">
-        <li><a href="#solutions">Solutions</a></li>
-        <li><a href="#architecture">Architecture</a></li>
-        <li><a href="#methodology">Methodology</a></li>
-        <li><a href="/insights">Insights</a></li>
-        <li><a href="/work/labs">Labs</a></li>
-      </ul>
-      <a href="#contact" class="nav-cta">Discuss Your Architecture →</a>
-    </div>
-  </header>
-
-  <!-- Hero Section -->
-  <div class="container">
-    <section class="hero">
-      <div class="hero-left">
-        <div class="hero-badge">
-          <span>●</span> ENTERPRISE AI SYSTEMS IN PRODUCTION
-        </div>
-        <h1>
-          Enterprise RAG &amp; AI Agents, <span>Built for Production.</span>
-        </h1>
-        <p>
-          We design, engineer, and deploy fault-tolerant retrieval pipelines and auditable agent systems inside your private cloud—with zero-hallucination guarantees and cross-encoder verification.
-        </p>
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow"><span class="pulse"></span> AI ENGINEERING · BUILT FOR PRODUCTION</div>
+        <h1>Intelligence,<br><em>engineered.</em></h1>
+        <p class="hero-copy">We build enterprise RAG systems and AI agents that turn scattered business knowledge into dependable, inspectable workflows.</p>
         <div class="hero-actions">
-          <a href="#contact" class="btn-primary">
-            Discuss Your AI Project →
-          </a>
-          <a href="/insights/why-vector-similarity-is-not-semantic-search" class="btn-secondary">
-            Read Architecture Whitepaper
-          </a>
+          <a class="button" href="#contact">Discuss an AI Project <span class="arrow">↗</span></a>
+          <a class="button light" href="#engineering">Explore our approach <span class="arrow">↓</span></a>
+        </div>
+        <div class="capabilities">
+          <span><i class="tick">✓</i> Evidence-grounded retrieval</span>
+          <span><i class="tick">✓</i> Controlled agent actions</span>
+          <span><i class="tick">✓</i> Deployment by design</span>
         </div>
       </div>
-
-      <!-- Live Interactive Architecture Visualizer -->
-      <div class="hero-right">
-        <div class="arch-card" id="architecture">
-          <div class="arch-card-header">
-            <div class="arch-title">
-              <span class="status-dot"></span>
-              PRODUCTION RETRIEVAL STACK
-            </div>
-            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #94A3B8;">
-              LATENCY: 42ms (p95)
-            </div>
-          </div>
-
-          <div class="pipeline-step">
-            <div class="step-info">
-              <span class="step-name">1. Ingestion &amp; Chunking</span>
-              <span class="step-tech">AST-Aware &amp; Proposition Splitting</span>
-            </div>
-            <span class="step-metric">Zero Loss</span>
-          </div>
-
-          <div class="pipeline-step">
-            <div class="step-info">
-              <span class="step-name">2. Dual Hybrid Retrieval</span>
-              <span class="step-tech">Dense Embeddings + Lucene BM25</span>
-            </div>
-            <span class="step-metric">Recall: 98.4%</span>
-          </div>
-
-          <div class="pipeline-step">
-            <div class="step-info">
-              <span class="step-name">3. Reciprocal Rank Fusion</span>
-              <span class="step-tech">RRF (k=60) Scoring Consensus</span>
-            </div>
-            <span class="step-metric">Top-100</span>
-          </div>
-
-          <div class="pipeline-step" style="border-color: rgba(0, 229, 255, 0.4); background: rgba(0, 229, 255, 0.04);">
-            <div class="step-info">
-              <span class="step-name">4. Cross-Encoder Reranker</span>
-              <span class="step-tech">BGE-Reranker-Large Token Attention</span>
-            </div>
-            <span class="step-metric">Score &ge; 0.72</span>
-          </div>
-
-          <div class="pipeline-step">
-            <div class="step-info">
-              <span class="step-name">5. LangGraph State Machine</span>
-              <span class="step-tech">Checkpointing &amp; HITL Approval Gate</span>
-            </div>
-            <span class="step-metric">Auditable</span>
-          </div>
+      <div class="visual-shell" aria-label="Illustration of a knowledge retrieval system">
+        <div class="visual-bg"></div>
+        <span class="visual-label label-a">SYSTEM MAP / 001</span>
+        <span class="visual-label label-b">RETRIEVAL FIELD — LIVE MODEL</span>
+        <div class="floating-note note-top"><small>RETRIEVAL QUALITY</small><strong>Evidence over guesswork</strong></div>
+        <div class="floating-note note-bottom"><small>CONTROL LAYER</small><strong>Verify before action ↗</strong></div>
+        <div class="diagram">
+          <svg viewBox="0 0 520 430" role="img" aria-label="Documents flow through indexing, retrieval, evidence and a controlled AI agent">
+            <defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="#789674"/></marker></defs>
+            <path class="route" d="M90 82 C150 82 145 150 210 150 S275 210 320 210 S385 265 425 265" marker-end="url(#arrow)"/>
+            <path class="route-blue" d="M92 180 C150 180 155 150 210 150 S275 210 320 210 S385 265 425 265"/>
+            <path class="route" d="M105 300 C160 300 150 250 210 250 S260 210 320 210"/>
+            <path class="route" d="M320 210 C330 135 370 125 425 125"/>
+            <path class="route-blue" d="M425 125 C465 155 465 220 425 265 S380 340 320 340"/>
+            <g transform="translate(35 48)">
+              <rect class="node" width="88" height="70" rx="2"/>
+              <path d="M17 18h36 M17 27h51 M17 36h42 M17 45h28" stroke="#82B7DC" stroke-width="2"/>
+              <text class="diagram-text" x="0" y="88">DOCS / PDF</text>
+            </g>
+            <g transform="translate(35 145)">
+              <rect class="node" width="88" height="70" rx="2"/>
+              <path d="M17 18h36 M17 27h51 M17 36h42 M17 45h28" stroke="#82B7DC" stroke-width="2"/>
+              <text class="diagram-text" x="0" y="88">POLICIES</text>
+            </g>
+            <g transform="translate(35 266)">
+              <rect class="node" width="88" height="70" rx="2"/>
+              <path d="M17 18h36 M17 27h51 M17 36h42 M17 45h28" stroke="#82B7DC" stroke-width="2"/>
+              <text class="diagram-text" x="0" y="88">KNOWLEDGE</text>
+            </g>
+            <g transform="translate(175 112)">
+              <rect class="node" width="105" height="78" rx="2"/>
+              <circle cx="25" cy="25" r="5" class="node-dot"/><circle cx="50" cy="25" r="5" fill="#D0E8F9" stroke="#0092D7"/><circle cx="75" cy="25" r="5" fill="#D0E8F9" stroke="#0092D7"/>
+              <path d="M25 25L50 43L75 25M50 43V57" stroke="#0092D7" fill="none"/>
+              <text class="diagram-text" x="10" y="96">INDEX + RETRIEVE</text>
+            </g>
+            <g transform="translate(285 178)">
+              <rect class="node" width="90" height="64" rx="2"/>
+              <path d="M15 17h57 M15 27h45 M15 37h50" stroke="#0092D7" stroke-width="2"/>
+              <text class="diagram-text" x="0" y="82">RERANK / VERIFY</text>
+            </g>
+            <g transform="translate(395 82)">
+              <rect class="node" width="94" height="75" rx="2"/>
+              <circle cx="25" cy="23" r="6" fill="#BEE3F8" stroke="#0092D7"/><circle cx="46" cy="23" r="6" fill="#BEE3F8" stroke="#0092D7"/><circle cx="67" cy="23" r="6" fill="#BEE3F8" stroke="#0092D7"/>
+              <path d="M25 23L46 43L67 23" stroke="#0092D7" fill="none"/>
+              <text class="diagram-text" x="11" y="61">EVIDENCE</text>
+            </g>
+            <g transform="translate(393 247)">
+              <rect class="node-strong" width="96" height="78" rx="2"/>
+              <circle cx="48" cy="23" r="9" fill="#b9f36a"/>
+              <path d="M30 43h36 M30 51h36" stroke="#5B86A4" stroke-width="1.5"/>
+              <text class="diagram-white" x="15" y="68">AI AGENT</text>
+            </g>
+            <g transform="translate(256 318)">
+              <rect x="0" y="0" width="108" height="48" fill="#edf3e8" stroke="#B4D2E7"/>
+              <text class="diagram-text" x="12" y="19">POLICY GATE</text>
+              <text class="diagram-text" x="12" y="33">HUMAN REVIEW</text>
+            </g>
+            <circle cx="210" cy="150" r="5" class="node-dot"/><circle cx="320" cy="210" r="5" class="node-dot"/><circle cx="425" cy="265" r="5" class="node-dot"/>
+          </svg>
         </div>
       </div>
-    </section>
-  </div>
-
-  <!-- Three Core Solutions -->
-  <div class="container" id="solutions">
-    <div class="section-title-wrap">
-      <div class="section-tag">ENGINEERING OFFERINGS</div>
-      <h2 class="section-title">Core Systems We Build &amp; Deploy</h2>
-      <p class="section-desc">
-        Engineered specifically for companies with strict data governance, zero-downtime requirements, and complex unstructured documentation.
-      </p>
     </div>
+  </section>
 
-    <div class="solutions-grid">
-      <!-- Card 1 -->
-      <div class="sol-card">
-        <div>
-          <div class="sol-icon">◈</div>
-          <h3 class="sol-heading">Enterprise RAG Systems</h3>
-          <p class="sol-text">
-            High-precision hybrid retrieval combining lexical exactness with dense semantics. Eliminates hallucinations in high-dimensional search spaces.
-          </p>
-          <ul class="sol-features">
-            <li>Parent-document &amp; table layout extraction</li>
-            <li>Reciprocal Rank Fusion (RRF) &amp; Cross-Encoders</li>
-            <li>Strict metadata &amp; role-based access filtering</li>
-          </ul>
-        </div>
-        <a href="/insights" class="sol-link">Explore Architecture →</a>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="sol-card">
-        <div>
-          <div class="sol-icon">⚙</div>
-          <h3 class="sol-heading">Production AI Agents</h3>
-          <p class="sol-text">
-            Cyclic state machines built on LangGraph with Postgres checkpointing, tool schema validation, and human-in-the-loop review triggers.
-          </p>
-          <ul class="sol-features">
-            <li>State persistence &amp; self-correcting loops</li>
-            <li>Circuit breakers for API timeouts &amp; rate limits</li>
-            <li>Audit logs for all tool invocations and SQL edits</li>
-          </ul>
-        </div>
-        <a href="/insights" class="sol-link">View Agent Schematics →</a>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="sol-card">
-        <div>
-          <div class="sol-icon">🛡</div>
-          <h3 class="sol-heading">Private AI Deployment</h3>
-          <p class="sol-text">
-            Sovereign AI deployed directly inside your VPC (AWS Bedrock, Azure AI, GCP) or on-prem. No external telemetry or data sharing.
-          </p>
-          <ul class="sol-features">
-            <li>vLLM &amp; TensorRT-LLM optimized inference</li>
-            <li>Air-gapped Kubernetes &amp; private endpoints</li>
-            <li>Zero training on your proprietary corporate data</li>
-          </ul>
-        </div>
-        <a href="/insights" class="sol-link">Learn Deployment Specs →</a>
-      </div>
+  <div class="ticker">
+    <div class="wrap ticker-inner">
+      <span class="ticker-label">Engineering priorities</span>
+      <span class="ticker-item"><b>↗</b> Built around your data</span>
+      <span class="ticker-item"><b>↗</b> Tested against real questions</span>
+      <span class="ticker-item"><b>↗</b> Designed for controlled deployment</span>
     </div>
   </div>
 
-  <!-- 5-Stage Delivery Methodology -->
-  <div class="container" id="methodology">
-    <div class="roadmap">
-      <div style="text-align: center; max-width: 600px; margin: 0 auto;">
-        <div class="section-tag">PREDICTABLE EXECUTION</div>
-        <h3 style="font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 8px;">
-          The Production Delivery Framework
-        </h3>
-        <p style="color: var(--text-muted); font-size: 14px;">
-          How we take enterprise AI systems from initial discovery to validated zero-defect deployment.
-        </p>
+  <section class="reality">
+    <div class="wrap">
+      <div class="section-head">
+        <div><div class="section-number">01 / THE PROBLEM</div><h2>A convincing demo<br>is not a production system.</h2></div>
+        <p class="section-intro">Real business environments are messy. Documents disagree, permissions matter, questions are ambiguous, and systems need to be evaluated beyond a handful of impressive answers.</p>
       </div>
+      <div class="comparison">
+        <div class="compare-col">
+          <div class="compare-title">Demo conditions</div>
+          <div class="compare-row"><span class="compare-icon">×</span><div><strong>Clean sample documents</strong><p>Small, curated datasets that make the happy path look easy.</p></div></div>
+          <div class="compare-row"><span class="compare-icon">×</span><div><strong>Happy-path questions</strong><p>Prompts selected because the system already knows how to answer them.</p></div></div>
+          <div class="compare-row"><span class="compare-icon">×</span><div><strong>Impressive output</strong><p>A fluent response without a clear way to inspect its evidence.</p></div></div>
+        </div>
+        <div class="compare-col">
+          <div class="compare-title">Production reality</div>
+          <div class="compare-row"><span class="compare-icon">✓</span><div><strong>Complex business knowledge</strong><p>Mixed formats, duplicate files, versioning, and domain-specific language.</p></div></div>
+          <div class="compare-row"><span class="compare-icon">✓</span><div><strong>Access-aware retrieval</strong><p>Relevant information must also be information the user is allowed to see.</p></div></div>
+          <div class="compare-row"><span class="compare-icon">✓</span><div><strong>Inspectable evidence</strong><p>Retrieval, answers, and consequential actions need evaluation and controls.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      <div class="roadmap-grid">
-        <div class="roadmap-step">
-          <div class="step-num">01 / DISCOVER</div>
-          <div class="step-title">Ingestion Audit</div>
-          <div class="step-desc">Document layout parsing, metadata schema definition, and access-control matrix mapping.</div>
+  <section class="solutions" id="solutions">
+    <div class="wrap">
+      <div class="section-head">
+        <div><div class="section-number">02 / WHAT WE ENGINEER</div><h2>Three disciplines.<br>One production mindset.</h2></div>
+        <p class="section-intro">We focus on the layers that determine whether an AI system is useful outside a demo: relevant information, controlled execution, and a deployment model that fits the environment.</p>
+      </div>
+      <div class="solution-list">
+        <a class="solution" href="#contact"><span class="solution-no">01</span><div><h3>Enterprise RAG Systems</h3><div class="tagline">Find the right evidence before generating the answer.</div></div><div class="details">Document ingestion · Hybrid retrieval · Reranking · Permission-aware search · Evidence citations</div><span class="solution-arrow">↗</span></a>
+        <a class="solution" href="#contact"><span class="solution-no">02</span><div><h3>Production AI Agents</h3><div class="tagline">Give models tools. Keep the system in control.</div></div><div class="details">Workflow orchestration · Typed tools · State management · Approval gates · Failure handling</div><span class="solution-arrow">↗</span></a>
+        <a class="solution" href="#contact"><span class="solution-no">03</span><div><h3>Private AI Deployment</h3><div class="tagline">Fit the system to your environment.</div></div><div class="details">Customer-cloud options · Enterprise integrations · Access controls · Observability · Handover</div><span class="solution-arrow">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="architecture" id="engineering">
+    <div class="wrap">
+      <div class="section-head">
+        <div><div class="section-number">03 / INSIDE THE SYSTEM</div><h2>Good AI is a system,<br>not a single model.</h2></div>
+        <p class="section-intro">The architecture should follow the data, the workflow, and the operating constraints. Each layer has a job—and a way to be tested.</p>
+      </div>
+      <div class="arch-flow">
+        <div class="arch-step"><span class="n">01 / SOURCE</span><span class="glyph">▤</span><strong>Enterprise<br>data</strong></div>
+        <div class="arch-step"><span class="n">02 / PREPARE</span><span class="glyph">⌘</span><strong>Parse &<br>normalize</strong></div>
+        <div class="arch-step"><span class="n">03 / INDEX</span><span class="glyph">⠿</span><strong>Dense + keyword<br>indexes</strong></div>
+        <div class="arch-step active"><span class="n">04 / RETRIEVE</span><span class="glyph">⌕</span><strong>Retrieve &<br>rerank</strong></div>
+        <div class="arch-step"><span class="n">05 / GROUND</span><span class="glyph">≋</span><strong>Evidence<br>assembly</strong></div>
+        <div class="arch-step"><span class="n">06 / GENERATE</span><span class="glyph">✳</span><strong>Model<br>response</strong></div>
+        <div class="arch-step"><span class="n">07 / INSPECT</span><span class="glyph">◉</span><strong>Evaluate &<br>observe</strong></div>
+      </div>
+      <div class="arch-foot"><span>↳ ACCESS CONTROL & PERMISSIONS</span><span>↳ EVALUATION / LOGGING / FEEDBACK</span><span>↳ AGENT ACTION GUARDRAILS</span></div>
+    </div>
+  </section>
+
+  <section class="principles">
+    <div class="wrap">
+      <div class="section-head">
+        <div><div class="section-number">04 / ENGINEERING PRINCIPLES</div><h2>Built to be inspected.<br>Designed to improve.</h2></div>
+        <p class="section-intro">A production system needs more than a compelling answer. It needs explicit boundaries, repeatable tests, and visibility into how it behaves.</p>
+      </div>
+      <div class="principle-grid">
+        <div class="principle"><div class="num">PRINCIPLE / 01</div><h3>Evidence before fluency</h3><p>Ground answers in relevant sources and make supporting evidence inspectable.</p></div>
+        <div class="principle"><div class="num">PRINCIPLE / 02</div><h3>Evaluation before launch</h3><p>Test retrieval and response quality against realistic business questions.</p></div>
+        <div class="principle"><div class="num">PRINCIPLE / 03</div><h3>Permissions at retrieval</h3><p>Account for access boundaries as information moves through the system.</p></div>
+        <div class="principle"><div class="num">PRINCIPLE / 04</div><h3>Approval for actions</h3><p>Use human review where consequential operations require it.</p></div>
+        <div class="principle"><div class="num">PRINCIPLE / 05</div><h3>Observable by design</h3><p>Make failures and behavior easier to investigate and improve.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="industries" id="industries">
+    <div class="wrap">
+      <div class="section-head">
+        <div><div class="section-number">05 / WHERE IT APPLIES</div><h2>Knowledge is different<br>in every industry.</h2></div>
+        <p class="section-intro">The engineering approach adapts to the language, documents, permissions, and workflows of the business. These are illustrative use cases, not claims of existing deployments.</p>
+      </div>
+      <div class="industry-layout">
+        <div class="industry-list" role="tablist" aria-label="Industry examples">
+          <button class="industry-btn active" data-industry="insurance" role="tab" aria-selected="true"><span>Insurance</span><span>↗</span></button>
+          <button class="industry-btn" data-industry="healthcare" role="tab" aria-selected="false"><span>Healthcare</span><span>↗</span></button>
+          <button class="industry-btn" data-industry="legal" role="tab" aria-selected="false"><span>Legal</span><span>↗</span></button>
+          <button class="industry-btn" data-industry="aviation" role="tab" aria-selected="false"><span>Aviation MRO</span><span>↗</span></button>
+          <button class="industry-btn" data-industry="operations" role="tab" aria-selected="false"><span>Document-heavy operations</span><span>↗</span></button>
         </div>
-        <div class="roadmap-step">
-          <div class="step-num">02 / ARCHITECT</div>
-          <div class="step-title">Retrieval Tuning</div>
-          <div class="step-desc">Hybrid vector/sparse setup, chunk boundary calibration, and cross-encoder scoring thresholds.</div>
-        </div>
-        <div class="roadmap-step">
-          <div class="step-num">03 / BUILD</div>
-          <div class="step-title">Agent State Flow</div>
-          <div class="step-desc">Cyclic LangGraph graphs, tool validation schemas, and approval gate mechanisms.</div>
-        </div>
-        <div class="roadmap-step">
-          <div class="step-num">04 / EVALUATE</div>
-          <div class="step-title">RAGAS Benchmark</div>
-          <div class="step-desc">Faithfulness scoring, synthetic query regression tests, and prompt injection red-teaming.</div>
-        </div>
-        <div class="roadmap-step">
-          <div class="step-num">05 / DEPLOY</div>
-          <div class="step-title">VPC Release</div>
-          <div class="step-desc">Private cloud rollout, OpenTelemetry latency monitoring, and token budgeting.</div>
+        <div class="industry-detail" id="industryDetail" role="tabpanel">
+          <div class="eyebrow"><span class="pulse"></span> ILLUSTRATIVE USE CASES</div>
+          <h3>Insurance knowledge systems</h3>
+          <p>Help teams find the right policy wording, supporting documents, and internal guidance with traceable evidence and appropriate access controls.</p>
+          <div class="usecases"><span>Policy wording search</span><span>Claims review support</span><span>Underwriting knowledge</span></div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="notes">
+    <div class="wrap">
+      <div class="section-head">
+        <div><div class="section-number">06 / ENGINEERING NOTES</div><h2>Show the thinking<br>behind the system.</h2></div>
+        <p class="section-intro">Technical credibility comes from showing the decisions, trade-offs, and evaluation methods—not just announcing that AI was used.</p>
+      </div>
+      <div class="notes-grid">
+        <article class="note-card">
+          <div class="note-meta"><span>Illustrative example</span><span>RAG / RETRIEVAL</span></div>
+          <div class="note-graphic"><div class="mini-doc"><i></i><i></i><i></i><i></i></div><div class="mini-doc"><i></i><i></i><i></i><i></i></div><div class="mini-line"></div><div class="mini-node">RRF</div></div>
+          <div><h3>Designing retrieval for a 250-document policy corpus</h3><p>Chunking, metadata, hybrid search, evaluation questions, and evidence traceability.</p><a class="note-link" href="#insights">Explore the approach <span>↗</span></a></div>
+        </article>
+        <article class="note-card">
+          <div class="note-meta"><span>Illustrative example</span><span>AGENT / CONTROL</span></div>
+          <div class="note-graphic"><div class="mini-node">ASK</div><div class="mini-line"></div><div class="mini-node">CHECK</div><div class="mini-line"></div><div class="mini-node">ACT</div></div>
+          <div><h3>From a document assistant to a controlled workflow agent</h3><p>Tool boundaries, approval steps, state handling, error paths, and evaluation strategy.</p><a class="note-link" href="#insights">Explore the approach <span>↗</span></a></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="insights" id="insights">
+    <div class="wrap">
+      <div class="insights-head">
+        <div><div class="section-number">07 / TECHNICAL INSIGHTS</div><h2>Engineering knowledge<br>for production AI.</h2></div>
+        <a class="button light" href="#contact">Explore all insights <span class="arrow">↗</span></a>
+      </div>
+      <div class="article-grid">
+        <article class="article"><div class="article-art a"></div><div class="article-cat">RETRIEVAL ENGINEERING · 8 MIN</div><h3>Hybrid Search vs. Vector Search: How to Choose</h3><div class="article-bottom"><span>Search architecture</span><b>↗</b></div></article>
+        <article class="article"><div class="article-art b"></div><div class="article-cat">EVALUATION · 10 MIN</div><h3>How to Evaluate a RAG System Before Production</h3><div class="article-bottom"><span>RAG reliability</span><b>↗</b></div></article>
+        <article class="article"><div class="article-art c"></div><div class="article-cat">SECURITY · 7 MIN</div><h3>Permission-Aware Retrieval for Enterprise Knowledge</h3><div class="article-bottom"><span>Access control</span><b>↗</b></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="process">
+    <div class="wrap">
+      <div class="section-head">
+        <div><div class="section-number">08 / HOW WE WORK</div><h2>From use case<br>to production.</h2></div>
+        <p class="section-intro">A practical delivery process connects the business problem to the architecture, evaluation strategy, and operating environment.</p>
+      </div>
+      <div class="process-list">
+        <div class="process-step"><div class="num">STEP 01 / DISCOVER</div><h3>Understand the workflow</h3><p>Clarify users, data, constraints, risks, and success criteria.</p><small>OUTPUT / USE-CASE DEFINITION</small></div>
+        <div class="process-step"><div class="num">STEP 02 / ARCHITECT</div><h3>Design the system</h3><p>Choose retrieval, orchestration, security, and deployment patterns.</p><small>OUTPUT / SYSTEM ARCHITECTURE</small></div>
+        <div class="process-step"><div class="num">STEP 03 / BUILD</div><h3>Implement & evaluate</h3><p>Build the workflow and test it against realistic questions and failure cases.</p><small>OUTPUT / EVALUATED IMPLEMENTATION</small></div>
+        <div class="process-step"><div class="num">STEP 04 / DEPLOY</div><h3>Operate & improve</h3><p>Prepare handover, observability, and a practical improvement loop.</p><small>OUTPUT / DEPLOYMENT PLAN</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="contact">
+    <div class="wrap">
+      <div class="cta-panel">
+        <div><div class="section-number">LET'S ENGINEER SOMETHING USEFUL</div><h2>Have a knowledge workflow worth engineering?</h2><p>Tell us about your documents, data, or business process. Let's explore what a production-ready RAG system or AI agent could look like.</p></div>
+        <a class="button" href="mailto:hello@botmartz.com?subject=AI%20Engineering%20Project">Discuss an AI Project <span class="arrow">↗</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-main">
+    <div><a class="brand" href="#top"><span class="brandmark"></span>botmartz<span style="font-weight:450;color:#718071">/ai</span></a><p class="footer-desc">AI engineering for production systems. Enterprise RAG, controlled AI agents, and document intelligence.</p></div>
+    <div class="footer-links">
+      <div class="footer-col"><strong>EXPLORE</strong><a href="#solutions">Solutions</a><a href="#industries">Industries</a><a href="#engineering">Engineering</a></div>
+      <div class="footer-col"><strong>KNOWLEDGE</strong><a href="#insights">Insights</a><a href="#top">About Botmartz</a></div>
+      <div class="footer-col"><strong>START A PROJECT</strong><a href="#contact">Contact</a><a href="mailto:hello@botmartz.com">Email us ↗</a></div>
     </div>
   </div>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      &copy; 2026 Botmartz AI Solutions Inc. All rights reserved. Engineering high-reliability enterprise RAG &amp; AI agents.
-    </div>
-  </footer>
-
+  <div class="wrap footer-bottom"><span>© 2026 BOTMARTZ AI SOLUTIONS</span><span>ENGINEERED WITH INTENT.</span></div>
+</footer>
+<div class="prototype">BOTMARTZ DESIGN SYSTEM / PRODUCTION AI</div>
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const navlinks = document.getElementById('navlinks');
+  menuBtn.addEventListener('click', () => {
+    const open = navlinks.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.textContent = open ? 'Close ×' : 'Menu +';
+  });
+  const industryContent = {
+    insurance: {
+      title: 'Insurance knowledge systems',
+      text: 'Help teams find the right policy wording, supporting documents, and internal guidance with traceable evidence and appropriate access controls.',
+      tags: ['Policy wording search', 'Claims review support', 'Underwriting knowledge']
+    },
+    healthcare: {
+      title: 'Healthcare knowledge retrieval',
+      text: 'Connect teams to internal protocols, administrative guidance, and organizational documents while respecting privacy and access boundaries.',
+      tags: ['Internal knowledge search', 'Document workflows', 'Access controls']
+    },
+    legal: {
+      title: 'Legal document intelligence',
+      text: 'Make large collections of contracts, matter documents, and internal legal knowledge easier to search and inspect.',
+      tags: ['Contract search', 'Matter knowledge', 'Evidence tracing']
+    },
+    aviation: {
+      title: 'Aviation MRO intelligence',
+      text: 'Help technical teams locate relevant maintenance-manual passages and supporting technical evidence across document collections.',
+      tags: ['Manual retrieval', 'Technical evidence', 'Revision awareness']
+    },
+    operations: {
+      title: 'Document-heavy operations',
+      text: 'Turn distributed operational documents into a more searchable, traceable knowledge layer connected to real workflows.',
+      tags: ['Document search', 'Knowledge assistant', 'Workflow support']
+    }
+  };
+  document.querySelectorAll('.industry-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.industry-btn').forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      const item = industryContent[btn.dataset.industry];
+      document.getElementById('industryDetail').innerHTML =
+        '<div class="eyebrow"><span class="pulse"></span> ILLUSTRATIVE USE CASES</div>' +
+        '<h3>' + item.title + '</h3><p>' + item.text + '</p><div class="usecases">' +
+        item.tags.map(tag => '<span>' + tag + '</span>').join('') + '</div>';
+    });
+  });
+  navlinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navlinks.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    menuBtn.textContent = 'Menu +';
+  }));
+</script>
 </body>
 </html>
