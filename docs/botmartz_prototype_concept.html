@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Botmartz AI Solutions | Enterprise RAG & Production AI Agents</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #050811;
+      --bg-card: rgba(13, 20, 36, 0.7);
+      --border-card: rgba(0, 229, 255, 0.15);
+      --cyan-glow: #00E5FF;
+      --blue-accent: #2563EB;
+      --blue-deep: #1D4ED8;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --code-bg: #090E1A;
+      --gradient-accent: linear-gradient(135deg, #00E5FF 0%, #2563EB 50%, #9333EA 100%);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(0, 229, 255, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 30%, rgba(37, 99, 235, 0.12) 0%, transparent 50%),
+        linear-gradient(to bottom, #050811, #080D1A);
+      background-attachment: fixed;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header Nav */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(5, 8, 17, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 18px 0;
+    }
+    .nav-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .logo-badge {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--cyan-glow);
+      box-shadow: 0 0 12px var(--cyan-glow);
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover {
+      color: var(--cyan-glow);
+    }
+    .nav-cta {
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      color: var(--cyan-glow) !important;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-weight: 700 !important;
+      transition: all 0.2s !important;
+    }
+    .nav-cta:hover {
+      background: var(--cyan-glow) !important;
+      color: #050811 !important;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 90px 0 70px;
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--cyan-glow);
+      margin-bottom: 22px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .hero h1 {
+      font-size: 50px;
+      line-height: 1.12;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+    }
+    .hero h1 span {
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 17px;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 34px;
+      max-width: 540px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .btn-primary {
+      background: var(--blue-accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 14.5px;
+      padding: 14px 26px;
+      border-radius: 9px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(37, 99, 235, 0.35);
+      transition: all 0.2s;
+    }
+    .btn-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.5);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.04);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-weight: 700;
+      font-size: 14.5px;
+      padding: 14px 24px;
+      border-radius: 9px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Live Interactive Architecture Visualizer */
+    .arch-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(12px);
+      position: relative;
+    }
+    .arch-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+    }
+    .arch-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: var(--cyan-glow);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 8px #10B981;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .pipeline-step {
+      background: var(--code-bg);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+    }
+    .pipeline-step:hover {
+      border-color: rgba(0, 229, 255, 0.4);
+      background: rgba(13, 20, 36, 0.9);
+      transform: translateX(4px);
+    }
+    .step-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .step-name {
+      font-weight: 700;
+      font-size: 13.5px;
+      color: #fff;
+    }
+    .step-tech {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .step-metric {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--cyan-glow);
+      background: rgba(0, 229, 255, 0.08);
+      padding: 3px 8px;
+      border-radius: 5px;
+    }
+
+    /* Solutions Section */
+    .section-title-wrap {
+      text-align: center;
+      max-width: 680px;
+      margin: 90px auto 48px;
+    }
+    .section-tag {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--cyan-glow);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      margin-bottom: 14px;
+    }
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 15.5px;
+    }
+
+    .solutions-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 80px;
+    }
+    .sol-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 32px 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .sol-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--cyan-glow), transparent);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .sol-card:hover {
+      border-color: rgba(0, 229, 255, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+    }
+    .sol-card:hover::before {
+      opacity: 1;
+    }
+    .sol-icon {
+      font-size: 26px;
+      margin-bottom: 18px;
+      color: var(--cyan-glow);
+    }
+    .sol-heading {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+    .sol-text {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .sol-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 18px;
+      margin-bottom: 24px;
+    }
+    .sol-features li {
+      font-size: 12.5px;
+      color: #E2E8F0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sol-features li::before {
+      content: '✓';
+      color: var(--cyan-glow);
+      font-weight: 800;
+    }
+    .sol-link {
+      color: var(--cyan-glow);
+      font-size: 13.5px;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap 0.2s;
+    }
+    .sol-link:hover {
+      gap: 10px;
+    }
+
+    /* Delivery Roadmap */
+    .roadmap {
+      background: rgba(13, 20, 36, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 40px;
+      margin-bottom: 90px;
+    }
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      margin-top: 32px;
+    }
+    .roadmap-step {
+      background: var(--code-bg);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 20px 16px;
+      position: relative;
+    }
+    .step-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--cyan-glow);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .step-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .step-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 40px 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <div class="container nav-wrap">
+      <a href="/" class="logo">
+        <span class="logo-badge"></span>
+        BOTMARTZ
+      </a>
+      <ul class="nav-links">
+        <li><a href="#solutions">Solutions</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#methodology">Methodology</a></li>
+        <li><a href="/insights">Insights</a></li>
+        <li><a href="/work/labs">Labs</a></li>
+      </ul>
+      <a href="#contact" class="nav-cta">Discuss Your Architecture →</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <div class="container">
+    <section class="hero">
+      <div class="hero-left">
+        <div class="hero-badge">
+          <span>●</span> ENTERPRISE AI SYSTEMS IN PRODUCTION
+        </div>
+        <h1>
+          Enterprise RAG &amp; AI Agents, <span>Built for Production.</span>
+        </h1>
+        <p>
+          We design, engineer, and deploy fault-tolerant retrieval pipelines and auditable agent systems inside your private cloud—with zero-hallucination guarantees and cross-encoder verification.
+        </p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn-primary">
+            Discuss Your AI Project →
+          </a>
+          <a href="/insights/why-vector-similarity-is-not-semantic-search" class="btn-secondary">
+            Read Architecture Whitepaper
+          </a>
+        </div>
+      </div>
+
+      <!-- Live Interactive Architecture Visualizer -->
+      <div class="hero-right">
+        <div class="arch-card" id="architecture">
+          <div class="arch-card-header">
+            <div class="arch-title">
+              <span class="status-dot"></span>
+              PRODUCTION RETRIEVAL STACK
+            </div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #94A3B8;">
+              LATENCY: 42ms (p95)
+            </div>
+          </div>
+
+          <div class="pipeline-step">
+            <div class="step-info">
+              <span class="step-name">1. Ingestion &amp; Chunking</span>
+              <span class="step-tech">AST-Aware &amp; Proposition Splitting</span>
+            </div>
+            <span class="step-metric">Zero Loss</span>
+          </div>
+
+          <div class="pipeline-step">
+            <div class="step-info">
+              <span class="step-name">2. Dual Hybrid Retrieval</span>
+              <span class="step-tech">Dense Embeddings + Lucene BM25</span>
+            </div>
+            <span class="step-metric">Recall: 98.4%</span>
+          </div>
+
+          <div class="pipeline-step">
+            <div class="step-info">
+              <span class="step-name">3. Reciprocal Rank Fusion</span>
+              <span class="step-tech">RRF (k=60) Scoring Consensus</span>
+            </div>
+            <span class="step-metric">Top-100</span>
+          </div>
+
+          <div class="pipeline-step" style="border-color: rgba(0, 229, 255, 0.4); background: rgba(0, 229, 255, 0.04);">
+            <div class="step-info">
+              <span class="step-name">4. Cross-Encoder Reranker</span>
+              <span class="step-tech">BGE-Reranker-Large Token Attention</span>
+            </div>
+            <span class="step-metric">Score &ge; 0.72</span>
+          </div>
+
+          <div class="pipeline-step">
+            <div class="step-info">
+              <span class="step-name">5. LangGraph State Machine</span>
+              <span class="step-tech">Checkpointing &amp; HITL Approval Gate</span>
+            </div>
+            <span class="step-metric">Auditable</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Three Core Solutions -->
+  <div class="container" id="solutions">
+    <div class="section-title-wrap">
+      <div class="section-tag">ENGINEERING OFFERINGS</div>
+      <h2 class="section-title">Core Systems We Build &amp; Deploy</h2>
+      <p class="section-desc">
+        Engineered specifically for companies with strict data governance, zero-downtime requirements, and complex unstructured documentation.
+      </p>
+    </div>
+
+    <div class="solutions-grid">
+      <!-- Card 1 -->
+      <div class="sol-card">
+        <div>
+          <div class="sol-icon">◈</div>
+          <h3 class="sol-heading">Enterprise RAG Systems</h3>
+          <p class="sol-text">
+            High-precision hybrid retrieval combining lexical exactness with dense semantics. Eliminates hallucinations in high-dimensional search spaces.
+          </p>
+          <ul class="sol-features">
+            <li>Parent-document &amp; table layout extraction</li>
+            <li>Reciprocal Rank Fusion (RRF) &amp; Cross-Encoders</li>
+            <li>Strict metadata &amp; role-based access filtering</li>
+          </ul>
+        </div>
+        <a href="/insights" class="sol-link">Explore Architecture →</a>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="sol-card">
+        <div>
+          <div class="sol-icon">⚙</div>
+          <h3 class="sol-heading">Production AI Agents</h3>
+          <p class="sol-text">
+            Cyclic state machines built on LangGraph with Postgres checkpointing, tool schema validation, and human-in-the-loop review triggers.
+          </p>
+          <ul class="sol-features">
+            <li>State persistence &amp; self-correcting loops</li>
+            <li>Circuit breakers for API timeouts &amp; rate limits</li>
+            <li>Audit logs for all tool invocations and SQL edits</li>
+          </ul>
+        </div>
+        <a href="/insights" class="sol-link">View Agent Schematics →</a>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="sol-card">
+        <div>
+          <div class="sol-icon">🛡</div>
+          <h3 class="sol-heading">Private AI Deployment</h3>
+          <p class="sol-text">
+            Sovereign AI deployed directly inside your VPC (AWS Bedrock, Azure AI, GCP) or on-prem. No external telemetry or data sharing.
+          </p>
+          <ul class="sol-features">
+            <li>vLLM &amp; TensorRT-LLM optimized inference</li>
+            <li>Air-gapped Kubernetes &amp; private endpoints</li>
+            <li>Zero training on your proprietary corporate data</li>
+          </ul>
+        </div>
+        <a href="/insights" class="sol-link">Learn Deployment Specs →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5-Stage Delivery Methodology -->
+  <div class="container" id="methodology">
+    <div class="roadmap">
+      <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+        <div class="section-tag">PREDICTABLE EXECUTION</div>
+        <h3 style="font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 8px;">
+          The Production Delivery Framework
+        </h3>
+        <p style="color: var(--text-muted); font-size: 14px;">
+          How we take enterprise AI systems from initial discovery to validated zero-defect deployment.
+        </p>
+      </div>
+
+      <div class="roadmap-grid">
+        <div class="roadmap-step">
+          <div class="step-num">01 / DISCOVER</div>
+          <div class="step-title">Ingestion Audit</div>
+          <div class="step-desc">Document layout parsing, metadata schema definition, and access-control matrix mapping.</div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">02 / ARCHITECT</div>
+          <div class="step-title">Retrieval Tuning</div>
+          <div class="step-desc">Hybrid vector/sparse setup, chunk boundary calibration, and cross-encoder scoring thresholds.</div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">03 / BUILD</div>
+          <div class="step-title">Agent State Flow</div>
+          <div class="step-desc">Cyclic LangGraph graphs, tool validation schemas, and approval gate mechanisms.</div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">04 / EVALUATE</div>
+          <div class="step-title">RAGAS Benchmark</div>
+          <div class="step-desc">Faithfulness scoring, synthetic query regression tests, and prompt injection red-teaming.</div>
+        </div>
+        <div class="roadmap-step">
+          <div class="step-num">05 / DEPLOY</div>
+          <div class="step-title">VPC Release</div>
+          <div class="step-desc">Private cloud rollout, OpenTelemetry latency monitoring, and token budgeting.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      &copy; 2026 Botmartz AI Solutions Inc. All rights reserved. Engineering high-reliability enterprise RAG &amp; AI agents.
+    </div>
+  </footer>
+
+</body>
+</html>
