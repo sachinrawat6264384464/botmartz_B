@@ -64,7 +64,7 @@ Protected by role-based authentication (`super-admin` & `admin`):
 ### 4. SEO & Answer Engine Optimization (AEO)
 - **Dynamic XML Sitemap (`app/sitemap.ts`)**: Auto-indexes all static marketing pages, implementation hubs, dynamic blog posts, and community events.
 - **AEO Plain-Text Files (`llms.txt`, `llms-full.txt`)**: Specially formatted markdown summaries for AI search engines (Perplexity, Gemini, ChatGPT).
-- **Structured Data JSON-LD**: Rich `Organization`, `Service`, `TechArticle`, and `Event` schema markup on all pages ahgshagsahsgg.
+- **Structured Data JSON-LD**: Rich `Organization`, `Service`, `TechArticle`, and `Event` schema markup on all pages.
 
 ---
 
