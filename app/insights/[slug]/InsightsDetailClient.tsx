@@ -494,29 +494,31 @@ export default function InsightsDetailClient({
                 ◈ Open in Google Colab
               </a>
             )}
-            <a
-              href={githubLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                backgroundColor: "rgba(255, 255, 255, 0.06)",
-                color: "#FFFFFF",
-                fontWeight: "700",
-                fontSize: "13px",
-                padding: "13px 22px",
-                borderRadius: "9px",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                transition: "all 0.2s",
-                border: "1px solid rgba(255, 255, 255, 0.18)",
-                cursor: "pointer",
-                textDecoration: "none",
-              }}
-              className="hover:bg-white/10"
-            >
-              ⌥ View Code on GitHub
-            </a>
+            {githubLink && (
+              <a
+                href={githubLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0.06)",
+                  color: "#FFFFFF",
+                  fontWeight: "700",
+                  fontSize: "13px",
+                  padding: "13px 22px",
+                  borderRadius: "9px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  transition: "all 0.2s",
+                  border: "1px solid rgba(255, 255, 255, 0.18)",
+                  cursor: "pointer",
+                  textDecoration: "none",
+                }}
+                className="hover:bg-white/10"
+              >
+                ⌥ View Code on GitHub
+              </a>
+            )}
           </div>
 
           {/* ═══════════════════════════════════════════════════════════════
@@ -826,29 +828,31 @@ export default function InsightsDetailClient({
                   >
                     ◈ Open in Colab
                   </a>
-                  <a
-                    href={githubLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      backgroundColor: "#F1F5F9",
-                      color: "#0F172A",
-                      fontWeight: "700",
-                      fontSize: "12.5px",
-                      padding: "11px 18px",
-                      borderRadius: "8px",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "6px",
-                      transition: "all 0.2s",
-                      border: "1px solid #CBD5E1",
-                      cursor: "pointer",
-                      textDecoration: "none",
-                    }}
-                    className="hover:bg-[#E2E8F0]"
-                  >
-                    ⌥ GitHub Repo
-                  </a>
+                  {githubLink && (
+                    <a
+                      href={githubLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        backgroundColor: "#F1F5F9",
+                        color: "#0F172A",
+                        fontWeight: "700",
+                        fontSize: "12.5px",
+                        padding: "11px 18px",
+                        borderRadius: "8px",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        transition: "all 0.2s",
+                        border: "1px solid #CBD5E1",
+                        cursor: "pointer",
+                        textDecoration: "none",
+                      }}
+                      className="hover:bg-[#E2E8F0]"
+                    >
+                      ⌥ GitHub Repo
+                    </a>
+                  )}
                 </div>
               </div>
             )}
