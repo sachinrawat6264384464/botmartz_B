@@ -1,11 +1,9 @@
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
 import TrackedLink from "@/app/_components/TrackedLink";
-import { adminDb } from "@/lib/firebase-admin";
-import { unstable_cache } from "next/cache";
-import DynamicIcon from "@/app/_components/DynamicIcon";
+import LivingKnowledgeCore from "@/app/_components/LivingKnowledgeCore";
+import IndustrySelector from "@/app/_components/IndustrySelector";
 import {
   Layers,
   Bot,
@@ -15,25 +13,24 @@ import {
   Search,
   CheckCircle2,
   ArrowRight,
-  Sparkles,
-  Server,
   Database,
   Cpu,
   Workflow,
   FileCheck,
-  Activity,
-  Lock,
+  Scale,
   ExternalLink,
   ChevronRight,
-  Scale
+  Lock,
+  Server,
+  FileText
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Enterprise RAG & AI Agents That Cite Sources | Botmartz",
-  description: "Botmartz builds citation-grounded Enterprise RAG systems and deterministic AI agents in 4–6 week production pilots. Benchmarked with RAGAS, RBAC-secured, DPDPA-compliant.",
+  title: "Enterprise RAG & AI Agents | Built for Production | Botmartz",
+  description: "Botmartz engineers production AI systems that turn complex business knowledge into dependable, evidence-grounded workflows with verified citations and private deployment.",
   openGraph: {
-    title: "Enterprise RAG & AI Agents That Cite Sources | Botmartz",
-    description: "Production-ready Enterprise RAG and deterministic AI agents benchmarked with RAGAS. Fixed 4–6 week delivery.",
+    title: "Enterprise RAG & AI Agents | Built for Production | Botmartz",
+    description: "AI engineering for real business knowledge. Enterprise RAG systems, deterministic AI agents, and private cloud deployment.",
     url: "https://www.botmartz.com",
     type: "website",
     images: [
@@ -41,14 +38,14 @@ export const metadata: Metadata = {
         url: "https://www.botmartz.com/BotmartznewBot.png",
         width: 1200,
         height: 630,
-        alt: "Botmartz - Enterprise RAG & AI Agents",
+        alt: "Botmartz - The Living Intelligence System",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Enterprise RAG & AI Agents That Cite Sources | Botmartz",
-    description: "Production-ready Enterprise RAG and deterministic AI agents benchmarked with RAGAS. Fixed 4–6 week delivery.",
+    title: "Enterprise RAG & AI Agents | Built for Production | Botmartz",
+    description: "AI engineering for real business knowledge. Grounded answers, verified citations, private deployment.",
     images: ["https://www.botmartz.com/BotmartznewBot.png"],
   },
   alternates: {
@@ -56,274 +53,94 @@ export const metadata: Metadata = {
   },
 };
 
-const STAGES = [
-  {
-    step: "01",
-    name: "Discover",
-    title: "Understand Systems & Workflows",
-    desc: "We analyze your document repositories, operational workflows, and data boundaries to identify where AI delivers verified business value.",
-  },
-  {
-    step: "02",
-    name: "Architect",
-    title: "Design the Optimal System",
-    desc: "We evaluate existing enterprise platforms (e.g. Glean), search backends (OpenSearch, Qdrant), and model pipelines to select the right stack.",
-  },
-  {
-    step: "03",
-    name: "Implement",
-    title: "Build, Benchmark & Harden",
-    desc: "We build parsing pipelines, hybrid retrieval engines, and deterministic agent state machines with rigorous evaluation harnesses.",
-  },
-  {
-    step: "04",
-    name: "Deploy",
-    title: "Move Safely into Production",
-    desc: "We integrate directly into your internal tools and APIs with role-based access control, security guardrails, and telemetry.",
-  },
-  {
-    step: "05",
-    name: "Optimize",
-    title: "Measure, Refine & Scale",
-    desc: "We monitor retrieval recall, detect document drift, tune prompt pipelines, and optimize performance continuously.",
-  },
-];
-
-const SOLUTIONS = [
-  {
-    icon: Search,
-    title: "Enterprise Knowledge & Search",
-    badge: "Knowledge Systems",
-    desc: "Transform fragmented corporate documents, policies, SOPs, and repositories into unified, high-precision search and RAG systems.",
-    capabilities: [
-      "Enterprise search & indexing",
-      "Dense/sparse hybrid retrieval",
-      "Layout-aware document intelligence",
-      "Permission-aware access controls",
-      "Verifiable citation grounding",
-    ],
-    href: "/services/enterprise-rag",
-  },
-  {
-    icon: Bot,
-    title: "AI Agents & Workflow Automation",
-    badge: "Controlled Automation",
-    desc: "Deploy constrained, deterministic agentic workflows that orchestrate tasks across multiple enterprise systems safely.",
-    capabilities: [
-      "LangGraph state machine architectures",
-      "Human-in-the-loop (HITL) checkpoints",
-      "Pydantic schema validation",
-      "Tool-calling & CRM/ERP integration",
-      "Audit logs & telemetry tracking",
-    ],
-    href: "/services/ai-agents",
-  },
-  {
-    icon: Blocks,
-    title: "AI Platforms & Integrations",
-    badge: "Platform Implementation",
-    desc: "Implement and customize leading enterprise AI and search platforms without rebuilding infrastructure from zero.",
-    capabilities: [
-      "Enterprise platform deployment (e.g. Glean)",
-      "Custom enterprise data connectors",
-      "Search infrastructure (OpenSearch, Qdrant, Weaviate, Elastic)",
-      "API & business application gateways",
-      "Private VPC & cloud orchestration",
-    ],
-    href: "/services/enterprise-rag",
-  },
-  {
-    icon: Code2,
-    title: "Domain Intelligence Systems",
-    badge: "Intelligent Software",
-    desc: "Engineer domain-specific AI software, aviation airworthiness OS (MRO), and visa document intelligence consoles tailored to high-stakes operations.",
-    capabilities: [
-      "Industry-specific workflow software (MRO, Legal, Visa)",
-      "Internal decision-support co-pilots",
-      "Multi-document analysis consoles",
-      "Intelligent extraction pipelines",
-      "Scalable microservices & APIs",
-    ],
-    href: "/services/ai-agents",
-  },
-];
-
-const RESEARCH_AREAS = [
-  {
-    tag: "ATTENTION & MEMORY RESEARCH",
-    title: "KV Cache Optimization & Grouped Query Attention (GQA)",
-    desc: "Investigating 8–16x KV cache reduction in autoregressive inference without model degradation, enabling long-context enterprise document intelligence on constrained compute.",
-    tech: ["PyTorch", "GQA", "KV Cache", "Transformers"],
-    focus: "Inference Efficiency"
-  },
-  {
-    tag: "AGENTIC STATE TOPOLOGY",
-    title: "Deterministic State Machines & HITL Verification",
-    desc: "Developing bounded LangGraph state topologies that eliminate unbounded LLM recursion and enforce strict schema gating on enterprise ERP and CRM tool-calling.",
-    tech: ["LangGraph", "Pydantic", "State Graphs", "Python"],
-    focus: "Agent Reliability"
-  },
-  {
-    tag: "RETRIEVAL BENCHMARKS",
-    title: "Layout-Aware Parsing & Dense/Sparse Hybrid Retrieval",
-    desc: "Benchmarking table extraction across complex multi-page regulatory filings, combining BM25 keyword matching with cross-encoder rerankers and automated RAGAS scoring.",
-    tech: ["OpenSearch", "BM25", "RAGAS", "Qdrant"],
-    focus: "Zero Hallucination"
-  },
-  {
-    tag: "NEUROMORPHIC & ADVANCED AI",
-    title: "Spiking Neural Networks & Efficient Neural Architectures",
-    desc: "Exploratory research into temporal spiking dynamics and neuromorphic computing paradigms for ultra-low latency, energy-efficient edge intelligence.",
-    tech: ["SNNs", "PyTorch", "Spike Timing", "Edge AI"],
-    focus: "Next-Gen Computing"
-  },
+const CHAPTERS = [
+  { id: "premise", name: "01 / Premise" },
+  { id: "tension", name: "02 / Reality" },
+  { id: "system", name: "03 / Architecture" },
+  { id: "disciplines", name: "04 / Solutions" },
+  { id: "industries", name: "05 / Industries" },
+  { id: "proof", name: "06 / Proof" },
+  { id: "insights", name: "07 / Journal" },
+  { id: "invitation", name: "08 / Connect" },
 ];
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-white text-slate-900 antialiased">
+    <div className="min-h-screen bg-[#FAFCFE] text-[#0B1C2C] antialiased selection:bg-[#00B8F0]/20 selection:text-[#0B1C2C]">
       
       {/* ═══════════════════════════════════════════
-          1. HERO SECTION (DARK THEME)
+          CHAPTER 1: THE PREMISE (HERO CHAPTER)
       ═══════════════════════════════════════════ */}
-      <section className="relative pt-[130px] pb-[100px] overflow-hidden bg-[#050B14] text-white border-b border-white/10">
-        {/* Glow Spheres */}
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/12 blur-[140px] rounded-full pointer-events-none" />
-        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0052FF]/15 blur-[160px] rounded-full pointer-events-none" />
-
-        {/* Blueprint Grid */}
+      <section className="relative pt-[120px] pb-[80px] overflow-hidden border-b border-[#E2EBF2] bg-gradient-to-b from-[#F2F7FB] via-[#FAFCFE] to-white">
+        {/* Subtle Ambient Blueprint Grid */}
         <div 
-          className="absolute inset-0 pointer-events-none opacity-20"
+          className="absolute inset-0 pointer-events-none opacity-30"
           style={{
-            backgroundImage: 'linear-gradient(rgba(0,184,240,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,0.08) 1px, transparent 1px)',
-            backgroundSize: '40px 40px',
+            backgroundImage: 'linear-gradient(#C9DCE9 1px, transparent 1px), linear-gradient(90deg, #C9DCE9 1px, transparent 1px)',
+            backgroundSize: '36px 36px',
           }}
         />
 
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+        <div className="max-w-[1220px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
-            {/* Left Content */}
-            <div className="flex-1 text-left">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#00B8F0]/10 border border-[#00B8F0]/30 text-[#00B8F0] font-mono text-[11px] uppercase tracking-widest mb-6 font-semibold">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>Enterprise RAG &amp; Deterministic AI Agent Engineering</span>
+            {/* Left Content Column (7 cols) */}
+            <div className="lg:col-span-7 text-left">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E5F3FC] border border-[#00B8F0]/30 font-mono text-[11px] font-bold text-[#0678BE] tracking-widest uppercase mb-6 shadow-sm">
+                <span className="w-2 h-2 rounded-full bg-[#00B8F0] animate-pulse" />
+                <span>AI ENGINEERING · BUILT FOR PRODUCTION</span>
               </div>
 
-              <h1 className="text-[clamp(38px,5.5vw,66px)] font-bold font-heading tracking-tight leading-[1.08] mb-6 text-white">
-                Enterprise AI Systems <br />
-                <span className="bg-gradient-to-r from-[#00B8F0] via-[#0066FF] to-[#60A5FA] bg-clip-text text-transparent">
-                  That Cite Sources.
+              <h1 className="text-[clamp(40px,5vw,68px)] font-extrabold tracking-tight leading-[1.04] mb-6 text-[#0B1C2C]">
+                Your business has the knowledge. <br />
+                <span className="text-[#0678BE] italic font-serif">
+                  We engineer the intelligence.
                 </span>
               </h1>
 
-              <p className="text-[17px] sm:text-[19px] text-[#8A9EB0] max-w-[580px] mb-8 leading-relaxed font-normal">
-                We turn messy documents, regulatory policies, and multi-step workflows into production-ready RAG search and deterministic AI agents in 4–6 weeks. Zero hallucinations. Verified paragraph citations. Measured retrieval quality.
+              <p className="text-base sm:text-lg text-[#4B6175] max-w-[580px] mb-8 leading-relaxed font-normal">
+                Botmartz designs and deploys AI systems that turn complex, fragmented business knowledge into evidence-grounded answers and controlled, auditable workflows.
               </p>
 
-              {/* Trust & Brain-Priming Metric Bar */}
-              <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-slate-300 mb-8 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 max-w-fit">
-                <span className="text-[#00B8F0] font-bold">● 4–6 Wk Production Pilots</span>
-                <span className="text-slate-600">|</span>
-                <span>RAGAS Evaluated</span>
-                <span className="text-slate-600">|</span>
-                <span>DPDPA &amp; Private VPC Ready</span>
-              </div>
-
-              <div className="flex flex-wrap gap-4 items-center mb-12">
+              {/* Action Buttons */}
+              <div className="flex flex-wrap gap-4 items-center mb-10">
                 <TrackedLink
                   href="/contact?type=architecture-review"
                   eventName="button_click"
-                  eventData={{ button_name: "home_hero_book_review" }}
-                  className="inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white px-7 py-4 rounded-xl text-[15px] font-semibold transition-all shadow-[0_4px_20px_rgba(0,102,255,0.4)] hover:scale-[1.02] active:scale-[0.98]"
+                  eventData={{ button_name: "home_hero_discuss" }}
+                  className="inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white px-7 py-4 rounded-xl text-sm font-bold transition-all shadow-[0_4px_20px_rgba(0,102,255,0.3)] hover:scale-[1.02] active:scale-[0.98]"
                 >
-                  Book Architecture Review <ArrowRight className="w-4 h-4" />
+                  <span>Discuss an AI Project</span>
+                  <ArrowRight className="w-4 h-4" />
                 </TrackedLink>
-                <TrackedLink
-                  href="/contact?type=feasibility-audit"
-                  eventName="button_click"
-                  eventData={{ button_name: "home_hero_free_audit" }}
-                  className="inline-flex items-center gap-2 border border-slate-700 text-white hover:border-[#00B8F0] hover:text-[#00B8F0] px-7 py-4 rounded-xl text-[15px] font-semibold transition-all hover:bg-white/5"
+                <a
+                  href="#system"
+                  className="inline-flex items-center gap-2 border border-[#C9DCE9] bg-white text-[#0B1C2C] hover:border-[#0092D7] hover:text-[#0092D7] px-6 py-4 rounded-xl text-sm font-bold transition-all shadow-sm"
                 >
-                  Request 48-Hour Feasibility Audit ↗
-                </TrackedLink>
+                  <span>Explore the Architecture ↓</span>
+                </a>
               </div>
 
-              {/* Core Philosophy Markers */}
-              <div className="pt-8 border-t border-white/10 flex flex-wrap gap-x-8 gap-y-3 text-xs font-mono text-[#8A9EB0]">
+              {/* Tri-Check Guarantee Bar */}
+              <div className="pt-6 border-t border-[#E2EBF2] flex flex-wrap gap-x-6 gap-y-2 text-xs font-mono font-semibold text-[#4B6175]">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 size={14} className="text-[#00B8F0]" />
-                  <span>Stack-Neutral Implementation</span>
+                  <span className="w-4 h-4 rounded-full bg-[#E5F3FC] text-[#0678BE] flex items-center justify-center text-[10px] font-bold">✓</span>
+                  <span>Evidence-grounded retrieval</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 size={14} className="text-[#00B8F0]" />
-                  <span>Strict Citation Grounding</span>
+                  <span className="w-4 h-4 rounded-full bg-[#E5F3FC] text-[#0678BE] flex items-center justify-center text-[10px] font-bold">✓</span>
+                  <span>Controlled agent actions</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 size={14} className="text-[#00B8F0]" />
-                  <span>Deterministic Workflows</span>
+                  <span className="w-4 h-4 rounded-full bg-[#E5F3FC] text-[#0678BE] flex items-center justify-center text-[10px] font-bold">✓</span>
+                  <span>Private VPC deployment</span>
                 </div>
               </div>
             </div>
 
-            {/* Right Architectural Graphic */}
-            <div className="flex-1 w-full max-w-[500px]">
-              <div className="bg-[#091222]/90 border border-white/15 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
-                <div className="flex items-center justify-between pb-5 mb-5 border-b border-white/10">
-                  <div className="text-xs font-mono text-[#00B8F0] uppercase tracking-wider font-bold">
-                    System Architecture Pipeline
-                  </div>
-                  <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-mono">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    Production Ready
-                  </div>
-                </div>
-
-                <div className="space-y-3.5 font-mono text-xs">
-                  <div className="p-3 rounded-xl bg-[#050B14] border border-white/10 flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <Database size={15} className="text-[#00B8F0]" />
-                      <span className="text-slate-200">Enterprise Data &amp; Silos</span>
-                    </div>
-                    <span className="text-[10px] text-slate-500">Docs / DBs / APIs</span>
-                  </div>
-
-                  <div className="flex justify-center text-slate-500 text-xs">↓</div>
-
-                  <div className="p-3 rounded-xl bg-[#050B14] border border-[#00B8F0]/30 flex items-center justify-between shadow-[0_0_15px_rgba(0,184,240,0.1)]">
-                    <div className="flex items-center gap-2.5">
-                      <Search size={15} className="text-[#00B8F0]" />
-                      <span className="text-white font-bold">Hybrid Search &amp; Reranking</span>
-                    </div>
-                    <span className="text-[10px] px-2 py-0.5 rounded bg-[#00B8F0]/15 text-[#00B8F0]">Dense + BM25</span>
-                  </div>
-
-                  <div className="flex justify-center text-slate-500 text-xs">↓</div>
-
-                  <div className="p-3 rounded-xl bg-[#050B14] border border-white/10 flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <Workflow size={15} className="text-[#60A5FA]" />
-                      <span className="text-slate-200">Constrained State Machine</span>
-                    </div>
-                    <span className="text-[10px] text-slate-500">Deterministic Routing</span>
-                  </div>
-
-                  <div className="flex justify-center text-slate-500 text-xs">↓</div>
-
-                  <div className="p-3 rounded-xl bg-[#071324] border border-emerald-500/30 flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <ShieldCheck size={15} className="text-emerald-400" />
-                      <span className="text-emerald-300 font-bold">Evidence Grounding &amp; Citations</span>
-                    </div>
-                    <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400">Refuses when evidence is missing</span>
-                  </div>
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#8A9EB0]">
-                  <span>Evaluation: Benchmark Harness</span>
-                  <span className="text-[#00B8F0] font-mono">Grounded Citations</span>
-                </div>
-              </div>
+            {/* Right Interactive 3D Visual Column (5 cols) */}
+            <div className="lg:col-span-5 w-full">
+              <LivingKnowledgeCore currentStage="retrieval" />
             </div>
 
           </div>
@@ -331,186 +148,80 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════════════════════════════
-          2. FROM AI STRATEGY TO PRODUCTION (5 STAGES) - LIGHT THEME
+          CHAPTER 2: THE TENSION (PROTOTYPE VS. PRODUCTION)
       ═══════════════════════════════════════════ */}
-      <section className="py-24 bg-[#F8FAFC] relative border-b border-slate-200">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="tension" className="py-24 bg-white border-b border-[#E2EBF2]">
+        <div className="max-w-[1220px] mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="font-mono text-xs tracking-[0.14em] text-[#0066FF] uppercase mb-3 font-bold">
-              DELIVERY LIFECYCLE
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-bold font-heading mb-4 text-slate-900">
-              From AI Strategy to Production.
-            </h2>
-            <p className="text-slate-600 text-base sm:text-lg">
-              A disciplined, milestone-driven framework that bridges executive vision with operational software.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-            {STAGES.map((s) => (
-              <div
-                key={s.step}
-                className="bg-white border border-slate-200 rounded-2xl p-6 flex flex-col justify-between hover:border-[#0066FF]/40 transition-all duration-300 shadow-sm hover:shadow-md group"
-              >
-                <div>
-                  <div className="font-mono text-2xl font-black text-slate-300 group-hover:text-[#0066FF] transition-colors mb-4">
-                    {s.step}
-                  </div>
-                  <div className="font-mono text-xs text-[#0066FF] uppercase tracking-wider font-bold mb-2">
-                    {s.name}
-                  </div>
-                  <h3 className="text-base font-bold text-slate-900 mb-3">
-                    {s.title}
-                  </h3>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    {s.desc}
-                  </p>
-                </div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-16">
+            <div className="lg:col-span-7">
+              <div className="font-mono text-xs font-bold tracking-[0.14em] text-[#0092D7] uppercase mb-3">
+                02 / THE PRODUCTION TENSION
               </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════
-          3. WHAT WE IMPLEMENT (4 CORE PILLARS) - LIGHT THEME
-      ═══════════════════════════════════════════ */}
-      <section id="solutions" className="py-24 bg-white relative border-b border-slate-200">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 mb-16">
-            <div>
-              <div className="font-mono text-xs tracking-[0.14em] text-[#0066FF] uppercase mb-3 font-bold">
-                CORE CAPABILITIES
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-bold font-heading text-slate-900 mb-4">
-                What We Implement
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B1C2C] tracking-tight">
+                A convincing demo is not a production system.
               </h2>
-              <p className="text-slate-600 text-base sm:text-lg max-w-2xl">
-                We engineer reliable, audited AI systems built around your specific operational workflows.
+            </div>
+            <div className="lg:col-span-5">
+              <p className="text-sm sm:text-base text-[#4B6175] leading-relaxed">
+                Generative AI prototypes produce impressive impressions. Production systems must operate under dirty schemas, permission boundaries, strict latency budgets, and real financial consequences.
               </p>
             </div>
-            <TrackedLink
-              href="/services"
-              eventName="button_click"
-              eventData={{ button_name: "home_view_all_solutions" }}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[#0066FF] hover:text-[#0052CC] transition-colors"
-            >
-              Explore All Solutions →
-            </TrackedLink>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {SOLUTIONS.map((sol, i) => (
-              <div
-                key={i}
-                className="bg-[#F8FAFC] border border-slate-200/80 rounded-2xl p-8 hover:border-[#0066FF]/40 transition-all duration-300 shadow-sm hover:shadow-md flex flex-col justify-between group"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 text-[#0066FF] flex items-center justify-center">
-                      <sol.icon size={22} />
-                    </div>
-                    <span className="font-mono text-xs px-3 py-1 rounded-full bg-slate-200/60 border border-slate-200 text-slate-700 font-semibold">
-                      {sol.badge}
-                    </span>
-                  </div>
-
-                  <h3 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-[#0066FF] transition-colors">
-                    {sol.title}
-                  </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-6">
-                    {sol.desc}
-                  </p>
-
-                  <ul className="space-y-2.5 pt-4 border-t border-slate-200 mb-8">
-                    {sol.capabilities.map((cap, idx) => (
-                      <li key={idx} className="flex items-center gap-2.5 text-xs text-slate-700 font-medium">
-                        <CheckCircle2 size={13} className="text-[#0066FF] shrink-0" />
-                        <span>{cap}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <TrackedLink
-                  href={sol.href}
-                  eventName="button_click"
-                  eventData={{ button_name: `solution_card_${sol.badge}` }}
-                  className="inline-flex items-center gap-2 font-mono text-xs text-[#0066FF] font-bold group-hover:text-[#0052CC] transition-colors"
-                >
-                  Explore Architecture <ArrowRight size={13} />
-                </TrackedLink>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════
-          4. STACK INTEGRATION - LIGHT THEME
-      ═══════════════════════════════════════════ */}
-      <section className="py-24 bg-[#F8FAFC] relative border-b border-slate-200">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 border border-[#C9DCE9] rounded-3xl overflow-hidden shadow-[0_10px_30px_rgba(11,28,44,0.04)]">
             
-            <div>
-              <div className="font-mono text-xs tracking-[0.14em] text-[#0066FF] uppercase mb-3 font-bold">
-                STACK INTEGRATION
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-bold font-heading text-slate-900 mb-6 leading-tight">
-                Enterprise AI Implementation, <br />
-                Without Starting From Scratch.
-              </h2>
-              <p className="text-base text-slate-600 leading-relaxed mb-6">
-                Most organizations do not need to spend months attempting to invent a proprietary search or AI stack. We work across your existing infrastructure and select battle-tested platforms to solve client problems rapidly.
-              </p>
-
-              <div className="space-y-4 mb-8">
-                <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-                  <div className="text-xs font-mono text-[#0066FF] font-bold mb-1">Enterprise AI Platforms</div>
-                  <div className="text-xs text-slate-600">Custom agents, data connectors, and adoption support for enterprise workplace AI (e.g. Glean).</div>
-                </div>
-                <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-                  <div className="text-xs font-mono text-[#0066FF] font-bold mb-1">Search &amp; Retrieval Infrastructure</div>
-                  <div className="text-xs text-slate-600">OpenSearch hybrid indexing, Qdrant vector databases, Weaviate schemas, and Elastic AI search.</div>
-                </div>
-                <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-                  <div className="text-xs font-mono text-[#0066FF] font-bold mb-1">Cloud &amp; Private VPC Deployment</div>
-                  <div className="text-xs text-slate-600">Deployable in your Amazon Web Services, Google Cloud, or Microsoft Azure environment.</div>
-                </div>
+            {/* Left: Demo Conditions */}
+            <div className="p-8 sm:p-12 bg-white border-b md:border-b-0 md:border-r border-[#C9DCE9]">
+              <div className="font-mono text-xs font-bold text-slate-400 uppercase tracking-widest pb-4 mb-6 border-b border-slate-100 flex items-center justify-between">
+                <span>TYPICAL DEMO CONDITIONS</span>
+                <span className="text-[10px] text-red-500 font-semibold">[FRAGILE STACK]</span>
               </div>
 
-              <TrackedLink
-                href="/work"
-                eventName="button_click"
-                eventData={{ button_name: "home_implementation_methodology" }}
-                className="inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all shadow-sm"
-              >
-                Explore Production Systems <ArrowRight size={14} />
-              </TrackedLink>
+              <div className="space-y-6">
+                {[
+                  { title: "Clean, curated sample documents", desc: "Small mock files that bypass complex layout parsing, OCR tables, and dense formatting." },
+                  { title: "Happy-path query assumptions", desc: "Prompts tuned because the vector index happened to yield close cosine proximity." },
+                  { title: "Unrestricted context & zero permissions", desc: "No tenant separation, role-based access control (RBAC), or sensitive privacy gating." },
+                  { title: "Impressionistic output without evidence", desc: "Fluent language that sounds plausible but lacks token-verifiable source citations." },
+                  { title: "A successful one-off test run", desc: "Demos don't reveal catastrophic silent failures when documents change or scale up." },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-start gap-4">
+                    <div className="w-6 h-6 rounded-md bg-slate-100 text-slate-500 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+                      ✕
+                    </div>
+                    <div>
+                      <div className="font-bold text-sm text-[#0B1C2C] mb-1">{item.title}</div>
+                      <div className="text-xs text-[#4B6175] leading-relaxed">{item.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-md">
-              <div className="font-mono text-xs text-[#0066FF] uppercase tracking-wider mb-6 font-bold">
-                Integration Matrix
+            {/* Right: Production Reality */}
+            <div className="p-8 sm:p-12 bg-[#F4F9FD]">
+              <div className="font-mono text-xs font-bold text-[#0678BE] uppercase tracking-widest pb-4 mb-6 border-b border-[#C9DCE9]/80 flex items-center justify-between">
+                <span>PRODUCTION ENGINEERING REALITY</span>
+                <span className="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">[DEFENSIVE STACK]</span>
               </div>
-              <div className="grid grid-cols-2 gap-3 text-xs font-mono">
+
+              <div className="space-y-6">
                 {[
-                  { title: "Enterprise AI Platforms", desc: "Glean, Custom Connectors" },
-                  { title: "Search Engines", desc: "OpenSearch, Elastic" },
-                  { title: "Vector Databases", desc: "Qdrant, Weaviate, pgvector" },
-                  { title: "Agent Frameworks", desc: "LangGraph, Google ADK" },
-                  { title: "Model Orchestration", desc: "OpenAI, Anthropic, Gemini" },
-                  { title: "Cloud Platforms", desc: "AWS, Azure, GCP" },
+                  { title: "Complex, unstructured business knowledge", desc: "Multi-decade PDFs, nested financial tables, scanned SOPs, and scattered databases." },
+                  { title: "Ambiguous, token-sparse real queries", desc: "Short jargon, token negation, and cross-reference queries that fool naive vector search." },
+                  { title: "Access-aware retrieval & data sovereignty", desc: "Hard metadata partitioning, tenant isolation, and strict document access barriers." },
+                  { title: "Evidence-grounded responses & citations", desc: "Token-level paragraph attribution with verified refusal when evidence is missing." },
+                  { title: "Continuous regression testing with RAGAS", desc: "Automated test suites scoring faithfulness, context recall, and agent trajectory safety." },
                 ].map((item, idx) => (
-                  <div key={idx} className="p-4 rounded-xl bg-slate-50 border border-slate-200">
-                    <div className="font-bold text-slate-900 mb-1">{item.title}</div>
-                    <div className="text-slate-600 text-[11px]">{item.desc}</div>
+                  <div key={idx} className="flex items-start gap-4">
+                    <div className="w-6 h-6 rounded-md bg-[#E5F3FC] text-[#0678BE] flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+                      ✓
+                    </div>
+                    <div>
+                      <div className="font-bold text-sm text-[#0B1C2C] mb-1">{item.title}</div>
+                      <div className="text-xs text-[#4B6175] leading-relaxed">{item.desc}</div>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -521,113 +232,478 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════════════════════════════
-          5. BOTMARTZ APPLIED RESEARCH & METHODOLOGY - LIGHT THEME
+          CHAPTER 3: THE SYSTEM (ARCHITECTURE REVEAL)
       ═══════════════════════════════════════════ */}
-      <section id="research" className="py-24 bg-white relative border-b border-slate-200">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="system" className="py-24 bg-[#F7FAFD] border-b border-[#E2EBF2]">
+        <div className="max-w-[1220px] mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 mb-16">
-            <div>
-              <div className="font-mono text-xs tracking-[0.14em] text-[#0066FF] uppercase mb-3 font-bold">
-                APPLIED AI RESEARCH &amp; FIRST PRINCIPLES
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-16">
+            <div className="lg:col-span-7">
+              <div className="font-mono text-xs font-bold tracking-[0.14em] text-[#0092D7] uppercase mb-3">
+                03 / SYSTEM TOPOLOGY
               </div>
-              <h2 className="text-3xl sm:text-4xl font-bold font-heading text-slate-900 mb-4">
-                Our Research &amp; Architectural Focus
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B1C2C] tracking-tight">
+                Good AI is an engineered system, not a single model.
               </h2>
-              <p className="text-slate-600 text-base sm:text-lg max-w-2xl">
-                We bridge cutting-edge machine learning research with deterministic enterprise engineering — investigating attention efficiency, state machines, and verified citation boundaries.
+            </div>
+            <div className="lg:col-span-5">
+              <p className="text-sm sm:text-base text-[#4B6175] leading-relaxed">
+                The architecture must follow the data, the security boundaries, and the operational workflow. Each layer has an explicit responsibility — and a measurable verification metric.
               </p>
             </div>
-            <TrackedLink
-              href="/contact?type=architecture-review"
-              eventName="button_click"
-              eventData={{ button_name: "home_research_discuss" }}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[#0066FF] hover:text-[#0052CC] transition-colors"
-            >
-              Discuss Architecture &amp; Research →
-            </TrackedLink>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {RESEARCH_AREAS.map((item, idx) => (
-              <div
-                key={idx}
-                className="rounded-2xl p-7 flex flex-col justify-between border bg-[#F8FAFC] border-slate-200 hover:border-blue-300 transition-all duration-300 shadow-sm hover:shadow-md"
-              >
+          {/* Interactive Topology Container */}
+          <div className="bg-white border border-[#C9DCE9] rounded-3xl p-6 sm:p-10 shadow-[0_10px_30px_rgba(11,28,44,0.04)]">
+            
+            <div className="flex flex-wrap items-center justify-between gap-4 pb-6 mb-8 border-b border-[#E2EBF2]">
+              <div className="text-xs font-mono font-bold text-[#0B1C2C]">
+                ENTERPRISE RETRIEVAL &amp; AGENT EXECUTION SCHEMATIC
+              </div>
+              <div className="flex items-center gap-3 text-xs font-mono text-slate-500">
+                <span className="flex items-center gap-1.5 text-emerald-600 font-bold">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  Grounded Pipeline
+                </span>
+                <span>|</span>
+                <span>Latency p95: 42ms</span>
+              </div>
+            </div>
+
+            {/* 5 Architectural Steps */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+              
+              <div className="p-5 rounded-2xl bg-[#F8FAFD] border border-[#C9DCE9] flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center justify-between gap-2 mb-4">
-                    <span className="font-mono text-[10px] px-2.5 py-1 rounded bg-blue-100/70 border border-blue-200 text-[#0066FF] font-bold">
-                      [{item.tag}]
-                    </span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-200 text-slate-800 font-semibold">
-                      {item.focus}
-                    </span>
-                  </div>
-
-                  <h3 className="text-xl font-bold text-slate-900 mb-2.5">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
-                    {item.desc}
+                  <div className="font-mono text-[10px] font-bold text-[#0092D7] uppercase mb-2">01 / INGESTION</div>
+                  <h3 className="font-bold text-sm text-[#0B1C2C] mb-2">Document Ingestion &amp; Chunking</h3>
+                  <p className="text-xs text-[#4B6175] leading-relaxed">
+                    AST-aware parsing across PDFs and SQL schemas. Proposition boundary extraction with parent-document mapping.
                   </p>
-
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {item.tech.map((t, i) => (
-                      <span key={i} className="text-[11px] font-mono px-2 py-0.5 bg-white rounded border border-slate-200 text-slate-700">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
                 </div>
-
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-xs font-mono text-slate-500">Active Laboratory Focus</span>
-                  <Link
-                    href="/contact?type=feasibility-audit"
-                    className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#0066FF] hover:text-[#0052CC] transition-colors"
-                  >
-                    <span>Request Technical Review</span>
-                    <ArrowRight size={13} />
-                  </Link>
+                <div className="mt-4 pt-3 border-t border-slate-200/60 font-mono text-[10px] text-slate-500">
+                  Zero token loss
                 </div>
               </div>
-            ))}
+
+              <div className="p-5 rounded-2xl bg-[#F8FAFD] border border-[#C9DCE9] flex flex-col justify-between">
+                <div>
+                  <div className="font-mono text-[10px] font-bold text-[#0092D7] uppercase mb-2">02 / RETRIEVAL</div>
+                  <h3 className="font-bold text-sm text-[#0B1C2C] mb-2">Dual Hybrid Search</h3>
+                  <p className="text-xs text-[#4B6175] leading-relaxed">
+                    Parallel ANN dense vector traversal and Lucene BM25 sparse keyword indices with hard metadata pre-filtering.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-slate-200/60 font-mono text-[10px] text-slate-500">
+                  Recall: &gt; 98.4%
+                </div>
+              </div>
+
+              <div className="p-5 rounded-2xl bg-[#F8FAFD] border border-[#C9DCE9] flex flex-col justify-between">
+                <div>
+                  <div className="font-mono text-[10px] font-bold text-[#0092D7] uppercase mb-2">03 / FUSION</div>
+                  <h3 className="font-bold text-sm text-[#0B1C2C] mb-2">Reciprocal Rank Fusion (RRF)</h3>
+                  <p className="text-xs text-[#4B6175] leading-relaxed">
+                    $k=60$ harmonic scoring combining dense semantic candidates with exact token matches to eliminate retrieval blindspots.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-slate-200/60 font-mono text-[10px] text-slate-500">
+                  Top-100 consensus
+                </div>
+              </div>
+
+              <div className="p-5 rounded-2xl bg-[#EAF5FC] border border-[#0092D7]/40 flex flex-col justify-between shadow-sm">
+                <div>
+                  <div className="font-mono text-[10px] font-bold text-[#0678BE] uppercase mb-2">04 / RERANK</div>
+                  <h3 className="font-bold text-sm text-[#0B1C2C] mb-2">Cross-Encoder Validation</h3>
+                  <p className="text-xs text-[#4B6175] leading-relaxed">
+                    Full cross-attention scoring (BGE-Reranker-Large). Discards low-confidence candidates with calibrated threshold $S \ge 0.72$.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-[#0092D7]/20 font-mono text-[10px] text-[#0678BE] font-bold">
+                  Zero hallucinations
+                </div>
+              </div>
+
+              <div className="p-5 rounded-2xl bg-[#F8FAFD] border border-[#C9DCE9] flex flex-col justify-between">
+                <div>
+                  <div className="font-mono text-[10px] font-bold text-[#0092D7] uppercase mb-2">05 / ACTION</div>
+                  <h3 className="font-bold text-sm text-[#0B1C2C] mb-2">State Machine &amp; HITL</h3>
+                  <p className="text-xs text-[#4B6175] leading-relaxed">
+                    LangGraph cyclic workflows with Postgres checkpointing, tool schema enforcement, and human approval gates for critical edits.
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-slate-200/60 font-mono text-[10px] text-slate-500">
+                  Fully auditable
+                </div>
+              </div>
+
+            </div>
+
+            {/* Bottom Governance Protocol Strip */}
+            <div className="mt-8 pt-6 border-t border-[#E2EBF2] flex flex-wrap justify-between items-center gap-4 text-xs font-mono text-[#4B6175]">
+              <span>↳ RBAC / TENANT DATA ISOLATION</span>
+              <span>↳ OPENTELEMETRY TRACING &amp; AUDIT LOGS</span>
+              <span>↳ RAGAS REGRESSION HARNESS</span>
+            </div>
+
           </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════
+          CHAPTER 4: THREE CORE DISCIPLINES (OFFERS)
+      ═══════════════════════════════════════════ */}
+      <section id="disciplines" className="py-24 bg-white border-b border-[#E2EBF2]">
+        <div className="max-w-[1220px] mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-16">
+            <div className="lg:col-span-7">
+              <div className="font-mono text-xs font-bold tracking-[0.14em] text-[#0092D7] uppercase mb-3">
+                04 / CORE CAPABILITIES
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B1C2C] tracking-tight">
+                Three disciplines. One production mindset.
+              </h2>
+            </div>
+            <div className="lg:col-span-5">
+              <p className="text-sm sm:text-base text-[#4B6175] leading-relaxed">
+                We focus on the layers that determine whether an enterprise AI investment succeeds: high-precision retrieval, deterministic state execution, and sovereign deployment.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            {/* Capability 1: Enterprise RAG */}
+            <div className="bg-[#F8FAFD] border border-[#C9DCE9] rounded-3xl p-8 flex flex-col justify-between hover:border-[#0092D7] transition-all hover:shadow-[0_12px_36px_rgba(0,146,215,0.08)] group">
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-[#E5F3FC] border border-[#C9DCE9] text-[#0092D7] flex items-center justify-center mb-6">
+                  <Database size={22} />
+                </div>
+                <div className="font-mono text-[11px] font-bold text-[#0678BE] uppercase mb-2">01 / RETRIEVAL ENGINEERING</div>
+                <h3 className="text-2xl font-bold text-[#0B1C2C] mb-3">Enterprise RAG Systems</h3>
+                <p className="text-sm text-[#4B6175] leading-relaxed mb-6">
+                  Grounded search architecture combining hybrid vector and keyword indices to retrieve exact supporting passages before generation begins.
+                </p>
+                <ul className="space-y-2.5 pt-4 border-t border-[#C9DCE9] mb-8 text-xs text-[#0B1C2C] font-semibold">
+                  <li className="flex items-center gap-2"><CheckCircle2 size={13} className="text-[#0092D7]" /> Layout-aware table and PDF parsing</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 size={13} className="text-[#0092D7]" /> Cross-encoder reranking &amp; RRF consensus</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 size={13} className="text-[#0092D7]" /> Role-based permission filtering (RBAC)</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 size={13} className="text-[#0092D7]" /> Verifiable paragraph citations</li>
+                </ul>
+              </div>
+              <TrackedLink
+                href="/services/enterprise-rag"
+                eventName="button_click"
+                eventData={{ button_name: "home_card_rag" }}
+                className="inline-flex items-center gap-2 font-mono text-xs font-bold text-[#0066FF] hover:text-[#0052CC]"
+              >
+                <span>Explore RAG Architecture</span>
+                <ArrowRight size={13} />
+              </TrackedLink>
+            </div>
+
+            {/* Capability 2: Production AI Agents */}
+            <div className="bg-[#F8FAFD] border border-[#C9DCE9] rounded-3xl p-8 flex flex-col justify-between hover:border-[#0092D7] transition-all hover:shadow-[0_12px_36px_rgba(0,146,215,0.08)] group">
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-[#E5F3FC] border border-[#C9DCE9] text-[#0092D7] flex items-center justify-center mb-6">
+                  <Workflow size={22} />
+                </div>
+                <div className="font-mono text-[11px] font-bold text-[#0678BE] uppercase mb-2">02 / WORKFLOW ORCHESTRATION</div>
+                <h3 className="text-2xl font-bold text-[#0B1C2C] mb-3">Production AI Agents</h3>
+                <p className="text-sm text-[#4B6175] leading-relaxed mb-6">
+                  Deterministic state machines that execute business workflows safely. Equipped with typed tools, state checkpointing, and human-in-the-loop review.
+                </p>
+                <ul className="space-y-2.5 pt-4 border-t border-[#C9DCE9] mb-8 text-xs text-[#0B1C2C] font-semibold">
+                  <li className="flex items-center gap-2"><CheckCircle2 size={13} className="text-[#0092D7]" /> LangGraph cyclic graphs &amp; state persistence</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 size={13} className="text-[#0092D7]" /> Pydantic tool schema validation</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 size={13} className="text-[#0092D7]" /> Approval gates for irreversible actions</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 size={13} className="text-[#0092D7]" /> Circuit breakers &amp; fallback recovery</li>
+                </ul>
+              </div>
+              <TrackedLink
+                href="/services/ai-agents"
+                eventName="button_click"
+                eventData={{ button_name: "home_card_agents" }}
+                className="inline-flex items-center gap-2 font-mono text-xs font-bold text-[#0066FF] hover:text-[#0052CC]"
+              >
+                <span>Explore AI Agents</span>
+                <ArrowRight size={13} />
+              </TrackedLink>
+            </div>
+
+            {/* Capability 3: Private AI Deployment */}
+            <div className="bg-[#F8FAFD] border border-[#C9DCE9] rounded-3xl p-8 flex flex-col justify-between hover:border-[#0092D7] transition-all hover:shadow-[0_12px_36px_rgba(0,146,215,0.08)] group">
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-[#E5F3FC] border border-[#C9DCE9] text-[#0092D7] flex items-center justify-center mb-6">
+                  <Server size={22} />
+                </div>
+                <div className="font-mono text-[11px] font-bold text-[#0678BE] uppercase mb-2">03 / SOVEREIGN INFRASTRUCTURE</div>
+                <h3 className="text-2xl font-bold text-[#0B1C2C] mb-3">Private AI Deployment</h3>
+                <p className="text-sm text-[#4B6175] leading-relaxed mb-6">
+                  Deployable within your private cloud environment (AWS Bedrock, Azure AI, GCP Vertex) or on-prem. Complete data sovereignty and zero telemetry leaks.
+                </p>
+                <ul className="space-y-2.5 pt-4 border-t border-[#C9DCE9] mb-8 text-xs text-[#0B1C2C] font-semibold">
+                  <li className="flex items-center gap-2"><CheckCircle2 size={13} className="text-[#0092D7]" /> VPC peering &amp; private endpoint configuration</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 size={13} className="text-[#0092D7]" /> Air-gapped container orchestration</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 size={13} className="text-[#0092D7]" /> Zero foundational model training retention</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 size={13} className="text-[#0092D7]" /> Complete operational code handover</li>
+                </ul>
+              </div>
+              <TrackedLink
+                href="/services/enterprise-rag"
+                eventName="button_click"
+                eventData={{ button_name: "home_card_private" }}
+                className="inline-flex items-center gap-2 font-mono text-xs font-bold text-[#0066FF] hover:text-[#0052CC]"
+              >
+                <span>Explore Private Deployment</span>
+                <ArrowRight size={13} />
+              </TrackedLink>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════
+          CHAPTER 5: THE INDUSTRY LENS
+      ═══════════════════════════════════════════ */}
+      <section id="industries" className="py-24 bg-[#F7FAFD] border-b border-[#E2EBF2]">
+        <div className="max-w-[1220px] mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-16">
+            <div className="lg:col-span-7">
+              <div className="font-mono text-xs font-bold tracking-[0.14em] text-[#0092D7] uppercase mb-3">
+                05 / DOMAIN SPECIALIZATION
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B1C2C] tracking-tight">
+                Knowledge is different in every industry.
+              </h2>
+            </div>
+            <div className="lg:col-span-5">
+              <p className="text-sm sm:text-base text-[#4B6175] leading-relaxed">
+                The underlying retrieval algorithms and agent state engines adapt to the terminology, document layout conventions, and regulatory boundaries of your sector.
+              </p>
+            </div>
+          </div>
+
+          <IndustrySelector />
 
         </div>
       </section>
 
       {/* ═══════════════════════════════════════════
-          6. ARCHITECTURE REVIEW / BOTTOM CONVERSION - LIGHT THEME
+          CHAPTER 6: PROOF (ENGINEERING CASE STUDIES)
       ═══════════════════════════════════════════ */}
-      <section className="py-24 bg-[#F8FAFC] relative text-center border-t border-slate-200">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <div className="w-16 h-16 rounded-2xl bg-blue-50 border border-blue-200 text-[#0066FF] flex items-center justify-center mx-auto mb-6 shadow-sm">
-            <Scale size={28} />
+      <section id="proof" className="py-24 bg-white border-b border-[#E2EBF2]">
+        <div className="max-w-[1220px] mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-16">
+            <div className="lg:col-span-7">
+              <div className="font-mono text-xs font-bold tracking-[0.14em] text-[#0092D7] uppercase mb-3">
+                06 / TRANSPARENT ENGINEERING
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B1C2C] tracking-tight">
+                Show the thinking behind the system.
+              </h2>
+            </div>
+            <div className="lg:col-span-5">
+              <p className="text-sm sm:text-base text-[#4B6175] leading-relaxed">
+                Technical credibility comes from showing architectural decisions, mathematical boundaries, and trade-offs — not making inflated claims.
+              </p>
+            </div>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4 font-heading">
-            Book an Architecture Review
-          </h2>
-          <p className="text-base sm:text-lg text-slate-600 mb-8 leading-relaxed">
-            Discuss your organization's document complexity, search challenges, or agent workflows with an experienced AI systems architect.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <TrackedLink
-              href="/contact?type=architecture-review"
-              eventName="button_click"
-              eventData={{ button_name: "home_bottom_cta_review" }}
-              className="inline-flex items-center justify-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold text-base px-8 py-4 rounded-xl shadow-[0_4px_20px_rgba(0,102,255,0.3)] transition-all"
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            {/* Case Study 1 */}
+            <div className="bg-[#F8FAFD] border border-[#C9DCE9] rounded-3xl p-8 flex flex-col justify-between shadow-sm">
+              <div>
+                <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 pb-4 mb-6 border-b border-slate-200">
+                  <span className="text-[#0678BE] font-bold">REFERENCE ARCHITECTURE / 01</span>
+                  <span>RAG RETRIEVAL</span>
+                </div>
+                <h3 className="text-xl font-bold text-[#0B1C2C] mb-3">
+                  Designing Retrieval for a 250-Document Insurance Corpus
+                </h3>
+                <p className="text-sm text-[#4B6175] leading-relaxed mb-6">
+                  An evaluation study on chunking granularity, dense bi-encoder limitations, and reciprocal rank fusion across complex multi-page policy forms. Demonstrates a 42% reduction in hallucinated claim exclusions.
+                </p>
+                <div className="flex flex-wrap gap-2 mb-8 font-mono text-[11px]">
+                  <span className="px-2.5 py-1 rounded bg-white border border-[#C9DCE9] text-[#0B1C2C]">BM25 + Splade</span>
+                  <span className="px-2.5 py-1 rounded bg-white border border-[#C9DCE9] text-[#0B1C2C]">RRF (k=60)</span>
+                  <span className="px-2.5 py-1 rounded bg-white border border-[#C9DCE9] text-[#0B1C2C]">Cross-Encoders</span>
+                </div>
+              </div>
+              <Link
+                href="/insights/why-vector-similarity-is-not-semantic-search"
+                className="inline-flex items-center gap-2 font-mono text-xs font-bold text-[#0066FF] hover:text-[#0052CC]"
+              >
+                <span>Read Full Engineering Whitepaper →</span>
+              </Link>
+            </div>
+
+            {/* Case Study 2 */}
+            <div className="bg-[#F8FAFD] border border-[#C9DCE9] rounded-3xl p-8 flex flex-col justify-between shadow-sm">
+              <div>
+                <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 pb-4 mb-6 border-b border-slate-200">
+                  <span className="text-[#0678BE] font-bold">REFERENCE ARCHITECTURE / 02</span>
+                  <span>AGENTIC ORCHESTRATION</span>
+                </div>
+                <h3 className="text-xl font-bold text-[#0B1C2C] mb-3">
+                  From a Document Assistant to a Controlled LangGraph Agent
+                </h3>
+                <p className="text-sm text-[#4B6175] leading-relaxed mb-6">
+                  Transitioning an enterprise customer service workflow from unconstrained prompt completions into a cyclic state graph with Pydantic tool verification and supervisor approval barriers.
+                </p>
+                <div className="flex flex-wrap gap-2 mb-8 font-mono text-[11px]">
+                  <span className="px-2.5 py-1 rounded bg-white border border-[#C9DCE9] text-[#0B1C2C]">LangGraph</span>
+                  <span className="px-2.5 py-1 rounded bg-white border border-[#C9DCE9] text-[#0B1C2C]">HITL Gates</span>
+                  <span className="px-2.5 py-1 rounded bg-white border border-[#C9DCE9] text-[#0B1C2C]">Postgres Checkpointing</span>
+                </div>
+              </div>
+              <Link
+                href="/services/ai-agents"
+                className="inline-flex items-center gap-2 font-mono text-xs font-bold text-[#0066FF] hover:text-[#0052CC]"
+              >
+                <span>Explore Agent Implementation →</span>
+              </Link>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════
+          CHAPTER 7: ENGINEERING JOURNAL (INSIGHTS)
+      ═══════════════════════════════════════════ */}
+      <section id="insights" className="py-24 bg-[#F7FAFD] border-b border-[#E2EBF2]">
+        <div className="max-w-[1220px] mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-16">
+            <div>
+              <div className="font-mono text-xs font-bold tracking-[0.14em] text-[#0092D7] uppercase mb-3">
+                07 / EDITORIAL JOURNAL
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0B1C2C] tracking-tight">
+                Engineering knowledge for production AI.
+              </h2>
+            </div>
+            <Link
+              href="/insights"
+              className="inline-flex items-center gap-1.5 font-mono text-xs font-bold text-[#0066FF] hover:text-[#0052CC]"
             >
-              Book Architecture Review <ArrowRight size={16} />
-            </TrackedLink>
-            <a
-              href="https://cal.com/botmartz-ai/20min"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 border border-slate-300 text-slate-700 bg-white hover:border-[#0066FF] hover:text-[#0066FF] font-semibold text-base px-8 py-4 rounded-xl transition-all shadow-sm"
-            >
-              Schedule Direct Call (20 Min)
-            </a>
+              <span>Explore All Engineering Notes</span>
+              <ArrowRight size={13} />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <Link href="/insights/why-vector-similarity-is-not-semantic-search" className="bg-white border border-[#C9DCE9] rounded-3xl p-7 flex flex-col justify-between hover:border-[#0092D7] transition-all hover:shadow-md group">
+              <div>
+                <div className="font-mono text-[10px] font-bold text-[#0678BE] uppercase mb-3">RETRIEVAL ENGINEERING · 12 MIN</div>
+                <h3 className="text-lg font-bold text-[#0B1C2C] group-hover:text-[#0066FF] transition-colors mb-3 leading-snug">
+                  Why Vector Similarity Is Not Semantic Search: Mathematical Foundations of Production Retrieval
+                </h3>
+                <p className="text-xs text-[#4B6175] leading-relaxed mb-6">
+                  Linear algebra, dual-encoder projection limits, and why cosine similarity fails on token negation without cross-encoders.
+                </p>
+              </div>
+              <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-mono text-slate-500">
+                <span>Oct 25, 2026</span>
+                <span className="text-[#0066FF] font-bold">Read Whitepaper ↗</span>
+              </div>
+            </Link>
+
+            <Link href="/insights" className="bg-white border border-[#C9DCE9] rounded-3xl p-7 flex flex-col justify-between hover:border-[#0092D7] transition-all hover:shadow-md group">
+              <div>
+                <div className="font-mono text-[10px] font-bold text-[#0678BE] uppercase mb-3">EVALUATION &amp; RELIABILITY · 10 MIN</div>
+                <h3 className="text-lg font-bold text-[#0B1C2C] group-hover:text-[#0066FF] transition-colors mb-3 leading-snug">
+                  How to Evaluate a RAG System Before Production Deployment
+                </h3>
+                <p className="text-xs text-[#4B6175] leading-relaxed mb-6">
+                  Designing golden question datasets from business logs, measuring faithfulness, and setting up automated regression harness.
+                </p>
+              </div>
+              <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-mono text-slate-500">
+                <span>Methodology</span>
+                <span className="text-[#0066FF] font-bold">Read Guide ↗</span>
+              </div>
+            </Link>
+
+            <Link href="/insights" className="bg-white border border-[#C9DCE9] rounded-3xl p-7 flex flex-col justify-between hover:border-[#0092D7] transition-all hover:shadow-md group">
+              <div>
+                <div className="font-mono text-[10px] font-bold text-[#0678BE] uppercase mb-3">ENTERPRISE SECURITY · 8 MIN</div>
+                <h3 className="text-lg font-bold text-[#0B1C2C] group-hover:text-[#0066FF] transition-colors mb-3 leading-snug">
+                  Permission-Aware Retrieval for Enterprise Knowledge Systems
+                </h3>
+                <p className="text-xs text-[#4B6175] leading-relaxed mb-6">
+                  Pre-query metadata partitioning vs. post-filtering: How to enforce access boundaries without sacrificing ANN recall.
+                </p>
+              </div>
+              <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-mono text-slate-500">
+                <span>Architecture</span>
+                <span className="text-[#0066FF] font-bold">Read Guide ↗</span>
+              </div>
+            </Link>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════
+          CHAPTER 8: INVITATION (CONVERSION CHAPTER)
+      ═══════════════════════════════════════════ */}
+      <section id="invitation" className="py-24 bg-[#050B14] text-white relative overflow-hidden">
+        {/* Glow Spheres */}
+        <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-[#00B8F0]/10 rounded-full blur-[140px] pointer-events-none" />
+        
+        <div className="max-w-[1220px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-3xl mx-auto text-center">
+            
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 font-mono text-[11px] font-bold text-[#00B8F0] tracking-widest uppercase mb-6">
+              08 / THE INVITATION
+            </div>
+
+            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-6 leading-tight text-white">
+              Have a knowledge workflow <br />
+              <span className="bg-gradient-to-r from-[#00B8F0] to-[#60A5FA] bg-clip-text text-transparent">
+                worth engineering?
+              </span>
+            </h2>
+
+            <p className="text-base sm:text-lg text-slate-300 mb-10 leading-relaxed max-w-2xl mx-auto">
+              Tell us what your team needs to retrieve, verify, or automate. We will discuss the operational constraints, the architecture, and a practical path to production.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <TrackedLink
+                href="/contact?type=architecture-review"
+                eventName="button_click"
+                eventData={{ button_name: "home_bottom_discuss_project" }}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white px-8 py-4 rounded-xl text-base font-bold transition-all shadow-[0_4px_24px_rgba(0,102,255,0.4)] hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <span>Discuss Your AI Project</span>
+                <ArrowRight size={16} />
+              </TrackedLink>
+              <a
+                href="https://cal.com/botmartz-ai/20min"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-slate-700 bg-white/5 text-white hover:border-[#00B8F0] hover:text-[#00B8F0] px-8 py-4 rounded-xl text-base font-semibold transition-all hover:bg-white/10"
+              >
+                <span>Schedule 20-Min Call ↗</span>
+              </a>
+            </div>
+
+            <div className="mt-12 pt-8 border-t border-white/10 text-xs font-mono text-slate-400 flex flex-wrap justify-center gap-6">
+              <span>● Fixed 4–6 week delivery pilots</span>
+              <span>● Direct architect consultation</span>
+              <span>● Complete VPC &amp; code handover</span>
+            </div>
+
           </div>
         </div>
       </section>
