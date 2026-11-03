@@ -365,3 +365,62 @@ iframe[src*="vercel.live"] {
   opacity: 0 !important;
   pointer-events: none !important;
 }
+
+/* ─── INKMENTORS-GRADE EDITORIAL SCROLL REVEAL & TRANSITIONS ─── */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal]:not([data-reveal-seen="true"]) {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  .reveal-enter {
+    animation: editorial-reveal-up 0.65s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0s) both;
+  }
+
+  .reveal-enter[data-reveal="image"] {
+    animation: editorial-reveal-image 0.75s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0s) both;
+  }
+}
+
+@keyframes editorial-reveal-up {
+  0% {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes editorial-reveal-image {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.975);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Smooth Lenis Scroll Overrides */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}

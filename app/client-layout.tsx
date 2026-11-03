@@ -17,6 +17,8 @@ const AccessibilityToolbox = dynamic(
   { ssr: false }
 );
 const ConversionTriggers = dynamic(() => import("./_components/ConversionTriggers"), { ssr: false });
+const SmoothScrollProvider = dynamic(() => import("./_components/SmoothScrollProvider"), { ssr: false });
+const ScrollRevealManager = dynamic(() => import("./_components/ScrollRevealManager"), { ssr: false });
 
 export default function ClientLayout({
   children,
@@ -40,24 +42,27 @@ export default function ClientLayout({
     <SettingsContext.Provider value={settings || {}}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
         <AccessibilityProvider>
-          <div className="min-h-screen flex flex-col" suppressHydrationWarning>
-            <AnalyticsProvider />
-            {/* WCAG Skip to Main Content Link */}
-            <a
-              href="#main-content"
-              suppressHydrationWarning
-              className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-4 focus:left-4 focus:px-4 focus:py-2.5 focus:bg-[#0052FF] focus:text-white focus:font-bold focus:rounded-lg shadow-2xl focus:outline-none focus:ring-2 focus:ring-white"
-            >
-              Skip to main content
-            </a>
-            {!isStandaloneRoute && navbar}
-            <div id="main-content" tabIndex={-1} className="flex-1 focus:outline-none" suppressHydrationWarning>
-              {children}
+          <SmoothScrollProvider>
+            <ScrollRevealManager />
+            <div className="min-h-screen flex flex-col" suppressHydrationWarning>
+              <AnalyticsProvider />
+              {/* WCAG Skip to Main Content Link */}
+              <a
+                href="#main-content"
+                suppressHydrationWarning
+                className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-4 focus:left-4 focus:px-4 focus:py-2.5 focus:bg-[#0052FF] focus:text-white focus:font-bold focus:rounded-lg shadow-2xl focus:outline-none focus:ring-2 focus:ring-white"
+              >
+                Skip to main content
+              </a>
+              {!isStandaloneRoute && navbar}
+              <div id="main-content" tabIndex={-1} className="flex-1 focus:outline-none" suppressHydrationWarning>
+                {children}
+              </div>
+              {!isStandaloneRoute && <Footer settings={settings} />}
+              {mounted && !isStandaloneRoute && <AccessibilityToolbox />}
+              {mounted && !isStandaloneRoute && <ConversionTriggers />}
             </div>
-            {!isStandaloneRoute && <Footer settings={settings} />}
-            {mounted && !isStandaloneRoute && <AccessibilityToolbox />}
-            {mounted && !isStandaloneRoute && <ConversionTriggers />}
-          </div>
+          </SmoothScrollProvider>
         </AccessibilityProvider>
       </ThemeProvider>
     </SettingsContext.Provider>
