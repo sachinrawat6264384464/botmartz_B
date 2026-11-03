@@ -75,7 +75,7 @@ const ARTICLES_DATA: InsightArticle[] = [
     title: "Observability for LLM Applications: Metrics That Matter",
     category: "MLOPS",
     description: "Key metrics, dashboards and alerts to monitor LLM apps in production and ensure reliability.",
-    author: "Harish R.",
+    author: "Soham Sharma",
     date: "Apr 30, 2024",
     readTime: "8 min read",
     slug: "observability-for-llm-applications-metrics-that-matter",
@@ -268,7 +268,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                         {featuredArticle.category}
                       </span>
                       <span className="text-xs text-slate-600 font-mono">{featuredArticle.date}</span>
-                      <span className="text-xs text-slate-600 font-mono">· {featuredArticle.readTime}</span>
+                      <span className="text-xs text-slate-600 font-mono">· {featuredArticle.category}</span>
                     </div>
                     <h2 className="text-[24px] sm:text-[32px] font-semibold leading-[1.25] text-slate-900 group-hover:text-[#00B8F0] transition-colors tracking-tight mb-4">
                       {featuredArticle.title}
@@ -301,7 +301,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,184,240,0.12),transparent_70%)] pointer-events-none" />
                       <img
                         src={featuredArticle.featuredImage}
-                        alt={featuredArticle.title}
+                        alt={(featuredArticle as any).featuredImageAlt || featuredArticle.title || "Botmartz Featured Architecture"}
                         className="w-full h-full max-h-[220px] object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_8px_24px_rgba(0,184,240,0.25)] relative z-10"
                       />
                     </div>
@@ -405,7 +405,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,184,240,0.12),transparent_70%)] pointer-events-none" />
                         <img
                           src={featuredArticle.featuredImage}
-                          alt={featuredArticle.title}
+                          alt={(featuredArticle as any).featuredImageAlt || featuredArticle.title || "Botmartz Featured Architecture"}
                           className="w-full h-full max-h-[200px] object-contain group-hover:scale-105 transition-transform duration-500 relative z-10 drop-shadow-[0_8px_24px_rgba(0,184,240,0.25)]"
                         />
                       </div>
@@ -483,7 +483,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                           {featuredArticle.author}
                         </div>
                         <div className="text-[12px] text-[#64748B]">
-                          {featuredArticle.date} · {featuredArticle.readTime}
+                          {featuredArticle.date}
                         </div>
                       </div>
                     </div>
@@ -514,7 +514,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                           <div className="relative w-full h-full overflow-hidden flex items-center justify-center">
                             <img
                               src={art.featuredImage}
-                              alt={art.title}
+                              alt={(art as any).featuredImageAlt || art.title || "Botmartz Insight Thumbnail"}
                               className={`w-full h-full transition-transform duration-500 group-hover:scale-105 ${
                                 art.featuredImage?.includes('LOGO') || art.featuredImage?.includes('logo')
                                   ? 'object-contain max-h-[150px] drop-shadow-[0_4px_16px_rgba(0,184,240,0.2)]'
@@ -687,7 +687,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                               {art.author}
                             </div>
                             <div className="text-[11.5px] text-[#64748B]">
-                              {art.date} · {art.readTime}
+                              {art.date}
                             </div>
                           </div>
                         </div>
@@ -777,7 +777,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
                         {matchingArt?.featuredImage ? (
                           <img
                             src={matchingArt.featuredImage}
-                            alt={art.title}
+                            alt={(matchingArt as any).featuredImageAlt || art.title || "Botmartz Insight"}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         ) : (
@@ -854,7 +854,7 @@ export default function InsightsListingSection({ dbArticles = [] }: { dbArticles
               </div>
               <ul className="space-y-3">
                 {[
-                  { label: "Engineering Reference Labs", icon: BookOpen, href: "/work/labs" },
+                  { label: "Systems Architecture", icon: BookOpen, href: "/services" },
                   { label: "Production AI Work", icon: Layers, href: "/work" },
                   { label: "AI Engineering Roadmap", icon: Network, href: "/services/enterprise-rag" },
                   { label: "Open Source @ Botmartz", icon: Code2, href: "/work/open-source" },

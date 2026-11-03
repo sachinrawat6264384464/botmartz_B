@@ -10,20 +10,22 @@ import { trackEvent } from "@/lib/analytics";
 export type NavDropdownItem = { name: string; path: string };
 export type NavItem = { name: string; path: string; dropdown?: NavDropdownItem[] };
 
-/* ─── DEFAULT NAV ITEMS (fallback if Firestore is empty) ─── */
+/* ─── STREAMLINED PRODUCTION NAV ITEMS ─── */
 const DEFAULT_NAV_ITEMS: NavItem[] = [
   { name: "Home", path: "/" },
   {
     name: "Solutions",
     path: "/services",
     dropdown: [
+      { name: "All Services & Industries", path: "/services" },
       { name: "Enterprise RAG & Search", path: "/services/enterprise-rag" },
       { name: "AI Agents & State Machines", path: "/services/ai-agents" },
+      { name: "Industry Architectures", path: "/services#industries" },
     ],
   },
   {
-    name: "Work & Labs",
-    path: "/work/labs",
+    name: "Work",
+    path: "/work",
   },
   {
     name: "Insights",
@@ -45,26 +47,39 @@ export default function Navbar({
 }) {
   let rawItems = (navItems && navItems.length > 0) ? navItems : DEFAULT_NAV_ITEMS;
   
-  const isCommunity = (str?: string) => {
+  const isExcluded = (str?: string) => {
     if (!str) return false;
     const lower = str.trim().toLowerCase();
-    return lower.includes("community");
+    return lower.includes("community") || lower.includes("open-source") || lower.includes("/labs");
   };
 
   const cleanItems = rawItems
-    .filter((item) => !isCommunity(item.name) && !isCommunity(item.path))
-    .map((item) => ({
-      ...item,
-      path: item.path ? item.path.trim().replace(/\s+/g, '-').replace(/%20/g, '-') : item.path,
-      dropdown: item.dropdown
+    .filter((item) => !isExcluded(item.name) && !isExcluded(item.path))
+    .map((item) => {
+      // Work should not have a dropdown per requirements
+      if (item.path === "/work" || item.name.toLowerCase() === "work") {
+        return {
+          ...item,
+          path: item.path ? item.path.trim().replace(/\s+/g, '-').replace(/%20/g, '-') : item.path,
+          dropdown: undefined,
+        };
+      }
+      
+      const filteredDropdown = item.dropdown
         ? item.dropdown
-            .filter((d) => !isCommunity(d.name) && !isCommunity(d.path))
+            .filter((d) => !isExcluded(d.name) && !isExcluded(d.path))
             .map((d) => ({
               ...d,
               path: d.path ? d.path.trim().replace(/\s+/g, '-').replace(/%20/g, '-') : d.path,
             }))
-        : undefined,
-    }));
+        : undefined;
+
+      return {
+        ...item,
+        path: item.path ? item.path.trim().replace(/\s+/g, '-').replace(/%20/g, '-') : item.path,
+        dropdown: filteredDropdown && filteredDropdown.length > 0 ? filteredDropdown : undefined,
+      };
+    });
   const NAV_ITEMS = cleanItems;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -82,19 +97,19 @@ export default function Navbar({
   return (
     <>
       {/* ── HEADER ── */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
-        <div className="wrap flex items-center justify-between h-[80px] sm:h-[86px]">
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-[80px] sm:h-[86px]">
 
-          {/* LOGO */}
+          {/* LOGO WITHOUT BORDER */}
           <Link href="/" aria-label="Botmartz home" className="flex-shrink-0 flex items-center">
             <Image
               src={logoUrl}
-              alt="Botmartz AI Solution PVT LTD."
+              alt="Botmartz AI Solutions Private Limited"
               width={200}
               height={66}
               priority
               suppressHydrationWarning
-              className="h-[58px] sm:h-[66px] w-auto object-contain transition-transform duration-200 hover:scale-105"
+              className="h-[52px] sm:h-[60px] w-auto object-contain transition-transform duration-200 hover:scale-105"
             />
           </Link>
 
@@ -110,13 +125,13 @@ export default function Navbar({
                 <Link
                   href={item.path}
                   prefetch={false}
-                  className={`relative inline-flex items-center gap-1 px-3 py-2 rounded-md text-[13px] font-semibold tracking-[-0.01em] transition-colors whitespace-nowrap ${
+                  className={`flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-150 relative ${
                     isActive(item)
-                      ? "text-[#0066FF]"
-                      : "text-[#334155] hover:text-[#0066FF]"
+                      ? "text-[#0066FF] font-bold"
+                      : "text-[#334155] hover:text-[#0066FF] hover:bg-slate-50"
                   }`}
                 >
-                  {item.name}
+                  <span>{item.name}</span>
                   {item.dropdown && (
                     <ChevronDown
                       className={`w-3.5 h-3.5 transition-transform duration-200 ${
@@ -124,13 +139,12 @@ export default function Navbar({
                       }`}
                     />
                   )}
-                  {/* Active underline */}
                   {isActive(item) && (
                     <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-[#0066FF] rounded-full" />
                   )}
                 </Link>
 
-                {/* DROPDOWN MENU — CSS only, no framer-motion */}
+                {/* DROPDOWN MENU */}
                 {item.dropdown && (
                   <div
                     className={`absolute top-full left-0 pt-2 z-[100] pointer-events-auto transition-all duration-150 before:absolute before:-top-4 before:left-0 before:right-0 before:h-4 before:content-[''] ${
@@ -160,19 +174,15 @@ export default function Navbar({
             ))}
           </nav>
 
-          {/* CTA + MOBILE TOGGLE */}
+          {/* CTA BUTTON */}
           <div className="flex items-center gap-3">
-            <a
-              href="https://cal.com/botmartz-ai/20min"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => trackEvent("button_click", { button_name: "navbar_talk_to_architect_desktop" })}
-              className="hidden sm:inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white text-[13px] font-bold px-5 py-2.5 rounded-lg shadow-[0_4px_14px_rgba(0,102,255,0.35)] transition-all hover:shadow-[0_4px_20px_rgba(0,102,255,0.5)] hover:-translate-y-px whitespace-nowrap"
+            <Link
+              href="/contact"
+              className="hidden sm:inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white text-[13px] font-bold px-5 py-2.5 rounded-lg shadow-sm transition-all hover:-translate-y-px whitespace-nowrap"
             >
-              <PhoneCall size={13} className="shrink-0" />
-              <span>Talk to an AI Architect</span>
+              <span>Contact Us</span>
               <ArrowRight size={13} className="shrink-0" />
-            </a>
+            </Link>
 
             {/* Mobile hamburger */}
             <button
@@ -186,49 +196,52 @@ export default function Navbar({
         </div>
       </header>
 
-      {/* ── MOBILE OVERLAY — CSS transition, no framer-motion ── */}
+      {/* ── MOBILE OVERLAY ── */}
       <div
         className={`fixed inset-0 z-[60] bg-white/98 backdrop-blur-xl flex flex-col transition-all duration-200 ${
           mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
-        <div className="wrap flex items-center justify-between h-[76px] border-b border-slate-200">
+        <div className="max-w-[1280px] mx-auto w-full px-4 flex items-center justify-between h-[76px] border-b border-slate-200">
           <Link href="/" prefetch={false} onClick={() => setMobileMenuOpen(false)} className="flex items-center">
-            <img
+            <Image
               src={logoUrl}
-              alt="Botmartz AI Solution PVT LTD."
-              suppressHydrationWarning
-              className="h-[50px] sm:h-[56px] w-auto object-contain"
+              alt="Botmartz AI Solutions Private Limited"
+              width={160}
+              height={50}
+              className="h-[46px] w-auto object-contain"
             />
           </Link>
           <button
-            className="text-[#334155] p-2 hover:bg-slate-100 rounded-lg flex items-center justify-center"
             onClick={() => setMobileMenuOpen(false)}
+            className="p-2 text-[#334155] hover:bg-slate-100 rounded-lg transition-colors"
             aria-label="Close menu"
           >
-            <X size={24} />
+            <X size={22} />
           </button>
         </div>
 
-        <nav className="flex flex-col gap-1 p-6 flex-1 overflow-y-auto">
+        <div className="px-6 py-6 flex flex-col gap-2 overflow-y-auto flex-1">
           {NAV_ITEMS.map((item) => (
-            <div key={item.name}>
+            <div key={item.name} className="py-2 border-b border-slate-100">
               <Link
                 href={item.path}
                 prefetch={false}
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2 py-3 text-xl font-bold text-[#334155] hover:text-[#0066FF] transition-colors"
+                onClick={handleDropdownNavigate}
+                className={`text-base font-semibold block ${
+                  isActive(item) ? "text-[#0066FF]" : "text-[#334155]"
+                }`}
               >
                 {item.name}
               </Link>
               {item.dropdown && (
-                <div className="flex flex-col gap-1 pl-4 border-l border-slate-200 mb-3">
+                <div className="pl-4 mt-2 space-y-2 border-l-2 border-slate-200">
                   {item.dropdown.map((sub) => (
                     <a
                       key={sub.name}
                       href={sub.path}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="py-2 text-sm text-[#475569] hover:text-[#0066FF] transition-colors cursor-pointer"
+                      onClick={handleDropdownNavigate}
+                      className="text-sm text-[#64748B] hover:text-[#0066FF] block py-1"
                     >
                       {sub.name}
                     </a>
@@ -237,20 +250,18 @@ export default function Navbar({
               )}
             </div>
           ))}
-          <div className="mt-6">
-            <a
-              href="https://cal.com/botmartz-ai/20min"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => { setMobileMenuOpen(false); trackEvent("button_click", { button_name: "navbar_talk_to_architect_mobile" }); }}
-              className="flex items-center justify-center gap-2 bg-[#0066FF] text-white font-bold py-4 rounded-xl text-base whitespace-nowrap"
+
+          <div className="pt-6">
+            <Link
+              href="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full inline-flex items-center justify-center gap-2 bg-[#0066FF] text-white font-bold text-sm py-3.5 rounded-xl shadow-md"
             >
-              <PhoneCall size={15} />
-              <span>Talk to an AI Architect</span>
-              <ArrowRight size={15} />
-            </a>
+              <span>Contact Us</span>
+              <ArrowRight size={14} />
+            </Link>
           </div>
-        </nav>
+        </div>
       </div>
     </>
   );

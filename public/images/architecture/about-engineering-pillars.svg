@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" width="100%" height="100%" fill="none">
+  <defs>
+    <linearGradient id="abtBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="50%" stop-color="#F0F9FF"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <filter id="abtShadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0F172A" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="680" rx="20" fill="url(#abtBg)" stroke="#E2E8F0" stroke-width="2"/>
+  
+  <g opacity="0.4">
+    <path d="M 0,80 L 1200,80 M 0,160 L 1200,160 M 0,240 L 1200,240 M 0,320 L 1200,320 M 0,400 L 1200,400 M 0,480 L 1200,480 M 0,560 L 1200,560" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="4 4"/>
+    <path d="M 160,0 L 160,680 M 320,0 L 320,680 M 480,0 L 480,680 M 640,0 L 640,680 M 800,0 L 800,680 M 960,0 L 960,680 M 1120,0 L 1120,680" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="4 4"/>
+  </g>
+
+  <!-- Header Strip -->
+  <rect x="40" y="32" width="1120" height="56" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5" filter="url(#abtShadow)"/>
+  <circle cx="68" cy="60" r="6" fill="#0066FF"/>
+  <text x="86" y="65" font-family="monospace" font-size="13" font-weight="700" fill="#0F172A" letter-spacing="1">BOTMARTZ AI SOLUTIONS · OUR 4 FOUNDATIONAL ENGINEERING PRINCIPLES</text>
+  <rect x="990" y="44" width="150" height="32" rx="8" fill="#F0F9FF" stroke="#BAE6FD" stroke-width="1"/>
+  <text x="1005" y="65" font-family="monospace" font-size="11" font-weight="700" fill="#0066FF">PRODUCTION FIRST</text>
+
+  <!-- 4 Pillars Grid -->
+  <g transform="translate(50, 115)">
+    <!-- Pillar 1 -->
+    <g transform="translate(0, 0)">
+      <rect width="255" height="420" rx="16" fill="#FFFFFF" stroke="#BAE6FD" stroke-width="2" filter="url(#abtShadow)"/>
+      <rect x="0" y="0" width="255" height="48" rx="16" fill="#F0F9FF"/>
+      <text x="18" y="30" font-family="sans-serif" font-size="14" font-weight="800" fill="#0369A1">01 · REJECT WRAPPERS</text>
+
+      <g transform="translate(16, 68)">
+        <text x="0" y="16" font-family="sans-serif" font-size="14" font-weight="700" fill="#0F172A">No Naive Chatbots</text>
+        <text x="0" y="38" font-family="sans-serif" font-size="11" fill="#64748B">Simple prompt stuffing</text>
+        <text x="0" y="54" font-family="sans-serif" font-size="11" fill="#64748B">fails at scale. We build</text>
+        <text x="0" y="70" font-family="sans-serif" font-size="11" fill="#64748B">deterministic pipelines</text>
+        <text x="0" y="86" font-family="sans-serif" font-size="11" fill="#64748B">with verified grounding.</text>
+      </g>
+
+      <g transform="translate(16, 200)">
+        <rect width="223" height="85" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+        <text x="12" y="24" font-family="monospace" font-size="10" font-weight="700" fill="#0F172A">THE DIFFERENCE</text>
+        <text x="12" y="44" font-family="sans-serif" font-size="10.5" fill="#047857">✓ Dual BM25 + Vector</text>
+        <text x="12" y="62" font-family="sans-serif" font-size="10.5" fill="#047857">✓ Cross-Encoder Rerank</text>
+      </g>
+
+      <rect x="16" y="320" width="223" height="76" rx="10" fill="#EFF6FF" stroke="#BFDBFE"/>
+      <text x="14" y="348" font-family="monospace" font-size="10.5" font-weight="700" fill="#1D4ED8">Zero Hallucinations</text>
+      <text x="14" y="370" font-family="sans-serif" font-size="10" fill="#1E40AF">Refuses when evidence is absent</text>
+    </g>
+
+    <!-- Pillar 2 -->
+    <g transform="translate(285, 0)">
+      <rect width="255" height="420" rx="16" fill="#FFFFFF" stroke="#BAE6FD" stroke-width="2" filter="url(#abtShadow)"/>
+      <rect x="0" y="0" width="255" height="48" rx="16" fill="#F0F9FF"/>
+      <text x="18" y="30" font-family="sans-serif" font-size="14" font-weight="800" fill="#0369A1">02 · PROVENANCE</text>
+
+      <g transform="translate(16, 68)">
+        <text x="0" y="16" font-family="sans-serif" font-size="14" font-weight="700" fill="#0F172A">SHA-256 Citations</text>
+        <text x="0" y="38" font-family="sans-serif" font-size="11" fill="#64748B">Every factual assertion</text>
+        <text x="0" y="54" font-family="sans-serif" font-size="11" fill="#64748B">must tie to an exact byte-range,</text>
+        <text x="0" y="70" font-family="sans-serif" font-size="11" fill="#64748B">page number, and verified</text>
+        <text x="0" y="86" font-family="sans-serif" font-size="11" fill="#64748B">document hash.</text>
+      </g>
+
+      <g transform="translate(16, 200)">
+        <rect width="223" height="85" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+        <text x="12" y="24" font-family="monospace" font-size="10" font-weight="700" fill="#0F172A">THE DIFFERENCE</text>
+        <text x="12" y="44" font-family="sans-serif" font-size="10.5" fill="#047857">✓ Audit-Ready Logs</text>
+        <text x="12" y="62" font-family="sans-serif" font-size="10.5" fill="#047857">✓ Statutory Provenance</text>
+      </g>
+
+      <rect x="16" y="320" width="223" height="76" rx="10" fill="#ECFDF5" stroke="#A7F3D0"/>
+      <text x="14" y="348" font-family="monospace" font-size="10.5" font-weight="700" fill="#065F46">100% Grounded</text>
+      <text x="14" y="370" font-family="sans-serif" font-size="10" fill="#047857">Court &amp; regulatory compliant</text>
+    </g>
+
+    <!-- Pillar 3 -->
+    <g transform="translate(570, 0)">
+      <rect width="255" height="420" rx="16" fill="#FFFFFF" stroke="#BAE6FD" stroke-width="2" filter="url(#abtShadow)"/>
+      <rect x="0" y="0" width="255" height="48" rx="16" fill="#F0F9FF"/>
+      <text x="18" y="30" font-family="sans-serif" font-size="14" font-weight="800" fill="#0369A1">03 · GOVERNANCE</text>
+
+      <g transform="translate(16, 68)">
+        <text x="0" y="16" font-family="sans-serif" font-size="14" font-weight="700" fill="#0F172A">Human-in-the-Loop</text>
+        <text x="0" y="38" font-family="sans-serif" font-size="11" fill="#64748B">Agents cannot mutate</text>
+        <text x="0" y="54" font-family="sans-serif" font-size="11" fill="#64748B">databases, trigger payments,</text>
+        <text x="0" y="70" font-family="sans-serif" font-size="11" fill="#64748B">or delete files without</text>
+        <text x="0" y="86" font-family="sans-serif" font-size="11" fill="#64748B">explicit 1-click human gate.</text>
+      </g>
+
+      <g transform="translate(16, 200)">
+        <rect width="223" height="85" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+        <text x="12" y="24" font-family="monospace" font-size="10" font-weight="700" fill="#0F172A">THE DIFFERENCE</text>
+        <text x="12" y="44" font-family="sans-serif" font-size="10.5" fill="#047857">✓ Slack &amp; WhatsApp HITL</text>
+        <text x="12" y="62" font-family="sans-serif" font-size="10.5" fill="#047857">✓ Saga Rollbacks</text>
+      </g>
+
+      <rect x="16" y="320" width="223" height="76" rx="10" fill="#FFFBEB" stroke="#FDE68A"/>
+      <text x="14" y="348" font-family="monospace" font-size="10.5" font-weight="700" fill="#92400E">Zero Runaway Risk</text>
+      <text x="14" y="370" font-family="sans-serif" font-size="10" fill="#78350F">Bounded LangGraph state DAGs</text>
+    </g>
+
+    <!-- Pillar 4 -->
+    <g transform="translate(855, 0)">
+      <rect width="255" height="420" rx="16" fill="#FFFFFF" stroke="#BAE6FD" stroke-width="2" filter="url(#abtShadow)"/>
+      <rect x="0" y="0" width="255" height="48" rx="16" fill="#F0F9FF"/>
+      <text x="18" y="30" font-family="sans-serif" font-size="14" font-weight="800" fill="#0369A1">04 · SOVEREIGNTY</text>
+
+      <g transform="translate(16, 68)">
+        <text x="0" y="16" font-family="sans-serif" font-size="14" font-weight="700" fill="#0F172A">Your VPC, Your IP</text>
+        <text x="0" y="38" font-family="sans-serif" font-size="11" fill="#64748B">Zero training on client data.</text>
+        <text x="0" y="54" font-family="sans-serif" font-size="11" fill="#64748B">Systems deploy entirely</text>
+        <text x="0" y="70" font-family="sans-serif" font-size="11" fill="#64748B">within your private cloud or</text>
+        <text x="0" y="86" font-family="sans-serif" font-size="11" fill="#64748B">on-premise bare-metal cluster.</text>
+      </g>
+
+      <g transform="translate(16, 200)">
+        <rect width="223" height="85" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+        <text x="12" y="24" font-family="monospace" font-size="10" font-weight="700" fill="#0F172A">THE DIFFERENCE</text>
+        <text x="12" y="44" font-family="sans-serif" font-size="10.5" fill="#047857">✓ 100% Client Code IP</text>
+        <text x="12" y="62" font-family="sans-serif" font-size="10.5" fill="#047857">✓ Zero Vendor Lock-in</text>
+      </g>
+
+      <rect x="16" y="320" width="223" height="76" rx="10" fill="#F1F5F9" stroke="#CBD5E1"/>
+      <text x="14" y="348" font-family="monospace" font-size="10.5" font-weight="700" fill="#0F172A">Private Air-Gapped</text>
+      <text x="14" y="370" font-family="sans-serif" font-size="10" fill="#475569">SOC2 &amp; HIPAA compatible</text>
+    </g>
+  </g>
+
+  <!-- Bottom Strip -->
+  <g transform="translate(40, 570)">
+    <rect width="1120" height="74" rx="14" fill="#0F172A" filter="url(#abtShadow)"/>
+    <g transform="translate(40, 18)">
+      <text x="0" y="20" font-family="monospace" font-size="11" font-weight="700" fill="#94A3B8">ENGINEERING PHILOSOPHY</text>
+      <text x="0" y="42" font-family="sans-serif" font-size="18" font-weight="800" fill="#38BDF8">Deterministic Over Speculative</text>
+    </g>
+    <line x1="360" y1="14" x2="360" y2="60" stroke="#334155" stroke-width="1"/>
+    <g transform="translate(400, 18)">
+      <text x="0" y="20" font-family="monospace" font-size="11" font-weight="700" fill="#94A3B8">HEADQUARTERS &amp; LABS</text>
+      <text x="0" y="42" font-family="sans-serif" font-size="18" font-weight="800" fill="#34D399">Indore, India · Global Remote</text>
+    </g>
+    <line x1="720" y1="14" x2="720" y2="60" stroke="#334155" stroke-width="1"/>
+    <g transform="translate(760, 18)">
+      <text x="0" y="20" font-family="monospace" font-size="11" font-weight="700" fill="#94A3B8">PRODUCTION INTEGRATIONS</text>
+      <text x="0" y="42" font-family="sans-serif" font-size="18" font-weight="800" fill="#FFFFFF">Postgres · Milvus · Qdrant · LangGraph</text>
+    </g>
+  </g>
+</svg>

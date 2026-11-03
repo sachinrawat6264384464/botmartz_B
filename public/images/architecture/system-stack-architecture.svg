@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="100%" height="100%" fill="none">
+  <!-- Modern Clean Canvas Background -->
+  <rect width="960" height="540" rx="16" fill="#F8FAFC"/>
+  <defs>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#E2E8F0" stroke-width="0.8" stroke-opacity="0.6"/>
+    </pattern>
+    <linearGradient id="layer1Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F0FDF4"/>
+    </linearGradient>
+    <linearGradient id="layer2Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F0F9FF"/>
+    </linearGradient>
+    <linearGradient id="layer3Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#FFFBEB"/>
+    </linearGradient>
+    <filter id="softShadow" x="-5%" y="-5%" width="110%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0F172A" flood-opacity="0.04"/>
+    </filter>
+  </defs>
+
+  <rect width="960" height="540" fill="url(#grid)"/>
+
+  <!-- Top System Header -->
+  <g transform="translate(48, 36)">
+    <rect width="180" height="26" rx="6" fill="#FFFFFF" stroke="#E2E8F0"/>
+    <circle cx="14" cy="13" r="4" fill="#0EA5E9"/>
+    <text x="26" y="17" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="700" fill="#0F172A" letter-spacing="0.5">DETERMINISTIC PIPELINE</text>
+    
+    <text x="200" y="18" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="500" fill="#64748B">End-to-End Enterprise Retrieval &amp; Agent Execution</text>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       LAYER 1: KNOWLEDGE INGESTION & STRUCTURAL PARSING
+  ══════════════════════════════════════════════════════════════ -->
+  <g transform="translate(48, 80)">
+    <rect width="864" height="116" rx="12" fill="url(#layer1Grad)" stroke="#BBF7D0" stroke-width="1.2" filter="url(#softShadow)"/>
+    
+    <!-- Left Indicator Badge -->
+    <rect x="20" y="18" width="56" height="24" rx="6" fill="#DCFCE7"/>
+    <text x="32" y="34" font-family="ui-monospace, monospace" font-size="12" font-weight="700" fill="#15803D">01</text>
+    <text x="86" y="35" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="700" fill="#0F172A">Knowledge Ingestion &amp; AST Layout Engine</text>
+    <text x="86" y="52" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" fill="#64748B">Preserves complex document hierarchy, tabular schemas, and cryptographic source hashes.</text>
+
+    <!-- 4 Sub-blocks inside Layer 1 -->
+    <g transform="translate(20, 64)">
+      <!-- Block 1 -->
+      <g transform="translate(0, 0)">
+        <rect width="195" height="38" rx="8" fill="#FFFFFF" stroke="#E2E8F0"/>
+        <text x="14" y="23" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" fill="#1E293B">Raw Multi-Format Ingest</text>
+      </g>
+      <!-- Arrow -->
+      <path d="M 203 19 L 213 19" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- Block 2 -->
+      <g transform="translate(221, 0)">
+        <rect width="195" height="38" rx="8" fill="#FFFFFF" stroke="#E2E8F0"/>
+        <text x="14" y="23" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" fill="#1E293B">AST Hierarchy Parsing</text>
+      </g>
+      <!-- Arrow -->
+      <path d="M 424 19 L 434 19" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- Block 3 -->
+      <g transform="translate(442, 0)">
+        <rect width="195" height="38" rx="8" fill="#FFFFFF" stroke="#E2E8F0"/>
+        <text x="14" y="23" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" fill="#1E293B">Proposition Chunking</text>
+      </g>
+      <!-- Arrow -->
+      <path d="M 645 19 L 655 19" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- Block 4 -->
+      <g transform="translate(663, 0)">
+        <rect width="161" height="38" rx="8" fill="#FFFFFF" stroke="#BBF7D0"/>
+        <circle cx="18" cy="19" r="4" fill="#16A34A"/>
+        <text x="30" y="23" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" fill="#166534">SHA-256 Provenance</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Flow Connector Down 1 -> 2 -->
+  <g transform="translate(480, 202)">
+    <line x1="0" y1="0" x2="0" y2="18" stroke="#0284C7" stroke-width="1.8" stroke-dasharray="3 3"/>
+    <polygon points="-4,18 4,18 0,24" fill="#0284C7"/>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       LAYER 2: HYBRID DUAL-CHANNEL RETRIEVAL & RRF FUSION
+  ══════════════════════════════════════════════════════════════ -->
+  <g transform="translate(48, 226)">
+    <rect width="864" height="124" rx="12" fill="url(#layer2Grad)" stroke="#BAE6FD" stroke-width="1.5" filter="url(#softShadow)"/>
+    
+    <!-- Left Indicator Badge -->
+    <rect x="20" y="18" width="56" height="24" rx="6" fill="#E0F2FE"/>
+    <text x="32" y="34" font-family="ui-monospace, monospace" font-size="12" font-weight="700" fill="#0284C7">02</text>
+    <text x="86" y="35" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="700" fill="#0F172A">Hybrid Retrieval &amp; Reciprocal Rank Fusion</text>
+    <text x="86" y="52" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" fill="#64748B">BM25 exact lexical match running parallel with HNSW vector traversal, fused and reranked under 120ms.</text>
+
+    <!-- Parallel Streams + Fusion inside Layer 2 -->
+    <g transform="translate(20, 64)">
+      <!-- Channel A: Sparse BM25 -->
+      <g transform="translate(0, 0)">
+        <rect width="260" height="42" rx="8" fill="#FFFFFF" stroke="#E2E8F0"/>
+        <text x="14" y="22" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" fill="#0F172A">Lucene BM25 Sparse Search</text>
+        <text x="14" y="35" font-family="ui-monospace, monospace" font-size="10" fill="#64748B">Exact IDs, codes, part numbers</text>
+      </g>
+      
+      <!-- Channel B: Dense Vector -->
+      <g transform="translate(280, 0)">
+        <rect width="260" height="42" rx="8" fill="#FFFFFF" stroke="#E2E8F0"/>
+        <text x="14" y="22" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" fill="#0F172A">HNSW Dense Vector Search</text>
+        <text x="14" y="35" font-family="ui-monospace, monospace" font-size="10" fill="#64748B">Cosine distance semantic match</text>
+      </g>
+
+      <!-- Merge Arrow -->
+      <path d="M 548 21 L 566 21" stroke="#0284C7" stroke-width="1.8"/>
+
+      <!-- Fusion & Rerank -->
+      <g transform="translate(574, 0)">
+        <rect width="250" height="42" rx="8" fill="#0284C7"/>
+        <text x="16" y="21" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">RRF Merge (k=60) + BGE Rerank</text>
+        <text x="16" y="34" font-family="ui-monospace, monospace" font-size="10" fill="#E0F2FE">Top 50 Candidates → Top 5 Verified</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Flow Connector Down 2 -> 3 -->
+  <g transform="translate(480, 356)">
+    <line x1="0" y1="0" x2="0" y2="18" stroke="#F59E0B" stroke-width="1.8" stroke-dasharray="3 3"/>
+    <polygon points="-4,18 4,18 0,24" fill="#F59E0B"/>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       LAYER 3: INTELLIGENCE RUNTIME & AGENT VERIFICATION
+  ══════════════════════════════════════════════════════════════ -->
+  <g transform="translate(48, 380)">
+    <rect width="864" height="124" rx="12" fill="url(#layer3Grad)" stroke="#FED7AA" stroke-width="1.2" filter="url(#softShadow)"/>
+    
+    <!-- Left Indicator Badge -->
+    <rect x="20" y="18" width="56" height="24" rx="6" fill="#FEF3C7"/>
+    <text x="32" y="34" font-family="ui-monospace, monospace" font-size="12" font-weight="700" fill="#D97706">03</text>
+    <text x="86" y="35" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="700" fill="#0F172A">Intelligence &amp; Deterministic Agent Execution</text>
+    <text x="86" y="52" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" fill="#64748B">Stateful LangGraph cycles with verbatim citation verification and human sign-off before database mutations.</text>
+
+    <!-- 3 Core Governance Blocks inside Layer 3 -->
+    <g transform="translate(20, 64)">
+      <!-- Block 1 -->
+      <g transform="translate(0, 0)">
+        <rect width="255" height="42" rx="8" fill="#FFFFFF" stroke="#E2E8F0"/>
+        <text x="14" y="21" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" fill="#0F172A">LangGraph State Machine</text>
+        <text x="14" y="34" font-family="ui-monospace, monospace" font-size="10" fill="#64748B">Deterministic cyclic state graphs</text>
+      </g>
+      
+      <!-- Block 2 -->
+      <g transform="translate(275, 0)">
+        <rect width="265" height="42" rx="8" fill="#FFFFFF" stroke="#E2E8F0"/>
+        <text x="14" y="21" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" fill="#0F172A">Citation Grounding Engine</text>
+        <text x="14" y="34" font-family="ui-monospace, monospace" font-size="10" fill="#16A34A">99.2% claim-level token precision</text>
+      </g>
+
+      <!-- Block 3 -->
+      <g transform="translate(560, 0)">
+        <rect width="264" height="42" rx="8" fill="#FFFFFF" stroke="#FDE68A"/>
+        <text x="14" y="21" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="600" fill="#92400E">Human Review Gate (HITL)</text>
+        <text x="14" y="34" font-family="ui-monospace, monospace" font-size="10" fill="#B45309">1-click audit before irreversible writes</text>
+      </g>
+    </g>
+  </g>
+</svg>
+

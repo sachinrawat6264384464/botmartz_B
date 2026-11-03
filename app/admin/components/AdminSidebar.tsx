@@ -364,9 +364,7 @@ export default function AdminSidebar() {
               {/* Work Collapsible Dropdown */}
               {renderCollapsibleGroup('Work', isWorkOpen, setIsWorkOpen, Layers, [
                 { label: 'Case Studies (Posts)', href: '/admin/case-studies', active: pathname === '/admin/case-studies', moduleId: 'case-studies' },
-                { label: 'Case Studies SEO/Hero', href: '/admin/pages?page=case-studies', active: pathname === '/admin/pages' && pageParam === 'case-studies', moduleId: 'pages' },
-                { label: 'Labs (Projects)', href: '/admin/labs', active: pathname === '/admin/labs', moduleId: 'labs' },
-                { label: 'Labs SEO/Hero', href: '/admin/pages?page=labs', active: pathname === '/admin/pages' && pageParam === 'labs', moduleId: 'pages' },
+                { label: 'Work SEO/Hero', href: '/admin/pages?page=work', active: pathname === '/admin/pages' && pageParam === 'work', moduleId: 'pages' },
               ])}
 
               {/* Flat Content Items */}

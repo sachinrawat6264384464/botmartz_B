@@ -270,51 +270,51 @@ export default function CareersClient({
         }}
       />
       
-      {/* ── HERO SECTION ── */}
-      <div className="bg-[#060C1F] relative overflow-hidden pt-24 pb-16 px-6 sm:px-10 lg:pt-28 lg:pb-20">
+      {/* ── HERO SECTION: LUMINOUS ARCHITECTURAL WHITE WITH WARM ORANGE & BLUE ACCENTS ── */}
+      <div className="bg-gradient-to-b from-[#FFFDF9] via-[#FAFDFE] to-white relative overflow-hidden pt-24 pb-16 px-6 sm:px-10 lg:pt-28 lg:pb-20 border-b border-[#E2E8F0] text-slate-900">
         <div 
           className="absolute inset-0 pointer-events-none opacity-40"
           style={{
-            backgroundImage: 'radial-gradient(circle at 65% 30%, rgba(0,198,255,0.15), transparent 70%)',
+            backgroundImage: 'radial-gradient(circle at 65% 30%, rgba(249,115,22,0.15), transparent 70%)',
           }}
         />
         <div className="relative max-w-[1240px] mx-auto">
-          <div className="font-semibold text-[12.5px] text-[#5B6B85] mb-6 tracking-wide flex items-center gap-2">
-            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+          <div className="font-semibold text-[12.5px] text-slate-600 mb-6 tracking-wide flex items-center gap-2">
+            <Link href="/" className="hover:text-orange-600 transition-colors">Home</Link>
             <span>›</span>
             <span>Company</span>
             <span>›</span>
-            <span className="text-[#00C6FF]">Careers</span>
+            <span className="text-orange-600">Careers</span>
           </div>
 
-          {/* HIGH IMPACT URGENCY BANNER */}
-          <div className="mb-6 inline-flex items-center gap-2 bg-gradient-to-r from-amber-500/20 via-rose-500/20 to-brand/20 border border-amber-400/40 rounded-full px-4 py-2 text-amber-300 font-bold text-xs sm:text-sm shadow-lg">
-            <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
-            <span>🔥 Roles Open — Apply Hurry Up & Join the Botmartz Team!</span>
+          {/* HIGH IMPACT STATUS BANNER */}
+          <div className="mb-6 inline-flex items-center gap-2 bg-[#F0F9FF] border border-[#BAE6FD] rounded-full px-4 py-2 text-[#0284C7] font-semibold text-xs sm:text-sm shadow-2xs">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+            <span>Open Engineering Positions — Fall/Winter 2026 Cohort</span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
             <div>
-              <div className="font-bold text-[12px] tracking-[0.1em] text-[#00C6FF] uppercase">
+              <div className="font-mono font-bold text-[12px] tracking-[0.1em] text-[#0284C7] uppercase">
                 {heroContent.badge || "Careers at Botmartz"}
               </div>
               <h1 
-                className="font-extrabold text-[clamp(32px,4.5vw,44px)] leading-[1.15] text-white mt-4"
-                dangerouslySetInnerHTML={{ __html: heroContent.title || 'Build the Future of<br /><span class="text-[#00C6FF]">AI Engineering</span> With Us' }}
+                className="font-extrabold text-[clamp(32px,4.5vw,44px)] leading-[1.15] text-[#0F172A] mt-4"
+                dangerouslySetInnerHTML={{ __html: heroContent.title ? heroContent.title.replace('text-orange-600', 'text-[#0284C7]') : 'Build the Future of<br /><span class="text-[#0284C7]">AI Engineering</span> With Us' }}
               />
-              <p className="font-medium text-[14.5px] sm:text-[15.5px] leading-[1.7] text-[#8FA3C4] mt-4.5 max-w-[480px]">
+              <p className="font-medium text-[14.5px] sm:text-[15.5px] leading-[1.7] text-slate-600 mt-4.5 max-w-[480px]">
                 {heroContent.subtitle || "We're a small team of engineers shipping production AI systems and building the community around them. If you'd rather build than talk about building, you'll fit right in."}
               </p>
               <div className="flex flex-wrap gap-3.5 mt-7">
                 <a 
                   href="#roles" 
-                  className="inline-flex items-center gap-2 bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] transition-all"
+                  className="inline-flex items-center gap-2 bg-[#0066FF] hover:bg-[#0052CC] text-white font-bold text-[14px] px-6 py-3.5 rounded-xl shadow-[0_8px_20px_rgba(0,102,255,0.25)] transition-all"
                 >
                   View Open Roles →
                 </a>
                 <button
                   onClick={() => openApplicationForm()}
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] shadow-lg transition-all cursor-pointer"
+                  className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-bold text-[14px] px-6 py-3.5 rounded-xl shadow-2xs transition-all cursor-pointer"
                 >
                   Apply Directly <Send size={15} />
                 </button>
@@ -325,12 +325,12 @@ export default function CareersClient({
               {heroStats.map((s, idx) => (
                 <div 
                   key={idx}
-                  className="bg-white/[0.04] border border-white/10 rounded-[14px] p-5 backdrop-blur-sm"
+                  className="bg-white border border-slate-200 rounded-[14px] p-5 shadow-2xs hover:border-[#0284C7]/40 hover:shadow-md transition-all"
                 >
-                  <div className="font-extrabold text-[26px] sm:text-[30px] text-[#00C6FF] leading-none">
+                  <div className="font-extrabold text-[26px] sm:text-[30px] text-[#0066FF] leading-none">
                     {s.value}
                   </div>
-                  <div className="font-semibold text-[12px] sm:text-[13px] text-[#8FA3C4] mt-1.5">
+                  <div className="font-semibold text-[12px] sm:text-[13px] text-slate-500 mt-1.5">
                     {s.label}
                   </div>
                 </div>

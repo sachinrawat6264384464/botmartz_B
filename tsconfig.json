@@ -30,5 +30,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "scratch", "blobs", "blogs", "botmartz-community"]
+  "exclude": ["node_modules", "scratch", "blobs", "blogs", "botmartz-community", "botmartz-next"]
 }

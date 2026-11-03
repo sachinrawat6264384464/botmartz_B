@@ -2,12 +2,11 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { JetBrains_Mono } from "next/font/google";
 import { Shield, Eye, Settings, ShieldAlert } from "lucide-react";
 import { useSettings } from "@/app/client-layout";
 
 const inter = { className: "" };
-const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"] });
+const mono = { className: "font-mono" };
 
 export default function CookiePolicyPage() {
   const settings = useSettings();
@@ -17,20 +16,20 @@ export default function CookiePolicyPage() {
   return (
     <main className="min-h-screen bg-[#F8FAFC] text-slate-900">
       
-      {/* ── 1. HERO SECTION (DARK THEME) ── */}
-      <section className="relative pt-[140px] pb-[70px] overflow-hidden bg-[#050B14] text-white border-b border-white/10">
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/12 blur-[140px] rounded-full pointer-events-none" />
-        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0052FF]/15 blur-[160px] rounded-full pointer-events-none" />
+      {/* ── 1. HERO SECTION: LUMINOUS ARCHITECTURAL WHITE WITH WARM ORANGE & BLUE ACCENTS ── */}
+      <section className="relative pt-[140px] pb-[70px] overflow-hidden bg-gradient-to-b from-[#FFFDF9] via-[#FAFDFE] to-white text-slate-900 border-b border-[#E2E8F0]">
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-orange-400/10 blur-[140px] rounded-full pointer-events-none" />
+        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0284C7]/10 blur-[160px] rounded-full pointer-events-none" />
 
         <div className="max-w-4xl mx-auto px-6 md:px-10 relative z-10">
-          <div className={`${mono.className} inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#00B8F0]/30 bg-[#00B8F0]/10 text-[#00B8F0] text-xs font-mono font-bold uppercase mb-4`}>
-            <Shield className="w-3.5 h-3.5" />
+          <div className={`${mono.className} inline-flex items-center gap-2 px-3 py-1 rounded-full border border-orange-200 bg-orange-50 text-orange-600 text-xs font-mono font-bold uppercase mb-4`}>
+            <Shield className="w-3.5 h-3.5 text-orange-600" />
             <span>Document ID: SEC-COOK-01</span>
           </div>
-          <h1 className="text-3xl md:text-5xl font-black font-heading tracking-tight text-white mb-3">
+          <h1 className="text-3xl md:text-5xl font-black font-heading tracking-tight text-[#0F172A] mb-3">
             Cookie Policy
           </h1>
-          <p className="text-[#8A9EB0] font-mono text-xs">
+          <p className="text-slate-500 font-mono text-xs">
             Last Updated: July 2026 &bull; Botmartz AI Solutions
           </p>
         </div>

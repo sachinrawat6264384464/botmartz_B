@@ -6,41 +6,21 @@ export const revalidate = 60; // Cache page for 60s for lightning fast performan
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Careers at Botmartz | Join Our AI Engineering Team",
-    description: "Explore open job positions and engineering roles at Botmartz. Build production AI systems, enterprise RAG, and autonomous agents with our team.",
-    keywords: [
-      "Botmartz Careers",
-      "AI Engineering Jobs",
-      "Software Engineer Jobs",
-      "Developer Relations",
-      "Graphic Designer Jobs",
-      "Remote AI Jobs",
-      "Production AI Team"
-    ],
-    openGraph: {
-      title: "Careers at Botmartz | Join Our AI Engineering Team",
-      description: "Explore open job positions and engineering roles at Botmartz. Build production AI systems, enterprise RAG, and autonomous agents with our team.",
-      url: "https://www.botmartz.com/careers",
-      siteName: "Botmartz",
-      images: [
-        {
-          url: "/BotmartznewBot.png",
-          width: 1200,
-          height: 630,
-          alt: "Careers at Botmartz AI Solutions"
-        }
-      ],
-      type: "website"
+    title: "Careers at Botmartz",
+    description: "Botmartz Careers",
+    robots: {
+      index: false,
+      follow: false,
+      nocache: true,
+      googleBot: {
+        index: false,
+        follow: false,
+        noimageindex: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'none',
+        'max-snippet': -1,
+      },
     },
-    twitter: {
-      card: "summary_large_image",
-      title: "Careers at Botmartz | Join Our AI Engineering Team",
-      description: "Explore open job positions and engineering roles at Botmartz. Build production AI systems, enterprise RAG, and autonomous agents with our team.",
-      images: ["/BotmartznewBot.png"]
-    },
-    alternates: {
-      canonical: "https://www.botmartz.com/careers"
-    }
   };
 }
 

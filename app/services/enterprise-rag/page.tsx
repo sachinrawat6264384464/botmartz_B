@@ -57,8 +57,8 @@ const DEFAULT_CONTENT = {
     subtitle: "We help organizations turn complex documents, policies, SOPs, and scattered databases into accurate, production-ready search and RAG systems. Grounded answers. Verifiable citations. Refuses when evidence is missing.",
     ctaText: "BOOK AN ARCHITECTURE REVIEW →",
     ctaLink: "https://cal.com/botmartz-ai/20min",
-    secondaryCtaText: "See Reference Implementation",
-    secondaryCtaLink: "/work/labs/insurance-intelligence",
+    secondaryCtaText: "Explore Open Source Retriever",
+    secondaryCtaLink: "/work/open-source",
   },
   problemSolution: {
     title: "Why Most RAG Pilots Fail in Production (And How We Engineer Reliability)",
@@ -81,10 +81,10 @@ const DEFAULT_CONTENT = {
     "Stack-Neutral Engineering: We select and implement retrieval backends (OpenSearch, Qdrant, Weaviate, Elastic, pgvector) based strictly on client scale and infrastructure requirements."
   ],
   useCases: [
-    { iconName: "Briefcase", title: "Insurance & Regulatory Compliance", description: "Navigate dense insurance policy forms, state filings, and compliance guidelines with verified paragraph citations and clause comparison." },
-    { iconName: "HelpCircle", title: "Support Ticket Deflection", description: "Give support engineers instant, cited answers drawn from thousands of technical manuals, so resolution time drops safely." },
-    { iconName: "LayoutTemplate", title: "Manufacturing & Engineering SOPs", description: "Turn dense technical manuals and standard operating procedures into an accessible, searchable interface your floor teams will actually use." },
-    { iconName: "FileSearch", title: "Legal & Research Knowledge", description: "Surface precedent, internal memos, regulatory updates and research documentation with strict confidentiality boundaries." }
+    { iconName: "Briefcase", title: "Immigration & Statutory Regulatory Intelligence (VisaDesk)", description: "Navigate thousands of pages of dynamic immigration statutes, policy updates, and legal evidence requirements with verified paragraph citations and automated clause comparison." },
+    { iconName: "FileSearch", title: "Environmental & Municipal Legal Precedent (CEQA & NEPA)", description: "Query 30+ year libraries of Environmental Impact Reports (EIRs) and mitigation monitoring programs with sub-3-second hybrid BM25/Dense retrieval and court-defensible citations." },
+    { iconName: "LayoutTemplate", title: "Aerospace MRO Technical Diagnostics (Aviotron)", description: "Parse dense multi-volume aircraft maintenance manuals, service bulletins, and FAA/EASA airworthiness directives with zero hallucinated part specifications." },
+    { iconName: "HelpCircle", title: "Enterprise Creative & Brand SOP Intelligence", description: "Index multi-brand style guides, packaging guidelines, and creative asset catalogs for instant semantic retrieval during automated marketing composition." }
   ],
   techStack: ["OpenSearch", "Qdrant", "Weaviate", "Elastic", "LlamaIndex", "FastAPI", "RAGAS", "AWS", "Azure", "GCP"],
   cta: {

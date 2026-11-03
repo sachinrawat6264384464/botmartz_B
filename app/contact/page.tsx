@@ -5,9 +5,9 @@ import ContactClient from './ContactClient';
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'Contact Us',
-    description: 'Book a discovery call with the Botmartz AI engineering team. Let\'s discuss how custom Generative AI and RAG solutions can impact your business.',
-    keywords: ['Contact Botmartz', 'AI Consulting', 'Hire AI Engineers', 'Enterprise AI Solutions'],
+    title: 'Contact Botmartz | Schedule AI Architecture Review',
+    description: 'Book an enterprise AI discovery session with founding engineers. We evaluate your document corpus, state machine requirements, and provide a 24h technical verdict.',
+    keywords: ['Contact Botmartz', 'AI Architecture Review', 'Enterprise RAG Consulting', 'Hire AI Engineers', 'Enterprise AI Solutions'],
   };
   
   try {
@@ -27,6 +27,18 @@ export async function generateMetadata(): Promise<Metadata> {
       description: meta.description,
       url: 'https://www.botmartz.com/contact',
       type: 'website',
+      images: [{
+        url: 'https://www.botmartz.com/images/architecture/contact-scoping-protocol.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Botmartz Architecture Review and Technical Scoping Protocol',
+      }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${meta.title} | Botmartz`,
+      description: meta.description,
+      images: ['https://www.botmartz.com/images/architecture/contact-scoping-protocol.svg'],
     },
     alternates: {
       canonical: 'https://www.botmartz.com/contact',

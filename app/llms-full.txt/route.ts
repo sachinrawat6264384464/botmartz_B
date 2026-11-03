@@ -82,8 +82,7 @@ Botmartz de-risks enterprise adoption through a staged offer ladder:
 - https://www.botmartz.com/services/enterprise-rag — Enterprise RAG service.
 - https://www.botmartz.com/services/ai-agents — AI Agents service.
 - https://www.botmartz.com/work — Reference implementations and engineering showcases (VisaDesk OS, OptimTensors).
-- https://www.botmartz.com/work/labs — AI Engineering Labs & Reference Architectures.
-- https://www.botmartz.com/work/labs/insurance-intelligence — Flagship Insurance Policy Intelligence Lab.
+- https://www.botmartz.com/work — Production AI Engineering & Reference Architectures.
 - https://www.botmartz.com/insights — Engineering Insights (technical write-ups).
 - https://www.botmartz.com/about — About and leadership.
 - https://www.botmartz.com/contact — Discovery call requests (team@botmartz.com).
