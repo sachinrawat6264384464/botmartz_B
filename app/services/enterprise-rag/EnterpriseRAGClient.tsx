@@ -111,7 +111,149 @@ export default function EnterpriseRAGClient({ content }: { content: any }) {
         </div>
       </section>
 
-      {/* ── 2. PROBLEM VS SOLUTION (KAIRO CARD ELEVATION) ── */}
+      {/* ── 2. PLAIN ENGLISH BREAKDOWN: WHAT IS ENTERPRISE RAG REALLY? ── */}
+      <section className="py-20 bg-slate-50 border-b border-[#E2E8F0]">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center mb-14">
+            <span className="font-mono text-xs tracking-wider text-[#0284C7] uppercase font-semibold block mb-2">
+              PLAIN ENGLISH EXPLANATION
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#0F172A] mb-4">
+              What Is Enterprise RAG? (In Simple Terms)
+            </h2>
+            <p className="text-base text-slate-600 leading-relaxed">
+              Before diving into algorithms, here is what this technology actually does for your business and everyday teams.
+            </p>
+          </div>
+
+          {/* 3-Way Plain English Comparison Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            
+            {/* Traditional Search */}
+            <div className="bg-white border border-slate-200 rounded-2xl p-7 shadow-xs flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center font-bold mb-5">
+                  1
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 mb-2">Traditional Keyword Search</h3>
+                <p className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-4">Like an Old Library Card Catalog</p>
+                <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                  You type a phrase and get <strong>50 blue links or PDF files</strong>. You still have to spend 45 minutes opening each file, reading dozens of pages, and manually copying out the numbers you need.
+                </p>
+              </div>
+              <div className="pt-4 border-t border-slate-100 text-xs font-semibold text-slate-500">
+                Effort: High manual reading &bull; Accuracy: Unassisted
+              </div>
+            </div>
+
+            {/* Generic Chatbots */}
+            <div className="bg-white border border-red-200 rounded-2xl p-7 shadow-xs flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center font-bold mb-5">
+                  2
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 mb-2">Generic Public Chatbots</h3>
+                <p className="text-xs font-mono text-red-600 uppercase tracking-wider mb-4">Like an Overconfident Intern</p>
+                <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                  Standard AI chats produce fluent, smooth answers. But when they don&apos;t know the exact rule in your company&apos;s 2026 handbook, <strong>they guess and fabricate facts</strong> (hallucination) that sound completely convincing.
+                </p>
+              </div>
+              <div className="pt-4 border-t border-red-100 text-xs font-semibold text-red-600">
+                Effort: Fast &bull; Risk: Dangerous fabrications &amp; privacy leaks
+              </div>
+            </div>
+
+            {/* Enterprise RAG */}
+            <div className="bg-white border-2 border-[#0284C7] rounded-2xl p-7 shadow-md flex flex-col justify-between relative">
+              <span className="absolute -top-3 right-6 bg-[#0284C7] text-white text-[10px] font-mono font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">
+                The Botmartz Standard
+              </span>
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-[#F0F9FF] text-[#0284C7] flex items-center justify-center font-bold mb-5">
+                  3
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 mb-2">Enterprise Grounded RAG</h3>
+                <p className="text-xs font-mono text-[#0284C7] uppercase tracking-wider mb-4">Like Your Sharpest In-House Specialist</p>
+                <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                  Reads <strong>only your verified company files</strong>. Synthesizes a direct, clear answer in 2 seconds, <strong>highlights the exact page and paragraph</strong> where the proof lives, and openly states <em>&quot;This information is not in your documents&quot;</em> instead of guessing.
+                </p>
+              </div>
+              <div className="pt-4 border-t border-sky-100 text-xs font-semibold text-[#0284C7] flex items-center gap-1.5">
+                <CheckCircle2 size={14} className="text-emerald-600" />
+                Effort: Zero &bull; Accuracy: 100% cited proof
+              </div>
+            </div>
+
+          </div>
+
+          {/* Real Human Impact Across Departments */}
+          <div className="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm">
+            <div className="max-w-2xl mb-8">
+              <span className="font-mono text-xs tracking-wider text-[#0284C7] uppercase font-semibold block mb-1">
+                SOLVING DAY-TO-DAY HEADACHES
+              </span>
+              <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+                How It Transforms Real Work Across Your Organization
+              </h3>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              
+              <div className="flex gap-4 items-start">
+                <div className="w-10 h-10 rounded-xl bg-sky-50 text-[#0284C7] flex items-center justify-center shrink-0 mt-1 border border-sky-100">
+                  <Briefcase size={18} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 text-base mb-1">For Legal &amp; Compliance Teams</h4>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    Stop spending late nights skimming through 400-page master vendor agreements. Ask: <em>&quot;Which contracts have unlimited indemnification liability?&quot;</em> and get direct side-by-side clause comparisons with exact paragraph citations in seconds.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-4 items-start">
+                <div className="w-10 h-10 rounded-xl bg-sky-50 text-[#0284C7] flex items-center justify-center shrink-0 mt-1 border border-sky-100">
+                  <Cpu size={18} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 text-base mb-1">For Operations, Field &amp; Plant Engineers</h4>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    When high-value equipment trips on the production floor or aircraft hangar, technicians don&apos;t have 3 hours to locate physical binders. They ask natural questions and get instant diagnostic steps, wiring diagrams, and torque specs with verified source pages.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-4 items-start">
+                <div className="w-10 h-10 rounded-xl bg-sky-50 text-[#0284C7] flex items-center justify-center shrink-0 mt-1 border border-sky-100">
+                  <FileSearch size={18} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 text-base mb-1">For Customer Support &amp; Technical Sales</h4>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    Empower junior representatives to answer tier-3 technical questions immediately without escalating to busy engineers. Responses are guaranteed to match the latest product documentation, pricing tables, and SLA terms.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-4 items-start">
+                <div className="w-10 h-10 rounded-xl bg-sky-50 text-[#0284C7] flex items-center justify-center shrink-0 mt-1 border border-sky-100">
+                  <Lock size={18} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 text-base mb-1">For CEOs, CIOs &amp; Enterprise Security Officers</h4>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    Protect intellectual property. Your confidential company files are deployed in your own private cloud (VPC) with strict employee role permissions (an intern cannot search executive payroll files) and zero training on public AI models.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── 3. PROBLEM VS SOLUTION (KAIRO CARD ELEVATION) ── */}
       <section className="py-24 bg-white border-b border-[#E2E8F0]">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           
