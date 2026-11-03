@@ -57,6 +57,18 @@ const nextConfig = {
         ],
       },
       {
+        // Strictly protect admin and api routes from all search engines and AI web scrapers
+        source: '/(admin|api)/:path*',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive, nosnippet, noimageindex' },
+          { key: 'Cache-Control', value: 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0' },
+          { key: 'Pragma', value: 'no-cache' },
+          { key: 'Expires', value: '0' },
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()' },
+        ],
+      },
+      {
         // Long-term cache for static assets
         source: '/(_next/static|favicon.ico|.*\\.png|.*\\.jpg|.*\\.jpeg|.*\\.svg|.*\\.webp|.*\\.avif)(.*)',
         headers: [
@@ -124,6 +136,26 @@ const nextConfig = {
       {
         source: '/services/ai agents',
         destination: '/services/ai-agents',
+        permanent: true,
+      },
+      {
+        source: '/insights/how-we-built-a-legal-document-intelligence-system-for-100k-docs',
+        destination: '/insights/prototype-vs-production-ai-client-perspective',
+        permanent: true,
+      },
+      {
+        source: '/insights/building-a-scalable-enterprise-rag-system-architecture-components-best-practices',
+        destination: '/insights/why-vector-similarity-is-not-semantic-search',
+        permanent: true,
+      },
+      {
+        source: '/insights/inside-ai-agents-from-reasoning-to-real-world-action',
+        destination: '/insights/how-to-build-multi-million-dollar-ai-agents-with-antigravity-and-mcp',
+        permanent: true,
+      },
+      {
+        source: '/insights/observability-for-llm-applications-metrics-that-matter',
+        destination: '/insights/microservices-vs-monolith-for-ai-systems-what-we-learned',
         permanent: true,
       },
     ];

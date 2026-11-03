@@ -23,10 +23,6 @@ export default function WriterRegistrationModal() {
 
   useEffect(() => {
     setMounted(true);
-    // Show guidelines invitation popup automatically when visiting insights page
-    const timer = setTimeout(() => {
-      setIsOpen(true);
-    }, 400);
 
     const handleCustomOpen = () => {
       setIsOpen(true);
@@ -35,7 +31,6 @@ export default function WriterRegistrationModal() {
     window.addEventListener("open-writer-modal", handleCustomOpen);
 
     return () => {
-      clearTimeout(timer);
       window.removeEventListener("open-writer-modal", handleCustomOpen);
     };
   }, []);

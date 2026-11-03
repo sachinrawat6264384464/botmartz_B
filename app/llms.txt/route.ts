@@ -17,16 +17,17 @@ Botmartz is engineering-first: the company publishes open benchmarks, reference 
 - [Enterprise RAG](https://www.botmartz.com/services/enterprise-rag): Hybrid dense/sparse vector retrieval with query decomposition, reranking, and evaluation-gated builds. We prove retrieval quality against a client's own documents before committing to a full build.
 - [AI Agents](https://www.botmartz.com/services/ai-agents): LangGraph-based multi-agent workflows with memory, tool use, planning, evaluation, and human-in-the-loop safeguards for production reliability.
 
-## Production Systems & Research Focus
+## Production Systems & Applied Research Focus
 Botmartz is deliberately focused on high-stakes, document-heavy and compute-intensive domains:
 - **VisaDesk OS**: High-assurance immigration and legal document intelligence with ColBERT late interaction, sovereign OCR, and automated citation verification.
-- **OptimTensors**: Deep learning inference efficiency research, KV cache memory footprint reduction (up to 8x), and Grouped-Query Attention (GQA) PyTorch kernels.
+- **Enterprise Catalog Intelligence Engine**: Enterprise generative creative and marketing catalog automation coordinating multi-agent prompt expansion and brand guideline verification.
+- **VelvetKey / HOA Connect**: Community and real estate operational AI automating resident ticket triage, vendor dispatch, and double-entry ledger bookkeeping via LangGraph state machines.
+- **In-House Sovereign AIOS**: Local air-gapped multi-agent operating system coordinating local Ollama model inference, Tailscale encrypted zero-trust mesh, and deterministic SQLite WAL persistence.
 - **Enterprise Knowledge & RAG**: Multi-document comparison, hybrid sparse/dense retrieval, and automated RAGAS evaluation harnesses.
-- **Deterministic Agent Graphs**: LangGraph state machines with schema-gated tool execution and human-in-the-loop oversight.
 
 ## Engineering & Proof of Capability
 - [Engineering Insights](https://www.botmartz.com/insights): Technical write-ups on production RAG and agent engineering — architecture decisions, retrieval strategies, evaluation methodology, and honest failure analysis.
-- [Work & Reference Implementations](https://www.botmartz.com/work): Open, reproducible reference builds and reference labs (/work/labs) with exact paragraph citation grounding and benchmark evaluation.
+- [Work & Reference Implementations](https://www.botmartz.com/work): Open, reproducible reference builds and production systems with exact paragraph citation grounding and benchmark evaluation.
 
 ## Company
 - [About Botmartz](https://www.botmartz.com/about): Mission, engineering standards, and Indore research lab vision.

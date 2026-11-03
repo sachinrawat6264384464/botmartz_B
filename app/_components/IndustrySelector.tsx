@@ -3,16 +3,16 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { 
-  ShieldCheck, 
-  Stethoscope, 
   Scale, 
+  Building2, 
   Plane, 
-  FileText, 
   ArrowRight, 
   CheckCircle2, 
   Lock, 
   Layers, 
-  FileCheck 
+  FileCheck,
+  FileText,
+  ShieldCheck
 } from "lucide-react";
 
 export interface IndustryData {
@@ -29,77 +29,55 @@ export interface IndustryData {
 }
 
 const INDUSTRIES: Record<string, IndustryData> = {
-  insurance: {
-    slug: "insurance",
-    name: "Insurance",
-    badge: "POLICY & UNDERWRITING",
-    headline: "Insurance Knowledge & Policy Retrieval Systems",
-    shortDescription: "Help underwriting and claims teams locate exact policy wording, riders, and supporting documentation across multi-decade policy libraries.",
-    documents: [
-      "Commercial General Liability (CGL) Forms",
-      "Underwriting Guidelines & Appetite Matrices",
-      "Claims Incident Reports & FNOL Logs",
-      "Reinsurance Treaty Endorsements",
-    ],
-    workflow: "A claims specialist queries complex exclusion criteria. The hybrid retrieval pipeline isolates applicable clauses across 400-page policy manuals, reranks via cross-encoder token alignment, and returns an evidence-cited answer.",
-    controls: [
-      "Strict paragraph-level source attribution",
-      "Document revision and effective-date validation",
-      "Role-based permission filtering (adjuster vs. underwriter)",
-      "Mandatory human review for coverage determination",
-    ],
-    evidenceStatus: "Illustrative Reference Architecture",
-    ctaLabel: "Explore Insurance Architecture →",
-  },
-  healthcare: {
-    slug: "healthcare",
-    name: "Healthcare",
-    badge: "CLINICAL PROTOCOLS",
-    headline: "Healthcare Protocol & Clinical Knowledge Systems",
-    shortDescription: "Connect medical teams to institutional guidelines, administrative protocols, and clinical literature while preserving patient privacy and scope boundaries.",
-    documents: [
-      "Hospital Formulary & Dosage Protocols",
-      "Institutional Clinical Care Pathways",
-      "Accreditation & Compliance SOPs (Joint Commission)",
-      "Administrative Billing & ICD-10 Codification Guides",
-    ],
-    workflow: "A clinician searches dosage pathways for specialized co-morbidities. The system retrieves verified internal guidance from accredited institutional records and generates a sourced summary for qualified review.",
-    controls: [
-      "Zero autonomous diagnostic claims — strict decision support",
-      "Temporal freshness verification on clinical protocols",
-      "HIPAA-compliant private cloud environment with no training retention",
-      "Auditable clinician verification sign-off gates",
-    ],
-    evidenceStatus: "Illustrative Reference Architecture",
-    ctaLabel: "Explore Healthcare Architecture →",
-  },
   legal: {
     slug: "legal",
-    name: "Legal",
-    badge: "CONTRACTS & LITIGATION",
-    headline: "Legal Document Intelligence & Clause Comparison",
-    shortDescription: "Make extensive contract repositories, matter filings, and internal playbooks instantly searchable with cross-clause comparison and version history.",
+    name: "Legal & Regulatory",
+    badge: "CONTRACTS & STATUTES",
+    headline: "Legal Document Intelligence & Statutory Clause Grounding",
+    shortDescription: "Make extensive contract repositories, master filings, and regulatory playbooks searchable with sub-second cross-clause comparison and cryptographic citation grounding.",
     documents: [
       "Master Services Agreements (MSAs) & Statements of Work",
+      "Statutory Regulatory Filings & Immigration Policy Updates",
       "Non-Disclosure & Intellectual Property Covenants",
-      "Matter Filings, Briefs & Discovery Transcripts",
       "Internal Negotiation Playbooks & Fallback Clauses",
     ],
-    workflow: "Corporate counsel compares indemnification clauses across 25 vendor agreements. The system extracts specific legal obligations, cross-references internal risk playbooks, and presents a side-by-side comparison.",
+    workflow: "Corporate counsel or immigration attorneys query statutory clauses across 5,000+ pages of filings. The hybrid BM25 + ColBERTv2 pipeline extracts exact statutory subsections (e.g. '14(b)(ii)'), cross-references internal risk matrices, and outputs court-defensible cited findings.",
     controls: [
-      "Token-exact verbatim citation anchoring",
-      "Multi-tenant client matter isolation and strict confidentiality",
-      "Version tracking across redlines and amendments",
-      "Human legal oversight checkpoint prior to contract markup",
+      "Token-exact verbatim citation anchoring with SHA-256 chunk hashes",
+      "Multi-tenant client matter isolation with zero telemetry leakage",
+      "Version tracking across statutory amendments and historical redlines",
+      "Mandatory attorney-in-the-loop sign-off before contract markups",
     ],
-    evidenceStatus: "Illustrative Reference Architecture",
+    evidenceStatus: "Verified Case Study",
     ctaLabel: "Explore Legal Architecture →",
+  },
+  realestate: {
+    slug: "realestate",
+    name: "Real Estate & Community Ops",
+    badge: "HOA & ASSET OPERATIONS",
+    headline: "Autonomous Community & Property Operations Intelligence",
+    shortDescription: "Unify resident inquiries, maintenance vendor dispatch, and double-entry financial ledger operations within deterministic cyclical agent state machines.",
+    documents: [
+      "Bylaws, Architectural Guidelines & CC&Rs",
+      "Vendor Contracts, SLAs & Work Order Histories",
+      "Reserve Studies & Double-Entry Financial Ledgers",
+      "Municipal Zoning & Compliance Directives",
+    ],
+    workflow: "A resident submits an urgent plumbing architectural modification request. An autonomous supervisor agent parses CC&R guidelines, validates architectural compliance, drafts vendor work orders, and queues board approval.",
+    controls: [
+      "Cyclical LangGraph state graphs with SQLite WAL persistence",
+      "Deterministic board-approval gates on all financial ledger entries",
+      "Role-based ACLs isolating board executives, owners, and contractors",
+      "Complete cryptographic audit log of all vendor dispatches",
+    ],
+    evidenceStatus: "Verified Case Study",
+    ctaLabel: "Explore Real Estate Architecture →",
   },
   aviation: {
     slug: "aviation",
-    name: "Aviation MRO",
-    badge: "MAINTENANCE & COMPLIANCE",
-    headline: "Aviation MRO & Technical Manual Intelligence",
+    name: "Aerospace & Technical MRO",
+    badge: "MAINTENANCE & AIRWORTHINESS",
+    headline: "Aviation MRO & Technical Manual Diagnostics",
     shortDescription: "Enable licensed aircraft engineers to rapidly pinpoint maintenance procedures, service bulletins, and compliance mandates across massive airworthiness datasets.",
     documents: [
       "Aircraft Maintenance Manuals (AMM)",
@@ -107,43 +85,21 @@ const INDUSTRIES: Record<string, IndustryData> = {
       "Airworthiness Directives (AD) & Service Bulletins (SB)",
       "Component Maintenance Manuals (CMM)",
     ],
-    workflow: "An MRO technician investigates an engine casing crack tolerance. The system retrieves exact ATA-chapter specifications from the approved structural manual and outputs verified torque standards and repair limits.",
+    workflow: "An MRO technician investigates an engine casing crack tolerance. The system retrieves exact ATA-chapter specifications from the approved structural manual and outputs verified torque standards, part IDs, and repair limits.",
     controls: [
       "Traceable tail-number and airframe revision tracking",
       "Strict exclusion of superseded technical documentation",
       "Licensed engineer signature gate required for work-order sign-off",
       "FAA / EASA audit trail logging for all procedure lookups",
     ],
-    evidenceStatus: "Illustrative Reference Architecture",
-    ctaLabel: "Explore Aviation MRO Architecture →",
-  },
-  operations: {
-    slug: "operations",
-    name: "Document-Heavy Ops",
-    badge: "COMPLIANCE & ENTERPRISE SOPS",
-    headline: "Enterprise Document Intelligence & Operational Search",
-    shortDescription: "Turn fragmented operating procedures, safety standards, and supply chain manuals into an intelligent, inspectable enterprise knowledge layer.",
-    documents: [
-      "Standard Operating Procedures (SOPs)",
-      "Health, Safety & Environment (HSE) Directives",
-      "Global Supply Chain Logistics & Tariff Schedules",
-      "Vendor Audit & ESG Compliance Filings",
-    ],
-    workflow: "An operations lead audits factory safety compliance across overseas facilities. The pipeline parses multilingual SOPs, normalizes safety standards, and outputs a compliant procedural checklist.",
-    controls: [
-      "Hierarchical metadata partitioning by geography and facility",
-      "Automated regression testing against golden question benchmarks",
-      "Continuous hallucination scoring via RAGAS metrics",
-      "Supervised action execution into ERP/ticketing software",
-    ],
-    evidenceStatus: "Illustrative Reference Architecture",
-    ctaLabel: "Explore Operations Architecture →",
+    evidenceStatus: "Active Laboratory Prototype",
+    ctaLabel: "Explore Aerospace Architecture →",
   },
 };
 
 export default function IndustrySelector() {
-  const [selectedKey, setSelectedKey] = useState<string>("insurance");
-  const industry = INDUSTRIES[selectedKey] || INDUSTRIES.insurance;
+  const [selectedKey, setSelectedKey] = useState<string>("legal");
+  const industry = INDUSTRIES[selectedKey] || INDUSTRIES.legal;
 
   return (
     <div className="w-full">

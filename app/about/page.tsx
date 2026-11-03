@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { 
   Building2, 
   ShieldCheck, 
@@ -19,8 +20,8 @@ import {
 import TrackedLink from '@/app/_components/TrackedLink';
 
 export const metadata: Metadata = {
-  title: 'About Us',
-  description: 'Botmartz helps organizations design, implement, integrate, and operate production-ready AI systems across knowledge, workflows, data, and software.',
+  title: 'About Botmartz | Enterprise AI Systems Engineering Practice',
+  description: 'Botmartz architects production AI systems across enterprise knowledge and workflows: hybrid RAG search, deterministic LangGraph agents, and private VPC deployment.',
   keywords: [
     'About Botmartz',
     'AI Engineering Practice',
@@ -30,10 +31,22 @@ export const metadata: Metadata = {
     'Enterprise RAG Consulting'
   ],
   openGraph: {
-    title: 'About Botmartz | AI Engineering & Implementation Practice',
-    description: 'Botmartz helps organizations design, implement, integrate, and operate production-ready AI systems across knowledge, workflows, data, and software.',
+    title: 'About Botmartz | Enterprise AI Systems Engineering Practice',
+    description: 'Botmartz architects production AI systems across enterprise knowledge and workflows: hybrid RAG search, deterministic LangGraph agents, and private VPC deployment.',
     url: 'https://www.botmartz.com/about',
     type: 'website',
+    images: [{
+      url: 'https://www.botmartz.com/images/architecture/about-engineering-pillars.svg',
+      width: 1200,
+      height: 630,
+      alt: 'Botmartz Foundational AI Engineering Principles',
+    }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Botmartz | Enterprise AI Systems Engineering Practice',
+    description: 'Botmartz architects production AI systems across enterprise knowledge and workflows: hybrid RAG search, deterministic LangGraph agents, and private VPC deployment.',
+    images: ['https://www.botmartz.com/images/architecture/about-engineering-pillars.svg'],
   },
   alternates: {
     canonical: 'https://www.botmartz.com/about',
@@ -131,51 +144,51 @@ export default function AboutPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
 
-      {/* ── 1. HERO SECTION (DARK THEME) ── */}
-      <section className="relative pt-[130px] pb-[80px] overflow-hidden bg-[#050B14] text-white border-b border-white/10">
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/12 blur-[140px] rounded-full pointer-events-none" />
-        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0052FF]/15 blur-[160px] rounded-full pointer-events-none" />
+      {/* ── 1. HERO SECTION: LUMINOUS ARCHITECTURAL WHITE WITH WARM ORANGE & BLUE ACCENTS ── */}
+      <section className="relative pt-[130px] pb-[80px] overflow-hidden bg-gradient-to-b from-[#FFFDF9] via-[#FAFDFE] to-white text-slate-900 border-b border-[#E2E8F0]">
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-orange-400/10 blur-[140px] rounded-full pointer-events-none" />
+        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0284C7]/10 blur-[160px] rounded-full pointer-events-none" />
 
         <div className="max-w-[1240px] mx-auto px-6 sm:px-10 relative z-10">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
             
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#00B8F0]/10 border border-[#00B8F0]/30 text-[#00B8F0] text-xs font-mono font-bold uppercase tracking-wider mb-6 shadow-sm">
-              <Building2 size={14} className="text-[#00B8F0]" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F0F9FF] border border-[#BAE6FD] text-[#0284C7] text-xs font-mono font-bold uppercase tracking-wider mb-6 shadow-2xs">
+              <Building2 size={14} className="text-[#0284C7]" />
               <span>ABOUT BOTMARTZ</span>
             </div>
 
-            <h1 className="text-[clamp(34px,5vw,60px)] font-extrabold font-heading tracking-tight leading-[1.12] text-white mb-6">
+            <h1 className="text-[clamp(34px,5vw,60px)] font-extrabold font-heading tracking-tight leading-[1.12] text-[#0F172A] mb-6">
               Engineering Production-Ready AI <br />
-              <span className="bg-gradient-to-r from-[#00B8F0] via-[#0066FF] to-[#60A5FA] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#0284C7] via-[#0066FF] to-[#0F172A] bg-clip-text text-transparent">
                 Across Systems &amp; Workflows.
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg text-[#8A9EB0] max-w-3xl leading-relaxed mb-10 font-normal">
+            <p className="text-base sm:text-lg text-slate-600 max-w-3xl leading-relaxed mb-10 font-normal">
               Botmartz helps organizations design, implement, integrate, and operate production-ready AI systems across knowledge, workflows, data, and software. We operate as a specialized AI engineering practice combining dedicated client delivery with ecosystem training and open-source innovation.
             </p>
 
             {/* Quick Practice Pillars Bar */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full p-5 rounded-2xl bg-[#091222]/80 border border-white/10 backdrop-blur-md text-left">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full p-6 rounded-2xl bg-white border border-slate-200 shadow-sm text-left">
               <div>
-                <div className="text-[11px] font-mono text-[#00B8F0] uppercase tracking-wider font-bold">PRACTICE FOCUS</div>
-                <div className="text-lg font-bold text-white mt-1">Enterprise AI</div>
-                <div className="text-[12px] text-[#8A9EB0]">RAG &amp; Agent Systems</div>
+                <div className="text-[11px] font-mono text-[#0284C7] uppercase tracking-wider font-bold">PRACTICE FOCUS</div>
+                <div className="text-lg font-bold text-slate-900 mt-1">Enterprise AI</div>
+                <div className="text-[12px] text-slate-500">RAG &amp; Agent Systems</div>
               </div>
               <div>
-                <div className="text-[11px] font-mono text-[#00B8F0] uppercase tracking-wider font-bold">DEPLOYMENT MODEL</div>
-                <div className="text-lg font-bold text-white mt-1">Client VPC</div>
-                <div className="text-[12px] text-[#8A9EB0]">Private &amp; Secure</div>
+                <div className="text-[11px] font-mono text-[#0284C7] uppercase tracking-wider font-bold">DEPLOYMENT MODEL</div>
+                <div className="text-lg font-bold text-slate-900 mt-1">Client VPC</div>
+                <div className="text-[12px] text-slate-500">Private &amp; Secure</div>
               </div>
               <div>
-                <div className="text-[11px] font-mono text-[#00B8F0] uppercase tracking-wider font-bold">VERIFIABILITY</div>
-                <div className="text-lg font-bold text-white mt-1">Grounding First</div>
-                <div className="text-[12px] text-[#8A9EB0]">Exact Paragraph Citations</div>
+                <div className="text-[11px] font-mono text-[#0284C7] uppercase tracking-wider font-bold">VERIFIABILITY</div>
+                <div className="text-lg font-bold text-slate-900 mt-1">Grounding First</div>
+                <div className="text-[12px] text-slate-500">Exact Paragraph Citations</div>
               </div>
               <div>
-                <div className="text-[11px] font-mono text-[#00B8F0] uppercase tracking-wider font-bold">ECOSYSTEM</div>
-                <div className="text-lg font-bold text-white mt-1">Labs &amp; Open Source</div>
-                <div className="text-[12px] text-[#8A9EB0]">Developer Community</div>
+                <div className="text-[11px] font-mono text-[#0284C7] uppercase tracking-wider font-bold">ECOSYSTEM</div>
+                <div className="text-lg font-bold text-slate-900 mt-1">Open Source &amp; Devs</div>
+                <div className="text-[12px] text-slate-500">Developer Community</div>
               </div>
             </div>
 
@@ -215,6 +228,19 @@ export default function AboutPage() {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* 4 Foundational Pillars Architecture Graphic */}
+          <div className="mt-14 relative w-full rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-xl group hover:border-[#0284C7]/40 transition-all duration-300">
+            <div className="relative aspect-[16/9] w-full bg-[#F8FAFC]">
+              <Image
+                src="/images/architecture/about-engineering-pillars.svg"
+                alt="Botmartz AI Solutions 4 Foundational Engineering Principles Graphic"
+                fill
+                priority
+                className="object-contain p-2 sm:p-4 group-hover:scale-[1.01] transition-transform duration-500"
+              />
+            </div>
           </div>
 
         </div>

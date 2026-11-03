@@ -169,18 +169,20 @@
 .c4 { bottom: 24px; right: 24px; border-left: none; border-top: none; }
 @media (max-width: 640px) { .corner { display: none; } }
 
-/* Shared Grid Container - Full Width */
+/* Shared Grid Container - Ergonomic Reading Width */
 .wrap {
-  @apply max-w-full mx-auto px-4 sm:px-6 md:px-8 w-full;
+  @apply max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 w-full;
 }
 
-/* Full Width Page Containers Across All Pages */
+/* Comfortable Enterprise Frame Across All Pages */
 .max-w-\[1240px\],
 .max-w-7xl,
 .max-w-6xl,
 .max-w-\[1400px\],
 .max-w-\[1600px\] {
-  max-width: 100% !important;
+  max-width: 1200px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 /* Section Spacing */

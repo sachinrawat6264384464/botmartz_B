@@ -396,7 +396,7 @@ export default function CareerDetailClient({ job }: { job: JobRole }) {
                 </div>
                 <div>
                   <div className="font-bold text-[13.5px] text-white">Actively Hiring</div>
-                  <div className="font-medium text-[11.5px] text-[#7C8CAD]">Apply Hurry Up</div>
+                  <div className="font-medium text-[11.5px] text-[#7C8CAD]">Rolling Evaluations</div>
                 </div>
               </div>
             </div>

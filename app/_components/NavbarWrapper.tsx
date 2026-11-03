@@ -15,10 +15,6 @@ const DEFAULT_ITEMS: NavItem[] = [
   },
   {
     name: "Work", path: "/work",
-    dropdown: [
-      { name: "Labs", path: "/work/labs" },
-      { name: "Open Source", path: "/work/open-source" },
-    ],
   },
   {
     name: "Engineering Insights", path: "/insights",

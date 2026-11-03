@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" width="100%" height="100%" fill="none">
+  <defs>
+    <linearGradient id="ctBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="50%" stop-color="#F0F9FF"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <filter id="ctShadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0F172A" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="680" rx="20" fill="url(#ctBg)" stroke="#E2E8F0" stroke-width="2"/>
+  
+  <g opacity="0.4">
+    <path d="M 0,80 L 1200,80 M 0,160 L 1200,160 M 0,240 L 1200,240 M 0,320 L 1200,320 M 0,400 L 1200,400 M 0,480 L 1200,480 M 0,560 L 1200,560" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="4 4"/>
+    <path d="M 160,0 L 160,680 M 320,0 L 320,680 M 480,0 L 480,680 M 640,0 L 640,680 M 800,0 L 800,680 M 960,0 L 960,680 M 1120,0 L 1120,680" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="4 4"/>
+  </g>
+
+  <!-- Header Strip -->
+  <rect x="40" y="32" width="1120" height="56" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5" filter="url(#ctShadow)"/>
+  <circle cx="68" cy="60" r="6" fill="#10B981"/>
+  <text x="86" y="65" font-family="monospace" font-size="13" font-weight="700" fill="#0F172A" letter-spacing="1">BOTMARTZ DIRECT ARCHITECTURE REVIEW &amp; 24-HOUR SCOPING PROTOCOL</text>
+  <rect x="990" y="44" width="150" height="32" rx="8" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1"/>
+  <text x="1005" y="65" font-family="monospace" font-size="11" font-weight="700" fill="#059669">FAST SLA: &lt; 24H</text>
+
+  <!-- Left: 3-Stage Discovery Process -->
+  <g transform="translate(60, 120)">
+    <rect width="520" height="420" rx="16" fill="#FFFFFF" stroke="#BAE6FD" stroke-width="2" filter="url(#ctShadow)"/>
+    <rect x="0" y="0" width="520" height="52" rx="16" fill="#F0F9FF"/>
+    <text x="24" y="32" font-family="sans-serif" font-size="16" font-weight="800" fill="#0369A1">WHAT HAPPENS AFTER YOU REACH OUT</text>
+    <rect x="420" y="14" width="76" height="24" rx="6" fill="#0284C7"/>
+    <text x="432" y="30" font-family="monospace" font-size="10.5" font-weight="700" fill="#FFFFFF">PROCESS</text>
+
+    <!-- Step 1 -->
+    <g transform="translate(24, 72)">
+      <rect width="472" height="74" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+      <circle cx="36" cy="37" r="16" fill="#EFF6FF"/>
+      <text x="32" y="42" font-family="monospace" font-size="13" font-weight="800" fill="#1D4ED8">1</text>
+      <text x="68" y="28" font-family="sans-serif" font-size="13" font-weight="700" fill="#0F172A">Direct Review by Founding AI Engineers</text>
+      <text x="68" y="48" font-family="sans-serif" font-size="11" fill="#64748B">No non-technical sales reps. A principal engineer reviews your document</text>
+      <text x="68" y="62" font-family="sans-serif" font-size="11" fill="#64748B">corpus, data schema, and latency requirements within 24 hours.</text>
+    </g>
+
+    <!-- Step 2 -->
+    <g transform="translate(24, 158)">
+      <rect width="472" height="74" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+      <circle cx="36" cy="37" r="16" fill="#EFF6FF"/>
+      <text x="32" y="42" font-family="monospace" font-size="13" font-weight="800" fill="#1D4ED8">2</text>
+      <text x="68" y="28" font-family="sans-serif" font-size="13" font-weight="700" fill="#0F172A">20-Minute Technical Feasibility Session</text>
+      <text x="68" y="48" font-family="sans-serif" font-size="11" fill="#64748B">We evaluate hybrid dense/sparse indexing, candidate reranking models,</text>
+      <text x="68" y="62" font-family="sans-serif" font-size="11" fill="#64748B">and determine if your problem requires an Agent DAG or RAG pipeline.</text>
+    </g>
+
+    <!-- Step 3 -->
+    <g transform="translate(24, 244)">
+      <rect width="472" height="74" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+      <circle cx="36" cy="37" r="16" fill="#EFF6FF"/>
+      <text x="32" y="42" font-family="monospace" font-size="13" font-weight="800" fill="#1D4ED8">3</text>
+      <text x="68" y="28" font-family="sans-serif" font-size="13" font-weight="700" fill="#0F172A">Fixed-Scope Blueprint &amp; 8-12 Week Roadmap</text>
+      <text x="68" y="48" font-family="sans-serif" font-size="11" fill="#64748B">You receive a written architectural specification, golden eval benchmark,</text>
+      <text x="68" y="62" font-family="sans-serif" font-size="11" fill="#64748B">and clear milestone-gated pricing with 100% client code ownership.</text>
+    </g>
+
+    <g transform="translate(24, 332)">
+      <rect width="472" height="66" rx="10" fill="#ECFDF5" stroke="#A7F3D0"/>
+      <text x="20" y="28" font-family="monospace" font-size="11" font-weight="700" fill="#065F46">SLA Guarantee: Fast Response Under 24 Hours</text>
+      <text x="20" y="48" font-family="sans-serif" font-size="11" fill="#047857">NDA signed upfront before corpus inspection. Zero client data training.</text>
+    </g>
+  </g>
+
+  <!-- Right: Verification Checklist -->
+  <g transform="translate(620, 120)">
+    <rect width="520" height="420" rx="16" fill="#FFFFFF" stroke="#BAE6FD" stroke-width="2" filter="url(#ctShadow)"/>
+    <rect x="0" y="0" width="520" height="52" rx="16" fill="#F0F9FF"/>
+    <text x="24" y="32" font-family="sans-serif" font-size="16" font-weight="800" fill="#0369A1">TECHNICAL SCOPING VERIFICATION</text>
+    <rect x="410" y="14" width="86" height="24" rx="6" fill="#10B981"/>
+    <text x="420" y="30" font-family="monospace" font-size="10.5" font-weight="700" fill="#FFFFFF">GUARANTEE</text>
+
+    <g transform="translate(24, 72)">
+      <rect width="472" height="96" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+      <text x="18" y="28" font-family="sans-serif" font-size="13" font-weight="700" fill="#0F172A">Enterprise Security &amp; Air-Gapped Deployments</text>
+      <text x="18" y="50" font-family="sans-serif" font-size="11" fill="#64748B">Deploy on AWS GovCloud, Azure Private Enclaves, or your local bare-metal</text>
+      <text x="18" y="66" font-family="sans-serif" font-size="11" fill="#64748B">cluster. Zero external API leaks or public LLM training on proprietary data.</text>
+      <text x="18" y="82" font-family="monospace" font-size="10" font-weight="700" fill="#0284C7">SOC2 Type II &amp; HIPAA Compliant Architectures</text>
+    </g>
+
+    <g transform="translate(24, 180)">
+      <rect width="472" height="96" rx="10" fill="#F8FAFC" stroke="#E2E8F0"/>
+      <text x="18" y="28" font-family="sans-serif" font-size="13" font-weight="700" fill="#0F172A">Direct Founder Communication Channels</text>
+      <text x="18" y="50" font-family="sans-serif" font-size="11" fill="#64748B">Immediate priority channel created via WhatsApp Direct Desk and private</text>
+      <text x="18" y="66" font-family="sans-serif" font-size="11" fill="#64748B">Slack shared connect. Fast turnarounds on architecture queries.</text>
+      <text x="18" y="82" font-family="monospace" font-size="10" font-weight="700" fill="#10B981">Dedicated Lead Architect Assigned on Day 1</text>
+    </g>
+
+    <!-- Bottom Specs -->
+    <g transform="translate(24, 290)">
+      <rect width="472" height="108" rx="10" fill="#0F172A"/>
+      <text x="20" y="32" font-family="monospace" font-size="11.5" font-weight="700" fill="#38BDF8">READY TO TEST YOUR USE CASE?</text>
+      <text x="20" y="56" font-family="sans-serif" font-size="11" fill="#94A3B8">Email: team@botmartz.com · Phone / WhatsApp: +91 97300 84626</text>
+      <text x="20" y="74" font-family="sans-serif" font-size="11" fill="#94A3B8">Location: Botmartz AI Solutions Pvt. Ltd., Indore, India (Global Remote)</text>
+      <text x="20" y="94" font-family="monospace" font-size="10" font-weight="700" fill="#34D399">Cal.com: 20-min Architecture Review Available ➔</text>
+    </g>
+  </g>
+
+  <!-- Bottom Metric Strip -->
+  <g transform="translate(40, 570)">
+    <rect width="1120" height="74" rx="14" fill="#0F172A" filter="url(#ctShadow)"/>
+    <g transform="translate(40, 18)">
+      <text x="0" y="20" font-family="monospace" font-size="11" font-weight="700" fill="#94A3B8">FEASIBILITY VERDICT</text>
+      <text x="0" y="42" font-family="sans-serif" font-size="20" font-weight="800" fill="#38BDF8">Within 24 Hours</text>
+    </g>
+    <line x1="280" y1="14" x2="280" y2="60" stroke="#334155" stroke-width="1"/>
+    <g transform="translate(320, 18)">
+      <text x="0" y="20" font-family="monospace" font-size="11" font-weight="700" fill="#94A3B8">DIRECT ENGINEER ENGAGEMENT</text>
+      <text x="0" y="42" font-family="sans-serif" font-size="20" font-weight="800" fill="#34D399">100% Engineering Team</text>
+    </g>
+    <line x1="580" y1="14" x2="580" y2="60" stroke="#334155" stroke-width="1"/>
+    <g transform="translate(620, 18)">
+      <text x="0" y="20" font-family="monospace" font-size="11" font-weight="700" fill="#94A3B8">CONFIDENTIALITY</text>
+      <text x="0" y="42" font-family="sans-serif" font-size="20" font-weight="800" fill="#38BDF8">Mutual NDA Signed Upfront</text>
+    </g>
+    <line x1="880" y1="14" x2="880" y2="60" stroke="#334155" stroke-width="1"/>
+    <g transform="translate(920, 18)">
+      <text x="0" y="20" font-family="monospace" font-size="11" font-weight="700" fill="#94A3B8">RESPONSE GUARANTEE</text>
+      <text x="0" y="42" font-family="sans-serif" font-size="18" font-weight="800" fill="#FFFFFF">&lt; 2h via WhatsApp Fast Desk</text>
+    </g>
+  </g>
+</svg>

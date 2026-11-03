@@ -439,7 +439,7 @@ export default function InsightsDetailClient({
               <div>
                 <div className="font-bold text-[14px] text-white">{authorName}</div>
                 <div className="font-medium text-[11.5px] text-[#7C8CAD]">
-                  {authorRole} · {formattedDate} · {readTime} min read
+                  {authorRole ? `${authorRole} · ` : ""}{formattedDate}
                 </div>
               </div>
             </div>
@@ -540,10 +540,10 @@ export default function InsightsDetailClient({
               className="hover:bg-white/[0.06] hover:border-white/15"
             >
               <div className="flex items-center justify-between text-[#8FA3C4]">
-                <span className="font-semibold text-[11px] uppercase tracking-wider">Read Time</span>
+                <span className="font-semibold text-[11px] uppercase tracking-wider">Depth</span>
                 <Clock className="w-4 h-4 text-[#00C6FF]" />
               </div>
-              <div className="font-extrabold text-[22px] text-white mt-1">{readTime} min</div>
+              <div className="font-extrabold text-[18px] text-white mt-1">Full Spec</div>
             </div>
 
             {/* Card 2: Failure Modes */}
@@ -619,7 +619,7 @@ export default function InsightsDetailClient({
             <Image
               fill
               src={featuredImg}
-              alt={post.title}
+              alt={post.featuredImageAlt || post.title || "Botmartz Engineering Insight"}
               className="object-cover object-center"
               priority
               unoptimized
@@ -769,7 +769,7 @@ export default function InsightsDetailClient({
                       <img
                         className="rounded-xl shadow-lg my-8 max-w-full h-auto mx-auto border border-slate-200"
                         src={src}
-                        alt={alt}
+                        alt={alt || post.featuredImageAlt || post.title || "Technical architecture diagram"}
                         {...props}
                       />
                     );

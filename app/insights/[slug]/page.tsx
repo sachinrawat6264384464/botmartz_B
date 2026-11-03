@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { adminDb } from '@/lib/firebase-admin';
+import { getLocalBlogBySlug, getAllLocalBlogs } from '@/lib/localBlogs';
 import InsightsDetailClient from './InsightsDetailClient';
 
 export const dynamic = 'force-dynamic';
@@ -11,6 +12,27 @@ interface Props {
     slug: string;
   }>;
 }
+
+const LEGACY_SLUG_REDIRECTS: Record<string, string> = {
+  // Legacy stub aliases -> Canonical pillar articles
+  "research_explained_1": "pytorch-primitives-vs-framework-abstractions",
+  "research_explained_2": "pytorch-primitives-vs-framework-abstractions",
+  "research_explained_3": "pytorch-primitives-vs-framework-abstractions",
+  "research_explained_4": "pytorch-primitives-vs-framework-abstractions",
+  "research_explained_5": "why-vector-similarity-is-not-semantic-search",
+  "research_explained_7": "pytorch-primitives-vs-framework-abstractions",
+  "research_explained_8": "why-vector-similarity-is-not-semantic-search",
+  "research_explained_9": "pytorch-primitives-vs-framework-abstractions",
+  "research-paper-deep-dive-colbert-contextualized-late-interaction-fast-semantic-search": "why-vector-similarity-is-not-semantic-search",
+  "building-a-scalable-enterprise-rag-system-architecture-components-best-practices": "why-vector-similarity-is-not-semantic-search",
+  "inside-ai-agents-from-reasoning-to-real-world-action": "how-to-build-multi-million-dollar-ai-agents-with-antigravity-and-mcp",
+  "advanced-rag-techniques-hybrid-search-reranking-query-rewriting": "why-vector-similarity-is-not-semantic-search",
+  "build-an-ai-chatbot-with-langgraph-and-openai-step-by-step": "how-to-build-multi-million-dollar-ai-agents-with-antigravity-and-mcp",
+  "how-we-built-a-legal-document-intelligence-system-for-100k-docs": "prototype-vs-production-ai-client-perspective",
+  "observability-for-llm-applications-metrics-that-matter": "microservices-vs-monolith-for-ai-systems-what-we-learned",
+  "prompt-engineering-patterns-that-actually-work-in-production": "how-to-build-multi-million-dollar-ai-agents-with-antigravity-and-mcp",
+  "open-source-projects-from-botmartz-labs-you-should-know": "pytorch-primitives-vs-framework-abstractions",
+};
 
 const KEPT_SLUGS = new Set([
   "building-a-scalable-enterprise-rag-system-architecture-components-best-practices",
@@ -104,7 +126,7 @@ When designing scalable AI architectures, teams often face the trade-off between
     title: "Observability for LLM Applications: Metrics That Matter",
     category: "MLOPS",
     excerpt: "Key metrics, dashboards and alerts to monitor LLM apps in production and ensure reliability.",
-    author: "Harish R.",
+    author: "Botmartz Team",
     createdAt: "2024-04-30T00:00:00.000Z",
     updatedAt: "2024-04-30T00:00:00.000Z",
     readTime: 8,
@@ -248,11 +270,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     console.error("Error generating metadata for blog post:", e);
   }
   
-  if (!post && STATIC_POSTS[slug]) {
-    post = STATIC_POSTS[slug];
+  if (!post) {
+    const local = getLocalBlogBySlug(slug);
+    if (local) {
+      post = local;
+    } else if (STATIC_POSTS[slug]) {
+      post = STATIC_POSTS[slug];
+    }
   }
   
   if (!post) {
+    if (LEGACY_SLUG_REDIRECTS[slug]) {
+      const targetSlug = LEGACY_SLUG_REDIRECTS[slug];
+      return {
+        title: "Engineering Insights | Botmartz",
+        alternates: {
+          canonical: `https://www.botmartz.com/insights/${targetSlug}`,
+        },
+      };
+    }
     return {
       title: "Insight",
       description: "Explore engineering insights and AI research from Botmartz.",
@@ -318,10 +354,21 @@ export default async function InsightsDetailPage({ params }: Props) {
   }
   
   if (!post) {
-    if (STATIC_POSTS[slug]) {
+    const local = getLocalBlogBySlug(slug);
+    if (local) {
+      post = {
+        ...local,
+        createdAt: local.createdAt,
+        updatedAt: local.updatedAt,
+      };
+      postId = local.id;
+    } else if (STATIC_POSTS[slug]) {
       post = STATIC_POSTS[slug];
       postId = `static-${slug}`;
     } else {
+      if (LEGACY_SLUG_REDIRECTS[slug]) {
+        permanentRedirect(`/insights/${LEGACY_SLUG_REDIRECTS[slug]}`);
+      }
       notFound();
     }
   }
@@ -351,6 +398,22 @@ export default async function InsightsDetailPage({ params }: Props) {
       .filter(p => p.slug && p.slug !== slug);
   } catch (err) {
     console.error("Error fetching related posts:", err);
+  }
+
+  if (related.length < 3) {
+    const localRelated = getAllLocalBlogs()
+      .filter(b => b.slug !== slug && !related.some(r => r.slug === b.slug))
+      .map(b => ({
+        id: b.id,
+        title: b.title,
+        slug: b.slug,
+        category: b.category,
+        author: b.author,
+        readTime: b.readTimeMinutes || 8,
+        excerpt: b.excerpt || "",
+        featuredImage: b.featuredImage || ""
+      }));
+    related = [...related, ...localRelated];
   }
 
   if (related.length < 3) {
@@ -387,6 +450,49 @@ export default async function InsightsDetailPage({ params }: Props) {
   }));
 
   const sanitizedRelated = JSON.parse(JSON.stringify(related));
+
+  // Technical Article & FAQ JSON-LD Schema
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "@id": `https://www.botmartz.com/insights/${slug}#article`,
+    "headline": sanitizedPost.title,
+    "description": sanitizedPost.excerpt || `Read our technical analysis on ${sanitizedPost.title} at Botmartz.`,
+    "url": `https://www.botmartz.com/insights/${slug}`,
+    "datePublished": sanitizedPost.createdAt,
+    "dateModified": sanitizedPost.updatedAt || sanitizedPost.createdAt,
+    "author": {
+      "@type": "Organization",
+      "name": sanitizedPost.author || "Botmartz Engineering Team",
+      "url": "https://www.botmartz.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Botmartz",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.botmartz.com/BotmartznewBot.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://www.botmartz.com/insights/${slug}`
+    },
+    "about": [
+      { "@type": "Thing", "name": "Enterprise RAG" },
+      { "@type": "Thing", "name": "Artificial Intelligence" },
+      { "@type": "Thing", "name": "Autonomous Agents" },
+      { "@type": "Thing", "name": "Hybrid Search" }
+    ]
+  };
   
-  return <InsightsDetailClient post={sanitizedPost} initialRelated={sanitizedRelated} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <InsightsDetailClient post={sanitizedPost} initialRelated={sanitizedRelated} />
+    </>
+  );
 }

@@ -12,8 +12,8 @@ import AIAgentsClient from "./AIAgentsClient";
 
 export async function generateMetadata(): Promise<Metadata> {
   let meta = {
-    title: 'AI Agent Development Company | Custom Multi-Agent Systems',
-    description: 'Botmartz is a premier enterprise AI agent development company. We build deterministic, LangGraph-powered multi-agent systems with human-in-the-loop controls, RBAC security, and guaranteed pilot timelines.',
+    title: 'Enterprise AI Agent Development Company | Custom Multi-Agent Systems',
+    description: 'Botmartz is a premier enterprise AI agent development company. We build deterministic, LangGraph-powered multi-agent systems with human-in-the-loop controls, RBAC security, and guaranteed production pilots.',
   };
   
   try {
@@ -35,7 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
           url: 'https://www.botmartz.com/BotmartznewBot.png',
           width: 1200,
           height: 630,
-          alt: 'Botmartz - AI Agent Development Company',
+          alt: 'Botmartz - Enterprise AI Agent Development Company',
         },
       ],
     },
@@ -53,13 +53,13 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const DEFAULT_CONTENT = {
   hero: {
-    badge: "SOLUTIONS / AI AGENTS & AUTOMATION",
-    title: "Stop Chasing Fragile Autonomy. Start Deploying Controlled Agentic Workflows.",
-    subtitle: "We build highly constrained, production-ready AI agents that execute specific enterprise workflows. Deterministic routing, human-in-the-loop approvals, and strict data validation schemas. Every state-changing action is gated by verification.",
+    badge: "ENTERPRISE AI AGENT DEVELOPMENT COMPANY",
+    title: "Enterprise AI Agent Development: Stop Chasing Fragile Autonomy. Deploy Controlled Workflows.",
+    subtitle: "As an enterprise AI agent development company, Botmartz engineers constrained, production-ready multi-agent systems that execute mission-critical business workflows. Deterministic LangGraph state routing, human-in-the-loop approvals, and rigid Pydantic schemas ensure every state-changing action is gated by verification.",
     ctaText: "Book an Architecture Review →",
     ctaLink: "https://cal.com/botmartz-ai/20min",
-    secondaryCtaText: "See Reference Implementation",
-    secondaryCtaLink: "/work/labs",
+    secondaryCtaText: "See Reference Implementations",
+    secondaryCtaLink: "/work",
   },
   problemSolution: {
     title: "Why Most AI Agent Pilots Fail (And How We Engineer Control)",
@@ -81,9 +81,10 @@ const DEFAULT_CONTENT = {
     "Note: We understand budgets vary. If this pricing does not align with your current budget, we completely understand and prefer to be transparent upfront to respect your time."
   ],
   useCases: [
-    { iconName: "HelpCircle", title: "Customer Support Triage", description: "Automatically classify, route, and draft responses for support tickets based on historical data." },
-    { iconName: "FileSearch", title: "Deep Research & Synthesis", description: "Agents that scour the web and internal databases to compile comprehensive briefs in minutes." },
-    { iconName: "Briefcase", title: "Sales Intelligence", description: "Automatically research prospects, score leads against ideal customer profiles, and draft highly personalized outreach." },
+    { iconName: "Briefcase", title: "Automated Enterprise Creative & Catalog Intelligence", description: "Multi-agent visual asset generation and catalog composition engine coordinating prompt expansion, image synthesis, and automated brand guideline validation." },
+    { iconName: "Lock", title: "Sovereign Real Estate & Community Operations (VelvetKey / HOA Connect)", description: "Autonomous resident triage, maintenance dispatch, and automated financial double-entry bookkeeping operating within local, privacy-compliant agent boundaries." },
+    { iconName: "FileSearch", title: "High-Stakes Regulatory Document Intelligence (VisaDesk & CEQA)", description: "Multi-document synthesis, cross-encoder reranking, and claim-level verification agents providing court-defensible legal and environmental citations in under 3 seconds." },
+    { iconName: "HelpCircle", title: "Local Sovereign Agentic OS (In-House AIOS)", description: "Air-gapped multi-agent operating system running locally on consumer hardware with zero telemetry leaks, local LLM orchestration, and deterministic SQLite/WAL persistence." }
   ],
   techStack: ["LangGraph", "Google ADK", "FastAPI", "Pydantic", "PostgreSQL", "OpenAI", "Anthropic", "Docker"],
   cta: {

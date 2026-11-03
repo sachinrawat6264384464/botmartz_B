@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Mail, MapPin, Phone, CheckCircle, AlertCircle, RefreshCw, HelpCircle, ShieldCheck, Clock, Layers } from 'lucide-react';
+import Image from 'next/image';
+import { Mail, MapPin, Phone, CheckCircle, AlertCircle, RefreshCw, HelpCircle, ShieldCheck, Clock, Layers, CheckCircle2, PenTool, MessageSquare, Building2, Send } from 'lucide-react';
 import { trackEvent } from '@/lib/analytics';
 
 interface ContactClientProps {
@@ -17,8 +18,11 @@ interface ContactClientProps {
 export default function ContactClient({ heroData, structuredData, settings }: ContactClientProps) {
   const email = settings?.general?.email || "team@botmartz.com";
   const phone = settings?.general?.phone || "+91 97300 84626";
-  const address = settings?.general?.address || "Indore, IN";
+  const address = settings?.general?.address || "Indore, Madhya Pradesh, India";
 
+  const [activeTab, setActiveTab] = useState<'client' | 'writer'>('client');
+
+  // Client Scoping Form State
   const [form, setForm] = useState({
     inquiryType: 'Book an Architecture Review',
     firstName: '',
@@ -27,20 +31,81 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
     phone: '',
     company: '',
     website: '',
-    industry: 'Insurance & Financial Services',
+    industry: 'Legal & Regulatory Compliance',
     systemsInvolved: '',
     dataScope: '10,000 - 100,000 Documents',
     timeline: 'Within 1 Month',
     message: ''
   });
 
+  // Writer Registration Form State
+  const [writerForm, setWriterForm] = useState({
+    fullName: '',
+    email: '',
+    portfolioUrl: '',
+    specialization: 'Enterprise RAG & Hybrid Retrieval',
+    proposalTitle: '',
+    abstract: '',
+  });
+
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [writerSuccess, setWriterSuccess] = useState(false);
   const [error, setError] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleWriterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setWriterForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleWriterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!writerForm.fullName.trim() || !writerForm.email.trim() || !writerForm.abstract.trim()) {
+      setError('Full Name, Email, and Proposed Article Abstract are required.');
+      return;
+    }
+    setSubmitting(true);
+    setError('');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: writerForm.fullName,
+          email: writerForm.email,
+          inquiryType: 'Engineering Insights Author Submission',
+          website: writerForm.portfolioUrl,
+          industry: 'Technical Research & Insights',
+          message: `PROPOSAL: ${writerForm.proposalTitle}\nSPECIALIZATION: ${writerForm.specialization}\nPORTFOLIO: ${writerForm.portfolioUrl}\n\nABSTRACT & OUTLINE:\n${writerForm.abstract}`
+        })
+      });
+
+      if (res.ok) {
+        setWriterSuccess(true);
+        trackEvent("form_submission", { form_name: "writer_registration", name: writerForm.fullName });
+        setWriterForm({
+          fullName: '',
+          email: '',
+          portfolioUrl: '',
+          specialization: 'Enterprise RAG & Hybrid Retrieval',
+          proposalTitle: '',
+          abstract: '',
+        });
+      } else {
+        const data = await res.json();
+        setError(data.error || 'Something went wrong. Please try again.');
+      }
+    } catch (err) {
+      setError('Network error. Please try again later.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -73,7 +138,7 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
           phone: '',
           company: '',
           website: '',
-          industry: 'Insurance & Financial Services',
+          industry: 'Legal & Regulatory Compliance',
           systemsInvolved: '',
           dataScope: '10,000 - 100,000 Documents',
           timeline: 'Within 1 Month',
@@ -98,36 +163,36 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       
-      {/* HERO SECTION */}
-      <section className="relative pt-[130px] pb-[80px] bg-[#050B14] text-white overflow-hidden border-b border-white/10">
+      {/* HERO SECTION: LUMINOUS ARCHITECTURAL WHITE WITH WARM ORANGE & BLUE ACCENTS */}
+      <section className="relative pt-[130px] pb-[80px] bg-gradient-to-b from-[#FFFDF9] via-[#FAFDFE] to-white text-slate-900 overflow-hidden border-b border-[#E2E8F0]">
         {/* Background Grid & Mask */}
         <div 
           className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: 'linear-gradient(rgba(0,184,240,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,184,240,0.06) 1px, transparent 1px)',
+            backgroundImage: 'linear-gradient(rgba(15,23,42,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,0.04) 1px, transparent 1px)',
             backgroundSize: '40px 40px',
           }}
         />
         {/* Background glow effects */}
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#00B8F0]/10 blur-[120px] rounded-full pointer-events-none" />
-        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0052FF]/15 blur-[150px] rounded-full pointer-events-none" />
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-orange-400/10 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-[#0284C7]/10 blur-[150px] rounded-full pointer-events-none" />
 
         <div className="wrap relative z-10 flex flex-col items-center text-center max-w-[800px] mx-auto">
-          <div className="w-16 h-16 bg-[#00B8F0]/15 border border-[#00B8F0]/30 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
-            <Mail className="w-8 h-8 text-[#00B8F0]" />
+          <div className="w-16 h-16 bg-[#F0F9FF] border border-[#BAE6FD] rounded-2xl flex items-center justify-center mb-6 shadow-2xs">
+            <Mail className="w-8 h-8 text-[#0284C7]" />
           </div>
-          <div className="font-mono text-[11px] tracking-[0.14em] text-[#00B8F0] uppercase mb-4 flex items-center gap-3 font-bold justify-center">
-            <span className="w-6 h-px bg-[#00B8F0]/30"></span>
+          <div className="font-mono text-[11px] tracking-[0.14em] text-[#0284C7] uppercase mb-4 flex items-center gap-3 font-bold justify-center">
+            <span className="w-6 h-px bg-[#BAE6FD]"></span>
             Enterprise Architecture &amp; Implementation
-            <span className="w-6 h-px bg-[#00B8F0]/30"></span>
+            <span className="w-6 h-px bg-[#BAE6FD]"></span>
           </div>
-          <h1 className="text-[clamp(36px,4.5vw,56px)] leading-[1.1] font-extrabold mb-6 tracking-tight text-white">
+          <h1 className="text-[clamp(36px,4.5vw,56px)] leading-[1.1] font-extrabold mb-6 tracking-tight text-[#0F172A]">
             Let's Review Your <br />
-            <span className="bg-gradient-to-r from-[#00B8F0] via-[#0066FF] to-[#60A5FA] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#0284C7] via-[#0066FF] to-[#0F172A] bg-clip-text text-transparent">
               AI Architecture.
             </span>
           </h1>
-          <p className="text-[17px] text-[#8FA3C4] max-w-[600px] mx-auto font-medium leading-relaxed">
+          <p className="text-[17px] text-slate-600 max-w-[600px] mx-auto font-medium leading-relaxed">
             Discuss your enterprise document challenges, search platforms, or agent workflows with an experienced AI systems architect.
           </p>
         </div>
@@ -262,13 +327,10 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
                          onChange={handleInputChange}
                          className="bg-slate-50 border border-slate-200 text-slate-900 rounded-xl px-4 py-3 text-[14px] focus:outline-none focus:border-[#0066FF] focus:ring-1 focus:ring-[#0066FF]"
                        >
-                         <option value="Insurance & Underwriting">Insurance &amp; Underwriting</option>
-                         <option value="Financial Services & Banking">Financial Services &amp; Banking</option>
-                         <option value="Enterprise Operations & Logistics">Enterprise Operations &amp; Logistics</option>
-                         <option value="Ecommerce & Retail">Ecommerce &amp; Retail</option>
-                         <option value="Legal & Regulated">Legal &amp; Regulated Sectors</option>
-                         <option value="Technology & SaaS">Technology &amp; SaaS</option>
-                         <option value="Other">Other Domain</option>
+                         <option value="Legal & Regulatory Compliance">Legal &amp; Regulatory Compliance</option>
+                         <option value="Real Estate & Community Operations">Real Estate &amp; Community Operations</option>
+                         <option value="Aerospace & Technical MRO">Aerospace &amp; Technical MRO</option>
+                         <option value="Other">Other Regulated Sector</option>
                        </select>
                     </div>
                   </div>
@@ -352,17 +414,50 @@ export default function ContactClient({ heroData, structuredData, settings }: Co
                   <a href={`tel:${phone.replace(/[^+\d]/g, '')}`} className="font-mono text-[13px] text-[#00B8F0] hover:underline font-semibold">{phone}</a>
                </div>
 
-               <div className="bg-slate-50 border border-slate-200 rounded-xl p-8 transition-all hover:border-[#00B8F0]/40 hover:shadow-md">
-                  <div className="w-10 h-10 border border-[#00B8F0]/20 bg-[#00B8F0]/10 rounded-lg flex items-center justify-center text-[#00B8F0] mb-4">
-                     <MapPin className="w-5 h-5" />
+               <div className="bg-slate-50 border border-slate-200 rounded-xl p-8 transition-all hover:border-[#00B8F0]/40 hover:shadow-md flex flex-col justify-between">
+                  <div>
+                    <div className="w-10 h-10 border border-[#00B8F0]/20 bg-[#00B8F0]/10 rounded-lg flex items-center justify-center text-[#00B8F0] mb-4">
+                       <MapPin className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-semibold text-[16px] mb-2 text-slate-900">Indore Headquarters</h3>
+                    <p className="text-[14px] text-slate-600 mb-3">AI Research & Systems Engineering Hub in Indore, serving global clients across 25+ jurisdictions.</p>
+                    <span className="font-mono text-[12px] text-slate-800 font-semibold uppercase tracking-wide block mb-4">{address}</span>
                   </div>
-                  <h3 className="font-semibold text-[16px] mb-2 text-slate-900">Headquarters</h3>
-                  <p className="text-[14px] text-slate-600 mb-4">Engineering team in Indore, India, working with clients in North America and Europe.</p>
-                  <span className="font-mono text-[13px] text-slate-800 font-semibold uppercase tracking-wide">{address}</span>
+                  {/* Interactive Indore Map Container */}
+                  <div className="relative w-full h-[140px] rounded-lg overflow-hidden border border-slate-200 shadow-inner">
+                    <iframe
+                      title="Botmartz Indore Headquarters Location"
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d117763.55502120159!2d75.79380806461942!3d22.72420499879979!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962fcad1b410ddb%3A0x96ec4da356240f4!2sIndore%2C%20Madhya%20Pradesh!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen={false}
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      className="w-full h-full grayscale hover:grayscale-0 transition-all duration-300"
+                    />
+                  </div>
                </div>
 
             </div>
          </div>
+      </section>
+
+      {/* TECHNICAL SCOPING & DIRECT PROTOCOL ARCHITECTURE GRAPHIC */}
+      <section className="py-12 bg-white border-t border-slate-200">
+        <div className="max-w-[1240px] mx-auto px-6 sm:px-10">
+          <div className="relative w-full rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-xl group hover:border-[#0284C7]/40 transition-all duration-300">
+            <div className="relative aspect-[16/9] w-full bg-[#F8FAFC]">
+              <Image
+                src="/images/architecture/contact-scoping-protocol.svg"
+                alt="Botmartz Direct Architecture Review and 24-Hour Scoping Protocol Graphic"
+                fill
+                priority
+                className="object-contain p-2 sm:p-4 group-hover:scale-[1.01] transition-transform duration-500"
+              />
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* FAQ & ENGAGEMENT PROCESS */}

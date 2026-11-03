@@ -2,22 +2,17 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Montserrat } from 'next/font/google';
-import { ArrowRight, ExternalLink, Sparkles, Layers, Code2, Terminal } from 'lucide-react';
-
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  display: 'swap',
-});
+import Image from 'next/image';
+import { ArrowRight, ExternalLink, Sparkles, Layers, Code2, Terminal, CheckCircle2 } from 'lucide-react';
+import VerifiedProductionBlueprint from '@/app/_components/VerifiedProductionBlueprint';
 
 export default function WorkClient({
   heroContent = {
     badge: "Our Work",
     title: "Production AI Systems,<br><span class=\"text-[#00C6FF]\">Shipped &amp; Proven</span>",
-    subtitle: "Explore our innovation labs, open-source AI projects, and engineering methodology for shipping real systems in production.",
-    ctaText: "Explore Labs →",
-    ctaLink: "/work/labs",
+    subtitle: "Explore our production implementations, open-source AI frameworks, and engineering methodology for shipping real systems.",
+    ctaText: "Browse Deployments →",
+    ctaLink: "#projects",
   },
   structuredData,
   aeoQuestion,
@@ -45,7 +40,7 @@ export default function WorkClient({
   ];
 
   return (
-    <div className={`${montserrat.className} bg-[#F5F8FC] text-[#0B1220] antialiased overflow-x-hidden min-h-screen`}>
+    <div className="bg-[#F5F8FC] text-[#0B1220] antialiased overflow-x-hidden min-h-screen">
       {/* Dynamic JSON-LD Injection */}
       {structuredData && (
         <script
@@ -54,64 +49,65 @@ export default function WorkClient({
         />
       )}
 
-      {/* ─── 1. HERO BANNER ─── */}
-      <div className="bg-[#060C1F] relative overflow-hidden pt-[110px] sm:pt-[130px] pb-16 px-6 sm:px-10">
+      {/* ─── 1. HERO BANNER: LUMINOUS ARCHITECTURAL WHITE WITH WARM ORANGE & BLUE ACCENTS ─── */}
+      <div className="bg-gradient-to-b from-[#FFFDF9] via-[#FAFDFE] to-white relative overflow-hidden pt-[110px] sm:pt-[130px] pb-16 px-6 sm:px-10 border-b border-[#E2E8F0] text-slate-900">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: "linear-gradient(rgba(0,198,255,0.06) 1px,transparent 1px), linear-gradient(90deg,rgba(0,198,255,0.06) 1px,transparent 1px)",
+            backgroundImage: "linear-gradient(rgba(15,23,42,0.04) 1px,transparent 1px), linear-gradient(90deg,rgba(15,23,42,0.04) 1px,transparent 1px)",
             backgroundSize: "44px 44px",
             maskImage: "radial-gradient(ellipse 80% 60% at 65% 30%,black,transparent)",
             WebkitMaskImage: "radial-gradient(ellipse 80% 60% at 65% 30%,black,transparent)"
           }}
         />
-        <div className="absolute w-[460px] h-[460px] rounded-full bg-[radial-gradient(circle,rgba(0,123,255,0.28),transparent_70%)] -top-[140px] -right-[80px] blur-[10px] pointer-events-none" />
+        <div className="absolute w-[460px] h-[460px] rounded-full bg-[radial-gradient(circle,rgba(249,115,22,0.08),transparent_70%)] -top-[140px] -right-[80px] blur-[30px] pointer-events-none" />
 
         <div className="relative max-w-[1240px] mx-auto">
           {/* Breadcrumb */}
-          <div className="font-semibold text-[12.5px] text-[#5B6B85] mb-5 sm:mb-[22px] flex items-center gap-2">
-            <Link href="/" className="hover:text-[#00C6FF] transition-colors">Home</Link>
+          <div className="font-semibold text-[12.5px] text-slate-500 mb-5 sm:mb-[22px] flex items-center gap-2 font-mono">
+            <Link href="/" className="hover:text-[#0284C7] transition-colors">Home</Link>
             <span>›</span>
-            <span className="text-[#00C6FF]">Work</span>
+            <span className="text-[#0284C7] font-bold">Work</span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-12 items-center">
             <div>
-              <div className="font-bold text-xs tracking-[0.1em] text-[#00C6FF] uppercase">
-                {heroContent.badge || "Our Work"}
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F0F9FF] border border-[#BAE6FD] text-[#0284C7] font-mono text-xs uppercase tracking-wider mb-4 shadow-2xs font-semibold">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>{heroContent.badge || "PROVEN PRODUCTION DEPLOYMENTS"}</span>
               </div>
               <h1
-                className="font-extrabold text-[36px] sm:text-[44px] md:text-[50px] leading-[1.15] text-white mt-4 tracking-[-0.01em]"
+                className="font-extrabold text-[36px] sm:text-[44px] md:text-[52px] leading-[1.12] text-[#0F172A] mt-2 tracking-tight"
                 dangerouslySetInnerHTML={{
-                  __html: heroContent.title || 'Production AI Systems,<br><span class="text-[#00C6FF]">Shipped &amp; Proven</span>'
+                  __html: heroContent.title ? heroContent.title.replace('text-orange-600', 'text-[#0284C7]').replace('text-[#00C6FF]', 'text-[#0284C7]') : 'Production AI Systems,<br><span class="text-[#0284C7]">Shipped &amp; Proven</span>'
                 }}
               />
-              <p className="font-medium text-[14.5px] sm:text-[15.5px] leading-[1.7] text-[#8FA3C4] mt-4.5 max-w-[500px]">
-                {heroContent.subtitle || "Case studies from enterprise clients across education, logistics, healthcare and SaaS — real systems in production, not proofs of concept."}
+              <p className="font-normal text-[15px] sm:text-[16px] leading-relaxed text-slate-600 mt-4 max-w-[520px]">
+                {heroContent.subtitle || "Reference case studies from enterprise clients across legal, aviation MRO, logistics, and supply chain — real deterministic systems in production."}
               </p>
-              <div className="flex gap-3.5 mt-7 flex-wrap items-center">
+              <div className="flex gap-3.5 mt-8 flex-wrap items-center">
                 <a
                   href={heroContent.ctaLink || "#cases"}
-                  className="inline-flex items-center gap-2 bg-[#007BFF] hover:bg-[#0069DB] text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] shadow-[0_8px_24px_rgba(0,123,255,0.35)] transition-all transform hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-2 bg-[#0284C7] hover:bg-[#0369A1] text-white font-semibold text-[14px] px-7 py-4 rounded-xl shadow-md transition-all transform hover:-translate-y-0.5"
                 >
-                  {heroContent.ctaText || "Browse Case Studies →"}
+                  {heroContent.ctaText || "Browse Deployments →"}
                 </a>
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 bg-[rgba(255,255,255,0.06)] hover:bg-[rgba(255,255,255,0.1)] border border-[rgba(255,255,255,0.18)] text-white font-bold text-[14px] px-6 py-3.5 rounded-[9px] transition-all"
+                  className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-semibold text-[14px] px-6 py-4 rounded-xl transition-all shadow-xs"
                 >
-                  Start a Project
+                  Request Technical Scoping
                 </Link>
               </div>
 
               {/* Sub-navigation */}
-              <div className="mt-8 pt-6 border-t border-[rgba(255,255,255,0.08)] flex items-center gap-5 flex-wrap text-xs font-semibold text-[#8FA3C4]">
-                <span>Explore:</span>
-                <Link href="/work/labs" className="text-[#00C6FF] hover:underline flex items-center gap-1">
-                  <Terminal className="w-3.5 h-3.5" /> AI Innovation Labs
+              <div className="mt-8 pt-6 border-t border-slate-200 flex items-center gap-5 flex-wrap text-xs font-semibold text-slate-500">
+                <span className="font-mono text-slate-400">EXPLORE:</span>
+                <Link href="#cases" className="text-[#0284C7] hover:underline flex items-center gap-1 font-mono">
+                  <Terminal className="w-3.5 h-3.5" /> Client Case Studies
                 </Link>
-                <Link href="/work/open-source" className="text-[#00C6FF] hover:underline flex items-center gap-1">
-                  <Code2 className="w-3.5 h-3.5" /> Open Source Projects
+                <Link href="/work/open-source" className="text-[#0284C7] hover:underline flex items-center gap-1 font-mono">
+                  <Code2 className="w-3.5 h-3.5" /> Open Source Retrievers
                 </Link>
               </div>
             </div>
@@ -119,9 +115,9 @@ export default function WorkClient({
             {/* Hero Stats Grid */}
             <div className="grid grid-cols-2 gap-3.5 sm:gap-4">
               {heroStats.map((s, i) => (
-                <div key={i} className="bg-[rgba(255,255,255,0.04)] border border-[rgba(255,255,255,0.1)] rounded-[14px] p-5 sm:p-6 transition-all hover:bg-[rgba(255,255,255,0.06)] hover:border-[rgba(0,198,255,0.3)]">
-                  <div className="font-extrabold text-[26px] sm:text-[30px] text-[#00C6FF] leading-none">{s.value}</div>
-                  <div className="font-semibold text-xs text-[#8FA3C4] mt-2">{s.label}</div>
+                <div key={i} className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 transition-all hover:border-[#0284C7]/40 hover:shadow-md shadow-xs">
+                  <div className="font-extrabold text-[26px] sm:text-[30px] text-[#0284C7] leading-none">{s.value}</div>
+                  <div className="font-semibold text-xs text-slate-500 mt-2 font-mono uppercase tracking-wide">{s.label}</div>
                 </div>
               ))}
             </div>
@@ -130,6 +126,11 @@ export default function WorkClient({
       </div>
 
 
+
+      {/* ─── 2. PRODUCTION ARCHITECTURE & DELIVERY MATRIX (3D GRAPHIC & BLUEPRINT) ─── */}
+      <div className="max-w-[1240px] mx-auto mt-12 px-6 sm:px-10">
+        <VerifiedProductionBlueprint />
+      </div>
 
       {/* ─── 3. HOW WE WORK (FROM PROBLEM TO PRODUCTION) (LIGHT THEME) ─── */}
       <div className="max-w-[1240px] mx-auto mt-16 px-6 sm:px-10">
@@ -163,7 +164,7 @@ export default function WorkClient({
               {aeoQuestion || "What kind of production AI systems has Botmartz built?"}
             </h3>
             <p className="text-[#5B6B85] text-[13.5px] sm:text-[14.5px] leading-relaxed">
-              {aeoAnswer || "Botmartz builds and deploys production AI systems across enterprise knowledge retrieval, agentic workflow automation, insurance and policy intelligence, and modern AI engineering architectures."}
+              {aeoAnswer || "Botmartz builds and deploys sovereign production AI systems across legal and statutory intelligence, real estate and community operational agents, and aerospace MRO technical retrieval."}
             </p>
           </div>
         </div>
