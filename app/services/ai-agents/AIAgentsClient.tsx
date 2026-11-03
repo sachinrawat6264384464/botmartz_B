@@ -8,6 +8,7 @@ import {
   FileSearch, HelpCircle, Users, Speaker, PieChart, Workflow, Lock, Settings, Bot, CheckCircle2, AlertTriangle, Terminal, Sparkles, Check
 } from "lucide-react";
 import DynamicIcon from "@/app/_components/DynamicIcon";
+import InteractiveAgentFactory from "@/app/_components/InteractiveAgentFactory";
 
 export default function AIAgentsClient({ content }: { content: any }) {
   return (
@@ -150,32 +151,22 @@ export default function AIAgentsClient({ content }: { content: any }) {
         </div>
       </section>
 
-      {/* ── 3. PRODUCTION ARCHITECTURE BREAKDOWN (DETAILED BLUEPRINT) ── */}
+      {/* ── 3. PRODUCTION ARCHITECTURE BREAKDOWN (INTERACTIVE AGENT FACTORY RUNTIME) ── */}
       <section className="py-20 bg-white border-b border-[#E2E8F0]">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10">
             <span className="font-mono text-xs tracking-wider text-[#0284C7] uppercase font-semibold block mb-2">
-              AGENT STATE MACHINE TOPOLOGY
+              INTERACTIVE AGENT FACTORY &bull; LIVE GOVERNED DAG
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0F172A] mb-3">
               Constrained LangGraph Execution &amp; HITL Approval Gate
             </h2>
             <p className="text-sm text-slate-600">
-              State machines with explicit rollback compensation, circuit breakers, and mandatory human review before state mutations.
+              Test real enterprise scenarios. Experience state machine rollbacks, circuit breakers, and mandatory human authorization gates before records mutate.
             </p>
           </div>
 
-          <div className="relative w-full rounded-2xl overflow-hidden border border-slate-200 shadow-xl bg-white group hover:border-[#0284C7]/50 transition-all duration-300">
-            <div className="relative aspect-[16/9] w-full bg-[#F8FAFC]">
-              <Image
-                src="/images/architecture/ai-agents-dag-specification.svg"
-                alt="Governed Multi-Agent State Machine Architecture Graphic"
-                fill
-                priority
-                className="object-contain p-2 sm:p-4 group-hover:scale-[1.01] transition-transform duration-500"
-              />
-            </div>
-          </div>
+          <InteractiveAgentFactory />
         </div>
       </section>
 
