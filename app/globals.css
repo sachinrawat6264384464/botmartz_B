@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "./_components/hero-section.css";
+
 
 @custom-variant dark (&:is(.dark *));
 
