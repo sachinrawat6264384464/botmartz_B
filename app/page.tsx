@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import TrackedLink from "@/app/_components/TrackedLink";
 import ExplodedAIArchitectureHero from "@/app/_components/ExplodedAIArchitectureHero";
 import IsometricSystemStack from "@/app/_components/IsometricSystemStack";
+import Interactive3DArchitectureCanvas from "@/app/_components/Interactive3DArchitectureCanvas";
 import ProblemSolverTransformation from "@/app/_components/ProblemSolverTransformation";
 import IndustrySelector from "@/app/_components/IndustrySelector";
 import GlobalImpactAndTestimonials from "@/app/_components/GlobalImpactAndTestimonials";
@@ -108,6 +109,11 @@ export default function HomePage() {
           </div>
 
           <IsometricSystemStack />
+
+          {/* Interactive WebGL 3D Real-Time Topology */}
+          <div className="mt-14">
+            <Interactive3DArchitectureCanvas />
+          </div>
 
         </div>
       </AnimatedSection>
