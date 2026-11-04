@@ -36,8 +36,8 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Enterprise RAG & AI Agents | Production AI Engineering | Botmartz",
-  description: "Botmartz architects high-ranking enterprise RAG systems and deterministic AI agents. Dual BM25 + dense vector search, Reciprocal Rank Fusion (k=60), Cross-Encoder reranking, and private VPC deployment with zero hallucination.",
+  title: "Enterprise RAG & Agentic AI Systems | Botmartz",
+  description: "Enterprise applied AI engineering: deterministic multi-agent systems, high-precision hybrid RAG, and private VPC deployment with zero hallucination.",
   keywords: [
     "Enterprise RAG",
     "Production RAG Architecture",
