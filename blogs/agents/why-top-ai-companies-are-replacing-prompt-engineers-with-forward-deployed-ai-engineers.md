@@ -7,7 +7,7 @@ authorName: "Soham Sharma"
 authorId: "soham-sharma-admin"
 category: "AI CAREERS & ENGINEERING"
 tags: ["Forward Deployed Engineer", "FDE", "Prompt Engineering", "Careers", "Enterprise AI", "LangGraph"]
-status: "draft"
+status: "published"
 featuredImage: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1600&auto=format&fit=crop&q=85"
 coverImage: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1600&auto=format&fit=crop&q=85"
 featuredImageAlt: "The Evolution of AI Engineering: From Prompt Engineering to Forward Deployed AI Engineer"
